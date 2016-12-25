@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import dev.kkorolyov.pancake.event.Action;
+import dev.kkorolyov.pancake.entity.Action;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.Logger.Level;
 import javafx.scene.Scene;

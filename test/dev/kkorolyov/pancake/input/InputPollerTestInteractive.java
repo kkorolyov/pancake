@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import dev.kkorolyov.pancake.event.Action;
+import dev.kkorolyov.pancake.entity.Action;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -28,7 +28,7 @@ public class InputPollerTestInteractive extends Application {
 				while (running) {
 					try {
 						Platform.runLater(() -> text.setText(q.poll().size() + " actions polled"));
-						Thread.currentThread().sleep(17);
+						Thread.sleep(17);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -53,27 +53,17 @@ public class InputPollerTestInteractive extends Application {
 	private static Map<KeyCode, Action> buildKeyMap() {
 		Map<KeyCode, Action> map = new HashMap<>();
 		
-		for (KeyCode code : KeyCode.values()) {
-			map.put(code, new Action() {
-				@Override
-				public void execute() {}
-				@Override
-				public void revert() {}
-			});
-		}
+		for (KeyCode code : KeyCode.values())
+			map.put(code, entity -> System.out.println(code));
+		
 		return Collections.unmodifiableMap(map);
 	}
 	private static Map<MouseButton, Action> buildMouseKeyMap() {
 		Map<MouseButton, Action> map = new HashMap<>();
 		
-		for (MouseButton code : MouseButton.values()) {
-			map.put(code, new Action() {
-				@Override
-				public void execute() {}
-				@Override
-				public void revert() {}
-			});
-		}
+		for (MouseButton code : MouseButton.values())
+			map.put(code, entity -> System.out.println(code));
+		
 		return Collections.unmodifiableMap(map);
 	}
 }
