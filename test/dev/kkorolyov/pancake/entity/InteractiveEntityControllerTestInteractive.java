@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.entity;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,15 +20,15 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 	private static final Label text = new Label("EMPTY");
 	private static final Scene scene = new Scene(new Group(text));
 	private static final InputPoller poller = new InputPoller(scene, buildKeyMap(), buildMouseKeyMap());
-	private static final Entity entity = new Entity(new DynamicPoint(), new InteractiveEntityController(poller));
+	private static final Entity entity = new Entity(2, new InteractiveEntityController(poller));
 	
 	public static void main(String[] args) {
 		new Thread(() -> {
 			while (running) {
 				try {
 					entity.update();
-					Platform.runLater(() -> text.setText(entity.getPosition().toString()));
-					Thread.sleep(17);
+					Platform.runLater(() -> text.setText(toStringPosition(entity)));
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -37,6 +38,15 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 		launch(args);
 		
 		running = false;
+	}
+	private static String toStringPosition(Entity entity) {
+		int[] position = new int[entity.getAxes()],
+					velocity = new int[position.length];
+		for (int i = 0; i < position.length; i++) {
+			position[i] = entity.getPosition(i);
+			velocity[i] = entity.getVelocity(i);
+		}
+		return Arrays.toString(position) + " " + Arrays.toString(velocity);
 	}
 
 	@Override
@@ -49,13 +59,13 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 	private static Map<KeyCode, Action> buildKeyMap() {
 		Map<KeyCode, Action> map = new HashMap<>();
 		
-		map.put(KeyCode.W, e -> e.getPosition().setYVelocity(-1));
-		map.put(KeyCode.A, e -> e.getPosition().setXVelocity(-1));
-		map.put(KeyCode.S, e -> e.getPosition().setYVelocity(1));
-		map.put(KeyCode.D, e -> e.getPosition().setXVelocity(1));
+		map.put(KeyCode.W, e -> e.setVelocity(1, -1));
+		map.put(KeyCode.A, e -> e.setVelocity(0, -1));
+		map.put(KeyCode.S, e -> e.setVelocity(1, 1));
+		map.put(KeyCode.D, e -> e.setVelocity(0, 1));
 		map.put(KeyCode.ESCAPE, e -> {
-			e.getPosition().setX(0);
-			e.getPosition().setY(0);
+			e.setPosition(0, 0);
+			e.setPosition(1, 0);
 		});
 		return map;
 	}
@@ -63,7 +73,7 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 		Map<MouseButton, Action> map = new HashMap<>();
 		
 		for (MouseButton code : MouseButton.values())
-			map.put(code, e -> e.getPosition().stop());
+			map.put(code, e -> e.stop());
 		
 		return map;
 	}

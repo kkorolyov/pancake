@@ -27,7 +27,7 @@ public class InputPoller {
 	private final Set<Action> actions = new HashSet<>();
 
 	/**
-	 * Constructs a new input queue listening to a scene and mapping according to a key map.
+	 * Constructs a new input poller listening to a scene and generating actions according to key and mouse maps.
 	 * @param scene scene emitting {@code KeyEvents}
 	 * @param keyMap mapping of keyboard keys to actions
 	 * @param mouseKeyMap mapping of mouse keys to actions
