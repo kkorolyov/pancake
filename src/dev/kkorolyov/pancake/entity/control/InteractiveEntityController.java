@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.entity;
+package dev.kkorolyov.pancake.entity.control;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.Logger.Level;
 import javafx.scene.Scene;

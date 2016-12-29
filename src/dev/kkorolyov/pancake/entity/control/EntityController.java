@@ -1,4 +1,6 @@
-package dev.kkorolyov.pancake.entity;
+package dev.kkorolyov.pancake.entity.control;
+
+import dev.kkorolyov.pancake.entity.Entity;
 
 /**
  * Updates {@code Entities} using discrete {@code Actions}.

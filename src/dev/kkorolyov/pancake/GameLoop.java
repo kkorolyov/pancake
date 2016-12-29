@@ -18,7 +18,6 @@ public class GameLoop extends AnimationTimer {
 	
 	@Override
 	public void handle(long now) {
-		pollKeys();	// Adds event for each pressed key
 		tick();
 		render();
 	}

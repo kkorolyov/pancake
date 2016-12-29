@@ -1,7 +1,11 @@
-package dev.kkorolyov.pancake.entity;
+package dev.kkorolyov.pancake.entity.control;
 
 import java.util.Arrays;
 
+import dev.kkorolyov.pancake.entity.Entity;
+import dev.kkorolyov.pancake.entity.control.EntityController;
+import dev.kkorolyov.pancake.entity.control.InteractiveEntityController;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -13,27 +17,12 @@ import javafx.stage.Stage;
 
 @SuppressWarnings("javadoc")
 public class InteractiveEntityControllerTestInteractive extends Application {
-	private static boolean running = true;
 	private static final Label text = new Label("EMPTY");
 	private static final Scene scene = new Scene(new Group(text));
 	private static final Entity entity = new Entity(2, buildController());
 	
 	public static void main(String[] args) {
-		new Thread(() -> {
-			while (running) {
-				try {
-					entity.update();
-					Platform.runLater(() -> text.setText(toStringPosition(entity)));
-					Thread.sleep(5);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			System.out.println("Loop done");
-		}).start();
 		launch(args);
-		
-		running = false;
 	}
 	private static String toStringPosition(Entity entity) {
 		int[] position = new int[entity.getAxes()],
@@ -50,6 +39,13 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 		primaryStage.setTitle(InteractiveEntityControllerTestInteractive.class.getSimpleName());
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		new AnimationTimer() {
+			public void handle(long now) {
+				entity.update();
+				Platform.runLater(() -> text.setText(toStringPosition(entity)));
+			}
+		}.start();
 	}
 	
 	private static EntityController buildController() {

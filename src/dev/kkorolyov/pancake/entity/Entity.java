@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.entity;
 
+import dev.kkorolyov.pancake.entity.control.EntityController;
+
 /**
  * A single entity found in the game world.
  */
@@ -7,7 +9,7 @@ public class Entity {
 	private static final int 	POSITION = 0,
 														VELOCITY = 1;
 	
-	private int[][] location;
+	private final int[][] location;
 	private EntityController controller;
 	
 	/**
@@ -16,20 +18,7 @@ public class Entity {
 	 * @param controller entity controller
 	 */
 	public Entity(int axes, EntityController controller) {
-		this(new int[axes][2], controller);
-	}
-	/**
-	 * Constructs a new entity.
-	 * @param location initial entity location determined by an arbitrary number of axes where
-	 * 	<ul>
-	 * 	<li>{@code location[axis][0] = position}</li>
-	 * 	<li>{@code location[axis][1] = velocity}</li>
-	 * 	</ul>
-	 * @param controller entity controller
-	 * @throws IllegalArgumentException if number of position and velocity axes differ
-	 */
-	public Entity(int[][] location, EntityController controller) {
-		this.location = location;
+		this.location = new int[axes][2];
 		this.controller = controller;
 	}
 	
@@ -102,5 +91,10 @@ public class Entity {
 	}
 	private boolean validAxis(int axis) {
 		return axis >= 0 && location.length > axis;
+	}
+	
+	/** @param controller new entity controller */
+	public void setController(EntityController controller) {
+		this.controller = controller;
 	}
 }

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.input;
 
-import dev.kkorolyov.pancake.entity.Action;
+import dev.kkorolyov.pancake.entity.control.Action;
 
 /*
  * TODO Implement this in a good way. 
