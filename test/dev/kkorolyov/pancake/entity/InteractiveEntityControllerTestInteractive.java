@@ -1,10 +1,7 @@
 package dev.kkorolyov.pancake.entity;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-import dev.kkorolyov.pancake.input.InputPoller;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
@@ -19,8 +16,7 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 	private static boolean running = true;
 	private static final Label text = new Label("EMPTY");
 	private static final Scene scene = new Scene(new Group(text));
-	private static final InputPoller poller = new InputPoller(scene, buildKeyMap(), buildMouseKeyMap());
-	private static final Entity entity = new Entity(2, new InteractiveEntityController(poller));
+	private static final Entity entity = new Entity(2, buildController());
 	
 	public static void main(String[] args) {
 		new Thread(() -> {
@@ -28,7 +24,7 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 				try {
 					entity.update();
 					Platform.runLater(() -> text.setText(toStringPosition(entity)));
-					Thread.sleep(10);
+					Thread.sleep(5);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -56,25 +52,20 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 		primaryStage.show();
 	}
 	
-	private static Map<KeyCode, Action> buildKeyMap() {
-		Map<KeyCode, Action> map = new HashMap<>();
+	private static EntityController buildController() {
+		InteractiveEntityController controller = new InteractiveEntityController(scene);
 		
-		map.put(KeyCode.W, e -> e.setVelocity(1, -1));
-		map.put(KeyCode.A, e -> e.setVelocity(0, -1));
-		map.put(KeyCode.S, e -> e.setVelocity(1, 1));
-		map.put(KeyCode.D, e -> e.setVelocity(0, 1));
-		map.put(KeyCode.ESCAPE, e -> {
+		controller.addAction(KeyCode.W, e -> e.setVelocity(1, -1));
+		controller.addAction(KeyCode.A, e -> e.setVelocity(0, -1));
+		controller.addAction(KeyCode.S, e -> e.setVelocity(1, 1));
+		controller.addAction(KeyCode.D, e -> e.setVelocity(0, 1));
+		controller.addAction(KeyCode.ESCAPE, e -> {
 			e.setPosition(0, 0);
 			e.setPosition(1, 0);
 		});
-		return map;
-	}
-	private static Map<MouseButton, Action> buildMouseKeyMap() {
-		Map<MouseButton, Action> map = new HashMap<>();
-		
 		for (MouseButton code : MouseButton.values())
-			map.put(code, e -> e.stop());
+			controller.addAction(code, e -> e.stop());
 		
-		return map;
+		return controller;
 	}
 }
