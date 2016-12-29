@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.entity.control;
 
 import java.util.Arrays;
 
+import dev.kkorolyov.pancake.entity.Bounds;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.control.EntityController;
 import dev.kkorolyov.pancake.entity.control.InteractiveEntityController;
@@ -19,16 +20,17 @@ import javafx.stage.Stage;
 public class InteractiveEntityControllerTestInteractive extends Application {
 	private static final Label text = new Label("EMPTY");
 	private static final Scene scene = new Scene(new Group(text));
-	private static final Entity entity = new Entity(2, buildController());
+	private static final Entity entity = new Entity(new Bounds(2, 0), buildController());
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	private static String toStringPosition(Entity entity) {
-		int[] position = new int[entity.getAxes()],
+		Bounds bounds = entity.getBounds();
+		int[] position = new int[bounds.axes()],
 					velocity = new int[position.length];
 		for (int i = 0; i < position.length; i++) {
-			position[i] = entity.getPosition(i);
+			position[i] = bounds.getPosition(i);
 			velocity[i] = entity.getVelocity(i);
 		}
 		return Arrays.toString(position) + " " + Arrays.toString(velocity);
@@ -56,12 +58,15 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 		controller.addAction(KeyCode.S, e -> e.setVelocity(1, 1));
 		controller.addAction(KeyCode.D, e -> e.setVelocity(0, 1));
 		controller.addAction(KeyCode.ESCAPE, e -> {
-			e.setPosition(0, 0);
-			e.setPosition(1, 0);
+			e.getBounds().setPosition(0, 0);
+			e.getBounds().setPosition(1, 0);
 		});
-		for (MouseButton code : MouseButton.values())
-			controller.addAction(code, e -> e.stop());
-		
+		for (MouseButton code : MouseButton.values()) {
+			controller.addAction(code, e -> {
+				for (int i = 0; i < e.getBounds().axes(); i++)
+					e.setVelocity(i, e.getVelocity(i) * 10);
+			});
+		}
 		return controller;
 	}
 }

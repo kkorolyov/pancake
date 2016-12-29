@@ -1,25 +1,27 @@
 package dev.kkorolyov.pancake.entity;
 
+import java.util.Arrays;
+
 import dev.kkorolyov.pancake.entity.control.EntityController;
 
 /**
  * A single entity found in the game world.
  */
 public class Entity {
-	private static final int 	POSITION = 0,
-														VELOCITY = 1;
-	
-	private final int[][] location;
+	private final Bounds bounds;
+	private final int[] velocity;
 	private EntityController controller;
 	
 	/**
-	 * Constructs a new entity with {@code 0} position and velocity along a number of axes.
-	 * @param axes number of axes defining this entity's location
+	 * Constructs a new entity.
+	 * @param bounds boundaries of this entity
 	 * @param controller entity controller
 	 */
-	public Entity(int axes, EntityController controller) {
-		this.location = new int[axes][2];
+	public Entity(Bounds bounds, EntityController controller) {
+		this.bounds = bounds;
 		this.controller = controller;
+		
+		velocity = new int[bounds.axes()];	// Velocity for each axis
 	}
 	
 	/**
@@ -31,66 +33,53 @@ public class Entity {
 		updateLocation();
 	}
 	private void updateLocation() {
-		for (int[] axis : location)
-			axis[POSITION] += axis[VELOCITY];
+		bounds.translate(velocity);
 	}
 	
 	/**
-	 * Sets all velocities to {@code 0}.
+	 * @param other entity against which to check collision
+	 * @return {@code true} if the entities intersect
+	 */
+	public boolean collides(Entity other) {
+		return bounds.intesects(other.bounds);
+	}
+	
+	/**
+	 * Sets velocity to {@code 0}.
 	 */
 	public void stop() {
-		for (int[] axis : location)
-			axis[1] = 0;
+		Arrays.fill(velocity, 0);
 	}
 	
-	/** @return number of axes defining this entity's location */
-	public int getAxes() {
-		return location.length;
-	}
-	
-	/**
-	 * Returns the position along an axis.
-	 * @param axis positive axis identifier (including {@code 0})
-	 * @return position along axis, defaulting to {@code 0} if the axis is undefined for this entity
-	 */
-	public int getPosition(int axis) {
-		return getLocation(axis, POSITION);
-	}
-	/**
-	 * Sets the position along an axis, if it is defined.
-	 * @param axis positive axis identifier (including {@code 0})
-	 * @param position new position along axis
-	 */
-	public void setPosition(int axis, int position) {
-		setLocation(axis, position, POSITION);
+	/** @return this entity's boundaries */
+	public Bounds getBounds() {
+		return bounds;
 	}
 	
 	/**
-	 * Returns the velocity along an axis.
-	 * @param axis positive axis identifier (including {@code 0})
-	 * @return position along axis, defaulting to {@code 0} if the axis is undefined for this entity
+	 * @param axis axis number
+	 * @return velocity along axis
+	 * @throws IllegalArgumentException if {@code axis < 0} or {@code axis >} number of velocity axes
 	 */
 	public int getVelocity(int axis) {
-		return getLocation(axis, VELOCITY);
+		validateAxis(axis);
+		return velocity[axis];
 	}
 	/**
-	 * Sets the velocity along an axis, if it is defined.
-	 * @param axis positive axis identifier (including {@code 0})
+	 * @param axis axis number
 	 * @param velocity new velocity along axis
+	 * @throws IllegalArgumentException if {@code axis < 0} or {@code axis >} number of velocity axes
 	 */
 	public void setVelocity(int axis, int velocity) {
-		setLocation(axis, velocity, VELOCITY);
+		validateAxis(axis);
+		this.velocity[axis] = velocity;
 	}
 	
-	private int getLocation(int axis, int parameter) {
-		return validAxis(axis) ? location[axis][parameter] : 0;
-	}
-	private void setLocation(int axis, int value, int parameter) {
-		if (validAxis(axis))
-			location[axis][parameter] = value;
-	}
-	private boolean validAxis(int axis) {
-		return axis >= 0 && location.length > axis;
+	private void validateAxis(int axis) {
+		if (axis < 0)
+			throw new IllegalArgumentException("Axis must be > 0: " + axis);
+		if (axis >= velocity.length)
+			throw new IllegalArgumentException("Axis must be < number of axes: " + axis);
 	}
 	
 	/** @param controller new entity controller */
