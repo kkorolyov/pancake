@@ -4,8 +4,10 @@ package dev.kkorolyov.pancake.entity;
  * A single entity found in the game world.
  */
 public class Entity {
-	private int[] position,
-								velocity;
+	private static final int 	POSITION = 0,
+														VELOCITY = 1;
+	
+	private int[][] location;
 	private EntityController controller;
 	
 	/**
@@ -14,22 +16,20 @@ public class Entity {
 	 * @param controller entity controller
 	 */
 	public Entity(int axes, EntityController controller) {
-		this(new int[axes], new int[axes], controller);
+		this(new int[axes][2], controller);
 	}
 	/**
 	 * Constructs a new entity.
-	 * @param position initial entity position along an arbitrary number of axes
-	 * @param velocity initial entity velocity along an arbitrary number of axes
+	 * @param location initial entity location determined by an arbitrary number of axes where
+	 * 	<ul>
+	 * 	<li>{@code location[axis][0] = position}</li>
+	 * 	<li>{@code location[axis][1] = velocity}</li>
+	 * 	</ul>
 	 * @param controller entity controller
 	 * @throws IllegalArgumentException if number of position and velocity axes differ
 	 */
-	public Entity(int[] position, int[] velocity, EntityController controller) {
-		if (position.length != velocity.length)
-			throw new IllegalArgumentException("Number of position axes does not match number of velocity axes: " + position.length + " != " + velocity.length);
-		
-		this.position = position;
-		this.velocity = velocity;
-		
+	public Entity(int[][] location, EntityController controller) {
+		this.location = location;
 		this.controller = controller;
 	}
 	
@@ -39,24 +39,24 @@ public class Entity {
 	public void update() {
 		stop();
 		controller.update(this);
-		updatePosition();
+		updateLocation();
 	}
-	private void updatePosition() {
-		for (int i = 0; i < position.length; i++)
-			position[i] += velocity[i];
+	private void updateLocation() {
+		for (int[] axis : location)
+			axis[POSITION] += axis[VELOCITY];
 	}
 	
 	/**
 	 * Sets all velocities to {@code 0}.
 	 */
 	public void stop() {
-		for (int i = 0; i < velocity.length; i++)
-			velocity[i] = 0;
+		for (int[] axis : location)
+			axis[1] = 0;
 	}
 	
 	/** @return number of axes defining this entity's location */
 	public int getAxes() {
-		return position.length;
+		return location.length;
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class Entity {
 	 * @return position along axis, defaulting to {@code 0} if the axis is undefined for this entity
 	 */
 	public int getPosition(int axis) {
-		return get(position, axis);
+		return getLocation(axis, POSITION);
 	}
 	/**
 	 * Sets the position along an axis, if it is defined.
@@ -73,7 +73,7 @@ public class Entity {
 	 * @param position new position along axis
 	 */
 	public void setPosition(int axis, int position) {
-		set(this.position, axis, position);
+		setLocation(axis, position, POSITION);
 	}
 	
 	/**
@@ -82,7 +82,7 @@ public class Entity {
 	 * @return position along axis, defaulting to {@code 0} if the axis is undefined for this entity
 	 */
 	public int getVelocity(int axis) {
-		return get(velocity, axis);
+		return getLocation(axis, VELOCITY);
 	}
 	/**
 	 * Sets the velocity along an axis, if it is defined.
@@ -90,17 +90,17 @@ public class Entity {
 	 * @param velocity new velocity along axis
 	 */
 	public void setVelocity(int axis, int velocity) {
-		set(this.velocity, axis, velocity);
+		setLocation(axis, velocity, VELOCITY);
 	}
 	
-	private static int get(int[] array, int index) {
-		return (validateIndex(array, index) ? array[index] : 0);
+	private int getLocation(int axis, int parameter) {
+		return validAxis(axis) ? location[axis][parameter] : 0;
 	}
-	private static void set(int[] array, int index, int value) {
-		if (validateIndex(array, index))
-			array[index] = value;
+	private void setLocation(int axis, int value, int parameter) {
+		if (validAxis(axis))
+			location[axis][parameter] = value;
 	}
-	private static boolean validateIndex(int[] array, int index) {
-		return index >= 0 && array.length > index;
+	private boolean validAxis(int axis) {
+		return axis >= 0 && location.length > axis;
 	}
 }
