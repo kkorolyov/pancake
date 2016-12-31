@@ -12,6 +12,8 @@ import dev.kkorolyov.pancake.entity.control.InteractiveEntityController;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -42,6 +44,19 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
+		primaryStage.widthProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				canvas.setWidth(canvas.getWidth() + newValue.doubleValue() - oldValue.doubleValue());
+			}
+		});
+		primaryStage.heightProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				canvas.setHeight(canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue());
+			}
+		});
+		
 		new AnimationTimer() {
 			public void handle(long now) {
 				entity.update();
@@ -52,7 +67,6 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 	}
 	private void drawInfo() {
 		GraphicsContext g = canvas.getGraphicsContext2D();
-		
 		g.strokeText(toStringPosition(entity), 0, canvas.getHeight() - 2);
 	}
 	
