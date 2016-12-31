@@ -1,5 +1,6 @@
 # Bin Files
 *.class
+bin/
 
 # Eclipse Files
 *.project

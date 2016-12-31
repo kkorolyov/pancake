@@ -1,6 +1,9 @@
 package dev.kkorolyov.pancake;
 
+import dev.kkorolyov.pancake.entity.Entity;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 /**
  * Renders all game entities.
@@ -19,7 +22,17 @@ public class Renderer {
 	/**
 	 * Renders entities on the canvas.
 	 */
-	public void render() {
-		// TODO Pass entities
+	public void render(Iterable<Entity> entities) {	// TODO Temp
+		GraphicsContext g = canvas.getGraphicsContext2D();
+		
+		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+		
+		for (Entity entity : entities) {
+			double 	x = entity.getBounds().getPosition(0),
+							y = entity.getBounds().getPosition(1);
+			Image image = entity.getSprite().getImage();
+			
+			g.drawImage(image, x, y);
+		}
 	}
 }

@@ -1,8 +1,7 @@
 package dev.kkorolyov.pancake.entity;
 
-import java.util.Arrays;
-
 import dev.kkorolyov.pancake.entity.control.EntityController;
+import javafx.scene.image.Image;
 
 /**
  * A single entity found in the game world.
@@ -10,17 +9,20 @@ import dev.kkorolyov.pancake.entity.control.EntityController;
 public class Entity {
 	private final Bounds bounds;
 	private final Physics physics;
+	private Sprite sprite;
 	private EntityController controller;
 	
 	/**
 	 * Constructs a new entity.
 	 * @param bounds boundaries of this entity
 	 * @param physics physics acting on this entity
+	 * @param sprite graphical representation of this entity
 	 * @param controller entity controller
 	 */
-	public Entity(Bounds bounds, Physics physics, EntityController controller) {
+	public Entity(Bounds bounds, Physics physics, Sprite sprite, EntityController controller) {
 		this.bounds = bounds;
 		this.physics = physics;
+		this.sprite = sprite;
 		this.controller = controller;
 	}
 	
@@ -48,6 +50,10 @@ public class Entity {
 	/** @return this entity's physics */
 	public Physics getPhysics() {
 		return physics;
+	}
+	
+	public Sprite getSprite() {
+		return sprite;
 	}
 	
 	public void move(int axis, float acceleration) {
