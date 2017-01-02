@@ -11,9 +11,10 @@ public class Body {
 	private final Vector 	velocity = new Vector(),
 												maxSpeed = new Vector(5, 5, 5),
 												force = new Vector(),
-												damping = new Vector(.9f, .9f, .9f);
+												damping = new Vector(.9f, .9f, .9f),
+												effectiveDamping = new Vector();
 	private float invMass;
-	private float epsilon = .0001f;
+	private float epsilon = (float) 1 / 1000;
 	
 	/**
 	 * Constructs a new body with a set mass.
@@ -28,36 +29,44 @@ public class Body {
 	 * @param dt seconds "elapsed" during this update
 	 */
 	public void update(float dt) {
-		updateVelocity(dt);
-	}
-	private void updateVelocity(float dt) {
 		damp();
-
-		float vxOld = velocity.getX(),
-					vyOld = velocity.getY(),
-					vzOld = velocity.getZ();
+		updateVelocity(dt);
+		roundZero();
+	}
+	
+	private void updateVelocity(float dt) {
+		velocity.set(	capVelocity(velocity.getX(), maxSpeed.getX(), force.getX(), dt),
+									capVelocity(velocity.getY(), maxSpeed.getY(), force.getY(), dt),
+									capVelocity(velocity.getZ(), maxSpeed.getZ(), force.getZ(), dt));
+	}
+	private float capVelocity(float velocity, float maxSpeed, float force, float dt) {
+		if (force == 0 || Math.abs(velocity) == maxSpeed)	// Skip computations
+			return velocity;
 		
-		velocity.translate(	capSpeedChange(vxOld, maxSpeed.getX(), force.getX(), dt),
-												capSpeedChange(vyOld, maxSpeed.getY(), force.getY(), dt),
-												capSpeedChange(vzOld, maxSpeed.getZ(), force.getZ(), dt));
-	}
-	private float capSpeedChange(float velocity, float maxSpeed, float force, float dt) {
-		if (force == 0)	// Skip computations
-			return 0;
+		float dv = (force * invMass) * dt,
+					newVelocity = velocity + dv;
 		
-		float dv = (force * invMass) * dt;
-		return (Math.abs(velocity + dv) > maxSpeed) ? 0 : dv;	// TODO Get to max speed
+		return (Math.abs(newVelocity) > maxSpeed) ? (newVelocity < 0 ? -maxSpeed : maxSpeed) : newVelocity;
 	}
-	private void damp() {	// TODO Icky
-		if (velocity.getX() != 0 && (force.getX() == 0 || opposite(velocity.getX(), force.getX())))
-			velocity.setX(velocity.getX() * damping.getX());
-		if (velocity.getY() != 0 && (force.getY() == 0 || opposite(velocity.getY(), force.getY())))
-			velocity.setY(velocity.getY() * damping.getY());
-		if (velocity.getZ() != 0 && (force.getZ() == 0 || opposite(velocity.getZ(), force.getZ())))
-			velocity.setZ(velocity.getZ() * damping.getZ());
+	
+	private void damp() {
+		effectiveDamping.setX(shouldDamp(velocity.getX(), force.getX()) ? damping.getX() : 1);
+		effectiveDamping.setY(shouldDamp(velocity.getY(), force.getY()) ? damping.getY() : 1);
+		effectiveDamping.setZ(shouldDamp(velocity.getZ(), force.getZ()) ? damping.getZ() : 1);
+		
+		velocity.scale(effectiveDamping);
 	}
-	private static boolean opposite(float val1, float val2) {
-		return (val1 < 0 && val2 >= 0) || (val2 < 0 && val1 >= 0);
+	private static boolean shouldDamp(float velocity, float force) {
+		return velocity != 0 && (velocity < 0 ? force >= 0 : force <= 0);	// Non-zero velocity and opposite or zero force
+	}
+	
+	private void roundZero() {
+		if (isZero(velocity.getX()))
+			velocity.setX(0);
+		if (isZero(velocity.getY()))
+			velocity.setY(0);
+		if (isZero(velocity.getZ()))
+			velocity.setZ(0);
 	}
 	private boolean isZero(float value) {
 		return Math.abs(value) <= epsilon;

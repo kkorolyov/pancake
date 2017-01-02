@@ -61,17 +61,20 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 			public void handle(long now) {
 				if (last == 0)
 					last = now;
+				float dt = ((float) (now - last)) / 1000000000;
 				
-				entity.update(((float) (now - last)) / 1000000000);
+				entity.update(dt);
 				renderer.render(Arrays.asList(entity));
-				drawInfo();
+				drawInfo(dt);
 				
 				last = now;
 			}
 		}.start();
 	}
-	private void drawInfo() {
+	private void drawInfo(float dt) {
 		GraphicsContext g = canvas.getGraphicsContext2D();
+		
+		g.strokeText("FPS: " + Math.round(1 / dt), 0, 10);
 		g.strokeText((entity.getBounds().getOrigin() + System.lineSeparator() + entity.getBody().toStringMultiline()), 0, canvas.getHeight() - 70);
 	}
 	

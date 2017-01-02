@@ -74,7 +74,7 @@ public class Vector {
 	 */
 	public void scale(Vector other) {
 		x *= other.x;
-		y *= other.x;
+		y *= other.y;
 		z *= other.z;
 	}
 	
