@@ -1,25 +1,25 @@
 package dev.kkorolyov.pancake.entity;
 
+import dev.kkorolyov.pancake.entity.collision.Bounds;
 import dev.kkorolyov.pancake.entity.control.EntityController;
-import javafx.scene.image.Image;
 
 /**
  * A single entity found in the game world.
  */
 public class Entity {
 	private final Bounds bounds;
-	private final Physics physics;
+	private final Body physics;
 	private Sprite sprite;
 	private EntityController controller;
 	
 	/**
 	 * Constructs a new entity.
-	 * @param bounds boundaries of this entity
-	 * @param physics physics acting on this entity
+	 * @param bounds entity boundaries
+	 * @param physics physics body representing this entity
 	 * @param sprite graphical representation of this entity
 	 * @param controller entity controller
 	 */
-	public Entity(Bounds bounds, Physics physics, Sprite sprite, EntityController controller) {
+	public Entity(Bounds bounds, Body physics, Sprite sprite, EntityController controller) {
 		this.bounds = bounds;
 		this.physics = physics;
 		this.sprite = sprite;
@@ -27,37 +27,38 @@ public class Entity {
 	}
 	
 	/**
-	 * Updates this entity by one tick.
+	 * Updates this entity.
+	 * @param dt seconds elapsed between this and the last update
 	 */
-	public void update() {
+	public void update(float dt) {
 		controller.update(this);
-		bounds.translate(physics.getVelocities());
-		physics.update();
+		physics.update(dt);
+		physics.apply(bounds);
 	}
 	
 	/**
 	 * @param other entity against which to check collision
-	 * @return {@code true} if the entities intersect
+	 * @return {@code true} if the entities collide
 	 */
 	public boolean collides(Entity other) {
-		return bounds.intesects(other.bounds);
+		return bounds.intersects(other.bounds);
 	}
 	
 	/** @return this entity's boundaries */
 	public Bounds getBounds() {
 		return bounds;
 	}
-	/** @return this entity's physics */
-	public Physics getPhysics() {
+	/** @return this entity's physics body */
+	public Body getBody() {
 		return physics;
 	}
-	
+	/** @return this entity's graphical representation */
 	public Sprite getSprite() {
 		return sprite;
 	}
 	
 	public void move(int axis, float acceleration) {
-		physics.accelerate(axis, acceleration);
+		// TODO
 	}
 	
 	/** @param controller new entity controller */

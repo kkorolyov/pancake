@@ -28,8 +28,8 @@ public class Renderer {
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		for (Entity entity : entities) {
-			double 	x = entity.getBounds().getPosition(0),
-							y = entity.getBounds().getPosition(1);
+			double 	x = entity.getBounds().getOrigin().getX(),
+							y = entity.getBounds().getOrigin().getY();
 			Image image = entity.getSprite().getImage();
 			
 			g.drawImage(image, x, y);
