@@ -11,6 +11,7 @@ public interface EntityController {
 	/**
 	 * Applies updates on an entity.
 	 * @param entity entity to update
+	 * @param dt elapsed time in seconds since last update
 	 */
-	void update(Entity entity);
+	void update(Entity entity, float dt);
 }

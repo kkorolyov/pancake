@@ -31,7 +31,7 @@ public class Entity {
 	 * @param dt seconds elapsed between this and the last update
 	 */
 	public void update(float dt) {
-		controller.update(this);
+		controller.update(this, dt);
 		physics.update(dt);
 		physics.apply(bounds);
 	}

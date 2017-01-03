@@ -10,6 +10,7 @@ import dev.kkorolyov.pancake.entity.collision.Bounds;
 import dev.kkorolyov.pancake.entity.collision.RectangleBounds;
 import dev.kkorolyov.pancake.entity.control.EntityController;
 import dev.kkorolyov.pancake.entity.control.InteractiveEntityController;
+import dev.kkorolyov.pancake.input.KeyAction;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -81,15 +82,15 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 	private static EntityController buildController() {
 		InteractiveEntityController controller = new InteractiveEntityController(scene);
 		
-		controller.addAction(KeyCode.W, e -> e.getBody().addForce(0, -10), e -> e.getBody().addForce(0, 10));
-		controller.addAction(KeyCode.A, e -> e.getBody().addForce(-10, 0), e -> e.getBody().addForce(10, 0));
-		controller.addAction(KeyCode.S, e -> e.getBody().addForce(0, 10), e -> e.getBody().addForce(0, -10));
-		controller.addAction(KeyCode.D, e -> e.getBody().addForce(10, 0), e -> e.getBody().addForce(-10, 0));
-		controller.addAction(KeyCode.SHIFT, e -> e.getBody().setMaxSpeed(10), e -> e.getBody().setMaxSpeed(5));
-		controller.addAction(KeyCode.ESCAPE, e -> e.getBounds().getOrigin().set(0, 0), null);
+		controller.addAction(new KeyAction(e -> e.getBody().addForce(0, -10), null, e -> e.getBody().addForce(0, 10), KeyCode.W));
+		controller.addAction(new KeyAction(e -> e.getBody().addForce(-10, 0), null, e -> e.getBody().addForce(10, 0), KeyCode.A));
+		controller.addAction(new KeyAction(e -> e.getBody().addForce(0, 10), null, e -> e.getBody().addForce(0, -10), KeyCode.S));
+		controller.addAction(new KeyAction(e -> e.getBody().addForce(10, 0), null, e -> e.getBody().addForce(-10, 0), KeyCode.D));
+		controller.addAction(new KeyAction(e -> e.getBody().setMaxSpeed(10), null, e -> e.getBody().setMaxSpeed(5), KeyCode.SHIFT));
+		controller.addAction(new KeyAction(e -> e.getBounds().getOrigin().set(0, 0), null, null, KeyCode.ESCAPE));
 		
-		controller.addAction(MouseButton.PRIMARY, e -> e.getBody().setMaxSpeed(1), e -> e.getBody().setMaxSpeed(5));
-		controller.addAction(MouseButton.SECONDARY, e -> e.getBody().setMaxSpeed(-100), e -> e.getBody().setMaxSpeed(5));
+		controller.addAction(new KeyAction(e -> e.getBody().setMaxSpeed(1), null, e -> e.getBody().setMaxSpeed(5), MouseButton.PRIMARY));
+		controller.addAction(new KeyAction(e -> e.getBody().setMaxSpeed(-100), null, e -> e.getBody().setMaxSpeed(5), MouseButton.SECONDARY));
 		return controller;
 	}
 }
