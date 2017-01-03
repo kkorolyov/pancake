@@ -5,16 +5,38 @@ import dev.kkorolyov.pancake.entity.collision.Vector;
 
 /**
  * Defines a body which reacts to physical forces.
- * The body's vector quantities are defined as {@code units/second}.
+ * <h5>A body is described by the following attributes:</h5>
+ * <ul>
+ * <li>Mass - A real number representing current mass in {@code kg}</li>
+ * <li>Velocity - A 3D vector representing current velocity in {@code m/s}</li>
+ * <li>Max Speed - A positive 3D vector representing maximum attainable speed in {@code m/s} along each axis</li>
+ * <li>Force - A 3D vector representing current net force in {@code N}</li>
+ * <li>Damping - A 3D vector with values within the range {@code [0, 1]} representing the proportion of velocity retained after each {@link #update(float)}</li>
+ * </ul>
+ * Because body attributes use floating-point values, a very small <b>epsilon</b> value is used in velocity calculations as a representation of absolute zero.
  */
 public class Body {
+	private static float epsilon = .001f;
+
 	private final Vector 	velocity = new Vector(),
 												maxSpeed = new Vector(5, 5, 5),
 												force = new Vector(),
 												damping = new Vector(.9f, .9f, .9f),
 												effectiveDamping = new Vector();
 	private float invMass;
-	private float epsilon = (float) 1 / 1000;
+	
+	private static boolean isZero(float value) {
+		return Math.abs(value) <= epsilon;
+	}
+	
+	/** @return current "essentially zero" value for all bodies */
+	public static float getEpsilon() {
+		return epsilon;
+	}
+	/** @param epsilon new "essentially zero" value for all bodies */
+	public static void setEpsilon(float epsilon) {
+		Body.epsilon = epsilon;
+	}
 	
 	/**
 	 * Constructs a new body with a set mass.
@@ -25,7 +47,7 @@ public class Body {
 	}
 	
 	/**
-	 * Updates this body's velocity and acceleration.
+	 * Updates this body's velocity according to current applied forces.
 	 * @param dt seconds "elapsed" during this update
 	 */
 	public void update(float dt) {
@@ -67,9 +89,6 @@ public class Body {
 			velocity.setY(0);
 		if (isZero(velocity.getZ()))
 			velocity.setZ(0);
-	}
-	private boolean isZero(float value) {
-		return Math.abs(value) <= epsilon;
 	}
 	
 	/**
@@ -191,7 +210,7 @@ public class Body {
 	 * @param dz new z-axis damping
 	 */
 	public void setDamping(float dx, float dy, float dz) {
-		damping.set(dx, dy, dz);
+		damping.set(Math.min(0, Math.max(1, dx)), Math.min(0, Math.max(1, dy)), Math.min(0, Math.max(1, dz)));
 	}
 	/** @param damping new damping vector */
 	public void setDamping(Vector damping) {
