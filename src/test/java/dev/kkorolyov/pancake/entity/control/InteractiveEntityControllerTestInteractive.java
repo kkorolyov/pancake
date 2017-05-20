@@ -6,21 +6,16 @@ import dev.kkorolyov.pancake.Renderer;
 import dev.kkorolyov.pancake.entity.Body;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Sprite;
-import dev.kkorolyov.pancake.entity.collision.Bounds;
 import dev.kkorolyov.pancake.entity.collision.RectangleBounds;
-import dev.kkorolyov.pancake.entity.control.EntityController;
-import dev.kkorolyov.pancake.entity.control.InteractiveEntityController;
 import dev.kkorolyov.pancake.input.KeyAction;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -31,7 +26,7 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 	private static final Canvas canvas = new Canvas(480, 480);
 	private static final Scene scene = new Scene(new Group(canvas));
 	private static final Renderer renderer = new Renderer(canvas);
-	private static final Entity entity = new Entity(new RectangleBounds(0, 0, 1, 1), new Body(1), new Sprite(new Image("dev/kkorolyov/pancake/16x16.png")), buildController());
+	private static final Entity entity = new Entity(new RectangleBounds(0, 0, 1, 1), new Body(1), new Sprite(new Image("16x16.png")), buildController());
 	
 	public static void main(String[] args) {
 		launch(args);

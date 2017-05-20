@@ -1,12 +1,9 @@
 package dev.kkorolyov.pancake.input;
 
-import java.io.PrintWriter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import dev.kkorolyov.pancake.entity.control.Action;
-import dev.kkorolyov.simplelogs.Logger;
-import dev.kkorolyov.simplelogs.Logger.Level;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -15,7 +12,7 @@ import javafx.scene.input.MouseButton;
  */
 public class KeyAction {
 	private static final float HOLD_THRESHOLD = .5f;
-	private static final Logger log = Logger.getLogger(KeyAction.class.getName(), Level.DEBUG, new PrintWriter(System.err));	// TODO Temp
+//	private static final Logger log = Logger.getLogger(KeyAction.class.getName(), Level.DEBUG, new PrintWriter(System.err));	// TODO Temp
 
 	private final Set<Enum<?>> keys = new LinkedHashSet<>();
 	private final Action onPress, onHold, onRelease;
@@ -60,7 +57,7 @@ public class KeyAction {
 				@Override
 				Action activate(KeyAction client, boolean allPressed, float dt) {
 					if (allPressed) {
-						log.debug("Keys pressed: " + client.keys);
+//						log.debug("Keys pressed: " + client.keys);
 						
 						client.holdTime = 0;
 						client.state = PRESSED;
@@ -76,14 +73,14 @@ public class KeyAction {
 						client.holdTime += dt;
 						
 						if (client.holdTime >= HOLD_THRESHOLD) {
-							log.debug("Keys held: " + client.keys);
+//							log.debug("Keys held: " + client.keys);
 							
 							client.state = WAITING;
 							return client.onHold;
 						} else
 							return null;
 					} else {
-						log.debug("Keys released: " + client.keys);
+//						log.debug("Keys released: " + client.keys);
 						
 						client.state = OPEN;
 						return client.onRelease;
@@ -94,7 +91,7 @@ public class KeyAction {
 				@Override
 				Action activate(KeyAction client, boolean allPressed, float dt) {
 					if (!allPressed) {
-						log.debug("Keys released: " + client.keys);
+//						log.debug("Keys released: " + client.keys);
 						
 						client.state = OPEN;
 						return client.onRelease;
