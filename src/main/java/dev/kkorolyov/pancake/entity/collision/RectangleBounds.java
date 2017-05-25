@@ -1,10 +1,13 @@
 package dev.kkorolyov.pancake.entity.collision;
 
+import dev.kkorolyov.pancake.component.Bounds;
+import dev.kkorolyov.pancake.math.Vector;
+
 /**
  * Bounds defined by a rectangular area.
  */
 public class RectangleBounds implements Bounds {
-	private final Vector origin, direction;
+	private final Vector origin, size;
 	
 	/**
 	 * Constructs a new rectangle from origin coordinates, width, and height.
@@ -23,29 +26,17 @@ public class RectangleBounds implements Bounds {
 	 * @param height rectangle height
 	 */
 	public RectangleBounds(Vector origin, float width, float height) {
-		this(origin, new Vector(origin.getX() + width, origin.getY() + height));
-	}
-	/**
-	 * Constructs a new rectangle from the area between 2 corner points.
-	 * @param origin origin point of rectangle
-	 * @param vector point of corner diagonally opposite {@code origin}
-	 */
-	public RectangleBounds(Vector origin, Vector vector) {
 		this.origin = origin;
-		this.direction = vector;
+		size = new Vector(width, height);
 	}
 	
 	/**
 	 * Translates this rectangle by specified values.
 	 * @param dx x-coordinate change
 	 * @param dy y-coordinate change
-	 * @return this rectangle after translation
 	 */
-	public RectangleBounds translate(float dx, float dy) {
+	public void translate(float dx, float dy) {
 		origin.translate(dx, dy);
-		direction.translate(dx, dy);
-		
-		return this;
 	}
 	
 	@Override
@@ -56,8 +47,8 @@ public class RectangleBounds implements Bounds {
 			return false;
 	}
 	private boolean intersects(RectangleBounds other) {
-		return intersects(origin.getX(), direction.getX(), other.origin.getX(), other.direction.getX())
-				&& intersects(origin.getY(), direction.getY(), other.origin.getY(), other.direction.getY());
+		return intersects(getX(), getX() + getWidth(), other.getX(), other.getX() + other.getWidth())
+				&& intersects(getY(), getY() + getHeight(), other.getY(), other.getY() + other.getHeight());
 	}
 	private static boolean intersects(float x1, float x2, float y1, float y2) {
 		return x2 >= y1 && y2 >= x1;
@@ -79,10 +70,25 @@ public class RectangleBounds implements Bounds {
 	
 	/** @return rectangle width */
 	public float getWidth() {
-		return direction.getX() - origin.getX();
+		return size.getX();
 	}
 	/** @return rectangle height */
 	public float getHeight() {
-		return direction.getY() - origin.getY();
+		return size.getY();
+	}
+	
+	@Override
+	public String toString() {
+		return "origin=" + origin + " size=" + size;
+	}
+	
+	@Override
+	public void update(float dt) {
+		/* TODO Auto-generated method stub */
+		
+	}
+	@Override
+	public int getEntity() {
+		return entityId;
 	}
 }

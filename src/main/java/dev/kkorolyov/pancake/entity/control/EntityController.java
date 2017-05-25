@@ -8,6 +8,11 @@ import dev.kkorolyov.pancake.entity.Entity;
  * @see Action
  */
 public interface EntityController {
+	/**	The no-op controller essentially equivalent to a {@code null} controller */
+	EntityController NULL = (entity, dt) -> {
+		// No-op
+	};
+	
 	/**
 	 * Applies updates on an entity.
 	 * @param entity entity to update

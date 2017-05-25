@@ -1,5 +1,8 @@
 package dev.kkorolyov.pancake.entity.collision;
 
+import dev.kkorolyov.pancake.component.Bounds;
+import dev.kkorolyov.pancake.math.Vector;
+
 /**
  * Bounds defined by an elliptical area.
  */

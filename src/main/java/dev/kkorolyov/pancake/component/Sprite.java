@@ -1,11 +1,12 @@
-package dev.kkorolyov.pancake.entity;
+package dev.kkorolyov.pancake.component;
 
+import dev.kkorolyov.pancake.Component;
 import javafx.scene.image.Image;
 
 /**
  * A dynamic image.
  */
-public class Sprite {
+public class Sprite implements Component {
 	private final Image baseImage;
 	
 	/**

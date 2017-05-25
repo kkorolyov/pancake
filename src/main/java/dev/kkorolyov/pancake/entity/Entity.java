@@ -1,68 +1,85 @@
 package dev.kkorolyov.pancake.entity;
 
-import dev.kkorolyov.pancake.entity.collision.Bounds;
-import dev.kkorolyov.pancake.entity.control.EntityController;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import dev.kkorolyov.pancake.Component;
 
 /**
- * A single entity found in the game world.
+ * A single entity found in the game world. Consists of a unique ID and a set of distinctly-typed {@code Component} objects.
  */
-public class Entity {
-	private final Bounds bounds;
-	private final Body physics;
-	private Sprite sprite;
-	private EntityController controller;
+public final class Entity implements Iterable<Component> {
+	//private final int id;	 TODO implement
+	private final Set<Component> components = new HashSet<>();
 	
 	/**
-	 * Constructs a new entity.
-	 * @param bounds entity boundaries
-	 * @param physics physics body representing this entity
-	 * @param sprite graphical representation of this entity
-	 * @param controller entity controller
+	 * Constructs a new entity composed of a set of components.
+	 * @param components initial components defining this entity
 	 */
-	public Entity(Bounds bounds, Body physics, Sprite sprite, EntityController controller) {
-		this.bounds = bounds;
-		this.physics = physics;
-		this.sprite = sprite;
-		this.controller = controller;
+	public Entity(Component... components) {
+		for (Component component : components)
+			add(component);
 	}
 	
 	/**
-	 * Updates this entity.
-	 * @param dt seconds elapsed between this and the last update
+	 * Checks if this entity has all components of particular types.
+	 * @param types component types
+	 * @return {@code true} if this entity has all such components
 	 */
-	public void update(float dt) {
-		controller.update(this, dt);
-		physics.update(dt);
-		physics.apply(bounds);
+	@SafeVarargs
+	public final boolean contains(Class<? extends Component>... types) {
+		for (Class<? extends Component> type : types) {
+			if (get(type) == null)
+				return false;
+		}
+		return true;
 	}
 	
 	/**
-	 * @param other entity against which to check collision
-	 * @return {@code true} if the entities collide
+	 * Returns a component of a particular type.
+	 * @param type component type
+	 * @return appropriate component, or {@code null} if this entity has no such component
 	 */
-	public boolean collides(Entity other) {
-		return bounds.intersects(other.bounds);
+	public <T extends Component> T get(Class<T> type) {
+		for (Component component : components) {
+			if (component.getClass() == type)
+				return type.cast(component);
+		}
+		return null;
 	}
 	
-	/** @return this entity's boundaries */
-	public Bounds getBounds() {
-		return bounds;
+	/**
+	 * Adds a component to this entity.
+	 * If this entity already contains a component of the same type, it is overwritten with this component.
+	 * @param component component to add
+	 * @return {@code true} if adding this component overwrote another component of the same type
+	 */
+	public boolean add(Component component) {
+		boolean overwrite = remove(component.getClass());
+		
+		components.add(component);
+		return overwrite;
 	}
-	/** @return this entity's physics body */
-	public Body getBody() {
-		return physics;
-	}
-	/** @return this entity's graphical representation */
-	public Sprite getSprite() {
-		return sprite;
+	/**
+	 * Removes a component by type.
+	 * @param type component type
+	 * @return {@code true} if this entity had such a component and it was removed
+	 */
+	public <T extends Component> boolean remove(Class<T> type) {
+		Iterator<Component> it = iterator();
+		
+		while (it.hasNext()) {
+			if (it.next().getClass() == type) {
+				it.remove();
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	public void move(int axis, float acceleration) {
-		// TODO
-	}
-	
-	/** @param controller new entity controller */
-	public void setController(EntityController controller) {
-		this.controller = controller;
+	@Override
+	public Iterator<Component> iterator() {
+		return components.iterator();
 	}
 }
