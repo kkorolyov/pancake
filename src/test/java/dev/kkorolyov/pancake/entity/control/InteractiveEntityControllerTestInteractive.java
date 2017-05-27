@@ -24,13 +24,13 @@ import javafx.stage.Stage;
 @SuppressWarnings("javadoc")
 public class InteractiveEntityControllerTestInteractive extends Application {
 	private static final float MOVE_FORCE = 100;
-	
+
 	private static final Canvas canvas = new Canvas(560, 560);
 	private static final Scene scene = new Scene(new Group(canvas));
 	private static final RenderSystem renderer = new RenderSystem(canvas);
 	private static final Entity entity = new Entity(new RectangleBounds(0, 0, 16, 16), new Body(1), new Sprite(new Image("16x16.png")), buildController()),
-															box = new Entity(new RectangleBounds(100, 100, 32, 32), new Body(.1f), new Sprite(new Image("32x32.png")), null);
-	
+			box = new Entity(new RectangleBounds(100, 100, 32, 32), new Body(.1f), new Sprite(new Image("32x32.png")), null);
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -55,25 +55,25 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 		});
 		Set<Entity> walls = buildWalls();
 		Entity[] bouncies = buildBouncies(1000);
-		
+
 		new AnimationTimer() {
-			private long 	last,
-										total;
-			
+			private long last,
+					total;
+
 			public void handle(long now) {
 				if (last == 0) last = now;
 				float dt = ((float) (now - last)) / 1000000000;
 				//entity.update(dt);
 				//box.update(dt);
-				
+
 				//entity.collide(box);
-				
+
 				for (Entity bouncy : bouncies) {
 					bouncy.update(dt);
-					
+
 					if (total > 1000000000)
 						bouncy.getBody().setForce(0, 0);
-					
+
 				}
 				for (int i = 0; i < bouncies.length; i++) {
 					for (int j = i + 1; j < bouncies.length; j++)
@@ -88,7 +88,7 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 				//renderer.render(Arrays.asList(entity, box));
 				renderer.render(Arrays.asList(bouncies));
 				drawInfo(dt);
-				
+
 				total += (now - last);
 				last = now;
 			}
@@ -104,38 +104,38 @@ public class InteractiveEntityControllerTestInteractive extends Application {
 
 	private static EntityController buildController() {
 		InteractiveEntityController controller = new InteractiveEntityController(scene);
-		controller.addAction(new KeyAction(e -> e.getBody().addForce(0, -MOVE_FORCE), null, e -> e.getBody().addForce(0, MOVE_FORCE), KeyCode.W));
-		controller.addAction(new KeyAction(e -> e.getBody().addForce(-MOVE_FORCE, 0), null, e -> e.getBody().addForce(MOVE_FORCE, 0), KeyCode.A));
-		controller.addAction(new KeyAction(e -> e.getBody().addForce(0, MOVE_FORCE), null, e -> e.getBody().addForce(0, -MOVE_FORCE), KeyCode.S));
-		controller.addAction(new KeyAction(e -> e.getBody().addForce(MOVE_FORCE, 0), null, e -> e.getBody().addForce(-MOVE_FORCE, 0), KeyCode.D));
-		controller.addAction(new KeyAction(e -> e.getBody().setMaxSpeed(10), null, e -> e.getBody().setMaxSpeed(5), KeyCode.SHIFT));
-		controller.addAction(new KeyAction(e -> {
-			e.getBounds().getOrigin().set(0, 0);
-			box.getBounds().getOrigin().set(100, 100);
-			}, null, null, KeyCode.ESCAPE));
-		
-		controller.addAction(new KeyAction(e -> e.getBody().setMaxSpeed(1), null, e -> e.getBody().setMaxSpeed(5), MouseButton.PRIMARY));
-		controller.addAction(new KeyAction(e -> e.getBody().setMaxSpeed(-100), null, e -> e.getBody().setMaxSpeed(5), MouseButton.SECONDARY));
+		controller.setActions(new KeyAction(e -> e.getBody().addForce(0, -MOVE_FORCE), null, e -> e.getBody().addForce(0, MOVE_FORCE), KeyCode.W),
+													new KeyAction(e -> e.getBody().addForce(-MOVE_FORCE, 0), null, e -> e.getBody().addForce(MOVE_FORCE, 0), KeyCode.A),
+													new KeyAction(e -> e.getBody().addForce(0, MOVE_FORCE), null, e -> e.getBody().addForce(0, -MOVE_FORCE), KeyCode.S),
+													new KeyAction(e -> e.getBody().addForce(MOVE_FORCE, 0), null, e -> e.getBody().addForce(-MOVE_FORCE, 0), KeyCode.D),
+													new KeyAction(e -> e.getBody().setMaxSpeed(10), null, e -> e.getBody().setMaxSpeed(5), KeyCode.SHIFT),
+													new KeyAction(e -> {
+														e.getBounds().getOrigin().set(0, 0);
+														box.getBounds().getOrigin().set(100, 100);
+													}, null, null, KeyCode.ESCAPE));
+
+		controller.setActions(new KeyAction(e -> e.getBody().setMaxSpeed(1), null, e -> e.getBody().setMaxSpeed(5), MouseButton.PRIMARY),
+													new KeyAction(e -> e.getBody().setMaxSpeed(-100), null, e -> e.getBody().setMaxSpeed(5), MouseButton.SECONDARY));
 		return controller;
 	}
-	
+
 	private static Set<Entity> buildWalls() {
 		Set<Entity> walls = new HashSet();
-		
+
 		walls.add(new Entity(new RectangleBounds(-100, 0, 100, (float) canvas.getHeight()), new Body(1000000), null, null));
 		walls.add(new Entity(new RectangleBounds(0, -100, (float) canvas.getWidth(), 100), new Body(1000000), null, null));
 		walls.add(new Entity(new RectangleBounds((float) canvas.getWidth() + .1f, 0, 100, (float) canvas.getHeight()), new Body(1000000), null, null));
 		walls.add(new Entity(new RectangleBounds(0, (float) canvas.getHeight() + .1f, (float) canvas.getWidth(), 100), new Body(1000000), null, null));
-		
+
 		return walls;
 	}
 	private static Entity[] buildBouncies(int num) {
 		List<Entity> bouncies = new LinkedList<>();
 		float size = 16,
-					mass = 1;
+				mass = 1;
 		int maxForce = 10;
-		Image image = new Image("dev/kkorolyov/pancake/16x16.png");
-		
+		Image image = new Image("16x16.png");
+
 		Random rand = new Random();
 		for (int i = 0; i < num; i++) {
 			Entity bouncy = new Entity(new RectangleBounds(rand.nextInt((int) (canvas.getWidth() - size)), rand.nextInt((int) (canvas.getHeight() - size)), size, size), new Body(mass), new Sprite(image), null);

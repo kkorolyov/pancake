@@ -5,30 +5,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Performs work on some set of entities.
+ * Performs work on entities matching a certain component signature.
  */
 public abstract class GameSystem {
-	private final Set<Class<? extends Component>> requiredComponents = new HashSet<>();
-	private Engine engine;
-	
+	private final Signature signature;
+
 	/**
 	 * Constructs a new system.
-	 * @param requiredComponents minimum set of component types employed by entities on which this system works
+	 * @param signature signature defining all components an entity must have to be affected by this system
 	 */
-	@SafeVarargs
-	public GameSystem(Class<? extends Component>... requiredComponents) {
-		this.requiredComponents.addAll(Arrays.asList(requiredComponents));
+	public GameSystem(Signature signature) {
+		this.signature = signature;
 	}
-	
-	void register(Engine engine) {
-		this.engine = engine;
-	}
-	
-	/** @return	minimum set of component types employed by entities on which this system works */
-	public Set<Class<? extends Component>> requires() {
-		return requiredComponents;
-	}
-	
+
 	/** @return entities on which this system performs work */
 	protected EntityManager getEntities() {
 		return engine.getEntities();
@@ -39,5 +28,5 @@ public abstract class GameSystem {
 	 * @param dt seconds elapsed since last update
 	 * @return number of updated entities
 	 */
-	public abstract int update(float dt);
+	public abstract int update(Iterable<Entity> entities, float dt);
 }

@@ -5,7 +5,7 @@ import java.util.Set;
 
 /**
  * Maintains a collection of entities.
- * An entity is composed of a unique ID and a set of uniquely-typed {@code Component} objects.
+ * An entity is composed of a unique ID and a set of uniquely-typed {@code Components}.
  */
 public class Engine {
 	//private final Set<Entity> entities = new LinkedHashSet<>();
@@ -16,8 +16,7 @@ public class Engine {
 	 * Constructs a new engine pre-populated with systems.
 	 */
 	public Engine(GameSystem... systems) {
-		for (GameSystem system : systems)
-			add(system);
+		for (GameSystem system : systems) add(system);
 	}
 	
 	/**
@@ -25,8 +24,7 @@ public class Engine {
 	 * @param dt seconds elapsed since last update
 	 */
 	public void update(float dt) {
-		for (GameSystem system : systems)
-			system.update(dt);
+		for (GameSystem system : systems) system.update(dt);
 	}
 	
 	/** @return entities managed by this engine */

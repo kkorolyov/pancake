@@ -3,19 +3,30 @@ package dev.kkorolyov.pancake;
 import java.util.*;
 import java.util.Map.Entry;
 
+import dev.kkorolyov.pancake.entity.Entity;
+
 /**
  * Maintains collections of components which define entity abstractions.
  */
 public class EntityManager {
 	private int idCounter = 0;	// Main ID counter
 	private Queue<Integer> reclaimedIds = new ArrayDeque<>();	// Reclaimed IDs from destroyed entities
-	private final Map<Class<? extends Component>, Map<Integer, Component>> componentPool = new HashMap<>();
+	private final Map<Signature, Set<Entity>> entities = new HashMap<>();
+
+	/**
+	 * Returns all entities with a signature subset matching {@code signature}.
+	 * @param signature signature defining a set of component types
+	 * @return all entities with a signature subset matching {@code signature}
+	 */
+	public Set<Entity> get(Signature signature) {
+
+	}
 	
 	/**
 	 * Constructs a new entity from a collection of components.
 	 * Components are added in the order they are passed as parameters, so if multiple components of the same type are passed in, only the latest such component is retained by the final entity.
 	 * @param components components composing entity
-	 * @return ID of created entity
+	 * @return created entity
 	 */
 	public int create(Component... components) {
 		int entityId = getId();
