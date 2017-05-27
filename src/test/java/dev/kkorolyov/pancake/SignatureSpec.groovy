@@ -40,16 +40,19 @@ class SignatureSpec extends Specification {
 		signature.has(componentTypes.toArray(new Class<? extends Component>[componentTypes.size()]))
 	}
 
-	def "has added component type"() {
-		when:
-		signature = new Signature()
-		then:
+	def "has all added component types"() {
+		List<Class<? extends Component>> addedTypes = []
+
+		expect:
 		!signature.has(type)
 
 		when:
 		signature.add(type)
+		addedTypes.push(type)
+
 		then:
-		signature.has(type)
+		addedTypes.each { signature.has(it) }
+		signature.has(addedTypes.toArray(new Class<? extends Component>[addedTypes.size()]))
 
 		where:
 		type << componentTypes
