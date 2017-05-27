@@ -30,7 +30,9 @@ dependencies {
 	compile 'dev.kkorolyov:simple-logs:3.+',
 			'dev.kkorolyov:simple-props:v4.+',
 			'dev.kkorolyov:sqlob:3.+'
-	testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
+	testCompile 'org.spockframework:spock-core:1.1-groovy-2.4',
+			'net.bytebuddy:byte-buddy:1.7.0',
+			'org.objenesis:objenesis:2.5.1'
 }
 
 test {

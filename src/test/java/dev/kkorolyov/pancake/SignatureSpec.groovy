@@ -7,14 +7,15 @@ import spock.lang.Specification
 import java.lang.reflect.Field
 
 class SignatureSpec extends Specification {
-	@Shared List<Class<? extends Component>> componentTypes = [
-		Bounds,
-		Damping,
-		Force,
-		MaxSpeed,
-		Sprite,
-		Transform,
-		Velocity
+	@Shared
+	List<Class<? extends Component>> componentTypes = [
+			Bounds,
+			Damping,
+			Force,
+			MaxSpeed,
+			Sprite,
+			Transform,
+			Velocity
 	]
 
 	Signature signature = new Signature()
@@ -23,8 +24,9 @@ class SignatureSpec extends Specification {
 		signature = new Signature()
 
 		expect:
-		getSignatureField() == 0;
+		getSignatureField() == 0
 	}
+
 	private long getSignatureField() {
 		Field f = Signature.getDeclaredField("signature")
 		f.setAccessible(true)
@@ -32,27 +34,49 @@ class SignatureSpec extends Specification {
 		return f.get(signature) as long
 	}
 
-	def "has all constructor-initialized component types"() {
+	def "contains all constructor-initialized component types"() {
 		when:
-		signature = new Signature(componentTypes.toArray(new Class<? extends Component>[componentTypes.size()]))
+		signature = new Signature(toArray(componentTypes))
 
 		then:
-		signature.has(componentTypes.toArray(new Class<? extends Component>[componentTypes.size()]))
+		signature.contains(toArray(componentTypes))
 	}
 
-	def "has all added component types"() {
+	def "symmetrically contains signature with matching component types"() {
+		when:
+		signature = new Signature(toArray(componentTypes))
+		Signature signature2 = new Signature(toArray(componentTypes))
+
+		then:
+		signature.contains(signature2)
+		signature2.contains(signature)
+	}
+	def "contains signature with subset of component types"() {
+		signature = new Signature(toArray(componentTypes))
+		Signature half0 = new Signature(split(componentTypes, 2, 0))
+		Signature half1 = new Signature(split(componentTypes, 2, 1))
+
+		expect:
+		signature.contains(half0)
+		signature.contains(half1)
+
+		!half0.contains(signature)
+		!half1.contains(signature)
+	}
+
+	def "contains all added component types"() {
 		List<Class<? extends Component>> addedTypes = []
 
 		expect:
-		!signature.has(type)
+		!signature.contains(type)
 
 		when:
 		signature.add(type)
 		addedTypes.push(type)
 
 		then:
-		addedTypes.each { signature.has(it) }
-		signature.has(addedTypes.toArray(new Class<? extends Component>[addedTypes.size()]))
+		addedTypes.each { signature.contains(it) }
+		signature.contains(toArray(addedTypes))
 
 		where:
 		type << componentTypes
@@ -61,27 +85,27 @@ class SignatureSpec extends Specification {
 		when:
 		signature.add(type)
 		then:
-		signature.has(type)
+		signature.contains(type)
 
 		when:
 		signature.add(type)
 		then:
-		signature.has(type)
+		signature.contains(type)
 
 		where:
 		type << componentTypes
 	}
 
-	def "does not have removed component type"() {
+	def "does not contain removed component type"() {
 		when:
 		signature.add(type)
 		then:
-		signature.has(type)
+		signature.contains(type)
 
 		when:
 		signature.remove(type)
 		then:
-		!signature.has(type)
+		!signature.contains(type)
 
 		where:
 		type << componentTypes
@@ -90,7 +114,7 @@ class SignatureSpec extends Specification {
 		when:
 		signature.remove(type)
 		then:
-		!signature.has(type)
+		!signature.contains(type)
 
 		where:
 		type << componentTypes
@@ -122,7 +146,15 @@ class SignatureSpec extends Specification {
 		signature != signature2
 
 		where:
-		type1 << componentTypes.collate(componentTypes.size() / 2 as int)[0]
-		type2 << componentTypes.collate(componentTypes.size() / 2 as int)[1]
+		type1 << split(componentTypes, 2, 0)
+		type2 << split(componentTypes, 2, 1)
+	}
+
+	private static Class<? extends Component>[] toArray(List<Class<? extends Component>> list) {
+		return list.toArray(new Class<? extends Component>[list.size()])
+	}
+
+	private static Class<? extends Component>[] split(List<Class<? extends Component>> list, int partitions, int partition) {
+		return list.collate(list.size() / partitions as int)[partition]
 	}
 }

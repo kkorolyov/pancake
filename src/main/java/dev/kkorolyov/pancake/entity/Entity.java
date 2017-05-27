@@ -1,52 +1,53 @@
 package dev.kkorolyov.pancake.entity;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.Signature;
 
 /**
  * A single entity found in the game world. Consists of a unique ID and a set of distinctly-typed {@code Component} objects.
  */
-public final class Entity implements Iterable<Component> {
-	//private final int id;	 TODO implement
-	private final Set<Component> components = new HashSet<>();
+public final class Entity {
+	private final int id;
+	private final Signature signature = new Signature();
+	private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 	
 	/**
 	 * Constructs a new entity composed of a set of components.
-	 * @param components initial components defining this entity
+	 * @param id entity id
+	 * @param components set of components defining this entity
 	 */
-	public Entity(Component... components) {
-		for (Component component : components)
-			add(component);
+	public Entity(int id, Component... components) {
+		this.id = id;
+		for (Component component : components) add(component);
 	}
-	
+
 	/**
-	 * Checks if this entity has all components of particular types.
-	 * @param types component types
-	 * @return {@code true} if this entity has all such components
+	 * Checks if this entity contains a subset of component types matching {@code signature}
+	 * @param signature signature defining set of component types
+	 * @return {@code true} if this entity contains all component types defined by {@code signature}
+	 */
+	public boolean contains(Signature signature) {
+		return this.signature.contains(signature);
+	}
+	/**
+	 * Checks if this entity contains all components of particular types.
+	 * @param types queried component types
+	 * @return {@code true} if this entity contains all such components
 	 */
 	@SafeVarargs
 	public final boolean contains(Class<? extends Component>... types) {
-		for (Class<? extends Component> type : types) {
-			if (get(type) == null)
-				return false;
-		}
-		return true;
+		return signature.contains(types);
 	}
-	
+
 	/**
-	 * Returns a component of a particular type.
+	 * Returns the component of a particular type.
 	 * @param type component type
-	 * @return appropriate component, or {@code null} if this entity has no such component
+	 * @return appropriate component, or {@code null} if this entity contains no such component
 	 */
 	public <T extends Component> T get(Class<T> type) {
-		for (Component component : components) {
-			if (component.getClass() == type)
-				return type.cast(component);
-		}
-		return null;
+		return type.cast(components.get(type));
 	}
 	
 	/**
@@ -57,8 +58,10 @@ public final class Entity implements Iterable<Component> {
 	 */
 	public boolean add(Component component) {
 		boolean overwrite = remove(component.getClass());
-		
-		components.add(component);
+
+		signature.add(component.getClass());
+		components.put(component.getClass(), component);
+
 		return overwrite;
 	}
 	/**
@@ -67,19 +70,21 @@ public final class Entity implements Iterable<Component> {
 	 * @return {@code true} if this entity had such a component and it was removed
 	 */
 	public <T extends Component> boolean remove(Class<T> type) {
-		Iterator<Component> it = iterator();
-		
-		while (it.hasNext()) {
-			if (it.next().getClass() == type) {
-				it.remove();
-				return true;
-			}
-		}
-		return false;
+		signature.remove(type);
+		return components.remove(type) != null;
 	}
-	
-	@Override
-	public Iterator<Component> iterator() {
-		return components.iterator();
+
+	/**
+	 * Checks if this entity's signature matches some other signature.
+	 * @param signature signature to match
+	 * @return {@code true} if this entity's signature equals {@code signature}
+	 */
+	public boolean matches(Signature signature) {
+		return this.signature.equals(signature);
+	}
+
+	/** @return entity ID */
+	public int getId() {
+		return id;
 	}
 }
