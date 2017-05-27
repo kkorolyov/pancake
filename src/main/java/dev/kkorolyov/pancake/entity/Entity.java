@@ -8,7 +8,7 @@ import dev.kkorolyov.pancake.Signature;
 /**
  * A single entity found in the game world. Consists of a unique ID and a set of distinctly-typed {@code Component} objects.
  */
-public final class Entity {
+public final class Entity implements Comparable<Entity> {
 	private final int id;
 	private final Signature signature = new Signature();
 	private final Map<Class<? extends Component>, Component> components = new HashMap<>();
@@ -86,5 +86,11 @@ public final class Entity {
 	/** @return entity ID */
 	public int getId() {
 		return id;
+	}
+
+	/**	Compares entities by ID. */
+	@Override
+	public int compareTo(Entity o) {
+		return Integer.compare(id, o.id);
 	}
 }
