@@ -1,13 +1,11 @@
 package dev.kkorolyov.pancake.engine;
 
-import dev.kkorolyov.pancake.component.Signature;
-
 /**
  * Performs work on entities matching a certain component signature.
  */
 public abstract class GameSystem {
 	private final Signature signature;
-	private EntityManager entities;
+	private EntityPool entities;
 
 	/**
 	 * Constructs a new system.
@@ -29,11 +27,11 @@ public abstract class GameSystem {
 	}
 
 	/** @return all entities known to this system */
-	public EntityManager getEntities() {
+	public EntityPool getEntities() {
 		return entities;
 	}
 	/** @param entities all entities known to this system */
-	void setEntities(EntityManager entities) {
+	void setEntities(EntityPool entities) {
 		this.entities = entities;
 	}
 }

@@ -6,12 +6,10 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-import dev.kkorolyov.pancake.component.Signature;
-
 /**
- * Maintains a pool of "component-bag" entities.
+ * A set of uniquely-identified "component-bag" entities.
  */
-public class EntityManager {
+public class EntityPool {
 	private int idCounter = 0;	// Main ID counter
 	private Queue<Integer> reclaimedIds = new ArrayDeque<>();	// Reclaimed IDs from destroyed entities
 	private final Map<Integer, Entity> entities = new HashMap<>();

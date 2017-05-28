@@ -4,17 +4,23 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * Maintains a collection of entities.
- * An entity is composed of a unique ID and a set of uniquely-typed {@code Components}.
+ * Central game management module.
+ * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public class GameEngine {
-	private final EntityManager entities = new EntityManager();
+	private final EntityPool entities = new EntityPool();
 	private final Set<GameSystem> systems = new LinkedHashSet<>();
 	
 	/**
 	 * Constructs a new engine pre-populated with systems.
 	 */
 	public GameEngine(GameSystem... systems) {
+		for (GameSystem system : systems) add(system);
+	}
+	/**
+	 * Constructs a new engine pre-populated with systems.
+	 */
+	public GameEngine(Iterable<GameSystem> systems) {
 		for (GameSystem system : systems) add(system);
 	}
 	

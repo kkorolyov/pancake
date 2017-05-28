@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.system;
 import java.util.Map.Entry;
 
 import dev.kkorolyov.pancake.engine.Component;
-import dev.kkorolyov.pancake.engine.EntityManager;
+import dev.kkorolyov.pancake.engine.EntityPool;
 import dev.kkorolyov.pancake.engine.GameSystem;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
@@ -31,7 +31,7 @@ public class RenderSystem extends GameSystem {
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		
 		int counter = 0;
-		EntityManager entities = getEntities();
+		EntityPool entities = getEntities();
 		for (Entry<Integer, Component> entity : entities.getAll(Transform.class)) {
 			Transform transform = (Transform) entity.getValue();
 			Sprite sprite = entities.get(entity.getKey(), Sprite.class);

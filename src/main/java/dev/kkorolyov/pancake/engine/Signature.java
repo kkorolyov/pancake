@@ -1,11 +1,11 @@
-package dev.kkorolyov.pancake.component;
+package dev.kkorolyov.pancake.engine;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import dev.kkorolyov.pancake.engine.Component;
+import dev.kkorolyov.pancake.component.*;
 
 /**
  * A distinct combination of registered component types.

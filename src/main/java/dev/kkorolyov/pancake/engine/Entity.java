@@ -2,8 +2,6 @@ package dev.kkorolyov.pancake.engine;
 
 import java.util.*;
 
-import dev.kkorolyov.pancake.component.Signature;
-
 /**
  * A single entity found in the game world. Consists of a unique ID and a set of distinctly-typed {@code Component} objects.
  */
@@ -26,7 +24,7 @@ public final class Entity implements Comparable<Entity> {
 	 * @param id entity id
 	 * @param components set of components defining this entity
 	 */
-	public Entity(int id, List<Component> components) {
+	public Entity(int id, Iterable<Component> components) {
 		this.id = id;
 		for (Component component : components) add(component);
 	}
