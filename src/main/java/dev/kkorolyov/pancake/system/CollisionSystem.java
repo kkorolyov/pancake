@@ -1,12 +1,10 @@
 package dev.kkorolyov.pancake.system;
 
-import java.util.Map.Entry;
-
-import dev.kkorolyov.pancake.engine.Component;
-import dev.kkorolyov.pancake.engine.EntityPool;
-import dev.kkorolyov.pancake.engine.GameSystem;
 import dev.kkorolyov.pancake.component.Bounds;
 import dev.kkorolyov.pancake.component.Transform;
+import dev.kkorolyov.pancake.core.Entity;
+import dev.kkorolyov.pancake.core.GameSystem;
+import dev.kkorolyov.pancake.core.Signature;
 
 /**
  * Detects and handles entity collisions.
@@ -16,19 +14,12 @@ public class CollisionSystem extends GameSystem {
 	 * Constructs a new collision system.
 	 */
 	public CollisionSystem() {
-		super(Transform.class, Bounds.class);
+		super(new Signature(Transform.class,
+												Bounds.class));
 	}
 	
 	@Override
-	public int update(float dt) {
-		int counter = 0;
-		EntityPool entities = getEntities();
-		for (Entry<Integer, Component> entity : entities.getAll(Bounds.class)) {
-			Bounds bounds = (Bounds) entity.getValue();
-			Transform transform = entities.get(entity.getKey(), Transform.class);
-			
-			if (bounds != null & transform != null)
-		}
-		return counter;
+	public void update(Entity entity, float dt) {
+		// TODO
 	}
 }

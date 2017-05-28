@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake;
+package dev.kkorolyov.pancake.core;
 
 import dev.kkorolyov.pancake.system.RenderSystem;
 import javafx.animation.AnimationTimer;
@@ -8,27 +8,26 @@ import javafx.animation.AnimationTimer;
  */
 public class GameLoop extends AnimationTimer {
 	private static final float ELAPSED_TO_S = 1 / 1000000000;
-	private long 	last,
-								total;
-	private RenderSystem renderer;
-	
+
+	private final GameEngine engine = new GameEngine();
+	private long last;
+	private long total;
+
 	/**
-	 * Constructs a new game loop.
-	 * @param renderer renderer used for drawing
+	 * Constructs a new game loop using a new {@link GameEngine} and rendering using {@code renderer}.
+	 * @param renderer rendering system
 	 */
 	public GameLoop(RenderSystem renderer) {
-		this.renderer = renderer;
+		engine.add(renderer);
 	}
 	
 	@Override
 	public void handle(long now) {
-		if (last == 0)
-			last = now;
+		if (last == 0) last = now;
 		long elapsed = now - last;
 		float dt = elapsed * ELAPSED_TO_S;
 		
-		tick();
-		render();
+		engine.update(dt);
 		
 		total += elapsed;
 		last = now;

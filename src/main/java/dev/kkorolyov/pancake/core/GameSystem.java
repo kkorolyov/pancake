@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.engine;
+package dev.kkorolyov.pancake.core;
 
 /**
  * Performs work on entities matching a certain component signature.
@@ -16,10 +16,21 @@ public abstract class GameSystem {
 	}
 
 	/**
-	 * Function invoked on all entities affected by this system.
+	 * Function invoked on each entity affected by this system.
 	 * @param dt seconds elapsed since last update
 	 */
 	public abstract void update(Entity entity, float dt);
+
+	/**
+	 * Function invoked at the beginning of an update cycle.
+	 * @param dt seconds elapsed since last update
+	 */
+	public void before(float dt) {}
+	/**
+	 * Function invoked at the end of an update cycle.
+	 * @param dt seconds elapsed since last update
+	 */
+	public void after(float dt) {}
 
 	/** @return component signature */
 	public Signature getSignature() {

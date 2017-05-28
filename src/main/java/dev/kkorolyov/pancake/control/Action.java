@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.control;
 
-import dev.kkorolyov.pancake.engine.Entity;
+import dev.kkorolyov.pancake.core.Entity;
 
 /**
  * An action performed by an entity.

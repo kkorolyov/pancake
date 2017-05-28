@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.engine;
+package dev.kkorolyov.pancake.core;
 
 import java.util.Arrays;
 import java.util.HashMap;

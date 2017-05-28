@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.engine;
+package dev.kkorolyov.pancake.core;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -30,9 +30,13 @@ public class GameEngine {
 	 */
 	public void update(float dt) {
 		for (GameSystem system : systems) {
+			system.before(dt);
+
 			for (Entity entity : entities.get(system.getSignature())) {
 				system.update(entity, dt);
 			}
+
+			system.after(dt);
 		}
 	}
 
