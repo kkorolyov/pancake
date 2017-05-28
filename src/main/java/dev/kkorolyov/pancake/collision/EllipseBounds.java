@@ -28,8 +28,8 @@ public class EllipseBounds implements Bounds {
 		return false;
 	}
 
-	@Override
-	public Vector getOrigin() {
+	/** @return circle center */
+	public Vector getCenter() {
 		return center;
 	}
 }

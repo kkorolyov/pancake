@@ -54,11 +54,6 @@ public class RectangleBounds implements Bounds {
 		return x2 >= y1 && y2 >= x1;
 	}
 	
-	@Override
-	public Vector getOrigin() {
-		return origin;
-	}
-	
 	/** @return origin x-coordinate */
 	public float getX() {
 		return origin.getX();
@@ -80,15 +75,5 @@ public class RectangleBounds implements Bounds {
 	@Override
 	public String toString() {
 		return "origin=" + origin + " size=" + size;
-	}
-	
-	@Override
-	public void update(float dt) {
-		/* TODO Auto-generated method stub */
-		
-	}
-	@Override
-	public int getEntity() {
-		return entityId;
 	}
 }
