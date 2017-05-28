@@ -26,12 +26,12 @@ class EntitySpec extends Specification {
 
 	def "contains all constructor-initialized component types"() {
 		when:
-		entity = new Entity(id, toArray(components))
+		entity = new Entity(id, components)
 		then:
-		entity.contains(mapToTypes(components))
+		entity.contains(new Signature(mapToTypes(components)))
 	}
 	def "contains signature with subset of component types"() {
-		entity = new Entity(id, toArray(components))
+		entity = new Entity(id, components)
 		Signature equal = new Signature(mapToTypes(components))
 		Signature half0 = new Signature(mapToTypes(split(components, 2, 0)))
 		Signature half1 = new Signature(mapToTypes(split(components, 2, 1)))
@@ -70,15 +70,11 @@ class EntitySpec extends Specification {
 		component << components
 	}
 
-	private static Component[] toArray(List<Component> list) {
-		return list.toArray(new Component[list.size()])
-	}
-
 	private static List<Component> split(List<Component> list, int partitions, int partition) {
 		return list.collate(list.size() / partitions as int)[partition]
 	}
 
-	private static Class<? extends Component>[] mapToTypes(List<Component> components) {
+	private static List<Class<? extends Component>> mapToTypes(List<Component> components) {
 		return components.collect { it.getClass() }.toArray(new Class<? extends Component>[components.size()])
 	}
 }

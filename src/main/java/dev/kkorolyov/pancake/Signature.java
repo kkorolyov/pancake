@@ -42,6 +42,23 @@ public class Signature {
 			}
 		}
 	}
+	/**
+	 * Sets the collection of additional component types used in masking.
+	 * @param types indexed types, if {@code null} or empty, only the default component types are used
+	 */
+	public static void index(Iterable<Class<? extends Component>> types) {
+		indexMap.clear();
+
+		long counter = 0;
+		for (Class<? extends Component> type : defaultTypes) {
+			indexMap.put(type, counter++);
+		}
+		if (types != null) {
+			for (Class<? extends Component> type : types) {
+				indexMap.put(type, counter++);
+			}
+		}
+	}
 
 	private long signature;
 
@@ -53,10 +70,21 @@ public class Signature {
 	}
 	/**
 	 * Constructs a new signature from a set of component types.
-	 * @param types types deciding signature
+	 * @param types types defining signature
 	 */
 	@SafeVarargs
 	public Signature(Class<? extends Component>... types) {
+		if (types != null) {
+			for (Class<? extends Component> type : types) {
+				add(type);
+			}
+		}
+	}
+	/**
+	 * Constructs a new signature from a set of component types.
+	 * @param types types defining signature
+	 */
+	public Signature(Iterable<Class<? extends Component>> types) {
 		if (types != null) {
 			for (Class<? extends Component> type : types) {
 				add(type);
@@ -69,21 +97,8 @@ public class Signature {
 	 * @param other signature to check against
 	 * @return {@code true} if this signature contains all component types specified by {@code other}
 	 */
-	public final boolean contains(Signature other) {
+	public final boolean masks(Signature other) {
 		return (signature & other.signature) == other.signature;
-	}
-	/**
-	 * Checks if this signature contains some set of component types.
-	 * @param types queried component types
-	 * @return {code true} if this signature contains all {@code types}
-	 */
-	@SafeVarargs
-	public final boolean contains(Class<? extends Component>... types) {
-		long mask = 0;
-		for (Class<? extends Component> type : types) {
-			mask |= getMask(type);
-		}
-		return (signature & mask) == mask;
 	}
 
 	/**

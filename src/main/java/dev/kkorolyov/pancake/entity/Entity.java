@@ -22,23 +22,23 @@ public final class Entity implements Comparable<Entity> {
 		this.id = id;
 		for (Component component : components) add(component);
 	}
+	/**
+	 * Constructs a new entity composed of a set of components.
+	 * @param id entity id
+	 * @param components set of components defining this entity
+	 */
+	public Entity(int id, List<Component> components) {
+		this.id = id;
+		for (Component component : components) add(component);
+	}
 
 	/**
-	 * Checks if this entity contains a subset of component types matching {@code signature}
+	 * Checks if this entity contains a subset of component types defined by {@code signature}
 	 * @param signature signature defining set of component types
 	 * @return {@code true} if this entity contains all component types defined by {@code signature}
 	 */
 	public boolean contains(Signature signature) {
-		return this.signature.contains(signature);
-	}
-	/**
-	 * Checks if this entity contains all components of particular types.
-	 * @param types queried component types
-	 * @return {@code true} if this entity contains all such components
-	 */
-	@SafeVarargs
-	public final boolean contains(Class<? extends Component>... types) {
-		return signature.contains(types);
+		return this.signature.masks(signature);
 	}
 
 	/**

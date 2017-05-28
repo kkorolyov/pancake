@@ -34,49 +34,49 @@ class SignatureSpec extends Specification {
 		return f.get(signature) as long
 	}
 
-	def "contains all constructor-initialized component types"() {
+	def "masks all constructor-initialized component types"() {
 		when:
-		signature = new Signature(toArray(componentTypes))
+		signature = new Signature(componentTypes)
 
 		then:
-		signature.contains(toArray(componentTypes))
+		signature.masks(new Signature(componentTypes))
 	}
 
-	def "symmetrically contains signature with matching component types"() {
+	def "symmetrically masks signature with matching component types"() {
 		when:
-		signature = new Signature(toArray(componentTypes))
-		Signature signature2 = new Signature(toArray(componentTypes))
+		signature = new Signature(componentTypes)
+		Signature signature2 = new Signature(componentTypes)
 
 		then:
-		signature.contains(signature2)
-		signature2.contains(signature)
+		signature.masks(signature2)
+		signature2.masks(signature)
 	}
-	def "contains signature with subset of component types"() {
-		signature = new Signature(toArray(componentTypes))
+	def "masks signature with subset of component types"() {
+		signature = new Signature(componentTypes)
 		Signature half0 = new Signature(split(componentTypes, 2, 0))
 		Signature half1 = new Signature(split(componentTypes, 2, 1))
 
 		expect:
-		signature.contains(half0)
-		signature.contains(half1)
+		signature.masks(half0)
+		signature.masks(half1)
 
-		!half0.contains(signature)
-		!half1.contains(signature)
+		!half0.masks(signature)
+		!half1.masks(signature)
 	}
 
-	def "contains all added component types"() {
+	def "masks all added component types"() {
 		List<Class<? extends Component>> addedTypes = []
 
 		expect:
-		!signature.contains(type)
+		!signature.masks(new Signature(type))
 
 		when:
 		signature.add(type)
 		addedTypes.push(type)
 
 		then:
-		addedTypes.each { signature.contains(it) }
-		signature.contains(toArray(addedTypes))
+		addedTypes.each { signature.masks(new Signature(it)) }
+		signature.masks(new Signature(addedTypes))
 
 		where:
 		type << componentTypes
@@ -85,27 +85,27 @@ class SignatureSpec extends Specification {
 		when:
 		signature.add(type)
 		then:
-		signature.contains(type)
+		signature.masks(new Signature(type))
 
 		when:
 		signature.add(type)
 		then:
-		signature.contains(type)
+		signature.masks(new Signature(type))
 
 		where:
 		type << componentTypes
 	}
 
-	def "does not contain removed component type"() {
+	def "does not mask removed component type"() {
 		when:
 		signature.add(type)
 		then:
-		signature.contains(type)
+		signature.masks(new Signature(type))
 
 		when:
 		signature.remove(type)
 		then:
-		!signature.contains(type)
+		!signature.masks(new Signature(type))
 
 		where:
 		type << componentTypes
@@ -114,7 +114,7 @@ class SignatureSpec extends Specification {
 		when:
 		signature.remove(type)
 		then:
-		!signature.contains(type)
+		!signature.masks(new Signature(type))
 
 		where:
 		type << componentTypes
@@ -150,11 +150,7 @@ class SignatureSpec extends Specification {
 		type2 << split(componentTypes, 2, 1)
 	}
 
-	private static Class<? extends Component>[] toArray(List<Class<? extends Component>> list) {
-		return list.toArray(new Class<? extends Component>[list.size()])
-	}
-
-	private static Class<? extends Component>[] split(List<Class<? extends Component>> list, int partitions, int partition) {
+	private static List<Class<? extends Component>> split(List<Class<? extends Component>> list, int partitions, int partition) {
 		return list.collate(list.size() / partitions as int)[partition]
 	}
 }
