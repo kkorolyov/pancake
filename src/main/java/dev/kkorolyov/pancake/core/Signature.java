@@ -6,19 +6,24 @@ import java.util.List;
 import java.util.Objects;
 
 import dev.kkorolyov.pancake.component.*;
+import dev.kkorolyov.pancake.component.collision.Bounds;
+import dev.kkorolyov.pancake.component.movement.Damping;
+import dev.kkorolyov.pancake.component.movement.Force;
+import dev.kkorolyov.pancake.component.movement.MaxSpeed;
+import dev.kkorolyov.pancake.component.movement.Velocity;
 
 /**
  * A distinct combination of registered component types.
  */
 public class Signature {
 	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
-	private static final List<Class<? extends Component>> defaultTypes = Arrays.asList(Bounds.class,
-																																										 Damping.class,
-																																										 Force.class,
-																																										 MaxSpeed.class,
-																																										 Sprite.class,
-																																										 Transform.class,
-																																										 Velocity.class);
+	private static final List<Class<? extends Component>> coreTypes = Arrays.asList(Bounds.class,
+																																									Damping.class,
+																																									Force.class,
+																																									MaxSpeed.class,
+																																									Sprite.class,
+																																									Transform.class,
+																																									Velocity.class);
 
 	static {
 		index();
@@ -26,14 +31,14 @@ public class Signature {
 
 	/**
 	 * Sets the collection of additional component types used in masking.
-	 * @param types indexed types, if {@code null} or empty, only the default component types are used
+	 * @param types indexed types, if {@code null} or empty, only the core component types are used
 	 */
 	@SafeVarargs
 	public static void index(Class<? extends Component>... types) {
 		indexMap.clear();
 
 		long counter = 0;
-		for (Class<? extends Component> type : defaultTypes) {
+		for (Class<? extends Component> type : coreTypes) {
 			indexMap.put(type, counter++);
 		}
 		if (types != null) {
@@ -50,7 +55,7 @@ public class Signature {
 		indexMap.clear();
 
 		long counter = 0;
-		for (Class<? extends Component> type : defaultTypes) {
+		for (Class<? extends Component> type : coreTypes) {
 			indexMap.put(type, counter++);
 		}
 		if (types != null) {

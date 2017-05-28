@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.system;
 
-import dev.kkorolyov.pancake.component.Bounds;
+import dev.kkorolyov.pancake.component.collision.Bounds;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.core.Entity;
 import dev.kkorolyov.pancake.core.GameSystem;

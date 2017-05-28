@@ -1,6 +1,10 @@
 package dev.kkorolyov.pancake.system;
 
 import dev.kkorolyov.pancake.component.*;
+import dev.kkorolyov.pancake.component.movement.Damping;
+import dev.kkorolyov.pancake.component.movement.Force;
+import dev.kkorolyov.pancake.component.movement.MaxSpeed;
+import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.Entity;
 import dev.kkorolyov.pancake.core.GameSystem;
 import dev.kkorolyov.pancake.core.Signature;
@@ -8,11 +12,11 @@ import dev.kkorolyov.pancake.core.Signature;
 /**
  * Updates entities using physics calculations.
  */
-public class PhysicsSystem extends GameSystem {
+public class MovementSystem extends GameSystem {
 	/**
 	 * Constructs a new physics system.
 	 */
-	public PhysicsSystem() {
+	public MovementSystem() {
 		super(new Signature(Velocity.class,
 												Force.class));
 	}

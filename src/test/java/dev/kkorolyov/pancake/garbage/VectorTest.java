@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.math;
+package dev.kkorolyov.pancake.garbage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -7,11 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+
+import dev.kkorolyov.pancake.math.Vector;
 
 @RunWith(Parameterized.class)
 @SuppressWarnings("javadoc")
@@ -37,7 +40,7 @@ public class VectorTest {
 	
 	@Test
 	public void testVector() {
-		assertEquals(new Vector(0, 0, 0), new Vector());
+		Assert.assertEquals(new Vector(0, 0, 0), new Vector());
 	}
 	@Test
 	public void testVectorFloatFloat() {

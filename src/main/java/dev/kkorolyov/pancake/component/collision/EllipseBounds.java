@@ -1,6 +1,5 @@
-package dev.kkorolyov.pancake.collision;
+package dev.kkorolyov.pancake.component.collision;
 
-import dev.kkorolyov.pancake.component.Bounds;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**

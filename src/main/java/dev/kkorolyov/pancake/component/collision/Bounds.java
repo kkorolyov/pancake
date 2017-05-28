@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.component;
+package dev.kkorolyov.pancake.component.collision;
 
 import dev.kkorolyov.pancake.core.Component;
 

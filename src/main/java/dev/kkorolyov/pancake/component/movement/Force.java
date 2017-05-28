@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.component;
+package dev.kkorolyov.pancake.component.movement;
 
 import dev.kkorolyov.pancake.core.Component;
 import dev.kkorolyov.pancake.math.Vector;
@@ -30,7 +30,7 @@ public class Force implements Component {
 	}
 	
 	/**
-	 * Set's this force to {@code 0}.
+	 * Sets this force to {@code 0}.
 	 */
 	public void clearForce() {
 		scaleForce(0);

@@ -87,11 +87,24 @@ public class Vector {
 	public static Vector add(Vector vI, Vector... vN) {
 		Vector result = new Vector(vI);
 		
-		for (Vector v : vN)
-			result.add(v);
+		for (Vector v : vN) result.add(v);
 		
 		return result;
 	}
+	/**
+	 * Returns a new vector formed by the subtraction of vectors from an initial vector.
+	 * @param vI initial vector
+	 * @param vN subtracted vectors
+	 * @return vector formed by {@code v1 - vN}
+	 */
+	public static Vector sub(Vector vI, Vector... vN) {
+		Vector result = new Vector(vI);
+
+		for (Vector v : vN) result.sub(v);
+
+		return result;
+	}
+
 	/**
 	 * Transforms this vector by adding another vector to it.
 	 * This is equivalent to translating this vector by the other vector's components.
@@ -111,20 +124,6 @@ public class Vector {
 		translate(other.x * scale, other.y * scale, other.z * scale);
 	}
 	
-	/**
-	 * Returns a new vector formed by the subtraction of vectors from an initial vector.
-	 * @param vI initial vector
-	 * @param vN subtracted vectors
-	 * @return vector formed by {@code v1 - vN}
-	 */
-	public static Vector sub(Vector vI, Vector... vN) {
-		Vector result = new Vector(vI);
-		
-		for (Vector v : vN)
-			result.sub(v);
-		
-		return result;
-	}
 	/**
 	 * Transforms this vector by subtracting another vector from it.
 	 * This is equivalent to translating this vector by the negative of the other vector's components.
@@ -173,7 +172,7 @@ public class Vector {
 	}
 	
 	/**
-	 * Normalizes this vector by scaling it into a unit vector pointing in the same direction.
+	 * Scales this vector to a unit vector pointing in the original direction.
 	 */
 	public void normalize() {
 		scale(1 / getMagnitude());
@@ -191,6 +190,7 @@ public class Vector {
 	public float getMagnitude() {
 		return (float) Math.sqrt(dot(this));
 	}
+
 	/** @return direction of this vector in the x-y plane, in radians */
 	public float getDirection2D() {
 		return (float) Math.atan2(y, x);

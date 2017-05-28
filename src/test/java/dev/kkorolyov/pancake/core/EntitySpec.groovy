@@ -1,5 +1,10 @@
-package dev.kkorolyov.pancake.entity
+package dev.kkorolyov.pancake.core
 
+import dev.kkorolyov.pancake.component.collision.Bounds
+import dev.kkorolyov.pancake.component.movement.Damping
+import dev.kkorolyov.pancake.component.movement.Force
+import dev.kkorolyov.pancake.component.movement.MaxSpeed
+import dev.kkorolyov.pancake.component.movement.Velocity
 import dev.kkorolyov.pancake.core.Component
 import dev.kkorolyov.pancake.core.Signature
 import dev.kkorolyov.pancake.component.*

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.component;
+package dev.kkorolyov.pancake.component.movement;
 
 import dev.kkorolyov.pancake.core.Component;
 import dev.kkorolyov.pancake.math.Vector;
@@ -9,7 +9,7 @@ import dev.kkorolyov.pancake.math.Vector;
 public class Velocity implements Component {
 	private static final float ZERO = .001f;
 	private final Vector velocity = new Vector();
-	
+
 	/**
 	 * Sets all axis values which are "effectively zero" to zero.
 	 * @return velocity after rounding
@@ -23,7 +23,7 @@ public class Velocity implements Component {
 	private static float round(float value) {
 		return Math.abs(value) <= ZERO ? ZERO : value;
 	}
-	
+
 	/**
 	 * Applies a positional change calculated from velocity and duration to a point.
 	 * @param position position to move
@@ -34,7 +34,7 @@ public class Velocity implements Component {
 		position.add(velocity, seconds);
 		return position;
 	}
-	
+
 	/** @return velocity vector */
 	public Vector getVelocity() {
 		return velocity;
