@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.input;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import dev.kkorolyov.pancake.entity.control.Action;
+import dev.kkorolyov.pancake.control.Action;
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.format.Formatters;

@@ -1,9 +1,8 @@
-package dev.kkorolyov.pancake.entity;
+package dev.kkorolyov.pancake.engine;
 
 import java.util.*;
 
-import dev.kkorolyov.pancake.Component;
-import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.component.Signature;
 
 /**
  * A single entity found in the game world. Consists of a unique ID and a set of distinctly-typed {@code Component} objects.

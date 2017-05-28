@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.component;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.engine.Component;
 import javafx.scene.image.Image;
 
 /**

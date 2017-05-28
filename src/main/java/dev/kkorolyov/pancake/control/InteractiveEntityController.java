@@ -1,8 +1,8 @@
-package dev.kkorolyov.pancake.entity.control;
+package dev.kkorolyov.pancake.control;
 
 import java.util.*;
 
-import dev.kkorolyov.pancake.entity.Entity;
+import dev.kkorolyov.pancake.engine.Entity;
 import dev.kkorolyov.pancake.input.KeyAction;
 import javafx.scene.Scene;
 

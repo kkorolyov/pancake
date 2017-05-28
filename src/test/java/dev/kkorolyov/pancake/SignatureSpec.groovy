@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake
 
 import dev.kkorolyov.pancake.component.*
+import dev.kkorolyov.pancake.engine.Component
 import spock.lang.Shared
 import spock.lang.Specification
 

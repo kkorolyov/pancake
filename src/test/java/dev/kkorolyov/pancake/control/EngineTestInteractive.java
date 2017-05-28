@@ -1,7 +1,6 @@
-package dev.kkorolyov.pancake.entity.control;
+package dev.kkorolyov.pancake.control;
 
 import dev.kkorolyov.pancake.component.*;
-import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.system.PhysicsSystem;
 import dev.kkorolyov.pancake.system.RenderSystem;

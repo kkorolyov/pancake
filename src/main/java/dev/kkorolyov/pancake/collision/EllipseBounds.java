@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.entity.collision;
+package dev.kkorolyov.pancake.collision;
 
 import dev.kkorolyov.pancake.component.Bounds;
 import dev.kkorolyov.pancake.math.Vector;

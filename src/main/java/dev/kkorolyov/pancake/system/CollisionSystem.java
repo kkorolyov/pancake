@@ -2,9 +2,9 @@ package dev.kkorolyov.pancake.system;
 
 import java.util.Map.Entry;
 
-import dev.kkorolyov.pancake.Component;
-import dev.kkorolyov.pancake.EntityManager;
-import dev.kkorolyov.pancake.GameSystem;
+import dev.kkorolyov.pancake.engine.Component;
+import dev.kkorolyov.pancake.engine.EntityManager;
+import dev.kkorolyov.pancake.engine.GameSystem;
 import dev.kkorolyov.pancake.component.Bounds;
 import dev.kkorolyov.pancake.component.Transform;
 

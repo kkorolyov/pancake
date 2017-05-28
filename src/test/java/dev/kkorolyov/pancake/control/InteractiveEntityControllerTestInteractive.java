@@ -1,10 +1,10 @@
-package dev.kkorolyov.pancake.entity.control;
+package dev.kkorolyov.pancake.control;
 
 import java.util.*;
 
 import dev.kkorolyov.pancake.component.Sprite;
-import dev.kkorolyov.pancake.entity.Entity;
-import dev.kkorolyov.pancake.entity.collision.RectangleBounds;
+import dev.kkorolyov.pancake.engine.Entity;
+import dev.kkorolyov.pancake.collision.RectangleBounds;
 import dev.kkorolyov.pancake.input.KeyAction;
 import dev.kkorolyov.pancake.system.RenderSystem;
 import garbage.Body;

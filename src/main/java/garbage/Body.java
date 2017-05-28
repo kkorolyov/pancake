@@ -1,6 +1,6 @@
 package garbage;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.engine.Component;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**
