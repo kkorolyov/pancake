@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.core;
 
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class GameEngine {
 	 * Constructs a new engine pre-populated with systems.
 	 */
 	public GameEngine(GameSystem... systems) {
-		for (GameSystem system : systems) add(system);
+		this(Arrays.asList(systems));
 	}
 	/**
 	 * Constructs a new engine pre-populated with systems.

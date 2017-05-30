@@ -16,8 +16,7 @@ public class Entity implements Comparable<Entity> {
 	 * @param components set of components defining this entity
 	 */
 	public Entity(int id, Component... components) {
-		this.id = id;
-		for (Component component : components) add(component);
+		this(id, Arrays.asList(components));
 	}
 	/**
 	 * Constructs a new entity composed of a set of components.

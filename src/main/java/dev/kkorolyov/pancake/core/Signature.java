@@ -40,6 +40,14 @@ public class Signature {
 	 */
 	@SafeVarargs
 	public static void index(Class<? extends Component>... types) {
+		index(Arrays.asList(types));
+	}
+	/**
+	 * Sets the collection of additional component types used in masking.
+	 * @param types indexed types, if {@code null} or empty, only the default component types are used
+	 * @throws IllegalArgumentException if a non-concrete type is indexed
+	 */
+	public static void index(Iterable<Class<? extends Component>> types) {
 		indexMap.clear();
 
 		long counter = 0;
@@ -47,23 +55,6 @@ public class Signature {
 			if (type.isInterface() || Modifier.isAbstract(type.getModifiers()))	{
 				throw new IllegalArgumentException(type + " is not a concrete type");
 			}
-			indexMap.put(type, counter++);
-		}
-		if (types != null) {
-			for (Class<? extends Component> type : types) {
-				indexMap.put(type, counter++);
-			}
-		}
-	}
-	/**
-	 * Sets the collection of additional component types used in masking.
-	 * @param types indexed types, if {@code null} or empty, only the default component types are used
-	 */
-	public static void index(Iterable<Class<? extends Component>> types) {
-		indexMap.clear();
-
-		long counter = 0;
-		for (Class<? extends Component> type : coreTypes) {
 			indexMap.put(type, counter++);
 		}
 		if (types != null) {
@@ -87,11 +78,7 @@ public class Signature {
 	 */
 	@SafeVarargs
 	public Signature(Class<? extends Component>... types) {
-		if (types != null) {
-			for (Class<? extends Component> type : types) {
-				add(type);
-			}
-		}
+		Arrays.asList(types);
 	}
 	/**
 	 * Constructs a new signature from a set of component types.
