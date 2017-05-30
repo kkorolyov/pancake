@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.Bounds;
+import dev.kkorolyov.pancake.component.collision.EllipseBounds;
+import dev.kkorolyov.pancake.component.collision.RectangleBounds;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.Entity;
@@ -25,7 +26,8 @@ public class CollisionSystem extends GameSystem {
 	 */
 	public CollisionSystem() {
 		super(new Signature(Transform.class,
-												Bounds.class,
+												RectangleBounds.class,
+												EllipseBounds.class,
 												Force.class,
 												Velocity.class));
 	}
@@ -44,8 +46,8 @@ public class CollisionSystem extends GameSystem {
 
 				Transform t1 = e1.get(Transform.class);
 				Transform t2 = e2.get(Transform.class);
-				Bounds b1 = e1.get(Bounds.class);
-				Bounds b2 = e2.get(Bounds.class);
+				RectangleBounds b1 = e1.get(RectangleBounds.class);
+				RectangleBounds b2 = e2.get(RectangleBounds.class);
 
 				if (b1.intersects(b2, t1.getPosition(), t2.getPosition())) {
 					collide(e1, e2);
