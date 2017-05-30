@@ -22,12 +22,11 @@ public class EllipseBounds implements Bounds {
 	}
 	
 	@Override
-	public boolean intersects(Bounds other) {
-		/* TODO Auto-generated method stub */
+	public boolean intersects(Bounds other, Vector thisOrigin, Vector otherOrigin) {
 		return false;
 	}
 
-	/** @return circle center */
+	/** @return ellipse center */
 	public Vector getCenter() {
 		return center;
 	}
