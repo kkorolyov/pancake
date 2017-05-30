@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import dev.kkorolyov.pancake.component.*;
 import dev.kkorolyov.pancake.component.collision.Bounds;
+import dev.kkorolyov.pancake.component.collision.RectangleBounds;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
@@ -18,6 +19,7 @@ import dev.kkorolyov.pancake.component.movement.Velocity;
 public class Signature {
 	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
 	private static final List<Class<? extends Component>> coreTypes = Arrays.asList(Bounds.class,
+																																									RectangleBounds.class,
 																																									Damping.class,
 																																									Force.class,
 																																									MaxSpeed.class,

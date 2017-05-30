@@ -49,4 +49,9 @@ public class GameEngine {
 	public void remove(GameSystem system) {
 		systems.remove(system);
 	}
+
+	/** @return entities handled by this engine */
+	public EntityPool getEntities() {
+		return entities;
+	}
 }

@@ -21,7 +21,7 @@ public class Velocity implements Component {
 		return velocity;
 	}
 	private static float round(float value) {
-		return Math.abs(value) <= ZERO ? ZERO : value;
+		return Math.abs(value) <= ZERO ? 0 : value;
 	}
 
 	/**
