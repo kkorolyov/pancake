@@ -14,6 +14,7 @@ import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
+import dev.kkorolyov.pancake.component.control.InteractiveEntityController;
 
 /**
  * A distinct combination of registered component types.
@@ -27,7 +28,8 @@ public class Signature {
 																																									MaxSpeed.class,
 																																									Sprite.class,
 																																									Transform.class,
-																																									Velocity.class);
+																																									Velocity.class,
+																																									InteractiveEntityController.class);
 
 	static {
 		index();
@@ -70,7 +72,7 @@ public class Signature {
 	 * Constructs a new signature without any component types.
 	 */
 	public Signature() {
-		this((Class<? extends Component>[]) null);
+		this((Iterable<Class<? extends Component>>) null);
 	}
 	/**
 	 * Constructs a new signature from a set of component types.

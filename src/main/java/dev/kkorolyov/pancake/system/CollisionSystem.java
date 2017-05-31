@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.EllipseBounds;
 import dev.kkorolyov.pancake.component.collision.RectangleBounds;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
@@ -27,7 +26,6 @@ public class CollisionSystem extends GameSystem {
 	public CollisionSystem() {
 		super(new Signature(Transform.class,
 												RectangleBounds.class,
-												EllipseBounds.class,
 												Force.class,
 												Velocity.class));
 	}

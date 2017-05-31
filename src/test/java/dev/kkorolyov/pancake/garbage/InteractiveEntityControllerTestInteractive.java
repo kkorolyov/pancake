@@ -3,8 +3,8 @@ package dev.kkorolyov.pancake.garbage;
 import java.util.*;
 
 import dev.kkorolyov.pancake.component.Sprite;
-import dev.kkorolyov.pancake.control.EntityController;
-import dev.kkorolyov.pancake.control.InteractiveEntityController;
+import dev.kkorolyov.pancake.component.control.EntityController;
+import dev.kkorolyov.pancake.component.control.InteractiveEntityController;
 import dev.kkorolyov.pancake.core.Entity;
 import dev.kkorolyov.pancake.component.collision.RectangleBounds;
 import dev.kkorolyov.pancake.input.KeyAction;

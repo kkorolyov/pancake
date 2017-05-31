@@ -2,8 +2,9 @@ package dev.kkorolyov.pancake.input;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
-import dev.kkorolyov.pancake.control.Action;
+import dev.kkorolyov.pancake.core.Entity;
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.format.Formatters;
@@ -18,7 +19,7 @@ public class KeyAction {
 	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
 
 	private final Set<Enum<?>> keys = new LinkedHashSet<>();
-	private final Action onPress, onHold, onRelease;
+	private final Consumer<? super Entity> onPress, onHold, onRelease;
 	private float holdTime = 0;
 	private KeyActionState state = KeyActionState.OPEN;
 
@@ -30,15 +31,15 @@ public class KeyAction {
 	 * @param inputs keys and buttons tied to actions
 	 * @throws IllegalArgumentException if any element of {@code inputs} is not a {@link KeyCode} or {@link MouseButton}
 	 */
-	public KeyAction(Action onPress, Action onHold, Action onRelease, Enum<?>... inputs) {
+	public KeyAction(Consumer<? super Entity> onPress, Consumer<? super Entity> onHold, Consumer<? super Entity> onRelease, Enum<?>... inputs) {
 		this.onPress = onPress;
 		this.onHold = onHold;
 		this.onRelease = onRelease;
 
 		for (Enum<?> input : inputs) {
-			if (!(input instanceof KeyCode || input instanceof MouseButton))
+			if (!(input instanceof KeyCode || input instanceof MouseButton)) {
 				throw new IllegalArgumentException("Not a valid key: " + input);
-
+			}
 			keys.add(input);
 		}
 	}
@@ -47,16 +48,16 @@ public class KeyAction {
 	 * Polls this {@code KeyAction} with all current active inputs.
 	 * @param inputs current active inputs
 	 * @param dt elapsed time in seconds since last poll
-	 * @return appropriate {@code Action}, or {@code null} if no appropriate action in the current state
+	 * @return appropriate action, or {@code null} if no appropriate action in the current state
 	 */
-	public Action activate(Set<Enum<?>> inputs, float dt) {
+	public Consumer<? super Entity> activate(Set<Enum<?>> inputs, float dt) {
 		return state.activate(this, inputs.containsAll(keys), dt);
 	}
 
 	private static abstract class KeyActionState {
 		static final KeyActionState OPEN = new KeyActionState() {
 			@Override
-			Action activate(KeyAction client, boolean allPressed, float dt) {
+			Consumer<? super Entity> activate(KeyAction client, boolean allPressed, float dt) {
 				if (allPressed) {
 					log.debug("Keys pressed: {}", client.keys);
 
@@ -69,7 +70,7 @@ public class KeyAction {
 		};
 		static final KeyActionState PRESSED = new KeyActionState() {
 			@Override
-			Action activate(KeyAction client, boolean allPressed, float dt) {
+			Consumer<? super Entity> activate(KeyAction client, boolean allPressed, float dt) {
 				if (allPressed) {
 					client.holdTime += dt;
 
@@ -90,7 +91,7 @@ public class KeyAction {
 		};
 		static final KeyActionState WAITING = new KeyActionState() {
 			@Override
-			Action activate(KeyAction client, boolean allPressed, float dt) {
+			Consumer<? super Entity> activate(KeyAction client, boolean allPressed, float dt) {
 				if (!allPressed) {
 					log.debug("Keys released: {}", client.keys);
 
@@ -101,6 +102,6 @@ public class KeyAction {
 			}
 		};
 
-		abstract Action activate(KeyAction client, boolean allPressed, float dt);
+		abstract Consumer<? super Entity> activate(KeyAction client, boolean allPressed, float dt);
 	}
 }

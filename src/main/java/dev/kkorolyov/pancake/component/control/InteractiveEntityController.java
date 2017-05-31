@@ -1,6 +1,10 @@
-package dev.kkorolyov.pancake.control;
+package dev.kkorolyov.pancake.component.control;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
 import dev.kkorolyov.pancake.core.Entity;
 import dev.kkorolyov.pancake.input.KeyAction;
@@ -40,9 +44,8 @@ public class InteractiveEntityController implements EntityController {
 	@Override
 	public void update(Entity entity, float dt) {
 		for (KeyAction keyAction : keyActions) {
-			Action action = keyAction.activate(pressedKeys, dt);
-			if (action != null)
-				action.execute(entity);
+			Consumer<? super Entity> action = keyAction.activate(pressedKeys, dt);
+			if (action != null) action.accept(entity);
 		}
 	}
 }
