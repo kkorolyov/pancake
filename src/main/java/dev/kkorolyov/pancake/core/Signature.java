@@ -80,7 +80,7 @@ public class Signature {
 	 */
 	@SafeVarargs
 	public Signature(Class<? extends Component>... types) {
-		Arrays.asList(types);
+		this(Arrays.asList(types));
 	}
 	/**
 	 * Constructs a new signature from a set of component types.
