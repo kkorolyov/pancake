@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.math.Vector;
-import dev.kkorolyov.pancake.system.MovementSystem;
+import dev.kkorolyov.pancake.system.AccelerationSystem;
 import dev.kkorolyov.pancake.system.RenderSystem;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -72,7 +72,7 @@ public class EngineTestInteractive extends Application {
 	}
 	
 	private Engine buildEngine() {
-		Engine engine = new Engine(new MovementSystem(), new RenderSystem(canvas));
+		Engine engine = new Engine(new AccelerationSystem(), new RenderSystem(canvas));
 
 		Velocity velocity = new Velocity();
 		MaxSpeed maxSpeed = new MaxSpeed(10);

@@ -1,28 +1,28 @@
 package dev.kkorolyov.pancake.system;
 
-import dev.kkorolyov.pancake.component.Transform;
+import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.Entity;
 import dev.kkorolyov.pancake.core.GameSystem;
 import dev.kkorolyov.pancake.core.Signature;
 
 /**
- * Applies velocity to entity positions.
+ * Caps entity max speeds.
  */
-public class MovementSystem extends GameSystem {
+public class SpeedCapSystem extends GameSystem {
 	/**
-	 * Constructs a new movement system.
+	 * Constructs a new speed cap system.
 	 */
-	public MovementSystem() {
-		super(new Signature(Transform.class,
+	public SpeedCapSystem() {
+		super(new Signature(MaxSpeed.class,
 												Velocity.class));
 	}
 
 	@Override
 	public void update(Entity entity, float dt) {
-		Transform transform = entity.get(Transform.class);
+		MaxSpeed maxSpeed = entity.get(MaxSpeed.class);
 		Velocity velocity = entity.get(Velocity.class);
 
-		velocity.move(transform.getPosition(), dt);
+		maxSpeed.cap(velocity.getVelocity());
 	}
 }

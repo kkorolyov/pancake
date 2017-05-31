@@ -13,10 +13,7 @@ import dev.kkorolyov.pancake.core.GameEngine;
 import dev.kkorolyov.pancake.core.GameLoop;
 import dev.kkorolyov.pancake.input.KeyAction;
 import dev.kkorolyov.pancake.math.Vector;
-import dev.kkorolyov.pancake.system.ActionSystem;
-import dev.kkorolyov.pancake.system.CollisionSystem;
-import dev.kkorolyov.pancake.system.MovementSystem;
-import dev.kkorolyov.pancake.system.RenderSystem;
+import dev.kkorolyov.pancake.system.*;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
@@ -39,6 +36,9 @@ public class Interactive extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		GameEngine engine = new GameEngine(
+				new DampingSystem(),
+				new AccelerationSystem(),
+				new SpeedCapSystem(),
 				new MovementSystem(),
 				new CollisionSystem(),
 				new ActionSystem(),

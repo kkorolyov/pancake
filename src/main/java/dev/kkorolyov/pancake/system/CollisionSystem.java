@@ -32,28 +32,17 @@ public class CollisionSystem extends GameSystem {
 	
 	@Override
 	public void update(Entity entity, float dt) {
-		entities.add(entity);
-	}
+		for (Entity other : entities) {
+			Transform t1 = entity.get(Transform.class);
+			Transform t2 = other.get(Transform.class);
+			RectangleBounds b1 = entity.get(RectangleBounds.class);
+			RectangleBounds b2 = other.get(RectangleBounds.class);
 
-	@Override
-	public void after(float dt) {
-		for (int i = 0; i < entities.size(); i++) {
-			for (int j = 1; j < entities.size(); j++) {
-				Entity e1 = entities.get(i);
-				Entity e2 = entities.get(j);
-
-				Transform t1 = e1.get(Transform.class);
-				Transform t2 = e2.get(Transform.class);
-				RectangleBounds b1 = e1.get(RectangleBounds.class);
-				RectangleBounds b2 = e2.get(RectangleBounds.class);
-
-				if (b1.intersects(b2, t1.getPosition(), t2.getPosition())) {
-					collide(e1, e2);
-				}
+			if (b1.intersects(b2, t1.getPosition(), t2.getPosition())) {
+				collide(entity, other);
 			}
 		}
-
-		entities.clear();
+		entities.add(entity);
 	}
 	private void collide(Entity e1, Entity e2) {
 		Vector v1 = e1.get(Velocity.class).getVelocity();
@@ -71,5 +60,10 @@ public class CollisionSystem extends GameSystem {
 		v1.scale(m1 - m2);
 		v1.add(v2, m2);
 		v1.scale(1 / (m1 + m2));
+	}
+
+	@Override
+	public void after(float dt) {
+		entities.clear();
 	}
 }
