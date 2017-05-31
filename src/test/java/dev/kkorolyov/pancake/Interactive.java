@@ -51,8 +51,8 @@ public class Interactive extends Application {
 										new Velocity(),
 										new Force(1),
 										new Damping(.5f),
-										new RectangleBounds(16, 16),
-										new Sprite(new Image("16x16.png")),
+										new RectangleBounds(32, 32),
+										new Sprite(new Image("32x32.png")),
 										buildController());
 
 		primaryStage.setTitle("Pancake: Interactive Test");
