@@ -12,7 +12,7 @@ import dev.kkorolyov.pancake.input.KeyAction;
 import javafx.scene.Scene;
 
 /**
- * Applies actions using player input.
+ * Applies actions using current player input.
  */
 public class InputSystem extends GameSystem {
 	private final Set<Enum<?>> pressedKeys = new HashSet<>();

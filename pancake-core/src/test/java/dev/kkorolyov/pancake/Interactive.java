@@ -1,28 +1,30 @@
 package dev.kkorolyov.pancake;
 
+import java.nio.file.Paths;
+
+import dev.kkorolyov.pancake.component.Input;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.component.collision.EllipseBounds;
 import dev.kkorolyov.pancake.component.collision.RectangleBounds;
-import dev.kkorolyov.pancake.component.Input;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
-import dev.kkorolyov.pancake.input.KeyAction;
+import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.system.*;
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.append.Appenders;
 import dev.kkorolyov.simplelogs.format.Formatters;
+import dev.kkorolyov.simpleprops.Properties;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 public class Interactive extends Application {
@@ -30,6 +32,7 @@ public class Interactive extends Application {
 
 	private Canvas canvas = new Canvas(560, 560);
 	private Scene scene = new Scene(new Group(canvas));
+	private ActionPool actions = buildActionPool();
 
 	public static void main(String[] args) {
 		Logger.getLogger("dev.kkorolyov.pancake", Level.DEBUG, Formatters.simple(), Appenders.err(Level.DEBUG));
@@ -66,11 +69,7 @@ public class Interactive extends Application {
 										new Damping(.5f),
 										new RectangleBounds(32, 32),
 										new Sprite(new Image("32x32.png")),
-										new Input(new KeyAction(e -> e.get(Force.class).addForce(0, -MOVE_FORCE), null, e -> e.get(Force.class).addForce(0, MOVE_FORCE), KeyCode.W),
-															new KeyAction(e -> e.get(Force.class).addForce(-MOVE_FORCE, 0), null, e -> e.get(Force.class).addForce(MOVE_FORCE, 0), KeyCode.A),
-															new KeyAction(e -> e.get(Force.class).addForce(0, MOVE_FORCE), null, e -> e.get(Force.class).addForce(0, -MOVE_FORCE), KeyCode.S),
-															new KeyAction(e -> e.get(Force.class).addForce(MOVE_FORCE, 0), null, e -> e.get(Force.class).addForce(-MOVE_FORCE, 0), KeyCode.D),
-															new KeyAction(e -> e.get(Transform.class).getPosition().set(0, 0), null, null, KeyCode.ESCAPE)));
+										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys.ini").toURI())))));
 
 		primaryStage.setTitle("Pancake: Interactive Test");
 		primaryStage.setScene(scene);
@@ -82,5 +81,17 @@ public class Interactive extends Application {
 		primaryStage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			canvas.setHeight(canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue());
 		});
+	}
+
+	private ActionPool buildActionPool() {
+		ActionPool actions = new ActionPool();
+
+		actions.put("FORCE_UP", e -> e.get(Force.class).addForce(0, -MOVE_FORCE));
+		actions.put("FORCE_DOWN", e -> e.get(Force.class).addForce(0, MOVE_FORCE));
+		actions.put("FORCE_LEFT", e -> e.get(Force.class).addForce(-MOVE_FORCE, 0));
+		actions.put("FORCE_RIGHT", e -> e.get(Force.class).addForce(MOVE_FORCE, 0));
+		actions.put("RESET", e -> e.get(Transform.class).getPosition().set(0, 0));
+
+		return actions;
 	}
 }

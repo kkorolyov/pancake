@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.input;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -52,6 +53,25 @@ public class KeyAction {
 	 */
 	public Consumer<? super Entity> activate(Set<Enum<?>> inputs, float dt) {
 		return state.activate(this, inputs.containsAll(keys), dt);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		KeyAction keyAction = (KeyAction) o;
+
+		return Float.compare(keyAction.holdTime, holdTime) == 0 &&
+					 Objects.equals(keys, keyAction.keys) &&
+					 Objects.equals(onPress, keyAction.onPress) &&
+					 Objects.equals(onHold, keyAction.onHold) &&
+					 Objects.equals(onRelease, keyAction.onRelease) &&
+					 Objects.equals(state, keyAction.state);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(keys, onPress, onHold, onRelease, holdTime, state);
 	}
 
 	private static abstract class KeyActionState {
