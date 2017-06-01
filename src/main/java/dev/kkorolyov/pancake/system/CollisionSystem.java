@@ -58,7 +58,7 @@ public class CollisionSystem extends GameSystem {
 		v1.set(v2);
 
 		v1.scale(m1 - m2);
-		v1.add(v2, m2);
+		v1.add(v2, 2 * m2);
 		v1.scale(1 / (m1 + m2));
 	}
 
