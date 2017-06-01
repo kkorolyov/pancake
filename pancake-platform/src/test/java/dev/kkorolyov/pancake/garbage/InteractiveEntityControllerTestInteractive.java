@@ -5,7 +5,7 @@ import java.util.*;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.control.EntityController;
 import dev.kkorolyov.pancake.component.control.InteractiveEntityController;
-import dev.kkorolyov.pancake.core.Entity;
+import dev.kkorolyov.pancake.Entity;
 import dev.kkorolyov.pancake.component.collision.RectangleBounds;
 import dev.kkorolyov.pancake.input.KeyAction;
 import dev.kkorolyov.pancake.system.RenderSystem;

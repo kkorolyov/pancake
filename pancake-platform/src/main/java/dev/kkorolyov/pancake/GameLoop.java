@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core;
+package dev.kkorolyov.pancake;
 
 import javafx.animation.AnimationTimer;
 
@@ -10,7 +10,6 @@ public class GameLoop extends AnimationTimer {
 
 	private final GameEngine engine;
 	private long last;
-	private long total;
 
 	/**
 	 * Constructs a new game loop.
@@ -23,12 +22,11 @@ public class GameLoop extends AnimationTimer {
 	@Override
 	public void handle(long now) {
 		if (last == 0) last = now;
+
 		long elapsed = now - last;
 		float dt = elapsed * ELAPSED_TO_S;
 
 		engine.update(dt);
-		
-		total += elapsed;
 		last = now;
 	}
 }

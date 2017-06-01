@@ -2,9 +2,9 @@ package dev.kkorolyov.pancake.system;
 
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
-import dev.kkorolyov.pancake.core.Entity;
-import dev.kkorolyov.pancake.core.GameSystem;
-import dev.kkorolyov.pancake.core.Signature;
+import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.GameSystem;
+import dev.kkorolyov.pancake.Signature;
 
 /**
  * Caps entity max speeds.

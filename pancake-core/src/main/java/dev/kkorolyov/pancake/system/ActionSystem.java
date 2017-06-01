@@ -1,9 +1,9 @@
 package dev.kkorolyov.pancake.system;
 
 import dev.kkorolyov.pancake.component.control.InteractiveEntityController;
-import dev.kkorolyov.pancake.core.Entity;
-import dev.kkorolyov.pancake.core.GameSystem;
-import dev.kkorolyov.pancake.core.Signature;
+import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.GameSystem;
+import dev.kkorolyov.pancake.Signature;
 
 /**
  * Applies actions to entities.

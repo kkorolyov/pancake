@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core;
+package dev.kkorolyov.pancake;
 
 /**
  * A container of entity data.

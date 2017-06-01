@@ -7,9 +7,9 @@ import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.component.collision.RectangleBounds;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
-import dev.kkorolyov.pancake.core.Entity;
-import dev.kkorolyov.pancake.core.GameSystem;
-import dev.kkorolyov.pancake.core.Signature;
+import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.GameSystem;
+import dev.kkorolyov.pancake.Signature;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**

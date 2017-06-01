@@ -1,5 +1,7 @@
-package dev.kkorolyov.pancake.core
+package dev.kkorolyov.pancake
 
+import dev.kkorolyov.pancake.Component
+import dev.kkorolyov.pancake.Signature
 import spock.lang.Shared
 import spock.lang.Specification
 

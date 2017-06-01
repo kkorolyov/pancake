@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core;
+package dev.kkorolyov.pancake;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
