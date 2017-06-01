@@ -24,6 +24,10 @@ class SignatureSpec extends Specification {
 			Velocity
 	]
 
+	def setupSpec() {
+		Signature.index(componentTypes)
+	}
+
 	Signature signature = new Signature()
 
 	def "empty signature equals zero"() {

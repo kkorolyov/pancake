@@ -2,15 +2,18 @@ package dev.kkorolyov.pancake;
 
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
+import dev.kkorolyov.pancake.component.collision.EllipseBounds;
 import dev.kkorolyov.pancake.component.collision.RectangleBounds;
 import dev.kkorolyov.pancake.component.control.EntityController;
 import dev.kkorolyov.pancake.component.control.InteractiveEntityController;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
+import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.EntityPool;
 import dev.kkorolyov.pancake.core.GameEngine;
 import dev.kkorolyov.pancake.core.GameLoop;
+import dev.kkorolyov.pancake.core.Signature;
 import dev.kkorolyov.pancake.input.KeyAction;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.system.*;
@@ -35,6 +38,15 @@ public class Interactive extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Signature.index(RectangleBounds.class,
+										EllipseBounds.class,
+										Damping.class,
+										Force.class,
+										MaxSpeed.class,
+										Sprite.class,
+										Transform.class,
+										Velocity.class,
+										InteractiveEntityController.class);
 		GameEngine engine = new GameEngine(
 				new DampingSystem(),
 				new AccelerationSystem(),

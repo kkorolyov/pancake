@@ -3,41 +3,17 @@ package dev.kkorolyov.pancake.core;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
-
-import dev.kkorolyov.pancake.component.Sprite;
-import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.EllipseBounds;
-import dev.kkorolyov.pancake.component.collision.RectangleBounds;
-import dev.kkorolyov.pancake.component.movement.Damping;
-import dev.kkorolyov.pancake.component.movement.Force;
-import dev.kkorolyov.pancake.component.movement.MaxSpeed;
-import dev.kkorolyov.pancake.component.movement.Velocity;
-import dev.kkorolyov.pancake.component.control.InteractiveEntityController;
 
 /**
  * A distinct combination of registered component types.
  */
 public class Signature {
 	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
-	private static final List<Class<? extends Component>> coreTypes = Arrays.asList(RectangleBounds.class,
-																																									EllipseBounds.class,
-																																									Damping.class,
-																																									Force.class,
-																																									MaxSpeed.class,
-																																									Sprite.class,
-																																									Transform.class,
-																																									Velocity.class,
-																																									InteractiveEntityController.class);
-
-	static {
-		index();
-	}
 
 	/**
-	 * Sets the collection of additional component types used in masking.
-	 * @param types indexed types, if {@code null} or empty, only the core component types are used
+	 * Sets the collection of component types used in masking.
+	 * @param types indexed types
 	 * @throws IllegalArgumentException if a non-concrete type is indexed
 	 */
 	@SafeVarargs
@@ -53,14 +29,11 @@ public class Signature {
 		indexMap.clear();
 
 		long counter = 0;
-		for (Class<? extends Component> type : coreTypes) {
-			if (type.isInterface() || Modifier.isAbstract(type.getModifiers()))	{
-				throw new IllegalArgumentException(type + " is not a concrete type");
-			}
-			indexMap.put(type, counter++);
-		}
 		if (types != null) {
 			for (Class<? extends Component> type : types) {
+				if (type.isInterface() || Modifier.isAbstract(type.getModifiers()))	{
+					throw new IllegalArgumentException(type + " is not a concrete type");
+				}
 				indexMap.put(type, counter++);
 			}
 		}
