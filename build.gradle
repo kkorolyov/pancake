@@ -13,64 +13,83 @@ plugins {
 	id 'maven-publish'
 	id 'com.jfrog.bintray' version '1.7.3'
 }
-apply plugin: 'dev.kkorolyov.auto-snapshot'
 
-group = 'dev.kkorolyov'
-version = '1.0'
 description = """Extensible Java game engine with an entity-component-system architecture"""
 
-repositories {
-	jcenter()
-	maven {
-		url 'https://dl.bintray.com/kkorolyov/java'
+subprojects {
+	apply plugin: 'groovy'
+	apply plugin: 'maven-publish'
+	apply plugin: 'com.jfrog.bintray'
+	apply plugin: 'dev.kkorolyov.auto-snapshot'
+
+	group = 'dev.kkorolyov'
+	version = '1.0'
+
+	repositories {
+		jcenter()
+		maven {
+			url 'https://dl.bintray.com/kkorolyov/java'
+		}
 	}
-}
 
-dependencies {
-	compile 'dev.kkorolyov:simple-logs:3.+',
-			'dev.kkorolyov:simple-props:v4.+',
-			'dev.kkorolyov:sqlob:3.+'
-	testCompile 'org.spockframework:spock-core:1.1-groovy-2.4',
-			'net.bytebuddy:byte-buddy:1.7.0',
-			'org.objenesis:objenesis:2.5.1'
-}
+	dependencies {
+		compile 'dev.kkorolyov:simple-logs:3.+',
+				'dev.kkorolyov:simple-props:v4.+',
+				'dev.kkorolyov:sqlob:3.+'
+		testCompile 'org.spockframework:spock-core:1.1-groovy-2.4',
+				'net.bytebuddy:byte-buddy:1.7.0',
+				'org.objenesis:objenesis:2.5.1'
+	}
 
-test {
-	filter.includeTestsMatching '*Spec'
-}
+	test {
+		filter.includeTestsMatching '*Spec'
+	}
 
-javadoc {
-	destinationDir = file('docs')
-}
+	javadoc {
+		destinationDir = file('docs')
+	}
 
-task sourcesJar(type: Jar) {
-	classifier = 'sources'
-	from sourceSets.main.allJava
-}
-task javadocJar(type: Jar) {
-	classifier = 'javadoc'
-	from javadoc.destinationDir
-}
-publishing {
-	publications {
-		Pub(MavenPublication) {
-			from components.java
-			artifact sourcesJar
-			artifact javadocJar
+	task sourcesJar(type: Jar) {
+		classifier = 'sources'
+		from sourceSets.main.allJava
+	}
+	task javadocJar(type: Jar) {
+		classifier = 'javadoc'
+		from javadoc.destinationDir
+	}
+	publishing {
+		publications {
+			Pub(MavenPublication) {
+				from components.java
+				artifact sourcesJar
+				artifact javadocJar
+			}
+		}
+	}
+	bintray {
+		user = System.getenv('BINTRAY_USER')
+		key = System.getenv('BINTRAY_KEY')
+		publications = ['Pub']
+		pkg {
+			repo = 'java'
+			name = project.name
+			licenses = ['BSD 3-Clause']
+			vcsUrl = 'https://github.com/kkorolyov/Pancake.git'
+			version {
+				name = project.version
+			}
 		}
 	}
 }
-bintray {
-	user = System.getenv('BINTRAY_USER')
-	key = System.getenv('BINTRAY_KEY')
-	publications = ['Pub']
-	pkg {
-		repo = 'java'
-		name = project.name
-		licenses = ['BSD 3-Clause']
-		vcsUrl = 'https://github.com/kkorolyov/Pancake.git'
-		version {
-			name = project.version
-		}
+
+project(':pancake-platform') {
+	description = """Main Pancake engine platform"""
+}
+
+project(':pancake-core') {
+	description = """Core Pancake systems and components"""
+
+	dependencies {
+		compile project(':pancake-platform')
 	}
 }

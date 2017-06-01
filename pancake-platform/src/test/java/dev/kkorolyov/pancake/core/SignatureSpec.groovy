@@ -1,12 +1,5 @@
 package dev.kkorolyov.pancake.core
 
-import dev.kkorolyov.pancake.component.Sprite
-import dev.kkorolyov.pancake.component.Transform
-import dev.kkorolyov.pancake.component.collision.RectangleBounds
-import dev.kkorolyov.pancake.component.movement.Damping
-import dev.kkorolyov.pancake.component.movement.Force
-import dev.kkorolyov.pancake.component.movement.MaxSpeed
-import dev.kkorolyov.pancake.component.movement.Velocity
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -14,15 +7,7 @@ import java.lang.reflect.Field
 
 class SignatureSpec extends Specification {
 	@Shared
-	List<Class<? extends Component>> componentTypes = [
-			RectangleBounds,
-			Damping,
-			Force,
-			MaxSpeed,
-			Sprite,
-			Transform,
-			Velocity
-	]
+	List<Class<? extends Component>> componentTypes = [new Component() {}, new Component() {}, new Component() {}].collect { it.class }
 
 	def setupSpec() {
 		Signature.index(componentTypes)

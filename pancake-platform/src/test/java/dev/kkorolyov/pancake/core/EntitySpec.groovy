@@ -1,26 +1,11 @@
 package dev.kkorolyov.pancake.core
 
-import dev.kkorolyov.pancake.component.Sprite
-import dev.kkorolyov.pancake.component.Transform
-import dev.kkorolyov.pancake.component.collision.Bounds
-import dev.kkorolyov.pancake.component.movement.Damping
-import dev.kkorolyov.pancake.component.movement.Force
-import dev.kkorolyov.pancake.component.movement.MaxSpeed
-import dev.kkorolyov.pancake.component.movement.Velocity
 import spock.lang.Shared
 import spock.lang.Specification
 
 class EntitySpec extends Specification {
 	@Shared int id = 0
-	@Shared List<Component> components = [
-			Mock(Bounds),
-			Mock(Damping),
-			Mock(Force),
-			Mock(MaxSpeed),
-			Mock(Sprite),
-			Mock(Transform),
-			Mock(Velocity)
-	]
+	@Shared List<Component> components = [new Component() {}, new Component() {}, new Component() {}]
 
 	def setupSpec() {
 		Signature.index(mapToTypes(components))
