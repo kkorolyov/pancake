@@ -46,6 +46,6 @@ class ActionPoolSpec extends Specification {
 		props.put(keys, press, hold, release)
 
 		expect:
-		actions.parseConfig(props)[0] == new KeyAction(pressAction, holdAction, releaseAction, KeyCode.W, KeyCode.A, KeyCode.S)
+		actions.parseConfig(props)[0] == new KeyAction(new Action(pressAction, holdAction, releaseAction), KeyCode.W, KeyCode.A, KeyCode.S)
 	}
 }

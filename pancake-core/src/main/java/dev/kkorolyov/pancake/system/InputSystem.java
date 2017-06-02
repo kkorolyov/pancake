@@ -33,7 +33,7 @@ public class InputSystem extends GameSystem {
 	@Override
 	public void update(Entity entity, float dt) {
 		for (KeyAction keyAction : entity.get(Input.class).getActions()) {
-			Consumer<? super Entity> action = keyAction.activate(pressedKeys, dt);
+			Consumer<? super Entity> action = keyAction.signal(pressedKeys, dt);
 			if (action != null) action.accept(entity);
 		}
 	}

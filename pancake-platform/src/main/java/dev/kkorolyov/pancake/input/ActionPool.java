@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.input;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import dev.kkorolyov.pancake.Entity;
 import dev.kkorolyov.simplelogs.Level;
@@ -55,12 +56,12 @@ public class ActionPool {
 			String[] keyNames = split(entry.getKey());
 			String[] actionNames = split(entry.getValue());
 
-			keyActions.add(new KeyAction(parseAction(actionNames, PRESS),
-																	 parseAction(actionNames, HOLD),
-																	 parseAction(actionNames, RELEASE),
+			keyActions.add(new KeyAction(new Action(parseAction(actionNames, PRESS),
+																							parseAction(actionNames, HOLD),
+																							parseAction(actionNames, RELEASE)),
 																	 parseKeys(keyNames)));
 
-			log.info("Parsed key config: {}={}", Arrays.toString(keyNames), Arrays.toString(actionNames));
+			log.info("Parsed key config: {}={}", (Supplier<?>) () -> Arrays.toString(keyNames), (Supplier<?>) () -> Arrays.toString(actionNames));
 		}
 		return keyActions;
 	}
@@ -77,7 +78,7 @@ public class ActionPool {
 		for (int i = 0; i < keys.length; i++) {
 			keys[i] = parseKey(keyNames[i]);
 		}
-		log.debug("Parsed keys: {} => {}", Arrays.toString(keyNames), Arrays.toString(keys));
+		log.debug("Parsed keys: {} => {}", (Supplier<?>) () -> Arrays.toString(keyNames), (Supplier<?>) () -> Arrays.toString(keys));
 		return keys;
 	}
 	private Enum<?> parseKey(String keyName) {
