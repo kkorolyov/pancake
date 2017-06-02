@@ -14,6 +14,9 @@ import dev.kkorolyov.simplelogs.format.Formatters;
  * The current state depends on the duration for which this action is activated or deactivated.
  */
 public class Action {
+	/** The action which contains no events */
+	public static final Action NOOP = new Action((Consumer<Entity>) null, null, null);
+
 	private static final float HOLD_THRESHOLD = .5f;
 	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
 
@@ -30,6 +33,13 @@ public class Action {
 	 */
 	public Action(Action start, Action hold, Action stop) {
 		this(start.start, hold.start, stop.start);
+	}
+	/**
+	 * Constructs a new action which contains only a {@code start} event.
+	 * @param start event returned on initial activation
+	 */
+	public Action(Consumer<Entity> start) {
+		this(start, null, null);
 	}
 	/**
 	 * Constructs a new action.

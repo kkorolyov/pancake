@@ -1,9 +1,11 @@
 package dev.kkorolyov.pancake.input;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import dev.kkorolyov.pancake.Entity;
 import dev.kkorolyov.simplelogs.Level;
@@ -17,36 +19,67 @@ import javafx.scene.input.MouseButton;
  * Maintains a collection of known actions applicable on entities.
  */
 public class ActionPool {
-	private static final int PRESS = 0;
-	private static final int HOLD = 1;
-	private static final int RELEASE = 2;
 	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
 
-	private final Map<String, Consumer<Entity>> actions = new HashMap<>();
+	private final Map<String, Action> actions = new HashMap<>();
 
 	/**
 	 * Retrieves an action by name.
 	 * @param name action identifier, case-insensitive
-	 * @return action mapped to {@code name}, or {@code null} if no such action
+	 * @return action mapped to {@code name}, or the {@code NOOP} action if no such action
 	 */
-	public Consumer<Entity> get(String name) {
-		return actions.get(name.toUpperCase());
+	public Action get(String name) {
+		if (name == null) return Action.NOOP;
+
+		Action action = actions.get(name.toUpperCase());
+		return action == null ? Action.NOOP : action;
+	}
+
+	/**
+	 * Parses a configuration file mapping new actions to combinations of known actions.
+	 * A single configuration entry takes the form {@code ACTION=START_ACTION, HOLD_ACTION, STOP_ACTION}.
+	 * Unknown or empty action names resolve to the {@code NOOP} action.
+	 * @param actionConfig action configuration file
+	 */
+	public void put(Properties actionConfig) {
+		for (Entry<String, String> entry : actionConfig) {
+			put(entry.getKey(), parseAction(split(entry.getValue())));
+			log.info("Parsed action config entry: {}", entry);
+		}
+	}
+	/**
+	 * Adds a simple action which contains only a start event to the pool.
+	 * @param name identifier
+	 * @param event start event logic
+	 */
+	public void put(String name, Consumer<Entity> event) {
+		put(name, new Action(event));
+	}
+	/**
+	 * Adds an action defined by existing known actions to the pool.
+	 * @param name identifier
+	 * @param start start action identifier
+	 * @param hold hold action identifier
+	 * @param stop stop action identifier
+	 */
+	public void put(String name, String start, String hold, String stop) {
+		put(name, new Action(get(start), get(hold), get(stop)));
 	}
 	/**
 	 * Adds an action to the pool.
 	 * If an action of the same name already exists in the pool, it is replaced with the new action.
 	 * @param name identifier
-	 * @param action action logic
+	 * @param action action
 	 */
-	public void put(String name, Consumer<Entity> action) {
+	public void put(String name, Action action) {
 		actions.put(name.toUpperCase(), action);
 	}
 
 	/**
 	 * Parses a configuration file defining keys bound to actions maintained by this action pool.
-	 * A single configuration entry takes the form {@code [KEY1, KEY2, ...]=PRESS_ACTION, HOLD_ACTION, RELEASE_ACTION}.
-	 * Unknown, empty, or omitted action names resolve to {@code null} actions.
-	 * @param keyConfig parsed key configuration file
+	 * A single configuration entry takes the form {@code [KEY1, KEY2, ...]=ACTION}, where {@code ACTION} is either a single action or a set of 3 actions independently defining start, hold, and stop events.
+	 * Unknown or empty action names resolve to the {@code NOOP} action.
+	 * @param keyConfig key configuration file
 	 * @return collection of {@link KeyAction} objects defined in {@code config}
 	 */
 	public Iterable<KeyAction> parseConfig(Properties keyConfig) {
@@ -56,29 +89,19 @@ public class ActionPool {
 			String[] keyNames = split(entry.getKey());
 			String[] actionNames = split(entry.getValue());
 
-			keyActions.add(new KeyAction(new Action(parseAction(actionNames, PRESS),
-																							parseAction(actionNames, HOLD),
-																							parseAction(actionNames, RELEASE)),
+			keyActions.add(new KeyAction(parseAction(actionNames),
 																	 parseKeys(keyNames)));
 
-			log.info("Parsed key config: {}={}", (Supplier<?>) () -> Arrays.toString(keyNames), (Supplier<?>) () -> Arrays.toString(actionNames));
+			log.info("Parsed key config entry: {}", entry);
 		}
 		return keyActions;
 	}
-	private String[] split(String array) {
-		String trim = "^\\[|]$";
-		String delimiter = ",\\s*";
-
-		return array.replaceAll(trim, "").split(delimiter);
-	}
-
 	private Enum<?>[] parseKeys(String[] keyNames) {
 		Enum<?>[] keys = new Enum<?>[keyNames.length];
 
 		for (int i = 0; i < keys.length; i++) {
 			keys[i] = parseKey(keyNames[i]);
 		}
-		log.debug("Parsed keys: {} => {}", (Supplier<?>) () -> Arrays.toString(keyNames), (Supplier<?>) () -> Arrays.toString(keys));
 		return keys;
 	}
 	private Enum<?> parseKey(String keyName) {
@@ -93,14 +116,21 @@ public class ActionPool {
 		}
 	}
 
-	private Consumer<Entity> parseAction(String[] actionNames, int index) {
-		if (actionNames.length > index) {
-			Consumer<Entity> action = get(actionNames[index]);
-
-			log.debug("Parsed action: {} => {}", actionNames[index], action);
-			return action;
-		} else {
-			return null;
+	private Action parseAction(String[] actionNames) {
+		switch (actionNames.length) {
+			case 1:
+				return get(actionNames[0]);
+			case 2:
+				return new Action(get(actionNames[0]), get(actionNames[1]), Action.NOOP);
+			default:
+				return new Action(get(actionNames[0]), get(actionNames[1]), get(actionNames[2]));
 		}
+	}
+
+	private String[] split(String array) {
+		String trim = "^\\[|]$";
+		String delimiter = ",\\s*";
+
+		return array.replaceAll(trim, "").split(delimiter);
 	}
 }

@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 import dev.kkorolyov.pancake.component.Input;
@@ -69,7 +71,7 @@ public class Interactive extends Application {
 										new Damping(.5f),
 										new RectangleBounds(32, 32),
 										new Sprite(new Image("32x32.png")),
-										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys.ini").toURI())))));
+										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 
 		primaryStage.setTitle("Pancake: Interactive Test");
 		primaryStage.setScene(scene);
@@ -92,6 +94,11 @@ public class Interactive extends Application {
 		actions.put("FORCE_RIGHT", e -> e.get(Force.class).addForce(MOVE_FORCE, 0));
 		actions.put("RESET", e -> e.get(Transform.class).getPosition().set(0, 0));
 
+		try {
+			actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("actions").toURI())));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
 		return actions;
 	}
 }
