@@ -66,12 +66,23 @@ public class Interactive extends Application {
 		new GameLoop(engine).start();
 
 		EntityPool entities = engine.getEntities();
+		Sprite sprite = new Sprite(new Image("32x32.png"));
+		RectangleBounds bounds = new RectangleBounds(sprite);
+
+		for (int i = 0; i < 5; i++) {
+			entities.create(new Transform(new Vector(50 + i * 40, 50 + i * 40)),
+											new Velocity(),
+											new Force(1),
+											new Damping(.5f - .1f * i),
+											bounds,
+											sprite);
+		}
 		entities.create(new Transform(new Vector(10, 10)),
 										new Velocity(),
 										new Force(1),
 										new Damping(.5f),
-										new RectangleBounds(32, 32),
-										new Sprite(new Image("32x32.png")),
+										bounds,
+										sprite,
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 
 		primaryStage.setTitle("Pancake: Interactive Test");

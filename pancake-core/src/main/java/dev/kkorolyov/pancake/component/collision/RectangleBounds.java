@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.component.collision;
 
+import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**
@@ -8,6 +9,13 @@ import dev.kkorolyov.pancake.math.Vector;
 public class RectangleBounds implements Bounds {
 	private final Vector size;
 
+	/**
+	 * Constructs a new rectangle matching the dimensions of a sprite.
+	 * @param sprite sprite supplying dimensions
+	 */
+	public RectangleBounds(Sprite sprite) {
+		this((float) sprite.getImage().getWidth(), (float) sprite.getImage().getHeight());
+	}
 	/**
 	 * Constructs a new rectangle from a width and height.
 	 * @param width rectangle width
