@@ -1,13 +1,8 @@
 package dev.kkorolyov.pancake.input;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
 
-import dev.kkorolyov.pancake.Entity;
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.format.Formatters;
@@ -43,36 +38,27 @@ public class ActionPool {
 	 */
 	public void put(Properties actionConfig) {
 		for (Entry<String, String> entry : actionConfig) {
-			put(entry.getKey(), parseAction(split(entry.getValue())));
+			put(parseAction(entry.getKey(), split(entry.getValue())));
 			log.info("Parsed action config entry: {}", entry);
 		}
 	}
 	/**
-	 * Adds a simple action which contains only a start event to the pool.
-	 * @param name identifier
-	 * @param event start event logic
-	 */
-	public void put(String name, Consumer<Entity> event) {
-		put(name, new Action(event));
-	}
-	/**
 	 * Adds an action defined by existing known actions to the pool.
-	 * @param name identifier
+	 * @param name action name
 	 * @param start start action identifier
 	 * @param hold hold action identifier
 	 * @param stop stop action identifier
 	 */
 	public void put(String name, String start, String hold, String stop) {
-		put(name, new Action(get(start), get(hold), get(stop)));
+		put(new Action(name, get(start), get(hold), get(stop)));
 	}
 	/**
 	 * Adds an action to the pool.
 	 * If an action of the same name already exists in the pool, it is replaced with the new action.
-	 * @param name identifier
-	 * @param action action
+	 * @param action added action
 	 */
-	public void put(String name, Action action) {
-		actions.put(name.toUpperCase(), action);
+	public void put(Action action) {
+		actions.put(action.getName(), action);
 	}
 
 	/**
@@ -89,7 +75,7 @@ public class ActionPool {
 			String[] keyNames = split(entry.getKey());
 			String[] actionNames = split(entry.getValue());
 
-			keyActions.add(new KeyAction(parseAction(actionNames),
+			keyActions.add(new KeyAction(parseAction(Arrays.toString(actionNames), actionNames),
 																	 parseKeys(keyNames)));
 
 			log.info("Parsed key config entry: {}", entry);
@@ -116,14 +102,14 @@ public class ActionPool {
 		}
 	}
 
-	private Action parseAction(String[] actionNames) {
+	private Action parseAction(String name, String[] actionNames) {
 		switch (actionNames.length) {
 			case 1:
 				return get(actionNames[0]);
 			case 2:
-				return new Action(get(actionNames[0]), get(actionNames[1]), Action.NOOP);
+				return new Action(name, get(actionNames[0]), get(actionNames[1]), Action.NOOP);
 			default:
-				return new Action(get(actionNames[0]), get(actionNames[1]), get(actionNames[2]));
+				return new Action(name, get(actionNames[0]), get(actionNames[1]), get(actionNames[2]));
 		}
 	}
 

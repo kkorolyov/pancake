@@ -15,11 +15,12 @@ import dev.kkorolyov.simplelogs.format.Formatters;
  */
 public class Action {
 	/** The action which contains no events */
-	public static final Action NOOP = new Action((Consumer<Entity>) null, null, null);
+	public static final Action NOOP = new Action("NOOP", (Consumer<Entity>) null, null, null);
 
 	private static final float HOLD_THRESHOLD = .5f;
 	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
 
+	private final String name;
 	private final Consumer<Entity> start, hold, stop;
 	private float holdTime = 0;
 	private ActionState state = ActionState.INACTIVE;
@@ -27,27 +28,31 @@ public class Action {
 	/**
 	 * Constructs a new action from other actions.
 	 * The {@code start} event of each parameter action populates the corresponding event of this action.
+	 * @param name action name
 	 * @param start action returned on initial activation
 	 * @param hold action returned after being active for some "hold threshold"
 	 * @param stop action returned on deactivation
 	 */
-	public Action(Action start, Action hold, Action stop) {
-		this(start.start, hold.start, stop.start);
+	public Action(String name, Action start, Action hold, Action stop) {
+		this(name, start.start, hold.start, stop.start);
 	}
 	/**
 	 * Constructs a new action which contains only a {@code start} event.
+	 * @param name action name
 	 * @param start event returned on initial activation
 	 */
-	public Action(Consumer<Entity> start) {
-		this(start, null, null);
+	public Action(String name, Consumer<Entity> start) {
+		this(name, start, null, null);
 	}
 	/**
 	 * Constructs a new action.
+	 * @param name action name
 	 * @param start event returned on initial activation
 	 * @param hold event returned after being active for some "hold threshold"
 	 * @param stop event returned on deactivation
 	 */
-	public Action(Consumer<Entity> start, Consumer<Entity> hold, Consumer<Entity> stop) {
+	public Action(String name, Consumer<Entity> start, Consumer<Entity> hold, Consumer<Entity> stop) {
+		this.name = name;
 		this.start = start;
 		this.hold = hold;
 		this.stop = stop;
@@ -63,13 +68,19 @@ public class Action {
 		return state.signal(this, active, dt);
 	}
 
+	/** @return action name */
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-
 		Action action = (Action) o;
+
 		return Float.compare(action.holdTime, holdTime) == 0 &&
+					 Objects.equals(name, action.name) &&
 					 Objects.equals(start, action.start) &&
 					 Objects.equals(hold, action.hold) &&
 					 Objects.equals(stop, action.stop) &&
@@ -77,7 +88,12 @@ public class Action {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(start, hold, stop, holdTime, state);
+		return Objects.hash(name, start, hold, stop, holdTime, state);
+	}
+
+	@Override
+	public String toString() {
+		return "Action{" + name + "}";
 	}
 
 	private static abstract class ActionState {

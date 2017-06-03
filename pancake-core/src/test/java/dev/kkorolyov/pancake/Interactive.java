@@ -13,6 +13,7 @@ import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
+import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.system.*;
@@ -88,11 +89,11 @@ public class Interactive extends Application {
 	private ActionPool buildActionPool() {
 		ActionPool actions = new ActionPool();
 
-		actions.put("FORCE_UP", e -> e.get(Force.class).addForce(0, -MOVE_FORCE));
-		actions.put("FORCE_DOWN", e -> e.get(Force.class).addForce(0, MOVE_FORCE));
-		actions.put("FORCE_LEFT", e -> e.get(Force.class).addForce(-MOVE_FORCE, 0));
-		actions.put("FORCE_RIGHT", e -> e.get(Force.class).addForce(MOVE_FORCE, 0));
-		actions.put("RESET", e -> e.get(Transform.class).getPosition().set(0, 0));
+		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).addForce(0, -MOVE_FORCE)));
+		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).addForce(0, MOVE_FORCE)));
+		actions.put(new Action("FORCE_LEFT", e -> e.get(Force.class).addForce(-MOVE_FORCE, 0)));
+		actions.put(new Action("FORCE_RIGHT", e -> e.get(Force.class).addForce(MOVE_FORCE, 0)));
+		actions.put(new Action("RESET", e -> e.get(Transform.class).getPosition().set(0, 0)));
 
 		try {
 			actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("actions").toURI())));
