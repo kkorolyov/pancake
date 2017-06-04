@@ -3,71 +3,88 @@ package dev.kkorolyov.pancake.system;
 import java.util.ArrayList;
 import java.util.List;
 
-import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.RectangleBounds;
-import dev.kkorolyov.pancake.component.movement.Force;
-import dev.kkorolyov.pancake.component.movement.Velocity;
+import dev.kkorolyov.pancake.Component;
 import dev.kkorolyov.pancake.Entity;
 import dev.kkorolyov.pancake.GameSystem;
 import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.component.Transform;
+import dev.kkorolyov.pancake.component.collision.BoxBounds;
+import dev.kkorolyov.pancake.component.collision.SphereBounds;
+import dev.kkorolyov.pancake.component.movement.Force;
+import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.math.Collider;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**
  * Detects and handles entity collisions.
  */
-public class CollisionSystem extends GameSystem {
+public abstract class CollisionSystem extends GameSystem {
 	// TODO Better collision detection alg (Current n^2)
-	private final List<Entity> entities = new ArrayList<>();
-	private final Vector vTemp = new Vector();
+	protected final List<Entity> entities = new ArrayList<>();
 
 	/**
 	 * Constructs a new collision system.
 	 */
-	public CollisionSystem() {
+	public CollisionSystem(Class<? extends Component> bounds) {
 		super(new Signature(Transform.class,
-												RectangleBounds.class,
-												Force.class,
-												Velocity.class));
+												bounds,
+												Velocity.class,
+												Force.class));
 	}
-	
+
 	@Override
 	public void update(Entity entity, float dt) {
 		for (Entity other : entities) {
-			Transform t1 = entity.get(Transform.class);
-			Transform t2 = other.get(Transform.class);
-			RectangleBounds b1 = entity.get(RectangleBounds.class);
-			RectangleBounds b2 = other.get(RectangleBounds.class);
-
-			Vector mtv = Collider.intersection(t1.getPosition(), b1.getSize(), t2.getPosition(), b2.getSize());
+			Vector mtv = intersection(entity, other);
 
 			if (mtv != null) {
-				t1.getPosition().add(mtv);
-				collide(entity, other);
+				entity.get(Transform.class).getPosition().add(mtv);
+
+				Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
+																other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
 			}
 		}
 		entities.add(entity);
 	}
-	private void collide(Entity e1, Entity e2) {
-		Vector v1 = e1.get(Velocity.class).getVelocity();
-		Vector v2 = e2.get(Velocity.class).getVelocity();
-		float m1 = e1.get(Force.class).getMass();
-		float m2 = e2.get(Force.class).getMass();
-		vTemp.set(e1.get(Velocity.class).getVelocity());
-
-		applyCollision(v1, v2, m1, m2);
-		applyCollision(v2, vTemp, m2, m1);
-	}
-	private void applyCollision(Vector v1, Vector v2, float m1, float m2) {
-		v1.set(v2);
-
-		v1.scale(m1 - m2);
-		v1.add(v2, 2 * m2);
-		v1.scale(1 / (m1 + m2));
-	}
+	protected abstract Vector intersection(Entity e1, Entity e2);
 
 	@Override
 	public void after(float dt) {
 		entities.clear();
+	}
+
+	/**
+	 * Detects and handles collisions between boxes.
+	 */
+	public static class BoxCollisionSystem extends CollisionSystem {
+		/**
+		 * Constructs a new box collision system.
+		 */
+		public BoxCollisionSystem() {
+			super(BoxBounds.class);
+		}
+
+		@Override
+		protected Vector intersection(Entity e1, Entity e2) {
+			return Collider.intersection(e1.get(Transform.class).getPosition(), e1.get(BoxBounds.class).getSize(),
+																	 e2.get(Transform.class).getPosition(), e2.get(BoxBounds.class).getSize());
+		}
+	}
+	/**
+	 * Detects and handles collisions between spheres.
+	 */
+	public static class SphereCollisionSystem extends CollisionSystem {
+		/**
+		 * Constructs a new sphere collision system.
+		 */
+		public SphereCollisionSystem() {
+			super(SphereBounds.class);
+		}
+
+		@Override
+		protected Vector intersection(Entity e1, Entity e2) {
+			return Collider.intersection(e1.get(Transform.class).getPosition(), e1.get(SphereBounds.class).getRadius(),
+																	 e2.get(Transform.class).getPosition(), e2.get(SphereBounds.class).getRadius());
+		}
 	}
 }

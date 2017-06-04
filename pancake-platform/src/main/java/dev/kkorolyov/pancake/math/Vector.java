@@ -7,7 +7,7 @@ import java.util.Objects;
  */
 public class Vector {
 	private float x, y, z;
-	
+
 	/**
 	 * Constructs a vector with a head at {@code (0, 0, 0)}.
 	 */
@@ -39,7 +39,7 @@ public class Vector {
 	public Vector(Vector original) {
 		this(original.x, original.y, original.z);
 	}
-	
+
 	/**
 	 * Translates the head of this vector along 2 axes.
 	 * @see #translate(float, float, float)
@@ -58,7 +58,7 @@ public class Vector {
 		y += dy;
 		z += dz;
 	}
-	
+
 	/**
 	 * Scales this vector by a scalar.
 	 * @param value value to scale by
@@ -77,7 +77,7 @@ public class Vector {
 		y *= other.y;
 		z *= other.z;
 	}
-	
+
 	/**
 	 * Returns a new vector formed by the addition of vectors to an initial vector.
 	 * @param vI initial vector
@@ -86,9 +86,9 @@ public class Vector {
 	 */
 	public static Vector add(Vector vI, Vector... vN) {
 		Vector result = new Vector(vI);
-		
+
 		for (Vector v : vN) result.add(v);
-		
+
 		return result;
 	}
 	/**
@@ -123,7 +123,7 @@ public class Vector {
 	public void add(Vector other, float scale) {
 		translate(other.x * scale, other.y * scale, other.z * scale);
 	}
-	
+
 	/**
 	 * Transforms this vector by subtracting another vector from it.
 	 * This is equivalent to translating this vector by the negative of the other vector's components.
@@ -140,9 +140,9 @@ public class Vector {
 	 * @see #sub(Vector)
 	 */
 	public void sub(Vector other, float scale) {
-		translate(-other.x * scale, -other.y * scale, -other.z * scale);
+		add(other, -scale);
 	}
-	
+
 	/**
 	 * Returns the dot product of this vector and another vector.
 	 * @param other vector to dot-multiply with this vector
@@ -151,9 +151,9 @@ public class Vector {
 	public float dot(Vector other) {
 		return (x * other.x) + (y * other.y) + (z * other.z);
 	}
-	
+
 	/**
-	 * Returns the projection of another vector onto this vector. 
+	 * Returns the projection of another vector onto this vector.
 	 * @param other vector to project onto this vector
 	 * @return projected vector
 	 */
@@ -161,7 +161,14 @@ public class Vector {
 		float scale = dot(other) / dot(this);
 		return new Vector(x * scale, y * scale, z * scale);
 	}
-	
+
+	/** @return Euclidean distance between this vector and {@code other} */
+	public float distance(Vector other) {
+		return (float) Math.sqrt(Math.pow(x - other.x, 2) +
+														 Math.pow(y - other.y, 2) +
+														 Math.pow(z - other.z, 2));
+	}
+
 	/**
 	 * Returns the angle between this vector and another vector.
 	 * @param other vector forming other end of angle
@@ -170,32 +177,27 @@ public class Vector {
 	public float angle(Vector other) {
 		return (float) Math.acos(dot(other) / (getMagnitude() * other.getMagnitude()));
 	}
-	
+
 	/**
 	 * Scales this vector to a unit vector pointing in the original direction.
 	 */
 	public void normalize() {
 		scale(1 / getMagnitude());
-	}	
-	/**
-	 * Calculates and returns the vector with {@code magnitude = 1} and same direction as this vector.
-	 * @return unit vector with the same direction as this vector
-	 */
-	public Vector getUnitVector() {
-		float scale = 1 / getMagnitude();
-		return new Vector(x * scale, y * scale, z * scale);
 	}
-	
+
 	/** @return magnitude of this vector */
 	public float getMagnitude() {
 		return (float) Math.sqrt(dot(this));
 	}
-
-	/** @return direction of this vector in the x-y plane, in radians */
-	public float getDirection2D() {
-		return (float) Math.atan2(y, x);
+	/**
+	 * Calculates and returns the vector with {@code magnitude = 1} and same direction as this vector.
+	 * @return unit vector with the same direction as this vector
+	 */
+	public Vector getDirection() {
+		float scale = 1 / getMagnitude();
+		return new Vector(x * scale, y * scale, z * scale);
 	}
-	
+
 	/**
 	 * Sets the head of this vector while retaining the current z-axis value.
 	 * @see #set(float, float, float)
@@ -219,9 +221,9 @@ public class Vector {
 	 * @param match vector to match
 	 */
 	public void set(Vector match) {
-		set(match.x, match.y, match.z); 
+		set(match.x, match.y, match.z);
 	}
-	
+
 	/** @return head x-coordinate */
 	public float getX() {
 		return x;
@@ -230,7 +232,7 @@ public class Vector {
 	public void setX(float x) {
 		this.x = x;
 	}
-	
+
 	/** @return head y-coordinate */
 	public float getY() {
 		return y;
@@ -239,7 +241,7 @@ public class Vector {
 	public void setY(float y) {
 		this.y = y;
 	}
-	
+
 	/** @return head z-coordinate */
 	public float getZ() {
 		return z;
@@ -248,14 +250,14 @@ public class Vector {
 	public void setZ(float z) {
 		this.z = z;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null || !(obj instanceof Vector)) return false;
-		
+
 		Vector o = (Vector) obj;
-		
+
 		return x == o.x
 				&& y == o.y
 				&& z == o.z;
@@ -264,7 +266,7 @@ public class Vector {
 	public int hashCode() {
 		return Objects.hash(x, y, z);
 	}
-	
+
 	/** @return coordinates of this vector's head as {@code (x, y, z)} */
 	@Override
 	public String toString() {

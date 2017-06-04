@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 import dev.kkorolyov.pancake.component.Input;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.EllipseBounds;
-import dev.kkorolyov.pancake.component.collision.RectangleBounds;
+import dev.kkorolyov.pancake.component.collision.BoxBounds;
+import dev.kkorolyov.pancake.component.collision.SphereBounds;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
@@ -17,6 +17,8 @@ import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.system.*;
+import dev.kkorolyov.pancake.system.CollisionSystem.BoxCollisionSystem;
+import dev.kkorolyov.pancake.system.CollisionSystem.SphereCollisionSystem;
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.append.Appenders;
@@ -45,8 +47,8 @@ public class Interactive extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Signature.index(RectangleBounds.class,
-										EllipseBounds.class,
+		Signature.index(BoxBounds.class,
+										SphereBounds.class,
 										Damping.class,
 										Force.class,
 										MaxSpeed.class,
@@ -59,7 +61,8 @@ public class Interactive extends Application {
 				new AccelerationSystem(),
 				new SpeedCapSystem(),
 				new MovementSystem(),
-				new CollisionSystem(),
+				new BoxCollisionSystem(),
+				new SphereCollisionSystem(),
 				new InputSystem(scene),
 				new RenderSystem(canvas)
 		);
@@ -67,24 +70,37 @@ public class Interactive extends Application {
 
 		EntityPool entities = engine.getEntities();
 
-		Sprite playerSprite = new Sprite(new Image("ScrumPLE-32.png"));
-		Sprite sprite = new Sprite(new Image("SQLOb-32x32.png"));
-		RectangleBounds bounds = new RectangleBounds(sprite);
+		Sprite sphereSprite = new Sprite(new Image("ScrumPLE-32.png"));
+		Sprite boxSprite = new Sprite(new Image("SQLOb-32x32.png"));
 
-		for (int i = 0; i < 5; i++) {
+		BoxBounds boxBounds = new BoxBounds(new Vector(32, 32, 0));
+		SphereBounds sphereBounds = new SphereBounds(16);
+
+		for (int i = 0; i < 5; i++) {	// Boxes
 			entities.create(new Transform(new Vector(50 + i * 40, 50 + i * 40)),
 											new Velocity(),
 											new Force(.1f),
 											new Damping(.9f - .1f * i),
-											bounds,
-											sprite);
+											boxBounds,
+											boxSprite);
 		}
+		for (int i = 0; i < 5; i++) {	// Spheres
+			entities.create(new Transform(new Vector((float) (canvas.getWidth() - (50 + i * 40)), 50 + i * 40)),
+											new Velocity(),
+											new Force(.1f),
+											new Damping(.9f - .1f * i),
+											sphereBounds,
+											sphereSprite);
+		}
+
+		// Player
 		entities.create(new Transform(new Vector(10, 10)),
 										new Velocity(),
 										new Force(1),
 										new Damping(.5f),
-										bounds,
-										playerSprite,
+										boxBounds,
+										sphereBounds,
+										sphereSprite,
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 
 		primaryStage.setTitle("Pancake: Interactive Test");
