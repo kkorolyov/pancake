@@ -66,14 +66,16 @@ public class Interactive extends Application {
 		new GameLoop(engine).start();
 
 		EntityPool entities = engine.getEntities();
-		Sprite sprite = new Sprite(new Image("32x32.png"));
+
+		Sprite playerSprite = new Sprite(new Image("ScrumPLE-32.png"));
+		Sprite sprite = new Sprite(new Image("SQLOb-32x32.png"));
 		RectangleBounds bounds = new RectangleBounds(sprite);
 
 		for (int i = 0; i < 5; i++) {
 			entities.create(new Transform(new Vector(50 + i * 40, 50 + i * 40)),
 											new Velocity(),
-											new Force(1),
-											new Damping(.5f - .1f * i),
+											new Force(.1f),
+											new Damping(.9f - .1f * i),
 											bounds,
 											sprite);
 		}
@@ -82,7 +84,7 @@ public class Interactive extends Application {
 										new Force(1),
 										new Damping(.5f),
 										bounds,
-										sprite,
+										playerSprite,
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 
 		primaryStage.setTitle("Pancake: Interactive Test");

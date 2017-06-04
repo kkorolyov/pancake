@@ -10,6 +10,7 @@ import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.Entity;
 import dev.kkorolyov.pancake.GameSystem;
 import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.math.Collider;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**
@@ -38,7 +39,10 @@ public class CollisionSystem extends GameSystem {
 			RectangleBounds b1 = entity.get(RectangleBounds.class);
 			RectangleBounds b2 = other.get(RectangleBounds.class);
 
-			if (b1.intersects(b2, t1.getPosition(), t2.getPosition())) {
+			Vector mtv = Collider.intersection(t1.getPosition(), b1.getSize(), t2.getPosition(), b2.getSize());
+
+			if (mtv != null) {
+				t1.getPosition().add(mtv);
 				collide(entity, other);
 			}
 		}

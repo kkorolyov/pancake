@@ -49,6 +49,11 @@ public class RectangleBounds implements Bounds {
 		return size.getY();
 	}
 
+	/** @return size vector */
+	public Vector getSize() {
+		return size;
+	}
+
 	@Override
 	public String toString() {
 		return "RectangleBounds{" +
