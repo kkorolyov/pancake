@@ -58,7 +58,7 @@ public class ActionPool {
 	 * @param action added action
 	 */
 	public void put(Action action) {
-		actions.put(action.getName(), action);
+		actions.put(action.getName().toUpperCase(), action);
 	}
 
 	/**
