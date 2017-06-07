@@ -70,8 +70,9 @@ public class Interactive extends Application {
 
 		EntityPool entities = engine.getEntities();
 
-		Sprite sphereSprite = new Sprite(new Image("ScrumPLE-32.png"));
-		Sprite boxSprite = new Sprite(new Image("SQLOb-32x32.png"));
+		Sprite playerSprite = new Sprite(new Image("rotate-happy_128.png"), 32, 32, 1 / 60f);
+		Sprite sphereSprite = new Sprite(new Image("scrumple_32.png"));
+		Sprite boxSprite = new Sprite(new Image("sqlob_32.png"));
 
 		BoxBounds boxBounds = new BoxBounds(new Vector(32, 32, 0));
 		SphereBounds sphereBounds = new SphereBounds(16);
@@ -100,7 +101,7 @@ public class Interactive extends Application {
 										new Damping(.5f),
 										boxBounds,
 										sphereBounds,
-										sphereSprite,
+										playerSprite,
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 
 		primaryStage.setTitle("Pancake: Interactive Test");

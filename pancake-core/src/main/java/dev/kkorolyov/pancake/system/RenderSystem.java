@@ -1,11 +1,13 @@
 package dev.kkorolyov.pancake.system;
 
-import dev.kkorolyov.pancake.component.Sprite;
-import dev.kkorolyov.pancake.component.Transform;
+import java.util.HashSet;
+import java.util.Set;
+
 import dev.kkorolyov.pancake.Entity;
 import dev.kkorolyov.pancake.GameSystem;
 import dev.kkorolyov.pancake.Signature;
-import dev.kkorolyov.pancake.math.Vector;
+import dev.kkorolyov.pancake.component.Sprite;
+import dev.kkorolyov.pancake.component.Transform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -15,7 +17,8 @@ import javafx.scene.canvas.GraphicsContext;
 public class RenderSystem extends GameSystem {
 	private final Canvas canvas;
 	private final GraphicsContext g;
-	
+	private final Set<Sprite> tickedSprites = new HashSet<>();
+
 	/**
 	 * Constructs a new render system.
 	 * @param canvas canvas on which to render
@@ -25,11 +28,13 @@ public class RenderSystem extends GameSystem {
 												Sprite.class));
 
 		this.canvas = canvas;
+
 		g = canvas.getGraphicsContext2D();
 	}
 
 	@Override
 	public void before(float dt) {
+		tickedSprites.clear();
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
@@ -38,8 +43,11 @@ public class RenderSystem extends GameSystem {
 		Transform transform = entity.get(Transform.class);
 		Sprite sprite = entity.get(Sprite.class);
 
-		Vector position = transform.getPosition();
-		g.drawImage(sprite.getImage(), position.getX(), position.getY());
+		if (!tickedSprites.contains(sprite)) {
+			sprite.tick(dt);
+			tickedSprites.add(sprite);
+		}
+		sprite.draw(g, transform.getPosition());
 	}
 
 	@Override
