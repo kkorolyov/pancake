@@ -4,12 +4,15 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import dev.kkorolyov.pancake.event.EventBroadcaster;
+
 /**
  * Central game management module.
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public class GameEngine {
 	private final EntityPool entities = new EntityPool();
+	private final EventBroadcaster events = new EventBroadcaster();
 	private final Set<GameSystem> systems = new LinkedHashSet<>();
 	
 	/**
@@ -30,6 +33,8 @@ public class GameEngine {
 	 * @param dt seconds elapsed since last update
 	 */
 	public void update(float dt) {
+		events.broadcast();
+
 		for (GameSystem system : systems) {
 			system.before(dt);
 
@@ -43,16 +48,21 @@ public class GameEngine {
 
 	/** @param system added system */
 	public void add(GameSystem system) {
-		system.setEntities(entities);
+		system.setEvents(events);
 		systems.add(system);
 	}
 	/** @param system removed system */
 	public void remove(GameSystem system) {
+		system.setEvents(null);
 		systems.remove(system);
 	}
 
 	/** @return entities handled by this engine */
 	public EntityPool getEntities() {
 		return entities;
+	}
+	/** @return event queue and broadcaster used by this engine */
+	public EventBroadcaster getEvents() {
+		return events;
 	}
 }

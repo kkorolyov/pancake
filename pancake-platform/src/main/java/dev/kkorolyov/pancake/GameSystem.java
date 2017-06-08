@@ -1,11 +1,14 @@
 package dev.kkorolyov.pancake;
 
+import dev.kkorolyov.pancake.event.EventBroadcaster;
+import dev.kkorolyov.pancake.event.Receiver;
+
 /**
  * Performs work on entities matching a certain component signature.
  */
 public abstract class GameSystem {
 	private final Signature signature;
-	private EntityPool entities;
+	private EventBroadcaster events;
 
 	/**
 	 * Constructs a new system.
@@ -32,17 +35,41 @@ public abstract class GameSystem {
 	 */
 	public void after(float dt) {}
 
+	/**
+	 * Registers to receive broadcasts of an event.
+	 * @param event event identifier
+	 * @param receiver action invoked on event reception
+	 */
+	public void register(String event, Receiver receiver) {
+		events.register(event, receiver);
+	}
+	/**
+	 * Removes a receiver from a set of registered receivers
+	 * @param event event identifier
+	 * @param receiver removed receiver
+	 * @return {@code true} if {@code receiver} was present and removed
+	 */
+	public boolean unregister(String event, Receiver receiver) {
+		return events.unregister(event, receiver);
+	}
+
+	/**
+	 * Queues an event.
+	 * @param event event identifier
+	 * @param target entity affected by event, or {@code null} if not applicable
+	 * @param changed component affected by event, or {@code null} if not applicable
+	 */
+	public void enqueue(String event, Entity target, Component changed) {
+		events.enqueue(event, target, changed);
+	}
+
 	/** @return component signature */
 	public Signature getSignature() {
 		return signature;
 	}
 
-	/** @return all entities known to this system */
-	public EntityPool getEntities() {
-		return entities;
-	}
-	/** @param entities all entities known to this system */
-	void setEntities(EntityPool entities) {
-		this.entities = entities;
+	/** @param events event queue and broadcaster used by this system */
+	void setEvents(EventBroadcaster events) {
+		this.events = events;
 	}
 }
