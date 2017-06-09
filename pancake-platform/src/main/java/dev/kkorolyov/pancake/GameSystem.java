@@ -19,6 +19,15 @@ public abstract class GameSystem {
 	}
 
 	/**
+	 * Invoked when this system is registered to a {@link GameEngine}.
+	 */
+	public void register() {}
+	/**
+	 * Invoked when this system is removed from a {@link GameEngine}.
+	 */
+	public void unregister() {}
+
+	/**
 	 * Function invoked on each entity affected by this system.
 	 * @param dt seconds elapsed since last update
 	 */

@@ -1,7 +1,9 @@
 package dev.kkorolyov.pancake.system;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import dev.kkorolyov.pancake.Component;
 import dev.kkorolyov.pancake.Entity;
@@ -20,7 +22,8 @@ import dev.kkorolyov.pancake.math.Vector;
  */
 public abstract class CollisionSystem extends GameSystem {
 	// TODO Better collision detection alg (Current n^2)
-	protected final List<Entity> entities = new ArrayList<>();
+	private final List<Entity> done = new ArrayList<>();
+	private final Queue<Entity> moved = new ArrayDeque<>();
 
 	/**
 	 * Constructs a new collision system.
@@ -34,24 +37,29 @@ public abstract class CollisionSystem extends GameSystem {
 
 	@Override
 	public void update(Entity entity, float dt) {
-		for (Entity other : entities) {
-			Vector mtv = intersection(entity, other);
-
-			if (mtv != null) {
-				entity.get(Transform.class).getPosition().add(mtv);
-
-				Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
-																other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
-			}
-		}
-		entities.add(entity);
+		((entity.get(Velocity.class).getVelocity().getMagnitude() > 0) ? moved : done).add(entity);
 	}
-	protected abstract Vector intersection(Entity e1, Entity e2);
 
 	@Override
 	public void after(float dt) {
-		entities.clear();
+		while (!moved.isEmpty()) {
+			Entity entity = moved.remove();
+
+			for (Entity other : done) {
+				Vector mtv = intersection(entity, other);
+
+				if (mtv != null) {
+					entity.get(Transform.class).getPosition().add(mtv);
+
+					Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
+																	other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
+				}
+			}
+			done.add(entity);
+		}
+		done.clear();
 	}
+	protected abstract Vector intersection(Entity e1, Entity e2);
 
 	/**
 	 * Detects and handles collisions between boxes.

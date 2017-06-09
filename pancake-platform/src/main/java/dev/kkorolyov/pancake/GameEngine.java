@@ -36,6 +36,7 @@ public class GameEngine {
 		events.broadcast();
 
 		for (GameSystem system : systems) {
+			long start = System.nanoTime();
 			system.before(dt);
 
 			for (Entity entity : entities.get(system.getSignature())) {
@@ -43,6 +44,10 @@ public class GameEngine {
 			}
 
 			system.after(dt);
+			long ms = (System.nanoTime() - start);
+
+			if (system.getClass().getSimpleName().equals("BoxCollisionSystem")
+					|| system.getClass().getSimpleName().equals("SphereCollisionSystem")) System.out.println(ms);
 		}
 	}
 
@@ -50,11 +55,15 @@ public class GameEngine {
 	public void add(GameSystem system) {
 		system.setEvents(events);
 		systems.add(system);
+
+		system.register();
 	}
 	/** @param system removed system */
 	public void remove(GameSystem system) {
 		system.setEvents(null);
 		systems.remove(system);
+
+		system.unregister();
 	}
 
 	/** @return entities handled by this engine */
