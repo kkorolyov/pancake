@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
+import dev.kkorolyov.pancake.component.Chain;
 import dev.kkorolyov.pancake.component.Input;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
@@ -19,10 +20,7 @@ import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.system.*;
 import dev.kkorolyov.pancake.system.CollisionSystem.BoxCollisionSystem;
 import dev.kkorolyov.pancake.system.CollisionSystem.SphereCollisionSystem;
-import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
-import dev.kkorolyov.simplelogs.append.Appenders;
-import dev.kkorolyov.simplelogs.format.Formatters;
 import dev.kkorolyov.simpleprops.Properties;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -39,14 +37,16 @@ public class Interactive extends Application {
 	private Scene scene = new Scene(new Group(canvas));
 	private ActionPool actions = buildActionPool();
 
-	public static void main(String[] args) {
-		Logger.getLogger("dev.kkorolyov.pancake", Level.DEBUG, Formatters.simple(), Appenders.err(Level.DEBUG));
+	public static void main(String[] args) throws URISyntaxException {
+		Logger.applyProps(Paths.get(ClassLoader.getSystemResource("logging.ini").toURI()));
 
 		Application.launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Vector camera = new Vector(10, 10);
+
 		Signature.index(BoxBounds.class,
 										SphereBounds.class,
 										Damping.class,
@@ -54,6 +54,7 @@ public class Interactive extends Application {
 										MaxSpeed.class,
 										Sprite.class,
 										Transform.class,
+										Chain.class,
 										Velocity.class,
 										Input.class);
 		GameEngine engine = new GameEngine(
@@ -64,8 +65,8 @@ public class Interactive extends Application {
 				new BoxCollisionSystem(),
 				new SphereCollisionSystem(),
 				new InputSystem(scene),
-				new RenderSystem(canvas)
-		);
+				new ChainSystem(),
+				new RenderSystem(canvas, 32, camera));
 		new GameLoop(engine).start();
 
 		EntityPool entities = engine.getEntities();
@@ -95,7 +96,8 @@ public class Interactive extends Application {
 		}
 
 		// Player
-		entities.create(new Transform(new Vector(10, 10)),
+		Transform playerTransform = new Transform(new Vector(-10, 10));
+		entities.create(playerTransform,
 										new Velocity(),
 										new Force(1),
 										new Damping(.5f),
@@ -103,6 +105,9 @@ public class Interactive extends Application {
 										sphereBounds,
 										playerSprite,
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
+		// Camera
+		entities.create(new Transform(camera),
+										new Chain(playerTransform, 128));
 
 		primaryStage.setTitle("Pancake: Interactive Test");
 		primaryStage.setScene(scene);

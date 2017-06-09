@@ -2,9 +2,6 @@ package dev.kkorolyov.pancake.component;
 
 import dev.kkorolyov.pancake.Component;
 import dev.kkorolyov.pancake.math.Vector;
-import dev.kkorolyov.simplelogs.Level;
-import dev.kkorolyov.simplelogs.Logger;
-import dev.kkorolyov.simplelogs.format.Formatters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -12,8 +9,6 @@ import javafx.scene.image.Image;
  * A dynamic image.
  */
 public class Sprite implements Component {
-	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
-
 	private final Image baseImage;
 	private final Vector origin;
 	private final Vector size;
@@ -70,7 +65,6 @@ public class Sprite implements Component {
 			}
 			sinceLastTick = 0;
 		}
-		log.debug("Set ({}, {}, {}x{}) frame of {}", origin.getX(), origin.getY(), size.getX(), size.getY(), baseImage);
 	}
 
 	/**
@@ -80,7 +74,7 @@ public class Sprite implements Component {
 	 */
 	public void draw(GraphicsContext g, Vector position) {
 		g.drawImage(baseImage, origin.getX(), origin.getY(), size.getX(), size.getY(),
-								position.getX(), position.getY(), size.getX(), size.getY());
+								position.getX() - size.getX() / 2, position.getY() - size.getY() / 2, size.getX(), size.getY());
 	}
 
 	/** @return entire base image */
