@@ -1,16 +1,20 @@
 package dev.kkorolyov.pancake;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.Map.Entry;
 
 import dev.kkorolyov.pancake.event.EventBroadcaster;
+import dev.kkorolyov.simplelogs.Logger;
 
 /**
  * Central game management module.
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public class GameEngine {
+	private static final Logger log = Config.getLogger(GameEngine.class);
+	private static final Map<GameSystem, Long> systemUsage = new HashMap<>();
+	private static int usageSamples;
+
 	private final EntityPool entities = new EntityPool();
 	private final EventBroadcaster events = new EventBroadcaster();
 	private final Set<GameSystem> systems = new LinkedHashSet<>();
@@ -37,17 +41,38 @@ public class GameEngine {
 
 		for (GameSystem system : systems) {
 			long start = System.nanoTime();
+
 			system.before(dt);
 
 			for (Entity entity : entities.get(system.getSignature())) {
 				system.update(entity, dt);
 			}
-
 			system.after(dt);
-			long ms = (System.nanoTime() - start);
 
-			if (system.getClass().getSimpleName().equals("BoxCollisionSystem")
-					|| system.getClass().getSimpleName().equals("SphereCollisionSystem")) System.out.println(ms);
+			Long lastUsage = systemUsage.get(system);
+			if (lastUsage == null) lastUsage = 0L;
+			systemUsage.put(system, lastUsage + (System.nanoTime() - start));
+		}
+		usageSamples++;
+		logUsage();
+	}
+	private static void logUsage() {
+		String sampleSize = Config.config.get("systemUsageSampleSize");
+		if (sampleSize != null) {
+			if (usageSamples >= Integer.parseInt(sampleSize)) {
+				StringJoiner usageResult = new StringJoiner(System.lineSeparator());
+				usageResult.add("System time usage over " + usageSamples + " ticks");
+
+				for (Entry<GameSystem, Long> entry : systemUsage.entrySet()) {
+					String systemName = entry.getKey().getClass().getName();
+					long totalMS = entry.getValue() / 1000000;
+
+					entry.setValue(0L);
+					usageResult.add(systemName + ": " + totalMS + "ms");
+				}
+				usageSamples = 0;
+				log.debug("{}", usageResult);
+			}
 		}
 	}
 
@@ -56,14 +81,14 @@ public class GameEngine {
 		system.setEvents(events);
 		systems.add(system);
 
-		system.register();
+		system.attach();
 	}
 	/** @param system removed system */
 	public void remove(GameSystem system) {
 		system.setEvents(null);
 		systems.remove(system);
 
-		system.unregister();
+		system.detach();
 	}
 
 	/** @return entities handled by this engine */

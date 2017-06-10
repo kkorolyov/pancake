@@ -6,9 +6,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import dev.kkorolyov.pancake.Entity;
-import dev.kkorolyov.simplelogs.Level;
-import dev.kkorolyov.simplelogs.Logger;
-import dev.kkorolyov.simplelogs.format.Formatters;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -16,8 +13,6 @@ import javafx.scene.input.MouseButton;
  * Signals an {@link Action} according to the current input state.
  */
 public class KeyAction {
-	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
-
 	private final Set<Enum<?>> keys = new LinkedHashSet<>();
 	private final Action action;
 

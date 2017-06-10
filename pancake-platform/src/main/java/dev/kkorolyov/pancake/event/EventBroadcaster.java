@@ -3,16 +3,15 @@ package dev.kkorolyov.pancake.event;
 import java.util.*;
 
 import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.Config;
 import dev.kkorolyov.pancake.Entity;
-import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
-import dev.kkorolyov.simplelogs.format.Formatters;
 
 /**
  * Broadcasts events expected by registered systems.
  */
 public class EventBroadcaster {
-	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
+	private static final Logger log = Config.getLogger(EventBroadcaster.class);
 
 	private final Map<String, Set<Receiver>> receivers = new HashMap<>();
 	private final Queue<Event> eventQueue = new ArrayDeque<>();

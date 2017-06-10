@@ -3,9 +3,8 @@ package dev.kkorolyov.pancake.input;
 import java.util.*;
 import java.util.Map.Entry;
 
-import dev.kkorolyov.simplelogs.Level;
+import dev.kkorolyov.pancake.Config;
 import dev.kkorolyov.simplelogs.Logger;
-import dev.kkorolyov.simplelogs.format.Formatters;
 import dev.kkorolyov.simpleprops.Properties;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -14,7 +13,7 @@ import javafx.scene.input.MouseButton;
  * Maintains a collection of known actions applicable on entities.
  */
 public class ActionPool {
-	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
+	private static final Logger log = Config.getLogger(ActionPool.class);
 
 	private final Map<String, Action> actions = new HashMap<>();
 

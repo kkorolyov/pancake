@@ -20,7 +20,6 @@ import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.system.*;
 import dev.kkorolyov.pancake.system.CollisionSystem.BoxCollisionSystem;
 import dev.kkorolyov.pancake.system.CollisionSystem.SphereCollisionSystem;
-import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simpleprops.Properties;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -38,8 +37,6 @@ public class Interactive extends Application {
 	private ActionPool actions = buildActionPool();
 
 	public static void main(String[] args) throws URISyntaxException {
-		Logger.applyProps(Paths.get(ClassLoader.getSystemResource("logging.ini").toURI()));
-
 		Application.launch(args);
 	}
 

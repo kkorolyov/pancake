@@ -19,13 +19,13 @@ public abstract class GameSystem {
 	}
 
 	/**
-	 * Invoked when this system is registered to a {@link GameEngine}.
+	 * Invoked when this system is attached to a {@link GameEngine}.
 	 */
-	public void register() {}
+	public void attach() {}
 	/**
-	 * Invoked when this system is removed from a {@link GameEngine}.
+	 * Invoked when this system is detached from a {@link GameEngine}.
 	 */
-	public void unregister() {}
+	public void detach() {}
 
 	/**
 	 * Function invoked on each entity affected by this system.

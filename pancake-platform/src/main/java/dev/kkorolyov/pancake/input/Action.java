@@ -3,10 +3,9 @@ package dev.kkorolyov.pancake.input;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import dev.kkorolyov.pancake.Config;
 import dev.kkorolyov.pancake.Entity;
-import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
-import dev.kkorolyov.simplelogs.format.Formatters;
 
 /**
  * A collection of 3 distinct events (start, hold, and stop) organized as a finite state machine.
@@ -18,7 +17,7 @@ public class Action {
 	public static final Action NOOP = new Action("NOOP", (Consumer<Entity>) null, null, null);
 
 	private static final float HOLD_THRESHOLD = .5f;
-	private static final Logger log = Logger.getLogger(Level.DEBUG, Formatters.simple());
+	private static final Logger log = Config.getLogger(Action.class);
 
 	private final String name;
 	private final Consumer<Entity> start, hold, stop;
