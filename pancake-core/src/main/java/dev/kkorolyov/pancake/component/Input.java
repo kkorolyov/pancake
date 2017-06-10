@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.input.KeyAction;
 
 /**

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.component;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.entity.Component;
 
 /**
  * "Anchors" to a transform at some offset position and moves when its anchor moves further than some "play" threshold.

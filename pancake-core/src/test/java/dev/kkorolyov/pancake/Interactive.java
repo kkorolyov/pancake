@@ -14,6 +14,8 @@ import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
+import dev.kkorolyov.pancake.entity.EntityPool;
+import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;

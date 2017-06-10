@@ -3,6 +3,8 @@ package dev.kkorolyov.pancake;
 import java.util.*;
 import java.util.Map.Entry;
 
+import dev.kkorolyov.pancake.entity.Entity;
+import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.simplelogs.Logger;
 

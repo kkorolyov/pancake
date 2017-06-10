@@ -4,9 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.GameSystem;
-import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.component.Input;
 import dev.kkorolyov.pancake.input.KeyAction;
 import javafx.scene.Scene;

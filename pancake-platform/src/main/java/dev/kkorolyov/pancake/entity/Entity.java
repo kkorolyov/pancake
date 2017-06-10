@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake;
+package dev.kkorolyov.pancake.entity;
 
 import java.util.*;
 

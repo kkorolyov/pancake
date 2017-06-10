@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import dev.kkorolyov.pancake.Config;
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.simplelogs.Logger;
 
 /**

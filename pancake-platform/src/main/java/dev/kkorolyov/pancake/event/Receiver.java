@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.event;
 
-import dev.kkorolyov.pancake.Component;
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.entity.Entity;
 
 /**
  * Acts on received events.

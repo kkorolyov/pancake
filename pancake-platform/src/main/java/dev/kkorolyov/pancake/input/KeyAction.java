@@ -5,7 +5,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Entity;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -39,7 +39,7 @@ public class KeyAction {
 	 * @param dt elapsed time in seconds since last poll
 	 * @return appropriate action, or {@code null} if no appropriate action in the current state
 	 */
-	public Consumer<? super Entity> signal(Set<Enum<?>> inputs, float dt) {
+	public Consumer<Entity> signal(Set<Enum<?>> inputs, float dt) {
 		return action.signal(inputs.containsAll(keys), dt);
 	}
 

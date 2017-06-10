@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.component.collision;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.entity.Component;
 
 /**
  * Bounds defined by a sphere.

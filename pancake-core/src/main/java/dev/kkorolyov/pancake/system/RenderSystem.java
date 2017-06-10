@@ -3,9 +3,9 @@ package dev.kkorolyov.pancake.system;
 import java.util.HashSet;
 import java.util.Set;
 
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.GameSystem;
-import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.component.Chain;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;

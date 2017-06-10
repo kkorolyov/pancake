@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.component;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.math.Vector;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

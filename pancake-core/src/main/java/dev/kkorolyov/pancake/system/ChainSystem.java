@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.system;
 
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.GameSystem;
-import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.component.Chain;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.math.Vector;

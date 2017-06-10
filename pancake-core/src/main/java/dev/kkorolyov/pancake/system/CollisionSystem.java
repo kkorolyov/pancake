@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import dev.kkorolyov.pancake.Component;
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.GameSystem;
-import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.component.collision.BoxBounds;
 import dev.kkorolyov.pancake.component.collision.SphereBounds;

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.input
 
-import dev.kkorolyov.pancake.Entity
+import dev.kkorolyov.pancake.entity.Entity
 import dev.kkorolyov.simpleprops.Properties
 import javafx.scene.input.KeyCode
 import spock.lang.Shared

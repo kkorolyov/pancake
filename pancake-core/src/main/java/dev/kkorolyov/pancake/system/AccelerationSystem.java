@@ -2,9 +2,9 @@ package dev.kkorolyov.pancake.system;
 
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.GameSystem;
-import dev.kkorolyov.pancake.Signature;
+import dev.kkorolyov.pancake.entity.Signature;
 
 /**
  * Accelerates entities by force.

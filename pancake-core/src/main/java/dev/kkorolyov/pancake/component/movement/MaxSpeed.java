@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.component.movement;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**

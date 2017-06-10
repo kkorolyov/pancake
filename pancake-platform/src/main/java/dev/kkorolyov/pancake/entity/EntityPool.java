@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake;
+package dev.kkorolyov.pancake.entity;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class EntityPool {
 	 * @param signature signature defining a set of component types
 	 * @return all entities with a signature subset matching {@code signature}
 	 */
-	Iterable<Entity> get(Signature signature) {
+	public Iterable<Entity> get(Signature signature) {
 		return entities.values().parallelStream()
 									 .filter(entity -> entity.contains(signature))
 									 .collect(Collectors.toSet());

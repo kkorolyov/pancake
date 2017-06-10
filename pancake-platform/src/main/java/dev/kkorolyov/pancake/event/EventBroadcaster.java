@@ -2,9 +2,9 @@ package dev.kkorolyov.pancake.event;
 
 import java.util.*;
 
-import dev.kkorolyov.pancake.Component;
+import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.Config;
-import dev.kkorolyov.pancake.Entity;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.simplelogs.Logger;
 
 /**

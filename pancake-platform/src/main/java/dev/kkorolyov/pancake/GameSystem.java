@@ -1,5 +1,8 @@
 package dev.kkorolyov.pancake;
 
+import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.entity.Entity;
+import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.pancake.event.Receiver;
 
