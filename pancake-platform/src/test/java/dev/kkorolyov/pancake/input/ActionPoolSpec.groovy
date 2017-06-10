@@ -1,16 +1,10 @@
 package dev.kkorolyov.pancake.input
 
-import dev.kkorolyov.pancake.entity.Entity
 import dev.kkorolyov.simpleprops.Properties
 import javafx.scene.input.KeyCode
-import spock.lang.Shared
 import spock.lang.Specification
 
-import java.util.function.Consumer
-
 class ActionPoolSpec extends Specification {
-	@Shared Consumer<Entity> action = { e -> e.toString() }
-
 	ActionPool actions = new ActionPool()
 
 	def "is case-insensitive"() {
@@ -18,8 +12,10 @@ class ActionPoolSpec extends Specification {
 		String lower = mixed.toLowerCase()
 		String upper = mixed.toUpperCase()
 
+		Action action = new Action(mixed, { e -> e.toString() })
+
 		when:
-		actions.put(mixed, action)
+		actions.put(action)
 
 		then:
 		actions.get(mixed) == action
@@ -34,18 +30,18 @@ class ActionPoolSpec extends Specification {
 		String hold = "ON_HOLD"
 		String release = "ON_RELEASE"
 
-		Consumer<Entity> pressAction = { e -> println press }
-		Consumer<Entity> holdAction = { e -> println hold }
-		Consumer<Entity> releaseAction = { e -> println release }
+		Action pressAction = new Action(press, { e -> println press })
+		Action holdAction = new Action(hold, { e -> println hold })
+		Action releaseAction = new Action(release, { e -> println release })
 
-		actions.put(press, pressAction)
-		actions.put(hold, holdAction)
-		actions.put(release, releaseAction)
+		actions.put(pressAction)
+		actions.put(holdAction)
+		actions.put(releaseAction)
 
 		Properties props = new Properties()
 		props.put(keys, press, hold, release)
 
 		expect:
-		actions.parseConfig(props)[0] == new KeyAction(new Action(pressAction, holdAction, releaseAction), KeyCode.W, KeyCode.A, KeyCode.S)
+		actions.parseConfig(props)[0] == new KeyAction(new Action([press, hold, release].toString(), pressAction, holdAction, releaseAction), KeyCode.W, KeyCode.A, KeyCode.S)
 	}
 }
