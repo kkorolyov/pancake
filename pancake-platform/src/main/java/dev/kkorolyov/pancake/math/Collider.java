@@ -60,13 +60,14 @@ public class Collider {
 	 * @return minimum translation vector to apply to first sphere to resolve intersection, or {@code null} if no intersection
 	 */
 	public static Vector intersection(Vector origin1, float radius1, Vector origin2, float radius2) {
-		float overlap = (radius1 + radius2) - origin1.distance(origin2);
+		mtv.set(origin2);
+		mtv.sub(origin1);	// Vector from origin1 to origin2
 
-		if (overlap > 0) {
-			mtv.set(origin2);
-			mtv.sub(origin1);	// Vector from origin1 to origin2
+		float overlap = mtv.getMagnitude() - (radius1 + radius2);
+
+		if (overlap < 0) {
 			mtv.normalize();	// Retain only direction
-			mtv.scale(-overlap); // Move origin1 away from origin2 by overlap amount
+			mtv.scale(overlap); // Move origin1 away from origin2 by overlap amount
 
 			return mtv;
 		} else {
