@@ -22,7 +22,7 @@ public class RenderSystem extends GameSystem {
 	private final Canvas canvas;
 	private final GraphicsContext g;
 
-	private final float unitPixels;
+	private final Vector unitPixels;
 	private final Vector camera;
 	private final Vector drawPosition = new Vector();
 
@@ -41,7 +41,7 @@ public class RenderSystem extends GameSystem {
 		this.canvas = canvas;
 		g = canvas.getGraphicsContext2D();
 
-		this.unitPixels = unitPixels;
+		this.unitPixels = new Vector(unitPixels, -unitPixels);	// Render as +y == up
 		this.camera = camera;
 	}
 

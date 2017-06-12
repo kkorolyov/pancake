@@ -32,7 +32,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Interactive extends Application {
-	private static final float MOVE_FORCE = 50;
+	private static final float MOVE_FORCE = 500;
 
 	private Canvas canvas = new Canvas(560, 560);
 	private Scene scene = new Scene(new Group(canvas));
@@ -77,28 +77,32 @@ public class Interactive extends Application {
 		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
 		SphereBounds sphereBounds = new SphereBounds(.5f);
 
-		for (int i = 0; i < 5; i++) {	// Boxes
-			entities.create(new Transform(new Vector(1 + i, i)),
-											new Velocity(),
-											new Force(.1f),
-											new Damping(.9f - .1f * i),
-											boxBounds,
-											boxSprite);
+		for (int i = 1; i <= 10; i++) {	// Boxes
+			for (int j = 1; j <= 10; j++) {
+				entities.create(new Transform(new Vector(i, -j)),
+												new Velocity(),
+												new Force(.1f),
+												new Damping(.9f),
+												boxBounds,
+												boxSprite);
+			}
 		}
-		for (int i = 0; i < 5; i++) {	// Spheres
-			entities.create(new Transform(new Vector((float) (10 - i), i)),
-											new Velocity(),
-											new Force(.1f),
-											new Damping(.9f - .1f * i),
-											sphereBounds,
-											sphereSprite);
+		for (int i = 1; i <= 10; i++) {	// Spheres
+			for (int j = 1; j <= 10; j++) {
+				entities.create(new Transform(new Vector(i, j)),
+												new Velocity(),
+												new Force(.1f),
+												new Damping(.9f),
+												sphereBounds,
+												sphereSprite);
+			}
 		}
 
 		// Player
 		Transform playerTransform = new Transform(new Vector(0, 0));
 		entities.create(playerTransform,
 										new Velocity(),
-										new Force(1),
+										new Force(10),
 										new Damping(.5f),
 										boxBounds,
 										sphereBounds,
@@ -123,8 +127,8 @@ public class Interactive extends Application {
 	private ActionPool buildActionPool() {
 		ActionPool actions = new ActionPool();
 
-		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).addForce(0, -MOVE_FORCE)));
-		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).addForce(0, MOVE_FORCE)));
+		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).addForce(0, MOVE_FORCE)));
+		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).addForce(0, -MOVE_FORCE)));
 		actions.put(new Action("FORCE_LEFT", e -> e.get(Force.class).addForce(-MOVE_FORCE, 0)));
 		actions.put(new Action("FORCE_RIGHT", e -> e.get(Force.class).addForce(MOVE_FORCE, 0)));
 		actions.put(new Action("RESET", e -> e.get(Transform.class).getPosition().set(0, 0)));
