@@ -32,7 +32,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Interactive extends Application {
-	private static final float MOVE_FORCE = 1000;
+	private static final float MOVE_FORCE = 50;
 
 	private Canvas canvas = new Canvas(560, 560);
 	private Scene scene = new Scene(new Group(canvas));
@@ -74,11 +74,11 @@ public class Interactive extends Application {
 		Sprite sphereSprite = new Sprite(new Image("scrumple_32.png"));
 		Sprite boxSprite = new Sprite(new Image("sqlob_32.png"));
 
-		BoxBounds boxBounds = new BoxBounds(new Vector(32, 32, 0));
-		SphereBounds sphereBounds = new SphereBounds(16);
+		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
+		SphereBounds sphereBounds = new SphereBounds(.5f);
 
 		for (int i = 0; i < 5; i++) {	// Boxes
-			entities.create(new Transform(new Vector(50 + i * 40, 50 + i * 40)),
+			entities.create(new Transform(new Vector(1 + i, i)),
 											new Velocity(),
 											new Force(.1f),
 											new Damping(.9f - .1f * i),
@@ -86,7 +86,7 @@ public class Interactive extends Application {
 											boxSprite);
 		}
 		for (int i = 0; i < 5; i++) {	// Spheres
-			entities.create(new Transform(new Vector((float) (canvas.getWidth() - (50 + i * 40)), 50 + i * 40)),
+			entities.create(new Transform(new Vector((float) (10 - i), i)),
 											new Velocity(),
 											new Force(.1f),
 											new Damping(.9f - .1f * i),
@@ -95,7 +95,7 @@ public class Interactive extends Application {
 		}
 
 		// Player
-		Transform playerTransform = new Transform(new Vector(-10, 10));
+		Transform playerTransform = new Transform(new Vector(0, 0));
 		entities.create(playerTransform,
 										new Velocity(),
 										new Force(1),
@@ -106,7 +106,7 @@ public class Interactive extends Application {
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 		// Camera
 		entities.create(new Transform(camera),
-										new Chain(playerTransform, 128));
+										new Chain(playerTransform, 1));
 
 		primaryStage.setTitle("Pancake: Interactive Test");
 		primaryStage.setScene(scene);

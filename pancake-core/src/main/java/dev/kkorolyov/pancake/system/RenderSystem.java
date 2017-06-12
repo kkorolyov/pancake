@@ -22,9 +22,7 @@ public class RenderSystem extends GameSystem {
 	private final Canvas canvas;
 	private final GraphicsContext g;
 
-	private float unitPixels;
-	private float zoom = 1;
-
+	private final float unitPixels;
 	private final Vector camera;
 	private final Vector drawPosition = new Vector();
 
@@ -41,9 +39,10 @@ public class RenderSystem extends GameSystem {
 												Sprite.class));
 
 		this.canvas = canvas;
+		g = canvas.getGraphicsContext2D();
+
 		this.unitPixels = unitPixels;
 		this.camera = camera;
-		g = canvas.getGraphicsContext2D();
 	}
 
 	@Override
@@ -62,11 +61,16 @@ public class RenderSystem extends GameSystem {
 			sprite.tick(dt);
 			tickedSprites.add(sprite);
 		}
-		drawPosition.set(transform.getPosition());
-		drawPosition.sub(camera);
-		drawPosition.translate((float) canvas.getWidth() / 2, (float) canvas.getHeight() / 2);
+		drawPosition.set(transform.getPosition());	// Raw position
+		drawPosition.sub(camera); // Position relative to camera
 
-		sprite.draw(g, drawPosition);
+		drawPosition.scale(unitPixels);	// Scale to pixels
+
+		drawPosition.translate((float) canvas.getWidth() / 2, (float) canvas.getHeight() / 2);	// Position relative to display center
+		drawPosition.sub(sprite.getSize(), .5f);	// Sprite top-left corner
+
+		g.drawImage(sprite.getBaseImage(), sprite.getOrigin().getX(), sprite.getOrigin().getY(), sprite.getSize().getX(), sprite.getSize().getY(),
+								drawPosition.getX(), drawPosition.getY(), sprite.getSize().getX(), sprite.getSize().getY());
 	}
 
 	@Override

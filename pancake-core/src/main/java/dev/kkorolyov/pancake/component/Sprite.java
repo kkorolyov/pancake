@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.component;
 
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.math.Vector;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
@@ -67,19 +66,18 @@ public class Sprite implements Component {
 		}
 	}
 
-	/**
-	 * Draws this sprite's current frame.
-	 * @param g drawing context
-	 * @param position draw position
-	 */
-	public void draw(GraphicsContext g, Vector position) {
-		g.drawImage(baseImage, origin.getX(), origin.getY(), size.getX(), size.getY(),
-								position.getX() - size.getX() / 2, position.getY() - size.getY() / 2, size.getX(), size.getY());
-	}
-
 	/** @return entire base image */
 	public Image getBaseImage() {
 		return baseImage;
+	}
+
+	/** @return coordinate of upper-left corner of the current frame */
+	public Vector getOrigin() {
+		return origin;
+	}
+	/** @return dimensions of a single frame */
+	public Vector getSize() {
+		return size;
 	}
 
 	/** @param frozen {@code true} disables all {@link #tick(float)} calls; {@code false} enables */
