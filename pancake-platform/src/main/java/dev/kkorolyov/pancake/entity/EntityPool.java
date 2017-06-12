@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
+import dev.kkorolyov.pancake.event.EventBroadcaster;
+import dev.kkorolyov.pancake.event.Events;
+
 /**
  * A set of uniquely-identified "component-bag" entities.
  */
@@ -13,6 +16,15 @@ public class EntityPool {
 	private int idCounter = 0;	// Main ID counter
 	private Queue<Integer> reclaimedIds = new ArrayDeque<>();	// Reclaimed IDs from destroyed entities
 	private final Map<Integer, Entity> entities = new HashMap<>();
+	private final EventBroadcaster events;
+
+	/**
+	 * Constructs an empty entity pool.
+	 * @param events registered event broadcaster
+	 */
+	public EntityPool(EventBroadcaster events) {
+		this.events = events;
+	}
 
 	/**
 	 * Returns all entities with a signature subset matching {@code signature}.
@@ -35,6 +47,7 @@ public class EntityPool {
 		Entity entity = new Entity(id, components);
 		entities.put(id, entity);
 
+		events.enqueue(Events.CREATED, entity, null);
 		return entity;
 	}
 	/**
@@ -43,9 +56,13 @@ public class EntityPool {
 	 * @return {@code true} if the entity pool contained an entity with ID matching {@code id}
 	 */
 	public boolean destroy(int id) {
-		boolean result = entities.remove(id) != null;
-		if (result) reclaimedIds.add(id);
+		Entity entity = entities.remove(id);
+		boolean result = entity != null;
 
+		if (result) {
+			reclaimedIds.add(id);
+			events.enqueue(Events.DESTROYED, entity, null);
+		}
 		return result;
 	}
 }

@@ -17,8 +17,8 @@ public class GameEngine {
 	private static final Map<GameSystem, Long> systemUsage = new HashMap<>();
 	private static int usageSamples;
 
-	private final EntityPool entities = new EntityPool();
 	private final EventBroadcaster events = new EventBroadcaster();
+	private final EntityPool entities = new EntityPool(events);
 	private final Set<GameSystem> systems = new LinkedHashSet<>();
 	
 	/**
