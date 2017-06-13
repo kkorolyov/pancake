@@ -23,13 +23,13 @@ public class Collider {
 	 */
 	public static Vector intersection(Vector origin1, Vector size1, Vector origin2, Vector size2) {
 		xTemp1.set(origin1);
-		xTemp1.sub(size1, .5f);
+		xTemp1.sub(size1, .5f);	// Lower-left vertex
 		xTemp2.set(origin2);
 		xTemp2.sub(size2, .5f);
 
-		float xOverlap = overlap(origin1.getX(), origin1.getX() + size1.getX(), origin2.getX(), origin2.getX() + size2.getX());
-		float yOverlap = overlap(origin1.getY(), origin1.getY() + size1.getY(), origin2.getY(), origin2.getY() + size2.getY());
-		float zOverlap = overlap(origin1.getZ(), origin1.getZ() + size1.getZ(), origin2.getZ(), origin2.getZ() + size2.getZ());
+		float xOverlap = overlap(xTemp1.getX(), xTemp1.getX() + size1.getX(), xTemp2.getX(), xTemp2.getX() + size2.getX());
+		float yOverlap = overlap(xTemp1.getY(), xTemp1.getY() + size1.getY(), xTemp2.getY(), xTemp2.getY() + size2.getY());
+		float zOverlap = overlap(xTemp1.getZ(), xTemp1.getZ() + size1.getZ(), xTemp2.getZ(), xTemp2.getZ() + size2.getZ());
 
 		if (xOverlap != 0 && yOverlap != 0 && zOverlap != 0) {
 			float xDiff = Math.abs(xOverlap), yDiff = Math.abs(yOverlap), zDiff = Math.abs(zOverlap);

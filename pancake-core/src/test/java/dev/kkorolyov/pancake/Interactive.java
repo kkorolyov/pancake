@@ -44,7 +44,7 @@ public class Interactive extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Vector camera = new Vector(10, 10);
+		Vector camera = new Vector(0, 0);
 
 		Signature.index(BoxBounds.class,
 										SphereBounds.class,
@@ -99,8 +99,8 @@ public class Interactive extends Application {
 		}
 
 		// Wall
-		entities.create(new Transform(new Vector(-5, 0)),
-										new BoxBounds(new Vector(5, 50)),
+		entities.create(new Transform(new Vector(-3, 0)),
+										new BoxBounds(new Vector(5, 21)),
 										boxSprite);
 
 		// Player
