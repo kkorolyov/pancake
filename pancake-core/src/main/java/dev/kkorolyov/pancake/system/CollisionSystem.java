@@ -1,19 +1,16 @@
 package dev.kkorolyov.pancake.system;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
-import dev.kkorolyov.pancake.entity.Component;
-import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.GameSystem;
-import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.component.collision.BoxBounds;
 import dev.kkorolyov.pancake.component.collision.SphereBounds;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
+import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.entity.Entity;
+import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.math.Collider;
 import dev.kkorolyov.pancake.math.Vector;
 
@@ -21,8 +18,11 @@ import dev.kkorolyov.pancake.math.Vector;
  * Detects and handles entity collisions.
  */
 public abstract class CollisionSystem extends GameSystem {
+	private static final Signature MOVEABLE = new Signature(Velocity.class,
+																													Force.class);
+
 	// TODO Better collision detection alg (Current n^2)
-	private final List<Entity> done = new ArrayList<>();
+	private final Set<Entity> done = new LinkedHashSet<>();
 	private final Queue<Entity> moved = new ArrayDeque<>();
 
 	/**
@@ -30,14 +30,13 @@ public abstract class CollisionSystem extends GameSystem {
 	 */
 	public CollisionSystem(Class<? extends Component> bounds) {
 		super(new Signature(Transform.class,
-												bounds,
-												Velocity.class,
-												Force.class));
+												bounds));
 	}
 
 	@Override
 	public void update(Entity entity, float dt) {
-		((entity.get(Velocity.class).getVelocity().getMagnitude() > 0) ? moved : done).add(entity);
+		Velocity velocity = entity.get(Velocity.class);
+		((velocity != null && velocity.getVelocity().getMagnitude() > 0) ? moved : done).add(entity);
 	}
 
 	@Override
@@ -51,8 +50,17 @@ public abstract class CollisionSystem extends GameSystem {
 				if (mtv != null) {
 					entity.get(Transform.class).getPosition().add(mtv);
 
-					Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
-																	other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
+					if (entity.contains(MOVEABLE)) {
+						if (other.contains(MOVEABLE)) {
+							Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
+																			other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
+						} else {
+							mtv.normalize();
+
+							Vector velocity = entity.get(Velocity.class).getVelocity();
+							velocity.add(mtv, velocity.getMagnitude());
+						}
+					}
 				}
 			}
 			done.add(entity);

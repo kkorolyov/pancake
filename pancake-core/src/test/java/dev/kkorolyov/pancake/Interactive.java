@@ -98,6 +98,11 @@ public class Interactive extends Application {
 			}
 		}
 
+		// Wall
+		entities.create(new Transform(new Vector(-5, 0)),
+										new BoxBounds(new Vector(5, 50)),
+										boxSprite);
+
 		// Player
 		Transform playerTransform = new Transform(new Vector(0, 0));
 		entities.create(playerTransform,
