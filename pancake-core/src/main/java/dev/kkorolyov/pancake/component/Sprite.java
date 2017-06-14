@@ -13,7 +13,6 @@ public class Sprite implements Component {
 	private final Vector size;
 	private float tickInterval;
 	private float sinceLastTick;
-	private boolean frozen;
 
 	/**
 	 * Constructs a new static sprite.
@@ -21,8 +20,6 @@ public class Sprite implements Component {
 	 */
 	public Sprite(Image baseImage) {
 		this(baseImage, (float) baseImage.getWidth(), (float) baseImage.getHeight(), 0);
-
-		frozen = true;
 	}
 	/**
 	 * Constructs a new animated sprite.
@@ -47,7 +44,7 @@ public class Sprite implements Component {
 	 * @see #freeze(boolean)
 	 */
 	public void tick(float dt) {
-		if (frozen) return;
+		if (isFrozen()) return;
 
 		sinceLastTick += dt;
 		if (sinceLastTick >= tickInterval) {
@@ -80,9 +77,13 @@ public class Sprite implements Component {
 		return size;
 	}
 
+	/** @return {@code true} if {@link #tick(float)} disabled */
+	public boolean isFrozen() {
+		return tickInterval <= 0;
+	}
 	/** @param frozen {@code true} disables all {@link #tick(float)} calls; {@code false} enables */
 	public void freeze(boolean frozen) {
-		this.frozen = frozen;
+		if (isFrozen() != frozen) tickInterval *= -1;
 	}
 
 	@Override
