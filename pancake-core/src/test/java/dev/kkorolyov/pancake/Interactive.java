@@ -77,6 +77,14 @@ public class Interactive extends Application {
 		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
 		SphereBounds sphereBounds = new SphereBounds(.5f);
 
+		Sprite grass = new Sprite(new Image("grass_64.png"));
+		for (int i = -15; i <= 15; i+= 2) {
+			for (int j = -15; j <= 15; j+= 2) {
+				entities.create(new Transform(new Vector(i, j, -1)),
+												grass);
+			}
+		}
+
 		for (int i = 1; i <= 10; i++) {	// Boxes
 			for (int j = 1; j <= 10; j++) {
 				entities.create(new Transform(new Vector(i, -j)),
