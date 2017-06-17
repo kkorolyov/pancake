@@ -1,14 +1,10 @@
 package dev.kkorolyov.pancake.system;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 
 import dev.kkorolyov.pancake.Config;
 import dev.kkorolyov.pancake.GameSystem;
-import dev.kkorolyov.pancake.component.Chain;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.entity.Entity;
@@ -21,8 +17,6 @@ import javafx.scene.canvas.GraphicsContext;
  * Renders all game entities.
  */
 public class RenderSystem extends GameSystem {
-	private static final Signature cameraSignature = new Signature(Chain.class);
-
 	private final Canvas canvas;
 	private final GraphicsContext g;
 
@@ -31,7 +25,6 @@ public class RenderSystem extends GameSystem {
 	private final Vector drawPosition = new Vector();
 
 	private final Set<Sprite> tickedSprites = new HashSet<>();
-	private final Map<Transform, Sprite> drawQueue = new TreeMap<>((t1, t2) -> t1.getPosition().getZ() < t2.getPosition().getZ() ? -1 : 1);
 
 	/**
 	 * Constructs a new render system.
@@ -41,7 +34,8 @@ public class RenderSystem extends GameSystem {
 	 */
 	public RenderSystem(Canvas canvas, float unitPixels, Vector camera) {
 		super(new Signature(Transform.class,
-												Sprite.class));
+												Sprite.class),
+					(e1, e2) -> e1.get(Transform.class).getPosition().getZ() < e2.get(Transform.class).getPosition().getZ() ? -1 : 1);
 
 		this.canvas = canvas;
 		g = canvas.getGraphicsContext2D();
@@ -53,7 +47,6 @@ public class RenderSystem extends GameSystem {
 	@Override
 	public void before(float dt) {
 		tickedSprites.clear();
-		drawQueue.clear();
 
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
@@ -63,20 +56,16 @@ public class RenderSystem extends GameSystem {
 		Transform transform = entity.get(Transform.class);
 		Sprite sprite = entity.get(Sprite.class);
 
-		drawQueue.put(transform, sprite);
-
 		if (!tickedSprites.contains(sprite)) {
 			sprite.tick(dt);
 			tickedSprites.add(sprite);
 		}
+		draw(transform, sprite);
 	}
 
 	@Override
 	public void after(float dt) {
-		for (Entry<Transform, Sprite> entry: drawQueue.entrySet()) {
-			draw(entry.getKey(), entry.getValue());
-		}
-		drawDebug(Config.config.getArray("renderInfo"), dt);
+		drawDebug(dt);
 	}
 
 	private void draw(Transform transform, Sprite sprite) {
@@ -91,7 +80,8 @@ public class RenderSystem extends GameSystem {
 		g.drawImage(sprite.getBaseImage(), sprite.getOrigin().getX(), sprite.getOrigin().getY(), sprite.getSize().getX(), sprite.getSize().getY(),
 								drawPosition.getX(), drawPosition.getY(), sprite.getSize().getX(), sprite.getSize().getY());
 	}
-	private void drawDebug(String[] args, float dt) {
+	private void drawDebug(float dt) {
+		String[] args = Config.config.getArray("renderInfo");
 		if (args == null) return;
 
 		for (String arg : args) {

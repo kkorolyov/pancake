@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake;
 
+import java.util.Comparator;
+
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
@@ -11,14 +13,24 @@ import dev.kkorolyov.pancake.event.Receiver;
  */
 public abstract class GameSystem {
 	private final Signature signature;
+	private final Comparator<Entity> comparator;
 	private EventBroadcaster events;
 
 	/**
-	 * Constructs a new system.
-	 * @param signature signature defining all components an entity must have to be affected by this system
+	 * Constructs a new system with arbitrary entity order.
+	 * @param signature defines all components an entity must have to be affected by this system
 	 */
 	public GameSystem(Signature signature) {
+		this(signature, null);
+	}
+	/**
+	 * Constructs a new system.
+	 * @param signature defines all components an entity must have to be affected by this system
+	 * @param comparator defines the order in which entities are supplied to this system
+	 */
+	public GameSystem(Signature signature, Comparator<Entity> comparator) {
 		this.signature = signature;
+		this.comparator = comparator;
 	}
 
 	/**
@@ -78,6 +90,10 @@ public abstract class GameSystem {
 	/** @return component signature */
 	public Signature getSignature() {
 		return signature;
+	}
+	/** @return required entity order */
+	public Comparator<Entity> getComparator() {
+		return comparator;
 	}
 
 	/** @param events event queue and broadcaster used by this system */

@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake;
 import java.util.*;
 import java.util.Map.Entry;
 
-import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.simplelogs.Logger;
@@ -46,9 +45,10 @@ public class GameEngine {
 
 			system.before(dt);
 
-			for (Entity entity : entities.get(system.getSignature())) {
-				system.update(entity, dt);
-			}
+			entities.get(system.getSignature(), system.getComparator())
+							.sequential()	// Avoid asynchronous update issues
+							.forEach(entity -> system.update(entity, dt));
+
 			system.after(dt);
 
 			Long lastUsage = systemUsage.get(system);

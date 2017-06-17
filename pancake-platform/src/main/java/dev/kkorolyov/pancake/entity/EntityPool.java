@@ -1,10 +1,7 @@
 package dev.kkorolyov.pancake.entity;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.Stream;
 
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.pancake.event.Events;
@@ -27,14 +24,18 @@ public class EntityPool {
 	}
 
 	/**
-	 * Returns all entities with a signature subset matching {@code signature}.
+	 * Returns a stream over all entities with a signature subset matching {@code signature}.
 	 * @param signature signature defining a set of component types
+	 * @param comparator comparator defining entity order, {@code null} results in no sorting
 	 * @return all entities with a signature subset matching {@code signature}
 	 */
-	public Iterable<Entity> get(Signature signature) {
-		return entities.values().parallelStream()
-									 .filter(entity -> entity.contains(signature))
-									 .collect(Collectors.toSet());
+	public Stream<Entity> get(Signature signature, Comparator<Entity> comparator) {
+		Stream<Entity> result = entities.values().parallelStream()
+																		.filter(entity -> entity.contains(signature));
+
+		if (comparator != null) result = result.sorted(comparator);
+
+		return result;
 	}
 
 	/**
