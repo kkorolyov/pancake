@@ -46,7 +46,7 @@ subprojects {
 	}
 
 	javadoc {
-		destinationDir = file('docs')
+		destinationDir = file("$rootProject.projectDir/docs/$project.name")
 	}
 
 	task sourcesJar(type: Jar) {
