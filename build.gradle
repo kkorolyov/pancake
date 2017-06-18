@@ -87,7 +87,7 @@ project(':pancake-platform') {
 }
 
 project(':pancake-core') {
-	description = """Core Pancake systems and components"""
+	description = """Collection of general and reusable systems and components for the Pancake engine"""
 
 	dependencies {
 		compile project(':pancake-platform')
