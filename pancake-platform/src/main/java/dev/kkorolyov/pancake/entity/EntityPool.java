@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import dev.kkorolyov.pancake.event.EventBroadcaster;
-import dev.kkorolyov.pancake.event.Events;
 
 /**
  * A set of uniquely-identified "component-bag" entities.
@@ -21,6 +20,8 @@ public class EntityPool {
 	 */
 	public EntityPool(EventBroadcaster events) {
 		this.events = events;
+
+		events.register("DESTROY", e -> destroy(e.getId()));
 	}
 
 	/**
@@ -48,7 +49,7 @@ public class EntityPool {
 		Entity entity = new Entity(id, components);
 		entities.put(id, entity);
 
-		events.enqueue(Events.CREATED, entity, null);
+		events.enqueue("CREATED", entity);
 		return entity;
 	}
 	/**
@@ -62,7 +63,7 @@ public class EntityPool {
 
 		if (result) {
 			reclaimedIds.add(id);
-			events.enqueue(Events.DESTROYED, entity, null);
+			events.enqueue("DESTROYED", entity);
 		}
 		return result;
 	}

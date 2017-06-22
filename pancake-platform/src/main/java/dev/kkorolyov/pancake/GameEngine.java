@@ -81,6 +81,8 @@ public class GameEngine {
 	/** @param system added system */
 	public void add(GameSystem system) {
 		system.setEvents(events);
+		system.setEntities(entities);
+
 		systems.add(system);
 
 		system.attach();
@@ -88,6 +90,8 @@ public class GameEngine {
 	/** @param system removed system */
 	public void remove(GameSystem system) {
 		system.setEvents(null);
+		system.setEntities(entities);
+
 		systems.remove(system);
 
 		system.detach();

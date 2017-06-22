@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake.event;
 
-import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
 
 /**
@@ -11,7 +10,6 @@ public interface Receiver {
 	/**
 	 * Receives and acts on a single event.
 	 * @param target entity affected by event, or {@code null} if not applicable
-	 * @param changed component affected by event, or {@code null} if not applicable
 	 */
-	void receive(Entity target, Component changed);
+	void receive(Entity target);
 }

@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
+import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.pancake.event.Receiver;
@@ -15,6 +16,7 @@ public abstract class GameSystem {
 	private final Signature signature;
 	private final Comparator<Entity> comparator;
 	private EventBroadcaster events;
+	private EntityPool entities;
 
 	/**
 	 * Constructs a new system with arbitrary entity order.
@@ -81,10 +83,18 @@ public abstract class GameSystem {
 	 * Queues an event.
 	 * @param event event identifier
 	 * @param target entity affected by event, or {@code null} if not applicable
-	 * @param changed component affected by event, or {@code null} if not applicable
 	 */
-	public void enqueue(String event, Entity target, Component changed) {
-		events.enqueue(event, target, changed);
+	public void enqueue(String event, Entity target) {
+		events.enqueue(event, target);
+	}
+
+	/**
+	 * Adds a new entity to the attached entity pool.
+	 * @param components components composing entity
+	 * @return created entity
+	 */
+	public Entity create(Component... components) {
+		return entities.create(components);
 	}
 
 	/** @return component signature */
@@ -96,8 +106,12 @@ public abstract class GameSystem {
 		return comparator;
 	}
 
-	/** @param events event queue and broadcaster used by this system */
+	/** @param events event queue and broadcaster accessible to this system */
 	void setEvents(EventBroadcaster events) {
 		this.events = events;
+	}
+	/** @param entities entity pool accessible to this system */
+	void setEntities(EntityPool entities) {
+		this.entities = entities;
 	}
 }

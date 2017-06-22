@@ -84,6 +84,21 @@ public class Entity implements Comparable<Entity> {
 		return id;
 	}
 
+	/** Checks for equality by ID. */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Entity entity = (Entity) o;
+
+		return id == entity.id;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
 	/**	Compares entities by ID. */
 	@Override
 	public int compareTo(Entity o) {
