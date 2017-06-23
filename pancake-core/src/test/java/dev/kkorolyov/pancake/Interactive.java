@@ -3,22 +3,23 @@ package dev.kkorolyov.pancake;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.function.Supplier;
 
-import dev.kkorolyov.pancake.component.Chain;
-import dev.kkorolyov.pancake.component.Input;
-import dev.kkorolyov.pancake.component.Sprite;
-import dev.kkorolyov.pancake.component.Transform;
+import dev.kkorolyov.pancake.component.*;
 import dev.kkorolyov.pancake.component.collision.BoxBounds;
 import dev.kkorolyov.pancake.component.collision.SphereBounds;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
+import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
+import dev.kkorolyov.pancake.math.WeightedDistribution;
 import dev.kkorolyov.pancake.system.*;
 import dev.kkorolyov.pancake.system.CollisionSystem.BoxCollisionSystem;
 import dev.kkorolyov.pancake.system.CollisionSystem.SphereCollisionSystem;
@@ -55,7 +56,8 @@ public class Interactive extends Application {
 										Transform.class,
 										Chain.class,
 										Velocity.class,
-										Input.class);
+										Input.class,
+										Spawner.class);
 		GameEngine engine = new GameEngine(
 				new DampingSystem(),
 				new AccelerationSystem(),
@@ -65,6 +67,7 @@ public class Interactive extends Application {
 				new SphereCollisionSystem(),
 				new InputSystem(scene),
 				new ChainSystem(),
+				new SpawnSystem(),
 				new RenderSystem(canvas, 32, camera));
 		new GameLoop(engine).start();
 
@@ -111,6 +114,14 @@ public class Interactive extends Application {
 										new BoxBounds(new Vector(5, 21)),
 										boxSprite);
 
+		WeightedDistribution<Supplier<Iterable<Component>>> spawnSupply = new WeightedDistribution<>();
+		spawnSupply.add(1, () -> Arrays.asList(new Transform(new Vector(1, 1)),
+																					 new Velocity(),
+																					 new Force(.1f),
+																					 new Damping(.9f),
+																					 sphereBounds,
+																					 sphereSprite));
+
 		// Player
 		Transform playerTransform = new Transform(new Vector(0, 0));
 		entities.create(playerTransform,
@@ -120,6 +131,7 @@ public class Interactive extends Application {
 										boxBounds,
 										sphereBounds,
 										playerSprite,
+										new Spawner(1, 4, .1f, spawnSupply),
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 		// Camera
 		entities.create(new Transform(camera),
