@@ -20,6 +20,9 @@ public class EntityPool {
 	 */
 	public EntityPool(EventBroadcaster events) {
 		this.events = events;
+
+		this.events.register("CREATE", (e, c) -> create(c));
+		this.events.register("DESTROY", (e, c) -> destroy(e));
 	}
 
 	/**
@@ -55,7 +58,7 @@ public class EntityPool {
 		Entity entity = new Entity(id, components);
 		entities.put(id, entity);
 
-		events.enqueue("CREATED", entity);
+		events.enqueue("CREATED", entity, components);
 		return entity;
 	}
 
@@ -70,7 +73,7 @@ public class EntityPool {
 
 		if (result) {
 			reclaimedIds.add(removed.getId());
-			events.enqueue("DESTROYED", removed);
+			events.enqueue("DESTROYED", removed, null);
 		}
 		return result;
 	}

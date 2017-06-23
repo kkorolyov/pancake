@@ -83,35 +83,10 @@ public abstract class GameSystem {
 	 * Queues an event.
 	 * @param event event identifier
 	 * @param target entity affected by event, or {@code null} if not applicable
+	 * @param rawTarget components affected by event, or {@code null} if not applicable
 	 */
-	public void enqueue(String event, Entity target) {
-		events.enqueue(event, target);
-	}
-
-	/**
-	 * Adds a new entity to the attached entity pool.
-	 * @param components components composing entity
-	 * @return created entity
-	 */
-	public Entity create(Component... components) {
-		return entities.create(components);
-	}
-	/**
-	 * Adds a new entity to the attached entity pool.
-	 * @param components components composing entity
-	 * @return created entity
-	 */
-	public Entity create(Iterable<Component> components) {
-		return entities.create(components);
-	}
-
-	/**
-	 * Removes an entity from the attached entity pool
-	 * @param entity entity to remove
-	 * @return {@code true} if the attached entity pool contained {@code entity} and it was removed
-	 */
-	public boolean destroy(Entity entity) {
-		return entities.destroy(entity);
+	public void enqueue(String event, Entity target, Iterable<Component> rawTarget) {
+		events.enqueue(event, target, rawTarget);
 	}
 
 	/** @return component signature */

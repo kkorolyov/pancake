@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.event;
 import java.util.*;
 
 import dev.kkorolyov.pancake.Config;
+import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.simplelogs.Logger;
 
@@ -39,11 +40,12 @@ public class EventBroadcaster {
 	 * Queues an event to broadcast to all registered receivers.
 	 * @param event event identifier
 	 * @param target entity affected by event, or {@code null} if not applicable
+	 * @param rawTarget components affected by event, or {@code null} if not applicable
 	 * @return number of receivers registered to event
 	 */
-	public int enqueue(String event, Entity target) {
-		eventQueue.add(new Event(event, target));
-		log.info("Enqueued new event: ({}, {})", event, target);
+	public int enqueue(String event, Entity target, Iterable<Component> rawTarget) {
+		eventQueue.add(new Event(event, target, rawTarget));
+		log.info("Enqueued new event: ({}, {}, {})", event, target, rawTarget);
 
 		Set<Receiver> eventReceivers = receivers.get(event);
 		return (eventReceivers == null) ? 0 : eventReceivers.size();
@@ -62,7 +64,7 @@ public class EventBroadcaster {
 			Set<Receiver> eventReceivers = receivers.get(event.name);
 			if (eventReceivers != null) {
 				for (Receiver eventReceiver : eventReceivers) {
-					eventReceiver.receive(event.target);
+					eventReceiver.receive(event.target, event.rawTarget);
 				}
 			}
 		}
@@ -73,10 +75,12 @@ public class EventBroadcaster {
 	private class Event {
 		final String name;
 		final Entity target;
+		final Iterable<Component> rawTarget;
 
-		Event(String name, Entity target) {
+		Event(String name, Entity target, Iterable<Component> rawTarget) {
 			this.name = name;
 			this.target = target;
+			this.rawTarget = rawTarget;
 		}
 	}
 }
