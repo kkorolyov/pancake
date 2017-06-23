@@ -96,6 +96,23 @@ public abstract class GameSystem {
 	public Entity create(Component... components) {
 		return entities.create(components);
 	}
+	/**
+	 * Adds a new entity to the attached entity pool.
+	 * @param components components composing entity
+	 * @return created entity
+	 */
+	public Entity create(Iterable<Component> components) {
+		return entities.create(components);
+	}
+
+	/**
+	 * Removes an entity from the attached entity pool
+	 * @param entity entity to remove
+	 * @return {@code true} if the attached entity pool contained {@code entity} and it was removed
+	 */
+	public boolean destroy(Entity entity) {
+		return entities.destroy(entity);
+	}
 
 	/** @return component signature */
 	public Signature getSignature() {

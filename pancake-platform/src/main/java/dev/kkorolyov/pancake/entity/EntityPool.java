@@ -20,8 +20,6 @@ public class EntityPool {
 	 */
 	public EntityPool(EventBroadcaster events) {
 		this.events = events;
-
-		events.register("DESTROY", e -> destroy(e.getId()));
 	}
 
 	/**
@@ -45,6 +43,14 @@ public class EntityPool {
 	 * @return created entity
 	 */
 	public Entity create(Component... components) {
+		return create(Arrays.asList(components));
+	}
+	/**
+	 * Constructs a new entity from a collection of components and adds it to the entity pool.
+	 * @param components components composing entity
+	 * @return created entity
+	 */
+	public Entity create(Iterable<Component> components) {
 		int id = reclaimedIds.isEmpty() ? idCounter++ : reclaimedIds.remove();
 		Entity entity = new Entity(id, components);
 		entities.put(id, entity);
@@ -52,18 +58,19 @@ public class EntityPool {
 		events.enqueue("CREATED", entity);
 		return entity;
 	}
+
 	/**
 	 * Removes an entity from the entity pool.
-	 * @param id ID designating entity to destroy
-	 * @return {@code true} if the entity pool contained an entity with ID matching {@code id}
+	 * @param entity entity to destroy
+	 * @return {@code true} if the entity pool contained {@code entity} and it was removed
 	 */
-	public boolean destroy(int id) {
-		Entity entity = entities.remove(id);
-		boolean result = entity != null;
+	public boolean destroy(Entity entity) {
+		Entity removed = entities.remove(entity.getId());
+		boolean result = removed != null;
 
 		if (result) {
-			reclaimedIds.add(id);
-			events.enqueue("DESTROYED", entity);
+			reclaimedIds.add(removed.getId());
+			events.enqueue("DESTROYED", removed);
 		}
 		return result;
 	}
