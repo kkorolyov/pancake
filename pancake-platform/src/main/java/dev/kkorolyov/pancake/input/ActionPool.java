@@ -19,13 +19,13 @@ public class ActionPool {
 
 	/**
 	 * Retrieves an action by name.
-	 * @param name action identifier, case-insensitive
+	 * @param name action identifier
 	 * @return action mapped to {@code name}, or the {@code NOOP} action if no such action
 	 */
 	public Action get(String name) {
 		if (name == null) return Action.NOOP;
 
-		Action action = actions.get(name.toUpperCase());
+		Action action = actions.get(name);
 		return action == null ? Action.NOOP : action;
 	}
 
@@ -57,7 +57,7 @@ public class ActionPool {
 	 * @param action added action
 	 */
 	public void put(Action action) {
-		actions.put(action.getName().toUpperCase(), action);
+		actions.put(action.getName(), action);
 	}
 
 	/**

@@ -131,7 +131,7 @@ public class Interactive extends Application {
 										boxBounds,
 										sphereBounds,
 										playerSprite,
-										new Spawner(1, 4, .1f, spawnSupply),
+//										new Spawner(1, 4, .1f, spawnSupply),
 										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
 		// Camera
 		entities.create(new Transform(camera),

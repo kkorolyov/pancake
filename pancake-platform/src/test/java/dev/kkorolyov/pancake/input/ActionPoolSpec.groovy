@@ -7,22 +7,6 @@ import spock.lang.Specification
 class ActionPoolSpec extends Specification {
 	ActionPool actions = new ActionPool()
 
-	def "is case-insensitive"() {
-		String mixed = "StRIng"
-		String lower = mixed.toLowerCase()
-		String upper = mixed.toUpperCase()
-
-		Action action = new Action(mixed, { e -> e.toString() })
-
-		when:
-		actions.put(action)
-
-		then:
-		actions.get(mixed) == action
-		actions.get(lower) == action
-		actions.get(upper) == action
-	}
-
 	def "parses full key action correctly"() {
 		String keys = "[W,A,S]"
 
