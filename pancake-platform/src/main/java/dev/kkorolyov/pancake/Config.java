@@ -53,11 +53,11 @@ public final class Config {
 	}
 
 	private static Properties loadProperties(String file) {
-		URL loggingURL = ClassLoader.getSystemResource(file);
-		if (loggingURL == null) return new Properties();
+		URL url = ClassLoader.getSystemResource(file);
+		if (url == null) return new Properties();
 
 		try {
-			return new Properties(Paths.get(loggingURL.toURI()));
+			return new Properties(Paths.get(url.toURI()));
 		} catch (URISyntaxException | IOException e) {
 			e.printStackTrace();
 			return new Properties();
