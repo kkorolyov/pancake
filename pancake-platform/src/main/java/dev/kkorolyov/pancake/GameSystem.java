@@ -4,7 +4,6 @@ import java.util.Comparator;
 
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
-import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.pancake.event.Receiver;
@@ -16,7 +15,6 @@ public abstract class GameSystem {
 	private final Signature signature;
 	private final Comparator<Entity> comparator;
 	private EventBroadcaster events;
-	private EntityPool entities;
 
 	/**
 	 * Constructs a new system with arbitrary entity order.
@@ -101,9 +99,5 @@ public abstract class GameSystem {
 	/** @param events event queue and broadcaster accessible to this system */
 	void setEvents(EventBroadcaster events) {
 		this.events = events;
-	}
-	/** @param entities entity pool accessible to this system */
-	void setEntities(EntityPool entities) {
-		this.entities = entities;
 	}
 }
