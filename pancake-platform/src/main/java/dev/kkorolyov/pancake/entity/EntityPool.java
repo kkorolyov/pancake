@@ -7,6 +7,15 @@ import dev.kkorolyov.pancake.event.EventBroadcaster;
 
 /**
  * A set of uniquely-identified "component-bag" entities.
+ * <pre>
+ * Events received:
+ * CREATE - creates an entity using provided components
+ * DESTROY - destroys a provided entity
+ *
+ * Events emitted:
+ * CREATED - when an entity is created; provides both the created entity and all its components
+ * DESTROYED - when an entity is destroyed; provides the destroyed entity
+ * </pre>
  */
 public class EntityPool {
 	private int idCounter = 0;	// Main ID counter

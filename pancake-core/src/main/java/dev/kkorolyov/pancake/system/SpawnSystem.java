@@ -9,6 +9,10 @@ import dev.kkorolyov.pancake.entity.Signature;
 
 /**
  * Spawns entity clones from spawner entities.
+ * <pre>
+ * Events received:
+ * SPAWN - spawns a clone using the {@link Spawner} of a provided entity
+ * </pre>
  */
 public class SpawnSystem extends GameSystem {
 	/**
