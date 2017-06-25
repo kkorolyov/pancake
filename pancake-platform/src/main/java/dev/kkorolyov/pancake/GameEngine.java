@@ -22,12 +22,14 @@ public class GameEngine {
 	
 	/**
 	 * Constructs a new engine pre-populated with systems.
+	 * @param systems attached systems
 	 */
 	public GameEngine(GameSystem... systems) {
 		this(Arrays.asList(systems));
 	}
 	/**
 	 * Constructs a new engine pre-populated with systems.
+	 * @param systems attached systems
 	 */
 	public GameEngine(Iterable<GameSystem> systems) {
 		for (GameSystem system : systems) add(system);

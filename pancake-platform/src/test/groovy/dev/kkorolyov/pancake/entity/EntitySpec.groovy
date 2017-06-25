@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake
+package dev.kkorolyov.pancake.entity
 
 import dev.kkorolyov.pancake.entity.Component
 import dev.kkorolyov.pancake.entity.Entity
