@@ -1,0 +1,8 @@
+# Binds arbitrary sets of keys to actions
+# 3-action tuples define custom (press, hold, release) behavior
+
+[W]=MOVE_UP
+[S]=MOVE_DOWN
+[A]=FORCE_LEFT,,FORCE_RIGHT
+[D]=FORCE_RIGHT,,FORCE_LEFT
+[ESCAPE]=RESET

@@ -73,14 +73,14 @@ public class Interactive extends Application {
 
 		EntityPool entities = engine.getEntities();
 
-		Sprite playerSprite = new Sprite(new Image("rotate-happy_128.png"), 32, 32, 1 / 60f);
-		Sprite sphereSprite = new Sprite(new Image("scrumple_32.png"));
-		Sprite boxSprite = new Sprite(new Image("sqlob_32.png"));
+		Sprite playerSprite = new Sprite(new Image("assets/rotate-happy_32.png"), 32, 32, 1 / 60f);
+		Sprite sphereSprite = new Sprite(new Image("assets/scrumple_32.png"));
+		Sprite boxSprite = new Sprite(new Image("assets/sqlob_32.png"));
 
 		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
 		SphereBounds sphereBounds = new SphereBounds(.5f);
 
-		Sprite grass = new Sprite(new Image("grass_64.png"));
+		Sprite grass = new Sprite(new Image("assets/cobble_64.png"));
 		for (int i = -15; i <= 15; i+= 2) {
 			for (int j = -15; j <= 15; j+= 2) {
 				entities.create(new Transform(new Vector(i, j, -1)),
@@ -132,7 +132,7 @@ public class Interactive extends Application {
 										sphereBounds,
 										playerSprite,
 //										new Spawner(1, 4, .1f, spawnSupply),
-										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("keys").toURI())))));
+										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
 		// Camera
 		entities.create(new Transform(camera),
 										new Chain(playerTransform, 1));
@@ -159,7 +159,7 @@ public class Interactive extends Application {
 		actions.put(new Action("RESET", e -> e.get(Transform.class).getPosition().set(0, 0)));
 
 		try {
-			actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("actions").toURI())));
+			actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/actions").toURI())));
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
