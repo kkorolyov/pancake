@@ -68,19 +68,19 @@ public class Interactive extends Application {
 				new InputSystem(scene),
 				new ChainSystem(),
 				new SpawnSystem(),
-				new RenderSystem(canvas, 32, camera));
+				new RenderSystem(canvas, 64, camera));
 		new GameLoop(engine).start();
 
 		EntityPool entities = engine.getEntities();
 
-		Sprite playerSprite = new Sprite(new Image("assets/rotate-happy_32.png"), 32, 32, 1 / 60f);
-		Sprite sphereSprite = new Sprite(new Image("assets/scrumple_32.png"));
-		Sprite boxSprite = new Sprite(new Image("assets/sqlob_32.png"));
+		Sprite playerSprite = new Sprite(new Image("assets/entities/swealor_64.png"), 64, 64, 1 / 60f);
+		Sprite sphereSprite = new Sprite(new Image("assets/entities/scrumple_64.png"));
+		Sprite boxSprite = new Sprite(new Image("assets/entities/sqlob_64.png"));
 
 		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
 		SphereBounds sphereBounds = new SphereBounds(.5f);
 
-		Sprite grass = new Sprite(new Image("assets/cobble_64.png"));
+		Sprite grass = new Sprite(new Image("assets/tiles/cobble_128.png"), 128, 128, 0);
 		for (int i = -15; i <= 15; i+= 2) {
 			for (int j = -15; j <= 15; j+= 2) {
 				entities.create(new Transform(new Vector(i, j, -1)),
