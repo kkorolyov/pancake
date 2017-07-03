@@ -1,71 +1,70 @@
 package dev.kkorolyov.pancake.component;
 
 import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.graphics.CompositeImage;
 import dev.kkorolyov.pancake.math.Vector;
-import javafx.scene.image.Image;
 
 /**
  * A dynamic image.
  */
 public class Sprite implements Component {
-	private final Image baseImage;
-	private final Vector origin;
-	private final Vector size;
-	private float tickInterval;
-	private float sinceLastTick;
+	private CompositeImage image;
+
+	private final Vector origin = new Vector();
+	private final Vector frames = new Vector();
+	private final Vector frameSize = new Vector();
+
+	private float frameInterval;
+	private float currentFrameTime;
+	private int frame;
+	private boolean stopped;
 
 	/**
 	 * Constructs a new static sprite.
-	 * @param baseImage sprite image
+	 * @param image sprite image
 	 */
-	public Sprite(Image baseImage) {
-		this(baseImage, (float) baseImage.getWidth(), (float) baseImage.getHeight(), 0);
+	public Sprite(CompositeImage image) {
+		this(image, 1, 1, 0);
 	}
 	/**
 	 * Constructs a new animated sprite.
-	 * @param baseImage base sprite sheet
-	 * @param width width in px of a single sprite
-	 * @param height height in px of a single sprite
-	 * @param tickInterval seconds between frame changes
+	 * @param image sprite sheet
+	 * @param xFrames number of frames in {@code image} along x-axis
+	 * @param yFrames number of frames in {@code image} along y-axis
+	 * @param frameInterval seconds between frame changes
 	 */
-	public Sprite(Image baseImage, float width, float height, float tickInterval) {
-		this.baseImage = baseImage;
-		this.tickInterval = tickInterval;
-
-		origin = new Vector(0, 0, 0);
-		size = new Vector(width, height);
+	public Sprite(CompositeImage image, int xFrames, int yFrames, float frameInterval) {
+		setImage(image);
+		setFrames(xFrames, yFrames);
+		setFrameInterval(frameInterval);
 	}
 
 	/**
-	 * Advances this sprite's animation by 1 frame.
-	 * If this sprite is already on the final frame, it loops back to the initial frame.
-	 * If this sprite is frozen or has only 1 frame, this method does nothing.
-	 * @param dt seconds elapsed since last invocation of this method
-	 * @see #freeze(boolean)
+	 * Changes to the next frame, if enough time has elapsed.
+	 * @param dt seconds elapsed since previous invocation of this method
 	 */
-	public void tick(float dt) {
-		if (isFrozen()) return;
+	public void update(float dt) {
+		if (isStopped()) return;
 
-		sinceLastTick += dt;
-		if (sinceLastTick >= tickInterval) {
-			for (int i = 0; i < (int) (sinceLastTick / tickInterval); i++) {  // Catch up on skipped ticks, if applicable
-				if ((origin.getX() + size.getX()) >= baseImage.getWidth()) {  // Right edge of viewport
-					if ((origin.getY() + size.getY()) >= baseImage.getHeight()) {  // Bottom edge of viewport
-						origin.set(0, 0);  // Wrap to start
-					} else {  // Next line
-						origin.set(0, origin.getY() + size.getY());
-					}
-				} else {
-					origin.translate(size.getX(), 0);
-				}
-			}
-			sinceLastTick = 0;
+		currentFrameTime += dt;
+		if (currentFrameTime >= Math.abs(frameInterval)) {
+			setFrame(frame + (frameInterval > 0 ? 1 : -1));	// Reversed if negative
+			currentFrameTime = 0;
 		}
 	}
 
-	/** @return entire base image */
-	public Image getBaseImage() {
-		return baseImage;
+	/** @return {@code true} if {@link #update(float)} is disabled */
+	public boolean isStopped() {
+		return stopped || frameInterval == 0;
+	}
+	/**
+	 * @param stopped {@code true} disables {@link #update(float)}, {@code false} enables
+	 * @param reset if {@code true}, sets the current frame to {@code 0}
+	 */
+	public void stop(boolean stopped, boolean reset) {
+		this.stopped = stopped;
+
+		if (reset) setFrame(0);
 	}
 
 	/** @return coordinate of upper-left corner of the current frame */
@@ -74,24 +73,78 @@ public class Sprite implements Component {
 	}
 	/** @return dimensions of a single frame */
 	public Vector getSize() {
-		return size;
+		return frameSize;
 	}
 
-	/** @return {@code true} if {@link #tick(float)} disabled */
-	public boolean isFrozen() {
-		return tickInterval <= 0;
+	/** @return sprite image */
+	public CompositeImage getImage() {
+		return image;
 	}
-	/** @param frozen {@code true} disables all {@link #tick(float)} calls; {@code false} enables */
-	public void freeze(boolean frozen) {
-		if (isFrozen() != frozen) tickInterval *= -1;
+
+	/** @param image new sprite image */
+	public void setImage(CompositeImage image) {
+		this.image = image;
+
+		applyFrameSize();
+	}
+	/** @return index of current frame, starting from {@code 0} */
+	public int getFrame() {
+		return frame;
+	}
+
+	/** @param frame new current frame */
+	public void setFrame(int frame) {
+		this.frame = Math.floorMod(frame, getLength());
+
+		origin.set((int) (this.frame % frames.getX()) * frameSize.getX(),
+							 (int) (this.frame / frames.getX()) * frameSize.getY());
+	}
+
+	/** @return number of frames along x and y axes on this sprite's image */
+	public Vector getFrames() {
+		return frames;
+	}
+
+	/**
+	 * @param xFrames number of frames along x-axis on this sprite's image
+	 * @param yFrames number of frames along y-axis on this sprite's image
+	 */
+	public void setFrames(int xFrames, int yFrames) {
+		frames.set(xFrames, yFrames);
+
+		applyFrameSize();
+	}
+
+	/** @return total number of frames */
+	public int getLength() {
+		return (int) (frames.getX() * frames.getY());
+	}
+
+	private void applyFrameSize() {
+		frameSize.set(image.getSize().getX() / frames.getX(), image.getSize().getY() / frames.getY());
+	}
+
+	/** @return seconds between frame changes */
+	public float getFrameInterval() {
+		return frameInterval;
+	}
+
+	/** @param frameInterval new seconds between frame changes */
+	public void setFrameInterval(float frameInterval) {
+		this.frameInterval = frameInterval;
 	}
 
 	@Override
 	public String toString() {
 		return "Sprite{" +
-					 "baseImage=" + baseImage +
+					 "image=" + image +
 					 ", origin=" + origin +
-					 ", size=" + size +
+					 ", frames=" + frames +
+					 ", frameSize=" + frameSize +
+					 ", frameInterval=" + frameInterval +
+					 ", currentFrameTime=" + currentFrameTime +
+					 ", frame=" + frame +
+					 ", stopped=" + stopped +
 					 '}';
 	}
 }

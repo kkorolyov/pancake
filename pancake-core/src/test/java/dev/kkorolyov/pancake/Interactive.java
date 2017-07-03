@@ -16,6 +16,7 @@ import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.entity.Signature;
+import dev.kkorolyov.pancake.graphics.CompositeImage;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
@@ -73,14 +74,15 @@ public class Interactive extends Application {
 
 		EntityPool entities = engine.getEntities();
 
-		Sprite playerSprite = new Sprite(new Image("assets/entities/swealor_64.png"), 64, 64, 1 / 60f);
-		Sprite sphereSprite = new Sprite(new Image("assets/entities/scrumple_64.png"));
-		Sprite boxSprite = new Sprite(new Image("assets/entities/sqlob_64.png"));
+		Sprite playerSprite = new Sprite(new CompositeImage(new Image("assets/entities/swealor.png"),
+																												new Image("assets/entities/skeleton.png")), 4, 3, 1 / 60f);
+		Sprite sphereSprite = new Sprite(new CompositeImage(new Image("assets/entities/scrumple_64.png")));
+		Sprite boxSprite = new Sprite(new CompositeImage(new Image("assets/entities/sqlob_64.png")));
 
 		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
 		SphereBounds sphereBounds = new SphereBounds(.5f);
 
-		Sprite grass = new Sprite(new Image("assets/tiles/cobble_128.png"), 128, 128, 0);
+		Sprite grass = new Sprite(new CompositeImage(new Image("assets/tiles/cobble_128.png")), 3, 2, 0);
 		for (int i = -15; i <= 15; i+= 2) {
 			for (int j = -15; j <= 15; j+= 2) {
 				entities.create(new Transform(new Vector(i, j, -1)),

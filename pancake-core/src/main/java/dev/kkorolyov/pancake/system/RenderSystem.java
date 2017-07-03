@@ -12,6 +12,7 @@ import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.math.Vector;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 /**
  * Renders all game entities.
@@ -57,7 +58,7 @@ public class RenderSystem extends GameSystem {
 		Sprite sprite = entity.get(Sprite.class);
 
 		if (!tickedSprites.contains(sprite)) {
-			sprite.tick(dt);
+			sprite.update(dt);
 			tickedSprites.add(sprite);
 		}
 		draw(transform, sprite);
@@ -77,8 +78,10 @@ public class RenderSystem extends GameSystem {
 		drawPosition.translate((float) canvas.getWidth() / 2, (float) canvas.getHeight() / 2);	// Position relative to display center
 		drawPosition.sub(sprite.getSize(), .5f);	// Sprite top-left corner
 
-		g.drawImage(sprite.getBaseImage(), sprite.getOrigin().getX(), sprite.getOrigin().getY(), sprite.getSize().getX(), sprite.getSize().getY(),
-								drawPosition.getX(), drawPosition.getY(), sprite.getSize().getX(), sprite.getSize().getY());
+		for (Image image : sprite.getImage()) {
+			g.drawImage(image, sprite.getOrigin().getX(), sprite.getOrigin().getY(), sprite.getSize().getX(), sprite.getSize().getY(),
+									drawPosition.getX(), drawPosition.getY(), sprite.getSize().getX(), sprite.getSize().getY());
+		}
 	}
 	private void drawDebug(float dt) {
 		String[] args = Config.config.getArray("renderInfo");
