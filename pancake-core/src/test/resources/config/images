@@ -1,0 +1,4 @@
+player=assets/entities/swealor.png, assets/entities/skeleton.png
+sphere=assets/entities/scrumple.png
+box=assets/entities/sqlob.png
+ground=assets/tiles/cobble.png

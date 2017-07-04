@@ -16,7 +16,7 @@ import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.entity.Signature;
-import dev.kkorolyov.pancake.graphics.CompositeImage;
+import dev.kkorolyov.pancake.graphics.ImagePool;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
@@ -30,15 +30,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Interactive extends Application {
 	private static final float MOVE_FORCE = 500;
 
-	private Canvas canvas = new Canvas(560, 560);
-	private Scene scene = new Scene(new Group(canvas));
-	private ActionPool actions = buildActionPool();
+	private final Canvas canvas = new Canvas(560, 560);
+	private final Scene scene = new Scene(new Group(canvas));
+	private final ActionPool actions = buildActionPool();
+	private final ImagePool images = buildImagePool();
 
 	public static void main(String[] args) throws URISyntaxException {
 		Application.launch(args);
@@ -74,19 +74,18 @@ public class Interactive extends Application {
 
 		EntityPool entities = engine.getEntities();
 
-		Sprite playerSprite = new Sprite(new CompositeImage(new Image("assets/entities/swealor.png"),
-																												new Image("assets/entities/skeleton.png")), 4, 3, 1 / 60f);
-		Sprite sphereSprite = new Sprite(new CompositeImage(new Image("assets/entities/scrumple_64.png")));
-		Sprite boxSprite = new Sprite(new CompositeImage(new Image("assets/entities/sqlob_64.png")));
+		Sprite playerSprite = new Sprite(images.get("player"), 4, 3, 1 / 60f);
+		Sprite sphereSprite = new Sprite(images.get("sphere"));
+		Sprite boxSprite = new Sprite(images.get("box"));
 
 		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
 		SphereBounds sphereBounds = new SphereBounds(.5f);
 
-		Sprite grass = new Sprite(new CompositeImage(new Image("assets/tiles/cobble_128.png")), 3, 2, 0);
+		Sprite ground = new Sprite(images.get("ground"), 3, 2, 0);
 		for (int i = -15; i <= 15; i+= 2) {
 			for (int j = -15; j <= 15; j+= 2) {
 				entities.create(new Transform(new Vector(i, j, -1)),
-												grass);
+												ground);
 			}
 		}
 
@@ -166,5 +165,16 @@ public class Interactive extends Application {
 			e.printStackTrace();
 		}
 		return actions;
+	}
+
+	private ImagePool buildImagePool() {
+		ImagePool images = new ImagePool();
+
+		try {
+			images.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/images").toURI())));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return images;
 	}
 }

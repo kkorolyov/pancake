@@ -8,7 +8,7 @@ class ActionPoolSpec extends Specification {
 	ActionPool actions = new ActionPool()
 
 	def "parses full key action correctly"() {
-		String keys = "[W,A,S]"
+		KeyCode[] keys = [KeyCode.W, KeyCode.A, KeyCode.S]
 
 		String press = "ON_PRESS"
 		String hold = "ON_HOLD"
@@ -23,9 +23,9 @@ class ActionPoolSpec extends Specification {
 		actions.put(releaseAction)
 
 		Properties props = new Properties()
-		props.put(keys, press, hold, release)
+		props.put(keys.toString(), press, hold, release)
 
 		expect:
-		actions.parseConfig(props)[0] == new KeyAction(new Action([press, hold, release].toString(), pressAction, holdAction, releaseAction), KeyCode.W, KeyCode.A, KeyCode.S)
+		actions.parseConfig(props)[0] == new KeyAction(new Action([press, hold, release].toString(), pressAction, holdAction, releaseAction), keys)
 	}
 }

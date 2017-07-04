@@ -27,14 +27,21 @@ public class CompositeImage implements Iterable<Image> {
 	 * @param images images forming final image, in order of first to last rendered
 	 */
 	public CompositeImage(Iterable<Image> images) {
-		for (Image image : images) addImage(image);
+		for (Image image : images) add(image);
 	}
 
+	/**
+	 * Adds all images from a composite image to the composition.
+	 * @param image composition containing images to add
+	 */
+	public void add(CompositeImage image) {
+		for (Image base : image) add(base);
+	}
 	/**
 	 * Adds an image to the top of the composition.
 	 * @param image added image
 	 */
-	public void addImage(Image image) {
+	public void add(Image image) {
 		images.add(image);
 
 		if (image.getWidth() > size.getX()) size.setX((float) image.getWidth());
@@ -45,7 +52,7 @@ public class CompositeImage implements Iterable<Image> {
 	 * @param image removed image
 	 * @return {@code true} if the composition contained {@code image} and it was removed
 	 */
-	public boolean removeImage(Image image) {
+	public boolean remove(Image image) {
 		return images.remove(image);
 	}
 
