@@ -124,7 +124,7 @@ public class Interactive extends Application {
 																					 sphereSprite));
 
 		// Player
-		Transform playerTransform = new Transform(new Vector(0, 0));
+		Transform playerTransform = new Transform(new Vector(0, 0), 45);
 		entities.create(playerTransform,
 										new Velocity(),
 										new Force(10),

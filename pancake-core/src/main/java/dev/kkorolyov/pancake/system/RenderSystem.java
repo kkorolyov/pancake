@@ -13,6 +13,7 @@ import dev.kkorolyov.pancake.math.Vector;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.transform.Rotate;
 
 /**
  * Renders all game entities.
@@ -24,6 +25,7 @@ public class RenderSystem extends GameSystem {
 	private final Vector unitPixels;
 	private final Vector camera;
 	private final Vector drawPosition = new Vector();
+	private final Rotate rotate = new Rotate();
 
 	private final Set<Sprite> tickedSprites = new HashSet<>();
 
@@ -66,16 +68,17 @@ public class RenderSystem extends GameSystem {
 
 	@Override
 	public void after(float dt) {
+		rotate(0, null);
+
 		drawDebug(dt);
 	}
 
 	private void draw(Transform transform, Sprite sprite) {
 		drawPosition.set(transform.getPosition());	// Raw position
 		drawPosition.sub(camera); // Position relative to camera
-
 		drawPosition.scale(unitPixels);	// Scale to pixels
-
 		drawPosition.translate((float) canvas.getWidth() / 2, (float) canvas.getHeight() / 2);	// Position relative to display center
+		rotate(transform.getRotation(), drawPosition);	// Rotate around transform origin
 		drawPosition.sub(sprite.getSize(), .5f);	// Sprite top-left corner
 
 		for (Image image : sprite.getImage()) {
@@ -94,5 +97,17 @@ public class RenderSystem extends GameSystem {
 					break;
 			}
 		}
+	}
+
+	private void rotate(float angle, Vector pivot) {
+		rotate.setAngle(angle);
+
+		if (pivot != null) {
+			rotate.setPivotX(pivot.getX());
+			rotate.setPivotY(pivot.getY());
+		}
+		g.setTransform(rotate.getMxx(), rotate.getMyx(),
+									 rotate.getMxy(), rotate.getMyy(),
+									 rotate.getTx(), rotate.getTy());
 	}
 }
