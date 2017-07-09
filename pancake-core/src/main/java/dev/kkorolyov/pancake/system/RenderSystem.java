@@ -9,6 +9,7 @@ import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
+import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.math.Vector;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -22,9 +23,7 @@ public class RenderSystem extends GameSystem {
 	private final Canvas canvas;
 	private final GraphicsContext g;
 
-	private final Vector unitPixels;
-	private final Vector camera;
-	private final Vector drawPosition = new Vector();
+	private final Camera camera;
 	private final Rotate rotate = new Rotate();
 
 	private final Set<Sprite> tickedSprites = new HashSet<>();
@@ -32,10 +31,9 @@ public class RenderSystem extends GameSystem {
 	/**
 	 * Constructs a new render system.
 	 * @param canvas canvas on which to render
-	 * @param unitPixels number of pixels within 1 unit distance
-	 * @param camera viewport center
+	 * @param camera view of render space
 	 */
-	public RenderSystem(Canvas canvas, float unitPixels, Vector camera) {
+	public RenderSystem(Canvas canvas, Camera camera) {
 		super(new Signature(Transform.class,
 												Sprite.class),
 					(e1, e2) -> e1.get(Transform.class).getPosition().getZ() < e2.get(Transform.class).getPosition().getZ() ? -1 : 1);
@@ -43,7 +41,6 @@ public class RenderSystem extends GameSystem {
 		this.canvas = canvas;
 		g = canvas.getGraphicsContext2D();
 
-		this.unitPixels = new Vector(unitPixels, -unitPixels);	// Render as +y == up
 		this.camera = camera;
 	}
 
@@ -74,10 +71,8 @@ public class RenderSystem extends GameSystem {
 	}
 
 	private void draw(Transform transform, Sprite sprite) {
-		drawPosition.set(transform.getPosition());	// Raw position
-		drawPosition.sub(camera); // Position relative to camera
-		drawPosition.scale(unitPixels);	// Scale to pixels
-		drawPosition.translate((float) canvas.getWidth() / 2, (float) canvas.getHeight() / 2);	// Position relative to display center
+		Vector drawPosition = camera.getRelativePosition(transform.getPosition());
+
 		rotate(transform.getRotation(), drawPosition);	// Rotate around transform origin
 		drawPosition.sub(sprite.getSize(), .5f);	// Sprite top-left corner
 
@@ -86,6 +81,7 @@ public class RenderSystem extends GameSystem {
 									drawPosition.getX(), drawPosition.getY(), sprite.getSize().getX(), sprite.getSize().getY());
 		}
 	}
+
 	private void drawDebug(float dt) {
 		String[] args = Config.config.getArray("renderInfo");
 		if (args == null) return;

@@ -77,6 +77,15 @@ public class Vector {
 		y *= other.y;
 		z *= other.z;
 	}
+	/**
+	 * Scales this vector by the inverse of another vector, dividing each component individually by the other vector's respective component.
+	 * @param other vector to inverse scale by
+	 */
+	public void invScale(Vector other) {
+		x /= other.x;
+		y /= other.y;
+		z /= other.z;
+	}
 
 	/**
 	 * Returns a new vector formed by the addition of vectors to an initial vector.
