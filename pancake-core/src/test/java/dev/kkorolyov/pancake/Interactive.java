@@ -1,11 +1,5 @@
 package dev.kkorolyov.pancake;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.function.Supplier;
-
 import dev.kkorolyov.pancake.component.*;
 import dev.kkorolyov.pancake.component.collision.BoxBounds;
 import dev.kkorolyov.pancake.component.collision.SphereBounds;
@@ -16,6 +10,7 @@ import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.entity.Signature;
+import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.graphics.ImagePool;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
@@ -25,6 +20,12 @@ import dev.kkorolyov.pancake.system.*;
 import dev.kkorolyov.pancake.system.CollisionSystem.BoxCollisionSystem;
 import dev.kkorolyov.pancake.system.CollisionSystem.SphereCollisionSystem;
 import dev.kkorolyov.simpleprops.Properties;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.function.Supplier;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
@@ -39,6 +40,8 @@ public class Interactive extends Application {
 	private final Scene scene = new Scene(new Group(canvas));
 	private final ActionPool actions = buildActionPool();
 	private final ImagePool images = buildImagePool();
+	private final Camera camera = new Camera(new Vector(), new Vector(64, -64, 1), (float) canvas.getWidth(), (float) canvas.getHeight());
+	private final Vector cursor = new Vector();
 
 	public static void main(String[] args) throws URISyntaxException {
 		Application.launch(args);
@@ -46,30 +49,28 @@ public class Interactive extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Vector camera = new Vector(0, 0);
-
 		Signature.index(BoxBounds.class,
-										SphereBounds.class,
-										Damping.class,
-										Force.class,
-										MaxSpeed.class,
-										Sprite.class,
-										Transform.class,
-										Chain.class,
-										Velocity.class,
-										Input.class,
-										Spawner.class);
+				SphereBounds.class,
+				Damping.class,
+				Force.class,
+				MaxSpeed.class,
+				Sprite.class,
+				Transform.class,
+				Chain.class,
+				Velocity.class,
+				Input.class,
+				Spawner.class);
 		GameEngine engine = new GameEngine(
+				new InputSystem(scene, camera, cursor),
 				new DampingSystem(),
 				new AccelerationSystem(),
 				new SpeedCapSystem(),
 				new MovementSystem(),
+				new ChainSystem(),
 				new BoxCollisionSystem(),
 				new SphereCollisionSystem(),
-				new InputSystem(scene),
-				new ChainSystem(),
 				new SpawnSystem(),
-				new RenderSystem(canvas, 64, camera));
+				new RenderSystem(canvas, camera));
 		new GameLoop(engine).start();
 
 		EntityPool entities = engine.getEntities();
@@ -133,10 +134,10 @@ public class Interactive extends Application {
 										sphereBounds,
 										playerSprite,
 //										new Spawner(1, 4, .1f, spawnSupply),
-										new Input(actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
+										new Input(true, actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
 		// Camera
-		entities.create(new Transform(camera),
-										new Chain(playerTransform, 1));
+		entities.create(new Transform(camera.getPosition()),
+										new Chain(playerTransform.getPosition(), 1));
 
 		primaryStage.setTitle("Pancake: Interactive Test");
 		primaryStage.setScene(scene);
@@ -144,9 +145,11 @@ public class Interactive extends Application {
 
 		primaryStage.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			canvas.setWidth(canvas.getWidth() + newValue.doubleValue() - oldValue.doubleValue());
+			camera.setSize((float) canvas.getWidth(), (float) canvas.getHeight());
 		});
 		primaryStage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			canvas.setHeight(canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue());
+			camera.setSize((float) canvas.getWidth(), (float) canvas.getHeight());
 		});
 	}
 
