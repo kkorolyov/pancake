@@ -9,6 +9,7 @@ import dev.kkorolyov.pancake.math.Vector;
 public class Transform implements Component {
 	private final Vector position;
 	private float rotation;
+	private float rotationSpeed;	// TODO Implement?
 
 	/**
 	 * Constructs a new transform with a rotation of {@code 0}.

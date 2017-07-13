@@ -1,8 +1,5 @@
 package dev.kkorolyov.pancake.system;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import dev.kkorolyov.pancake.Config;
 import dev.kkorolyov.pancake.GameSystem;
 import dev.kkorolyov.pancake.component.Sprite;
@@ -11,6 +8,9 @@ import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.math.Vector;
+
+import java.util.HashSet;
+import java.util.Set;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;

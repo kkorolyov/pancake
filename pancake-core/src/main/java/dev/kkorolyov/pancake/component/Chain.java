@@ -1,31 +1,90 @@
 package dev.kkorolyov.pancake.component;
 
 import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.math.Vector;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * "Anchors" to a transform at some offset position and moves when its anchor moves further than some "play" threshold.
+ * Maintains references to a single positional and multiple rotational anchors.
+ * Moves towards the positional anchor when past some threshold.
+ * Faces towards the nearest rotational anchor.
  */
 public class Chain implements Component {
-	private final Transform anchor;
+	private Vector positionAnchor;
 	private float play;
+	private final Set<Vector> rotationAnchors = new HashSet<>();
 
 	/**
 	 * Constructs a new chain.
-	 * @param anchor transform anchored to
-	 * @param play radius within which {@code anchor} may move without being followed by this chain
+	 * @param positionAnchor chained positional anchor
+	 * @param play chained positional anchor's play radius
+	 * @param rotationAnchors chained rotational anchors
 	 */
-	public Chain(Transform anchor, float play) {
-		this.anchor = anchor;
+	public Chain(Vector positionAnchor, float play, Vector... rotationAnchors) {
+		this(positionAnchor, play, Arrays.asList(rotationAnchors));
+	}
+	/**
+	 * Constructs a new chain.
+	 * @param positionAnchor chained positional anchor
+	 * @param play chained positional anchor's play radius
+	 * @param rotationAnchors chained rotational anchors
+	 */
+	public Chain(Vector positionAnchor, float play, Iterable<Vector> rotationAnchors) {
+		setPositionAnchor(positionAnchor, play);
+		if (rotationAnchors != null) {
+			for (Vector rotationAnchor : rotationAnchors) addRotationAnchor(rotationAnchor);
+		}
+	}
+
+	/** @return positional anchor, or {@code null} if not set */
+	public Vector getPositionAnchor() {
+		return positionAnchor;
+	}
+	/** @param anchor new positional anchor */
+	public void setPositionAnchor(Vector anchor) {
+		setPositionAnchor(anchor, play);
+	}
+
+	/** @return maximum distance this chain's positional anchor may move without being followed */
+	public float getPlay() {
+		return play;
+	}
+	/** @param play new positional anchor play threshold */
+	public void setPlay(float play) {
+		setPositionAnchor(positionAnchor, play);
+	}
+
+	/**
+	 * @param anchor new positional anchor
+	 * @param play maximum distance {@code anchor} may move without this chain following
+	 */
+	public void setPositionAnchor(Vector anchor, float play) {
+		this.positionAnchor = anchor;
 		this.play = play;
 	}
 
-	/** @return transform anchored to */
-	public Transform getAnchor() {
-		return anchor;
+	/**
+	 * Adds a rotational anchor.
+	 * @param anchor rotational anchor
+	 * @return {@code true} if this chain did not already contain {@code anchor} as a rotational anchor
+	 */
+	public boolean addRotationAnchor(Vector anchor) {
+		return rotationAnchors.add(anchor);
+	}
+	/**
+	 * Removes a rotational anchor.
+	 * @param anchor removed rotational anchor
+	 * @return {@code true} if {@code anchor} was bound to this chain
+	 */
+	public boolean removeRotationAnchor(Vector anchor) {
+		return rotationAnchors.remove(anchor);
 	}
 
-	/** @return maximum radius within which anchor can move without this chain following */
-	public float getPlay() {
-		return play;
+	/** @return all rotational anchors */
+	public Iterable<Vector> getRotationAnchors() {
+		return rotationAnchors;
 	}
 }

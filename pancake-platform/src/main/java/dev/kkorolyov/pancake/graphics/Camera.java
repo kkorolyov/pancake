@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.graphics;
 import dev.kkorolyov.pancake.math.Vector;
 
 /**
- * Provides for mapping between absolute and relative positions.
+ * A viewport on a render medium providing for mapping between absolute and relative/rendered positions.
  */
 public class Camera {
 	private Vector position;
@@ -15,12 +15,13 @@ public class Camera {
 	 * Constructs a new camera.
 	 * @param position absolute camera position
 	 * @param unitPixels number of pixels within 1 unit of absolute distance along each axis
-	 * @param size dimensions of render medium
+	 * @param width render medium width
+	 * @param height render medium height
 	 */
-	public Camera(Vector position, Vector unitPixels, Vector size) {
+	public Camera(Vector position, Vector unitPixels, float width, float height) {
 		setPosition(position);
 		setUnitPixels(unitPixels);
-		setSize(size);
+		setSize(width, height);
 	}
 
 	/**
@@ -70,9 +71,12 @@ public class Camera {
 		this.unitPixels = unitPixels;
 	}
 
-	/** @param size new dimensions of render medium */
-	public void setSize(Vector size) {
-		halfSize.set(size);
+	/**
+	 * @param width render medium width
+	 * @param height render medium height
+	 */
+	public void setSize(float width, float height) {
+		halfSize.set(width, height);
 		halfSize.scale(.5f);
 	}
 }

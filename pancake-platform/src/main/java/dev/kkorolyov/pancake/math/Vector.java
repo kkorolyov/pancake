@@ -194,7 +194,10 @@ public class Vector {
 		scale(1 / getMagnitude());
 	}
 
-	/** @return magnitude of this vector */
+	/**
+	 * Calculates and returns the magnitude of this vector.
+	 * @return magnitude of this vector
+	 */
 	public float getMagnitude() {
 		return (float) Math.sqrt(dot(this));
 	}
@@ -205,6 +208,21 @@ public class Vector {
 	public Vector getDirection() {
 		float scale = 1 / getMagnitude();
 		return new Vector(x * scale, y * scale, z * scale);
+	}
+
+	/**
+	 * Calculates and returns the angle between the positive x-axis and this vector's projection on the x-y plane.
+	 * @return azimuthal angle in radians
+	 */
+	public float getTheta() {
+		return (float) Math.atan2(y, x);
+	}
+	/**
+	 * Calculates and returns the angle between the positive z-axis and this vector.
+	 * @return polar angle in radians
+	 */
+	public float getPhi() {
+		return (float) Math.acos(z / getMagnitude());
 	}
 
 	/**
