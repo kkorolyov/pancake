@@ -284,10 +284,9 @@ public class Vector {
 		if (obj == null || !(obj instanceof Vector)) return false;
 
 		Vector o = (Vector) obj;
-
-		return x == o.x
-				&& y == o.y
-				&& z == o.z;
+		return Float.compare(x, o.x) == 0
+				&& Float.compare(y, o.y) == 0
+				&& Float.compare(z, o.z) == 0;
 	}
 	@Override
 	public int hashCode() {

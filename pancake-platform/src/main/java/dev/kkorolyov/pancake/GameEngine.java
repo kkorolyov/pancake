@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake;
 
-import java.util.*;
-import java.util.Map.Entry;
-
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.simplelogs.Logger;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * Central game management module.
@@ -13,8 +13,8 @@ import dev.kkorolyov.simplelogs.Logger;
  */
 public class GameEngine {
 	private static final Logger log = Config.getLogger(GameEngine.class);
-	private static final Map<GameSystem, Long> systemUsage = new HashMap<>();
-	private static int usageSamples;
+	private final Map<GameSystem, Long> systemUsage = new HashMap<>();
+	private int usageSamples;
 
 	private final EventBroadcaster events = new EventBroadcaster();
 	private final EntityPool entities = new EntityPool(events);
@@ -60,7 +60,7 @@ public class GameEngine {
 		usageSamples++;
 		logUsage();
 	}
-	private static void logUsage() {
+	private void logUsage() {
 		String sampleSize = Config.config.get("systemUsageSampleSize");
 		if (sampleSize != null) {
 			if (usageSamples >= Integer.parseInt(sampleSize)) {
