@@ -1,20 +1,26 @@
 package dev.kkorolyov.pancake;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
-
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.format.Formatters;
 import dev.kkorolyov.simpleprops.Properties;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
+
 /**
  * Provides access to configuration.
  */
 public final class Config {
-	public static Properties config;
+	private static final String CONFIG_DEFAULT_PROPS = "pancake.defaults.ini";
+	private static final String CONFIG_PROPS = "pancake.ini";
+	private static final String LOG_PROPS = "logging.ini";
+	private static final Logger log = getLogger(Config.class);
+
+	public static final Properties config = new Properties();
 
 	static {
 		reloadConfig();
@@ -27,21 +33,24 @@ public final class Config {
 	 * Reloads configuration file.
 	 */
 	public static void reloadConfig() {
-		config = loadProperties("pancake.defaults.ini");
-		config.put(loadProperties("pancake.ini"), true);
+		try {
+			Optional<Path> configDefaultProps = getPath(CONFIG_DEFAULT_PROPS);
+			Optional<Path> configProps = getPath(CONFIG_PROPS);
+
+			if (configDefaultProps.isPresent()) config.load(configDefaultProps.get());
+			if (configProps.isPresent()) config.load(configProps.get());
+		} catch (IOException e) {
+			log.exception(Level.FATAL, e);
+		}
+		log.info("Reloaded config: {}", config);
 	}
 	/**
 	 * Reloads logger configuration.
 	 */
 	public static void reloadLogging() {
-		URL loggingUrl = ClassLoader.getSystemResource("logging.ini");
-		if (loggingUrl != null) {
-			try {
-				Logger.applyProps(Paths.get(loggingUrl.toURI()));
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-		}
+		getPath(LOG_PROPS).ifPresent(Logger::applyProps);
+
+		log.info("Reloaded loggers");
 	}
 
 	/**
@@ -52,15 +61,12 @@ public final class Config {
 		return Logger.getLogger(c.getName(), Level.DEBUG, Formatters.simple());
 	}
 
-	private static Properties loadProperties(String file) {
-		URL url = ClassLoader.getSystemResource(file);
-		if (url == null) return new Properties();
-
+	private static Optional<Path> getPath(String file) {
 		try {
-			return new Properties(Paths.get(url.toURI()));
-		} catch (URISyntaxException | IOException e) {
-			e.printStackTrace();
-			return new Properties();
+			return Optional.of(Paths.get(ClassLoader.getSystemResource(file).toURI()));
+		} catch (URISyntaxException | NullPointerException e) {
+			log.exception(Level.FATAL, e);
+			return Optional.empty();
 		}
 	}
 }
