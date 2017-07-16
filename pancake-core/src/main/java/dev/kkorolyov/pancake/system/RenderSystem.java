@@ -8,18 +8,21 @@ import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.math.Vector;
+import dev.kkorolyov.simplelogs.Logger;
 
-import java.util.HashSet;
-import java.util.Set;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.transform.Rotate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Renders all game entities.
  */
 public class RenderSystem extends GameSystem {
+	private static final Logger log = Config.getLogger(RenderSystem.class);
+
 	private final Canvas canvas;
 	private final GraphicsContext g;
 
@@ -91,6 +94,8 @@ public class RenderSystem extends GameSystem {
 				case "FPS":
 					g.strokeText("FPS: " + Math.round(1 / dt), 0, 10);
 					break;
+				default:
+					log.warning("Unknown renderInfo arg: {}", arg);
 			}
 		}
 	}

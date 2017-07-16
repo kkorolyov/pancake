@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.event;
 
-import java.util.*;
-
 import dev.kkorolyov.pancake.Config;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.simplelogs.Logger;
+
+import java.util.*;
 
 /**
  * Broadcasts events expected by registered systems.
@@ -72,7 +72,7 @@ public class EventBroadcaster {
 		return size;
 	}
 
-	private class Event {
+	private static class Event {
 		final String name;
 		final Entity target;
 		final Iterable<Component> rawTarget;
