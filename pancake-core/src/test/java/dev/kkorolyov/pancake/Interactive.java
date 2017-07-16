@@ -21,17 +21,17 @@ import dev.kkorolyov.pancake.system.CollisionSystem.BoxCollisionSystem;
 import dev.kkorolyov.pancake.system.CollisionSystem.SphereCollisionSystem;
 import dev.kkorolyov.simpleprops.Properties;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.function.Supplier;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.function.Supplier;
 
 public class Interactive extends Application {
 	private static final float MOVE_FORCE = 500;
@@ -156,10 +156,10 @@ public class Interactive extends Application {
 	private ActionPool buildActionPool() {
 		ActionPool actions = new ActionPool();
 
-		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).addForce(0, MOVE_FORCE)));
-		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).addForce(0, -MOVE_FORCE)));
-		actions.put(new Action("FORCE_LEFT", e -> e.get(Force.class).addForce(-MOVE_FORCE, 0)));
-		actions.put(new Action("FORCE_RIGHT", e -> e.get(Force.class).addForce(MOVE_FORCE, 0)));
+		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).getForce().translate(0, MOVE_FORCE)));
+		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).getForce().translate(0, -MOVE_FORCE)));
+		actions.put(new Action("FORCE_RIGHT", e -> e.get(Force.class).getForce().translate(MOVE_FORCE, 0)));
+		actions.put(new Action("FORCE_LEFT", e -> e.get(Force.class).getForce().translate(-MOVE_FORCE, 0)));
 		actions.put(new Action("RESET", e -> e.get(Transform.class).getPosition().set(0, 0)));
 
 		try {

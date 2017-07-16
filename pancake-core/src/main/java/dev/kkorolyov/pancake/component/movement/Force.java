@@ -11,7 +11,7 @@ public class Force implements Component {
 	private float mass, invMass;
 	
 	/**
-	 * Constructs a new {@code Force} component with a set mass.
+	 * Constructs a new force.
 	 * @param mass mass in {@code kg}
 	 */
 	public Force(float mass) {
@@ -29,77 +29,12 @@ public class Force implements Component {
 		return velocity;
 	}
 	
-	/**
-	 * Sets this force to {@code 0}.
-	 */
-	public void clearForce() {
-		scaleForce(0);
-	}
-	/**
-	 * Inverts this force.
-	 */
-	public void invertForce() {
-		scaleForce(-1);
-	}
-	/**
-	 * Scales this force.
-	 * @param scale value to scale by
-	 */
-	public void scaleForce(float scale) {
-		force.scale(scale);
-	}
-	
-	/**
-	 * Adds a force to this force.
-	 * @param fx added x-axis force
-	 * @param fy added y-axis force
-	 */
-	public void addForce(float fx, float fy) {
-		addForce(fx, fy, 0);
-	}
-	/**
-	 * Adds a force to this force.
-	 * @param fx added x-axis force
-	 * @param fy added y-axis force
-	 * @param fz added z-axis force
-	 */
-	public void addForce(float fx, float fy, float fz) {
-		force.translate(fx, fy, fz);
-	}
-	/**
-	 * Adds a force to this body's net force.
-	 * @param force added force vector
-	 */
-	public void addForce(Vector force) {
-		this.force.add(force);
-	}
-	
-	/** @return force vector */
+	/** @return force in {@code N} */
 	public Vector getForce() {
 		return force;
 	}
-	
-	/**
-	 * @param fx new x-axis force
-	 * @param fy new y-axis force
-	 */
-	public void setForce(float fx, float fy) {
-		setForce(fx, fy, force.getZ());
-	}
-	/**
-	 * @param fx new x-axis force
-	 * @param fy new y-axis force
-	 * @param fz new z-axis force
-	 */
-	public void setForce(float fx, float fy, float fz) {
-		force.set(fx, fy, fz);
-	}
-	/** @param force new force vector */
-	public void setForce(Vector force) {
-		this.force.set(force);
-	}
-	
-	/** @return this body's mass */
+
+	/** @return mass in {@code kg} */
 	public float getMass() {
 		return mass;
 	}
