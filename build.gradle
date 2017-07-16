@@ -87,9 +87,22 @@ project(':pancake-platform') {
 }
 
 project(':pancake-core') {
-	description = """Collection of general and reusable systems and components for the Pancake engine"""
+	description = """Collection of general, reusable systems and components for the Pancake engine"""
 
 	dependencies {
 		compile project(':pancake-platform')
 	}
+}
+
+project(':test-interactive') {
+	apply plugin: 'application'
+
+	description = """Interactive test of platform+core modules"""
+
+	dependencies {
+		compile project(':pancake-core')
+	}
+	sourceSets.main.resources.srcDirs += [project(':pancake-core').sourceSets.main.resources]	// Default config
+
+	mainClassName = 'dev.kkorolyov.pancake.Interactive'
 }
