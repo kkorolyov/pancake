@@ -6,18 +6,22 @@ import dev.kkorolyov.pancake.entity.Component;
  * Bounds defined by a sphere.
  */
 public class SphereBounds implements Component {
-	private final float radius;
+	private float radius;
 	
 	/**
 	 * Constructs a new sphere.
 	 * @param radius sphere radius
 	 */
 	public SphereBounds(float radius) {
-		this.radius = radius;
+		setRadius(radius);
 	}
 
 	/** @return sphere radius */
 	public float getRadius() {
 		return radius;
+	}
+	/** @param radius new sphere radius */
+	public void setRadius(float radius) {
+		this.radius = radius;
 	}
 }

@@ -38,14 +38,14 @@ public class Input implements Component {
 		return keyActions;
 	}
 	/**
-	 * Sets actions occurring on various key combinations.
+	 * Clears existing actions before applying new {@code keyActions}.
 	 * @param keyActions actions to listen for
 	 */
 	public void setActions(KeyAction... keyActions) {
 		setActions(Arrays.asList(keyActions));
 	}
 	/**
-	 * Sets actions occurring on various key combinations.
+	 * Clears existing actions before applying new {@code keyActions}.
 	 * @param keyActions actions to listen for
 	 */
 	public void setActions(Iterable<KeyAction> keyActions) {

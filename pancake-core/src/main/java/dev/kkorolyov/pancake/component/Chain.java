@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Maintains references to a single positional and multiple rotational anchors.
- * Moves towards the positional anchor when past some threshold.
+ * Moves towards the positional anchor when the distance between the anchor and the chained entity passes some threshold.
  * Faces towards the nearest rotational anchor.
  */
 public class Chain implements Component {
@@ -20,7 +20,7 @@ public class Chain implements Component {
 	/**
 	 * Constructs a new chain.
 	 * @param positionAnchor chained positional anchor
-	 * @param play chained positional anchor's play radius
+	 * @param play maximum distance between {@code positionAnchor} and the chained entity
 	 * @param rotationAnchors chained rotational anchors
 	 */
 	public Chain(Vector positionAnchor, float play, Vector... rotationAnchors) {
@@ -29,7 +29,7 @@ public class Chain implements Component {
 	/**
 	 * Constructs a new chain.
 	 * @param positionAnchor chained positional anchor
-	 * @param play chained positional anchor's play radius
+	 * @param play maximum distance between {@code positionAnchor} and the chained entity
 	 * @param rotationAnchors chained rotational anchors
 	 */
 	public Chain(Vector positionAnchor, float play, Iterable<Vector> rotationAnchors) {

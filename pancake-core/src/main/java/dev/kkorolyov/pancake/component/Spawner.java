@@ -1,15 +1,19 @@
 package dev.kkorolyov.pancake.component;
 
-import java.util.function.Supplier;
-
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.math.WeightedDistribution;
+
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * Provides clones of entity templates between 2 radii around some position.
  */
 public class Spawner implements Component {
+	private static final float PI = (float) Math.PI;
+	private static final Random rand = new Random();
+
 	private float minRadius;
 	private float radiusDifference;
 
@@ -32,10 +36,10 @@ public class Spawner implements Component {
 	}
 
 	/**
-	 * Returns a template clone, or {@code null} if inactive or the spawn interval has not yet passed since the last spawn.
-	 * @param origin point around which to position clone
+	 * Creates, positions, and returns a template clone.
+	 * @param origin point around which to randomly position clone
 	 * @param dt seconds since last invocation of this method
-	 * @return random template clone positioned around {@code origin}, or {@code null} if not allowed
+	 * @return random template clone randomly positioned around {@code origin}, or {@code null} if inactive or the last invocation of this method happened within the spawn interval
 	 */
 	public Iterable<Component> spawn(Vector origin, float dt) {
 		if (!isActive()) return null;
@@ -47,9 +51,9 @@ public class Spawner implements Component {
 		return spawn(origin);
 	}
 	/**
-	 * Returns a template clone.
-	 * @param origin point around which to position clone
-	 * @return random template clone positioned around {@code origin}
+	 * Creates, positions, and returns a template clone.
+	 * @param origin point around which to randomly position clone
+	 * @return random template clone randomly positioned around {@code origin}
 	 */
 	public Iterable<Component> spawn(Vector origin) {
 		Iterable<Component> clone = templates.get().get();
@@ -57,7 +61,7 @@ public class Spawner implements Component {
 		for (Component component : clone) {
 			if (component instanceof Transform) {
 				Vector position = ((Transform) component).getPosition();
-				position(position);
+				randomPosition(position);
 				position.add(origin);
 
 				break;
@@ -65,10 +69,10 @@ public class Spawner implements Component {
 		}
 		return clone;
 	}
-	private void position(Vector position) {
-		float radius = (float) (minRadius + (radiusDifference * Math.random()));
-		float theta = (float) (2 * Math.PI * Math.random());
-		float phi = (float) (2 * Math.PI * Math.random());
+	private void randomPosition(Vector position) {
+		float radius = minRadius + (radiusDifference * rand.nextFloat());
+		float theta = 2 * PI * rand.nextFloat();
+		float phi = 2 * PI * rand.nextFloat();
 
 		float x = (float) (radius * Math.cos(theta));
 		float y = (float) (radius * Math.sin(theta));
@@ -101,7 +105,7 @@ public class Spawner implements Component {
 	public float getInterval() {
 		return interval;
 	}
-	/** @param interval minimum seconds between spawns when active; negative implies inactive with {@code abs(interval)} interval */
+	/** @param interval new minimum seconds between spawns when active; negative implies inactive with {@code abs(interval)} interval */
 	public void setInterval(float interval) {
 		this.interval = Math.abs(interval);
 		sinceLast = 0;
