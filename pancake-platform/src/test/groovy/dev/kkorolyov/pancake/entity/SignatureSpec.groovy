@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.entity
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.lang.reflect.Field
+import static dev.kkorolyov.pancake.SpecUtilities.getField
 
 class SignatureSpec extends Specification {
 	@Shared
@@ -19,14 +19,7 @@ class SignatureSpec extends Specification {
 		signature = new Signature()
 
 		expect:
-		getSignatureField() == 0
-	}
-
-	private long getSignatureField() {
-		Field f = Signature.getDeclaredField("signature")
-		f.setAccessible(true)
-
-		return f.get(signature) as long
+		getField("signature", signature) == 0
 	}
 
 	def "masks all constructor-initialized component types"() {

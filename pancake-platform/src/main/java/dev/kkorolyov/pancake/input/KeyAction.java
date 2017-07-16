@@ -1,13 +1,14 @@
 package dev.kkorolyov.pancake.input;
 
+import dev.kkorolyov.pancake.entity.Entity;
+
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
-
-import dev.kkorolyov.pancake.entity.Entity;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 
 /**
  * Signals an {@link Action} according to the current input state.
@@ -23,14 +24,18 @@ public class KeyAction {
 	 * @throws IllegalArgumentException if any element of {@code inputs} is not a {@link KeyCode} or {@link MouseButton}
 	 */
 	public KeyAction(Action action, Enum<?>... inputs) {
+		this(action, Arrays.asList(inputs));
+	}
+	/**
+	 * Constructs a new {@code KeyAction} tied to a set of keys and buttons.
+	 * @param action signalled action
+	 * @param inputs keys and buttons tied to action
+	 * @throws IllegalArgumentException if any element of {@code inputs} is not a {@link KeyCode} or {@link MouseButton}
+	 */
+	public KeyAction(Action action, Iterable<Enum<?>> inputs) {
 		this.action = action;
 
-		for (Enum<?> input : inputs) {
-			if (!(input instanceof KeyCode || input instanceof MouseButton)) {
-				throw new IllegalArgumentException("Not a valid key: " + input);
-			}
-			keys.add(input);
-		}
+		setKeys(inputs);
 	}
 
 	/**
@@ -41,6 +46,28 @@ public class KeyAction {
 	 */
 	public Consumer<Entity> signal(Set<Enum<?>> inputs, float dt) {
 		return action.signal(inputs.containsAll(keys), dt);
+	}
+
+	/**
+	 * @param inputs keys and buttons tied to action
+	 * @throws IllegalArgumentException if any element of {@code inputs} is not a {@link KeyCode} or {@link MouseButton}
+	 */
+	public void setKeys(Enum<?>... inputs) {
+		setKeys(Arrays.asList(inputs));
+	}
+	/**
+	 * @param inputs keys and buttons tied to action
+	 * @throws IllegalArgumentException if any element of {@code inputs} is not a {@link KeyCode} or {@link MouseButton}
+	 */
+	public void setKeys(Iterable<Enum<?>> inputs) {
+		keys.clear();
+
+		for (Enum<?> input : inputs) {
+			if (!(input instanceof KeyCode || input instanceof MouseButton)) {
+				throw new IllegalArgumentException("Not a valid key: " + input);
+			}
+			keys.add(input);
+		}
 	}
 
 	@Override
