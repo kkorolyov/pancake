@@ -102,7 +102,6 @@ project(':test-interactive') {
 	dependencies {
 		compile project(':pancake-core')
 	}
-	sourceSets.main.resources.srcDirs += [project(':pancake-core').sourceSets.main.resources]	// Default config
 
 	mainClassName = 'dev.kkorolyov.pancake.Interactive'
 }

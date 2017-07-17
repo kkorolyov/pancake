@@ -7,6 +7,7 @@ import dev.kkorolyov.simpleprops.Properties;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -64,7 +65,7 @@ public final class Config {
 	private static Optional<Path> getPath(String file) {
 		try {
 			return Optional.of(Paths.get(ClassLoader.getSystemResource(file).toURI()));
-		} catch (URISyntaxException | NullPointerException e) {
+		} catch (FileSystemNotFoundException | URISyntaxException | NullPointerException e) {
 			log.exception(Level.FATAL, e);
 			return Optional.empty();
 		}

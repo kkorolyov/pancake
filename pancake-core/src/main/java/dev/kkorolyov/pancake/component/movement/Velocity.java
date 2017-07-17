@@ -3,18 +3,14 @@ package dev.kkorolyov.pancake.component.movement;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.math.Vector;
 
-import static dev.kkorolyov.pancake.Config.config;
-
 /**
  * Velocity of a moving entity.
  */
 public class Velocity implements Component {
-	private static final float ZERO = Float.parseFloat(config.get("zero"));
 	private final Vector velocity = new Vector();
 
 	/**
 	 * Sets all axis values which are "effectively zero" to zero.
-	 * The effective zero value is specified by the {@code zero} configuration property.
 	 * @return velocity after rounding applied
 	 */
 	public Vector round() {
@@ -24,7 +20,7 @@ public class Velocity implements Component {
 		return velocity;
 	}
 	private static float round(float value) {
-		return Math.abs(value) <= ZERO ? 0 : value;
+		return Float.compare(0, value) == 0 ? 0 : value;
 	}
 
 	/**
