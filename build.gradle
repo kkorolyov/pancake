@@ -91,6 +91,7 @@ project(':pancake-core') {
 
 	dependencies {
 		compile project(':pancake-platform')
+		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
 	}
 }
 

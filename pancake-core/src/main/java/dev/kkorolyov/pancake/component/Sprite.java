@@ -49,8 +49,8 @@ public class Sprite implements Component {
 		currentFrameTime += dt;
 		if (currentFrameTime < Math.abs(frameInterval)) return;
 
+		setFrame(frame + (int) (currentFrameTime / frameInterval));	// Reversed if negative
 		currentFrameTime = 0;
-		setFrame(frame + (frameInterval > 0 ? 1 : -1));	// Reversed if negative
 	}
 
 	/** @return {@code true} if {@link #update(float)} is disabled */
