@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.component.collision;
+package dev.kkorolyov.pancake.component;
 
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.math.Vector;
@@ -11,8 +11,17 @@ import dev.kkorolyov.pancake.math.Vector;
  * </pre>
  */
 public class Bounds implements Component {
+	/** Intersection type between 2 boxes */
+	public static final int BOX_BOX = 0;
+	/** Intersection type between 2 spheres */
+	public static final int SPHERE_SPHERE = 1;
+	/** Intersection type between a box and sphere */
+	public static final int BOX_SPHERE = 2;
+	/** Intersection type between a sphere and a box */
+	public static final int SPHERE_BOX = 3;
+
 	private Vector box;
-	private Float radius;
+	private float radius;
 
 	/**
 	 * Constructs new bounds defined solely by a box.
@@ -36,9 +45,31 @@ public class Bounds implements Component {
 	 */
 	public Bounds(Vector box, Float radius) {
 		this.box = box;
-		this.radius = radius;
+		this.radius = (radius != null) ? radius : 0;
 
 		verifyDefined();
+	}
+
+	/**
+	 * Returns the type of intersection occurring between this bounds and {@code other}.
+	 * e.g. Box-Box, Sphere-Sphere, Box-Sphere.
+	 * @param other intersected bounds
+	 * @return preferred intersection type between {@code this} and {@code other}
+	 */
+	public int getIntersectionType(Bounds other) {
+		return hasRadius()
+				? other.hasRadius() ? SPHERE_SPHERE
+					: hasBox() ? BOX_BOX : SPHERE_BOX
+				: other.hasBox() ? BOX_BOX : BOX_SPHERE;
+	}
+
+	/** @return {@code true} if this bounds is defined by a box */
+	public boolean hasBox() {
+		return box != null;
+	}
+	/** @return {@code true} if this bounds is defined by a sphere */
+	public boolean hasRadius() {
+		return radius > 0;
 	}
 
 	/** @return box dimensions, or {@code null} if not set */
@@ -57,8 +88,8 @@ public class Bounds implements Component {
 		return this;
 	}
 
-	/** @return sphere radius, or {@code null} if not set */
-	public Float getRadius() {
+	/** @return sphere radius, or a value {@code <= 0} if not set */
+	public float getRadius() {
 		return radius;
 	}
 	/**
@@ -67,14 +98,14 @@ public class Bounds implements Component {
 	 * @throws IllegalStateException if both {@code box} and {@code radius} of this instance are {@code null}
 	 */
 	public Bounds setRadius(Float radius) {
-		this.radius = radius;
+		this.radius = (radius != null) ? radius : 0;
 		verifyDefined();
 
 		return this;
 	}
 
 	private void verifyDefined() {
-		if (box == null && radius == null) {
+		if (box == null && radius <= 0) {
 			throw new IllegalStateException(this + " is defined by neither a box nor a sphere");
 		}
 	}

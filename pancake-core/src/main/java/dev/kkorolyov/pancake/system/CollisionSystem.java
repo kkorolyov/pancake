@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.system;
 
 import dev.kkorolyov.pancake.GameSystem;
+import dev.kkorolyov.pancake.component.Bounds;
 import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.Bounds;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Entity;
@@ -14,6 +14,11 @@ import java.util.ArrayDeque;
 import java.util.LinkedHashSet;
 import java.util.Queue;
 import java.util.Set;
+
+import static dev.kkorolyov.pancake.component.Bounds.BOX_BOX;
+import static dev.kkorolyov.pancake.component.Bounds.BOX_SPHERE;
+import static dev.kkorolyov.pancake.component.Bounds.SPHERE_BOX;
+import static dev.kkorolyov.pancake.component.Bounds.SPHERE_SPHERE;
 
 /**
  * Detects and handles entity collisions.
@@ -74,16 +79,21 @@ public class CollisionSystem extends GameSystem {
 		Bounds b1 = e1.get(Bounds.class);
 		Bounds b2 = e2.get(Bounds.class);
 
-		return (b1.getBox() != null)
-				? (b2.getBox() != null)
-					? Collider.intersection(t1.getPosition(), b1.getBox(),	// Box-Box
-						t2.getPosition(), b2.getBox())
-					: Collider.intersection(t1.getPosition(), b1.getBox(),	// Box-Sphere
-						t2.getPosition(), b2.getRadius())
-				: (b2.getRadius() != null)
-					? Collider.intersection(t1.getPosition(), b1.getRadius(),	// Sphere-Sphere
-						t2.getPosition(), b2.getRadius())
-					: Collider.intersection(t2.getPosition(), b2.getBox(),	// Sphere-Box
+		switch (b1.getIntersectionType(b2)) {
+			case BOX_BOX:
+				return Collider.intersection(t1.getPosition(), b1.getBox(),
+						t2.getPosition(), b2.getBox());
+			case SPHERE_SPHERE:
+				return Collider.intersection(t1.getPosition(), b1.getRadius(),
+						t2.getPosition(), b2.getRadius());
+			case BOX_SPHERE:
+				return Collider.intersection(t1.getPosition(), b1.getBox(),
+						t2.getPosition(), b2.getRadius());
+			case SPHERE_BOX:
+				return Collider.intersection(t2.getPosition(), b2.getBox(),
 						t1.getPosition(), b1.getRadius());
+			default:
+				return null;
+		}
 	}
 }

@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake;
 
+import dev.kkorolyov.pancake.component.Bounds;
 import dev.kkorolyov.pancake.component.Chain;
 import dev.kkorolyov.pancake.component.Input;
 import dev.kkorolyov.pancake.component.Spawner;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.Bounds;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
@@ -87,6 +87,8 @@ public class Interactive extends Application {
 		Sprite boxSprite = new Sprite(images.get("box"));
 
 		Bounds bounds = new Bounds(new Vector(1, 1, 0), .5f);
+		Bounds boxBounds = new Bounds(bounds.getBox());
+		Bounds sphereBounds = new Bounds(bounds.getRadius());
 
 		Sprite ground = new Sprite(images.get("ground"), 3, 2, 0);
 		for (int i = -15; i <= 15; i+= 2) {
@@ -102,7 +104,7 @@ public class Interactive extends Application {
 												new Velocity(),
 												new Force(.1f),
 												new Damping(.9f),
-												bounds,
+												boxBounds,
 												boxSprite);
 			}
 		}
@@ -112,7 +114,7 @@ public class Interactive extends Application {
 												new Velocity(),
 												new Force(.1f),
 												new Damping(.9f),
-												bounds,
+												sphereBounds,
 												sphereSprite);
 			}
 		}
