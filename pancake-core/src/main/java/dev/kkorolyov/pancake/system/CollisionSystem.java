@@ -1,25 +1,25 @@
 package dev.kkorolyov.pancake.system;
 
-import java.util.*;
-
 import dev.kkorolyov.pancake.GameSystem;
 import dev.kkorolyov.pancake.component.Transform;
-import dev.kkorolyov.pancake.component.collision.BoxBounds;
-import dev.kkorolyov.pancake.component.collision.SphereBounds;
+import dev.kkorolyov.pancake.component.collision.Bounds;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
-import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.math.Collider;
 import dev.kkorolyov.pancake.math.Vector;
 
+import java.util.ArrayDeque;
+import java.util.LinkedHashSet;
+import java.util.Queue;
+import java.util.Set;
+
 /**
  * Detects and handles entity collisions.
  */
-public abstract class CollisionSystem extends GameSystem {
-	private static final Signature MOVEABLE = new Signature(Velocity.class,
-																													Force.class);
+public class CollisionSystem extends GameSystem {
+	private static final Signature MOVEABLE = new Signature(Velocity.class, Force.class);
 
 	// TODO Better collision detection alg (Current n^2)
 	private final Set<Entity> done = new LinkedHashSet<>();
@@ -28,9 +28,9 @@ public abstract class CollisionSystem extends GameSystem {
 	/**
 	 * Constructs a new collision system.
 	 */
-	public CollisionSystem(Class<? extends Component> bounds) {
+	public CollisionSystem() {
 		super(new Signature(Transform.class,
-												bounds));
+				Bounds.class));
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public abstract class CollisionSystem extends GameSystem {
 					if (entity.contains(MOVEABLE)) {
 						if (other.contains(MOVEABLE)) {
 							Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
-																			other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
+									other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
 						} else {
 							mtv.normalize();
 
@@ -67,40 +67,23 @@ public abstract class CollisionSystem extends GameSystem {
 		}
 		done.clear();
 	}
-	protected abstract Vector intersection(Entity e1, Entity e2);
+	private Vector intersection(Entity e1, Entity e2) {	// TODO Optimize performance
+		Transform t1 = e1.get(Transform.class);
+		Transform t2 = e2.get(Transform.class);
 
-	/**
-	 * Detects and handles collisions between boxes.
-	 */
-	public static class BoxCollisionSystem extends CollisionSystem {
-		/**
-		 * Constructs a new box collision system.
-		 */
-		public BoxCollisionSystem() {
-			super(BoxBounds.class);
-		}
+		Bounds b1 = e1.get(Bounds.class);
+		Bounds b2 = e2.get(Bounds.class);
 
-		@Override
-		protected Vector intersection(Entity e1, Entity e2) {
-			return Collider.intersection(e1.get(Transform.class).getPosition(), e1.get(BoxBounds.class).getSize(),
-																	 e2.get(Transform.class).getPosition(), e2.get(BoxBounds.class).getSize());
-		}
-	}
-	/**
-	 * Detects and handles collisions between spheres.
-	 */
-	public static class SphereCollisionSystem extends CollisionSystem {
-		/**
-		 * Constructs a new sphere collision system.
-		 */
-		public SphereCollisionSystem() {
-			super(SphereBounds.class);
-		}
-
-		@Override
-		protected Vector intersection(Entity e1, Entity e2) {
-			return Collider.intersection(e1.get(Transform.class).getPosition(), e1.get(SphereBounds.class).getRadius(),
-																	 e2.get(Transform.class).getPosition(), e2.get(SphereBounds.class).getRadius());
-		}
+		return (b1.getBox() != null)
+				? (b2.getBox() != null)
+					? Collider.intersection(t1.getPosition(), b1.getBox(),	// Box-Box
+						t2.getPosition(), b2.getBox())
+					: Collider.intersection(t1.getPosition(), b1.getBox(),	// Box-Sphere
+						t2.getPosition(), b2.getRadius())
+				: (b2.getRadius() != null)
+					? Collider.intersection(t1.getPosition(), b1.getRadius(),	// Sphere-Sphere
+						t2.getPosition(), b2.getRadius())
+					: Collider.intersection(t2.getPosition(), b2.getBox(),	// Sphere-Box
+						t1.getPosition(), b1.getRadius());
 	}
 }

@@ -1,8 +1,11 @@
 package dev.kkorolyov.pancake;
 
-import dev.kkorolyov.pancake.component.*;
-import dev.kkorolyov.pancake.component.collision.BoxBounds;
-import dev.kkorolyov.pancake.component.collision.SphereBounds;
+import dev.kkorolyov.pancake.component.Chain;
+import dev.kkorolyov.pancake.component.Input;
+import dev.kkorolyov.pancake.component.Spawner;
+import dev.kkorolyov.pancake.component.Sprite;
+import dev.kkorolyov.pancake.component.Transform;
+import dev.kkorolyov.pancake.component.collision.Bounds;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.MaxSpeed;
@@ -16,9 +19,15 @@ import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.math.WeightedDistribution;
-import dev.kkorolyov.pancake.system.*;
-import dev.kkorolyov.pancake.system.CollisionSystem.BoxCollisionSystem;
-import dev.kkorolyov.pancake.system.CollisionSystem.SphereCollisionSystem;
+import dev.kkorolyov.pancake.system.AccelerationSystem;
+import dev.kkorolyov.pancake.system.ChainSystem;
+import dev.kkorolyov.pancake.system.CollisionSystem;
+import dev.kkorolyov.pancake.system.DampingSystem;
+import dev.kkorolyov.pancake.system.InputSystem;
+import dev.kkorolyov.pancake.system.MovementSystem;
+import dev.kkorolyov.pancake.system.RenderSystem;
+import dev.kkorolyov.pancake.system.SpawnSystem;
+import dev.kkorolyov.pancake.system.SpeedCapSystem;
 import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
@@ -49,8 +58,7 @@ public class Interactive extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Signature.index(BoxBounds.class,
-				SphereBounds.class,
+		Signature.index(Bounds.class,
 				Damping.class,
 				Force.class,
 				MaxSpeed.class,
@@ -67,8 +75,7 @@ public class Interactive extends Application {
 				new SpeedCapSystem(),
 				new MovementSystem(),
 				new ChainSystem(),
-				new BoxCollisionSystem(),
-				new SphereCollisionSystem(),
+				new CollisionSystem(),
 				new SpawnSystem(),
 				new RenderSystem(canvas, camera));
 		new GameLoop(engine).start();
@@ -79,8 +86,7 @@ public class Interactive extends Application {
 		Sprite sphereSprite = new Sprite(images.get("sphere"));
 		Sprite boxSprite = new Sprite(images.get("box"));
 
-		BoxBounds boxBounds = new BoxBounds(new Vector(1, 1, 0));
-		SphereBounds sphereBounds = new SphereBounds(.5f);
+		Bounds bounds = new Bounds(new Vector(1, 1, 0), .5f);
 
 		Sprite ground = new Sprite(images.get("ground"), 3, 2, 0);
 		for (int i = -15; i <= 15; i+= 2) {
@@ -96,7 +102,7 @@ public class Interactive extends Application {
 												new Velocity(),
 												new Force(.1f),
 												new Damping(.9f),
-												boxBounds,
+												bounds,
 												boxSprite);
 			}
 		}
@@ -106,14 +112,14 @@ public class Interactive extends Application {
 												new Velocity(),
 												new Force(.1f),
 												new Damping(.9f),
-												sphereBounds,
+												bounds,
 												sphereSprite);
 			}
 		}
 
 		// Wall
 		entities.create(new Transform(new Vector(-3, 0)),
-										new BoxBounds(new Vector(5, 21)),
+										new Bounds(new Vector(5, 21)),
 										boxSprite);
 
 		WeightedDistribution<Supplier<Iterable<Component>>> spawnSupply = new WeightedDistribution<>();
@@ -121,7 +127,7 @@ public class Interactive extends Application {
 																					 new Velocity(),
 																					 new Force(.1f),
 																					 new Damping(.9f),
-																					 sphereBounds,
+																					 bounds,
 																					 sphereSprite));
 
 		// Player
@@ -130,8 +136,7 @@ public class Interactive extends Application {
 										new Velocity(),
 										new Force(10),
 										new Damping(.5f),
-										boxBounds,
-										sphereBounds,
+										bounds,
 										playerSprite,
 //										new Spawner(1, 4, .1f, spawnSupply),
 										new Input(true, actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
