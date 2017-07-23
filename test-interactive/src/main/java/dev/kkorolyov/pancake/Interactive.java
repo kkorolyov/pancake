@@ -40,15 +40,26 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.function.Supplier;
 
 public class Interactive extends Application {
 	private static final float MOVE_FORCE = 500;
+	private static final float OBJECT_MASS = .1f;
+	private static final float PLAYER_MASS = 10;
+	private static final float OBJECT_DAMPING = .9f;
+	private static final float PLAYER_DAMPING = .5f;
+	private static final Vector BOX = new Vector(1, 1);
+	private static final float RADIUS = BOX.getX() / 2;
+
+	private static final Random rand = new Random();
 
 	private final Canvas canvas = new Canvas(560, 560);
 	private final Scene scene = new Scene(new Group(canvas));
+
 	private final ActionPool actions = buildActionPool();
 	private final ImagePool images = buildImagePool();
+
 	private final Camera camera = new Camera(new Vector(), new Vector(64, -64, 1), (float) canvas.getWidth(), (float) canvas.getHeight());
 	private final Vector cursor = new Vector();
 
@@ -58,6 +69,8 @@ public class Interactive extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		tweakStage(primaryStage);
+
 		Signature.index(Bounds.class,
 				Damping.class,
 				Force.class,
@@ -82,79 +95,26 @@ public class Interactive extends Application {
 
 		EntityPool entities = engine.getEntities();
 
-		Sprite playerSprite = new Sprite(images.get("player"), 4, 3, 1 / 60f);
-		Sprite sphereSprite = new Sprite(images.get("sphere"));
-		Sprite boxSprite = new Sprite(images.get("box"));
-
-		Bounds bounds = new Bounds(new Vector(1, 1, 0), .5f);
-		Bounds boxBounds = new Bounds(bounds.getBox());
-		Bounds sphereBounds = new Bounds(bounds.getRadius());
-
-		Sprite ground = new Sprite(images.get("ground"), 3, 2, 0);
-		for (int i = -15; i <= 15; i+= 2) {
-			for (int j = -15; j <= 15; j+= 2) {
-				entities.create(new Transform(new Vector(i, j, -1)),
-												ground);
-			}
-		}
-
-		for (int i = 1; i <= 10; i++) {	// Boxes
-			for (int j = 1; j <= 10; j++) {
-				entities.create(new Transform(new Vector(i, -j)),
-												new Velocity(),
-												new Force(.1f),
-												new Damping(.9f),
-												boxBounds,
-												boxSprite);
-			}
-		}
-		for (int i = 1; i <= 10; i++) {	// Spheres
-			for (int j = 1; j <= 10; j++) {
-				entities.create(new Transform(new Vector(i, j)),
-												new Velocity(),
-												new Force(.1f),
-												new Damping(.9f),
-												sphereBounds,
-												sphereSprite);
-			}
-		}
-
 		// Wall
-		entities.create(new Transform(new Vector(-3, 0)),
-										new Bounds(new Vector(5, 21)),
-										boxSprite);
+		entities.create(new Transform(new Vector(-3, 0), randRotation()),
+				new Bounds(new Vector(5, 21)),
+				new Sprite(images.get("box")));
 
-		WeightedDistribution<Supplier<Iterable<Component>>> spawnSupply = new WeightedDistribution<>();
-		spawnSupply.add(1, () -> Arrays.asList(new Transform(new Vector(1, 1)),
-																					 new Velocity(),
-																					 new Force(.1f),
-																					 new Damping(.9f),
-																					 bounds,
-																					 sphereSprite));
+		addGround(entities);
+		addBoxes(entities, 200);
+		addSpheres(entities, 200);
+		addPlayer(entities);
+	}
+	private void tweakStage(Stage stage) {
+		stage.setTitle("Pancake: Interactive Test");
+		stage.setScene(scene);
+		stage.show();
 
-		// Player
-		Transform playerTransform = new Transform(new Vector(0, 0), 45);
-		entities.create(playerTransform,
-										new Velocity(),
-										new Force(10),
-										new Damping(.5f),
-										bounds,
-										playerSprite,
-//										new Spawner(1, 4, .1f, spawnSupply),
-										new Input(true, actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
-		// Camera
-		entities.create(new Transform(camera.getPosition()),
-										new Chain(playerTransform.getPosition(), 1));
-
-		primaryStage.setTitle("Pancake: Interactive Test");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-
-		primaryStage.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+		stage.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			canvas.setWidth(canvas.getWidth() + newValue.doubleValue() - oldValue.doubleValue());
 			camera.setSize((float) canvas.getWidth(), (float) canvas.getHeight());
 		});
-		primaryStage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+		stage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 			canvas.setHeight(canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue());
 			camera.setSize((float) canvas.getWidth(), (float) canvas.getHeight());
 		});
@@ -186,5 +146,72 @@ public class Interactive extends Application {
 			e.printStackTrace();
 		}
 		return images;
+	}
+
+	private void addGround(EntityPool entities) {
+		Sprite ground = new Sprite(images.get("ground"), 3, 2, 0);
+		for (int i = -15; i <= 15; i+= 2) {
+			for (int j = -15; j <= 15; j+= 2) {
+				entities.create(new Transform(new Vector(i, j, -1)),
+						ground);
+			}
+		}
+	}
+
+	private void addPlayer(EntityPool entities) throws Exception {
+		Transform playerTransform = new Transform(new Vector(), randRotation());
+		entities.create(playerTransform,
+				new Velocity(),
+				new Force(PLAYER_MASS),
+				new Damping(PLAYER_DAMPING),
+				new Bounds(BOX, RADIUS),
+				new Sprite(images.get("player"), 4, 3, 1 / 60f),
+				// buildSpawner(),
+				new Input(true, actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
+
+		entities.create(new Transform(camera.getPosition()),	// Chained camera
+				new Chain(playerTransform.getPosition(), 1));
+	}
+
+	private void addSpheres(EntityPool entities, int num) {
+		int line = (int) Math.sqrt(num);
+
+		for (int i = 1; i <= line; i++) {
+			for (int j = 1; j <= line; j++) {
+				addObject(entities, new Vector(i, j), new Bounds(RADIUS), new Sprite(images.get("sphere")));
+			}
+		}
+	}
+	private void addBoxes(EntityPool entities, int num) {
+		int line = (int) Math.sqrt(num);
+
+		for (int i = 1; i <= line; i++) {
+			for (int j = 1; j <= line; j++) {
+				addObject(entities, new Vector(i, -j), new Bounds(BOX), new Sprite(images.get("box")));
+			}
+		}
+	}
+
+	private void addObject(EntityPool entities, Vector position, Bounds bounds, Sprite sprite) {
+		entities.create(new Transform(position, randRotation()),
+				new Velocity(),
+				new Force(OBJECT_MASS),
+				new Damping(OBJECT_DAMPING),
+				bounds,
+				sprite);
+	}
+
+	private Spawner buildSpawner() {
+		return new Spawner(1, 4, .1f, new WeightedDistribution<Supplier<Iterable<Component>>>()
+				.add(1, () -> Arrays.asList(new Transform(new Vector(1, 1), randRotation()),
+						new Velocity(),
+						new Force(OBJECT_MASS),
+						new Damping(OBJECT_DAMPING),
+						new Bounds(BOX, RADIUS),
+						new Sprite(images.get("sphere")))));
+	}
+
+	private float randRotation() {
+		return rand.nextInt(360);
 	}
 }

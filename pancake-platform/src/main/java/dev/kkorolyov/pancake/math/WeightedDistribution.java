@@ -16,10 +16,13 @@ public class WeightedDistribution<T> {
 	 * Adds a weighted value to this distribution.
 	 * @param weight value weight relative to this retriever's total weight
 	 * @param value added value
+	 * @return {@code this}
 	 */
-	public void add(int weight, T value) {
+	public WeightedDistribution<T> add(int weight, T value) {
 		distribution.put(total, value);
 		total += weight;
+
+		return this;
 	}
 
 	/** @return random value from this distribution */
