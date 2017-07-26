@@ -108,3 +108,17 @@ project(':test-interactive') {
 	mainClassName = 'dev.kkorolyov.pancake.Interactive'
 	startScripts.classpath = files('\"') + startScripts.classpath	// Resources must be at head of classpath for some reason
 }
+
+project(':killstreek') {
+	apply plugin: 'application'
+
+	description = """Top-down ARPG with dynamic RNG system"""
+
+	dependencies {
+		compile project(':pancake-core')
+		runtime files('src/main/resources')
+	}
+
+	mainClassName = 'dev.kkorolyov.killstreek.Launcher'
+	startScripts.classpath = files('\"') + startScripts.classpath
+}

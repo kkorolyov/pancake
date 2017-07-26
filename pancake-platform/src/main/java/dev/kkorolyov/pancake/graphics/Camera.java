@@ -7,7 +7,7 @@ import dev.kkorolyov.pancake.math.Vector;
  */
 public class Camera {
 	private Vector position;
-	private Vector unitPixels = new Vector();
+	private Vector unitPixels;
 	private final Vector output = new Vector();
 	private final Vector halfSize = new Vector();
 

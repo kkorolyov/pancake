@@ -12,8 +12,6 @@ import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
-import dev.kkorolyov.pancake.entity.Signature;
-import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.graphics.ImagePool;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.input.ActionPool;
@@ -31,11 +29,6 @@ import dev.kkorolyov.pancake.system.SpeedCapSystem;
 import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -43,7 +36,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class Interactive extends Application {
+public class Interactive extends Launcher {
 	private static final float MOVE_FORCE = 500;
 	private static final float OBJECT_MASS = .1f;
 	private static final float PLAYER_MASS = 10;
@@ -54,24 +47,20 @@ public class Interactive extends Application {
 
 	private static final Random rand = new Random();
 
-	private final Canvas canvas = new Canvas(560, 560);
-	private final Scene scene = new Scene(new Group(canvas));
+	public Interactive() {
+		super(new LauncherConfig()
+				.title("Pancake: Interactive Test")
+				.size(new Vector(560, 560))
+				.unitPixels(new Vector(64, -64, 1)));
+	}
 
-	private final ActionPool actions = buildActionPool();
-	private final ImagePool images = buildImagePool();
-
-	private final Camera camera = new Camera(new Vector(), new Vector(64, -64, 1), (float) canvas.getWidth(), (float) canvas.getHeight());
-	private final Vector cursor = new Vector();
-
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) {
 		Application.launch(args);
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		tweakStage(primaryStage);
-
-		Signature.index(Bounds.class,
+	protected Iterable<Class<? extends Component>> components() {
+		return Arrays.asList(Bounds.class,
 				Damping.class,
 				Force.class,
 				MaxSpeed.class,
@@ -81,8 +70,10 @@ public class Interactive extends Application {
 				Velocity.class,
 				Input.class,
 				Spawner.class);
-		GameEngine engine = new GameEngine(
-				new InputSystem(scene, camera, cursor),
+	}
+	@Override
+	protected Iterable<GameSystem> systems() {
+		return Arrays.asList(new InputSystem(scene, camera, new Vector()),
 				new DampingSystem(),
 				new AccelerationSystem(),
 				new SpeedCapSystem(),
@@ -91,10 +82,34 @@ public class Interactive extends Application {
 				new CollisionSystem(),
 				new SpawnSystem(),
 				new RenderSystem(canvas, camera));
-		new GameLoop(engine).start();
+	}
 
-		EntityPool entities = engine.getEntities();
+	@Override
+	protected void initImages(ImagePool images) {
+		try {
+			images.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/images").toURI())));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+	@Override
+	protected void initActions(ActionPool actions) {
+		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).getForce().translate(0, MOVE_FORCE)));
+		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).getForce().translate(0, -MOVE_FORCE)));
+		actions.put(new Action("FORCE_RIGHT", e -> e.get(Force.class).getForce().translate(MOVE_FORCE, 0)));
+		actions.put(new Action("FORCE_LEFT", e -> e.get(Force.class).getForce().translate(-MOVE_FORCE, 0)));
+		actions.put(new Action("RESET", e -> e.get(Transform.class).getPosition().set(0, 0)));
+		actions.put(new Action("WALK", e -> e.get(Sprite.class).stop(false, false)));
+		actions.put(new Action("STOP", e -> e.get(Sprite.class).stop(true, false)));
 
+		try {
+			actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/actions").toURI())));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+	@Override
+	protected void initEntities(EntityPool entities) {
 		// Wall
 		entities.create(new Transform(new Vector(-3, 0), randRotation()),
 				new Bounds(new Vector(5, 21)),
@@ -104,48 +119,6 @@ public class Interactive extends Application {
 		addBoxes(entities, 200);
 		addSpheres(entities, 200);
 		addPlayer(entities);
-	}
-	private void tweakStage(Stage stage) {
-		stage.setTitle("Pancake: Interactive Test");
-		stage.setScene(scene);
-		stage.show();
-
-		stage.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-			canvas.setWidth(canvas.getWidth() + newValue.doubleValue() - oldValue.doubleValue());
-			camera.setSize((float) canvas.getWidth(), (float) canvas.getHeight());
-		});
-		stage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-			canvas.setHeight(canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue());
-			camera.setSize((float) canvas.getWidth(), (float) canvas.getHeight());
-		});
-	}
-
-	private ActionPool buildActionPool() {
-		ActionPool actions = new ActionPool();
-
-		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).getForce().translate(0, MOVE_FORCE)));
-		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).getForce().translate(0, -MOVE_FORCE)));
-		actions.put(new Action("FORCE_RIGHT", e -> e.get(Force.class).getForce().translate(MOVE_FORCE, 0)));
-		actions.put(new Action("FORCE_LEFT", e -> e.get(Force.class).getForce().translate(-MOVE_FORCE, 0)));
-		actions.put(new Action("RESET", e -> e.get(Transform.class).getPosition().set(0, 0)));
-
-		try {
-			actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/actions").toURI())));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return actions;
-	}
-
-	private ImagePool buildImagePool() {
-		ImagePool images = new ImagePool();
-
-		try {
-			images.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/images").toURI())));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return images;
 	}
 
 	private void addGround(EntityPool entities) {
@@ -158,19 +131,26 @@ public class Interactive extends Application {
 		}
 	}
 
-	private void addPlayer(EntityPool entities) throws Exception {
-		Transform playerTransform = new Transform(new Vector(), randRotation());
-		entities.create(playerTransform,
-				new Velocity(),
-				new Force(PLAYER_MASS),
-				new Damping(PLAYER_DAMPING),
-				new Bounds(BOX, RADIUS),
-				new Sprite(images.get("player"), 4, 3, 1 / 60f),
-				// buildSpawner(),
-				new Input(true, actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
+	private void addPlayer(EntityPool entities) {
+		try {
+			Sprite sprite = new Sprite(images.get("player"), 4, 3, 1 / 60f);
+			sprite.stop(true, false);
 
-		entities.create(new Transform(camera.getPosition()),	// Chained camera
-				new Chain(playerTransform.getPosition(), 1));
+			Transform playerTransform = new Transform(new Vector(), randRotation());
+			entities.create(playerTransform,
+					new Velocity(),
+					new Force(PLAYER_MASS),
+					new Damping(PLAYER_DAMPING),
+					new Bounds(BOX, RADIUS),
+					sprite,
+					// buildSpawner(),
+					new Input(true, actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
+
+			entities.create(new Transform(camera.getPosition()),  // Chained camera
+					new Chain(playerTransform.getPosition(), 1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void addSpheres(EntityPool entities, int num) {
