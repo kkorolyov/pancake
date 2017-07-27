@@ -12,9 +12,7 @@ import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
-import dev.kkorolyov.pancake.graphics.ImagePool;
 import dev.kkorolyov.pancake.input.Action;
-import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.math.WeightedDistribution;
 import dev.kkorolyov.pancake.system.AccelerationSystem;
@@ -29,8 +27,6 @@ import dev.kkorolyov.pancake.system.SpeedCapSystem;
 import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Random;
@@ -47,17 +43,17 @@ public class Interactive extends Launcher {
 
 	private static final Random rand = new Random();
 
-	public Interactive() {
-		super(new LauncherConfig()
-				.title("Pancake: Interactive Test")
-				.size(new Vector(560, 560))
-				.unitPixels(new Vector(64, -64, 1)));
-	}
-
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
 
+	@Override
+	protected LauncherConfig config() {
+		return new LauncherConfig()
+				.title("Pancake: Interactive Test")
+				.size(560, 560)
+				.unitPixels(new Vector(64, -64, 1));
+	}
 	@Override
 	protected Iterable<Class<? extends Component>> components() {
 		return Arrays.asList(Bounds.class,
@@ -85,15 +81,15 @@ public class Interactive extends Launcher {
 	}
 
 	@Override
-	protected void initImages(ImagePool images) {
-		try {
-			images.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/images").toURI())));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
+	public void init() throws Exception {
+		initImages();
+		initActions();
+		initEntities(engine.getEntities());
 	}
-	@Override
-	protected void initActions(ActionPool actions) {
+	private void initImages() throws Exception {
+		images.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/images").toURI())));
+	}
+	private void initActions() throws Exception {
 		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).getForce().translate(0, MOVE_FORCE)));
 		actions.put(new Action("FORCE_DOWN", e -> e.get(Force.class).getForce().translate(0, -MOVE_FORCE)));
 		actions.put(new Action("FORCE_RIGHT", e -> e.get(Force.class).getForce().translate(MOVE_FORCE, 0)));
@@ -102,14 +98,9 @@ public class Interactive extends Launcher {
 		actions.put(new Action("WALK", e -> e.get(Sprite.class).stop(false, false)));
 		actions.put(new Action("STOP", e -> e.get(Sprite.class).stop(true, false)));
 
-		try {
-			actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/actions").toURI())));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
+		actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/actions").toURI())));
 	}
-	@Override
-	protected void initEntities(EntityPool entities) {
+	private void initEntities(EntityPool entities) throws Exception {
 		// Wall
 		entities.create(new Transform(new Vector(-3, 0), randRotation()),
 				new Bounds(new Vector(5, 21)),
@@ -123,8 +114,8 @@ public class Interactive extends Launcher {
 
 	private void addGround(EntityPool entities) {
 		Sprite ground = new Sprite(images.get("ground"), 3, 2, 0);
-		for (int i = -15; i <= 15; i+= 2) {
-			for (int j = -15; j <= 15; j+= 2) {
+		for (int i = -15; i <= 15; i += 2) {
+			for (int j = -15; j <= 15; j += 2) {
 				entities.create(new Transform(new Vector(i, j, -1)),
 						ground);
 			}
