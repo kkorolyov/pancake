@@ -1,20 +1,30 @@
 package dev.kkorolyov.pancake.entity;
 
-import java.util.*;
+import dev.kkorolyov.pancake.event.EventBroadcaster;
+
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Stream;
 
-import dev.kkorolyov.pancake.event.EventBroadcaster;
+import static dev.kkorolyov.pancake.event.PlatformEvents.CREATE;
+import static dev.kkorolyov.pancake.event.PlatformEvents.CREATED;
+import static dev.kkorolyov.pancake.event.PlatformEvents.DESTROY;
+import static dev.kkorolyov.pancake.event.PlatformEvents.DESTROYED;
 
 /**
  * A set of uniquely-identified "component-bag" entities.
  * <pre>
  * Events received:
- * CREATE - creates an entity using provided components
- * DESTROY - destroys a provided entity
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#CREATE} - creates an entity using provided components
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#DESTROY} - destroys a provided entity
  *
  * Events emitted:
- * CREATED - when an entity is created; provides both the created entity and all its components
- * DESTROYED - when an entity is destroyed; provides the destroyed entity
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#CREATED} - when an entity is created; provides both the created entity and all its components
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#DESTROYED} - when an entity is destroyed; provides the destroyed entity
  * </pre>
  */
 public class EntityPool {
@@ -30,8 +40,8 @@ public class EntityPool {
 	public EntityPool(EventBroadcaster events) {
 		this.events = events;
 
-		this.events.register("CREATE", (e, c) -> create(c));
-		this.events.register("DESTROY", (e, c) -> destroy(e));
+		this.events.register(CREATE, (e, c) -> create(c));
+		this.events.register(DESTROY, (e, c) -> destroy(e));
 	}
 
 	/**
@@ -42,7 +52,7 @@ public class EntityPool {
 	 */
 	public Stream<Entity> get(Signature signature, Comparator<Entity> comparator) {
 		Stream<Entity> result = entities.values().parallelStream()
-																		.filter(entity -> entity.contains(signature));
+				.filter(entity -> entity.contains(signature));
 
 		if (comparator != null) result = result.sorted(comparator);
 
@@ -67,7 +77,7 @@ public class EntityPool {
 		Entity entity = new Entity(id, components);
 		entities.put(id, entity);
 
-		events.enqueue("CREATED", entity, components);
+		events.enqueue(CREATED, entity, components);
 		return entity;
 	}
 
@@ -82,7 +92,7 @@ public class EntityPool {
 
 		if (result) {
 			reclaimedIds.add(removed.getId());
-			events.enqueue("DESTROYED", removed, null);
+			events.enqueue(DESTROYED, removed, null);
 		}
 		return result;
 	}
