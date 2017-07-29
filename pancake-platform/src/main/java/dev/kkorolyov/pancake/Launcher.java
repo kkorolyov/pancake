@@ -53,10 +53,12 @@ public abstract class Launcher extends Application {
 
 	/**
 	 * All initialization code should go here.
-	 * Examples
-	 * * Image/Action pool setup
-	 * * Attaching event handlers
-	 * * Configuration file application
+	 * Examples:
+	 * <pre>
+	 *   - Image/Action pool setup
+	 *   - Attaching event handlers
+	 *   - Configuration file application
+	 * </pre>
 	 */
 	public abstract void init() throws Exception;
 
