@@ -8,7 +8,6 @@ import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
-import dev.kkorolyov.pancake.component.movement.MaxSpeed;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
@@ -23,7 +22,6 @@ import dev.kkorolyov.pancake.system.InputSystem;
 import dev.kkorolyov.pancake.system.MovementSystem;
 import dev.kkorolyov.pancake.system.RenderSystem;
 import dev.kkorolyov.pancake.system.SpawnSystem;
-import dev.kkorolyov.pancake.system.SpeedCapSystem;
 import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
@@ -34,6 +32,7 @@ import java.util.function.Supplier;
 
 public class Interactive extends Launcher {
 	private static final float MOVE_FORCE = 500;
+	private static final float MAX_SPEED = 50;
 	private static final float OBJECT_MASS = .1f;
 	private static final float PLAYER_MASS = 10;
 	private static final float OBJECT_DAMPING = .9f;
@@ -59,7 +58,6 @@ public class Interactive extends Launcher {
 		return Arrays.asList(Bounds.class,
 				Damping.class,
 				Force.class,
-				MaxSpeed.class,
 				Sprite.class,
 				Transform.class,
 				Chain.class,
@@ -72,7 +70,6 @@ public class Interactive extends Launcher {
 		return Arrays.asList(new InputSystem(scene, camera, new Vector()),
 				new DampingSystem(),
 				new AccelerationSystem(),
-				new SpeedCapSystem(),
 				new MovementSystem(),
 				new ChainSystem(),
 				new CollisionSystem(),
@@ -129,7 +126,7 @@ public class Interactive extends Launcher {
 
 			Transform playerTransform = new Transform(new Vector(), randRotation());
 			entities.create(playerTransform,
-					new Velocity(),
+					new Velocity(MAX_SPEED),
 					new Force(PLAYER_MASS),
 					new Damping(PLAYER_DAMPING),
 					new Bounds(BOX, RADIUS),
