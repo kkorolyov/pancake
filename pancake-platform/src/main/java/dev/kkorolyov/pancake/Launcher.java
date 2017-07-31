@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.graphics.ImagePool;
 import dev.kkorolyov.pancake.input.ActionPool;
 import dev.kkorolyov.pancake.math.Vector;
+import dev.kkorolyov.pancake.sound.SoundPool;
 
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +26,7 @@ public abstract class Launcher extends Application {
 	protected final Camera camera = new Camera(new Vector(), null, 0, 0);
 
 	protected final ImagePool images = new ImagePool();
+	protected final SoundPool sounds = new SoundPool();
 	protected final ActionPool actions = new ActionPool();
 
 	protected final GameEngine engine;

@@ -11,6 +11,7 @@ import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.EntityPool;
+import dev.kkorolyov.pancake.event.PlatformEvents;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.math.WeightedDistribution;
@@ -80,11 +81,19 @@ public class Interactive extends Launcher {
 	@Override
 	public void init() throws Exception {
 		initImages();
+		initSounds();
 		initActions();
 		initEntities(engine.getEntities());
 	}
 	private void initImages() throws Exception {
 		images.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/images").toURI())));
+	}
+	private void initSounds() throws Exception {
+		sounds.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/sounds").toURI())));
+
+		engine.getEvents().register(PlatformEvents.CREATED, (e, c) -> {
+			if (e.get(Input.class) != null) sounds.get("spawn").play();
+		});
 	}
 	private void initActions() throws Exception {
 		actions.put(new Action("FORCE_UP", e -> e.get(Force.class).getForce().translate(0, MOVE_FORCE)));
