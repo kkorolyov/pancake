@@ -1,12 +1,11 @@
 package dev.kkorolyov.pancake;
 
-import java.util.Comparator;
-
-import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
 import dev.kkorolyov.pancake.event.Receiver;
+
+import java.util.Comparator;
 
 /**
  * Performs work on entities matching a certain component signature.
@@ -64,7 +63,7 @@ public abstract class GameSystem {
 	 * @param event event identifier
 	 * @param receiver action invoked on event reception
 	 */
-	public void register(String event, Receiver receiver) {
+	public void register(String event, Receiver<?> receiver) {
 		events.register(event, receiver);
 	}
 	/**
@@ -73,18 +72,17 @@ public abstract class GameSystem {
 	 * @param receiver removed receiver
 	 * @return {@code true} if {@code receiver} was present and removed
 	 */
-	public boolean unregister(String event, Receiver receiver) {
+	public boolean unregister(String event, Receiver<?> receiver) {
 		return events.unregister(event, receiver);
 	}
 
 	/**
 	 * Queues an event.
 	 * @param event event identifier
-	 * @param target entity affected by event, or {@code null} if not applicable
-	 * @param rawTarget components affected by event, or {@code null} if not applicable
+	 * @param payload event payload
 	 */
-	public void enqueue(String event, Entity target, Iterable<Component> rawTarget) {
-		events.enqueue(event, target, rawTarget);
+	public void enqueue(String event, Object payload) {
+		events.enqueue(event, payload);
 	}
 
 	/** @return component signature */

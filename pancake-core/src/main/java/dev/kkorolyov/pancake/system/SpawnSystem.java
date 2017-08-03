@@ -7,11 +7,17 @@ import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
 
+import static dev.kkorolyov.pancake.event.CoreEvents.SPAWN;
+import static dev.kkorolyov.pancake.event.PlatformEvents.CREATE;
+
 /**
  * Spawns entity clones from spawner entities.
  * <pre>
  * Events received:
- * SPAWN - spawns a clone using the {@link Spawner} of a provided entity
+ * {@link dev.kkorolyov.pancake.event.CoreEvents#SPAWN} - spawns a clone using the provided entity's {@link Spawner} (Entity)
+ *
+ * Events emitted:
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#CREATE} - when an entity is spawned (Entity)
  * </pre>
  */
 public class SpawnSystem extends GameSystem {
@@ -24,12 +30,12 @@ public class SpawnSystem extends GameSystem {
 	}
 	@Override
 	public void attach() {
-		register("SPAWN", (e, c) -> {
+		register(SPAWN, (Entity e) -> {
 			Spawner spawner = e.get(Spawner.class);
 			Transform transform = e.get(Transform.class);
 
 			Iterable<Component> clone = spawner.spawn(transform.getPosition());
-			enqueue("CREATE", null, clone);
+			enqueue(CREATE, clone);
 		});
 	}
 
@@ -39,6 +45,6 @@ public class SpawnSystem extends GameSystem {
 		Transform transform = entity.get(Transform.class);
 
 		Iterable<Component> clone = spawner.spawn(transform.getPosition(), dt);
-		if (clone != null) enqueue("CREATE", null, clone);
+		if (clone != null) enqueue(CREATE, clone);
 	}
 }

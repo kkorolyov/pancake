@@ -20,7 +20,7 @@ public class HealthSystem extends GameSystem {
 	@Override
 	public void update(Entity entity, float dt) {
 		if (entity.get(Health.class).isDead()) {
-			enqueue(PlatformEvents.DESTROY, entity, null);
+			enqueue(PlatformEvents.DESTROY, entity);
 		}
 	}
 }
