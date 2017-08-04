@@ -1,19 +1,17 @@
 package dev.kkorolyov.pancake.sound;
 
 import dev.kkorolyov.pancake.Config;
+import dev.kkorolyov.pancake.math.WeightedDistribution;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.scene.media.AudioClip;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 /**
  * Provides access to sounds by name.
@@ -22,10 +20,9 @@ import java.util.Random;
  */
 public class SoundPool {
 	private static final int DEFAULT_CACHE_SIZE = 15;
-	private static final Random rand = new Random();
 	private static final Logger log = Config.getLogger(SoundPool.class);
 
-	private final Map<String, List<String>> resourceLists = new HashMap<>();
+	private final Map<String, WeightedDistribution<String>> resourceDistributions = new HashMap<>();
 	private final Map<String, AudioClip> cache;
 	private int cacheSize;
 
@@ -61,15 +58,15 @@ public class SoundPool {
 		return cache.computeIfAbsent(getResource(name), AudioClip::new);
 	}
 	private String getResource(String name) {
-		List<String> resources = resourceLists.get(name);
+		WeightedDistribution<String> resources = resourceDistributions.get(name);
 		if (resources == null) throw new NoSuchElementException("No resources associated with name: " + name);
 
-		return resources.get(rand.nextInt(resources.size()));
+		return resources.get();
 	}
 
 	/**
 	 * Parses sounds from a configuration file.
-	 * Each entry is a sound name mapped to an arbitrary-length list of resources.
+	 * Each entry is a sound name mapped to an arbitrary-length list of resources, all with weight {@code 1}.
 	 * If a resource does not contain {@code //}, it is assumed to be found on the local filesystem.
 	 * @param soundConfig sound configuration file
 	 */
@@ -89,17 +86,27 @@ public class SoundPool {
 			log.info("Parsed sound entry: {}", name);
 		}
 	}
+
 	/**
-	 * Adds a {@code name -> resource} association.
+	 * Adds a {@code name -> resource} association with weight {@code 1}.
 	 * @param name sound name
 	 * @param resource resource URL
 	 */
 	public void put(String name, String resource) {
-		List<String> resources = resourceLists.computeIfAbsent(name, k -> {
+		put(name, resource, 1);
+	}
+	/**
+	 * Adds a {@code name -> resource} association.
+	 * @param name sound name
+	 * @param resource resource URL
+	 * @param weight {@code resource} weight compared to other resources in the same distribution
+	 */
+	public void put(String name, String resource, int weight) {
+		WeightedDistribution<String> resources = resourceDistributions.computeIfAbsent(name, k -> {
 			log.info("No resource list for name={}, creating new...", name);
-			return new ArrayList<>();
+			return new WeightedDistribution<>();
 		});
-		resources.add(resource);
+		resources.add(weight, resource);
 	}
 
 	/** @return maximum size of audio file cache */
