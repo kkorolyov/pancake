@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake
 
-import dev.kkorolyov.pancake.entity.Component
 import dev.kkorolyov.pancake.entity.Entity
 import dev.kkorolyov.pancake.event.EventBroadcaster
 import dev.kkorolyov.pancake.event.Receiver
@@ -12,9 +11,8 @@ import static dev.kkorolyov.pancake.SpecUtilities.setField
 
 class GameSystemSpec extends Specification {
 	@Shared String event = UUID.randomUUID().toString()
-	@Shared Iterable<Component> rawTarget = []
-	@Shared Entity target = new Entity(0, rawTarget)
-	@Shared Receiver receiver = {target, rawTarget -> return}
+	@Shared Object payload = Mock()
+	@Shared Receiver receiver = {payload -> return}
 	EventBroadcaster events = Mock()
 
 	GameSystem system = new GameSystem(null) {
@@ -43,9 +41,9 @@ class GameSystemSpec extends Specification {
 
 	def "queues events to attached event broadcaster"() {
 		when:
-		system.enqueue(event, target, rawTarget)
+		system.enqueue(event, payload)
 
 		then:
-		1 * events.enqueue(event, target, rawTarget)
+		1 * events.enqueue(event, payload)
 	}
 }

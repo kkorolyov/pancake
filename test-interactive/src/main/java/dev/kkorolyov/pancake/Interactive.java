@@ -10,6 +10,7 @@ import dev.kkorolyov.pancake.component.movement.Damping;
 import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.event.PlatformEvents;
 import dev.kkorolyov.pancake.input.Action;
@@ -91,7 +92,7 @@ public class Interactive extends Launcher {
 	private void initSounds() throws Exception {
 		sounds.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/sounds").toURI())));
 
-		engine.getEvents().register(PlatformEvents.CREATED, (e, c) -> {
+		engine.getEvents().register(PlatformEvents.CREATED, (Entity e) -> {
 			if (e.get(Input.class) != null) sounds.get("spawn").play();
 		});
 	}

@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.entity;
 
 import dev.kkorolyov.pancake.event.EventBroadcaster;
+import dev.kkorolyov.pancake.event.Receiver;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -19,12 +20,12 @@ import static dev.kkorolyov.pancake.event.PlatformEvents.DESTROYED;
  * A set of uniquely-identified "component-bag" entities.
  * <pre>
  * Events received:
- * {@link dev.kkorolyov.pancake.event.PlatformEvents#CREATE} - creates an entity using provided components
- * {@link dev.kkorolyov.pancake.event.PlatformEvents#DESTROY} - destroys a provided entity
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#CREATE} - creates an entity (Iterable&lt;Component&gt;)
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#DESTROY} - destroys an entity (Entity)
  *
  * Events emitted:
- * {@link dev.kkorolyov.pancake.event.PlatformEvents#CREATED} - when an entity is created; provides both the created entity and all its components
- * {@link dev.kkorolyov.pancake.event.PlatformEvents#DESTROYED} - when an entity is destroyed; provides the destroyed entity
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#CREATED} - when an entity is created (Entity)
+ * {@link dev.kkorolyov.pancake.event.PlatformEvents#DESTROYED} - when an entity is destroyed (Entity)
  * </pre>
  */
 public class EntityPool {
@@ -40,8 +41,8 @@ public class EntityPool {
 	public EntityPool(EventBroadcaster events) {
 		this.events = events;
 
-		this.events.register(CREATE, (e, c) -> create(c));
-		this.events.register(DESTROY, (e, c) -> destroy(e));
+		this.events.register(CREATE, (Receiver<Iterable<Component>>) this::create);
+		this.events.register(DESTROY, (Receiver<Entity>) this::destroy);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class EntityPool {
 		Entity entity = new Entity(id, components);
 		entities.put(id, entity);
 
-		events.enqueue(CREATED, entity, components);
+		events.enqueue(CREATED, entity);
 		return entity;
 	}
 
@@ -92,7 +93,7 @@ public class EntityPool {
 
 		if (result) {
 			reclaimedIds.add(removed.getId());
-			events.enqueue(DESTROYED, removed, null);
+			events.enqueue(DESTROYED, entity);
 		}
 		return result;
 	}
