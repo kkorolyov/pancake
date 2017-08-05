@@ -5,12 +5,14 @@ import dev.kkorolyov.pancake.SpecUtilities
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.util.function.Consumer
+
 class EventBroadcasterSpec extends Specification {
 	@Shared String event = "SomeEvent"
-	@Shared Receiver receiver = {t, rt -> 1}
+	@Shared Consumer<?> receiver = {t, rt -> 1}
 
-	Map<String, Set<Receiver>> receivers = Mock()
-	HashSet<Receiver> receiverSet = Mock()
+	Map<String, Set<Consumer<?>>> receivers = Mock()
+	HashSet<Consumer<?>> receiverSet = Mock()
 
 	EventBroadcaster eventBroadcaster = new EventBroadcaster()
 

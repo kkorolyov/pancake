@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.entity;
 
 import dev.kkorolyov.pancake.event.EventBroadcaster;
-import dev.kkorolyov.pancake.event.Receiver;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -9,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static dev.kkorolyov.pancake.event.PlatformEvents.CREATE;
@@ -41,8 +41,8 @@ public class EntityPool {
 	public EntityPool(EventBroadcaster events) {
 		this.events = events;
 
-		this.events.register(CREATE, (Receiver<Iterable<Component>>) this::create);
-		this.events.register(DESTROY, (Receiver<Entity>) this::destroy);
+		this.events.register(CREATE, (Consumer<Iterable<Component>>) this::create);
+		this.events.register(DESTROY, (Consumer<Entity>) this::destroy);
 	}
 
 	/**

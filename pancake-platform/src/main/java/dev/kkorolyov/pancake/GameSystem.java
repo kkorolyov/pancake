@@ -3,9 +3,9 @@ package dev.kkorolyov.pancake;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
-import dev.kkorolyov.pancake.event.Receiver;
 
 import java.util.Comparator;
+import java.util.function.Consumer;
 
 /**
  * Performs work on entities matching a certain component signature.
@@ -63,7 +63,7 @@ public abstract class GameSystem {
 	 * @param event event identifier
 	 * @param receiver action invoked on event reception
 	 */
-	public void register(String event, Receiver<?> receiver) {
+	public void register(String event, Consumer<?> receiver) {
 		events.register(event, receiver);
 	}
 	/**
@@ -72,7 +72,7 @@ public abstract class GameSystem {
 	 * @param receiver removed receiver
 	 * @return {@code true} if {@code receiver} was present and removed
 	 */
-	public boolean unregister(String event, Receiver<?> receiver) {
+	public boolean unregister(String event, Consumer<?> receiver) {
 		return events.unregister(event, receiver);
 	}
 

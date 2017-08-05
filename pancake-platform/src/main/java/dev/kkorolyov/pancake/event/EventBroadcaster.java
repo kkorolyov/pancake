@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Broadcasts events expected by registered systems.
@@ -16,7 +17,7 @@ import java.util.Set;
 public class EventBroadcaster {
 	private static final Logger log = Config.getLogger(EventBroadcaster.class);
 
-	private final Map<String, Set<Receiver>> receivers = new HashMap<>();
+	private final Map<String, Set<Consumer<?>>> receivers = new HashMap<>();
 	private final Queue<String> eventQueue = new ArrayDeque<>();
 	private final Queue<Object> payloadQueue = new ArrayDeque<>();
 
@@ -25,7 +26,7 @@ public class EventBroadcaster {
 	 * @param event event identifier
 	 * @param receiver action invoked on event reception
 	 */
-	public void register(String event, Receiver<?> receiver) {
+	public void register(String event, Consumer<?> receiver) {
 		receivers.computeIfAbsent(event, k -> new HashSet<>()).add(receiver);
 		log.info("Registered new event receiver: ({}, {})", event, receiver);
 	}
@@ -35,8 +36,8 @@ public class EventBroadcaster {
 	 * @param receiver removed receiver
 	 * @return {@code true} if {@code receiver} was present and removed
 	 */
-	public boolean unregister(String event, Receiver<?> receiver) {
-		Set<Receiver> set = receivers.get(event);
+	public boolean unregister(String event, Consumer<?> receiver) {
+		Set<Consumer<?>> set = receivers.get(event);
 		return (set != null) && set.remove(receiver);
 	}
 
@@ -51,7 +52,7 @@ public class EventBroadcaster {
 		payloadQueue.add(payload);
 		log.debug("Enqueued new event: ({}, {})", event, payload);
 
-		Set<Receiver> eventReceivers = receivers.get(event);
+		Set<Consumer<?>> eventReceivers = receivers.get(event);
 		return (eventReceivers == null) ? 0 : eventReceivers.size();
 	}
 
@@ -66,10 +67,10 @@ public class EventBroadcaster {
 			String event = eventQueue.remove();
 			Object payload = payloadQueue.remove();
 
-			Set<Receiver> eventReceivers = receivers.get(event);
+			Set<Consumer<?>> eventReceivers = receivers.get(event);
 			if (eventReceivers != null) {
-				for (Receiver eventReceiver : eventReceivers) {
-					eventReceiver.receive(payload);
+				for (Consumer eventReceiver : eventReceivers) {
+					eventReceiver.accept(payload);
 				}
 			}
 		}

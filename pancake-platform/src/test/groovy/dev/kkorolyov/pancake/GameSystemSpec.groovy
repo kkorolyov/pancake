@@ -2,17 +2,18 @@ package dev.kkorolyov.pancake
 
 import dev.kkorolyov.pancake.entity.Entity
 import dev.kkorolyov.pancake.event.EventBroadcaster
-import dev.kkorolyov.pancake.event.Receiver
 
 import spock.lang.Shared
 import spock.lang.Specification
+
+import java.util.function.Consumer
 
 import static dev.kkorolyov.pancake.SpecUtilities.setField
 
 class GameSystemSpec extends Specification {
 	@Shared String event = UUID.randomUUID().toString()
 	@Shared Object payload = Mock()
-	@Shared Receiver receiver = {payload -> return}
+	@Shared Consumer<?> receiver = {payload -> return}
 	EventBroadcaster events = Mock()
 
 	GameSystem system = new GameSystem(null) {
