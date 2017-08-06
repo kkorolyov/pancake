@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.math;
 
 import java.util.NavigableMap;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -25,9 +26,13 @@ public class WeightedDistribution<T> {
 		return this;
 	}
 
-	/** @return random value from this distribution */
+	/**
+	 * @return random value from this distribution
+	 * @throws NoSuchElementException if this distribution is empty
+	 */
 	public T get() {
-		return distribution.floorEntry(rand.nextInt(total))
-											 .getValue();
+		if (total == 0) throw new NoSuchElementException("Distribution is empty");
+
+		return distribution.floorEntry(rand.nextInt(total)).getValue();
 	}
 }
