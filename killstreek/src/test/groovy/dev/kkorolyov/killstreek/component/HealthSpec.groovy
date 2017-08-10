@@ -17,25 +17,16 @@ class HealthSpec extends Specification {
 		max << (1..100)
 	}
 
-	def "accepted positive values decrement current health"() {
+	def "changes by specified amount"() {
 		when:
-		health.accept(damage)
+		health.setMax(Integer.MAX_VALUE)
+		health.change(amount)
 
 		then:
-		health.getCurrent() == (current - damage)
+		health.getCurrent() == (current + amount)
 
 		where:
-		damage << (0..100)
-	}
-	def "accepted negative values increment current health"() {
-		when:
-		health.accept(-1 * heal)
-
-		then:
-		health.getCurrent() == (current + heal)
-
-		where:
-		heal << (0..100)
+		amount << (-100..100)
 	}
 
 	def "sets <= 0 max health to 1"() {
@@ -49,16 +40,6 @@ class HealthSpec extends Specification {
 		badValue << (0..-100)
 	}
 
-	def "sets < 0 current health to 0"() {
-		when:
-		health.setCurrent(badValue)
-
-		then:
-		health.getCurrent() == 0
-
-		where:
-		badValue << (-1..-100)
-	}
 	def "sets > max current health to max"() {
 		when:
 		health.setCurrent(badValue)
