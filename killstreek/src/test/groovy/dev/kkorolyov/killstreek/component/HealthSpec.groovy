@@ -4,14 +4,14 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 class HealthSpec extends Specification {
-	@Shared int max = 1
+	@Shared int max = Integer.MAX_VALUE
 	@Shared int current = 1
 
 	Health health = new Health(max, current)
 
 	def "max-only constructor sets current health to max"() {
 		expect:
-		new Health(max).getCurrent() == max
+		new Health(max).getValue().get() == max
 
 		where:
 		max << (1..100)
@@ -19,35 +19,33 @@ class HealthSpec extends Specification {
 
 	def "changes by specified amount"() {
 		when:
-		health.setMax(Integer.MAX_VALUE)
 		health.change(amount)
 
 		then:
-		health.getCurrent() == (current + amount)
+		health.getValue().get() == (current + amount)
 
 		where:
 		amount << (-100..100)
 	}
 
-	def "sets <= 0 max health to 1"() {
+	def "is dead at health <= 0"() {
 		when:
-		health.setMax(badValue)
+		health.getValue().set(value)
 
 		then:
-		health.getMax() == 1
+		health.isDead()
 
 		where:
-		badValue << (0..-100)
+		value << (0..-100)
 	}
-
-	def "sets > max current health to max"() {
+	def "is superdead at health < 0"() {
 		when:
-		health.setCurrent(badValue)
+		health.getValue().set(value)
 
 		then:
-		health.getCurrent() == max
+		health.isSuperDead()
 
 		where:
-		badValue << ((max + 1)..(max + 100))
+		value << (-1..-100)
 	}
 }

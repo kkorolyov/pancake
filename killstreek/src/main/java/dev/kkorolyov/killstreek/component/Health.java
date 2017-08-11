@@ -23,8 +23,6 @@ public class Health implements Component {
 	 */
 	public Health(int max, int current) {
 		value = new BoundedValue<>(null, max, current);
-		setMax(max);
-		setCurrent(current);
 	}
 
 	/**
@@ -39,32 +37,13 @@ public class Health implements Component {
 	public boolean isDead() {
 		return value.get() <= 0;
 	}
-
-	/** @return maximum health */
-	public int getMax() {
-		return value.getMaximum();
-	}
-	/**
-	 * Constrained {@code > 0}.
-	 * @param max new maximum health
-	 * @return {@code this}
-	 */
-	public Health setMax(int max) {
-		value.setMaximum(Math.max(1, max));
-		return this;
+	/** @return {@code true} if current health {@code < 0} */
+	public boolean isSuperDead() {
+		return value.get() < 0;
 	}
 
-	/** @return current health */
-	public int getCurrent() {
-		return value.get();
-	}
-	/**
-	 * Constrained {@code <= max}.
-	 * @param current new current health
-	 * @return {@code this}
-	 */
-	public Health setCurrent(int current) {
-		value.set(current);
-		return this;
+	/** @return health value */
+	public BoundedValue<Integer> getValue() {
+		return value;
 	}
 }
