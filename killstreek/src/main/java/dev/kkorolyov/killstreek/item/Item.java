@@ -10,43 +10,34 @@ import java.util.function.Consumer;
 /**
  * Applies effects to entities.
  */
-public class Item {
+public abstract class Item {
+	/**	An effect which does nothing, used for padding the pool of random effects */
+	public static final Consumer<Entity> NOOP_EFFECT = entity -> {};
+	private static int idCounter;
+
+	private final int id;
 	private final String name;
 	private final Sprite sprite;
 	private final WeightedDistribution<Consumer<Entity>> effects = new WeightedDistribution<>();
-	private int uses;
 
 	/**
-	 * Constructs a new item with {@code 1} use.
-	 * @see #Item(String, Sprite, int)
-	 */
-	public Item(String name, Sprite sprite) {
-		this(name, sprite, 1);
-	}
-	/**
-	 * Constructs a new item.
+	 * Constructs a new item with a unique ID.
 	 * @param name item name
 	 * @param sprite item visual
-	 * @param uses initial number of item uses
 	 */
-	public Item(String name, Sprite sprite, int uses) {
+	public Item(String name, Sprite sprite) {
+		this.id = Item.idCounter++;
 		this.name = name;
 		this.sprite = sprite;
-		setUses(uses);
 	}
 
 	/**
-	 * If this item has remaining uses, applies a random effect from this item to an entity and decrements remaining uses by {@code 1}.
+	 * Applies a randomly-select effect from this item's effect pool to an entity.
 	 * @param entity entity receiving effect
-	 * @return {@code true} if this item had at least 1 use and affected {@code entity}
-	 * @throws NoSuchElementException if this item has remaining uses, but no effects
+	 * @throws NoSuchElementException if this item has no effects
 	 */
-	public boolean apply(Entity entity) {
-		if (isEmpty()) return false;
-
+	public void apply(Entity entity) {
 		effects.get().accept(entity);
-		uses--;
-		return true;
 	}
 
 	/**
@@ -68,9 +59,9 @@ public class Item {
 		return this;
 	}
 
-	/** @return {@code true} if this item has no more uses remaining */
-	public boolean isEmpty() {
-		return getUses() <= 0;
+	/** @return unique item ID */
+	public int getId() {
+		return id;
 	}
 
 	/** @return item name */
@@ -83,16 +74,6 @@ public class Item {
 		return sprite;
 	}
 
-	/** @return number of remaining uses */
-	public int getUses() {
-		return uses;
-	}
-	/**
-	 * @param uses new number of remaining uses
-	 * @return {@code this}
-	 */
-	public Item setUses(int uses) {
-		this.uses = uses;
-		return this;
-	}
+	/** @return maximum number of items of this type in a single stack */
+	public abstract int getMaxStackSize();
 }
