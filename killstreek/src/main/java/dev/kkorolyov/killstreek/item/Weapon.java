@@ -8,7 +8,7 @@ import dev.kkorolyov.pancake.component.Sprite;
  */
 public class Weapon extends Equippable {
 	private final float rate;
-	private boolean twoHanded;
+	private final int requiredSlots;
 
 	/**
 	 * Constructs a new weapon.
@@ -17,13 +17,13 @@ public class Weapon extends Equippable {
 	 * @param durability weapon durability
 	 * @param value damage value
 	 * @param rate weapon fire rate in s
-	 * @param twoHanded whether this weapon requires both weapon slots to equip
+	 * @param requiredSlots number of weapon slots required to equip this weapon
 	 */
-	public Weapon(String name, Sprite sprite, BoundedValue<Integer> durability, int value, int rate, boolean twoHanded) {
+	public Weapon(String name, Sprite sprite, BoundedValue<Integer> durability, int value, int rate, int requiredSlots) {
 		super(name, sprite, durability, value);
 
 		this.rate = rate;
-		this.twoHanded = twoHanded;
+		this.requiredSlots = requiredSlots;
 	}
 
 	/** @return fire rate in s */
@@ -31,8 +31,8 @@ public class Weapon extends Equippable {
 		return rate;
 	}
 
-	/** @return {@code true} if this weapon requires both weapon slots to equip */
-	public boolean isTwoHanded() {
-		return twoHanded;
+	/** @return number of weapon slots required to equip this weapon */
+	public int getRequiredSlots() {
+		return requiredSlots;
 	}
 }
