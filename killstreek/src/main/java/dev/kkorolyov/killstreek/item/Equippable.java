@@ -28,9 +28,11 @@ public abstract class Equippable extends Item {
 	/**
 	 * Applies a change to current durability.
 	 * @param amount change in current durability
+	 * @return new durability value
 	 */
-	public void changeDurability(int amount) {
+	public int changeDurability(int amount) {
 		durability.set(durability.get() + amount);
+		return durability.get();
 	}
 
 	/** @return {@code true} if current durability value is equal to the minimum value */
