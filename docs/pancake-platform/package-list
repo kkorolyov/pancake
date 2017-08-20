@@ -1,6 +1,7 @@
 dev.kkorolyov.pancake
 dev.kkorolyov.pancake.entity
 dev.kkorolyov.pancake.event
+dev.kkorolyov.pancake.graphics
 dev.kkorolyov.pancake.input
 dev.kkorolyov.pancake.math
-dev.kkorolyov.pancake.tile
+dev.kkorolyov.pancake.sound
