@@ -116,6 +116,7 @@ project(':killstreek') {
 
 	dependencies {
 		compile project(':pancake-core')
+		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
 		runtime files('src/main/resources')
 	}
 
