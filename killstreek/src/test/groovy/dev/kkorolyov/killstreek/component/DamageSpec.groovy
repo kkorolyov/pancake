@@ -12,6 +12,15 @@ class DamageSpec extends Specification {
 
 	Damage damage = new Damage(value, duration)
 
+	def "no-arg-constructed damage starts expired"() {
+		when:
+		damage = new Damage()
+		damage.apply(health, randFloat())
+
+		then:
+		0 * health.change(_ as int)
+	}
+
 	def "value without duration applies full damage immediately"() {
 		when:
 		damage.setValue(value)

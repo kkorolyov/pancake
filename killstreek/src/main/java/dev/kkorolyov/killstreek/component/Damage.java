@@ -14,6 +14,12 @@ public class Damage implements Component {
 	private float elapsed;
 
 	/**
+	 * Constructs a new, expired damage.
+	 */
+	public Damage() {
+		this(0, 0);
+	}
+	/**
 	 * Constructs a new damage which applies its entire value at once.
 	 * @param value damage value
 	 */
@@ -50,7 +56,9 @@ public class Damage implements Component {
 		}
 		return true;
 	}
-	private boolean isExpired() {
+
+	/** @return {@code true} if subsequent damage applications will do nothing */
+	public boolean isExpired() {
 		return elapsed >= duration;
 	}
 
