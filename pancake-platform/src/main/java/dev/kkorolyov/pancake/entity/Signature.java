@@ -21,8 +21,8 @@ public class Signature {
 		index(Arrays.asList(types));
 	}
 	/**
-	 * Sets the collection of additional component types used in masking.
-	 * @param types indexed types, if {@code null} or empty, only the default component types are used
+	 * Sets the collection of component types used in masking.
+	 * @param types indexed types
 	 * @throws IllegalArgumentException if a non-concrete type is indexed
 	 */
 	public static void index(Iterable<Class<? extends Component>> types) {
