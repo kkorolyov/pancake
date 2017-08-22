@@ -60,13 +60,21 @@ class SpecUtilities {
 		f.set(object, value)
 	}
 
-	/** @return random float between {@code 0} and {@code MAX_INT} */
-	static float randFloat() {
-		return rand.nextInt(Integer.MAX_VALUE) * rand.nextFloat()
+	/** @return random int */
+	static int randInt() {
+		return rand.nextInt()
 	}
 	/** @return random long */
 	static long randLong() {
 		return rand.nextLong()
+	}
+	/** @return random float between {@code 0} and {@code MAX_INT} */
+	static float randFloat() {
+		return rand.nextInt(Integer.MAX_VALUE) * rand.nextFloat()
+	}
+	/** @return random String */
+	static String randString() {
+		return UUID.randomUUID().toString()
 	}
 
 	/** @return random KeyCode */
