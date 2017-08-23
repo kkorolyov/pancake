@@ -57,6 +57,13 @@ public class Damage implements Component {
 		return true;
 	}
 
+	/**
+	 * Resets elapsed damage duration.
+	 */
+	public void reset() {
+		setValue(value, duration);
+	}
+
 	/** @return {@code true} if subsequent damage applications will do nothing */
 	public boolean isExpired() {
 		return elapsed >= duration;
@@ -87,5 +94,10 @@ public class Damage implements Component {
 		elapsed = Math.min(0, duration);
 
 		return this;
+	}
+
+	/** @return seconds over which damage distributed */
+	public float getDuration() {
+		return duration;
 	}
 }
