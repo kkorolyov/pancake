@@ -7,6 +7,7 @@ import dev.kkorolyov.pancake.component.movement.Force;
 import dev.kkorolyov.pancake.component.movement.Velocity;
 import dev.kkorolyov.pancake.entity.Entity;
 import dev.kkorolyov.pancake.entity.Signature;
+import dev.kkorolyov.pancake.event.CoreEvents;
 import dev.kkorolyov.pancake.math.Collider;
 import dev.kkorolyov.pancake.math.Vector;
 
@@ -40,8 +41,9 @@ public class CollisionSystem extends GameSystem {
 
 	@Override
 	public void update(Entity entity, float dt) {
-		Velocity velocity = entity.get(Velocity.class);
-		((velocity != null && velocity.getVelocity().getMagnitude() > 0) ? moved : done).add(entity);
+		((entity.contains(MOVEABLE) && entity.get(Velocity.class).getVelocity().getMagnitude() > 0)
+				? moved
+				: done).add(entity);
 	}
 
 	@Override
@@ -55,17 +57,16 @@ public class CollisionSystem extends GameSystem {
 				if (mtv != null) {
 					entity.get(Transform.class).getPosition().add(mtv);
 
-					if (entity.contains(MOVEABLE)) {
-						if (other.contains(MOVEABLE)) {
-							Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
-									other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
-						} else {
-							mtv.normalize();
+					if (other.contains(MOVEABLE)) {	// Entities in "moved" are already verified to be MOVEABLE
+						Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
+								other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
+					} else {
+						mtv.normalize();
 
-							Vector velocity = entity.get(Velocity.class).getVelocity();
-							velocity.add(mtv, velocity.getMagnitude());
-						}
+						Vector velocity = entity.get(Velocity.class).getVelocity();
+						velocity.add(mtv, velocity.getMagnitude());
 					}
+					enqueue(CoreEvents.COLLIDED, new Object[]{entity, other});	// TODO New Object[] may be a performance detriment
 				}
 			}
 			done.add(entity);

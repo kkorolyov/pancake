@@ -2,6 +2,7 @@ package dev.kkorolyov.killstreek.item;
 
 import dev.kkorolyov.killstreek.item.Armor.Type;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,6 +12,23 @@ import java.util.stream.Collectors;
  */
 public class ArmorSet {
 	private final Map<Type, Armor> armor = new HashMap<>();
+
+	/**
+	 * Constructs a new armor set initialized with armor pieces.
+	 * @param armor initial armor pieces
+	 */
+	public ArmorSet(Armor... armor) {
+		this(Arrays.asList(armor));
+	}
+	/**
+	 * Constructs a new armor set initialized with armor pieces.
+	 * @param armor initial armor pieces
+	 */
+	public ArmorSet(Iterable<Armor> armor) {
+		if (armor != null) {
+			for (Armor piece : armor) equip(piece);
+		}
+	}
 
 	/** @return total defense value of all unbroken armor */
 	public int getDefense() {
