@@ -2,6 +2,8 @@ package dev.kkorolyov.pancake.system;
 
 import dev.kkorolyov.pancake.Config;
 import dev.kkorolyov.pancake.GameSystem;
+import dev.kkorolyov.pancake.PerformanceCounter;
+import dev.kkorolyov.pancake.PerformanceCounter.Usage;
 import dev.kkorolyov.pancake.component.Sprite;
 import dev.kkorolyov.pancake.component.Transform;
 import dev.kkorolyov.pancake.entity.Entity;
@@ -13,6 +15,8 @@ import dev.kkorolyov.simplelogs.Logger;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.transform.Rotate;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +25,7 @@ import java.util.Set;
  * Renders all game entities.
  */
 public class RenderSystem extends GameSystem {
+	private static final int LINE_HEIGHT = 14;
 	private static final Logger log = Config.getLogger(RenderSystem.class);
 
 	private final Canvas canvas;
@@ -89,10 +94,21 @@ public class RenderSystem extends GameSystem {
 		String[] args = Config.config.getArray("renderInfo");
 		if (args == null) return;
 
+		double y = 0;
+
 		for (String arg : args) {
 			switch (arg) {
-				case "FPS":
-					g.strokeText("FPS: " + Math.round(1 / dt), 0, 10);
+				case "fps":
+					g.strokeText("FPS: " + Math.round(1 / dt), 0, y += LINE_HEIGHT);
+					break;
+				case "usage":
+					for (Usage usage : PerformanceCounter.usages()) {
+						Paint previous = g.getStroke();
+
+						if (usage.exceedsMax()) g.setStroke(Color.DARKRED);
+						g.strokeText(usage.toString(), 0, y += LINE_HEIGHT);
+						g.setStroke(previous);
+					}
 					break;
 				default:
 					log.warning("Unknown renderInfo arg: {}", arg);

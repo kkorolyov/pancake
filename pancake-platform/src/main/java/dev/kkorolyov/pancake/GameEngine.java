@@ -2,20 +2,16 @@ package dev.kkorolyov.pancake;
 
 import dev.kkorolyov.pancake.entity.EntityPool;
 import dev.kkorolyov.pancake.event.EventBroadcaster;
-import dev.kkorolyov.simplelogs.Logger;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Central game management module.
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public class GameEngine {
-	private static final Logger log = Config.getLogger(GameEngine.class);
-	private final Map<GameSystem, Long> systemUsage = new HashMap<>();
-	private int usageSamples;
-
 	private final EventBroadcaster events = new EventBroadcaster();
 	private final EntityPool entities = new EntityPool(events);
 	private final Set<GameSystem> systems = new LinkedHashSet<>();
@@ -43,7 +39,7 @@ public class GameEngine {
 		events.broadcast();
 
 		for (GameSystem system : systems) {
-			long start = System.nanoTime();
+			PerformanceCounter.start();
 
 			system.before(dt);
 
@@ -53,30 +49,7 @@ public class GameEngine {
 
 			system.after(dt);
 
-			Long lastUsage = systemUsage.get(system);
-			if (lastUsage == null) lastUsage = 0L;
-			systemUsage.put(system, lastUsage + (System.nanoTime() - start));
-		}
-		usageSamples++;
-		logUsage();
-	}
-	private void logUsage() {
-		String sampleSize = Config.config.get("systemUsageSampleSize");
-		if (sampleSize != null) {
-			if (usageSamples >= Integer.parseInt(sampleSize)) {
-				StringJoiner usageResult = new StringJoiner(System.lineSeparator());
-				usageResult.add("System time usage over " + usageSamples + " ticks");
-
-				for (Entry<GameSystem, Long> entry : systemUsage.entrySet()) {
-					String systemName = entry.getKey().getClass().getName();
-					long totalMS = entry.getValue() / 1000000;
-
-					entry.setValue(0L);
-					usageResult.add(systemName + ": " + totalMS + "ms");
-				}
-				usageSamples = 0;
-				log.debug("{}", usageResult);
-			}
+			PerformanceCounter.end(system);
 		}
 	}
 

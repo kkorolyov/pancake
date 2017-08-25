@@ -100,9 +100,11 @@ project(':test-interactive') {
 
 	description = """Interactive test of platform+core modules"""
 
+	sourceSets.main.resources.srcDirs += project(':pancake-platform').sourceSets.main.resources.srcDirs
+
 	dependencies {
 		compile project(':pancake-core')
-		runtime files('src/main/resources')
+		runtime sourceSets.main.resources
 	}
 
 	mainClassName = 'dev.kkorolyov.pancake.Interactive'
@@ -117,7 +119,7 @@ project(':killstreek') {
 	dependencies {
 		compile project(':pancake-core')
 		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
-		runtime files('src/main/resources')
+		runtime sourceSets.main.resources
 	}
 
 	mainClassName = 'dev.kkorolyov.killstreek.Launcher'
