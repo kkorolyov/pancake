@@ -44,6 +44,8 @@ public class Interactive extends Launcher {
 
 	private static final Random rand = new Random();
 
+	private final Transform playerTransform = new Transform(new Vector(), randRotation());
+
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
@@ -134,7 +136,6 @@ public class Interactive extends Launcher {
 			Sprite sprite = new Sprite(images.get("player"), 4, 3, 1 / 60f);
 			sprite.stop(true, false);
 
-			Transform playerTransform = new Transform(new Vector(), randRotation());
 			entities.create(playerTransform,
 					new Velocity(MAX_SPEED),
 					new Force(PLAYER_MASS),
@@ -175,6 +176,7 @@ public class Interactive extends Launcher {
 				new Velocity(),
 				new Force(OBJECT_MASS),
 				new Damping(OBJECT_DAMPING),
+				new Chain(null, 0, playerTransform.getPosition()),
 				bounds,
 				sprite);
 	}
