@@ -36,6 +36,8 @@ public class RenderSystem extends GameSystem {
 
 	private final Set<Sprite> tickedSprites = new HashSet<>();
 
+	private float last;
+
 	/**
 	 * Constructs a new render system.
 	 * @param canvas canvas on which to render
@@ -99,7 +101,9 @@ public class RenderSystem extends GameSystem {
 		for (String arg : args) {
 			switch (arg) {
 				case "fps":
-					g.strokeText("FPS: " + Math.round(1 / dt), 0, y += LINE_HEIGHT);
+					float now = System.nanoTime();
+					g.strokeText("FPS: " + Math.round(1000000000 / (now - last)), 0, y += LINE_HEIGHT);
+					last = now;
 					break;
 				case "usage":
 					for (Usage usage : PerformanceCounter.usages()) {
