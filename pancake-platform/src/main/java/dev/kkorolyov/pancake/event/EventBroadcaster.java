@@ -1,8 +1,5 @@
 package dev.kkorolyov.pancake.event;
 
-import dev.kkorolyov.pancake.Config;
-import dev.kkorolyov.simplelogs.Logger;
-
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,8 +12,6 @@ import java.util.function.Consumer;
  * Broadcasts events expected by registered systems.
  */
 public class EventBroadcaster {
-	private static final Logger log = Config.getLogger(EventBroadcaster.class);
-
 	private final Map<String, Set<Consumer<?>>> receivers = new HashMap<>();
 	private final Queue<String> eventQueue = new ArrayDeque<>();
 	private final Queue<Object> payloadQueue = new ArrayDeque<>();
@@ -28,7 +23,6 @@ public class EventBroadcaster {
 	 */
 	public void register(String event, Consumer<?> receiver) {
 		receivers.computeIfAbsent(event, k -> new HashSet<>()).add(receiver);
-		log.info("Registered new event receiver: ({}, {})", event, receiver);
 	}
 	/**
 	 * Removes a receiver from a set of registered receivers
@@ -50,7 +44,6 @@ public class EventBroadcaster {
 	public int enqueue(String event, Object payload) {
 		eventQueue.add(event);
 		payloadQueue.add(payload);
-		log.debug("Enqueued new event: ({}, {})", event, payload);
 
 		Set<Consumer<?>> eventReceivers = receivers.get(event);
 		return (eventReceivers == null) ? 0 : eventReceivers.size();
@@ -74,7 +67,6 @@ public class EventBroadcaster {
 				}
 			}
 		}
-		if (size > 0) log.info("Broadcast {} queued events", size);
 		return size;
 	}
 }
