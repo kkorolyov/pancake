@@ -95,6 +95,19 @@ project(':pancake-core') {
 	}
 }
 
+project(':skillet') {
+	apply plugin: 'application'
+
+	description = """Standalone application for designing and exporting entities"""
+
+	dependencies {
+		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
+	}
+
+	mainClassName = 'dev.kkorolyov.pancake.skillet.Skillet'
+	startScripts.classpath = files('\"') + startScripts.classpath	// Resources must be at head of classpath for some reason
+}
+
 project(':test-interactive') {
 	apply plugin: 'application'
 
