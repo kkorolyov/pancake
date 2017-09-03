@@ -6,39 +6,39 @@ package dev.kkorolyov.pancake.skillet {
 		load()
 		reload()
 	}
+
+	package display {
+  	interface Displayable {
+    	Node toNode()
+    }
+
+    interface DisplayStrategy {
+    	Node display(Attribute)
+    }
+    DisplayStrategy <|.. NumberDisplayStrategy
+    DisplayStrategy <|.. TextDisplayStrategy
+    DisplayStrategy <|.. ImageDisplayStrategy
+    DisplayStrategy <|.. MapDisplayStrategy
+
+    class Entity {
+    }
+    class Component {
+    }
+    class Attribute {
+    	Object value
+    }
+  }
+
+  Skillet --> Displayable
+
+  Displayable <|.. Entity
+  Displayable <|.. Component
+  Displayable <|.. Attribute
+
+  Attribute --> DisplayStrategy
+
+  Entity *-- "*" Component
+  Component *-- "*" Attribute
 }
-
-package dev.kkorolyov.pancake.skillet.display {
-	interface Displayable {
-  	Node toNode()
-  }
-
-  interface DisplayStrategy {
-  	Node display(Attribute)
-  }
-  DisplayStrategy <|.. NumberDisplayStrategy
-  DisplayStrategy <|.. TextDisplayStrategy
-  DisplayStrategy <|.. ImageDisplayStrategy
-  DisplayStrategy <|.. MapDisplayStrategy
-
-  class Entity {
-  }
-  class Component {
-  }
-  class Attribute {
-  	Object value
-  }
-}
-
-Skillet --> Displayable
-
-Displayable <|.. Entity
-Displayable <|.. Component
-Displayable <|.. Attribute
-
-Attribute --> DisplayStrategy
-
-Entity *-- "*" Component
-Component *-- "*" Attribute
 
 @enduml

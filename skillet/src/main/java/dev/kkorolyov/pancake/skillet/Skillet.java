@@ -39,12 +39,14 @@ public class Skillet extends Application {
 
 		// TODO Testing shit below
 		Map<String, Object> m = new LinkedHashMap<>();
-		m.put("1", 234234);
+		m.put("1", "234234");
 		m.put("sdfs43wy5eyh", "YOOOOO");
+		Map<String, Object> m2 = new LinkedHashMap<>();
+		m2.put("2", m);
 
 		Attribute text = new Attribute("TextAttr", "Stringo");
 		Attribute num = new Attribute("NumAttr", 4);
-		Attribute map = new Attribute("MapAttr", m);
+		Attribute map = new Attribute("MapAttr", m2);
 
 		entity = new Entity("Entity")
 				.addComponent(new Component("Component1")

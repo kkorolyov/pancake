@@ -2,18 +2,18 @@ package dev.kkorolyov.pancake.skillet.display;
 
 import dev.kkorolyov.pancake.skillet.display.data.Attribute;
 
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import static dev.kkorolyov.pancake.skillet.uibuilder.DisplayableTransformer.paneCollector;
 import static dev.kkorolyov.pancake.skillet.uibuilder.LabelBuilder.buildLabel;
+import static dev.kkorolyov.pancake.skillet.uibuilder.TextBuilder.buildTextField;
 import static dev.kkorolyov.pancake.skillet.uibuilder.TitledPaneBuilder.buildTitledPane;
 
 /**
@@ -28,7 +28,7 @@ public abstract class DisplayStrategy {
 		strategies.put(Map.class, new MapDisplayStrategy());
 	}
 
-	private static Node simpleDisplay(String name, Node value, String tooltip) {
+	private static Node simpleDisplay(String name, String tooltip, Node value) {
 		Label label = buildLabel(name + ": ", tooltip);
 
 		BorderPane pane = new BorderPane();
@@ -67,19 +67,18 @@ public abstract class DisplayStrategy {
 	private static class NumberDisplayStrategy extends DisplayStrategy {
 		@Override
 		public Node display(Attribute attribute) {
-			TextField numText = new TextField(attribute.getValue().toString());
-
-			numText.textProperty().addListener((ObservableValue<? extends String> observableValue, String oldValue, String newValue) -> {
-				if (!newValue.matches("[+-]?(\\d*\\.\\d*|\\d+)?")) numText.setText(oldValue);
-			});
-			return simpleDisplay(attribute.getName(), numText, getTooltip("Number"));
+			return simpleDisplay(attribute.getName(), getTooltip("Number"), buildTextField(attribute.getValue().toString(), (target, oldValue, newValue) -> {
+				if (!newValue.matches("[+-]?(\\d*\\.\\d*|\\d+)?")) target.setText(oldValue);
+				attribute.setValue(NumberFormat.getInstance().parse(target.getText()));
+			}));
 		}
 	}
 
 	private static class TextDisplayStrategy extends DisplayStrategy {
 		@Override
 		public Node display(Attribute attribute) {
-			return simpleDisplay(attribute.getName(), new TextField(attribute.getValue().toString()), getTooltip("Text"));
+			return simpleDisplay(attribute.getName(), getTooltip("Text"), buildTextField(attribute.getValue().toString(), (target, oldValue, newValue) ->
+					attribute.setValue(newValue)));
 		}
 	}
 
@@ -89,7 +88,7 @@ public abstract class DisplayStrategy {
 			Map<String, Object> map = attribute.getValue(Map.class);
 
 			return buildTitledPane(attribute.getName(), getTooltip("Map"), map.entrySet().stream()
-					.map(entry -> new Attribute(entry.getKey(), entry.getValue()))
+					.map(entry -> new Attribute(entry.getKey(), entry.getValue(), (oldValue, newValue) -> entry.setValue(newValue)))
 					.collect(paneCollector(VBox.class)));
 		}
 	}
