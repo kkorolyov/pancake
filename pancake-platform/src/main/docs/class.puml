@@ -1,0 +1,128 @@
+@startuml
+
+package dev.kkorolyov.pancake {
+	class GameLoop {
+		void handle(long now)
+	}
+
+	class GameEngine {
+		void update(float dt)
+	}
+	abstract class GameSystem {
+	}
+
+	class Config
+
+	abstract class Launcher
+
+	class Limiter {
+		float duration
+		float elapsed
+		boolean isReady(float dt)
+	}
+
+	class PerformanceCounter {
+		void start()
+		void end(GameSystem system)
+	}
+	class Usage {
+		boolean exceedsMax()
+	}
+
+	package event {
+  	class EventBroadcaster {
+  		void register(String event, Consumer<?> receiver)
+  		void enqueue(String event, Object payload)
+  		int broadcast()
+  	}
+  }
+
+  package entity {
+  	class Entity
+  	class EntityPool
+
+  	class Signature {
+  		boolean masks(Signature other)
+  	}
+
+  	Entity o-- "1" Signature
+  	Entity *-- "*" Component
+
+  	EntityPool *-- "*" Entity
+
+  	Signature --> Signature: masks
+  }
+
+  package graphics {
+  	class Camera {
+  		Vector getAbsolutePosition(Vector relative)
+			Vector getRelativePosition(Vector absolute)
+  	}
+
+  	class CompositeImage {
+  	}
+
+  	class ImagePool {
+  		void put(Properties imageConfig)
+		}
+
+  	ImagePool o-- "*" CompositeImage
+  }
+
+  package input {
+		class Action {
+			Consumer<Entity> signal(boolean active, float dt)
+		}
+		abstract class ActionState
+
+		class KeyAction {
+			Consumer<Entity> signal(Set<Enum<?>> inputs, float dt)
+		}
+
+		class ActionPool {
+			void put(Properties actionConfig)
+			Iterable<KeyAction> parseConfig(Properties keyConfig)
+		}
+
+		Action *-- "1" ActionState
+		KeyAction o-- "1" Action
+
+		ActionPool o-- "*" Action
+		ActionPool --> KeyAction: creates
+  }
+
+  package math {
+	  class Vector
+
+	  class WeightedDistribution
+
+	  class Collider {
+	  	{static} Vector intersection(Vector origin1, Vector size1, Vector origin2, Vector size2)
+			{static} Vector intersection(Vector origin1, float radius1, Vector origin2, float radius2)
+			{static} Vector intersection(Vector origin1, Vector size1, Vector origin2, float radius2)
+			{static} void elasticCollide(Vector origin1, Vector velocity1, float mass1, Vector origin2, Vector velocity2, float mass2)
+	  }
+  }
+
+  package sound {
+  	class SoundPool {
+  		void put(Properties soundConfig)
+  	}
+  }
+
+  GameLoop *-- "1" GameEngine
+
+  GameEngine *-- "1" EventBroadcaster
+  GameEngine *-- "1" EntityPool
+	GameEngine *-- "*" GameSystem
+	GameEngine --> GameSystem: updates
+
+  SoundPool o-- "*" javafx.scene.media.AudioClip
+	SoundPool --> WeightedDistribution
+
+	PerformanceCounter *-- "*" Usage
+
+	Launcher --|> javafx.application.Application
+}
+
+@enduml
