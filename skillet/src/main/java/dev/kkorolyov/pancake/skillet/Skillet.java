@@ -1,23 +1,27 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.skillet.display.data.Attribute;
-import dev.kkorolyov.pancake.skillet.display.data.Component;
-import dev.kkorolyov.pancake.skillet.display.data.Entity;
+import dev.kkorolyov.pancake.skillet.data.Attribute;
+import dev.kkorolyov.pancake.skillet.data.Component;
+import dev.kkorolyov.pancake.skillet.data.ComponentFactory;
+import dev.kkorolyov.pancake.skillet.data.Entity;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static dev.kkorolyov.pancake.skillet.uibuilder.MenuBuilder.buildMenu;
-import static dev.kkorolyov.pancake.skillet.uibuilder.MenuBuilder.buildMenuBar;
-import static dev.kkorolyov.pancake.skillet.uibuilder.MenuBuilder.buildMenuItem;
+import static dev.kkorolyov.pancake.skillet.utility.ui.UIBuilder.buildMenuItem;
 
 public class Skillet extends Application {
+	private final BorderPane pane = new BorderPane();
+	private final ComponentFactory componentFactory = new ComponentFactory();
 	private Entity entity;
-	private BorderPane pane = new BorderPane();
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -28,8 +32,8 @@ public class Skillet extends Application {
 		primaryStage.setTitle("Skillet - Pancake Entity Designer");
 
 		// Menu bar
-		pane.setTop(buildMenuBar(
-				buildMenu("_File",
+		pane.setTop(new MenuBar(
+				new Menu("_File", null,
 						buildMenuItem("_Save", e -> save()),
 						buildMenuItem("_Load", e -> load()),
 						buildMenuItem("_Reload", e -> reload()))));
@@ -48,7 +52,7 @@ public class Skillet extends Application {
 		Attribute num = new Attribute("NumAttr", 4);
 		Attribute map = new Attribute("MapAttr", m2);
 
-		entity = new Entity("Entity")
+		entity = new Entity("Entity", componentFactory)
 				.addComponent(new Component("Component1")
 						.addAttribute(text)
 						.addAttribute(num)
@@ -63,6 +67,9 @@ public class Skillet extends Application {
 
 	}
 	private void reload() {
-		pane.setCenter(entity.toNode());
+		Node node = entity.toNode();
+
+		pane.setCenter(node);
+		BorderPane.setAlignment(node, Pos.TOP_CENTER);
 	}
 }

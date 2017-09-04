@@ -1,18 +1,21 @@
-package dev.kkorolyov.pancake.skillet.display.data;
+package dev.kkorolyov.pancake.skillet.data;
 
 import dev.kkorolyov.pancake.skillet.display.DisplayStrategy;
 import dev.kkorolyov.pancake.skillet.display.Displayable;
 
 import javafx.scene.Node;
+import java.io.Serializable;
 import java.util.function.BiConsumer;
 
 /**
  * A field with a value.
  */
-public class Attribute implements Displayable {
+public class Attribute implements Displayable, Serializable {
+	private static final long serialVersionUID = -334204822782020299L;
+
 	private final String name;
 	private Object value;
-	private final BiConsumer<Object, Object> valueChangedListener;
+	private final transient BiConsumer<Object, Object> valueChangedListener;
 
 	/**
 	 * Constructs a new attribute.

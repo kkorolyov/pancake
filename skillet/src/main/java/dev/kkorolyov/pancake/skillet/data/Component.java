@@ -1,19 +1,22 @@
-package dev.kkorolyov.pancake.skillet.display.data;
+package dev.kkorolyov.pancake.skillet.data;
 
 import dev.kkorolyov.pancake.skillet.display.Displayable;
 
 import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.kkorolyov.pancake.skillet.uibuilder.DisplayableTransformer.asPane;
+import static dev.kkorolyov.pancake.skillet.utility.ui.DisplayableTransformer.asPane;
 
 /**
  * A container of attributes.
  */
-public class Component implements Displayable {
+public class Component implements Displayable, Serializable {
+	private static final long serialVersionUID = -5144869208259619358L;
+
 	private final String name;
 	private final List<Attribute> attributes = new ArrayList<>();
 
@@ -25,10 +28,6 @@ public class Component implements Displayable {
 		this.name = name;
 	}
 
-	/** @return component name */
-	public String getName() {
-		return name;
-	}
 
 	/**
 	 * @param attribute added attribute
@@ -39,8 +38,13 @@ public class Component implements Displayable {
 		return this;
 	}
 
+	/** @return component name */
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public Node toNode() {
-		return new TitledPane(name, asPane(attributes, VBox.class));
+		return new TitledPane(name, asPane(attributes, VBox::new));
 	}
 }

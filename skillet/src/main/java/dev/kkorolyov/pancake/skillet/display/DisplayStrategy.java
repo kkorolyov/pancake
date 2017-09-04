@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.skillet.display;
 
-import dev.kkorolyov.pancake.skillet.display.data.Attribute;
+import dev.kkorolyov.pancake.skillet.data.Attribute;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,10 +11,10 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import static dev.kkorolyov.pancake.skillet.uibuilder.DisplayableTransformer.paneCollector;
-import static dev.kkorolyov.pancake.skillet.uibuilder.LabelBuilder.buildLabel;
-import static dev.kkorolyov.pancake.skillet.uibuilder.TextBuilder.buildTextField;
-import static dev.kkorolyov.pancake.skillet.uibuilder.TitledPaneBuilder.buildTitledPane;
+import static dev.kkorolyov.pancake.skillet.utility.ui.DisplayableTransformer.paneCollector;
+import static dev.kkorolyov.pancake.skillet.utility.ui.UIBuilder.buildLabel;
+import static dev.kkorolyov.pancake.skillet.utility.ui.UIBuilder.buildTextField;
+import static dev.kkorolyov.pancake.skillet.utility.ui.UIBuilder.buildTitledPane;
 
 /**
  * Converts an attribute to a displayable node.
@@ -89,7 +89,7 @@ public abstract class DisplayStrategy {
 
 			return buildTitledPane(attribute.getName(), getTooltip("Map"), map.entrySet().stream()
 					.map(entry -> new Attribute(entry.getKey(), entry.getValue(), (oldValue, newValue) -> entry.setValue(newValue)))
-					.collect(paneCollector(VBox.class)));
+					.collect(paneCollector(VBox::new)));
 		}
 	}
 }
