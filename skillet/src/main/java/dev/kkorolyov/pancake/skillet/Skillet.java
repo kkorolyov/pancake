@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.skillet.data.Attribute;
 import dev.kkorolyov.pancake.skillet.data.Component;
 import dev.kkorolyov.pancake.skillet.data.ComponentFactory;
 import dev.kkorolyov.pancake.skillet.data.Entity;
+import dev.kkorolyov.pancake.skillet.display.EntityDisplay;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -11,12 +12,13 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIBuilder.buildMenuItem;
+import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.action;
 
 public class Skillet extends Application {
 	private final BorderPane pane = new BorderPane();
@@ -34,9 +36,12 @@ public class Skillet extends Application {
 		// Menu bar
 		pane.setTop(new MenuBar(
 				new Menu("_File", null,
-						buildMenuItem("_Save", e -> save()),
-						buildMenuItem("_Load", e -> load()),
-						buildMenuItem("_Reload", e -> reload()))));
+						action(e -> save(),
+								new MenuItem("_Save")),
+						action(e -> load(),
+								new MenuItem("_Load")),
+						action(e -> reload(),
+								new MenuItem("_Reload")))));
 
 		primaryStage.setScene(new Scene(pane, 480, 480));
 		primaryStage.show();
@@ -52,12 +57,13 @@ public class Skillet extends Application {
 		Attribute num = new Attribute("NumAttr", 4);
 		Attribute map = new Attribute("MapAttr", m2);
 
-		entity = new Entity("Entity", componentFactory)
-				.addComponent(new Component("Component1")
+		entity = new Entity("Entity");
+		componentFactory
+				.add(new Component("Component1")
 						.addAttribute(text)
 						.addAttribute(num)
 						.addAttribute(map))
-				.addComponent(new Component("Component2"));
+				.add(new Component("Component2"));
 	}
 
 	private void save() {
@@ -67,7 +73,7 @@ public class Skillet extends Application {
 
 	}
 	private void reload() {
-		Node node = entity.toNode();
+		Node node = new EntityDisplay(entity, componentFactory).getRoot();
 
 		pane.setCenter(node);
 		BorderPane.setAlignment(node, Pos.TOP_CENTER);

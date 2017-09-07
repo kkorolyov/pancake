@@ -1,21 +1,15 @@
 package dev.kkorolyov.pancake.skillet.data;
 
-import dev.kkorolyov.pancake.skillet.display.DisplayStrategy;
-import dev.kkorolyov.pancake.skillet.display.Displayable;
-
-import javafx.scene.Node;
 import java.io.Serializable;
-import java.util.function.BiConsumer;
 
 /**
  * A field with a value.
  */
-public class Attribute implements Displayable, Serializable {
+public class Attribute extends DataObservable<Attribute> implements Serializable {
 	private static final long serialVersionUID = -334204822782020299L;
 
 	private final String name;
 	private Object value;
-	private final transient BiConsumer<Object, Object> valueChangedListener;
 
 	/**
 	 * Constructs a new attribute.
@@ -23,18 +17,8 @@ public class Attribute implements Displayable, Serializable {
 	 * @param value attribute value
 	 */
 	public Attribute(String name, Object value) {
-		this(name, value, null);
-	}
-	/**
-	 * Constructs a new attribute.
-	 * @param name attribute name
-	 * @param value attribute value
-	 * @param valueChangedListener listener called with (oldValue, newValue) when this attribute's value changes
-	 */
-	public Attribute(String name, Object value, BiConsumer<Object, Object> valueChangedListener) {
 		this.name = name;
 		setValue(value);
-		this.valueChangedListener = valueChangedListener;
 	}
 
 	/** @return attribute name */
@@ -62,16 +46,12 @@ public class Attribute implements Displayable, Serializable {
 		Object oldValue = this.value;
 
 		this.value = value;
+		changed(AttributeChangeEvent.VALUE);
 
-		if (valueChangedListener != null) {
-			valueChangedListener.accept(oldValue, this.value);
-		}
 		return oldValue;
 	}
 
-	@Override
-	public Node toNode() {
-		return DisplayStrategy.getStrategy(value.getClass())
-				.display(this);
+	public enum AttributeChangeEvent implements DataChangeEvent {
+		VALUE
 	}
 }

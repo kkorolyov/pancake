@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.skillet.data;
 
 import dev.kkorolyov.simpleprops.Properties;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -26,11 +27,18 @@ public class ComponentFactory {
 	}
 
 	/** @return names of all components */
-	public Iterable<String> getNames() {
-		components.put("Testo", new Component("Testo"));
+	public Collection<String> getNames() {
 		return components.keySet();
 	}
 
+	/**
+	 * @param component added component
+	 * @return {@code this}
+	 */
+	public ComponentFactory add(Component component) {
+		components.put(component.getName(), component);
+		return this;
+	}
 	/**
 	 * Parses components from a config file.
 	 * Each property in the file is expected to be in the format:
@@ -45,13 +53,22 @@ public class ComponentFactory {
 	 *   Map - {key: value, key: value, key: value...}
 	 * </pre>
 	 * @param componentConfig component config properties
+	 * @return {@code this}
 	 */
-	public void put(Properties componentConfig) {
-
+	public ComponentFactory add(Properties componentConfig) {
+		return this;
 	}
 
 	/**
-	 * Clears all components.
+	 * @param name removed component name
+	 * @return removed component, or {@code null} if no such component
+	 */
+	public Component remove(String name) {
+		return components.remove(name);
+	}
+
+	/**
+	 * Removes all components.
 	 */
 	public void clear() {
 		components.clear();
