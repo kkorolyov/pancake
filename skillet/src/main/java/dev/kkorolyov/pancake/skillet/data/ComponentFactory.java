@@ -5,8 +5,10 @@ import dev.kkorolyov.simpleprops.Properties;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import static dev.kkorolyov.pancake.skillet.utility.Data.serialClone;
+import static dev.kkorolyov.pancake.skillet.utility.Data.stringToComponent;
 
 /**
  * Provides fresh instances of various components by name.
@@ -56,6 +58,9 @@ public class ComponentFactory {
 	 * @return {@code this}
 	 */
 	public ComponentFactory add(Properties componentConfig) {
+		for (Entry<String, String> entry : componentConfig) {
+			components.put(entry.getKey(), stringToComponent(entry.getKey() + "=" + entry.getValue()));
+		}
 		return this;
 	}
 

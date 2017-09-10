@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.skillet.data.Attribute;
 import dev.kkorolyov.pancake.skillet.data.Attribute.AttributeChangeEvent;
 import dev.kkorolyov.pancake.skillet.data.DataChangeListener;
 import dev.kkorolyov.pancake.skillet.data.DataObservable.DataChangeEvent;
+import dev.kkorolyov.pancake.skillet.utility.Data;
 import dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator;
 
 import javafx.geometry.Pos;
@@ -27,7 +28,7 @@ import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.change;
  */
 public class AttributeDisplay implements Display, DataChangeListener<Attribute> {
 	private Node root;
-	private DisplayStrategy strategy;
+	private ValueDisplayer strategy;
 
 	private static Node simpleDisplay(String name, String tooltip, Node value) {
 		Label label = tooltip(tooltip,
@@ -64,21 +65,21 @@ public class AttributeDisplay implements Display, DataChangeListener<Attribute> 
 	@Override
 	public void changed(Attribute target, DataChangeEvent event) {
 		if (AttributeChangeEvent.VALUE == event) {
-			strategy = DisplayStrategy.getStrategy(target);
+			strategy = ValueDisplayer.getStrategy(target);
 
 			root = strategy.display(target);
 			root.setId(target.getName());
 		}
 	}
 
-	private static abstract class DisplayStrategy {
-		private static final Collection<DisplayStrategy> strategies = Arrays.asList(
-				new NumberDisplayStrategy(),
-				new TextDisplayStrategy(),
-				new MapDisplayStrategy()
+	private static abstract class ValueDisplayer {
+		private static final Collection<ValueDisplayer> strategies = Arrays.asList(
+				new NumberDisplayer(),
+				new StringDisplayer(),
+				new MapDisplayer()
 		);
 
-		private static DisplayStrategy getStrategy(Attribute attribute) {
+		private static ValueDisplayer getStrategy(Attribute attribute) {
 			Class<?> c = attribute.getValue().getClass();
 
 			return strategies.stream()
@@ -91,14 +92,20 @@ public class AttributeDisplay implements Display, DataChangeListener<Attribute> 
 
 		abstract boolean accepts(Class<?> c);
 
-		private static class NumberDisplayStrategy extends DisplayStrategy {
+		private static class NumberDisplayer extends ValueDisplayer {
 			@Override
 			public Node display(Attribute attribute) {
 				return simpleDisplay(attribute.getName(), "Number", change((target, oldValue, newValue) -> {
-							if (!newValue.matches("[+-]?(\\d*\\.\\d*|\\d+)?")) target.setText(oldValue);
+							if (!Data.isNumberOrEmpty(newValue)) target.setText(oldValue);
 
-							if (!target.getText().equals(oldValue)) attribute.setValue(NumberFormat.getInstance().parse(target.getText()));
-						}, new TextField(attribute.getValue().toString()), TextInputControl::textProperty));
+							if (!target.getText().equals(oldValue)) {
+								attribute.setValue(Data.isNumber(target.getText())
+										? NumberFormat.getInstance().parse(target.getText())
+										: 0);
+							}
+						},
+						TextInputControl::textProperty,
+						new TextField(attribute.getValue().toString())));
 			}
 
 			@Override
@@ -107,12 +114,14 @@ public class AttributeDisplay implements Display, DataChangeListener<Attribute> 
 			}
 		}
 
-		private static class TextDisplayStrategy extends DisplayStrategy {
+		private static class StringDisplayer extends ValueDisplayer {
 			@Override
 			public Node display(Attribute attribute) {
 				return simpleDisplay(attribute.getName(), "Text", change((target, oldValue, newValue) -> {
-					if (!newValue.equals(oldValue)) attribute.setValue(newValue);
-				}, new TextField(attribute.getValue().toString()), TextInputControl::textProperty));
+							if (!newValue.equals(oldValue)) attribute.setValue(newValue);
+						},
+						TextInputControl::textProperty,
+						new TextField(attribute.getValue().toString())));
 			}
 
 			@Override
@@ -121,7 +130,7 @@ public class AttributeDisplay implements Display, DataChangeListener<Attribute> 
 			}
 		}
 
-		private static class MapDisplayStrategy extends DisplayStrategy {
+		private static class MapDisplayer extends ValueDisplayer {
 			@Override
 			public Node display(Attribute attribute) {
 				Map<String, Object> map = attribute.getValue(Map.class);

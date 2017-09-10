@@ -1,0 +1,7 @@
+.add-component .arrow-button, .add-component .arrow {
+	-fx-padding: 0px;	/* Remove the dropdown arrow */
+}
+
+.remove-component {
+	-fx-cursor: default;
+}

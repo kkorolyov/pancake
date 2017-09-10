@@ -21,14 +21,19 @@ package dev.kkorolyov.pancake.skillet {
 			Object value
 		}
 
+		class ComponentFactory {
+		}
+
 		DataObservable o-l- "*" DataChangeListener
 
-		DataObservable <|-d- Entity
-		DataObservable <|-d- Component
-		DataObservable <|-d- Attribute
+		DataObservable <|-- Entity
+		DataObservable <|-- Component
+		DataObservable <|-- Attribute
 
 		Entity *-- "*" Component
 		Component *-- "*" Attribute
+
+		ComponentFactory o-- "*" Component
 	}
 
 	package display {
@@ -51,27 +56,31 @@ package dev.kkorolyov.pancake.skillet {
     DisplayStrategy <|.. ImageDisplayStrategy
     DisplayStrategy <|.. MapDisplayStrategy
 
-    Display <|.d. EntityDisplay
-		Display <|.d. ComponentDisplay
-		Display <|.d. AttributeDisplay
+    Display <|.. EntityDisplay
+		Display <|.. ComponentDisplay
+		Display <|.. AttributeDisplay
 
 		AttributeDisplay *-- "1" DisplayStrategy
   }
 
   package utility {
+		class DisplayTransformer {
+		}
+
   	class UIDecorator {
   	}
   }
 
-  DataChangeListener <|.d. EntityDisplay
-	DataChangeListener <|.d. ComponentDisplay
-	DataChangeListener <|.d. AttributeDisplay
+  DataChangeListener <|.. EntityDisplay
+	DataChangeListener <|.. ComponentDisplay
+	DataChangeListener <|.. AttributeDisplay
 
   EntityDisplay o-- "1" Entity
   ComponentDisplay o-- "1" Component
   AttributeDisplay o-- "1" Attribute
 
   Skillet --> EntityDisplay
+  Skillet --> ComponentFactory
 }
 
 @enduml

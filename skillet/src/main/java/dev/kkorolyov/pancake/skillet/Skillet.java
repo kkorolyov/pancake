@@ -5,6 +5,7 @@ import dev.kkorolyov.pancake.skillet.data.Component;
 import dev.kkorolyov.pancake.skillet.data.ComponentFactory;
 import dev.kkorolyov.pancake.skillet.data.Entity;
 import dev.kkorolyov.pancake.skillet.display.EntityDisplay;
+import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -15,6 +16,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -36,14 +40,17 @@ public class Skillet extends Application {
 		// Menu bar
 		pane.setTop(new MenuBar(
 				new Menu("_File", null,
-						action(e -> save(),
+						action(e -> saveEntity(),
 								new MenuItem("_Save")),
-						action(e -> load(),
+						action(e -> loadEntity(),
 								new MenuItem("_Load")),
-						action(e -> reload(),
+						action(e -> reloadEntity(),
 								new MenuItem("_Reload")))));
 
-		primaryStage.setScene(new Scene(pane, 480, 480));
+		Scene scene = new Scene(pane, 480, 480);
+		scene.getStylesheets().add("style.css");
+
+		primaryStage.setScene(scene);
 		primaryStage.show();
 
 		// TODO Testing shit below
@@ -64,15 +71,25 @@ public class Skillet extends Application {
 						.addAttribute(num)
 						.addAttribute(map))
 				.add(new Component("Component2"));
+
+		try {
+			componentFactory.add(new Properties(Paths.get(ClassLoader.getSystemResource("components").toURI())));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void save() {
+	private void newEntity() {
 
 	}
-	private void load() {
+
+	private void saveEntity() {
 
 	}
-	private void reload() {
+	private void loadEntity() {
+
+	}
+	private void reloadEntity() {
 		Node node = new EntityDisplay(entity, componentFactory).getRoot();
 
 		pane.setCenter(node);

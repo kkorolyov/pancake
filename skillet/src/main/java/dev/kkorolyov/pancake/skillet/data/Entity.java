@@ -8,9 +8,13 @@ import java.util.Map;
  * A container of components.
  */
 public class Entity extends DataObservable<Entity> {
-	private final String name;
+	private String name;
 	private final Map<String, Component> components = new LinkedHashMap<>();
 
+	/**
+	 * Constructs a new entity with an empty name.
+	 */
+	public Entity() {}
 	/**
 	 * Constructs a new entity.
 	 * @param name entity name
@@ -54,13 +58,19 @@ public class Entity extends DataObservable<Entity> {
 	public String getName() {
 		return name;
 	}
+	/** @param name entity name */
+	public void setName(String name) {
+		this.name = name;
 
+		changed(EntityChangeEvent.NAME);
+	}
 	/** @return	entity components */
 	public Collection<Component> getComponents() {
 		return components.values();
 	}
 
 	public enum EntityChangeEvent implements DataChangeEvent {
+		NAME,
 		ADD,
 		REMOVE
 	}

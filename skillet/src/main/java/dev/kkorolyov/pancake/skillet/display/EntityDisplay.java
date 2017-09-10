@@ -7,26 +7,36 @@ import dev.kkorolyov.pancake.skillet.data.DataObservable.DataChangeEvent;
 import dev.kkorolyov.pancake.skillet.data.Entity;
 import dev.kkorolyov.pancake.skillet.data.Entity.EntityChangeEvent;
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.action;
+import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.change;
 import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.collapsible;
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.contextMenu;
 import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.tooltip;
 
 /**
  * Displays an {@link Entity}.
  */
 public class EntityDisplay implements Display, DataChangeListener<Entity> {
+	private final TextField nameField;
 	private final VBox content;
 	private final TitledPane root;
 
 	/**
-	 * Constructs a new entity display.
+	 * Constructs a new entity disityy.
 	 * @param entity displayed entity
 	 * @param componentFactory component factory providing all addable components
 	 */
@@ -35,17 +45,37 @@ public class EntityDisplay implements Display, DataChangeListener<Entity> {
 				.map(component -> buildComponentDisplay(entity, component))
 				.toArray(Node[]::new));
 
-		root = contextMenu(() ->
-						new ContextMenu(componentFactory.getNames().stream()
-								.filter(name -> !entity.containsComponent(name))
-								.map(name -> action(e ->
-												entity.addComponent(componentFactory.get(name)),
-										new MenuItem("Add component: " + name)))
-								.toArray(MenuItem[]::new)),
-				collapsible(false,
-						tooltip("Right click to add component",
-								new TitledPane(entity.getName(), content))));
+		nameField = change((target, oldValue, newValue) -> entity.setName(newValue),
+				TextInputControl::textProperty,
+				tooltip("Entity name",
+						new TextField(entity.getName())));
+
+		MenuButton addButton = change((target, oldValue, newValue) -> {
+					target.getItems().clear();
+					componentFactory.getNames().stream()
+							.filter(name -> !entity.containsComponent(name))
+							.map(name -> action(
+									e1 -> entity.addComponent(componentFactory.get(name)),
+									new MenuItem("Add: " + name)))
+							.forEach(target.getItems()::add);
+				},
+				MenuButton::showingProperty,
+				tooltip("Add component",
+						new MenuButton("+")));
+		addButton.getStyleClass().add("add-component");
+
+		Pane header = buildHeader(nameField, addButton);
+
+		ScrollPane scrollPane = new ScrollPane(content);
+		scrollPane.setFitToWidth(true);
+
+		root = collapsible(false,
+				new TitledPane(entity.getName(), scrollPane));
+		root.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		root.setGraphic(header);
 		root.setId(entity.getName());
+
+		header.minWidthProperty().bind(root.widthProperty().subtract(12));
 
 		entity.register(this);
 	}
@@ -57,7 +87,9 @@ public class EntityDisplay implements Display, DataChangeListener<Entity> {
 
 	@Override
 	public void changed(Entity target, DataChangeEvent event) {
-		if (EntityChangeEvent.ADD == event) {
+		if (EntityChangeEvent.NAME == event) {
+			nameField.setText(target.getName());
+		} else if (EntityChangeEvent.ADD == event) {
 			for (Component component : target.getComponents()) {
 				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(component.getName()))) {
 					content.getChildren().add(buildComponentDisplay(target, component));
@@ -69,11 +101,31 @@ public class EntityDisplay implements Display, DataChangeListener<Entity> {
 	}
 
 	private Node buildComponentDisplay(Entity entity, Component component) {
-		return contextMenu(() ->
-						new ContextMenu(action(e -> {
-							entity.removeComponent(component.getName());
-						}, new MenuItem("Remove component: " + component.getName()))),
-				tooltip("Right click to remove component",
-						new ComponentDisplay(component).getRoot()));
+		Label label = new Label(component.getName());
+
+		Button removeButton = action(e -> entity.removeComponent(component.getName()),
+				tooltip("Remove component",
+						new Button("-")));
+		removeButton.getStyleClass().add("remove-component");
+
+		Pane header = buildHeader(label, removeButton);
+
+		TitledPane componentRoot = new ComponentDisplay(component).getRoot();
+		componentRoot.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		componentRoot.setGraphic(header);
+
+		header.minWidthProperty().bind(componentRoot.widthProperty().subtract(28));
+
+		return componentRoot;
+	}
+
+	private Pane buildHeader(Node name, Node action) {
+		BorderPane header = new BorderPane();
+		header.setLeft(name);
+		header.setRight(action);
+		BorderPane.setAlignment(name, Pos.CENTER);
+		BorderPane.setAlignment(header, Pos.CENTER);
+
+		return header;
 	}
 }

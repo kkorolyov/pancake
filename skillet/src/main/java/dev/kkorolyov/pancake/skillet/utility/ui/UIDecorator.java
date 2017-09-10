@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.skillet.utility.ui;
 
-import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -73,7 +73,7 @@ public final class UIDecorator {
 	 * @param propertyFunction retrieves the property by applying a function on {@code node} on which to attach listener
 	 * @return {@code node} after change listener attachment
 	 */
-	public static <V, T extends Node> T change(ThrowingChangeListener<? super V, T> listener, T node, Function<T, Property<V>> propertyFunction) {
+	public static <V, T extends Node> T change(ThrowingChangeListener<? super V, T> listener, Function<T, ReadOnlyProperty<V>> propertyFunction, T node) {
 		propertyFunction.apply(node).addListener((observable, oldValue, newValue) -> {
 			try {
 				listener.changed(node, oldValue, newValue);
