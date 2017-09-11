@@ -56,7 +56,7 @@ public class EntityDisplay implements Display, DataChangeListener<Entity> {
 							.filter(name -> !entity.containsComponent(name))
 							.map(name -> action(
 									e1 -> entity.addComponent(componentFactory.get(name)),
-									new MenuItem("Add: " + name)))
+									new MenuItem(name)))
 							.forEach(target.getItems()::add);
 				},
 				MenuButton::showingProperty,

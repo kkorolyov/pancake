@@ -96,7 +96,7 @@ public class AttributeDisplay implements Display, DataChangeListener<Attribute> 
 			@Override
 			public Node display(Attribute attribute) {
 				return simpleDisplay(attribute.getName(), "Number", change((target, oldValue, newValue) -> {
-							if (!Data.isNumberOrEmpty(newValue)) target.setText(oldValue);
+							if (newValue.length() > 0 && !Data.isNumber(newValue)) target.setText(oldValue);
 
 							if (!target.getText().equals(oldValue)) {
 								attribute.setValue(Data.isNumber(target.getText())

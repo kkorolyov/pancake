@@ -1,14 +1,13 @@
 package dev.kkorolyov.pancake.skillet.data;
 
-import dev.kkorolyov.simpleprops.Properties;
+import dev.kkorolyov.pancake.skillet.utility.Persister;
 
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import static dev.kkorolyov.pancake.skillet.utility.Data.serialClone;
-import static dev.kkorolyov.pancake.skillet.utility.Data.stringToComponent;
 
 /**
  * Provides fresh instances of various components by name.
@@ -43,25 +42,16 @@ public class ComponentFactory {
 	}
 	/**
 	 * Parses components from a config file.
-	 * Each property in the file is expected to be in the format:
-	 * <pre>
-	 *   {componentName}={attributeName}: {attributeValue}...
-	 * </pre>
-	 * i.e. a component name mapped to an arbitrary list of attributes.
-	 * Valid attribute value types include:
-	 * <pre>
-	 *   String - AnyTextNotParseableAsANumber
-	 *   Number - 123, 1.23
-	 *   Map - {key: value, key: value, key: value...}
-	 * </pre>
-	 * @param componentConfig component config properties
-	 * @return {@code this}
+	 * See {@link Persister#loadComponents(Path)} for appropriate file formatting.
+	 * @param componentConfig path to component config
+	 * @return all parsed components
 	 */
-	public ComponentFactory add(Properties componentConfig) {
-		for (Entry<String, String> entry : componentConfig) {
-			components.put(entry.getKey(), stringToComponent(entry.getKey() + "=" + entry.getValue()));
+	public Collection<Component> add(Path componentConfig) {
+		Collection<Component> added = Persister.loadComponents(componentConfig);
+		for (Component component : added) {
+			add(component);
 		}
-		return this;
+		return added;
 	}
 
 	/**
