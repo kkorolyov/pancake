@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -67,6 +68,7 @@ public abstract class Launcher extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle(title);
+		primaryStage.getIcons().add(new Image("pancake-icon.png"));
 		primaryStage.setScene(scene);
 		primaryStage.show();
 

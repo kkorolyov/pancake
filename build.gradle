@@ -100,6 +100,8 @@ project(':skillet') {
 
 	description = """Standalone application for designing and exporting entities"""
 
+	sourceSets.main.resources.srcDirs += project(':pancake-platform').sourceSets.main.resources.srcDirs
+
 	dependencies {
 		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
 	}
@@ -117,7 +119,6 @@ project(':test-interactive') {
 
 	dependencies {
 		compile project(':pancake-core')
-		runtime sourceSets.main.resources
 	}
 
 	mainClassName = 'dev.kkorolyov.pancake.Interactive'

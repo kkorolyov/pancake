@@ -1,26 +1,31 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.skillet.data.Attribute;
 import dev.kkorolyov.pancake.skillet.data.Component;
 import dev.kkorolyov.pancake.skillet.data.ComponentFactory;
 import dev.kkorolyov.pancake.skillet.data.Entity;
 import dev.kkorolyov.pancake.skillet.display.EntityDisplay;
-import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import java.io.IOException;
+import javafx.stage.Window;
+import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.action;
 
@@ -35,54 +40,45 @@ public class Skillet extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		addDefaultComponents();
+
 		primaryStage.setTitle("Skillet - Pancake Entity Designer");
+		primaryStage.getIcons().add(new Image("pancake-icon.png"));
 
 		// Menu bar
 		pane.setTop(new MenuBar(
-				new Menu("_File", null,
+				new Menu("_Entity", null,
+						action(e -> newEntity(),
+								new MenuItem("_New")),
 						action(e -> saveEntity(),
 								new MenuItem("_Save")),
 						action(e -> loadEntity(),
 								new MenuItem("_Load")),
 						action(e -> reloadEntity(),
-								new MenuItem("_Reload")))));
+								new MenuItem("_Reload"))),
+				new Menu("_Components", null,
+						action(e -> loadComponents(primaryStage),
+								new MenuItem("_Load")))));
 
 		Scene scene = new Scene(pane, 480, 480);
 		scene.getStylesheets().add("style.css");
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
-		// TODO Testing shit below
-		Map<String, Object> m = new LinkedHashMap<>();
-		m.put("1", "234234");
-		m.put("sdfs43wy5eyh", "YOOOOO");
-		Map<String, Object> m2 = new LinkedHashMap<>();
-		m2.put("2", m);
-
-		Attribute text = new Attribute("TextAttr", "Stringo");
-		Attribute num = new Attribute("NumAttr", 4);
-		Attribute map = new Attribute("MapAttr", m2);
-
-		entity = new Entity("Entity");
-		componentFactory
-				.add(new Component("Component1")
-						.addAttribute(text)
-						.addAttribute(num)
-						.addAttribute(map))
-				.add(new Component("Component2"));
-
+	}
+	private void addDefaultComponents() {
 		try {
-			componentFactory.add(new Properties(Paths.get(ClassLoader.getSystemResource("components").toURI())));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
+			componentFactory.add(Paths.get(ClassLoader.getSystemResource("defaults.pan").toURI()));
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
 	private void newEntity() {
+		entity = new Entity();
 
+		reloadEntity();
 	}
-
 	private void saveEntity() {
 
 	}
@@ -94,5 +90,24 @@ public class Skillet extends Application {
 
 		pane.setCenter(node);
 		BorderPane.setAlignment(node, Pos.TOP_CENTER);
+	}
+
+	private void loadComponents(Window window) {
+		FileChooser chooser = new FileChooser();
+		chooser.getExtensionFilters().add(new ExtensionFilter("Pancake Entities", "*.pan"));
+
+		List<Component> addedComponents = new ArrayList<>();
+		for (File file : chooser.showOpenMultipleDialog(window)) {
+			addedComponents.addAll(componentFactory.add(file.toPath()));
+		}
+		Alert addedComponentsInfo = new Alert(
+				AlertType.INFORMATION,
+				addedComponents.stream()
+						.map(component -> component.getName() + " - " + component.getAttributes().size() + " attributes")
+						.collect(Collectors.joining(System.lineSeparator())));
+		addedComponentsInfo.setTitle("Added Components");
+		addedComponentsInfo.setHeaderText(addedComponentsInfo.getTitle());
+
+		addedComponentsInfo.show();
 	}
 }
