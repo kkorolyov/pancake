@@ -1,10 +1,10 @@
 package dev.kkorolyov.pancake.skillet.display;
 
-import dev.kkorolyov.pancake.skillet.data.Attribute;
-import dev.kkorolyov.pancake.skillet.data.Component;
-import dev.kkorolyov.pancake.skillet.data.Component.ComponentChangeEvent;
-import dev.kkorolyov.pancake.skillet.data.DataChangeListener;
-import dev.kkorolyov.pancake.skillet.data.DataObservable.DataChangeEvent;
+import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
+import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
+import dev.kkorolyov.pancake.muffin.data.type.Attribute;
+import dev.kkorolyov.pancake.muffin.data.type.Component;
+import dev.kkorolyov.pancake.muffin.data.type.Component.ComponentChangeEvent;
 
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;

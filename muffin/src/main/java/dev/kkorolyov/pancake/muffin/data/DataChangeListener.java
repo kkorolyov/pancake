@@ -1,6 +1,6 @@
-package dev.kkorolyov.pancake.skillet.data;
+package dev.kkorolyov.pancake.muffin.data;
 
-import dev.kkorolyov.pancake.skillet.data.DataObservable.DataChangeEvent;
+import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
 
 /**
  * Listens for changes on a {@link DataObservable}.

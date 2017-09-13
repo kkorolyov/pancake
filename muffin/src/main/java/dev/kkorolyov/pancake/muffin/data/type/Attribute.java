@@ -1,4 +1,6 @@
-package dev.kkorolyov.pancake.skillet.data;
+package dev.kkorolyov.pancake.muffin.data.type;
+
+import dev.kkorolyov.pancake.muffin.data.DataObservable;
 
 import java.io.Serializable;
 

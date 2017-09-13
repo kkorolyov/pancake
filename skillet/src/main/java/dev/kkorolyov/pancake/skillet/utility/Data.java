@@ -15,7 +15,11 @@ public final class Data {
 
 	/** @return {@code true} if {@code s} is a valid number */
 	public static boolean isNumber(String s) {
-		return s.matches("[+-]?(\\d+\\.\\d+|\\d+)");
+		return s.matches("[+-]?(\\d*\\.\\d+|\\d+\\.\\d*|\\d+)");
+	}
+	/** @return {@code true} if {@code s} is a valid number, dot, or empty string */
+	public static boolean isSemiNumber(String s) {
+		return s.matches("[+-]?(\\d*\\.\\d*|\\d*)");
 	}
 
 	/**

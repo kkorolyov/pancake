@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.skillet.display;
 
-import dev.kkorolyov.pancake.skillet.data.Component;
-import dev.kkorolyov.pancake.skillet.data.ComponentFactory;
-import dev.kkorolyov.pancake.skillet.data.DataChangeListener;
-import dev.kkorolyov.pancake.skillet.data.DataObservable.DataChangeEvent;
-import dev.kkorolyov.pancake.skillet.data.Entity;
-import dev.kkorolyov.pancake.skillet.data.Entity.EntityChangeEvent;
+import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
+import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
+import dev.kkorolyov.pancake.muffin.data.type.Component;
+import dev.kkorolyov.pancake.muffin.data.type.Entity;
+import dev.kkorolyov.pancake.muffin.data.type.Entity.EntityChangeEvent;
+import dev.kkorolyov.pancake.skillet.ComponentFactory;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;

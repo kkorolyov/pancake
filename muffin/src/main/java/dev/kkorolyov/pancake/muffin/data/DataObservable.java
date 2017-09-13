@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet.data;
+package dev.kkorolyov.pancake.muffin.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +24,7 @@ public abstract class DataObservable<T extends DataObservable<T>> {
 	}
 
 	/**
-	 * @param listener	new listener
+	 * @param listener new listener
 	 * @return {@code this}
 	 */
 	public T register(DataChangeListener<T> listener) {

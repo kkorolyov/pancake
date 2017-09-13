@@ -1,6 +1,9 @@
-package dev.kkorolyov.pancake.skillet.data;
+package dev.kkorolyov.pancake.muffin.data.type;
+
+import dev.kkorolyov.pancake.muffin.data.DataObservable;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,15 +15,24 @@ public class Entity extends DataObservable<Entity> {
 	private final Map<String, Component> components = new LinkedHashMap<>();
 
 	/**
-	 * Constructs a new entity with an empty name.
+	 * Constructs a new entity with an empty name and no components.
 	 */
 	public Entity() {}
 	/**
-	 * Constructs a new entity.
+	 * Constructs a new entity with no components.
 	 * @param name entity name
 	 */
 	public Entity(String name) {
+		this(name, Collections.emptyList());
+	}
+	/**
+	 * Construcs a new entity.
+	 * @param name entity name
+	 * @param components entity components
+	 */
+	public Entity(String name, Collection<Component> components) {
 		this.name = name;
+		for (Component component : components) addComponent(component);
 	}
 
 	/**
@@ -64,6 +76,7 @@ public class Entity extends DataObservable<Entity> {
 
 		changed(EntityChangeEvent.NAME);
 	}
+
 	/** @return	entity components */
 	public Collection<Component> getComponents() {
 		return components.values();

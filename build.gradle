@@ -85,13 +85,22 @@ subprojects {
 project(':pancake-platform') {
 	description = """Main Pancake engine platform"""
 }
+def specUtilities = project(':pancake-platform').sourceSets.test.output
 
 project(':pancake-core') {
 	description = """Collection of general, reusable systems and components for the Pancake engine"""
 
 	dependencies {
 		compile project(':pancake-platform')
-		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
+		testCompile specUtilities
+	}
+}
+
+project(':muffin') {
+	description = """Library for translating Pancake entities between objects and files"""
+
+	dependencies {
+		testCompile specUtilities
 	}
 }
 
@@ -103,7 +112,8 @@ project(':skillet') {
 	sourceSets.main.resources.srcDirs += project(':pancake-platform').sourceSets.main.resources.srcDirs
 
 	dependencies {
-		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
+		compile project(':muffin')
+		testCompile specUtilities
 	}
 
 	mainClassName = 'dev.kkorolyov.pancake.skillet.Skillet'
@@ -132,7 +142,7 @@ project(':killstreek') {
 
 	dependencies {
 		compile project(':pancake-core')
-		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
+		testCompile specUtilities
 		runtime sourceSets.main.resources
 	}
 

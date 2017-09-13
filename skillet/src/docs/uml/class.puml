@@ -7,77 +7,46 @@ package dev.kkorolyov.pancake.skillet {
 		reload()
 	}
 
-	package data {
-		abstract class DataObservable<T> {
-		}
-		interface DataChangeListener {
-		}
-
-		class Entity {
-		}
-		class Component {
-		}
-		class Attribute {
-			Object value
-		}
-
-		class ComponentFactory {
-		}
-
-		DataObservable o-l- "*" DataChangeListener
-
-		DataObservable <|-- Entity
-		DataObservable <|-- Component
-		DataObservable <|-- Attribute
-
-		Entity *-- "*" Component
-		Component *-- "*" Attribute
-
-		ComponentFactory o-- "*" Component
-	}
-
 	package display {
   	interface Display {
     	Node getRoot()
     }
 
-    class EntityDisplay {
-    }
-    class ComponentDisplay {
-    }
-    class AttributeDisplay {
-    }
+		package value {
+			abstract class ValueDisplayer {
+				Node display(Attribute)
+				boolean accepts(Class)
+			}
+			abstract class ValueDisplayers {
+			}
 
-    interface DisplayStrategy {
-    	Node display(Attribute)
-    }
-    DisplayStrategy <|.. NumberDisplayStrategy
-    DisplayStrategy <|.. TextDisplayStrategy
-    DisplayStrategy <|.. ImageDisplayStrategy
-    DisplayStrategy <|.. MapDisplayStrategy
+			package strategy {
+				ValueDisplayer <|-- NumberDisplayer
+				ValueDisplayer <|-- StringDisplayer
+				ValueDisplayer <|-- MapDisplayer
+			}
+
+			ValueDisplayers *-- "1" NumberDisplayer
+			ValueDisplayers *-- "1" StringDisplayer
+			ValueDisplayers *-- "1" MapDisplayer
+		}
 
     Display <|.. EntityDisplay
 		Display <|.. ComponentDisplay
 		Display <|.. AttributeDisplay
 
-		AttributeDisplay *-- "1" DisplayStrategy
+		AttributeDisplay --> ValueDisplayers
   }
 
   package utility {
-		class DisplayTransformer {
-		}
+  	package ui {
+			class DisplayTransformer {
+			}
 
-  	class UIDecorator {
+			class UIDecorator {
+			}
   	}
   }
-
-  DataChangeListener <|.. EntityDisplay
-	DataChangeListener <|.. ComponentDisplay
-	DataChangeListener <|.. AttributeDisplay
-
-  EntityDisplay o-- "1" Entity
-  ComponentDisplay o-- "1" Component
-  AttributeDisplay o-- "1" Attribute
 
   Skillet --> EntityDisplay
   Skillet --> ComponentFactory
