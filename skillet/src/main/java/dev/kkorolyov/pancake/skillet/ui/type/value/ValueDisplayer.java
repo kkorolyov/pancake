@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet.display.value;
+package dev.kkorolyov.pancake.skillet.ui.type.value;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
 import dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator;
@@ -26,7 +26,9 @@ public abstract class ValueDisplayer {
 	}
 
 	protected <N extends Node> N tooltip(String tooltip, N value) {
-		return UIDecorator.tooltip(tooltip + " attribute", value);
+		return UIDecorator.decorate(value)
+				.tooltip(tooltip + " attribute")
+				.get();
 	}
 
 	/** @return representative display of {@code attribute} */

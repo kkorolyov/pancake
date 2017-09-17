@@ -3,11 +3,10 @@ package dev.kkorolyov.pancake.skillet;
 import dev.kkorolyov.pancake.muffin.data.type.Component;
 import dev.kkorolyov.pancake.muffin.data.type.Entity;
 import dev.kkorolyov.pancake.muffin.persistence.ComponentPersister;
-import dev.kkorolyov.pancake.skillet.display.EntityDisplay;
+import dev.kkorolyov.pancake.skillet.ui.panel.ComponentList;
+import dev.kkorolyov.pancake.skillet.ui.panel.EntityTabs;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -28,7 +27,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.action;
+import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.decorate;
 
 public class Skillet extends Application {
 	private static final String ENTITY_FILE_EXTENSION = ".mfn";
@@ -39,6 +38,9 @@ public class Skillet extends Application {
 	private final ComponentPersister componentPersister = new ComponentPersister();
 	private final ComponentFactory componentFactory = new ComponentFactory();
 	private Entity entity;
+
+	private final EntityTabs entityTabs = new EntityTabs();
+	private final ComponentList componentList = new ComponentList(componentFactory);
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -56,17 +58,22 @@ public class Skillet extends Application {
 		// Menu bar
 		pane.setTop(new MenuBar(
 				new Menu("_Entity", null,
-						action(e -> newEntity(),
-								new MenuItem("_New")),
-						action(e -> saveEntity(),
-								new MenuItem("_Save")),
-						action(e -> loadEntity(),
-								new MenuItem("_Open")),
-						action(e -> reloadEntity(),
-								new MenuItem("_Reload"))),
+						decorate(new MenuItem("_New"))
+								.action(this::newEntity)
+								.get(),
+						decorate(new MenuItem("_Save"))
+								.action(this::saveEntity)
+								.get(),
+						decorate(new MenuItem("_Open"))
+								.action(this::loadEntity)
+								.get(),
+						decorate(new MenuItem("_Reload"))
+								.action(this::reloadEntity)
+								.get()),
 				new Menu("_Components", null,
-						action(e -> loadComponents(),
-								new MenuItem("_Load")))));
+						decorate(new MenuItem("_Load"))
+								.action(this::loadComponents)
+								.get())));
 
 		Scene scene = new Scene(pane, 480, 480);
 		scene.getStylesheets().add("style.css");
@@ -93,6 +100,17 @@ public class Skillet extends Application {
 				}
 			}
 		});
+
+		newEntity();
+
+		componentList.onComponentSelected(component -> {
+			entity.addComponent(component);
+			componentList.disableComponents(entity);
+		});
+
+		pane.setCenter(entityTabs.getRoot());
+		pane.setRight(componentList.getRoot());
+
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -139,10 +157,14 @@ public class Skillet extends Application {
 	private void reloadEntity() {
 		if (entity == null) return;
 
-		Node node = new EntityDisplay(entity, componentFactory).getRoot();
+		// Node node = new EntityDisplay(entity).getRoot();
+		//
+		// pane.setCenter(node);
+		// BorderPane.setAlignment(node, Pos.TOP_CENTER);
 
-		pane.setCenter(node);
-		BorderPane.setAlignment(node, Pos.TOP_CENTER);
+		entityTabs.add(entity);
+
+		componentList.disableComponents(entity);
 	}
 
 	private void loadComponents() {

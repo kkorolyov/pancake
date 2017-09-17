@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.skillet.utility.ui;
 
-import dev.kkorolyov.pancake.skillet.display.Display;
+import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.layout.Pane;
 import java.util.Collection;
@@ -13,12 +13,12 @@ import java.util.stream.Collector;
 public final class DisplayTransformer {
 	private DisplayTransformer() {}
 
-	public static <T extends Display, R extends Pane> R asPane(Collection<T> displayables, Supplier<R> paneSupplier) {
+	public static <T extends Panel, R extends Pane> R asPane(Collection<T> displayables, Supplier<R> paneSupplier) {
 		return displayables.stream()
 				.collect(paneCollector(paneSupplier));
 	}
 
-	public static <T extends Display, R extends Pane> Collector<T, R, R> paneCollector(Supplier<R> paneSupplier) {
+	public static <T extends Panel, R extends Pane> Collector<T, R, R> paneCollector(Supplier<R> paneSupplier) {
 		return Collector.of(
 				paneSupplier,
 				(pane, data) -> pane.getChildren().add(data.getRoot()),

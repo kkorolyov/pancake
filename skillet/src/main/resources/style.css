@@ -1,7 +1,39 @@
+.root {
+	-fx-background-color: #708090;
+}
+
+.menu-bar {
+	-fx-background-color: #374f66;
+}
+.menu-bar .menu>.label {
+	-fx-text-fill: #dcdcdc;
+}
+
+.panel-header {
+	-fx-background-color: #51667a;
+	-fx-text-fill: #dcdcdc;
+
+	-fx-padding: 8px;
+}
+.panel-header .content {
+	-fx-background-color: transparent;
+}
+
+.entity>.title {
+	-fx-background-color: #51667a;
+}
+.entity>.title:hover {
+	-fx-background-color: #374f66;
+}
+
 .add-component .arrow-button, .add-component .arrow {
 	-fx-padding: 0px;	/* Remove the dropdown arrow */
 }
 
 .remove-component {
 	-fx-cursor: default;
+}
+
+.scroll-pane {
+	-fx-background-color: transparent;
 }

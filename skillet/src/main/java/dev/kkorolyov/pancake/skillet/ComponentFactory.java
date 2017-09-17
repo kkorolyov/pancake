@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.skillet;
 
+import dev.kkorolyov.pancake.muffin.data.DataObservable;
 import dev.kkorolyov.pancake.muffin.data.type.Component;
 import dev.kkorolyov.pancake.skillet.utility.Data;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 /**
  * Provides fresh instances of various components by name.
  */
-public class ComponentFactory {
+public class ComponentFactory extends DataObservable<ComponentFactory> {
 	private final Map<String, Component> components = new LinkedHashMap<>();
 
 	/**
@@ -42,7 +43,11 @@ public class ComponentFactory {
 	 * @return {@code this}
 	 */
 	public ComponentFactory add(Component component, boolean overwrite) {
-		if (overwrite || !contains(component.getName())) components.put(component.getName(), component);
+		if (overwrite || !contains(component.getName())) {
+			components.put(component.getName(), component);
+
+			changed(ComponentFactoryChangeEvent.ADD);
+		}
 		return this;
 	}
 	/**
@@ -61,7 +66,11 @@ public class ComponentFactory {
 	 * @return removed component, or {@code null} if no such component
 	 */
 	public Component remove(String name) {
-		return components.remove(name);
+		Component removed = components.remove(name);
+
+		if (removed != null) changed(ComponentFactoryChangeEvent.REMOVE);
+
+		return removed;
 	}
 
 	/**
@@ -69,5 +78,10 @@ public class ComponentFactory {
 	 */
 	public void clear() {
 		components.clear();
+	}
+
+	public enum ComponentFactoryChangeEvent implements DataChangeEvent {
+		ADD,
+		REMOVE
 	}
 }

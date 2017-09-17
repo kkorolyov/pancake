@@ -1,8 +1,8 @@
-package dev.kkorolyov.pancake.skillet.display.value.strategy;
+package dev.kkorolyov.pancake.skillet.ui.type.value.strategy;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.skillet.display.AttributeDisplay;
-import dev.kkorolyov.pancake.skillet.display.value.ValueDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.type.AttributePanel;
+import dev.kkorolyov.pancake.skillet.ui.type.value.ValueDisplayer;
 
 import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
@@ -21,7 +21,7 @@ public class MapDisplayer extends ValueDisplayer {
 
 		return tooltip("Map",
 				new TitledPane(attribute.getName(), map.entrySet().stream()
-						.map(entry -> new AttributeDisplay(
+						.map(entry -> new AttributePanel(
 								new Attribute(entry.getKey(), entry.getValue())
 										.register((inner, event) -> entry.setValue(inner.getValue()))
 						)).collect(paneCollector(VBox::new))));

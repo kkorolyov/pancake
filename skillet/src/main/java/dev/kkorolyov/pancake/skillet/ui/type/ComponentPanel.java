@@ -1,10 +1,11 @@
-package dev.kkorolyov.pancake.skillet.display;
+package dev.kkorolyov.pancake.skillet.ui.type;
 
 import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
 import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
 import dev.kkorolyov.pancake.muffin.data.type.Component;
 import dev.kkorolyov.pancake.muffin.data.type.Component.ComponentChangeEvent;
+import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
@@ -15,7 +16,7 @@ import static dev.kkorolyov.pancake.skillet.utility.ui.DisplayTransformer.asPane
 /**
  * Displays a {@link Component}.
  */
-public class ComponentDisplay implements Display, DataChangeListener<Component> {
+public class ComponentPanel implements Panel, DataChangeListener<Component> {
 	private final VBox content;
 	private final TitledPane root;
 
@@ -23,9 +24,9 @@ public class ComponentDisplay implements Display, DataChangeListener<Component> 
 	 * Constructs a new component display.
 	 * @param component displayed component
 	 */
-	public ComponentDisplay(Component component) {
+	public ComponentPanel(Component component) {
 		content = asPane(component.getAttributes().stream()
-				.map(AttributeDisplay::new)
+				.map(AttributePanel::new)
 				.collect(Collectors.toList()), VBox::new);
 
 		root = new TitledPane(component.getName(), content);
@@ -44,7 +45,7 @@ public class ComponentDisplay implements Display, DataChangeListener<Component> 
 		if (ComponentChangeEvent.ADD == event) {
 			for (Attribute attribute : target.getAttributes()) {
 				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(attribute.getName()))) {
-					content.getChildren().add(new AttributeDisplay(attribute).getRoot());
+					content.getChildren().add(new AttributePanel(attribute).getRoot());
 				}
 			}
 		} else if (ComponentChangeEvent.REMOVE == event) {
