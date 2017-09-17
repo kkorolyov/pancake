@@ -51,12 +51,12 @@ public class Skillet extends Application {
 
 		entityTabPane.onEntitySelected(selected -> {
 			entity = selected;
-			componentList.disableComponents(entity);
+			componentList.refreshComponents(entity);
 		});
 
 		componentList.onComponentSelected(component -> {
 			entity.addComponent(component);
-			componentList.disableComponents(entity);
+			componentList.refreshComponents(entity);
 		});
 
 		addDefaultComponents();

@@ -15,7 +15,7 @@ public class MenuItemDecorator<T extends MenuItem> extends UIDecorator<T> {
 	 * @param procedure attached action procedure
 	 * @return {@code this}
 	 */
-	public dev.kkorolyov.pancake.skillet.utility.decorator.MenuItemDecorator<T> action(Runnable procedure) {
+	public MenuItemDecorator<T> action(Runnable procedure) {
 		object.setOnAction(e -> procedure.run());
 		return this;
 	}

@@ -18,17 +18,23 @@ public class TabDecorator<T extends Tab> extends UIDecorator<T> {
 	 * @param graphic tab graphic
 	 * @return {@code this}
 	 */
-	public dev.kkorolyov.pancake.skillet.utility.decorator.TabDecorator<T> graphic(Node graphic) {
+	public TabDecorator<T> graphic(Node graphic) {
 		object.setGraphic(graphic);
 		return this;
 	}
 	/**
-	 * Sets content
+	 * Sets content.
 	 * @param content tab content
 	 * @return {@code this}
 	 */
-	public dev.kkorolyov.pancake.skillet.utility.decorator.TabDecorator<T> content(Node content) {
+	public TabDecorator<T> content(Node content) {
 		object.setContent(content);
+		return this;
+	}
+
+
+	public TabDecorator<T> close(Runnable procedure) {
+		object.setOnClosed(e -> procedure.run());
 		return this;
 	}
 
@@ -38,7 +44,7 @@ public class TabDecorator<T extends Tab> extends UIDecorator<T> {
 	 * @param listener attached change listener
 	 * @return {@code this}
 	 */
-	public <V> dev.kkorolyov.pancake.skillet.utility.decorator.TabDecorator<T> change(Function<T, ObservableValue<V>> propertyFunction, ThrowingChangeListener<? super V, T> listener) {
+	public <V> TabDecorator<T> change(Function<T, ObservableValue<V>> propertyFunction, ThrowingChangeListener<? super V, T> listener) {
 		propertyFunction.apply(object).addListener((observable, oldValue, newValue) -> {
 			try {
 				listener.changed(object, oldValue, newValue);

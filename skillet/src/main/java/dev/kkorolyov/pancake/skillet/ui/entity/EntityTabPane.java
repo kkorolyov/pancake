@@ -22,7 +22,6 @@ public class EntityTabPane implements Panel, DataChangeListener<Entity> {
 	private final Map<Entity, Tab> entities = new HashMap<>();
 	private final TabPane root = new TabPane();
 
-	private Entity selected;
 	private Consumer<Entity> entitySelected;
 
 	/**
@@ -37,23 +36,33 @@ public class EntityTabPane implements Panel, DataChangeListener<Entity> {
 					.change(Tab::selectedProperty,
 							(target, oldValue, newValue) -> {
 								if (newValue) entitySelected(entity);
+								else entityUnselected(entity);
 							})
+					.close(() -> entityClosed(entity))
 					.get();
 
 			root.getTabs().add(tab);
 			return tab;
 		});
-		entity.register(this);
 	}
 
 	private void entitySelected(Entity entity) {
-		selected = entity;
+		if (entity != null) entity.register(this);
 
-		if (entitySelected != null) entitySelected.accept(selected);
+		if (entitySelected != null) entitySelected.accept(entity);
 	}
 	/** @param entitySelected listener invoked with the selected entity when an entity is selected */
 	public void onEntitySelected(Consumer<Entity> entitySelected) {
 		this.entitySelected = entitySelected;
+	}
+
+	private void entityUnselected(Entity entity) {
+		entity.unregister(this);
+	}
+
+	private void entityClosed(Entity entity) {
+		entities.remove(entity);
+		if (entities.isEmpty()) entitySelected(null);
 	}
 
 	@Override

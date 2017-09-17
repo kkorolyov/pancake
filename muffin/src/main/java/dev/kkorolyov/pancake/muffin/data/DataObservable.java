@@ -1,23 +1,19 @@
 package dev.kkorolyov.pancake.muffin.data;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A piece of data which fires change events.
  */
 public abstract class DataObservable<T extends DataObservable<T>> {
-	private final Collection<DataChangeListener<T>> listeners = new ArrayList<>();
-	private final Collection<DataChangeListener<T>> unregisteredListeners = new ArrayList<>();
+	private final Collection<DataChangeListener<T>> listeners = new CopyOnWriteArrayList<>();
 
 	/**
 	 * Distributes a change event to all registered listeners.
 	 * @return number of listeners which received event
 	 */
 	protected int changed(DataChangeEvent event) {
-		for (DataChangeListener<T> listener : unregisteredListeners) listeners.remove(listener);
-		unregisteredListeners.clear();
-
 		for (DataChangeListener<T> listener : listeners) listener.changed((T) this, event);
 
 		return listeners.size();
@@ -38,7 +34,7 @@ public abstract class DataObservable<T extends DataObservable<T>> {
 	public boolean unregister(DataChangeListener<T> listener) {
 		if (!listeners.contains(listener)) return false;
 
-		unregisteredListeners.add(listener);
+		listeners.remove(listener);
 		return true;
 	}
 

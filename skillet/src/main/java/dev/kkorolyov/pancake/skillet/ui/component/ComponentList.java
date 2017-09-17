@@ -35,6 +35,7 @@ public class ComponentList implements Panel, DataChangeListener<ComponentFactory
 					.compact()
 					.get());
 
+	private Entity lastKnown;
 	private Consumer<Component> componentSelected;
 
 	/**
@@ -49,8 +50,10 @@ public class ComponentList implements Panel, DataChangeListener<ComponentFactory
 	 * Disables buttons of all components present in {@code entity}.
 	 * Enables buttons of all others.
 	 */
-	public void disableComponents(Entity entity) {
-		componentButtons.forEach((key, value) -> value.setDisable(entity.containsComponent(key)));
+	public void refreshComponents(Entity entity) {
+		lastKnown = entity;
+
+		componentButtons.forEach((name, button) -> button.setDisable(lastKnown == null || lastKnown.containsComponent(name)));
 	}
 
 	private void componentSelected(Component component) {
@@ -90,5 +93,6 @@ public class ComponentList implements Panel, DataChangeListener<ComponentFactory
 				}
 			}
 		}
+		refreshComponents(lastKnown);
 	}
 }
