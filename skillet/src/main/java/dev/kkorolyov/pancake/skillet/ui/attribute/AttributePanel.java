@@ -1,11 +1,10 @@
-package dev.kkorolyov.pancake.skillet.ui.type;
+package dev.kkorolyov.pancake.skillet.ui.attribute;
 
 import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
 import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
 import dev.kkorolyov.pancake.muffin.data.type.Attribute.AttributeChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
-import dev.kkorolyov.pancake.skillet.ui.type.value.ValueDisplayers;
 
 import javafx.scene.Node;
 

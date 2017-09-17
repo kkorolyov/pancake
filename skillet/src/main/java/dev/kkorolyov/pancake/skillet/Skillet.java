@@ -3,8 +3,8 @@ package dev.kkorolyov.pancake.skillet;
 import dev.kkorolyov.pancake.muffin.data.type.Component;
 import dev.kkorolyov.pancake.muffin.data.type.Entity;
 import dev.kkorolyov.pancake.muffin.persistence.ComponentPersister;
-import dev.kkorolyov.pancake.skillet.ui.panel.ComponentList;
-import dev.kkorolyov.pancake.skillet.ui.panel.EntityTabs;
+import dev.kkorolyov.pancake.skillet.ui.component.ComponentList;
+import dev.kkorolyov.pancake.skillet.ui.entity.EntityTabPane;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -27,19 +27,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
 
 public class Skillet extends Application {
 	private static final String ENTITY_FILE_EXTENSION = ".mfn";
 
 	private Stage stage;
-	private final BorderPane pane = new BorderPane();
 
 	private final ComponentPersister componentPersister = new ComponentPersister();
 	private final ComponentFactory componentFactory = new ComponentFactory();
 	private Entity entity;
 
-	private final EntityTabs entityTabs = new EntityTabs();
+	private final EntityTabPane entityTabPane = new EntityTabPane();
 	private final ComponentList componentList = new ComponentList(componentFactory);
 
 	public static void main(String[] args) {
@@ -50,13 +49,25 @@ public class Skillet extends Application {
 	public void start(Stage primaryStage) {
 		stage = primaryStage;
 
+		entityTabPane.onEntitySelected(selected -> {
+			entity = selected;
+			componentList.disableComponents(entity);
+		});
+
+		componentList.onComponentSelected(component -> {
+			entity.addComponent(component);
+			componentList.disableComponents(entity);
+		});
+
 		addDefaultComponents();
 
 		primaryStage.setTitle("Skillet - Pancake Entity Designer");
 		primaryStage.getIcons().add(new Image("pancake-icon.png"));
 
+		BorderPane root = new BorderPane();
+
 		// Menu bar
-		pane.setTop(new MenuBar(
+		root.setTop(new MenuBar(
 				new Menu("_Entity", null,
 						decorate(new MenuItem("_New"))
 								.action(this::newEntity)
@@ -66,16 +77,13 @@ public class Skillet extends Application {
 								.get(),
 						decorate(new MenuItem("_Open"))
 								.action(this::loadEntity)
-								.get(),
-						decorate(new MenuItem("_Reload"))
-								.action(this::reloadEntity)
 								.get()),
 				new Menu("_Components", null,
 						decorate(new MenuItem("_Load"))
 								.action(this::loadComponents)
 								.get())));
 
-		Scene scene = new Scene(pane, 480, 480);
+		Scene scene = new Scene(root, 480, 480);
 		scene.getStylesheets().add("style.css");
 
 		// Shortcuts
@@ -91,9 +99,6 @@ public class Skillet extends Application {
 					case O:
 						loadEntity();
 						break;
-					case R:
-						reloadEntity();
-						break;
 					case L:
 						loadComponents();
 						break;
@@ -101,15 +106,8 @@ public class Skillet extends Application {
 			}
 		});
 
-		newEntity();
-
-		componentList.onComponentSelected(component -> {
-			entity.addComponent(component);
-			componentList.disableComponents(entity);
-		});
-
-		pane.setCenter(entityTabs.getRoot());
-		pane.setRight(componentList.getRoot());
+		root.setCenter(entityTabPane.getRoot());
+		root.setRight(componentList.getRoot());
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -125,9 +123,7 @@ public class Skillet extends Application {
 	}
 
 	private void newEntity() {
-		entity = new Entity();
-
-		reloadEntity();
+		entityTabPane.add(new Entity());
 	}
 	private void saveEntity() {
 		if (entity == null) return;
@@ -150,21 +146,8 @@ public class Skillet extends Application {
 
 			componentFactory.add(components, false);
 
-			entity = new Entity(result.getName().replaceAll(ENTITY_FILE_EXTENSION, ""), components);
+			entityTabPane.add(new Entity(result.getName().replaceAll(ENTITY_FILE_EXTENSION, ""), components));
 		}
-		reloadEntity();
-	}
-	private void reloadEntity() {
-		if (entity == null) return;
-
-		// Node node = new EntityDisplay(entity).getRoot();
-		//
-		// pane.setCenter(node);
-		// BorderPane.setAlignment(node, Pos.TOP_CENTER);
-
-		entityTabs.add(entity);
-
-		componentList.disableComponents(entity);
 	}
 
 	private void loadComponents() {

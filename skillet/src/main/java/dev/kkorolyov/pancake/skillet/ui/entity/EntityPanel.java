@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet.ui.type;
+package dev.kkorolyov.pancake.skillet.ui.entity;
 
 import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
 import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.muffin.data.type.Component;
 import dev.kkorolyov.pancake.muffin.data.type.Entity;
 import dev.kkorolyov.pancake.muffin.data.type.Entity.EntityChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
+import dev.kkorolyov.pancake.skillet.ui.component.ComponentPanel;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -18,8 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.decorate;
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.scroll;
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
 
 /**
  * Displays an {@link Entity}.
@@ -37,9 +37,10 @@ public class EntityPanel implements Panel, DataChangeListener<Entity> {
 				.map(component -> buildComponentDisplay(entity, component))
 				.toArray(Node[]::new));
 
-		root = decorate(scroll(content))
+		root = decorate(new ScrollPane(content))
 				.id(entity.getName())
 				.styleClass("entity")
+				.compact()
 				.get();
 
 		entity.register(this);

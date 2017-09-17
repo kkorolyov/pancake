@@ -1,7 +1,7 @@
-package dev.kkorolyov.pancake.skillet.ui.type.value;
+package dev.kkorolyov.pancake.skillet.ui.attribute;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator;
+import dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;

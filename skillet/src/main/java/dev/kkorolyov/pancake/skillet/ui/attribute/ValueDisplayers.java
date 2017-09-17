@@ -1,9 +1,9 @@
-package dev.kkorolyov.pancake.skillet.ui.type.value;
+package dev.kkorolyov.pancake.skillet.ui.attribute;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.skillet.ui.type.value.strategy.MapDisplayer;
-import dev.kkorolyov.pancake.skillet.ui.type.value.strategy.NumberDisplayer;
-import dev.kkorolyov.pancake.skillet.ui.type.value.strategy.StringDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.MapDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.NumberDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.StringDisplayer;
 
 import java.util.Arrays;
 import java.util.Collection;

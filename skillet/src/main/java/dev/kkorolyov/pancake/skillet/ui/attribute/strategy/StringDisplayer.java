@@ -1,13 +1,13 @@
-package dev.kkorolyov.pancake.skillet.ui.type.value.strategy;
+package dev.kkorolyov.pancake.skillet.ui.attribute.strategy;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.skillet.ui.type.value.ValueDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.attribute.ValueDisplayer;
 
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
 
 /**
  * Displays attributes with a string value.
@@ -18,10 +18,10 @@ public class StringDisplayer extends ValueDisplayer {
 		return simpleDisplay(attribute.getName(),
 				"Text",
 				decorate(new TextField(attribute.getValue().toString()))
-						.change((target, oldValue, newValue) -> {
+						.change(TextInputControl::textProperty,
+								(target, oldValue, newValue) -> {
 									if (!newValue.equals(oldValue)) attribute.setValue(newValue);
-								},
-								TextInputControl::textProperty)
+								})
 						.get());
 	}
 

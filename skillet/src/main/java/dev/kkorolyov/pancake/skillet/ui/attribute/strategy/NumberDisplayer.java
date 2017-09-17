@@ -1,7 +1,7 @@
-package dev.kkorolyov.pancake.skillet.ui.type.value.strategy;
+package dev.kkorolyov.pancake.skillet.ui.attribute.strategy;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.skillet.ui.type.value.ValueDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.attribute.ValueDisplayer;
 import dev.kkorolyov.pancake.skillet.utility.Data;
 
 import javafx.scene.Node;
@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import java.text.NumberFormat;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
 
 /**
  * Displays attributes with a numerical value.
@@ -20,7 +20,8 @@ public class NumberDisplayer extends ValueDisplayer {
 		return simpleDisplay(attribute.getName(),
 				"Number",
 				decorate(new TextField(attribute.getValue().toString()))
-						.change((target, oldValue, newValue) -> {
+						.change(TextInputControl::textProperty,
+								(target, oldValue, newValue) -> {
 									if (!Data.isSemiNumber(newValue)) target.setText(oldValue);
 
 									if (!target.getText().equals(oldValue)) {
@@ -28,8 +29,7 @@ public class NumberDisplayer extends ValueDisplayer {
 												? NumberFormat.getInstance().parse(target.getText())
 												: 0);
 									}
-								},
-								TextInputControl::textProperty)
+								})
 						.get());
 	}
 

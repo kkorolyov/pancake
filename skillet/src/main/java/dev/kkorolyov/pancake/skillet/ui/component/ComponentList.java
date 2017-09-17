@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet.ui.panel;
+package dev.kkorolyov.pancake.skillet.ui.component;
 
 import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
 import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
@@ -11,6 +11,7 @@ import dev.kkorolyov.pancake.skillet.ui.Panel;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,8 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.decorate;
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.scroll;
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
 
 /**
  * Displays a list of components which may be added to the designed entity.
@@ -31,7 +31,9 @@ public class ComponentList implements Panel, DataChangeListener<ComponentFactory
 			decorate(new Label("Components"))
 					.styleClass("panel-header")
 					.get(),
-			scroll(content));
+			decorate(new ScrollPane(content))
+					.compact()
+					.get());
 
 	private Consumer<Component> componentSelected;
 

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet.ui.panel;
+package dev.kkorolyov.pancake.skillet.ui.entity;
 
 import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
 import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
@@ -13,12 +13,12 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
-import static dev.kkorolyov.pancake.skillet.utility.ui.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
 
 /**
- * A tab which displays an entity.
+ * Editable label displaying an entity name.
  */
-public class EntityTab implements Panel, DataChangeListener<Entity> {
+public class EntityLabel implements Panel, DataChangeListener<Entity> {
 	private final Label label = new Label();
 	private final TextField textField = new TextField();
 	private final VBox root = new VBox();
@@ -27,7 +27,7 @@ public class EntityTab implements Panel, DataChangeListener<Entity> {
 	 * Constructs a new entity tab.
 	 * @param entity associated entity
 	 */
-	public EntityTab(Entity entity) {
+	public EntityLabel(Entity entity) {
 		decorate(label)
 				.minSize(10.0, null)
 				.click(() -> {
@@ -36,16 +36,15 @@ public class EntityTab implements Panel, DataChangeListener<Entity> {
 				}, 2);
 
 		decorate(textField)
-				.change((target, oldValue, newValue) -> {
+				.change(Node::focusedProperty,
+						(target, oldValue, newValue) -> {
 							if (!newValue) swapTo(label);
-						},
-						Node::focusedProperty)
-				.change((target, oldValue, newValue) ->
-								entity.setName(newValue),
-						TextInputControl::textProperty)
+						})
+				.change(TextInputControl::textProperty,
+						(target, oldValue, newValue) -> entity.setName(newValue))
 				.press(() -> swapTo(label), KeyCode.ENTER, KeyCode.ESCAPE);
 
-		changed(entity, EntityChangeEvent.NAME);	// Force a text change
+		changed(entity, EntityChangeEvent.NAME);  // Force a text change
 		swapTo(label);
 
 		entity.register(this);
