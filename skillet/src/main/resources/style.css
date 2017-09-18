@@ -19,13 +19,6 @@
 	-fx-background-color: transparent;
 }
 
-.entity>.title {
-	-fx-background-color: #51667a;
-}
-.entity>.title:hover {
-	-fx-background-color: #374f66;
-}
-
 .add-component .arrow-button, .add-component .arrow {
 	-fx-padding: 0px;	/* Remove the dropdown arrow */
 }

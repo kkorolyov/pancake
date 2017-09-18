@@ -29,7 +29,7 @@ public class ComponentPersister extends DataPersister<Component> {
 	 * i.e. a component name mapped to an arbitrary list of attributes.
 	 * Valid attribute value types include:
 	 * <pre>
-	 *   Number - 123, 1.23
+	 *   Number - 123, -456, 1.23
 	 *   String - "someText"
 	 *   Map - {key=value, key=value, key=value...}
 	 * </pre>
@@ -72,7 +72,7 @@ public class ComponentPersister extends DataPersister<Component> {
 		String name = split[0], attributesS = split[1];
 
 		Component component = new Component(name);
-		for (String attributeS : attributesS.split(",\\s?(?![^{]*})")) {
+		for (String attributeS : attributesS.split(",\\s?(?!([^{]*}|[^\\[]*]))")) {	// Split on "," outside of "{...}" and "[...]"
 			component.addAttribute(attributePersister.read(attributeS));
 		}
 		return component;

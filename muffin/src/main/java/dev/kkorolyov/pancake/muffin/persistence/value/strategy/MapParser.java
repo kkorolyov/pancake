@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Parses maps.
  */
-public class MapParser extends ValueParser {
+public class MapParser implements ValueParser {
 	@Override
 	public Object parse(String s) {
 		Map<String, Object> map = new LinkedHashMap<>();

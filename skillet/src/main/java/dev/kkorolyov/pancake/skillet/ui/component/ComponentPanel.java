@@ -12,6 +12,8 @@ import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
+
 /**
  * Displays a {@link Component}.
  */
@@ -29,8 +31,10 @@ public class ComponentPanel implements Panel, DataChangeListener<Component> {
 						.map(attribute -> new AttributePanel(attribute).getRoot())
 						.toArray(Node[]::new));
 
-		root = new TitledPane(component.getName(), content);
-		root.setId(component.getName());
+		root = decorate(new TitledPane(component.getName(), content))
+				.id(component.getName())
+				.styleClass("component")
+				.get();
 
 		component.register(this);
 	}

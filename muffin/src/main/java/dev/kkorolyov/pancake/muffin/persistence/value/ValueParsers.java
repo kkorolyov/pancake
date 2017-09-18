@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.muffin.persistence.value;
 import dev.kkorolyov.pancake.muffin.persistence.value.strategy.MapParser;
 import dev.kkorolyov.pancake.muffin.persistence.value.strategy.NumberParser;
 import dev.kkorolyov.pancake.muffin.persistence.value.strategy.StringParser;
+import dev.kkorolyov.pancake.muffin.persistence.value.strategy.URIParser;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.Collection;
  */
 public final class ValueParsers {
 	private static final Collection<ValueParser> strategies = Arrays.asList(
+			new URIParser(),
 			new NumberParser(),
 			new StringParser(),
 			new MapParser()

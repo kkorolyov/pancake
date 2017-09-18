@@ -1,20 +1,22 @@
 package dev.kkorolyov.pancake.skillet.ui.attribute;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
+import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
+
 /**
  * Displays an attribute according to its value.
  */
 public abstract class ValueDisplayer {
 	protected Node simpleDisplay(String name, String tooltip, Node value) {
-		Label label = tooltip(tooltip,
-				new Label(name + ": "));
+		Label label = decorate(new Label(name + ": "))
+				.tooltip(tooltip(tooltip))	// Maximum clarity
+				.get();
 
 		BorderPane pane = new BorderPane();
 		pane.setLeft(label);
@@ -25,10 +27,8 @@ public abstract class ValueDisplayer {
 		return pane;
 	}
 
-	protected <N extends Node> N tooltip(String tooltip, N value) {
-		return UIDecorator.decorate(value)
-				.tooltip(tooltip + " attribute")
-				.get();
+	protected String tooltip(String tooltip) {
+		return tooltip + " attribute";
 	}
 
 	/** @return representative display of {@code attribute} */

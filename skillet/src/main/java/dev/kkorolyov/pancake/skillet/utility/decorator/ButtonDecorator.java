@@ -5,7 +5,7 @@ import javafx.scene.control.ButtonBase;
 /**
  * Decorates {@link ButtonBase} implementors.
  */
-public class ButtonDecorator<T extends ButtonBase, D extends ButtonDecorator<T, D>> extends RegionDecorator<T, D> {
+public class ButtonDecorator<T extends ButtonBase, D extends ButtonDecorator<T, D>> extends LabeledDecorator<T, D> {
 	ButtonDecorator(T object) {
 		super(object);
 	}

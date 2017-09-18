@@ -2,17 +2,19 @@ package dev.kkorolyov.pancake.muffin.persistence.value.strategy;
 
 import dev.kkorolyov.pancake.muffin.persistence.value.ValueParser;
 
+import java.net.URI;
+
 /**
- * Parses text in "".
+ * Parses values formatted as URIs.
  */
-public class StringParser implements ValueParser {
+public class URIParser implements ValueParser {
 	@Override
 	public Object parse(String s) {
-		return s.substring(1, s.length() - 1);
+		return URI.create(s);
 	}
 
 	@Override
 	public boolean accepts(String s) {
-		return s.matches("^\".*\"$");
+		return s.matches("^[a-zA-Z]+://.+");
 	}
 }

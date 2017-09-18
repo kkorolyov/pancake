@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.muffin.data.type.Attribute;
 import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.MapDisplayer;
 import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.NumberDisplayer;
 import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.StringDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.URIDisplayer;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.Collection;
  */
 public final class ValueDisplayers {
 	private static final Collection<ValueDisplayer> strategies = Arrays.asList(
+			new URIDisplayer(),
 			new NumberDisplayer(),
 			new StringDisplayer(),
 			new MapDisplayer()

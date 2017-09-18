@@ -9,7 +9,7 @@ import dev.kkorolyov.pancake.muffin.persistence.value.ValueParsers;
 public class AttributePersister extends DataPersister<Attribute> {
 	@Override
 	public Attribute read(String s) {
-		String[] split = s.split(":\\s?", 2);
+		String[] split = s.split(":\\s", 2);
 		String name = split[0], valueS = split[1];
 
 		return new Attribute(name, ValueParsers.getStrategy(valueS).parse(valueS));

@@ -8,7 +8,7 @@ import java.text.ParseException;
 /**
  * Parses numerical values.
  */
-public class NumberParser extends ValueParser {
+public class NumberParser implements ValueParser {
 	@Override
 	public Object parse(String s) {
 		try {
