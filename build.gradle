@@ -96,14 +96,6 @@ project(':pancake-core') {
 	}
 }
 
-project(':muffin') {
-	description = """Library for translating Pancake entities between objects and files"""
-
-	dependencies {
-		testCompile specUtilities
-	}
-}
-
 project(':skillet') {
 	apply plugin: 'application'
 
@@ -112,7 +104,7 @@ project(':skillet') {
 	sourceSets.main.resources.srcDirs += project(':pancake-platform').sourceSets.main.resources.srcDirs
 
 	dependencies {
-		compile project(':muffin')
+		compile project(':pancake-platform')
 		testCompile specUtilities
 	}
 

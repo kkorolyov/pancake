@@ -1,13 +1,9 @@
-package dev.kkorolyov.pancake.muffin.data.type;
-
-import dev.kkorolyov.pancake.muffin.data.DataObservable;
-
-import java.io.Serializable;
+package dev.kkorolyov.pancake.storage;
 
 /**
  * A field with a value.
  */
-public class Attribute extends DataObservable<Attribute> implements Serializable {
+public class Attribute extends Storable<Attribute> {
 	private static final long serialVersionUID = -334204822782020299L;
 
 	private final String name;
@@ -53,7 +49,10 @@ public class Attribute extends DataObservable<Attribute> implements Serializable
 		return oldValue;
 	}
 
-	public enum AttributeChangeEvent implements DataChangeEvent {
+	/**
+	 * A change to an attribute.
+	 */
+	public enum AttributeChangeEvent implements StorableChangeEvent {
 		VALUE
 	}
 }

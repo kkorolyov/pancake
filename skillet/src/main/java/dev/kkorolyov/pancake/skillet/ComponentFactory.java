@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.muffin.data.DataObservable;
-import dev.kkorolyov.pancake.muffin.data.type.Component;
 import dev.kkorolyov.pancake.skillet.utility.Data;
+import dev.kkorolyov.pancake.storage.Component;
+import dev.kkorolyov.pancake.storage.Storable;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Provides fresh instances of various components by name.
  */
-public class ComponentFactory extends DataObservable<ComponentFactory> {
+public class ComponentFactory extends Storable<ComponentFactory> {
 	private final Map<String, Component> components = new LinkedHashMap<>();
 
 	/**
@@ -80,7 +80,7 @@ public class ComponentFactory extends DataObservable<ComponentFactory> {
 		components.clear();
 	}
 
-	public enum ComponentFactoryChangeEvent implements DataChangeEvent {
+	public enum ComponentFactoryChangeEvent implements StorableChangeEvent {
 		ADD,
 		REMOVE
 	}

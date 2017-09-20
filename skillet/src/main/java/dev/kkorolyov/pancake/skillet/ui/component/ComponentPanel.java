@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.skillet.ui.component;
 
-import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
-import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
-import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.muffin.data.type.Component;
-import dev.kkorolyov.pancake.muffin.data.type.Component.ComponentChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.attribute.AttributePanel;
+import dev.kkorolyov.pancake.storage.Attribute;
+import dev.kkorolyov.pancake.storage.Component;
+import dev.kkorolyov.pancake.storage.Component.ComponentChangeEvent;
+import dev.kkorolyov.pancake.storage.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.storage.StorableListener;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -23,7 +23,7 @@ import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decora
 /**
  * Displays a {@link Component}.
  */
-public class ComponentPanel implements Panel, DataChangeListener<Component> {
+public class ComponentPanel implements Panel, StorableListener<Component> {
 	private final VBox content = new VBox();
 	private final TitledPane root = new TitledPane();
 
@@ -78,7 +78,7 @@ public class ComponentPanel implements Panel, DataChangeListener<Component> {
 	}
 
 	@Override
-	public void changed(Component target, DataChangeEvent event) {
+	public void changed(Component target, StorableChangeEvent event) {
 		if (ComponentChangeEvent.ADD == event) {
 			for (Attribute attribute : target.getAttributes()) {
 				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(attribute.getName()))) {

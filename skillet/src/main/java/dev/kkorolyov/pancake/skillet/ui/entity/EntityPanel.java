@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.skillet.ui.entity;
 
-import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
-import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
-import dev.kkorolyov.pancake.muffin.data.type.Component;
-import dev.kkorolyov.pancake.muffin.data.type.Entity;
-import dev.kkorolyov.pancake.muffin.data.type.Entity.EntityChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentPanel;
+import dev.kkorolyov.pancake.storage.Component;
+import dev.kkorolyov.pancake.storage.Entity;
+import dev.kkorolyov.pancake.storage.Entity.EntityChangeEvent;
+import dev.kkorolyov.pancake.storage.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.storage.StorableListener;
 
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -17,7 +17,7 @@ import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decora
 /**
  * Displays an {@link Entity}.
  */
-public class EntityPanel implements Panel, DataChangeListener<Entity> {
+public class EntityPanel implements Panel, StorableListener<Entity> {
 	private final VBox content;
 	private final ScrollPane root;
 
@@ -45,7 +45,7 @@ public class EntityPanel implements Panel, DataChangeListener<Entity> {
 	}
 
 	@Override
-	public void changed(Entity target, DataChangeEvent event) {
+	public void changed(Entity target, StorableChangeEvent event) {
 		if (EntityChangeEvent.ADD == event) {
 			for (Component component : target.getComponents()) {
 				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(component.getName()))) {

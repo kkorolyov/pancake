@@ -1,16 +1,17 @@
-package dev.kkorolyov.pancake.muffin.data.type;
-
-import dev.kkorolyov.pancake.muffin.data.DataObservable;
+package dev.kkorolyov.pancake.storage;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A container of components.
+ * A container of distinct components.
  */
-public class Entity extends DataObservable<Entity> {
+public class Entity extends Storable<Entity> implements Iterable<Component> {
+	private static final long serialVersionUID = -6259009537483472204L;
+
 	private String name;
 	private final Map<String, Component> components = new LinkedHashMap<>();
 
@@ -26,11 +27,11 @@ public class Entity extends DataObservable<Entity> {
 		this(name, Collections.emptyList());
 	}
 	/**
-	 * Construcs a new entity.
+	 * Constructs a new entity.
 	 * @param name entity name
 	 * @param components entity components
 	 */
-	public Entity(String name, Collection<Component> components) {
+	public Entity(String name, Iterable<Component> components) {
 		this.name = name;
 		for (Component component : components) addComponent(component);
 	}
@@ -54,6 +55,15 @@ public class Entity extends DataObservable<Entity> {
 
 		return this;
 	}
+	/**
+	 * @param components components to add
+	 * @return {@code this}
+	 */
+	public Entity addAll(Iterable<Component> components) {
+		components.forEach(this::addComponent);
+		return this;
+	}
+
 	/**
 	 * @param name removed component name
 	 * @return removed component, or {@code null} if no such component
@@ -82,7 +92,15 @@ public class Entity extends DataObservable<Entity> {
 		return components.values();
 	}
 
-	public enum EntityChangeEvent implements DataChangeEvent {
+	@Override
+	public Iterator<Component> iterator() {
+		return getComponents().iterator();
+	}
+
+	/**
+	 * A change to an entity.
+	 */
+	public enum EntityChangeEvent implements StorableChangeEvent {
 		NAME,
 		ADD,
 		REMOVE

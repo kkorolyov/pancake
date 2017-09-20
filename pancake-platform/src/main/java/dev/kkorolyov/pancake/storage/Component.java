@@ -1,16 +1,14 @@
-package dev.kkorolyov.pancake.muffin.data.type;
+package dev.kkorolyov.pancake.storage;
 
-import dev.kkorolyov.pancake.muffin.data.DataObservable;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * A container of attributes.
  */
-public class Component extends DataObservable<Component> implements Serializable {
+public class Component extends Storable<Component> implements Iterable<Attribute> {
 	private static final long serialVersionUID = -5144869208259619358L;
 
 	private final String name;
@@ -45,7 +43,15 @@ public class Component extends DataObservable<Component> implements Serializable
 		return attributes;
 	}
 
-	public enum ComponentChangeEvent implements DataChangeEvent {
+	@Override
+	public Iterator<Attribute> iterator() {
+		return getAttributes().iterator();
+	}
+
+	/**
+	 * A change to a component.
+	 */
+	public enum ComponentChangeEvent implements StorableChangeEvent {
 		ADD,
 		REMOVE
 	}

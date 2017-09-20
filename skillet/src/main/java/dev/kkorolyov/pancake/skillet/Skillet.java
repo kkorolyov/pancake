@@ -1,10 +1,9 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.muffin.data.type.Component;
-import dev.kkorolyov.pancake.muffin.data.type.Entity;
-import dev.kkorolyov.pancake.muffin.persistence.ComponentPersister;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentList;
 import dev.kkorolyov.pancake.skillet.ui.entity.EntityTabPane;
+import dev.kkorolyov.pancake.storage.Component;
+import dev.kkorolyov.pancake.storage.Entity;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,7 +22,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,12 +32,13 @@ public class Skillet extends Application {
 
 	private Stage stage;
 
-	private final ComponentPersister componentPersister = new ComponentPersister();
 	private final ComponentFactory componentFactory = new ComponentFactory();
 	private Entity entity;
 
 	private final EntityTabPane entityTabPane = new EntityTabPane();
 	private final ComponentList componentList = new ComponentList(componentFactory);
+
+	private final ResourceHandler resourceHandler = new ResourceHandler();
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -115,7 +114,7 @@ public class Skillet extends Application {
 	private void addDefaultComponents() {
 		try {
 			componentFactory.add(
-					componentPersister.loadComponents(Paths.get(ClassLoader.getSystemResource("defaults" + ENTITY_FILE_EXTENSION).toURI())),
+					resourceHandler.load(Paths.get(ClassLoader.getSystemResource("defaults" + ENTITY_FILE_EXTENSION).toURI())),
 					false);
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
@@ -133,7 +132,7 @@ public class Skillet extends Application {
 
 		File result = chooser.showSaveDialog(stage);
 		if (result != null) {
-			componentPersister.saveComponents(entity.getComponents(), result.toPath());
+			resourceHandler.save(entity, result.toPath());
 		}
 	}
 	private void loadEntity() {
@@ -142,7 +141,7 @@ public class Skillet extends Application {
 
 		File result = chooser.showOpenDialog(stage);
 		if (result != null) {
-			Collection<Component> components = componentPersister.loadComponents(result.toPath());
+			Iterable<Component> components = resourceHandler.load(result.toPath());
 
 			componentFactory.add(components, false);
 
@@ -159,7 +158,7 @@ public class Skillet extends Application {
 			List<Component> addedComponents = new ArrayList<>();
 
 			for (File file : results) {
-				addedComponents.addAll(componentPersister.loadComponents(file.toPath()));
+				resourceHandler.load(file.toPath()).forEach(addedComponents::add);
 			}
 			componentFactory.add(addedComponents, false);
 

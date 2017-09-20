@@ -1,7 +1,7 @@
-package dev.kkorolyov.pancake.muffin.persistence.value.strategy;
+package dev.kkorolyov.pancake.storage.serialization.strategy;
 
-import dev.kkorolyov.pancake.muffin.persistence.value.ValueParser;
-import dev.kkorolyov.pancake.muffin.persistence.value.ValueParsers;
+import dev.kkorolyov.pancake.storage.serialization.ValueParser;
+import dev.kkorolyov.pancake.storage.serialization.ValueParsers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

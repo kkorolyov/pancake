@@ -1,17 +1,17 @@
 package dev.kkorolyov.pancake.skillet.ui.attribute;
 
-import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
-import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
-import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.muffin.data.type.Attribute.AttributeChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
+import dev.kkorolyov.pancake.storage.Attribute;
+import dev.kkorolyov.pancake.storage.Attribute.AttributeChangeEvent;
+import dev.kkorolyov.pancake.storage.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.storage.StorableListener;
 
 import javafx.scene.Node;
 
 /**
  * Displays an {@link Attribute}.
  */
-public class AttributePanel implements Panel, DataChangeListener<Attribute> {
+public class AttributePanel implements Panel, StorableListener<Attribute> {
 	private Node root;
 
 	/**
@@ -30,7 +30,7 @@ public class AttributePanel implements Panel, DataChangeListener<Attribute> {
 	}
 
 	@Override
-	public void changed(Attribute target, DataChangeEvent event) {
+	public void changed(Attribute target, StorableChangeEvent event) {
 		if (AttributeChangeEvent.VALUE == event) {
 			root = ValueDisplayers.getStrategy(target).display(target);
 			root.setId(target.getName());

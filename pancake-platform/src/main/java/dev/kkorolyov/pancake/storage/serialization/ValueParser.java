@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.muffin.persistence.value;
+package dev.kkorolyov.pancake.storage.serialization;
 
 /**
  * Parses a value to a certain type.

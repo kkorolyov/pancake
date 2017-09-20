@@ -1,10 +1,10 @@
 package dev.kkorolyov.pancake.skillet.ui.entity;
 
-import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
-import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
-import dev.kkorolyov.pancake.muffin.data.type.Entity;
-import dev.kkorolyov.pancake.muffin.data.type.Entity.EntityChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
+import dev.kkorolyov.pancake.storage.Entity;
+import dev.kkorolyov.pancake.storage.Entity.EntityChangeEvent;
+import dev.kkorolyov.pancake.storage.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.storage.StorableListener;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -18,7 +18,7 @@ import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decora
 /**
  * Editable label displaying an entity name.
  */
-public class EntityLabel implements Panel, DataChangeListener<Entity> {
+public class EntityLabel implements Panel, StorableListener<Entity> {
 	private final Label label = new Label();
 	private final TextField textField = new TextField();
 	private final VBox root = new VBox();
@@ -61,7 +61,7 @@ public class EntityLabel implements Panel, DataChangeListener<Entity> {
 	}
 
 	@Override
-	public void changed(Entity target, DataChangeEvent event) {
+	public void changed(Entity target, StorableChangeEvent event) {
 		if (EntityChangeEvent.NAME == event) {
 			label.setText(target.getName());
 			textField.setText(target.getName());

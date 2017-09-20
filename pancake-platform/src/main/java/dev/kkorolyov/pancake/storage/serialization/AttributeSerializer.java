@@ -1,12 +1,11 @@
-package dev.kkorolyov.pancake.muffin.persistence;
+package dev.kkorolyov.pancake.storage.serialization;
 
-import dev.kkorolyov.pancake.muffin.data.type.Attribute;
-import dev.kkorolyov.pancake.muffin.persistence.value.ValueParsers;
+import dev.kkorolyov.pancake.storage.Attribute;
 
 /**
- * Deals with persistence of attributes.
+ * Serializes attributes.
  */
-public class AttributePersister extends DataPersister<Attribute> {
+public class AttributeSerializer implements Serializer<Attribute> {
 	@Override
 	public Attribute read(String s) {
 		String[] split = s.split(":\\s", 2);

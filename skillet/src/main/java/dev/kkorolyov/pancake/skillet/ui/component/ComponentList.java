@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.skillet.ui.component;
 
-import dev.kkorolyov.pancake.muffin.data.DataChangeListener;
-import dev.kkorolyov.pancake.muffin.data.DataObservable.DataChangeEvent;
-import dev.kkorolyov.pancake.muffin.data.type.Component;
-import dev.kkorolyov.pancake.muffin.data.type.Entity;
 import dev.kkorolyov.pancake.skillet.ComponentFactory;
 import dev.kkorolyov.pancake.skillet.ComponentFactory.ComponentFactoryChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
+import dev.kkorolyov.pancake.storage.Component;
+import dev.kkorolyov.pancake.storage.Entity;
+import dev.kkorolyov.pancake.storage.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.storage.StorableListener;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -24,7 +24,7 @@ import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decora
 /**
  * Displays a list of components which may be added to the designed entity.
  */
-public class ComponentList implements Panel, DataChangeListener<ComponentFactory> {
+public class ComponentList implements Panel, StorableListener<ComponentFactory> {
 	private final Map<String, Button> componentButtons = new HashMap<>();
 	private final VBox content = new VBox();
 	private final VBox root = new VBox(
@@ -70,7 +70,7 @@ public class ComponentList implements Panel, DataChangeListener<ComponentFactory
 	}
 
 	@Override
-	public void changed(ComponentFactory target, DataChangeEvent event) {
+	public void changed(ComponentFactory target, StorableChangeEvent event) {
 		if (ComponentFactoryChangeEvent.ADD == event) {
 			target.getNames()
 					.forEach(name ->

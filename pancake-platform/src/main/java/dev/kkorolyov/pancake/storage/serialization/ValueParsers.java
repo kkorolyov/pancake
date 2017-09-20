@@ -1,9 +1,9 @@
-package dev.kkorolyov.pancake.muffin.persistence.value;
+package dev.kkorolyov.pancake.storage.serialization;
 
-import dev.kkorolyov.pancake.muffin.persistence.value.strategy.MapParser;
-import dev.kkorolyov.pancake.muffin.persistence.value.strategy.NumberParser;
-import dev.kkorolyov.pancake.muffin.persistence.value.strategy.StringParser;
-import dev.kkorolyov.pancake.muffin.persistence.value.strategy.URIParser;
+import dev.kkorolyov.pancake.storage.serialization.strategy.MapParser;
+import dev.kkorolyov.pancake.storage.serialization.strategy.NumberParser;
+import dev.kkorolyov.pancake.storage.serialization.strategy.StringParser;
+import dev.kkorolyov.pancake.storage.serialization.strategy.URIParser;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +22,7 @@ public final class ValueParsers {
 	/**
 	 * @param s string to parse
 	 * @return most appropriate parser for {@code s}
-	 * @throws UnsupportedOperationException if no parser for {@code s}
+	 * @throws UnsupportedOperationException if no parser for {@code s} found
 	 */
 	public static ValueParser getStrategy(String s) {
 		return strategies.stream()
