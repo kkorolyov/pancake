@@ -29,6 +29,7 @@ public class EntityLabel implements Panel, DataChangeListener<Entity> {
 	 */
 	public EntityLabel(Entity entity) {
 		decorate(label)
+				.styleClass("entity-name")
 				.minSize(10.0, null)
 				.click(() -> {
 					swapTo(textField);

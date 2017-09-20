@@ -8,15 +8,8 @@ import dev.kkorolyov.pancake.muffin.data.type.Entity.EntityChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentPanel;
 
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
@@ -33,13 +26,13 @@ public class EntityPanel implements Panel, DataChangeListener<Entity> {
 	 * @param entity displayed entity
 	 */
 	public EntityPanel(Entity entity) {
-		content = new VBox(entity.getComponents().stream()
+		content = decorate(new VBox(entity.getComponents().stream()
 				.map(component -> buildComponentDisplay(entity, component))
-				.toArray(Node[]::new));
+				.toArray(Node[]::new)))
+				.styleClass("entity-content")
+				.get();
 
 		root = decorate(new ScrollPane(content))
-				.id(entity.getName())
-				.styleClass("entity")
 				.compact()
 				.get();
 
@@ -65,32 +58,9 @@ public class EntityPanel implements Panel, DataChangeListener<Entity> {
 	}
 
 	private Node buildComponentDisplay(Entity entity, Component component) {
-		Label label = new Label(component.getName());
+		ComponentPanel componentPanel = new ComponentPanel(component);
+		componentPanel.onComponentRemoveAction(() -> entity.removeComponent(component.getName()));
 
-		Button removeButton = decorate(new Button("-"))
-				.styleClass("remove-component")
-				.tooltip("Remove component")
-				.action(() -> entity.removeComponent(component.getName()))
-				.get();
-
-		Pane header = buildHeader(label, removeButton);
-
-		TitledPane componentRoot = new ComponentPanel(component).getRoot();
-		componentRoot.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-		componentRoot.setGraphic(header);
-
-		header.minWidthProperty().bind(componentRoot.widthProperty().subtract(28));
-
-		return componentRoot;
-	}
-
-	private Pane buildHeader(Node name, Node action) {
-		BorderPane header = new BorderPane();
-		header.setLeft(name);
-		header.setRight(action);
-		BorderPane.setAlignment(name, Pos.CENTER);
-		BorderPane.setAlignment(header, Pos.CENTER);
-
-		return header;
+		return componentPanel.getRoot();
 	}
 }

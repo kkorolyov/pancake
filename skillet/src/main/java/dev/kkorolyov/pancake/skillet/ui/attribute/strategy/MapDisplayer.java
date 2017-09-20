@@ -21,15 +21,19 @@ public class MapDisplayer extends ValueDisplayer {
 		Map<String, Object> map = attribute.getValue(Map.class);
 
 		return decorate(new TitledPane())
+				.styleClass("attribute")
 				.graphic(decorate(new Label(attribute.getName()))
+						.styleClass("attribute-name")
 						.tooltip(tooltip("Map"))
 						.get())
-				.content(new VBox(map.entrySet().stream()
+				.content(decorate(new VBox(map.entrySet().stream()
 						.map(entry -> new AttributePanel(
 								new Attribute(entry.getKey(), entry.getValue())
 										.register((inner, event) -> entry.setValue(inner.getValue())))
 								.getRoot())
 						.toArray(Node[]::new)))
+						.styleClass("attribute-content")
+						.get())
 				.get();
 	}
 

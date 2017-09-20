@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.skillet.utility.decorator;
 
+import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
@@ -28,12 +29,12 @@ public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extend
 		return (D) this;
 	}
 	/**
-	 * Adds a styling class.
-	 * @param styleClass class to add
+	 * Adds styling classes.
+	 * @param classes styling classes to add
 	 * @return {@code this}
 	 */
-	public D styleClass(String styleClass) {
-		object.getStyleClass().add(styleClass);
+	public D styleClass(String... classes) {
+		object.getStyleClass().addAll(classes);
 		return (D) this;
 	}
 
@@ -112,6 +113,17 @@ public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extend
 			contextMenuSupplier.get().show(node, e.getScreenX(), e.getScreenY());
 			e.consume();
 		});
+		return (D) this;
+	}
+
+	/**
+	 * Applies a binding on a property.
+	 * @param propertyFunction retrieves the property from the decorated node
+	 * @param bound property to bind
+	 * @return {@code this}
+	 */
+	public <V> D bind(Function<T, Property<V>> propertyFunction, ObservableValue<V> bound) {
+		propertyFunction.apply(object).bind(bound);
 		return (D) this;
 	}
 }

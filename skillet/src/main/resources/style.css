@@ -1,17 +1,30 @@
 .root {
-	-fx-background-color: #708090;
+	/* Color definitions */
+	main: #708090;
+
+	accent-dark: #374f66;
+	accent-light: #51667a;
+
+	accent-dark-text: #dcdcdc;
+	accent-light-text: #ededed;
+
+	-fx-background-color: main;
 }
 
 .menu-bar {
-	-fx-background-color: #374f66;
+	-fx-background-color: accent-dark;
 }
-.menu-bar .menu>.label {
-	-fx-text-fill: #dcdcdc;
+.menu-bar .menu > .label {
+	-fx-text-fill: accent-dark-text;
+}
+
+.entity-tabs > .tab-header-area > .tab-header-background {
+	-fx-background-color: accent-light;
 }
 
 .panel-header {
-	-fx-background-color: #51667a;
-	-fx-text-fill: #dcdcdc;
+	-fx-background-color: accent-light;
+	-fx-text-fill: accent-light-text;
 
 	-fx-padding: 8px;
 }
@@ -19,14 +32,44 @@
 	-fx-background-color: transparent;
 }
 
-.add-component .arrow-button, .add-component .arrow {
-	-fx-padding: 0px;	/* Remove the dropdown arrow */
+.scroll-pane {
+	-fx-background-color: transparent;
+}
+
+.entity-tab,
+.component > .title {
+	-fx-background-color: accent-dark;
+}
+.entity-name,
+.component-name {
+	-fx-text-fill: accent-dark-text;
+}
+
+.attribute > .title {
+	-fx-background-color: accent-dark;
+}
+.attribute-name {
+	-fx-text-fill: accent-dark-text;
+}
+
+.component > .title .arrow,
+.attribute > .title .arrow {
+	-fx-background-color: accent-light-text;
+}
+
+.entity-content, 
+.component-content {
+	-fx-background-color: accent-light;
+}
+
+.attribute-content {
+	-fx-background-color: accent-light;
 }
 
 .remove-component {
+	-fx-background-color: transparent;
 	-fx-cursor: default;
 }
-
-.scroll-pane {
-	-fx-background-color: transparent;
+.remove-component > .minus {
+	-fx-fill: accent-light-text;
 }

@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.skillet.ui.attribute;
 
 import dev.kkorolyov.pancake.muffin.data.type.Attribute;
 
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -14,17 +13,13 @@ import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decora
  */
 public abstract class ValueDisplayer {
 	protected Node simpleDisplay(String name, String tooltip, Node value) {
-		Label label = decorate(new Label(name + ": "))
-				.tooltip(tooltip(tooltip))	// Maximum clarity
+		return decorate(new BorderPane())
+				.left(decorate(new Label(name + ": "))
+						.styleClass("attribute-name")
+						.tooltip(tooltip(tooltip))  // Maximum clarity
+						.get())
+				.right(value)
 				.get();
-
-		BorderPane pane = new BorderPane();
-		pane.setLeft(label);
-		pane.setRight(value);
-		BorderPane.setAlignment(label, Pos.CENTER);
-		BorderPane.setAlignment(value, Pos.CENTER);
-
-		return pane;
 	}
 
 	protected String tooltip(String tooltip) {

@@ -14,6 +14,25 @@ public class TabDecorator<T extends Tab> extends UIDecorator<T> {
 	}
 
 	/**
+	 * Sets an ID.
+	 * @param id ID to set
+	 * @return {@code this}
+	 */
+	public TabDecorator<T> id(String id) {
+		object.setId(id);
+		return this;
+	}
+	/**
+	 * Adds styling classes.
+	 * @param classes styling classes to add
+	 * @return {@code this}
+	 */
+	public TabDecorator<T> styleClass(String... classes) {
+		object.getStyleClass().addAll(classes);
+		return this;
+	}
+
+	/**
 	 * Sets a graphic.
 	 * @param graphic tab graphic
 	 * @return {@code this}
@@ -32,7 +51,11 @@ public class TabDecorator<T extends Tab> extends UIDecorator<T> {
 		return this;
 	}
 
-
+	/**
+	 * Sets an on-close procedure.
+	 * @param procedure attached on-close procedure
+	 * @return {@code this}
+	 */
 	public TabDecorator<T> close(Runnable procedure) {
 		object.setOnClosed(e -> procedure.run());
 		return this;

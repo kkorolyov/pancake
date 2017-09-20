@@ -7,6 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
 /**
@@ -30,6 +31,11 @@ public abstract class UIDecorator<O> {
 	/** @return decorator around {@code button} */
 	public static <T extends ButtonBase, D extends ButtonDecorator<T, D>> ButtonDecorator<T, D> decorate(T button) {
 		return new ButtonDecorator<>(button);
+	}
+
+	/** @return decorator around {@code borderPane} */
+	public static <T extends BorderPane, D extends BorderPaneDecorator<T, D>> BorderPaneDecorator<T, D> decorate(T borderPane) {
+		return new BorderPaneDecorator<>(borderPane);
 	}
 
 	/** @return decorator around {@code scrollPane} */

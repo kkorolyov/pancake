@@ -25,14 +25,28 @@ public class EntityTabPane implements Panel, DataChangeListener<Entity> {
 	private Consumer<Entity> entitySelected;
 
 	/**
+	 * Constructs a new entity tab pane.
+	 */
+	public EntityTabPane() {
+		decorate(root)
+				.styleClass("entity-tabs");
+	}
+
+	/**
 	 * Adds a new entity tab if it does not yet exist.
 	 * @param entity associated entity
 	 */
 	public void add(Entity entity) {
 		entities.computeIfAbsent(entity, k -> {
 			Tab tab = decorate(new Tab())
-					.graphic(new EntityLabel(entity).getRoot())
-					.content(new EntityPanel(entity).getRoot())
+					.id(entity.getName())
+					.styleClass("entity-tab")
+					.graphic(decorate(new EntityLabel(entity).getRoot())
+							.styleClass("entity-name")
+							.get())
+					.content(decorate(new EntityPanel(entity).getRoot())
+							.styleClass("entity-content")
+							.get())
 					.change(Tab::selectedProperty,
 							(target, oldValue, newValue) -> {
 								if (newValue) entitySelected(entity);

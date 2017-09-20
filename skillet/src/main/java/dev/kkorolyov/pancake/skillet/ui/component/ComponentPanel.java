@@ -8,9 +8,15 @@ import dev.kkorolyov.pancake.muffin.data.type.Component.ComponentChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.attribute.AttributePanel;
 
-import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import java.util.stream.Collectors;
 
 import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
 
@@ -18,25 +24,52 @@ import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decora
  * Displays a {@link Component}.
  */
 public class ComponentPanel implements Panel, DataChangeListener<Component> {
-	private final VBox content;
-	private final TitledPane root;
+	private final VBox content = new VBox();
+	private final TitledPane root = new TitledPane();
+
+	private Runnable componentRemoveAction;
 
 	/**
 	 * Constructs a new component display.
 	 * @param component displayed component
 	 */
 	public ComponentPanel(Component component) {
-		content = new VBox(
-				component.getAttributes().stream()
-						.map(attribute -> new AttributePanel(attribute).getRoot())
-						.toArray(Node[]::new));
+		content.getChildren().addAll(component.getAttributes().stream()
+				.map(attribute -> new AttributePanel(attribute).getRoot())
+				.collect(Collectors.toList()));
 
-		root = decorate(new TitledPane(component.getName(), content))
+		decorate(root)
 				.id(component.getName())
 				.styleClass("component")
-				.get();
+				.contentDisplay(ContentDisplay.GRAPHIC_ONLY)
+				.graphic(decorate(new BorderPane())
+						.left(decorate(new Label(component.getName()))
+								.styleClass("component-name")
+								.get())
+						.right(decorate(new Button())
+								.contentDisplay(ContentDisplay.GRAPHIC_ONLY)
+								.graphic(decorate(new Rectangle(8, 2))
+										.styleClass("minus")
+										.get())
+								.styleClass("remove-component")
+								.tooltip("Remove component")
+								.action(this::componentRemoveAction)
+								.get())
+						.bind(Region::minWidthProperty, root.widthProperty().subtract(28))
+						.get())
+				.content(decorate(content)
+						.styleClass("component-content")
+						.get());
 
 		component.register(this);
+	}
+
+	private void componentRemoveAction() {
+		if (componentRemoveAction != null) componentRemoveAction.run();
+	}
+	/** @param componentRemoveAction listener invoked when this panel is requested for removal */
+	public void onComponentRemoveAction(Runnable componentRemoveAction) {
+		this.componentRemoveAction = componentRemoveAction;
 	}
 
 	@Override
