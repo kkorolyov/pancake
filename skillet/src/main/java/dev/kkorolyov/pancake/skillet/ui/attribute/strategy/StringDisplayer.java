@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 
-import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
 
 /**
  * Displays attributes with a string value.

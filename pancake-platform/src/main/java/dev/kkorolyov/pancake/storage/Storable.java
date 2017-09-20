@@ -49,7 +49,7 @@ public abstract class Storable<T extends Storable<T>> implements Serializable {
 	 * Clones this object by serializing and deserializing it.
 	 * @return clone of {@code this}
 	 */
-	public T serialClone() {
+	public T copy() {
 		ByteArrayOutputStream bo = new ByteArrayOutputStream();
 		try (ObjectOutputStream oo = new ObjectOutputStream(bo)) {
 			oo.writeObject(this);

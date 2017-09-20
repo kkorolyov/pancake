@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.skillet.utility.Data;
 import dev.kkorolyov.pancake.storage.Component;
 import dev.kkorolyov.pancake.storage.Storable;
 
@@ -16,13 +15,13 @@ public class ComponentFactory extends Storable<ComponentFactory> {
 	private final Map<String, Component> components = new LinkedHashMap<>();
 
 	/**
-	 * Provides a clone of a component by serializing, then deserializing its base instance.
-	 * @param name name of component to clone
+	 * Provides a copy of a component.
+	 * @param name name of component to copy
 	 * @return clone of component of name {@code name}, or {@code null} if no such component
 	 */
 	public Component get(String name) {
 		return Optional.of(components.get(name))
-				.map(Data::serialClone)
+				.map(Storable::copy)
 				.orElse(null);
 	}
 

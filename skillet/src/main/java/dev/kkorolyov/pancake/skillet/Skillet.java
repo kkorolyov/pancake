@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
 
 public class Skillet extends Application {
 	private static final String ENTITY_FILE_EXTENSION = ".mfn";

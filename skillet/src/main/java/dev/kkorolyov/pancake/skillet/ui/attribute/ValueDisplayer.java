@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 
-import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
 
 /**
  * Displays an attribute according to its value.

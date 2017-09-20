@@ -1,4 +1,6 @@
-package dev.kkorolyov.pancake.skillet.utility.decorator;
+package dev.kkorolyov.pancake.skillet.decorator;
+
+import dev.kkorolyov.pancake.skillet.UIDecorator;
 
 import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
@@ -15,7 +17,11 @@ import java.util.function.Supplier;
  * Decorates {@link Node}s.
  */
 public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extends UIDecorator<T> {
-	NodeDecorator(T object) {
+	/**
+	 * Constructs a new Node decorator.
+	 * @param object decorated object
+	 */
+	public NodeDecorator(T object) {
 		super(object);
 	}
 

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
 
 /**
  * Displays editing entities as selectable tabs.

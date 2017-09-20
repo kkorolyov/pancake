@@ -13,7 +13,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
-import static dev.kkorolyov.pancake.skillet.utility.decorator.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
 
 /**
  * Editable label displaying an entity name.

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet.utility.decorator;
+package dev.kkorolyov.pancake.skillet.decorator;
 
 import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
@@ -7,7 +7,11 @@ import javafx.scene.control.TitledPane;
  * Decorates {@link TitledPane}s.
  */
 public class TitledPaneDecorator<T extends TitledPane> extends LabeledDecorator<T, TitledPaneDecorator<T>> {
-	TitledPaneDecorator(T object) {
+	/**
+	 * Constructs a new TitledPane decorator.
+	 * @param object decorated object
+	 */
+	public TitledPaneDecorator(T object) {
 		super(object);
 	}
 

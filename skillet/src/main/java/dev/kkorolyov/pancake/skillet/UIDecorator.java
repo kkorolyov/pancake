@@ -1,4 +1,14 @@
-package dev.kkorolyov.pancake.skillet.utility.decorator;
+package dev.kkorolyov.pancake.skillet;
+
+import dev.kkorolyov.pancake.skillet.decorator.BorderPaneDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.ButtonDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.LabeledDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.MenuItemDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.NodeDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.RegionDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.ScrollPaneDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.TabDecorator;
+import dev.kkorolyov.pancake.skillet.decorator.TitledPaneDecorator;
 
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
@@ -14,7 +24,7 @@ import javafx.scene.layout.Region;
  * Decorates and alters JavaFX UI elements.
  */
 public abstract class UIDecorator<O> {
-	O object;
+	protected O object;
 
 	/** @return decorator around {@code node} */
 	public static <T extends Node, D extends NodeDecorator<T, D>> NodeDecorator<T, D> decorate(T node) {
@@ -58,7 +68,11 @@ public abstract class UIDecorator<O> {
 		return new TabDecorator<>(tab);
 	}
 
-	UIDecorator(O object) {
+	/**
+	 * Constructs a new decorator.
+	 * @param object decorated object
+	 */
+	protected UIDecorator(O object) {
 		this.object = object;
 	}
 
