@@ -34,7 +34,7 @@ subprojects {
 
 	dependencies {
 		compile 'dev.kkorolyov:simple-logs:3.+',
-				'dev.kkorolyov:simple-props:v4.+',
+				'dev.kkorolyov:simple-props:4.+',
 				'dev.kkorolyov:sqlob:3.+'
 		testCompile 'org.spockframework:spock-core:1.1-groovy-2.4',
 				'net.bytebuddy:byte-buddy:1.7.0',
@@ -85,14 +85,31 @@ subprojects {
 project(':pancake-platform') {
 	description = """Main Pancake engine platform"""
 }
+def specUtilities = project(':pancake-platform').sourceSets.test.output
 
 project(':pancake-core') {
 	description = """Collection of general, reusable systems and components for the Pancake engine"""
 
 	dependencies {
 		compile project(':pancake-platform')
-		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
+		testCompile specUtilities
 	}
+}
+
+project(':skillet') {
+	apply plugin: 'application'
+
+	description = """Standalone application for designing and exporting entities"""
+
+	sourceSets.main.resources.srcDirs += project(':pancake-platform').sourceSets.main.resources.srcDirs
+
+	dependencies {
+		compile project(':pancake-platform')
+		testCompile specUtilities
+	}
+
+	mainClassName = 'dev.kkorolyov.pancake.skillet.Skillet'
+	startScripts.classpath = files('\"') + startScripts.classpath	// Resources must be at head of classpath for some reason
 }
 
 project(':test-interactive') {
@@ -104,7 +121,6 @@ project(':test-interactive') {
 
 	dependencies {
 		compile project(':pancake-core')
-		runtime sourceSets.main.resources
 	}
 
 	mainClassName = 'dev.kkorolyov.pancake.Interactive'
@@ -118,7 +134,7 @@ project(':killstreek') {
 
 	dependencies {
 		compile project(':pancake-core')
-		testCompile project(':pancake-platform').sourceSets.test.output	// Access to SpecUtilities
+		testCompile specUtilities
 		runtime sourceSets.main.resources
 	}
 

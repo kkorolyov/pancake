@@ -1,0 +1,55 @@
+@startuml
+
+package dev.kkorolyov.pancake.skillet {
+	class Skillet {
+		save()
+		load()
+		reload()
+	}
+
+	package display {
+  	interface Display {
+    	Node getRoot()
+    }
+
+		package value {
+			abstract class ValueDisplayer {
+				Node display(Attribute)
+				boolean accepts(Class)
+			}
+			abstract class ValueDisplayers {
+			}
+
+			package strategy {
+				ValueDisplayer <|-- NumberDisplayer
+				ValueDisplayer <|-- StringDisplayer
+				ValueDisplayer <|-- MapDisplayer
+			}
+
+			ValueDisplayers *-- "1" NumberDisplayer
+			ValueDisplayers *-- "1" StringDisplayer
+			ValueDisplayers *-- "1" MapDisplayer
+		}
+
+    Display <|.. EntityDisplay
+		Display <|.. ComponentDisplay
+		Display <|.. AttributeDisplay
+
+		AttributeDisplay --> ValueDisplayers
+  }
+
+  package utility {
+  	package ui {
+			class DisplayTransformer {
+			}
+
+			class UIDecorator {
+			}
+  	}
+  }
+
+  Skillet --> EntityDisplay
+  Skillet --> ComponentFactory
+}
+
+@enduml

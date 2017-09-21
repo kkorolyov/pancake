@@ -1,0 +1,57 @@
+@startuml
+
+package dev.kkorolyov.pancake.muffin {
+	package data {
+		abstract class DataObservable<T> {
+		}
+		interface DataChangeListener {
+		}
+
+		class Entity {
+		}
+		class Component {
+		}
+		class Attribute {
+			Object value
+		}
+
+		DataObservable o-l- "*" DataChangeListener
+
+		DataObservable <|-- Entity
+		DataObservable <|-- Component
+		DataObservable <|-- Attribute
+
+		Entity *-r- "*" Component
+		Component *-l- "*" Attribute
+	}
+
+  package persistence {
+  	abstract class DataPersister {
+  	}
+  	DataPersister <|-- ComponentPersister
+  	DataPersister <|-- AttributePersister
+
+  	package value {
+			abstract class ValueParser {
+				Object parse(String)
+				boolean accepts(String)
+			}
+			abstract class ValueParsers {
+			}
+
+			package strategy {
+				ValueParser <|-- NumberParser
+				ValueParser <|-- StringParser
+				ValueParser <|-- MapParser
+			}
+
+			ValueParsers o-- "1" NumberParser
+			ValueParsers o-- "1" StringParser
+			ValueParsers o-- "1" MapParser
+  	}
+
+		AttributePersister --> ValueParsers
+  }
+}
+
+@enduml
