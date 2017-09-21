@@ -1,23 +1,13 @@
 package dev.kkorolyov.pancake.storage.serialization;
 
-import dev.kkorolyov.pancake.storage.serialization.strategy.MapParser;
-import dev.kkorolyov.pancake.storage.serialization.strategy.NumberParser;
-import dev.kkorolyov.pancake.storage.serialization.strategy.StringParser;
-import dev.kkorolyov.pancake.storage.serialization.strategy.URIParser;
-
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.ServiceLoader;
+import java.util.stream.StreamSupport;
 
 /**
  * Provides strategies for parsing strings based on pattern.
  */
 public final class ValueParsers {
-	private static final Collection<ValueParser> strategies = Arrays.asList(
-			new URIParser(),
-			new NumberParser(),
-			new StringParser(),
-			new MapParser()
-	);
+	private static final Iterable<ValueParser> strategies = ServiceLoader.load(ValueParser.class);
 
 	/**
 	 * @param s string to parse
@@ -25,7 +15,7 @@ public final class ValueParsers {
 	 * @throws UnsupportedOperationException if no parser for {@code s} found
 	 */
 	public static ValueParser getStrategy(String s) {
-		return strategies.stream()
+		return StreamSupport.stream(strategies.spliterator(), false)
 				.filter(strategy -> strategy.accepts(s))
 				.findFirst()
 				.orElseThrow(() -> new UnsupportedOperationException("No parsing strategy for: " + s));
