@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
 
 /**
  * Central game management module.
@@ -16,7 +17,13 @@ public class GameEngine {
 	private final EventBroadcaster events = new EventBroadcaster();
 	private final EntityPool entities = new EntityPool(events);
 	private final Map<GameSystem, Limiter> systems = new LinkedHashMap<>();
-	
+
+	/**
+	 * Constructs a new engine pre-populated with all {@link GameSystem} implementations provided by the {@link ServiceLoader}.
+	 */
+	public GameEngine() {
+		this(ServiceLoader.load(GameSystem.class));
+	}
 	/**
 	 * Constructs a new engine pre-populated with systems.
 	 * @param systems attached systems
@@ -29,7 +36,7 @@ public class GameEngine {
 	 * @param systems attached systems
 	 */
 	public GameEngine(Iterable<GameSystem> systems) {
-		for (GameSystem system : systems) add(system);
+		systems.forEach(this::add);
 	}
 	
 	/**

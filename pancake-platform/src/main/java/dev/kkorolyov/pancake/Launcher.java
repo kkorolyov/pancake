@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake;
 
-import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.graphics.ImagePool;
@@ -16,15 +15,19 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import static dev.kkorolyov.pancake.event.PlatformEvents.CAMERA_CREATED;
+import static dev.kkorolyov.pancake.event.PlatformEvents.CANVAS_CREATED;
+import static dev.kkorolyov.pancake.event.PlatformEvents.SCENE_CREATED;
+
 /**
  * Provides a framework to configure and launch Pancake games.
  */
 public abstract class Launcher extends Application {
 	protected final String title;
-	protected final Canvas canvas = new Canvas();
-	protected final Scene scene = new Scene(new Group(canvas));
+	protected final Canvas canvas;
+	protected final Scene scene;
 
-	protected final Camera camera = new Camera(new Vector(), null, 0, 0);
+	protected final Camera camera;
 
 	protected final ImagePool images = new ImagePool();
 	protected final SoundPool sounds = new SoundPool();
@@ -37,22 +40,20 @@ public abstract class Launcher extends Application {
 		LauncherConfig config = config();
 		config.verify();
 
+		Signature.index();
+		engine = new GameEngine();
+		gameLoop = new GameLoop(engine);
+
+		canvas = announce(new Canvas(), CANVAS_CREATED);
+		scene = announce(new Scene(new Group(canvas)), SCENE_CREATED);
+		camera = announce(new Camera(new Vector(), config.unitPixels, 0, 0), CAMERA_CREATED);
+
 		title = config.title;
 		setSize(config.size.getX(), config.size.getY());
-		camera.setUnitPixels(config.unitPixels);
-
-		Signature.index(components());
-		engine = new GameEngine(systems());
-		gameLoop = new GameLoop(engine);
 	}
 
 	/** @return configuration defining basic properties */
 	protected abstract LauncherConfig config();
-
-	/** @return all components used in game */
-	protected abstract Iterable<Class<? extends Component>> components();
-	/** @return all systems used in game, in update order */
-	protected abstract Iterable<GameSystem> systems();
 
 	/**
 	 * All initialization code should go here.
@@ -84,6 +85,11 @@ public abstract class Launcher extends Application {
 		canvas.setHeight(height);
 
 		camera.setSize(width, height);
+	}
+
+	private <T> T announce(T object, String event) {
+		engine.getEvents().enqueue(event, object);
+		return object;
 	}
 
 	/**

@@ -1,7 +1,16 @@
 package dev.kkorolyov.pancake.entity;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -11,6 +20,13 @@ import java.util.Objects;
 public class Signature {
 	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
 
+	/**
+	 * Sets the collection of component types used in masking to all {@link Component} types provided in a service file.
+	 * @throws IllegalArgumentException if a non-concrete type is indexed
+	 */
+	public static void index() {
+		index(loadComponentClasses());
+	}
 	/**
 	 * Sets the collection of component types used in masking.
 	 * @param types indexed types
@@ -36,6 +52,34 @@ public class Signature {
 				}
 				indexMap.put(type, counter++);
 			}
+		}
+	}
+
+	private static Iterable<Class<? extends Component>> loadComponentClasses() {
+		Collection<Class<? extends Component>> componentClasses = new ArrayList<>();
+
+		try {
+			for (URL resource : Collections.list(ClassLoader.getSystemResources(
+					"META-INF/services/" + Component.class.getName()))) {
+				try (BufferedReader in = new BufferedReader(new InputStreamReader(
+						resource.openStream(), Charset.forName("UTF-8")))) {
+					in.lines()
+							.map(Signature::toClass)
+							.forEach(componentClasses::add);
+				} catch (IOException e) {
+					throw new UncheckedIOException(e);
+				}
+			}
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+		return componentClasses;
+	}
+	private static Class<? extends Component> toClass(String className) {
+		try {
+			return Class.forName(className).asSubclass(Component.class);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -1,6 +1,9 @@
 package dev.kkorolyov.pancake.entity;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A single entity found in the game world. Consists of a unique ID and a set of distinctly-typed {@code Component} objects.
@@ -25,7 +28,7 @@ public class Entity implements Comparable<Entity> {
 	 */
 	public Entity(int id, Iterable<Component> components) {
 		this.id = id;
-		for (Component component : components) add(component);
+		components.forEach(this::add);
 	}
 
 	/**

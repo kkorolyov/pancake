@@ -9,10 +9,13 @@ import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.input.KeyAction;
 import dev.kkorolyov.pancake.math.Vector;
 
+import javafx.scene.Scene;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
-import javafx.scene.Scene;
+
+import static dev.kkorolyov.pancake.event.PlatformEvents.CAMERA_CREATED;
+import static dev.kkorolyov.pancake.event.PlatformEvents.SCENE_CREATED;
 
 /**
  * Applies actions using current player input.
@@ -20,28 +23,27 @@ import javafx.scene.Scene;
 public class InputSystem extends GameSystem {
 	private final Set<Enum<?>> pressedKeys = new HashSet<>();
 	private final Vector relCursor = new Vector();
-	private final Vector cursor;
-	private final Camera camera;
+	private final Vector cursor = new Vector();	// TODO What to do with this?
+	private Camera camera;
 
 	/**
 	 * Constructs a new input system.
-	 * @param scene scene providing player input
-	 * @param camera camera providing for mapping cursor position from render to absolute coordinates
-	 * @param cursor vector kept updated with absolute cursor position
 	 */
-	public InputSystem(Scene scene, Camera camera, Vector cursor) {
+	public InputSystem() {
 		super(new Signature(Input.class));
+	}
+	@Override
+	public void attach() {
+		register(SCENE_CREATED, (Scene scene) -> {
+			scene.setOnMouseMoved(e -> relCursor.set((float) e.getX(), (float) e.getY()));
 
-		this.camera = camera;
-		this.cursor = cursor;
+			scene.setOnMousePressed((e) -> pressedKeys.add(e.getButton()));
+			scene.setOnMouseReleased((e) -> pressedKeys.remove(e.getButton()));
 
-		scene.setOnMouseMoved(e -> relCursor.set((float) e.getX(), (float) e.getY()));
-
-		scene.setOnMousePressed((e) -> pressedKeys.add(e.getButton()));
-		scene.setOnMouseReleased((e) -> pressedKeys.remove(e.getButton()));
-
-		scene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
-		scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+			scene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
+			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+		});
+		register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
 	}
 
 	@Override

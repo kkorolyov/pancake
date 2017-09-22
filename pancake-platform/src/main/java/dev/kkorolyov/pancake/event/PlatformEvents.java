@@ -10,5 +10,9 @@ public final class PlatformEvents {
 	public static final String CREATED = "CREATED";
 	public static final String DESTROYED = "DESTROYED";
 
+	public static final String SCENE_CREATED = "SCENE_CREATED";
+	public static final String CANVAS_CREATED = "CANVAS_CREATED";
+	public static final String CAMERA_CREATED = "CAMERA_CREATED";
+
 	private PlatformEvents() {}
 }
