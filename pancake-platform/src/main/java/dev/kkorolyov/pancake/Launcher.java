@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake;
 
-import dev.kkorolyov.pancake.entity.Component;
 import dev.kkorolyov.pancake.entity.Signature;
 import dev.kkorolyov.pancake.graphics.Camera;
 import dev.kkorolyov.pancake.graphics.ImagePool;
@@ -41,7 +40,7 @@ public abstract class Launcher extends Application {
 		LauncherConfig config = config();
 		config.verify();
 
-		Signature.index(components());
+		Signature.index();
 		engine = new GameEngine();
 		gameLoop = new GameLoop(engine);
 
@@ -55,9 +54,6 @@ public abstract class Launcher extends Application {
 
 	/** @return configuration defining basic properties */
 	protected abstract LauncherConfig config();
-
-	/** @return all components used in game */
-	protected abstract Iterable<Class<? extends Component>> components();
 
 	/**
 	 * All initialization code should go here.

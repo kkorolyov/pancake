@@ -49,18 +49,6 @@ public class Interactive extends Launcher {
 				.size(560, 560)
 				.unitPixels(new Vector(64, -64, 1));
 	}
-	@Override
-	protected Iterable<Class<? extends Component>> components() {
-		return Arrays.asList(Bounds.class,
-				Damping.class,
-				Force.class,
-				Sprite.class,
-				Transform.class,
-				Chain.class,
-				Velocity.class,
-				Input.class,
-				Spawner.class);
-	}
 
 	@Override
 	public void init() throws Exception {

@@ -19,7 +19,7 @@ public class GameEngine {
 	private final Map<GameSystem, Limiter> systems = new LinkedHashMap<>();
 
 	/**
-	 * Constructs a new engine pre-populated with systems provided by the service loader.
+	 * Constructs a new engine pre-populated with all {@link GameSystem} implementations provided by the {@link ServiceLoader}.
 	 */
 	public GameEngine() {
 		this(ServiceLoader.load(GameSystem.class));
