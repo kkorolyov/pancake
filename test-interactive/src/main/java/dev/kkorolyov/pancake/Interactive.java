@@ -16,14 +16,6 @@ import dev.kkorolyov.pancake.event.PlatformEvents;
 import dev.kkorolyov.pancake.input.Action;
 import dev.kkorolyov.pancake.math.Vector;
 import dev.kkorolyov.pancake.math.WeightedDistribution;
-import dev.kkorolyov.pancake.system.AccelerationSystem;
-import dev.kkorolyov.pancake.system.ChainSystem;
-import dev.kkorolyov.pancake.system.CollisionSystem;
-import dev.kkorolyov.pancake.system.DampingSystem;
-import dev.kkorolyov.pancake.system.InputSystem;
-import dev.kkorolyov.pancake.system.MovementSystem;
-import dev.kkorolyov.pancake.system.RenderSystem;
-import dev.kkorolyov.pancake.system.SpawnSystem;
 import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
@@ -68,17 +60,6 @@ public class Interactive extends Launcher {
 				Velocity.class,
 				Input.class,
 				Spawner.class);
-	}
-	@Override
-	protected Iterable<GameSystem> systems() {
-		return Arrays.asList(new InputSystem(scene, camera, new Vector()),
-				new DampingSystem(),
-				new AccelerationSystem(),
-				new MovementSystem(),
-				new ChainSystem(),
-				new CollisionSystem(),
-				new SpawnSystem(),
-				new RenderSystem(canvas, camera));
 	}
 
 	@Override

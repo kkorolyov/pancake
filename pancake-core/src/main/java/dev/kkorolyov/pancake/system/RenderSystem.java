@@ -18,8 +18,12 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Rotate;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+
+import static dev.kkorolyov.pancake.event.PlatformEvents.CAMERA_CREATED;
+import static dev.kkorolyov.pancake.event.PlatformEvents.CANVAS_CREATED;
 
 /**
  * Renders all game entities.
@@ -28,10 +32,10 @@ public class RenderSystem extends GameSystem {
 	private static final int LINE_HEIGHT = 14;
 	private static final Logger log = Config.getLogger(RenderSystem.class);
 
-	private final Canvas canvas;
-	private final GraphicsContext g;
+	private Canvas canvas;
+	private GraphicsContext g;
 
-	private final Camera camera;
+	private Camera camera;
 	private final Rotate rotate = new Rotate();
 
 	private final Set<Sprite> tickedSprites = new HashSet<>();
@@ -40,18 +44,19 @@ public class RenderSystem extends GameSystem {
 
 	/**
 	 * Constructs a new render system.
-	 * @param canvas canvas on which to render
-	 * @param camera view of render space
 	 */
-	public RenderSystem(Canvas canvas, Camera camera) {
+	public RenderSystem() {
 		super(new Signature(Transform.class,
 												Sprite.class),
-					(e1, e2) -> e1.get(Transform.class).getPosition().getZ() < e2.get(Transform.class).getPosition().getZ() ? -1 : 1);
-
-		this.canvas = canvas;
-		g = canvas.getGraphicsContext2D();
-
-		this.camera = camera;
+					Comparator.comparing(entity -> entity.get(Transform.class).getPosition().getZ()));
+	}
+	@Override
+	public void attach() {
+		register(CANVAS_CREATED, (Canvas canvas) -> {
+			this.canvas = canvas;
+			this.g = canvas.getGraphicsContext2D();
+		});
+		register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
 	}
 
 	@Override
@@ -77,7 +82,7 @@ public class RenderSystem extends GameSystem {
 	public void after(float dt) {
 		rotate(0, null);
 
-		drawDebug(dt);
+		drawDebug();
 	}
 
 	private void draw(Transform transform, Sprite sprite) {
@@ -92,7 +97,7 @@ public class RenderSystem extends GameSystem {
 		}
 	}
 
-	private void drawDebug(float dt) {
+	private void drawDebug() {
 		String[] args = Config.config.getArray("renderInfo");
 		if (args == null) return;
 
@@ -102,7 +107,7 @@ public class RenderSystem extends GameSystem {
 			switch (arg) {
 				case "fps":
 					float now = System.nanoTime();
-					g.strokeText("FPS: " + Math.round(1000000000 / (now - last)), 0, y += LINE_HEIGHT);
+					g.strokeText("FPS: " + Math.round(1e9 / (now - last)), 0, y += LINE_HEIGHT);
 					last = now;
 					break;
 				case "usage":
