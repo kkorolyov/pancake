@@ -1,6 +1,6 @@
 package dev.kkorolyov.killstreek.component;
 
-import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.platform.entity.Component;
 
 /**
  * Applies damage values to an entity.

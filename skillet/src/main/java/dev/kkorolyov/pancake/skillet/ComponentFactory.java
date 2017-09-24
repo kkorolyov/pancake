@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.storage.Component;
-import dev.kkorolyov.pancake.storage.Storable;
+import dev.kkorolyov.pancake.platform.storage.Component;
+import dev.kkorolyov.pancake.platform.storage.Storable;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;

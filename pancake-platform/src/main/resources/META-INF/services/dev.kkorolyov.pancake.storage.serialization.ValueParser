@@ -1,4 +1,0 @@
-dev.kkorolyov.pancake.storage.serialization.strategy.MapParser
-dev.kkorolyov.pancake.storage.serialization.strategy.NumberParser
-dev.kkorolyov.pancake.storage.serialization.strategy.StringParser
-dev.kkorolyov.pancake.storage.serialization.strategy.URIParser

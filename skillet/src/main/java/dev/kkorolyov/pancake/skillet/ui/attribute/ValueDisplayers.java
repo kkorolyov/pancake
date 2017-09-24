@@ -1,10 +1,10 @@
 package dev.kkorolyov.pancake.skillet.ui.attribute;
 
+import dev.kkorolyov.pancake.platform.storage.Attribute;
 import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.MapDisplayer;
 import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.NumberDisplayer;
 import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.StringDisplayer;
 import dev.kkorolyov.pancake.skillet.ui.attribute.strategy.URIDisplayer;
-import dev.kkorolyov.pancake.storage.Attribute;
 
 import java.util.Arrays;
 import java.util.Collection;

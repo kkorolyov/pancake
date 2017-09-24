@@ -1,0 +1,4 @@
+dev.kkorolyov.pancake.platform.storage.serialization.strategy.MapParser
+dev.kkorolyov.pancake.platform.storage.serialization.strategy.NumberParser
+dev.kkorolyov.pancake.platform.storage.serialization.strategy.StringParser
+dev.kkorolyov.pancake.platform.storage.serialization.strategy.URIParser

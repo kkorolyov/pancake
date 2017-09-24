@@ -1,8 +1,8 @@
 package dev.kkorolyov.killstreek.item;
 
-import dev.kkorolyov.pancake.component.Sprite;
-import dev.kkorolyov.pancake.entity.Entity;
-import dev.kkorolyov.pancake.math.WeightedDistribution;
+import dev.kkorolyov.pancake.core.component.Sprite;
+import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
 
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
@@ -20,13 +20,17 @@ public abstract class Item {
 	private final Sprite sprite;
 	private final WeightedDistribution<Consumer<Entity>> effects = new WeightedDistribution<>();
 
+	private static int generateId() {
+		return idCounter++;
+	}
+
 	/**
 	 * Constructs a new item with a unique ID.
 	 * @param name item name
 	 * @param sprite item visual
 	 */
 	public Item(String name, Sprite sprite) {
-		this.id = Item.idCounter++;
+		this.id = generateId();
 		this.name = name;
 		this.sprite = sprite;
 	}

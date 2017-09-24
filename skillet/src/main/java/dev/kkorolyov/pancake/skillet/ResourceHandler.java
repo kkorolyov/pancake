@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.storage.Entity;
-import dev.kkorolyov.pancake.storage.serialization.EntitySerializer;
+import dev.kkorolyov.pancake.platform.storage.Entity;
+import dev.kkorolyov.pancake.platform.storage.serialization.EntitySerializer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

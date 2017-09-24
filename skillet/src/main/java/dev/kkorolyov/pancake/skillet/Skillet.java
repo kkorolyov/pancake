@@ -1,9 +1,9 @@
 package dev.kkorolyov.pancake.skillet;
 
+import dev.kkorolyov.pancake.platform.storage.Component;
+import dev.kkorolyov.pancake.platform.storage.Entity;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentList;
 import dev.kkorolyov.pancake.skillet.ui.entity.EntityTabPane;
-import dev.kkorolyov.pancake.storage.Component;
-import dev.kkorolyov.pancake.storage.Entity;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

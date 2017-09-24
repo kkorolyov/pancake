@@ -1,7 +1,7 @@
 package dev.kkorolyov.killstreek.item;
 
 import dev.kkorolyov.killstreek.utility.BoundedValue;
-import dev.kkorolyov.pancake.component.Sprite;
+import dev.kkorolyov.pancake.core.component.Sprite;
 
 /**
  * An item attachable to an equipment slot.
