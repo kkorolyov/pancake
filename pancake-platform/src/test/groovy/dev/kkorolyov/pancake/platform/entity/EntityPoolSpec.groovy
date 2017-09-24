@@ -25,8 +25,6 @@ class EntityPoolSpec extends Specification {
 	EntityPool entities = new EntityPool(events)
 
 	def setupSpec() {
-		Signature.index(component.class)
-
 		signature = new Signature(component.class)
 	}
 

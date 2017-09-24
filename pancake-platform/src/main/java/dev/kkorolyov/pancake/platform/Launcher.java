@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.graphics.Camera;
 import dev.kkorolyov.pancake.platform.graphics.ImagePool;
 import dev.kkorolyov.pancake.platform.input.ActionPool;
@@ -40,7 +39,6 @@ public abstract class Launcher extends Application {
 		LauncherConfig config = config();
 		config.verify();
 
-		Signature.index();
 		engine = new GameEngine();
 		gameLoop = new GameLoop(engine);
 

@@ -9,10 +9,6 @@ class SignatureSpec extends Specification {
 	@Shared
 	List<Class<? extends Component>> componentTypes = [new Component() {}, new Component() {}, new Component() {}].collect { it.class }
 
-	def setupSpec() {
-		Signature.index(componentTypes)
-	}
-
 	Signature signature = new Signature()
 
 	def "empty signature equals zero"() {

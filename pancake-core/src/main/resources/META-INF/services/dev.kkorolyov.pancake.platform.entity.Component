@@ -1,9 +1,0 @@
-dev.kkorolyov.pancake.core.component.Bounds
-dev.kkorolyov.pancake.core.component.Chain
-dev.kkorolyov.pancake.core.component.Input
-dev.kkorolyov.pancake.core.component.Spawner
-dev.kkorolyov.pancake.core.component.Sprite
-dev.kkorolyov.pancake.core.component.Transform
-dev.kkorolyov.pancake.core.component.movement.Damping
-dev.kkorolyov.pancake.core.component.movement.Force
-dev.kkorolyov.pancake.core.component.movement.Velocity

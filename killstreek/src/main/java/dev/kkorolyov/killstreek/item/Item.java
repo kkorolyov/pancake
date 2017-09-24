@@ -15,14 +15,14 @@ public abstract class Item {
 	public static final Consumer<Entity> NOOP_EFFECT = entity -> {};
 	private static int idCounter;
 
+	private static int generateId() {
+		return idCounter++;
+	}
+
 	private final int id;
 	private final String name;
 	private final Sprite sprite;
 	private final WeightedDistribution<Consumer<Entity>> effects = new WeightedDistribution<>();
-
-	private static int generateId() {
-		return idCounter++;
-	}
 
 	/**
 	 * Constructs a new item with a unique ID.

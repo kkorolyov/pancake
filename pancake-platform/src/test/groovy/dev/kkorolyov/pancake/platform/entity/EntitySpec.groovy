@@ -7,10 +7,6 @@ class EntitySpec extends Specification {
 	@Shared int id = 0
 	@Shared List<Component> components = [new Component() {}, new Component() {}, new Component() {}]
 
-	def setupSpec() {
-		Signature.index(mapToTypes(components))
-	}
-
 	Entity entity = new Entity(id)
 
 	def "contains all constructor-initialized component types"() {
