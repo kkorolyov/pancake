@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.platform.event
 
-import dev.kkorolyov.pancake.platform.SpecUtilities
-
 import spock.lang.Shared
 import spock.lang.Specification
 
 import java.util.function.Consumer
+
+import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
 
 class EventBroadcasterSpec extends Specification {
 	@Shared String event = "SomeEvent"
@@ -17,7 +17,7 @@ class EventBroadcasterSpec extends Specification {
 	EventBroadcaster eventBroadcaster = new EventBroadcaster()
 
 	def setup() {
-		SpecUtilities.setField("receivers", eventBroadcaster, receivers)
+		setField("receivers", eventBroadcaster, receivers)
 	}
 
 	def "registers receiver to correct event"() {

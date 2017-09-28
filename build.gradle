@@ -1,72 +1,105 @@
-buildscript {
-	repositories {
-		maven {
-			url 'https://dl.bintray.com/kkorolyov/groovy'
-		}
-	}
-	dependencies {
-		classpath 'dev.kkorolyov:auto-snapshot:1.0'
-	}
-}
 plugins {
+	id 'java-library'
 	id 'groovy'
 	id 'maven-publish'
 	id 'com.jfrog.bintray' version '1.7.3'
 }
 
-description = """Extensible Java game engine with an entity-component-system architecture"""
+description = "Extensible Java game engine with an entity-component-system architecture"
 
 subprojects {
-	apply plugin: 'groovy'
-	apply plugin: 'maven-publish'
-	apply plugin: 'com.jfrog.bintray'
-	apply plugin: 'dev.kkorolyov.auto-snapshot'
-
 	group = 'dev.kkorolyov'
 	version = '1.0'
 
 	repositories {
-		mavenLocal()	// For early dev only
-		jcenter()
+		mavenLocal()  // TODO For early dev only
+		jcenter()  // Most things
 		maven {
-			url 'https://dl.bintray.com/kkorolyov/java'
+			url 'https://dl.bintray.com/kkorolyov/java'  // SimpleTools
 		}
 	}
+}
 
-	dependencies {
-		compile 'dev.kkorolyov:simple-logs:3.+',
-				'dev.kkorolyov:simple-props:4.+',
-				'dev.kkorolyov:sqlob:3.+'
-		testCompile 'org.spockframework:spock-core:1.1-groovy-2.+',
-				'net.bytebuddy:byte-buddy:1.+',
-				'org.objenesis:objenesis:2.+'
-	}
-
+configure([	// "Doc"able
+    project(':pancake-platform'),
+		project('pancake-core'),
+		project('skillet'),
+		project('killstreek')
+]) {
 	javadoc {
 		destinationDir = file("$rootProject.projectDir/docs/$project.name")
 	}
+}
 
-	task sourcesJar(type: Jar) {
-		classifier = 'sources'
+configure([	// Testable
+		project(':pancake-platform'),
+		project(':pancake-core'),
+		project(':skillet'),
+		project(':killstreek')
+]) {
+	apply plugin: 'groovy'
+
+	dependencies {
+		testImplementation(
+				'org.spockframework:spock-core:1.1-groovy-2.+',
+				'net.bytebuddy:byte-buddy:1.+',
+				'org.objenesis:objenesis:2.+'
+		)
+	}
+}
+configure([	// Platform test utilities-dependent
+		project(':pancake-core'),
+		project(':skillet'),
+		project(':killstreek')
+]) {
+	dependencies {
+		testImplementation project(path: ':pancake-platform', configuration: 'platformTest')
+	}
+}
+
+configure([	// Libraries
+		project(':pancake-platform'),
+		project(':pancake-core')
+]) {
+	apply plugin: 'java-library'
+	apply plugin: 'maven-publish'
+	apply plugin: 'com.jfrog.bintray'
+
+	dependencies {
+		api (
+				'dev.kkorolyov:simple-props:4.+'
+		)
+		implementation(
+				'dev.kkorolyov:simple-logs:3.+'
+		)
+	}
+
+	// Artifacts
+	task sourceJar(type: Jar) {
+		classifier = 'source'
 		from sourceSets.main.allJava
 	}
 	task javadocJar(type: Jar) {
 		classifier = 'javadoc'
 		from javadoc.destinationDir
 	}
+
+	// Maven publish
 	publishing {
 		publications {
-			Pub(MavenPublication) {
+			pancake(MavenPublication) {
 				from components.java
-				artifact sourcesJar
+
+				artifact sourceJar
 				artifact javadocJar
 			}
 		}
 	}
+	// Bintray upload
 	bintray {
 		user = System.getenv('BINTRAY_USER')
 		key = System.getenv('BINTRAY_KEY')
-		publications = ['Pub']
+		publications = ['pancake']
 		pkg {
 			repo = 'java'
 			name = project.name
@@ -79,62 +112,74 @@ subprojects {
 	}
 }
 
-project(':pancake-platform') {
-	description = """Main Pancake engine platform"""
-}
-def specUtilities = project(':pancake-platform').sourceSets.test.output
-
-project(':pancake-core') {
-	description = """Collection of general, reusable systems and components for the Pancake engine"""
+// Applications
+configure([
+    project(':skillet'),
+		project(':killstreek')
+]) {
+	apply plugin: 'java'
+	apply plugin: 'application'	// Run
 
 	dependencies {
-		compile project(':pancake-platform')
-		testCompile specUtilities
+		implementation(
+				project(':pancake-platform')
+		)
+	}
+}
+
+project(':pancake-platform') {
+	description = "Main Pancake engine platform"
+
+
+	task testJar(type: Jar) {
+		classifier = 'test'
+		from sourceSets.test.output
+	}
+
+	configurations {
+		platformTest
+	}
+	artifacts {
+		platformTest testJar
+	}
+}
+
+project(':pancake-core') {
+	description = "Collection of general, reusable systems and components for the Pancake engine"
+
+	dependencies {
+		implementation project(':pancake-platform')
 	}
 }
 
 project(':skillet') {
-	apply plugin: 'application'
-
-	description = """Standalone application for designing and exporting entities"""
-
-	sourceSets.main.resources.srcDirs += project(':pancake-platform').sourceSets.main.resources.srcDirs
-
-	dependencies {
-		compile project(':pancake-platform')
-		testCompile specUtilities
-	}
+	description = "Standalone application for designing and exporting entities"
 
 	mainClassName = 'dev.kkorolyov.pancake.skillet.Skillet'
-	startScripts.classpath = files('\"') + startScripts.classpath	// Resources must be at head of classpath for some reason
-}
-
-project(':test-interactive') {
-	apply plugin: 'application'
-
-	description = """Interactive test of platform+core modules"""
-
-	sourceSets.main.resources.srcDirs += project(':pancake-platform').sourceSets.main.resources.srcDirs
-
-	dependencies {
-		compile project(':pancake-core')
-	}
-
-	mainClassName = 'dev.kkorolyov.pancake.test.Interactive'
-	startScripts.classpath = files('\"') + startScripts.classpath	// Resources must be at head of classpath for some reason
 }
 
 project(':killstreek') {
-	apply plugin: 'application'
-
-	description = """Top-down ARPG with dynamic RNG system"""
+	description = "Top-down ARPG with dynamic RNG system"
 
 	dependencies {
-		compile project(':pancake-core')
-		testCompile specUtilities
-		runtime sourceSets.main.resources
+		implementation(
+				project(':pancake-core')
+		)
 	}
-
 	mainClassName = 'dev.kkorolyov.killstreek.Launcher'
-	startScripts.classpath = files('\"') + startScripts.classpath
+}
+
+// Its own thing
+project(':test-interactive') {
+	apply plugin: 'application'
+
+	description = "Interactive test of core modules"
+
+	dependencies {
+		implementation(
+				project(':pancake-platform'),
+				project(':pancake-core')
+		)
+	}
+	mainClassName = 'dev.kkorolyov.pancake.test.Interactive'
 }
