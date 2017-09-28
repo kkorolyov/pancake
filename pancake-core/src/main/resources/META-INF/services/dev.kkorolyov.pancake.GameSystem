@@ -1,8 +1,0 @@
-dev.kkorolyov.pancake.system.InputSystem
-dev.kkorolyov.pancake.system.DampingSystem
-dev.kkorolyov.pancake.system.AccelerationSystem
-dev.kkorolyov.pancake.system.MovementSystem
-dev.kkorolyov.pancake.system.ChainSystem
-dev.kkorolyov.pancake.system.CollisionSystem
-dev.kkorolyov.pancake.system.SpawnSystem
-dev.kkorolyov.pancake.system.RenderSystem

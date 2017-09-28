@@ -1,13 +1,13 @@
 package dev.kkorolyov.killstreek.item
 
 import dev.kkorolyov.killstreek.utility.BoundedValue
-import dev.kkorolyov.pancake.component.Sprite
+import dev.kkorolyov.pancake.core.component.Sprite
 
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.SpecUtilities.randInt
-import static dev.kkorolyov.pancake.SpecUtilities.randString
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
 
 class ArmorSetSpec extends Specification {
 	@Shared Sprite sprite = Mock()

@@ -1,7 +1,7 @@
 package dev.kkorolyov.killstreek.component;
 
 import dev.kkorolyov.killstreek.utility.BoundedValue;
-import dev.kkorolyov.pancake.entity.Component;
+import dev.kkorolyov.pancake.platform.entity.Component;
 
 /**
  * Maintains an entity's state of existence.

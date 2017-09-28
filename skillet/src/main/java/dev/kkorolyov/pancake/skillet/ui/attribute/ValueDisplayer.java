@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.skillet.ui.attribute;
 
-import dev.kkorolyov.pancake.storage.Attribute;
+import dev.kkorolyov.pancake.platform.storage.Attribute;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;

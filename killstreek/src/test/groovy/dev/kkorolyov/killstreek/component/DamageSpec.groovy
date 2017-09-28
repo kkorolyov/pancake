@@ -3,7 +3,7 @@ package dev.kkorolyov.killstreek.component
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.SpecUtilities.randFloat
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
 
 class DamageSpec extends Specification {
 	@Shared int value = 10

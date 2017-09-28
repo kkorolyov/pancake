@@ -26,6 +26,7 @@ subprojects {
 	version = '1.0'
 
 	repositories {
+		mavenLocal()	// For early dev only
 		jcenter()
 		maven {
 			url 'https://dl.bintray.com/kkorolyov/java'
@@ -36,13 +37,9 @@ subprojects {
 		compile 'dev.kkorolyov:simple-logs:3.+',
 				'dev.kkorolyov:simple-props:4.+',
 				'dev.kkorolyov:sqlob:3.+'
-		testCompile 'org.spockframework:spock-core:1.1-groovy-2.4',
-				'net.bytebuddy:byte-buddy:1.7.0',
-				'org.objenesis:objenesis:2.5.1'
-	}
-
-	test {
-		filter.includeTestsMatching '*Spec'
+		testCompile 'org.spockframework:spock-core:1.1-groovy-2.+',
+				'net.bytebuddy:byte-buddy:1.+',
+				'org.objenesis:objenesis:2.+'
 	}
 
 	javadoc {
@@ -123,7 +120,7 @@ project(':test-interactive') {
 		compile project(':pancake-core')
 	}
 
-	mainClassName = 'dev.kkorolyov.pancake.Interactive'
+	mainClassName = 'dev.kkorolyov.pancake.test.Interactive'
 	startScripts.classpath = files('\"') + startScripts.classpath	// Resources must be at head of classpath for some reason
 }
 

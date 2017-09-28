@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.skillet.ui.component;
 
+import dev.kkorolyov.pancake.platform.storage.Component;
+import dev.kkorolyov.pancake.platform.storage.Entity;
+import dev.kkorolyov.pancake.platform.storage.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.platform.storage.StorableListener;
 import dev.kkorolyov.pancake.skillet.ComponentFactory;
 import dev.kkorolyov.pancake.skillet.ComponentFactory.ComponentFactoryChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
-import dev.kkorolyov.pancake.storage.Component;
-import dev.kkorolyov.pancake.storage.Entity;
-import dev.kkorolyov.pancake.storage.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.storage.StorableListener;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
