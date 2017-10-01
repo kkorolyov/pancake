@@ -2,19 +2,18 @@ package dev.kkorolyov.pancake.skillet;
 
 import dev.kkorolyov.pancake.platform.storage.Entity;
 import dev.kkorolyov.pancake.platform.storage.serialization.EntitySerializer;
+import dev.kkorolyov.simplefiles.stream.StreamStrategies;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
+
+import static dev.kkorolyov.simplefiles.Files.bytes;
+import static dev.kkorolyov.simplefiles.Files.in;
+import static dev.kkorolyov.simplefiles.Files.out;
 
 /**
  * Handles filesystem resources and I/O.
  */
 public class ResourceHandler {
-	private static final Charset charset = Charset.forName("UTF-8");
-
 	private final EntitySerializer entitySerializer = new EntitySerializer();
 
 	/**
@@ -22,24 +21,19 @@ public class ResourceHandler {
 	 * @param path path to resource to load
 	 * @return loaded entity
 	 */
-	public Entity load(Path path) {
-		try {
-			return entitySerializer.read(
-					new String(Files.readAllBytes(path), charset));
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
+	public Entity load(String path) {
+		return entitySerializer.read(
+				new String(
+						bytes(in(path, StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH)),
+						StandardCharsets.UTF_8));
 	}
 	/**
 	 * Saves an entity to a resource.
 	 * @param entity entity to save
 	 * @param path path to resource to save as
 	 */
-	public void save(Entity entity, Path path) {
-		try {
-			Files.write(path,	entitySerializer.write(entity).getBytes(charset));
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
+	public void save(Entity entity, String path) {
+		bytes(out(path, StreamStrategies.OUT_PATH),
+				entitySerializer.write(entity).getBytes(StandardCharsets.UTF_8));
 	}
 }

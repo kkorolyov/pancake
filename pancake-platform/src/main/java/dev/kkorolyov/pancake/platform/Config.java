@@ -1,16 +1,12 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.simplefiles.stream.StreamStrategies;
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.format.Formatters;
 import dev.kkorolyov.simpleprops.Properties;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
+import static dev.kkorolyov.simplefiles.Files.in;
 
 /**
  * Provides access to configuration.
@@ -34,22 +30,19 @@ public final class Config {
 	 * Reloads configuration file.
 	 */
 	public static void reloadConfig() {
-		try {
-			Optional<Path> configDefaultProps = getPath(CONFIG_DEFAULT_PROPS);
-			Optional<Path> configProps = getPath(CONFIG_PROPS);
+		in(config::load,
+				CONFIG_DEFAULT_PROPS, StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH);
+		in(config::load,
+				CONFIG_PROPS, StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH);
 
-			if (configDefaultProps.isPresent()) config.load(configDefaultProps.get());
-			if (configProps.isPresent()) config.load(configProps.get());
-		} catch (IOException e) {
-			log.exception(Level.FATAL, e);
-		}
 		log.info("Reloaded config: {}", config);
 	}
 	/**
 	 * Reloads logger configuration.
 	 */
 	public static void reloadLogging() {
-		getPath(LOG_PROPS).ifPresent(Logger::applyProps);
+		in(Logger::applyProps,
+				LOG_PROPS, StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH);
 
 		log.info("Reloaded loggers");
 	}
@@ -60,14 +53,5 @@ public final class Config {
 	 */
 	public static Logger getLogger(Class<?> c) {
 		return Logger.getLogger(c.getName(), Level.DEBUG, Formatters.simple());
-	}
-
-	private static Optional<Path> getPath(String file) {
-		try {
-			return Optional.of(Paths.get(ClassLoader.getSystemResource(file).toURI()));
-		} catch (FileSystemNotFoundException | URISyntaxException | NullPointerException e) {
-			log.exception(Level.FATAL, e);
-			return Optional.empty();
-		}
 	}
 }

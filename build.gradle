@@ -20,11 +20,18 @@ subprojects {
 	}
 }
 
+// Projects
+def platform = project(':pancake-platform')
+def core = project(':pancake-core')
+def skillet = project(':skillet')
+def killstreek = project(':killstreek')
+def testInteractive = project(':test-interactive')
+
 configure([	// "Doc"able
-    project(':pancake-platform'),
-		project('pancake-core'),
-		project('skillet'),
-		project('killstreek')
+    platform,
+		core,
+		skillet,
+		killstreek
 ]) {
 	javadoc {
 		destinationDir = file("$rootProject.projectDir/docs/$project.name")
@@ -32,10 +39,10 @@ configure([	// "Doc"able
 }
 
 configure([	// Testable
-		project(':pancake-platform'),
-		project(':pancake-core'),
-		project(':skillet'),
-		project(':killstreek')
+		platform,
+		core,
+		skillet,
+		killstreek
 ]) {
 	apply plugin: 'groovy'
 
@@ -48,9 +55,9 @@ configure([	// Testable
 	}
 }
 configure([	// Platform test utilities-dependent
-		project(':pancake-core'),
-		project(':skillet'),
-		project(':killstreek')
+		core,
+		skillet,
+		killstreek
 ]) {
 	dependencies {
 		testImplementation project(path: ':pancake-platform', configuration: 'platformTest')
@@ -58,21 +65,12 @@ configure([	// Platform test utilities-dependent
 }
 
 configure([	// Libraries
-		project(':pancake-platform'),
-		project(':pancake-core')
+		platform,
+		core
 ]) {
 	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
 	apply plugin: 'com.jfrog.bintray'
-
-	dependencies {
-		api (
-				'dev.kkorolyov:simple-props:4.+'
-		)
-		implementation(
-				'dev.kkorolyov:simple-logs:3.+'
-		)
-	}
 
 	// Artifacts
 	task sourceJar(type: Jar) {
@@ -96,40 +94,71 @@ configure([	// Libraries
 		}
 	}
 	// Bintray upload
-	bintray {
-		user = System.getenv('BINTRAY_USER')
-		key = System.getenv('BINTRAY_KEY')
-		publications = ['pancake']
-		pkg {
-			repo = 'java'
-			name = project.name
-			licenses = ['BSD 3-Clause']
-			vcsUrl = 'https://github.com/kkorolyov/Pancake.git'
-			version {
-				name = project.version
+	afterEvaluate {
+		bintray {
+			user = System.getenv('BINTRAY_USER')
+			key = System.getenv('BINTRAY_KEY')
+			publications = ['pancake']
+			pkg {
+				repo = 'java'
+				name = project.name
+				licenses = ['BSD 3-Clause']
+				vcsUrl = 'https://github.com/kkorolyov/Pancake.git'
+				version {
+					name = project.version
+				}
 			}
 		}
 	}
 }
 
-// Applications
-configure([
-    project(':skillet'),
-		project(':killstreek')
+configure([	// Applications
+    skillet,
+		killstreek,
+		testInteractive
 ]) {
 	apply plugin: 'java'
 	apply plugin: 'application'	// Run
+}
 
+configure([	// Platform-reliant
+    core,
+		skillet,
+		killstreek,
+		testInteractive
+]) {
 	dependencies {
-		implementation(
-				project(':pancake-platform')
-		)
+		implementation platform
+	}
+}
+configure([	// Core-reliant
+    killstreek,
+		testInteractive
+]) {
+	dependencies {
+		implementation core
+	}
+}
+
+configure([	// SimpleFiles-reliant
+		platform,
+		skillet,
+		testInteractive
+]) {
+	dependencies {
+		implementation 'dev.kkorolyov:simple-files:1.+'
 	}
 }
 
 project(':pancake-platform') {
 	description = "Main Pancake engine platform"
 
+	dependencies {
+		api(
+				'dev.kkorolyov:simple-logs:3.+',
+				'dev.kkorolyov:simple-props:4.+'
+		)
+	}
 
 	task testJar(type: Jar) {
 		classifier = 'test'
@@ -146,10 +175,6 @@ project(':pancake-platform') {
 
 project(':pancake-core') {
 	description = "Collection of general, reusable systems and components for the Pancake engine"
-
-	dependencies {
-		implementation project(':pancake-platform')
-	}
 }
 
 project(':skillet') {
@@ -161,25 +186,11 @@ project(':skillet') {
 project(':killstreek') {
 	description = "Top-down ARPG with dynamic RNG system"
 
-	dependencies {
-		implementation(
-				project(':pancake-core')
-		)
-	}
 	mainClassName = 'dev.kkorolyov.killstreek.Launcher'
 }
 
-// Its own thing
 project(':test-interactive') {
-	apply plugin: 'application'
-
 	description = "Interactive test of core modules"
 
-	dependencies {
-		implementation(
-				project(':pancake-platform'),
-				project(':pancake-core')
-		)
-	}
 	mainClassName = 'dev.kkorolyov.pancake.test.Interactive'
 }

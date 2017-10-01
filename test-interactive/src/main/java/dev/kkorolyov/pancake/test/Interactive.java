@@ -17,13 +17,15 @@ import dev.kkorolyov.pancake.platform.event.Events;
 import dev.kkorolyov.pancake.platform.input.Action;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
+import dev.kkorolyov.simplefiles.stream.StreamStrategies;
 import dev.kkorolyov.simpleprops.Properties;
 
 import javafx.application.Application;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Supplier;
+
+import static dev.kkorolyov.simplefiles.Files.in;
 
 public class Interactive extends Launcher {
 	private static final float MOVE_FORCE = 500;
@@ -59,10 +61,10 @@ public class Interactive extends Launcher {
 		initEntities(engine.getEntities());
 	}
 	private void initImages() throws Exception {
-		images.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/images").toURI())));
+		images.put(new Properties(in("config/images", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH)));
 	}
 	private void initSounds() throws Exception {
-		sounds.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/sounds").toURI())));
+		sounds.put(new Properties(in("config/sounds", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH)));
 
 		engine.getEvents().register(Events.CREATED, (Entity e) -> {
 			if (e.get(Input.class) != null) sounds.get("spawn").play();
@@ -77,7 +79,7 @@ public class Interactive extends Launcher {
 		actions.put(new Action("WALK", e -> e.get(Sprite.class).stop(false, false)));
 		actions.put(new Action("STOP", e -> e.get(Sprite.class).stop(true, false)));
 
-		actions.put(new Properties(Paths.get(ClassLoader.getSystemResource("config/actions").toURI())));
+		actions.put(new Properties(in("config/actions", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH)));
 	}
 	private void initEntities(EntityPool entities) throws Exception {
 		// Wall
@@ -113,7 +115,7 @@ public class Interactive extends Launcher {
 					new Bounds(BOX, RADIUS),
 					sprite,
 					// buildSpawner(),
-					new Input(true, actions.parseConfig(new Properties(Paths.get(ClassLoader.getSystemResource("config/keys").toURI())))));
+					new Input(true, actions.parseConfig(new Properties(in("config/keys", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH)))));
 
 			entities.create(new Transform(camera.getPosition()),  // Chained camera
 					new Chain(playerTransform.getPosition(), 1));

@@ -19,8 +19,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,13 +110,9 @@ public class Skillet extends Application {
 		primaryStage.show();
 	}
 	private void addDefaultComponents() {
-		try {
-			componentFactory.add(
-					resourceHandler.load(Paths.get(ClassLoader.getSystemResource("defaults" + ENTITY_FILE_EXTENSION).toURI())),
-					false);
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
+		componentFactory.add(
+				resourceHandler.load("defaults" + ENTITY_FILE_EXTENSION),
+				false);
 	}
 
 	private void newEntity() {
@@ -132,7 +126,7 @@ public class Skillet extends Application {
 
 		File result = chooser.showSaveDialog(stage);
 		if (result != null) {
-			resourceHandler.save(entity, result.toPath());
+			resourceHandler.save(entity, result.toString());
 		}
 	}
 	private void loadEntity() {
@@ -141,7 +135,7 @@ public class Skillet extends Application {
 
 		File result = chooser.showOpenDialog(stage);
 		if (result != null) {
-			Iterable<Component> components = resourceHandler.load(result.toPath());
+			Iterable<Component> components = resourceHandler.load(result.toString());
 
 			componentFactory.add(components, false);
 
@@ -158,7 +152,7 @@ public class Skillet extends Application {
 			List<Component> addedComponents = new ArrayList<>();
 
 			for (File file : results) {
-				resourceHandler.load(file.toPath()).forEach(addedComponents::add);
+				resourceHandler.load(file.toString()).forEach(addedComponents::add);
 			}
 			componentFactory.add(addedComponents, false);
 
