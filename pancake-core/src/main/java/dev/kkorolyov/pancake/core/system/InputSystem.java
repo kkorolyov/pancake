@@ -5,9 +5,9 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.graphics.Camera;
 import dev.kkorolyov.pancake.platform.input.KeyAction;
 import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.media.Camera;
 
 import javafx.scene.Scene;
 import java.util.HashSet;

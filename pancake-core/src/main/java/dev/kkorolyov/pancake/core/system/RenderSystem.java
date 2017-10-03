@@ -8,8 +8,8 @@ import dev.kkorolyov.pancake.platform.PerformanceCounter;
 import dev.kkorolyov.pancake.platform.PerformanceCounter.Usage;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.graphics.Camera;
 import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.media.Camera;
 import dev.kkorolyov.simplelogs.Logger;
 
 import javafx.scene.canvas.Canvas;

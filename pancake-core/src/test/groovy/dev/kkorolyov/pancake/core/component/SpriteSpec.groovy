@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.component
 
-import dev.kkorolyov.pancake.platform.graphics.CompositeImage
+import dev.kkorolyov.pancake.platform.media.CompositeImage
 
 import spock.lang.Shared
 import spock.lang.Specification

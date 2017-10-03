@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.sound;
+package dev.kkorolyov.pancake.platform.media;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
@@ -37,7 +37,9 @@ public class SoundPool {
 	 * @param cacheSize maximum size of audio file cache
 	 */
 	public SoundPool(int cacheSize) {
-		cache = new LinkedHashMap<String, AudioClip>(cacheSize) {
+		cache = new LinkedHashMap<>(cacheSize) {
+			private static final long serialVersionUID = -4374897957713259831L;
+
 			@Override
 			protected boolean removeEldestEntry(Entry eldest) {
 				return size() > getCacheSize();
@@ -76,6 +78,7 @@ public class SoundPool {
 				String url = resource;
 
 				if (!resource.contains("//")) {
+					// TODO Currently, only tries classpath
 					URL systemUrl = ClassLoader.getSystemResource(resource);
 					if (systemUrl == null) throw new NoSuchElementException("No such system resource: " + resource);
 

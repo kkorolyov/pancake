@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.sound
+package dev.kkorolyov.pancake.platform.media
 
 import spock.lang.Shared
 import spock.lang.Specification

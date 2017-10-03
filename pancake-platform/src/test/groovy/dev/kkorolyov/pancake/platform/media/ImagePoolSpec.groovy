@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.graphics
+package dev.kkorolyov.pancake.platform.media
 
 import dev.kkorolyov.simpleprops.Properties
 import javafx.scene.image.Image

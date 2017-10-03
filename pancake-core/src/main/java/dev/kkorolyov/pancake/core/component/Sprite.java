@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.graphics.CompositeImage;
 import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.media.CompositeImage;
 
 /**
  * A dynamic image.

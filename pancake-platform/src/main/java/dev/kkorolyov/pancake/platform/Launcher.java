@@ -1,10 +1,10 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.graphics.Camera;
-import dev.kkorolyov.pancake.platform.graphics.ImagePool;
 import dev.kkorolyov.pancake.platform.input.ActionPool;
 import dev.kkorolyov.pancake.platform.math.Vector;
-import dev.kkorolyov.pancake.platform.sound.SoundPool;
+import dev.kkorolyov.pancake.platform.media.Camera;
+import dev.kkorolyov.pancake.platform.media.ImagePool;
+import dev.kkorolyov.pancake.platform.media.SoundPool;
 
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;

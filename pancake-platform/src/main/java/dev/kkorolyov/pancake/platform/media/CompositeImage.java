@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.graphics;
+package dev.kkorolyov.pancake.platform.media;
 
 import dev.kkorolyov.pancake.platform.math.Vector;
 

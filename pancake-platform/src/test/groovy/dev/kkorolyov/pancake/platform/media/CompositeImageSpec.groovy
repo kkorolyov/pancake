@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.graphics
+package dev.kkorolyov.pancake.platform.media
 
 import javafx.scene.image.Image
 
