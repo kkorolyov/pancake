@@ -1,57 +1,179 @@
 @startuml
 
-package dev.kkorolyov.pancake.muffin {
-	package data {
-		abstract class DataObservable<T> {
-		}
-		interface DataChangeListener {
-		}
-
-		class Entity {
-		}
-		class Component {
-		}
-		class Attribute {
-			Object value
-		}
-
-		DataObservable o-l- "*" DataChangeListener
-
-		DataObservable <|-- Entity
-		DataObservable <|-- Component
-		DataObservable <|-- Attribute
-
-		Entity *-r- "*" Component
-		Component *-l- "*" Attribute
+package platform {
+	class GameLoop {
+		handle(long)
 	}
 
-  package persistence {
-  	abstract class DataPersister {
-  	}
-  	DataPersister <|-- ComponentPersister
-  	DataPersister <|-- AttributePersister
+	class GameEngine {
+		update(long)
+	}
 
-  	package value {
-			abstract class ValueParser {
+	abstract class GameSystem {
+		update(Entity, long)
+	}
+
+	class Limiter {
+		boolean isReady(long)
+	}
+
+	class PerformanceCounter {
+		start()
+		end(GameSystem)
+	}
+
+	class Config
+
+	abstract class Launcher {
+		start(Stage)
+	}
+
+	package event {
+  	class EventBroadcaster {
+  		register(String, Consumer<?>)
+  		enqueue(String, Object)
+  		int broadcast()
+  	}
+  }
+
+  package entity {
+  	class Entity
+  	class EntityPool
+
+  	class Signature {
+  		boolean masks(Signature)
+  	}
+
+  	class Component
+
+  	Entity o-- "1" Signature
+  	Entity *-- "*" Component
+
+  	EntityPool *-- "*" Entity
+
+  	Signature --> Signature: masks
+  }
+
+  package media {
+  	class Camera {
+  		Vector getAbsolutePosition(Vector)
+			Vector getRelativePosition(Vector)
+  	}
+
+  	class CompositeImage
+
+  	class ImagePool {
+  		put(Properties)
+		}
+
+		class SoundPool {
+			put(Properties)
+		}
+
+  	ImagePool o-- "*" CompositeImage
+  }
+
+  package input {
+		class Action {
+			Consumer<Entity> signal(boolean, float)
+		}
+
+		class KeyAction {
+			Consumer<Entity> signal(Set<Enum<?>>, float)
+		}
+
+		class ActionPool {
+			put(Properties)
+			Iterable<KeyAction> parseConfig(Properties)
+		}
+
+		KeyAction o-- "1" Action
+
+		ActionPool o-- "*" Action
+		ActionPool --> KeyAction: creates
+  }
+
+  package math {
+	  class Vector
+
+	  class WeightedDistribution
+
+	  class Collider {
+	  	{static} Vector intersection(Vector, Vector, Vector, Vector)
+			{static} Vector intersection(Vector, float, Vector, float)
+			{static} Vector intersection(Vector, Vector, Vector, float)
+			{static} void elasticCollide(Vector, Vector, float, Vector, Vector, float)
+	  }
+  }
+
+  package storage {
+  	abstract class Storable<T extends Storable> {
+  		~ int changed(StorableChangeEvent)
+			T register(StorableListener)
+			T copy()
+  	}
+  	interface StorableListener
+
+		class storage.Entity
+		class storage.Component
+		class storage.Attribute
+
+		package serialization {
+			interface Serializer<T> {
+				T read(String)
+				String write(T)
+			}
+			class EntitySerializer
+			class ComponentSerializer
+			class AttributeSerializer
+
+			interface ValueParser {
 				Object parse(String)
 				boolean accepts(String)
 			}
-			abstract class ValueParsers {
-			}
-
 			package strategy {
+				ValueParser <|-- MapParser
 				ValueParser <|-- NumberParser
 				ValueParser <|-- StringParser
-				ValueParser <|-- MapParser
+				ValueParser <|-- URIParser
 			}
 
-			ValueParsers o-- "1" NumberParser
-			ValueParsers o-- "1" StringParser
-			ValueParsers o-- "1" MapParser
-  	}
+			Serializer <|-- EntitySerializer
+			Serializer <|-- ComponentSerializer
+			Serializer <|-- AttributeSerializer
 
-		AttributePersister --> ValueParsers
+			EntitySerializer --> storage.Entity: serializes
+			ComponentSerializer --> storage.Component: serializes
+			AttributeSerializer --> storage.Attribute: serializes
+		}
+
+		Storable ..|> Serializable
+		Storable o-- "*" StorableListener
+		Storable <|-- storage.Entity
+		Storable <|-- storage.Component
+		Storable <|-- storage.Attribute
+
+		storage.Entity o-- "*" storage.Component
+		storage.Component o-- "*" storage.Attribute
   }
+
+  GameLoop *-- "1" GameEngine
+
+  GameEngine *-- "1" EventBroadcaster
+  GameEngine *-- "1" EntityPool
+	GameEngine *-- "*" GameSystem
+
+	GameEngine --> GameSystem: updates
+	GameEngine --> PerformanceCounter: queries
+
+	GameSystem --> Signature: filters by
+	GameSystem --> Entity: updates
+
+	Limiter --> GameSystem: limits
+
+	PerformanceCounter --> GameSystem: times
+
+	Launcher --> GameLoop: initializes
 }
 
 @enduml
