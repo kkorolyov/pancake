@@ -1,4 +1,5 @@
 plugins {
+	id 'com.gradle.build-scan' version '1.9'
 	id 'java-library'
 	id 'groovy'
 	id 'maven-publish'
@@ -6,6 +7,11 @@ plugins {
 }
 
 description = "Extensible Java game engine with an entity-component-system architecture"
+
+buildScan {
+	licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+	licenseAgree = 'yes'
+}
 
 subprojects {
 	group = 'dev.kkorolyov'
@@ -70,7 +76,7 @@ configure([	// Platform test utilities-dependent
 configure([	// Libraries
 		platform,
 		core
-]) {
+]) {project ->
 	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
 	apply plugin: 'com.jfrog.bintray'
@@ -111,6 +117,23 @@ configure([	// Libraries
 					name = project.version
 				}
 			}
+		}
+	}
+
+	task releaseLocal(dependsOn: [javadoc, test, publishToMavenLocal]) {
+		group 'publishing'
+		description "Prepares all release resources and publishes to the local Maven repo"
+
+		doLast {
+			println "Released ${project.name}-${project.version} locally"
+		}
+	}
+	task releaseBintray(dependsOn: [releaseLocal, bintrayUpload]) {
+		group 'publishing'
+		description "Releases to Bintray"
+
+		doLast {
+			println "Released ${project.name}-${project.version} to Bintray"
 		}
 	}
 }
