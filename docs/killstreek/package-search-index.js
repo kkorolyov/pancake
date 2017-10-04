@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"dev.kkorolyov.killstreek.component"},{"l":"dev.kkorolyov.killstreek.event"},{"l":"dev.kkorolyov.killstreek.item"},{"l":"dev.kkorolyov.killstreek.system"},{"l":"dev.kkorolyov.killstreek.utility"}]

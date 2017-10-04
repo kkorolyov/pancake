@@ -32,8 +32,11 @@ configure([	// "Doc"able
 		core,
 		skillet,
 		killstreek
-]) {
+]) {project ->
+	apply plugin: 'java'
+
 	javadoc {
+		source = sourceSets.main.allJava
 		destinationDir = file("$rootProject.projectDir/docs/$project.name")
 	}
 }

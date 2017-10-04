@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"dev.kkorolyov.pancake.skillet"},{"l":"dev.kkorolyov.pancake.skillet.decorator"},{"l":"dev.kkorolyov.pancake.skillet.ui"},{"l":"dev.kkorolyov.pancake.skillet.ui.attribute"},{"l":"dev.kkorolyov.pancake.skillet.ui.attribute.strategy"},{"l":"dev.kkorolyov.pancake.skillet.ui.component"},{"l":"dev.kkorolyov.pancake.skillet.ui.entity"}]

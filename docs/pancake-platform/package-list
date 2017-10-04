@@ -1,7 +1,9 @@
-dev.kkorolyov.pancake
-dev.kkorolyov.pancake.entity
-dev.kkorolyov.pancake.event
-dev.kkorolyov.pancake.graphics
-dev.kkorolyov.pancake.input
-dev.kkorolyov.pancake.math
-dev.kkorolyov.pancake.sound
+dev.kkorolyov.pancake.platform
+dev.kkorolyov.pancake.platform.entity
+dev.kkorolyov.pancake.platform.event
+dev.kkorolyov.pancake.platform.input
+dev.kkorolyov.pancake.platform.math
+dev.kkorolyov.pancake.platform.media
+dev.kkorolyov.pancake.platform.storage
+dev.kkorolyov.pancake.platform.storage.serialization
+dev.kkorolyov.pancake.platform.storage.serialization.strategy
