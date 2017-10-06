@@ -8,8 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -74,20 +76,34 @@ public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extend
 	 * @return {@code this}
 	 */
 	public D press(Runnable procedure, KeyCode... keys) {
-		object.setOnKeyPressed(e -> {
-			if (Arrays.stream(keys).anyMatch(keyCode -> e.getCode() == keyCode)) procedure.run();
-		});
-		return (D) this;
+		return press(procedure, Arrays.stream(keys)
+				.map(key -> new KeyCodeCombination(key))
+				.toArray(KeyCombination[]::new));
 	}
 	/**
 	 * Sets a key press procedure.
 	 * @param procedure attached press procedure
-	 * @param keyCombination key combination required to invoke {@code procedure}
+	 * @param keyCombinations set of key combinations from which any individual combination can invoke {@code procedure}
 	 * @return {@code this}
 	 */
-	public D press(Runnable procedure, KeyCombination keyCombination) {
+	public D press(Runnable procedure, KeyCombination... keyCombinations) {
 		object.setOnKeyPressed(e -> {
-			if (keyCombination.match(e)) procedure.run();
+			if (Arrays.stream(keyCombinations).anyMatch(keyCombination -> keyCombination.match(e))) procedure.run();
+		});
+		return (D) this;
+	}
+
+	/**
+	 * Sets multiple key press procedures.
+	 * @param keyProcedures map of key combinations to the procedures they invoke
+	 * @return {@code this}
+	 */
+	public D press(Map<KeyCombination, Runnable> keyProcedures) {
+		object.setOnKeyPressed(e -> {
+			keyProcedures.entrySet().stream()
+					.filter(entry -> entry.getKey().match(e))
+					.findFirst()
+					.ifPresent(entry -> entry.getValue().run());
 		});
 		return (D) this;
 	}
