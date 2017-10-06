@@ -1,7 +1,0 @@
-# Defines new actions composed of known actions
-# Each action is mapped to a 3-action tuple defining (press, hold, release) behavior
-
-MOVE_UP=FORCE_UP,,FORCE_DOWN
-MOVE_DOWN=FORCE_DOWN,,FORCE_UP
-MOVE_LEFT=FORCE_LEFT,,FORCE_RIGHT
-MOVE_RIGHT=FORCE_RIGHT,,FORCE_LEFT

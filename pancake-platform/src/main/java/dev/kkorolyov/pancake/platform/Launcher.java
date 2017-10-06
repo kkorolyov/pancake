@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.input.ActionPool;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
@@ -31,6 +33,8 @@ public abstract class Launcher extends Application {
 	protected final ImagePool images = new ImagePool();
 	protected final SoundPool sounds = new SoundPool();
 	protected final ActionPool actions = new ActionPool();
+	protected final EntityPool entities;
+	protected final EventBroadcaster events;
 
 	protected final GameEngine engine;
 	protected final GameLoop gameLoop;
@@ -40,6 +44,9 @@ public abstract class Launcher extends Application {
 		config.verify();
 
 		engine = new GameEngine();
+		entities = engine.getEntities();
+		events = engine.getEvents();
+
 		gameLoop = new GameLoop(engine);
 
 		canvas = announce(new Canvas(), CANVAS_CREATED);
