@@ -25,7 +25,7 @@ public class NumberDisplayer extends ValueDisplayer {
 		TextField node = new TextField(attribute.getValue().toString());
 
 		attribute.register((target, event) -> {
-			if (AttributeChangeEvent.VALUE == event) node.setText(attribute.getValue().toString());
+			if (AttributeChangeEvent.VALUE == event) node.setText(target.getValue().toString());
 		});
 		return simpleDisplay(attribute.getName(),
 				"Number",
@@ -40,7 +40,7 @@ public class NumberDisplayer extends ValueDisplayer {
 								})
 						.get());
 	}
-	private Map<KeyCombination, Runnable> buildProcedureMap(Attribute attribute) {
+	private static Map<KeyCombination, Runnable> buildProcedureMap(Attribute attribute) {
 		Map<KeyCombination, Runnable> procedureMap = new HashMap<>();
 		procedureMap.put(new KeyCodeCombination(KeyCode.UP), () -> changeValue(attribute, "1"));
 		procedureMap.put(new KeyCodeCombination(KeyCode.DOWN), () -> changeValue(attribute, "-1"));
