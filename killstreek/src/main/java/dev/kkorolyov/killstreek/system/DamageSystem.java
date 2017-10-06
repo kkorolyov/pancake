@@ -2,21 +2,22 @@ package dev.kkorolyov.killstreek.system;
 
 import dev.kkorolyov.killstreek.component.Damage;
 import dev.kkorolyov.killstreek.component.Health;
-import dev.kkorolyov.killstreek.event.GameEvents;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.event.Events;
+
+import static dev.kkorolyov.killstreek.event.Events.DAMAGE;
+import static dev.kkorolyov.pancake.platform.event.Events.DESTROY;
 
 /**
  * Applies damage to entity health.
  * Removes dead entities.
  * <pre>
  * Events received:
- * {@link GameEvents#DAMAGE} - resets the provided entity's {@link Damage} (Entity)
+ * {@link dev.kkorolyov.killstreek.event.Events#DAMAGE} - resets the provided entity's {@link Damage} (Entity)
  *
  * Events emitted:
- * {@link Events#DESTROY} - when an entity dies (Entity)
+ * {@link dev.kkorolyov.pancake.platform.event.Events#DESTROY} - when an entity dies (Entity)
  * </pre>
  */
 public class DamageSystem extends GameSystem {
@@ -30,7 +31,7 @@ public class DamageSystem extends GameSystem {
 	}
 	@Override
 	public void attach() {
-		register(GameEvents.DAMAGE, (Entity e) -> e.get(Damage.class).reset());
+		register(DAMAGE, (Entity e) -> e.get(Damage.class).reset());
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class DamageSystem extends GameSystem {
 		damage.apply(health, dt);
 
 		if (health.isDead()) {
-			enqueue(Events.DESTROY, entity);
+			enqueue(DESTROY, entity);
 		}
 	}
 }

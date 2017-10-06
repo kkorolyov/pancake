@@ -1,2 +1,2 @@
 rootProject.name = 'pancake'
-include 'pancake-platform', 'pancake-core', 'skillet', 'killstreek', 'test-interactive'
+include 'pancake-platform', 'pancake-core', 'skillet', 'killstreek'
