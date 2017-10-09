@@ -1,20 +1,24 @@
 package dev.kkorolyov.pancake.platform.entity
 
+import dev.kkorolyov.pancake.platform.action.Action
+
 import spock.lang.Shared
 import spock.lang.Specification
 
 class EntitySpec extends Specification {
 	@Shared int id = 0
 	@Shared List<Component> components = [new Component() {}, new Component() {}, new Component() {}]
+	Action action = Mock()
 
 	Entity entity = new Entity(id)
 
-	def "contains all constructor-initialized component types"() {
+	def "matches signature of all constructor-initialized component types"() {
 		when:
 		entity = new Entity(id, components)
 		then:
-		entity.contains(new Signature(mapToTypes(components)))
+		entity.matches(new Signature(mapToTypes(components)))
 	}
+
 	def "contains signature with subset of component types"() {
 		entity = new Entity(id, components)
 		Signature equal = new Signature(mapToTypes(components))
@@ -53,6 +57,28 @@ class EntitySpec extends Specification {
 
 		where:
 		component << components
+	}
+
+	def "applies attached actions"() {
+		List<Action> actions = (0..3).collect {Mock(Action)}
+
+		actions.each {entity.add(it)}
+
+		expect:
+		entity.applyActions() == actions.size()
+		actions.each {it.accept(entity)}
+	}
+
+	def "removes attached actions after apply"() {
+		entity.add(action)
+
+		when:
+		int result0 = entity.applyActions()
+		int result1 = entity.applyActions()
+
+		then:
+		result0 == 1
+		result1 == 0
 	}
 
 	private static List<Component> split(List<Component> list, int partitions, int partition) {

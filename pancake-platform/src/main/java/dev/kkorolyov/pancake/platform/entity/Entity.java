@@ -1,7 +1,11 @@
 package dev.kkorolyov.pancake.platform.entity;
 
+import dev.kkorolyov.pancake.platform.action.Action;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -12,6 +16,7 @@ public class Entity implements Comparable<Entity> {
 	private final int id;
 	private final Signature signature = new Signature();
 	private final Map<Class<? extends Component>, Component> components = new HashMap<>();
+	private final List<Action> actions = new ArrayList<>();
 	
 	/**
 	 * Constructs a new entity composed of a set of components.
@@ -39,6 +44,14 @@ public class Entity implements Comparable<Entity> {
 	public boolean contains(Signature signature) {
 		return this.signature.masks(signature);
 	}
+	/**
+	 * Checks if this entity's signature matches some other signature.
+	 * @param signature signature to match
+	 * @return {@code true} if this entity's signature equals {@code signature}
+	 */
+	public boolean matches(Signature signature) {
+		return this.signature.equals(signature);
+	}
 
 	/**
 	 * Returns the component of a particular type.
@@ -48,7 +61,7 @@ public class Entity implements Comparable<Entity> {
 	public <T extends Component> T get(Class<T> type) {
 		return type.cast(components.get(type));
 	}
-	
+
 	/**
 	 * Adds a component to this entity.
 	 * If this entity already contains a component of the same type, it is overwritten with this component.
@@ -74,12 +87,27 @@ public class Entity implements Comparable<Entity> {
 	}
 
 	/**
-	 * Checks if this entity's signature matches some other signature.
-	 * @param signature signature to match
-	 * @return {@code true} if this entity's signature equals {@code signature}
+	 * Adds an action to this entity.
+	 * @param action action to add
+	 * @return {@code this}
 	 */
-	public boolean matches(Signature signature) {
-		return this.signature.equals(signature);
+	public Entity add(Action action) {
+		actions.add(action);
+		return this;
+	}
+
+	/**
+	 * Applies all attached actions and removes them after application.
+	 * Actions are applied in the order they were added.
+	 * @return number of applied actions
+	 */
+	public int applyActions() {
+		for (Action action : actions) action.accept(this);
+
+		int numActions = actions.size();
+
+		actions.clear();
+		return numActions;
 	}
 
 	/** @return entity ID */
