@@ -68,7 +68,8 @@ public class MultiStageAction extends Action {
 			void apply(Entity entity, MultiStageAction client) {
 				switch (client.armingOption) {
 					case ACTIVATE:
-						client.start.accept(entity);
+						accept(client.start, entity);
+
 						client.holdTime = 0;
 						client.state = ACTIVE;
 						break;
@@ -81,13 +82,15 @@ public class MultiStageAction extends Action {
 				switch (client.armingOption) {
 					case ACTIVATE:
 						if (Float.compare(client.holdTime, client.holdThreshold) >= 0) {
-							client.hold.accept(entity);
+							accept(client.hold, entity);
+
 							client.holdTime = 0;
 							client.state = DECAYED;
 						}
 						break;
 					case DEACTIVATE:
-						client.end.accept(entity);
+						accept(client.end, entity);
+
 						client.holdTime = 0;
 						client.state = INACTIVE;
 						break;
@@ -99,7 +102,8 @@ public class MultiStageAction extends Action {
 			void apply(Entity entity, MultiStageAction client) {
 				switch (client.armingOption) {
 					case DEACTIVATE:
-						client.end.accept(entity);
+						accept(client.end, entity);
+
 						client.holdTime = 0;
 						client.state = INACTIVE;
 						break;
@@ -108,5 +112,9 @@ public class MultiStageAction extends Action {
 		};
 
 		abstract void apply(Entity entity, MultiStageAction client);
+
+		void accept(Action action, Entity entity) {
+			if (action != null) action.accept(entity);
+		}
 	}
 }

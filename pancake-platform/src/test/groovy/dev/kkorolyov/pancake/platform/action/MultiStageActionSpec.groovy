@@ -26,6 +26,20 @@ class MultiStageActionSpec extends Specification {
 		0 * _.accept(_)
 	}
 
+	def "avoids invoking null delegate actions"() {
+		when:
+		action = new MultiStageAction(null, null, null, holdThreshold)
+		action.arm(ACTIVATE, dt)
+				.apply(entity)
+		action.arm(ACTIVATE, dt)
+				.apply(entity)
+		action.arm(DEACTIVATE, dt)
+				.apply(entity)
+
+		then:
+		0 * _.accept(_)
+	}
+
 	def "{ACTIVATE} -> start"() {
 		when:
 		action.arm(ACTIVATE, dt)
