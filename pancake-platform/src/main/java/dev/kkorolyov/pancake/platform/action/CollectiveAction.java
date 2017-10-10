@@ -8,26 +8,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * An {@link Action} which applies a collection of other actions.
+ * An {@link Action} which applies a collection of contained, delegate actions.
  */
 public class CollectiveAction extends Action {
-	private final Set<Action> actions = new HashSet<>();
+	private final Set<Action> delegates = new HashSet<>();
 
-	/**
-	 * Constructs a new collective action.
-	 * @param actions contained actions, duplicated are ignored
-	 */
-	public CollectiveAction(Action... actions) {
-		this(Arrays.asList(actions));
+	/** @see #CollectiveAction(Iterable)  */
+	public CollectiveAction(Action... delegates) {
+		this(Arrays.asList(delegates));
 	}
 	/**
 	 * Constructs a new collective action.
-	 * @param actions contained actions, duplicates are ignored
+	 * @param delegates contained actions, duplicates are ignored
 	 */
-	public CollectiveAction(Iterable<Action> actions) {
+	public CollectiveAction(Iterable<Action> delegates) {
 		super(new Signature());
 
-		actions.forEach(this.actions::add);
+		delegates.forEach(this.delegates::add);
 	}
 
 	/**
@@ -35,6 +32,6 @@ public class CollectiveAction extends Action {
 	 */
 	@Override
 	protected void apply(Entity entity) {
-		for (Action action : actions) action.accept(entity);
+		for (Action delegate : delegates) delegate.accept(entity);
 	}
 }

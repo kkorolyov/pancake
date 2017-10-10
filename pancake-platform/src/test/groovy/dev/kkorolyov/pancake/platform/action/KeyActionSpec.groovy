@@ -9,21 +9,20 @@ import spock.lang.Specification
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randKeyCode
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randMouseButton
+import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
+import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
 class KeyActionSpec extends Specification {
-	@Shared float holdThreshold = 0
 	@Shared float dt = 0
 	@Shared Set<Enum> inputs = [KeyCode.A, MouseButton.PRIMARY]
 	Entity entity = Mock()
-	Action start = Mock()
-	Action hold = Mock()
-	Action end = Mock()
+	MultiStageAction delegate = Mock()
 
-	KeyAction action = new KeyAction(start, hold, end, holdThreshold, inputs)
+	KeyAction action = new KeyAction(delegate, inputs)
 
 	def "accepts inputs of valid types"() {
 		when:
-		new KeyAction(start, hold, end, holdThreshold, values)
+		new KeyAction(delegate, values)
 
 		then:
 		notThrown IllegalArgumentException
@@ -37,39 +36,38 @@ class KeyActionSpec extends Specification {
 	}
 	def "declines inputs of invalid types"() {
 		when:
-		new KeyAction(start, hold, end, holdThreshold, values)
+		new KeyAction(delegate, values)
 
 		then:
 		thrown IllegalArgumentException
 
 		where:
 		values << [
-				MultiStageAction.ArmingOption.ACTIVATE,
+				ACTIVATE,
 				[randKeyCode(), MultiStageAction.ArmingOption.DEACTIVATE],
-				[randMouseButton(), MultiStageAction.ArmingOption.ACTIVATE],
-				[randKeyCode(), randMouseButton(), MultiStageAction.ArmingOption.ACTIVATE]
+				[randMouseButton(), ACTIVATE],
+				[randKeyCode(), randMouseButton(), ACTIVATE]
 		]
 	}
 
-	def "inclusive superset of inputs counts as ACTIVE"() {
+	def "inclusive superset of inputs translates to ACTIVATE"() {
 		when:
 		action.arm(values, dt)
 				.apply(entity)
 
 		then:
-		1 * start.accept(entity)
-		0 * _.accept(_)
+		1 * delegate.arm(ACTIVATE, dt)
 
 		where:
 		values << [inputs, inputs << KeyCode.B]
 	}
-	def "exclusive subset of inputs counts as INACTIVE"() {
+	def "exclusive subset of inputs translates to DEACTIVATE"() {
 		when:
 		action.arm(values, dt)
 				.apply(entity)
 
 		then:
-		0 * _.accept(_)
+		1 * delegate.arm(DEACTIVATE, dt)
 
 		where:
 		values << [[].toSet(), inputs.collate(2)[0].toSet(), inputs.collate(2)[1].toSet()]
