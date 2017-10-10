@@ -8,6 +8,8 @@ import dev.kkorolyov.pancake.platform.entity.Signature;
  */
 public class MultiStageAction extends Action {
 	private final Action start, hold, end;
+	private final float holdThreshold;
+	private float holdTime;
 	private ArmingOption armingOption;
 	private State state = State.INACTIVE;
 
@@ -16,23 +18,27 @@ public class MultiStageAction extends Action {
 	 * @param start action applied when this action is "activated"
 	 * @param hold action applied the first time this action is signalled after it has been "activated"
 	 * @param end action applied when this action is "deactivated"
+	 * @param holdThreshold minimum number of seconds this action must remain in the "active" state before moving on to the "decayed" state
 	 */
-	public MultiStageAction(Action start, Action hold, Action end) {
+	public MultiStageAction(Action start, Action hold, Action end, float holdThreshold) {
 		super(new Signature());
 
 		this.start = start;
 		this.hold = hold;
 		this.end = end;
+		this.holdThreshold = holdThreshold;
 	}
 
 	/**
 	 * Arms this action to move to the next state in its state sequence, according to the given arming option.
 	 * The next time {@link #apply(Entity)} is invoked on this action, its state will change according to the current arming option.
 	 * @param armingOption option influencing the next state this action moves to after its next application
+	 * @param dt seconds elapsed since the last invocation of this method
 	 * @return {@code this}
 	 */
-	public MultiStageAction arm(ArmingOption armingOption) {
+	public MultiStageAction arm(ArmingOption armingOption, float dt) {
 		this.armingOption = armingOption;
+		holdTime += dt;
 		return this;
 	}
 
@@ -63,6 +69,7 @@ public class MultiStageAction extends Action {
 				switch (client.armingOption) {
 					case ACTIVATE:
 						client.start.accept(entity);
+						client.holdTime = 0;
 						client.state = ACTIVE;
 						break;
 				}
@@ -73,11 +80,15 @@ public class MultiStageAction extends Action {
 			void apply(Entity entity, MultiStageAction client) {
 				switch (client.armingOption) {
 					case ACTIVATE:
-						client.hold.accept(entity);
-						client.state = DECAYED;
+						if (Float.compare(client.holdTime, client.holdThreshold) >= 0) {
+							client.hold.accept(entity);
+							client.holdTime = 0;
+							client.state = DECAYED;
+						}
 						break;
 					case DEACTIVATE:
 						client.end.accept(entity);
+						client.holdTime = 0;
 						client.state = INACTIVE;
 						break;
 				}
@@ -89,6 +100,7 @@ public class MultiStageAction extends Action {
 				switch (client.armingOption) {
 					case DEACTIVATE:
 						client.end.accept(entity);
+						client.holdTime = 0;
 						client.state = INACTIVE;
 						break;
 				}
