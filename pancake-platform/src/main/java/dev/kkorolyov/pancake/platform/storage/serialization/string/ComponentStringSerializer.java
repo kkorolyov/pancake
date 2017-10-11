@@ -1,15 +1,20 @@
-package dev.kkorolyov.pancake.platform.storage.serialization;
+package dev.kkorolyov.pancake.platform.storage.serialization.string;
 
 import dev.kkorolyov.pancake.platform.storage.Attribute;
 import dev.kkorolyov.pancake.platform.storage.Component;
+import dev.kkorolyov.pancake.platform.storage.serialization.StringSerializer;
 
 import java.util.StringJoiner;
 
 /**
- * Serializes components.
+ * Serializes components to strings.
  */
-public class ComponentSerializer implements Serializer<Component> {
-	private final AttributeSerializer attributeSerializer = new AttributeSerializer();
+public class ComponentStringSerializer extends StringSerializer<Component> {
+	private final AttributeStringSerializer attributeStringSerializer = new AttributeStringSerializer();
+
+	public ComponentStringSerializer() {
+		super(".+=.+");
+	}
 
 	@Override
 	public Component read(String s) {
@@ -18,7 +23,7 @@ public class ComponentSerializer implements Serializer<Component> {
 
 		Component component = new Component(name);
 		for (String attributeS : attributesS.split(",\\s?(?!([^{]*}|[^\\[]*]))")) {	// Split on "," outside of "{...}" and "[...]"
-			component.addAttribute(attributeSerializer.read(attributeS));
+			component.addAttribute(attributeStringSerializer.read(attributeS));
 		}
 		return component;
 	}
@@ -27,7 +32,7 @@ public class ComponentSerializer implements Serializer<Component> {
 		StringJoiner joiner = new StringJoiner(", ", (component.getName() + " = "), "");
 
 		for (Attribute attribute : component.getAttributes()) {
-			joiner.add(attributeSerializer.write(attribute));
+			joiner.add(attributeStringSerializer.write(attribute));
 		}
 		return joiner.toString();
 	}

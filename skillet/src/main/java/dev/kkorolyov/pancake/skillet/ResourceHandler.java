@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.skillet;
 
 import dev.kkorolyov.pancake.platform.storage.Entity;
-import dev.kkorolyov.pancake.platform.storage.serialization.EntitySerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.string.EntityStringSerializer;
 import dev.kkorolyov.simplefiles.stream.StreamStrategies;
 
 import java.nio.charset.StandardCharsets;
@@ -14,7 +14,7 @@ import static dev.kkorolyov.simplefiles.Files.out;
  * Handles filesystem resources and I/O.
  */
 public class ResourceHandler {
-	private final EntitySerializer entitySerializer = new EntitySerializer();
+	private final EntityStringSerializer entitySerializer = new EntityStringSerializer();
 
 	/**
 	 * Loads an entity from a resource.
