@@ -1,19 +1,27 @@
 package dev.kkorolyov.pancake.platform.storage.serialization;
 
 /**
- * Transforms data between instance and serialized representation.
+ * Serializes an instance to some other representation.
+ * @param <I> raw instance type
+ * @param <O> serialized instance type
  */
-public interface Serializer<T> {
+public interface Serializer<I, O> {
 	/**
-	 * Reads a data instance from a string.
-	 * @param s string to read
-	 * @return parsed instance of {@code T}
+	 * Deserializes an instance representation.
+	 * @param out serialized representation
+	 * @return deserialized instance
 	 */
-	T read(String s);
+	I read(O out);
 	/**
-	 * Writes a data instance to a string.
-	 * @param instance instance to write
-	 * @return persistable string representation of {@code instance}
+	 * Serializes an instance.
+	 * @param in instance to serialize
+	 * @return serialized instance representation
 	 */
-	String write(T instance);
+	O write(I in);
+
+	/**
+	 * @param out serialized representation
+	 * @return {@code true} if this serializer can deserialize {@code out}
+	 */
+	boolean accepts(O out);
 }

@@ -1,15 +1,20 @@
-package dev.kkorolyov.pancake.platform.storage.serialization;
+package dev.kkorolyov.pancake.platform.storage.serialization.string;
 
 import dev.kkorolyov.pancake.platform.storage.Entity;
+import dev.kkorolyov.pancake.platform.storage.serialization.StringSerializer;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
- * Serializes entities.
+ * Serializes entities to strings.
  */
-public class EntitySerializer implements Serializer<Entity> {
-	private final ComponentSerializer componentSerializer = new ComponentSerializer();
+public class EntityStringSerializer extends StringSerializer<Entity> {
+	private final ComponentStringSerializer componentStringSerializer = new ComponentStringSerializer();
+
+	public EntityStringSerializer() {
+		super("(.+=.+\\R)*");	// Requires newline at end of string
+	}
 
 	/**
 	 * Reads an entity from a string.
@@ -28,7 +33,7 @@ public class EntitySerializer implements Serializer<Entity> {
 	@Override
 	public Entity read(String s) {
 		return Arrays.stream(s.split("\\R"))
-				.map(componentSerializer::read)
+				.map(componentStringSerializer::read)
 				.collect(
 						Entity::new,
 						Entity::addComponent,
@@ -40,7 +45,7 @@ public class EntitySerializer implements Serializer<Entity> {
 	@Override
 	public String write(Entity entity) {
 		return entity.getComponents().stream()
-				.map(componentSerializer::write)
+				.map(componentStringSerializer::write)
 				.collect(Collectors.joining(System.lineSeparator()));
 	}
 }
