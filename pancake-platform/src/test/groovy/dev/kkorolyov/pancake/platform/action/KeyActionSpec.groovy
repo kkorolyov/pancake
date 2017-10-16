@@ -44,7 +44,7 @@ class KeyActionSpec extends Specification {
 		where:
 		values << [
 				ACTIVATE,
-				[randKeyCode(), MultiStageAction.ArmingOption.DEACTIVATE],
+				[randKeyCode(), DEACTIVATE],
 				[randMouseButton(), ACTIVATE],
 				[randKeyCode(), randMouseButton(), ACTIVATE]
 		]
