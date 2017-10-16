@@ -40,11 +40,17 @@ public class GameEngine {
 	}
 	
 	/**
-	 * Applies a single timestep of system updates on all applicable entities.
+	 * Proceeds the simulation by 1 tick.
+	 * <pre>
+	 * All queued events are broadcast
+	 * All entities apply each of their attached actions
+	 * Each system updates all entities it is applicable to
+	 * </pre>
 	 * @param dt seconds elapsed since last update
 	 */
 	public void update(float dt) {
 		events.broadcast();
+		entities.applyActions();
 
 		for (Entry<GameSystem, Limiter> entry : systems.entrySet()) {
 			if (!entry.getValue().isReady(dt)) continue;

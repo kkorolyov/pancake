@@ -8,8 +8,6 @@ import static dev.kkorolyov.simplefiles.Files.in;
 public final class Config {
 	public static final Properties images = new Properties(in("config/images", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH));
 	public static final Properties sounds = new Properties(in("config/sounds", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH));
-	public static final Properties actions = new Properties(in("config/actions", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH));
-	public static final Properties keys = new Properties(in("config/keys", StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH));
 
 	private Config() {}
 }

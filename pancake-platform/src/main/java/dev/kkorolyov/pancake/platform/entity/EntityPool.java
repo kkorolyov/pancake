@@ -47,6 +47,13 @@ public class EntityPool {
 	}
 
 	/**
+	 * Applies actions of all entities.
+	 */
+	public void applyActions() {
+		entities.values().forEach(Entity::applyActions);
+	}
+
+	/**
 	 * Returns a stream over all entities with a signature subset matching {@code signature}.
 	 * @param signature signature defining a set of component types
 	 * @param comparator comparator defining entity order, {@code null} results in no sorting

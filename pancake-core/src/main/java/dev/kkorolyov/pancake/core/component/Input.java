@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.core.component;
 
+import dev.kkorolyov.pancake.platform.action.KeyAction;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.input.KeyAction;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;

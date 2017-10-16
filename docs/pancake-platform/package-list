@@ -1,9 +1,10 @@
 dev.kkorolyov.pancake.platform
+dev.kkorolyov.pancake.platform.action
 dev.kkorolyov.pancake.platform.entity
 dev.kkorolyov.pancake.platform.event
-dev.kkorolyov.pancake.platform.input
 dev.kkorolyov.pancake.platform.math
 dev.kkorolyov.pancake.platform.media
 dev.kkorolyov.pancake.platform.storage
 dev.kkorolyov.pancake.platform.storage.serialization
-dev.kkorolyov.pancake.platform.storage.serialization.strategy
+dev.kkorolyov.pancake.platform.storage.serialization.string
+dev.kkorolyov.pancake.platform.storage.serialization.string.action

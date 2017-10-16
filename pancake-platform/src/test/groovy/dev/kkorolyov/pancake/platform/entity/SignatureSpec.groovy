@@ -18,6 +18,13 @@ class SignatureSpec extends Specification {
 		getField("signature", signature) == 0
 	}
 
+	def "masks empty signature"() {
+		signature = new Signature(componentTypes)
+
+		expect:
+		signature.masks(new Signature())
+	}
+
 	def "masks all constructor-initialized component types"() {
 		when:
 		signature = new Signature(componentTypes)
