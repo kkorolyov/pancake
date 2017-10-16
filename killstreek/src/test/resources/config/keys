@@ -1,10 +1,9 @@
 # Binds arbitrary sets of keys to actions
-# 3-action tuples define custom (press, hold, release) behavior
 
 [W]=MOVE_UP
 [S]=MOVE_DOWN
-[A]=FORCE_LEFT,WALK,FORCE_RIGHT
-[D]=FORCE_RIGHT,WALK,FORCE_LEFT
+[A]=MOVE_LEFT
+[D]=MOVE_RIGHT
 [ESCAPE]=RESET
 [SHIFT]=TOGGLE_ANIMATION
 [CONTROL]=TOGGLE_SPAWNER

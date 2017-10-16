@@ -13,7 +13,7 @@ public class EntityStringSerializer extends StringSerializer<Entity> {
 	private final ComponentStringSerializer componentStringSerializer = new ComponentStringSerializer();
 
 	public EntityStringSerializer() {
-		super("(.+=.+\\R)*");	// Requires newline at end of string
+		super("(.+=.+(\\R|$))+");
 	}
 
 	/**

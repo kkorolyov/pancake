@@ -18,12 +18,6 @@ public class Signature {
 	private long signature;
 
 	/**
-	 * Constructs a new signature without any component types.
-	 */
-	public Signature() {
-		this((Iterable<Class<? extends Component>>) null);
-	}
-	/**
 	 * Constructs a new signature from a set of component types.
 	 * @param types types defining signature
 	 */

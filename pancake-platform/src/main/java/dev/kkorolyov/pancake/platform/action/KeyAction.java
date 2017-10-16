@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -28,8 +27,6 @@ public class KeyAction extends Action {
 	 * @throws IllegalArgumentException if any element of {@code inputs} is not a {@link KeyCode} or {@link MouseButton}
 	 */
 	public KeyAction(MultiStageAction delegate, Iterable<Enum> inputs) {
-		super(new Signature());
-
 		this.delegate = delegate;
 		for (Enum input : inputs) {
 			if (!(input instanceof KeyCode || input instanceof MouseButton)) {

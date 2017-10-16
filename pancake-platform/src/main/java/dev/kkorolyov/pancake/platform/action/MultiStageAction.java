@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 
 /**
  * An {@link Action} which applies a different action depending on its current state.
@@ -21,8 +20,6 @@ public class MultiStageAction extends Action {
 	 * @param holdThreshold minimum number of seconds this action must remain in the "active" state before moving on to the "decayed" state
 	 */
 	public MultiStageAction(Action start, Action hold, Action end, float holdThreshold) {
-		super(new Signature());
-
 		this.start = start;
 		this.hold = hold;
 		this.end = end;

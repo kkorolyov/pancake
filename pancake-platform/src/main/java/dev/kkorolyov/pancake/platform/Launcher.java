@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
-import dev.kkorolyov.pancake.platform.input.ActionPool;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
 import dev.kkorolyov.pancake.platform.media.ImagePool;
@@ -32,7 +32,7 @@ public abstract class Launcher extends Application {
 
 	protected final ImagePool images = new ImagePool();
 	protected final SoundPool sounds = new SoundPool();
-	protected final ActionPool actions = new ActionPool();
+	protected final ActionRegistry actions = new ActionRegistry();
 	protected final EntityPool entities;
 	protected final EventBroadcaster events;
 

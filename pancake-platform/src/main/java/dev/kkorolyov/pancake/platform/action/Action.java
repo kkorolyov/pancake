@@ -1,8 +1,10 @@
 package dev.kkorolyov.pancake.platform.action;
 
+import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 /**
@@ -13,11 +15,18 @@ public abstract class Action implements Consumer<Entity> {
 	private final Signature signature;
 
 	/**
-	 * Constructs a new action acting on entities containing the provided signature.
-	 * @param signature signature defining minimum components required for action function
+	 * @see #Action(Iterable)
 	 */
-	protected Action(Signature signature) {
-		this.signature = signature;
+	@SafeVarargs
+	protected Action(Class<? extends Component>... componentTypes) {
+		this(Arrays.asList(componentTypes));
+	}
+	/**
+	 * Constructs a new action acting on entities containing the given components.
+	 * @param componentTypes minimum component types required in accepted entities
+	 */
+	protected Action(Iterable<Class<? extends Component>> componentTypes) {
+		this.signature = new Signature(componentTypes);
 	}
 
 	/**

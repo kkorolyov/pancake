@@ -1,5 +1,7 @@
 package dev.kkorolyov.killstreek;
 
+import dev.kkorolyov.pancake.core.action.ForceAction;
+import dev.kkorolyov.pancake.core.action.TransformAction;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Chain;
 import dev.kkorolyov.pancake.core.component.Input;
@@ -10,6 +12,7 @@ import dev.kkorolyov.pancake.core.component.movement.Damping;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.Launcher;
+import dev.kkorolyov.pancake.platform.action.FreeFormAction;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector;
@@ -22,6 +25,7 @@ import java.util.function.Supplier;
 
 import static dev.kkorolyov.killstreek.Constants.BOX;
 import static dev.kkorolyov.killstreek.Constants.MAX_SPEED;
+import static dev.kkorolyov.killstreek.Constants.MOVE_FORCE;
 import static dev.kkorolyov.killstreek.Constants.OBJECT_DAMPING;
 import static dev.kkorolyov.killstreek.Constants.OBJECT_MASS;
 import static dev.kkorolyov.killstreek.Constants.PLAYER_DAMPING;
@@ -65,9 +69,28 @@ public class FunctionalTest extends Launcher {
 		});
 	}
 	private void initActions() {
-		ActionsDirectory.actions.forEach(actions::put);
+		actions.put("FORCE_UP", new ForceAction(new Vector(0, MOVE_FORCE)));
+		actions.put("FORCE_DOWN", new ForceAction(new Vector(0, -MOVE_FORCE)));
+		actions.put("FORCE_RIGHT", new ForceAction(new Vector(MOVE_FORCE, 0)));
+		actions.put("FORCE_LEFT", new ForceAction(new Vector(-MOVE_FORCE, 0)));
+		actions.put("RESET", new TransformAction(new Vector(0, 0)));
 
-		actions.put(Config.actions);
+		actions.put("WALK", new FreeFormAction(e -> e.get(Sprite.class).stop(false, false),
+				Sprite.class));
+		actions.put("STOP_WALK", new FreeFormAction(e -> e.get(Sprite.class).stop(true, false),
+				Sprite.class));
+
+		actions.put("TOGGLE_ANIMATION", new FreeFormAction(e -> {
+			Sprite sprite = e.get(Sprite.class);
+			sprite.stop(!sprite.isStopped(), false);
+		}, Sprite.class));
+
+		actions.put("TOGGLE_SPAWNER", new FreeFormAction(e -> {
+			Spawner spawner = e.get(Spawner.class);
+			spawner.setActive(!spawner.isActive());
+		}, Sprite.class));
+
+		actions.put("config/actions");
 	}
 	private void initEntities() {
 		addGround();
@@ -151,7 +174,7 @@ public class FunctionalTest extends Launcher {
 				new Bounds(BOX, RADIUS),
 				spawner,
 				sprite,
-				new Input(true, actions.parseConfig(Config.keys))
+				new Input(true, actions.readKeys("config/keys"))
 		);
 	}
 

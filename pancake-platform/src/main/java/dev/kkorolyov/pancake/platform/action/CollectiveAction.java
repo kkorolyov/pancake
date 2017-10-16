@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,8 +21,6 @@ public class CollectiveAction extends Action {
 	 * @param delegates contained actions, duplicates are ignored
 	 */
 	public CollectiveAction(Iterable<Action> delegates) {
-		super(new Signature());
-
 		delegates.forEach(this.delegates::add);
 	}
 
