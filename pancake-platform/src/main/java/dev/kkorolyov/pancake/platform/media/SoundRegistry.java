@@ -13,14 +13,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 
+import static dev.kkorolyov.pancake.platform.Resources.in;
+
 /**
- * Provides access to sounds by name.
+ * A collection of sounds retrievable by name.
  * Names are mapped to an arbitrary-length collection of sound resources.
  * When retrieving from a name with multiple resource associations, a randomly-selected associated resource is returned.
  */
-public class SoundPool {
+public class SoundRegistry {
 	private static final int DEFAULT_CACHE_SIZE = 15;
-	private static final Logger log = Config.getLogger(SoundPool.class);
+	private static final Logger log = Config.getLogger(SoundRegistry.class);
 
 	private final Map<String, WeightedDistribution<String>> resourceDistributions = new HashMap<>();
 	private final Map<String, AudioClip> cache;
@@ -29,14 +31,14 @@ public class SoundPool {
 	/**
 	 * Constructs a new sound pool using the {@link #DEFAULT_CACHE_SIZE}.
 	 */
-	public SoundPool() {
+	public SoundRegistry() {
 		this(DEFAULT_CACHE_SIZE);
 	}
 	/**
 	 * Constructs a new sound pool using some cache size.
 	 * @param cacheSize maximum size of audio file cache
 	 */
-	public SoundPool(int cacheSize) {
+	public SoundRegistry(int cacheSize) {
 		cache = new LinkedHashMap<>(cacheSize) {
 			private static final long serialVersionUID = -4374897957713259831L;
 
@@ -70,9 +72,12 @@ public class SoundPool {
 	 * Parses sounds from a configuration file.
 	 * Each entry is a sound name mapped to an arbitrary-length list of resources, all with weight {@code 1}.
 	 * If a resource does not contain {@code //}, it is assumed to be found on the local filesystem.
-	 * @param soundConfig sound configuration file
+	 * @param path path to sound configuration file
 	 */
-	public void put(Properties soundConfig) {
+	// TODO Use serializers instead
+	public void put(String path) {
+		Properties soundConfig = new Properties(in(path));
+
 		for (String name : soundConfig.keys()) {
 			for (String resource : soundConfig.getArray(name)) {
 				String url = resource;

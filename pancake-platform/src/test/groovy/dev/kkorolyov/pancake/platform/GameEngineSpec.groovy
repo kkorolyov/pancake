@@ -2,7 +2,9 @@ package dev.kkorolyov.pancake.platform
 
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
+import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster
+import dev.kkorolyov.pancake.platform.utility.PerformanceCounter
 
 import spock.lang.Ignore
 import spock.lang.Specification
@@ -13,18 +15,23 @@ import static SpecUtilities.randFloat
 import static SpecUtilities.setField
 
 class GameEngineSpec extends Specification {
+	Signature signature = Mock()
+	Comparator<Entity> comparator = Mock()
 	EventBroadcaster events = Mock()
+	PerformanceCounter performanceCounter = Mock()
 	EntityPool entities = Mock()
 	GameSystem system = Mock()
-	GameSystem[] systems = (0..10).collect {it -> Mock(GameSystem)}
+	GameSystem[] systems = (0..10).collect {it -> Mock(GameSystem) {
+		getSignature() >> signature
+		getComparator() >> comparator
+	}}
 
-	GameEngine engine = new GameEngine(systems)
+	GameEngine engine = new GameEngine(events, entities, systems)
 
 	def setup() {
-		setField("events", engine, events)
-		setField("entities", engine, entities)
+		setField("performanceCounter", engine, performanceCounter)
 
-		entities.get(_, _) >> Mock(Stream) {
+		entities.get(signature, comparator) >> Mock(Stream) {
 			sequential() >> it
 		}
 	}
@@ -49,7 +56,7 @@ class GameEngineSpec extends Specification {
 		engine.update(dt)
 
 		then:
-		entities.get(_, _) >> Mock(Stream) {
+		entities.get(signature, comparator) >> Mock(Stream) {
 			sequential() >> it
 			iterator() >> Mock(Iterator) {
 				next() >>> [(1..10).collect {it2 -> entity}, false]
@@ -81,19 +88,19 @@ class GameEngineSpec extends Specification {
 		dt << randFloat()
 	}
 
-	def "attaches current event broadcaster to added system"() {
+	def "shares services with added system"() {
 		when:
 		engine.add(system)
 
 		then:
-		1 * system.setEvents(events)
+		1 * system.share(events, performanceCounter)
 	}
-	def "detaches current event broadcaster from removed system"() {
+	def "unshares services from removed system"() {
 		when:
 		engine.remove(system)
 
 		then:
-		1 * system.setEvents(null)
+		1 * system.share(null, null)
 	}
 
 	def "invokes 'attach' on added system"() {

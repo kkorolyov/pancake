@@ -1,12 +1,11 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.simplefiles.stream.StreamStrategies;
 import dev.kkorolyov.simplelogs.Level;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simplelogs.format.Formatters;
 import dev.kkorolyov.simpleprops.Properties;
 
-import static dev.kkorolyov.simplefiles.Files.in;
+import static dev.kkorolyov.pancake.platform.Resources.in;
 
 /**
  * Provides access to configuration.
@@ -24,16 +23,12 @@ public final class Config {
 		reloadLogging();
 	}
 
-	private Config() {}
-
 	/**
 	 * Reloads configuration file.
 	 */
 	public static void reloadConfig() {
-		in(config::load,
-				CONFIG_DEFAULT_PROPS, StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH);
-		in(config::load,
-				CONFIG_PROPS, StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH);
+		in(CONFIG_DEFAULT_PROPS, config::load);
+		in(CONFIG_PROPS, config::load);
 
 		log.info("Reloaded config: {}", config);
 	}
@@ -41,8 +36,7 @@ public final class Config {
 	 * Reloads logger configuration.
 	 */
 	public static void reloadLogging() {
-		in(Logger::applyProps,
-				LOG_PROPS, StreamStrategies.IN_PATH, StreamStrategies.IN_CLASSPATH);
+		in(LOG_PROPS, Logger::applyProps);
 
 		log.info("Reloaded loggers");
 	}

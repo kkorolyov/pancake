@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform;
+package dev.kkorolyov.pancake.platform.utility;
 
 /**
  * A timer which is ready after a set number of seconds have passed.

@@ -3,6 +3,8 @@ package dev.kkorolyov.pancake.platform;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
+import dev.kkorolyov.pancake.platform.utility.PerformanceCounter.Usage;
 
 import java.util.Comparator;
 import java.util.function.Consumer;
@@ -13,7 +15,9 @@ import java.util.function.Consumer;
 public abstract class GameSystem {
 	private final Signature signature;
 	private final Comparator<Entity> comparator;
+
 	private EventBroadcaster events;
+	private PerformanceCounter performanceCounter;
 
 	/**
 	 * Constructs a new system with arbitrary entity order.
@@ -85,6 +89,11 @@ public abstract class GameSystem {
 		events.enqueue(event, payload);
 	}
 
+	/** @return current performance counter usages */
+	public Iterable<Usage> usages() {
+		return performanceCounter.usages();
+	}
+
 	/** @return component signature */
 	public Signature getSignature() {
 		return signature;
@@ -94,8 +103,13 @@ public abstract class GameSystem {
 		return comparator;
 	}
 
-	/** @param events event queue and broadcaster accessible to this system */
-	void setEvents(EventBroadcaster events) {
+	/**
+	 * Used by a {@link GameEngine} to share services.
+	 * @param events shared event broadcaster
+	 * @param performanceCounter shared performance counter
+	 */
+	void share(EventBroadcaster events, PerformanceCounter performanceCounter) {
 		this.events = events;
+		this.performanceCounter = performanceCounter;
 	}
 }

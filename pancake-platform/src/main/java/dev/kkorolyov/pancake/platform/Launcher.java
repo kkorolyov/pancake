@@ -5,8 +5,8 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
-import dev.kkorolyov.pancake.platform.media.ImagePool;
-import dev.kkorolyov.pancake.platform.media.SoundPool;
+import dev.kkorolyov.pancake.platform.media.ImageRegistry;
+import dev.kkorolyov.pancake.platform.media.SoundRegistry;
 
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -30,24 +30,19 @@ public abstract class Launcher extends Application {
 
 	protected final Camera camera;
 
-	protected final ImagePool images = new ImagePool();
-	protected final SoundPool sounds = new SoundPool();
+	protected final ImageRegistry images = new ImageRegistry();
+	protected final SoundRegistry sounds = new SoundRegistry();
 	protected final ActionRegistry actions = new ActionRegistry();
-	protected final EntityPool entities;
-	protected final EventBroadcaster events;
 
-	protected final GameEngine engine;
-	protected final GameLoop gameLoop;
+	protected final EventBroadcaster events = new EventBroadcaster();
+	protected final EntityPool entities = new EntityPool(events);
+
+	protected final GameEngine engine = new GameEngine(events, entities);
+	protected final GameLoop gameLoop = new GameLoop(engine);
 
 	protected Launcher() {
 		LauncherConfig config = config();
 		config.verify();
-
-		engine = new GameEngine();
-		entities = engine.getEntities();
-		events = engine.getEvents();
-
-		gameLoop = new GameLoop(engine);
 
 		canvas = announce(new Canvas(), CANVAS_CREATED);
 		scene = announce(new Scene(new Group(canvas)), SCENE_CREATED);
@@ -93,7 +88,7 @@ public abstract class Launcher extends Application {
 	}
 
 	private <T> T announce(T object, String event) {
-		engine.getEvents().enqueue(event, object);
+		events.enqueue(event, object);
 		return object;
 	}
 

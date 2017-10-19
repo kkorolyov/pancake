@@ -4,12 +4,11 @@ import dev.kkorolyov.pancake.core.component.Sprite;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.PerformanceCounter;
-import dev.kkorolyov.pancake.platform.PerformanceCounter.Usage;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
+import dev.kkorolyov.pancake.platform.utility.PerformanceCounter.Usage;
 import dev.kkorolyov.simplelogs.Logger;
 
 import javafx.scene.canvas.Canvas;
@@ -111,7 +110,7 @@ public class RenderSystem extends GameSystem {
 					last = now;
 					break;
 				case "usage":
-					for (Usage usage : PerformanceCounter.usages()) {
+					for (Usage usage : usages()) {
 						Paint previous = g.getStroke();
 
 						if (usage.exceedsMax()) g.setStroke(Color.DARKRED);

@@ -59,38 +59,39 @@ public class FunctionalTest extends Launcher {
 	}
 
 	private void initImages() {
-		images.put(Config.images);
+		images.put("config/images");
 	}
 	private void initSounds() {
-		sounds.put(Config.sounds);
+		sounds.put("config/sounds");
 
 		events.register(CREATED, (Entity e) -> {
 			if (e.get(Transform.class) == playerTransform) sounds.get("spawn").play();
 		});
 	}
 	private void initActions() {
-		actions.put("FORCE_UP", new ForceAction(new Vector(0, MOVE_FORCE)));
-		actions.put("FORCE_DOWN", new ForceAction(new Vector(0, -MOVE_FORCE)));
-		actions.put("FORCE_RIGHT", new ForceAction(new Vector(MOVE_FORCE, 0)));
-		actions.put("FORCE_LEFT", new ForceAction(new Vector(-MOVE_FORCE, 0)));
-		actions.put("RESET", new TransformAction(new Vector(0, 0)));
+		actions
+				.put("FORCE_UP", new ForceAction(new Vector(0, MOVE_FORCE)))
+				.put("FORCE_DOWN", new ForceAction(new Vector(0, -MOVE_FORCE)))
+				.put("FORCE_RIGHT", new ForceAction(new Vector(MOVE_FORCE, 0)))
+				.put("FORCE_LEFT", new ForceAction(new Vector(-MOVE_FORCE, 0)))
+				.put("RESET", new TransformAction(new Vector(0, 0)))
 
-		actions.put("WALK", new FreeFormAction(e -> e.get(Sprite.class).stop(false, false),
-				Sprite.class));
-		actions.put("STOP_WALK", new FreeFormAction(e -> e.get(Sprite.class).stop(true, false),
-				Sprite.class));
+				.put("WALK", new FreeFormAction(e -> e.get(Sprite.class).stop(false, false),
+						Sprite.class))
+				.put("STOP_WALK", new FreeFormAction(e -> e.get(Sprite.class).stop(true, false),
+						Sprite.class))
 
-		actions.put("TOGGLE_ANIMATION", new FreeFormAction(e -> {
-			Sprite sprite = e.get(Sprite.class);
-			sprite.stop(!sprite.isStopped(), false);
-		}, Sprite.class));
+				.put("TOGGLE_ANIMATION", new FreeFormAction(e -> {
+					Sprite sprite = e.get(Sprite.class);
+					sprite.stop(!sprite.isStopped(), false);
+				}, Sprite.class))
 
-		actions.put("TOGGLE_SPAWNER", new FreeFormAction(e -> {
-			Spawner spawner = e.get(Spawner.class);
-			spawner.setActive(!spawner.isActive());
-		}, Sprite.class));
+				.put("TOGGLE_SPAWNER", new FreeFormAction(e -> {
+					Spawner spawner = e.get(Spawner.class);
+					spawner.setActive(!spawner.isActive());
+				}, Sprite.class))
 
-		actions.put("config/actions");
+				.put("config/actions");
 	}
 	private void initEntities() {
 		addGround();

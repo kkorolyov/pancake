@@ -2,6 +2,8 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.utility.Limiter;
+import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -14,28 +16,33 @@ import java.util.ServiceLoader;
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public class GameEngine {
-	private final EventBroadcaster events = new EventBroadcaster();
-	private final EntityPool entities = new EntityPool(events);
+	private final EventBroadcaster events;
+	private final EntityPool entities;
+	private final PerformanceCounter performanceCounter = new PerformanceCounter();
 	private final Map<GameSystem, Limiter> systems = new LinkedHashMap<>();
 
 	/**
-	 * Constructs a new engine pre-populated with all {@link GameSystem} implementations provided by the {@link ServiceLoader}.
+	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
-	public GameEngine() {
-		this(ServiceLoader.load(GameSystem.class));
+	public GameEngine(EventBroadcaster events, EntityPool entities) {
+		this(events, entities, ServiceLoader.load(GameSystem.class));
 	}
 	/**
-	 * Constructs a new engine pre-populated with systems.
-	 * @param systems attached systems
+	 * @see #GameEngine(EventBroadcaster, EntityPool, Iterable)
 	 */
-	public GameEngine(GameSystem... systems) {
-		this(Arrays.asList(systems));
+	public GameEngine(EventBroadcaster events, EntityPool entities, GameSystem... systems) {
+		this(events, entities, Arrays.asList(systems));
 	}
 	/**
-	 * Constructs a new engine pre-populated with systems.
+	 * Constructs a new game engine.
+	 * @param events attached event broadcaster
+	 * @param entities attached entity pool
 	 * @param systems attached systems
 	 */
-	public GameEngine(Iterable<GameSystem> systems) {
+	public GameEngine(EventBroadcaster events, EntityPool entities, Iterable<GameSystem> systems) {
+		this.events = events;
+		this.entities = entities;
+
 		systems.forEach(this::add);
 	}
 	
@@ -57,7 +64,7 @@ public class GameEngine {
 
 			GameSystem system = entry.getKey();
 
-			PerformanceCounter.start();
+			performanceCounter.start();
 
 			system.before(dt);
 
@@ -67,7 +74,7 @@ public class GameEngine {
 
 			system.after(dt);
 
-			PerformanceCounter.end(system);
+			performanceCounter.end(system);
 		}
 	}
 
@@ -80,7 +87,7 @@ public class GameEngine {
 	 * @param updateInterval minimum elapsed seconds between updates of {@code system}, constrained {@code >= 0}
 	 */
 	public void add(GameSystem system, float updateInterval) {
-		system.setEvents(events);
+		system.share(events, performanceCounter);
 
 		systems.put(system, new Limiter(Math.max(0, updateInterval)));
 
@@ -89,19 +96,10 @@ public class GameEngine {
 
 	/** @param system removed system */
 	public void remove(GameSystem system) {
-		system.setEvents(null);
+		system.share(null, null);
 
 		systems.remove(system);
 
 		system.detach();
-	}
-
-	/** @return entities handled by this engine */
-	public EntityPool getEntities() {
-		return entities;
-	}
-	/** @return event queue and broadcaster used by this engine */
-	public EventBroadcaster getEvents() {
-		return events;
 	}
 }

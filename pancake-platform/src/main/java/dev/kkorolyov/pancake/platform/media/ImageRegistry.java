@@ -8,11 +8,13 @@ import javafx.scene.image.Image;
 import java.util.HashMap;
 import java.util.Map;
 
+import static dev.kkorolyov.pancake.platform.Resources.in;
+
 /**
- * Maintains a collection of composite images retrievable by name.
+ * A collection of composite images retrievable by name.
  */
-public class ImagePool {
-	private static final Logger log = Config.getLogger(ImagePool.class);
+public class ImageRegistry {
+	private static final Logger log = Config.getLogger(ImageRegistry.class);
 
 	private final Map<String, CompositeImage> images = new HashMap<>();
 
@@ -29,9 +31,12 @@ public class ImagePool {
 	 * Parses images from a configuration file.
 	 * Each entry is an image name mapped to an arbitrary-length array of base images.
 	 * Each base image is first parsed as the name of an image found in this pool, or a filename of an image on the file system if no such image exists in this pool.
-	 * @param imageConfig image configuration file
+	 * @param path path to image configuration file
 	 */
-	public void put(Properties imageConfig) {
+	// TODO Use serializers instead
+	public void put(String path) {
+		Properties imageConfig = new Properties(in(path));
+
 		for (String name : imageConfig.keys()) {
 			CompositeImage image = new CompositeImage();
 

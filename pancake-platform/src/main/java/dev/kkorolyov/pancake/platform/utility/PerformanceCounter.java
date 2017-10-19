@@ -1,40 +1,40 @@
-package dev.kkorolyov.pancake.platform;
+package dev.kkorolyov.pancake.platform.utility;
 
+import dev.kkorolyov.pancake.platform.Config;
+import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.simplelogs.Logger;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Provides global access to performance counts.
+ * Maintains performance counts.
  */
-public final class PerformanceCounter {
-	private static final long maxTime = Long.parseLong(Config.config.get("maxTime"));
-	private static final int samples = Math.max(1, Integer.parseInt(Config.config.get("samples")));
+public class PerformanceCounter {
+	private static final long MAX_TIME = Long.parseLong(Config.config.get("maxTime"));
+	private static final int SAMPLES = Math.max(1, Integer.parseInt(Config.config.get("samples")));
 	private static final Logger log = Config.getLogger(PerformanceCounter.class);
 
-	private static final Map<GameSystem, Usage> systemUsage = new LinkedHashMap<>();
-	private static long start;
-
-	private PerformanceCounter() {}
+	private final Map<GameSystem, Usage> systemUsage = new LinkedHashMap<>();
+	private long start;
 
 	/**
 	 * Sets the shared time counter to the current system time.
 	 */
-	public static void start() {
+	public void start() {
 		start = System.nanoTime();
 	}
 	/**
 	 * Sets the usage time of {@code system} as μs since the last invocation of {@link #start()} and resets the shared time counter.
 	 * @param system game system to set usage of
 	 */
-	public static void end(GameSystem system) {
-		systemUsage.computeIfAbsent(system, k -> new Usage(system, samples))
+	public void end(GameSystem system) {
+		systemUsage.computeIfAbsent(system, k -> new Usage(system, SAMPLES))
 				.add((System.nanoTime() - start) / 1000);
 	}
 
 	/** @return all system usage average values */
-	public static Iterable<Usage> usages() {
+	public Iterable<Usage> usages() {
 		return systemUsage.values();
 	}
 
@@ -67,7 +67,7 @@ public final class PerformanceCounter {
 			}
 			if (exceedsMax()) {
 				log.warning("{} exceeded max usage by {} microseconds",
-						system, value - maxTime, maxTime, value);
+						system, value - MAX_TIME, MAX_TIME, value);
 			}
 		}
 
@@ -83,7 +83,7 @@ public final class PerformanceCounter {
 
 		/** @return {@code true} if this average value exceeds the expected maximum value */
 		public boolean exceedsMax() {
-			return value > maxTime;
+			return value > MAX_TIME;
 		}
 
 		/** @return usage representation in the format: {@code {systemName}: {value}μs} */
