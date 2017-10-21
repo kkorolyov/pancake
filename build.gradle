@@ -28,11 +28,12 @@ subprojects {
 
 // Projects
 def platform = project(':pancake-platform')
+def testUtils = project(':pancake-test-utils')
 def core = project(':pancake-core')
 def skillet = project(':skillet')
 def killstreek = project(':killstreek')
 
-configure([	// "Doc"able
+configure([	// Doc-able
     platform,
 		core,
 		skillet,
@@ -58,17 +59,9 @@ configure([	// Testable
 		testImplementation(
 				'org.spockframework:spock-core:1.1-groovy-2.+',
 				'net.bytebuddy:byte-buddy:1.+',
-				'org.objenesis:objenesis:2.+'
+				'org.objenesis:objenesis:2.+',
+				testUtils
 		)
-	}
-}
-configure([	// Platform test utilities-dependent
-		core,
-		skillet,
-		killstreek
-]) {
-	dependencies {
-		testImplementation project(path: ':pancake-platform', configuration: 'platformTest')
 	}
 }
 
@@ -180,17 +173,16 @@ project(':pancake-platform') {
 				'dev.kkorolyov:simple-props:4.+'
 		)
 	}
+}
+project(':pancake-test-utils') {
+	apply plugin: 'groovy'
+	description = "Test utilities"
 
-	task testJar(type: Jar) {
-		classifier = 'test'
-		from sourceSets.test.output
-	}
-
-	configurations {
-		platformTest
-	}
-	artifacts {
-		platformTest testJar
+	dependencies {
+		implementation(
+				'org.spockframework:spock-core:1.1-groovy-2.+',
+				platform
+		)
 	}
 }
 

@@ -60,6 +60,15 @@ class SpecUtilities {
 		f.set(object, value)
 	}
 
+	/**
+	 * Wraps a float in a {@code BigDecimal}.
+	 * @param value float value to wrap
+	 * @return {@code value} as a {@code BigDecimal}
+	 */
+	static BigDecimal bigDecimal(float value) {
+		return BigDecimal.valueOf(value)
+	}
+
 	/** @return random int */
 	static int randInt() {
 		return rand.nextInt()
