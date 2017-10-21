@@ -5,6 +5,8 @@ import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
+import java.util.Objects;
+
 /**
  * Applies a force.
  */
@@ -30,5 +32,18 @@ public class ForceAction extends Action {
 	/** @return force vector added to accepted entities */
 	public Vector getForce() {
 		return force;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		ForceAction o = (ForceAction) obj;
+		return Objects.equals(force, o.force);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(force);
 	}
 }

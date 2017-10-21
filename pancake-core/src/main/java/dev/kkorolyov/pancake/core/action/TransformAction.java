@@ -5,6 +5,8 @@ import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
+import java.util.Objects;
+
 /**
  * Sets a transform.
  */
@@ -46,5 +48,19 @@ public class TransformAction extends Action {
 	/** @return rotation set on accepted entities, or {@code null} */
 	public Float getRotation() {
 		return rotation;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		TransformAction o = (TransformAction) obj;
+		return Objects.equals(position, o.position)
+				&& Objects.equals(rotation, o.rotation);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(position, rotation);
 	}
 }

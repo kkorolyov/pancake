@@ -36,7 +36,8 @@ public class VectorStringSerializer extends StringSerializer<Vector> {
 	@Override
 	public String write(Vector in) {
 		return Stream.of(in.getX(), in.getY(), in.getZ())
-				.map(String::valueOf)
+				.map(BigDecimal::valueOf)
+				.map(Object::toString)
 				.collect(Collectors.joining(",", "(", ")"));
 	}
 }
