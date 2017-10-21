@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.Resources;
-import dev.kkorolyov.pancake.platform.storage.serialization.string.action.ActionContainerStringSerializer;
-import dev.kkorolyov.pancake.platform.storage.serialization.string.action.KeyActionStringSerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.action.ActionContainerStringSerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.action.KeyActionStringSerializer;
 import dev.kkorolyov.simplelogs.Logger;
 
 import java.util.Arrays;
@@ -67,7 +67,7 @@ public class ActionRegistry {
 		Arrays.stream(Resources.string(path).split("\\R"))
 				.filter(actionContainerSerializer::accepts)
 				.peek(actionS -> log.info("Parsing action: {}", actionS))
-				.map(actionContainerSerializer::read)
+				.map(actionS -> actionContainerSerializer.read(actionS, this))
 				.peek(actionContainer -> log.debug("Parsed to {}={}", actionContainer.name, actionContainer.action))
 				.forEach(container -> put(container.name, container.action));
 		return this;
@@ -83,7 +83,7 @@ public class ActionRegistry {
 		return Arrays.stream(Resources.string(path).split("\\R"))
 				.filter(keyActionSerializer::accepts)
 				.peek(actionS -> log.info("Parsing key action: {}", actionS))
-				.map(keyActionSerializer::read)
+				.map(actionS -> keyActionSerializer.read(actionS, this))
 				.peek(keyAction -> log.debug("Parsed to {}", keyAction))
 				.collect(Collectors.toList());
 	}

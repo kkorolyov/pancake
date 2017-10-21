@@ -26,4 +26,9 @@ public class ForceAction extends Action {
 		entity.get(Force.class)
 				.getForce().add(force);
 	}
+
+	/** @return force vector added to accepted entities */
+	public Vector getForce() {
+		return force;
+	}
 }

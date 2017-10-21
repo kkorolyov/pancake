@@ -1,7 +1,8 @@
 package dev.kkorolyov.pancake.platform.storage.serialization.string;
 
+import dev.kkorolyov.pancake.platform.storage.serialization.AutoSerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.Serializer;
 import dev.kkorolyov.pancake.platform.storage.serialization.StringSerializer;
-import dev.kkorolyov.pancake.platform.storage.serialization.StringSerializers;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.Map;
  * Parses maps.
  */
 public class MapStringSerializer extends StringSerializer<Map> {
+	private static final Serializer<Object, String> autoSerializer = new AutoSerializer(StringSerializer.class);
+
 	public MapStringSerializer() {
 		super("\\{.+}");
 	}
@@ -23,7 +26,7 @@ public class MapStringSerializer extends StringSerializer<Map> {
 			String[] splitPair = pair.split("\\s*=\\s*", 2);
 			String name = splitPair[0], valueS = splitPair[1];
 
-			map.put(name, StringSerializers.read(valueS));
+			map.put(name, autoSerializer.read(valueS));
 		}
 		return map;
 	}

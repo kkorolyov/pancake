@@ -1,10 +1,11 @@
-package dev.kkorolyov.pancake.platform.storage.serialization.string.action;
+package dev.kkorolyov.pancake.platform.storage.serialization.action;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
-import dev.kkorolyov.pancake.platform.storage.serialization.StringSerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.AutoContextualSerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.ContextualSerializer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,23 +14,22 @@ import java.util.stream.Collectors;
 /**
  * Serializes multi-stage actions.
  */
-public class MultiStageActionStringSerializer extends StringSerializer<MultiStageAction> {
-	private final ActionRegistry registry;
+public class MultiStageActionStringSerializer extends ActionSerializer<MultiStageAction> {
+	private static final ContextualSerializer<Action, String, ActionRegistry> autoSerializer = new AutoContextualSerializer(ActionSerializer.class);
+
 	private final float holdThreshold = Float.parseFloat(Config.config.get("holdThreshold"));
 
 	/**
 	 * Constructs a new multi-stage action serializer.
-	 * @param registry associated action registry
 	 */
-	public MultiStageActionStringSerializer(ActionRegistry registry) {
+	public MultiStageActionStringSerializer() {
 		super(".*(,.*){2}");
-		this.registry = registry;
 	}
 
 	@Override
-	public MultiStageAction read(String out) {
+	public MultiStageAction read(String out, ActionRegistry context) {
 		List<Action> actions = Arrays.stream(out.split(",\\s?(?![^{]*})"))
-				.map(actionS -> actionS.length() <= 0 ? null : registry.readAction(actionS))
+				.map(actionS -> actionS.length() <= 0 ? null : autoSerializer.read(actionS, context))
 				.collect(Collectors.toList());
 
 		return new MultiStageAction(
@@ -39,7 +39,7 @@ public class MultiStageActionStringSerializer extends StringSerializer<MultiStag
 				holdThreshold);
 	}
 	@Override
-	public String write(MultiStageAction in) {
+	public String write(MultiStageAction in, ActionRegistry context) {
 		// TODO
 		return null;
 	}

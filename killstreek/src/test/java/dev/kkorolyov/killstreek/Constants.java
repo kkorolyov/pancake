@@ -3,7 +3,6 @@ package dev.kkorolyov.killstreek;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 public final class Constants {
-	public static final float MOVE_FORCE = 500;
 	public static final float MAX_SPEED = 50;
 	public static final float OBJECT_MASS = .1f;
 	public static final float PLAYER_MASS = 10;

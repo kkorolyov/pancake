@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  */
 public class NumberStringSerializer extends StringSerializer<BigDecimal> {
 	public NumberStringSerializer() {
-		super("[+-]?(\\d*\\.\\d+|\\d+)");
+		super("[+-]?(\\d*\\.)?\\d+");
 	}
 
 	@Override

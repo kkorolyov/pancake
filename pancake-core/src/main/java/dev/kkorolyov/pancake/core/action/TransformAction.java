@@ -38,4 +38,13 @@ public class TransformAction extends Action {
 		entityTransform.getPosition().set(position);
 		if (rotation != null) entityTransform.setRotation(rotation);
 	}
+
+	/** @return position vector set on accepted entities */
+	public Vector getPosition() {
+		return position;
+	}
+	/** @return rotation set on accepted entities, or {@code null} */
+	public Float getRotation() {
+		return rotation;
+	}
 }

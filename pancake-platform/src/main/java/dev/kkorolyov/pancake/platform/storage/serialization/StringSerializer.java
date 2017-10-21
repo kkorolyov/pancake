@@ -1,6 +1,9 @@
 package dev.kkorolyov.pancake.platform.storage.serialization;
 
+import java.util.Optional;
+import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * Serializes to strings.
@@ -20,5 +23,27 @@ public abstract class StringSerializer<I> implements Serializer<I, String> {
 	@Override
 	public boolean accepts(String out) {
 		return pattern.matcher(out).matches();
+	}
+
+	/**
+	 * @param out string to match
+	 * @return deserialized form of first matched group in {@code out}, if found
+	 */
+	public Optional<I> match(String out) {
+		return matches(out).findFirst();
+	}
+	/**
+	 * @param out string to match
+	 * @return deserialized forms of all matched groups in {@code out}, if any
+	 */
+	public Stream<I> matches(String out) {
+		return pattern.matcher(out).results()
+				.map(MatchResult::group)
+				.map(this::read);
+	}
+
+	/** @return accepted regex pattern */
+	public String pattern() {
+		return pattern.pattern();
 	}
 }

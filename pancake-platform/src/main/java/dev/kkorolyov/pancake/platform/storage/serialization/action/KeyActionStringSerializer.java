@@ -1,10 +1,9 @@
-package dev.kkorolyov.pancake.platform.storage.serialization.string.action;
+package dev.kkorolyov.pancake.platform.storage.serialization.action;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.action.KeyAction;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
-import dev.kkorolyov.pancake.platform.storage.serialization.StringSerializer;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -14,24 +13,20 @@ import java.util.stream.Collectors;
 /**
  * Serializes key actions.
  */
-public class KeyActionStringSerializer extends StringSerializer<KeyAction> {
-	private final ActionRegistry registry;
-
+public class KeyActionStringSerializer extends ActionSerializer<KeyAction> {
 	/**
 	 * Constructs a new key action serializer.
-	 * @param registry associated action registry
 	 */
-	public KeyActionStringSerializer(ActionRegistry registry) {
-		super("\\[[_a-zA-Z]+(,\\s*[_a-zA-Z]+)*]\\s*=\\s*.+");
-		this.registry = registry;
+	public KeyActionStringSerializer() {
+		super("\\[[_a-zA-Z]+(,\\s*[_a-zA-Z]+)*]\\s*=\\s*[_a-zA-Z]+");
 	}
 
 	@Override
-	public KeyAction read(String out) {
+	public KeyAction read(String out, ActionRegistry context) {
 		String[] split = out.split("\\s*=\\s*", 2);
 		String keysS = split[0], actionS = split[1];
 
-		return new KeyAction(readAction(actionS), readKeys(keysS));
+		return new KeyAction(readAction(actionS, context), readKeys(keysS));
 	}
 
 	private Iterable<Enum> readKeys(String s) {
@@ -48,8 +43,8 @@ public class KeyActionStringSerializer extends StringSerializer<KeyAction> {
 		}
 	}
 
-	private MultiStageAction readAction(String s) {
-		Action action = registry.readAction(s);
+	private MultiStageAction readAction(String s, ActionRegistry context) {
+		Action action = context.get(s);
 
 		return action instanceof MultiStageAction
 				? (MultiStageAction) action
@@ -57,7 +52,7 @@ public class KeyActionStringSerializer extends StringSerializer<KeyAction> {
 	}
 
 	@Override
-	public String write(KeyAction in) {
+	public String write(KeyAction in, ActionRegistry context) {
 		// TODO
 		return null;
 	}
