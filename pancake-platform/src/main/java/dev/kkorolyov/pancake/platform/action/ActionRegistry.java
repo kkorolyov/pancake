@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.Resources;
-import dev.kkorolyov.pancake.platform.storage.serialization.action.ActionContainerStringSerializer;
-import dev.kkorolyov.pancake.platform.storage.serialization.action.KeyActionStringSerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.action.ActionContainerSerializer;
+import dev.kkorolyov.pancake.platform.storage.serialization.action.KeyActionSerializer;
 import dev.kkorolyov.simplelogs.Logger;
 
 import java.util.Arrays;
@@ -21,8 +21,8 @@ public class ActionRegistry {
 
 	private final Map<String, Action> actions = new HashMap<>();
 
-	private final ActionContainerStringSerializer actionContainerSerializer = new ActionContainerStringSerializer();
-	private final KeyActionStringSerializer keyActionSerializer = new KeyActionStringSerializer();
+	private final ActionContainerSerializer actionContainerSerializer = new ActionContainerSerializer();
+	private final KeyActionSerializer keyActionSerializer = new KeyActionSerializer();
 
 	/**
 	 * Retrieves an action by name.

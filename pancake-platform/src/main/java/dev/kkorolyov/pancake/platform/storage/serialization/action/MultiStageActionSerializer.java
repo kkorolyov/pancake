@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Serializes multi-stage actions.
  */
-public class MultiStageActionStringSerializer extends ActionSerializer<MultiStageAction> {
+public class MultiStageActionSerializer extends ActionSerializer<MultiStageAction> {
 	private static final ContextualSerializer<Action, String, ActionRegistry> autoSerializer = new AutoContextualSerializer(ActionSerializer.class);
 
 	private final float holdThreshold = Float.parseFloat(Config.config.get("holdThreshold"));
@@ -22,7 +22,7 @@ public class MultiStageActionStringSerializer extends ActionSerializer<MultiStag
 	/**
 	 * Constructs a new multi-stage action serializer.
 	 */
-	public MultiStageActionStringSerializer() {
+	public MultiStageActionSerializer() {
 		super(".*(,.*){2}");
 	}
 

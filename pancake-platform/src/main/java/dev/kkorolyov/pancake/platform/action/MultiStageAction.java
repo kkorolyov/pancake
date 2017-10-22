@@ -2,6 +2,8 @@ package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.entity.Entity;
 
+import java.util.Objects;
+
 /**
  * An {@link Action} which applies a different action depending on its current state.
  */
@@ -49,6 +51,22 @@ public class MultiStageAction extends Action {
 		if (armingOption != null) state.apply(entity, this);
 
 		armingOption = null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		MultiStageAction o = (MultiStageAction) obj;
+		return Objects.equals(start, o.start)
+				&& Objects.equals(hold, o.hold)
+				&& Objects.equals(end, o.end)
+				&& Float.compare(holdThreshold, o.holdThreshold) == 0;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(start, hold, end, holdThreshold);
 	}
 
 	/**

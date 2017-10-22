@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.MouseButton
 
 import java.lang.reflect.Field
+import java.lang.reflect.Modifier
 
 /**
  * Provides utility methods for Specs.
@@ -57,7 +58,14 @@ class SpecUtilities {
 		Field f = c.getDeclaredField(field)
 		f.setAccessible(true)
 
-		f.set(object, value)
+		unfinalize(f).set(object, value)
+	}
+	private static Field unfinalize(Field f) {
+		Field modifiers = Field.class.getDeclaredField("modifiers")
+		modifiers.setAccessible(true)
+		modifiers.setInt(f, f.modifiers & ~Modifier.FINAL)
+
+		return f;
 	}
 
 	/**

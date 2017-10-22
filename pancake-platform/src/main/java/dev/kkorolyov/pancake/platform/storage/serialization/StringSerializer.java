@@ -26,6 +26,14 @@ public abstract class StringSerializer<I> implements Serializer<I, String> {
 	}
 
 	/**
+	 * @param out string to consume matches form
+	 * @return result after removing all matched groups in {@code out}
+	 */
+	public String consume(String out) {
+		return pattern.matcher(out).replaceAll("");
+	}
+
+	/**
 	 * @param out string to match
 	 * @return deserialized form of first matched group in {@code out}, if found
 	 */

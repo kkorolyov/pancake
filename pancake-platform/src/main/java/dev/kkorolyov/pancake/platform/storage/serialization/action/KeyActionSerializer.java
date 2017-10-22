@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 /**
  * Serializes key actions.
  */
-public class KeyActionStringSerializer extends ActionSerializer<KeyAction> {
+public class KeyActionSerializer extends ActionSerializer<KeyAction> {
+	private static final ActionSerializer<Action> actionSerializer = new RegisteredActionSerializer();
+
 	/**
 	 * Constructs a new key action serializer.
 	 */
-	public KeyActionStringSerializer() {
-		super("\\[[_a-zA-Z]+(,\\s*[_a-zA-Z]+)*]\\s*=\\s*[_a-zA-Z]+");
+	public KeyActionSerializer() {
+		super("\\[[_a-zA-Z]+(,\\s*[_a-zA-Z]+)*]\\s*=\\s*" + actionSerializer.pattern());
 	}
 
 	@Override
@@ -44,7 +46,7 @@ public class KeyActionStringSerializer extends ActionSerializer<KeyAction> {
 	}
 
 	private MultiStageAction readAction(String s, ActionRegistry context) {
-		Action action = context.get(s);
+		Action action = actionSerializer.read(s, context);
 
 		return action instanceof MultiStageAction
 				? (MultiStageAction) action

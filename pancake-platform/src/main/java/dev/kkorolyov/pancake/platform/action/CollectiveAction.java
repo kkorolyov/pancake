@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -30,5 +31,18 @@ public class CollectiveAction extends Action {
 	@Override
 	protected void apply(Entity entity) {
 		for (Action delegate : delegates) delegate.accept(entity);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		CollectiveAction o = (CollectiveAction) obj;
+		return Objects.equals(delegates, o.delegates);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(delegates);
 	}
 }

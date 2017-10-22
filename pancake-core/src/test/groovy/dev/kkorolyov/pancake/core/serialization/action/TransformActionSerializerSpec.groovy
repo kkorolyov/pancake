@@ -3,42 +3,23 @@ package dev.kkorolyov.pancake.core.serialization.action
 import dev.kkorolyov.pancake.core.action.TransformAction
 import dev.kkorolyov.pancake.platform.action.ActionRegistry
 import dev.kkorolyov.pancake.platform.math.Vector
-import dev.kkorolyov.pancake.platform.storage.serialization.AbstractContextualSerializerSpec
+import dev.kkorolyov.pancake.platform.specbase.BaseContextualSerializerSpec
 
-import spock.lang.Shared
+import static dev.kkorolyov.pancake.platform.SpecUtilities.bigDecimal
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.*
+class TransformActionSerializerSpec extends BaseContextualSerializerSpec<TransformAction, String, ActionRegistry> {
+	float x = randFloat(), y = randFloat(), z = randFloat()
+	Vector position = new Vector(x, y, z)
+	float rotation = randFloat()
 
-class TransformActionSerializerSpec extends AbstractContextualSerializerSpec<TransformAction, String, ActionRegistry> {
-	@Shared float x = randFloat(), y = randFloat(), z = randFloat()
-	@Shared Vector position = new Vector(x, y, z)
-	@Shared float rotation = randFloat()
-
-	def setupSpec() {
-		inReps = [
-				new TransformAction(position, rotation),
-				new TransformAction(position)
-		]
-		outReps = [
-				String.format("TRANSFORM{(%s,%s,%s), %s}", bigDecimal(x), bigDecimal(y), bigDecimal(z), bigDecimal(rotation)),
-				String.format("TRANSFORM{(%s,%s,%s)}", bigDecimal(x), bigDecimal(y), bigDecimal(z))
-		]
-	}
 	def setup() {
+		reps += [
+				(new TransformAction(position, rotation)): "TRANSFORM{(${bigDecimal(x)},${bigDecimal(y)},${bigDecimal(z)}), ${bigDecimal(rotation)}}",
+				(new TransformAction(position)): "TRANSFORM{(${bigDecimal(x)},${bigDecimal(y)},${bigDecimal(z)})}"
+		]
 		context = null
 
 		serializer = new TransformActionSerializer()
-	}
-
-	def "accepts matching pattern"() {
-		expect:
-		serializer.accepts(outRep)
-
-		where:
-		outRep << outReps
-	}
-	def "rejects non-matching pattern"() {
-		expect:
-		!serializer.accepts(randString())
 	}
 }

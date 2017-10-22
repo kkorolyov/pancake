@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 /**
  * Serializes collective actions.
  */
-public class CollectiveActionStringSerializer extends ActionSerializer<CollectiveAction> {
+public class CollectiveActionSerializer extends ActionSerializer<CollectiveAction> {
 	private static final ContextualSerializer<Action, String, ActionRegistry> autoSerializer = new AutoContextualSerializer(ActionSerializer.class);
 
 	/**
 	 * Constructs a new collective action serializer
 	 */
-	public CollectiveActionStringSerializer() {
+	public CollectiveActionSerializer() {
 		super("\\{.+(,\\s?.+)+}");
 	}
 

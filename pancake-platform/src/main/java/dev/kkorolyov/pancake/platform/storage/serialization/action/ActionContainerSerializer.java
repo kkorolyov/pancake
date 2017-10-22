@@ -5,18 +5,20 @@ import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.storage.serialization.AutoContextualSerializer;
 import dev.kkorolyov.pancake.platform.storage.serialization.ContextualSerializer;
 import dev.kkorolyov.pancake.platform.storage.serialization.StringSerializer;
-import dev.kkorolyov.pancake.platform.storage.serialization.action.ActionContainerStringSerializer.ActionContainer;
+import dev.kkorolyov.pancake.platform.storage.serialization.action.ActionContainerSerializer.ActionContainer;
+
+import java.util.Objects;
 
 /**
  * Serializes actions associated with some identifier.
  */
-public class ActionContainerStringSerializer extends StringSerializer<ActionContainer> implements ContextualSerializer<ActionContainer, String, ActionRegistry> {
+public class ActionContainerSerializer extends StringSerializer<ActionContainer> implements ContextualSerializer<ActionContainer, String, ActionRegistry> {
 	private static final ContextualSerializer<Action, String, ActionRegistry> autoSerializer = new AutoContextualSerializer(ActionSerializer.class);
 
 	/**
 	 * Constructs a new action container serializer.
 	 */
-	public ActionContainerStringSerializer() {
+	public ActionContainerSerializer() {
 		super("[_a-zA-Z]+\\s*=\\s*.+");
 	}
 
@@ -38,9 +40,9 @@ public class ActionContainerStringSerializer extends StringSerializer<ActionCont
 	}
 	@Override
 	public String write(ActionContainer in, ActionRegistry context) {
-		// TODO
-		return null;
+		return in.name + "=" + autoSerializer.write(in.action, context);
 	}
+
 	/**
 	 * Contains a single name-action association.
 	 */
@@ -51,6 +53,20 @@ public class ActionContainerStringSerializer extends StringSerializer<ActionCont
 		private ActionContainer(String name, Action action) {
 			this.name = name;
 			this.action = action;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+			ActionContainer o = (ActionContainer) obj;
+			return Objects.equals(name, o.name)
+					&& Objects.equals(action, o.action);
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(name, action);
 		}
 	}
 }

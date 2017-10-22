@@ -28,7 +28,7 @@ public class TransformActionSerializer extends ActionSerializer<TransformAction>
 	public TransformAction read(String out, ActionRegistry context) {
 		Vector position = positionSerializer.match(out)
 				.orElseThrow(IllegalStateException::new);
-		Float rotation = rotationSerializer.match(out.replaceAll(positionSerializer.pattern(), ""))
+		Float rotation = rotationSerializer.match(positionSerializer.consume(out))
 				.map(BigDecimal::floatValue)
 				.orElse(null);
 
