@@ -45,6 +45,16 @@ configure([	// Doc-able
 		source = sourceSets.main.allJava
 		destinationDir = file("$rootProject.projectDir/docs/$project.name")
 	}
+
+	task cleandoc {
+		group 'documentation'
+		description "Cleans documentation directory"
+
+		doLast{
+			javadoc.destinationDir.deleteDir()
+			println "Cleaned documentation directory: $javadoc.destinationDir"
+		}
+	}
 }
 
 configure([	// Testable
