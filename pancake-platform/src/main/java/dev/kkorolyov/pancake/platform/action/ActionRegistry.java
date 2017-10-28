@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.Resources;
-import dev.kkorolyov.pancake.platform.storage.serialization.action.ActionContainerSerializer;
-import dev.kkorolyov.pancake.platform.storage.serialization.action.KeyActionSerializer;
+import dev.kkorolyov.pancake.platform.serialization.action.ActionContainerSerializer;
+import dev.kkorolyov.pancake.platform.serialization.action.KeyActionSerializer;
 import dev.kkorolyov.simplelogs.Logger;
 
 import java.util.Arrays;

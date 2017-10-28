@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.specbase
 
-import dev.kkorolyov.pancake.platform.storage.serialization.AutoSerializer
-import dev.kkorolyov.pancake.platform.storage.serialization.Serializer
+import dev.kkorolyov.pancake.platform.serialization.AutoSerializer
+import dev.kkorolyov.pancake.platform.serialization.Serializer
 
 import spock.lang.Specification
 /**

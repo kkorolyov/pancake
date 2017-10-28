@@ -1,10 +1,10 @@
 package dev.kkorolyov.pancake.skillet.ui.entity;
 
-import dev.kkorolyov.pancake.platform.storage.Component;
-import dev.kkorolyov.pancake.platform.storage.Entity;
-import dev.kkorolyov.pancake.platform.storage.Entity.EntityChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.GenericComponent;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.StorableListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentPanel;
 
@@ -12,12 +12,12 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
-import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 
 /**
- * Displays an {@link Entity}.
+ * Displays an {@link GenericEntity}.
  */
-public class EntityPanel implements Panel, StorableListener<Entity> {
+public class EntityPanel implements Panel, StorableListener<GenericEntity> {
 	private final VBox content;
 	private final ScrollPane root;
 
@@ -25,7 +25,7 @@ public class EntityPanel implements Panel, StorableListener<Entity> {
 	 * Constructs a new entity display.
 	 * @param entity displayed entity
 	 */
-	public EntityPanel(Entity entity) {
+	public EntityPanel(GenericEntity entity) {
 		content = decorate(new VBox(entity.getComponents().stream()
 				.map(component -> buildComponentDisplay(entity, component))
 				.toArray(Node[]::new)))
@@ -45,9 +45,9 @@ public class EntityPanel implements Panel, StorableListener<Entity> {
 	}
 
 	@Override
-	public void changed(Entity target, StorableChangeEvent event) {
+	public void changed(GenericEntity target, StorableChangeEvent event) {
 		if (EntityChangeEvent.ADD == event) {
-			for (Component component : target.getComponents()) {
+			for (GenericComponent component : target.getComponents()) {
 				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(component.getName()))) {
 					content.getChildren().add(buildComponentDisplay(target, component));
 				}
@@ -57,7 +57,7 @@ public class EntityPanel implements Panel, StorableListener<Entity> {
 		}
 	}
 
-	private Node buildComponentDisplay(Entity entity, Component component) {
+	private Node buildComponentDisplay(GenericEntity entity, GenericComponent component) {
 		ComponentPanel componentPanel = new ComponentPanel(component);
 		componentPanel.onComponentRemoveAction(() -> entity.removeComponent(component.getName()));
 

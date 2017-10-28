@@ -1,6 +1,20 @@
-Transform = position: {x=0, y=0, z=0}, rotation: 0
-Bounds = box: {x=0, y=0, z=0}, radius: 0
-Damping = damping: {x=0, y=0, z=0}
-Force = force: {x=0, y=0, z=0}, mass: 0
-Velocity = velocity: {x=0, y=0, z=0}, maxSpeed: {x=0, y=0, z=0}
-Sprite = image: "", imageURI: file:///c/test
+DEFAULT[
+	Transform{
+		position: (0,0,0), rotation: 0
+	},
+	Bounds{
+		box: (0,0,0), radius: 0
+	},
+	Damping{
+		damping: (0,0,0)
+	},
+	Force{
+		force: (0,0,0), mass: 0
+	},
+	Velocity{
+		velocity: (0,0,0), maxSpeed: (0,0,0)
+	},
+	Sprite{
+		image: "", imageURI: file:///c/test
+	}
+]

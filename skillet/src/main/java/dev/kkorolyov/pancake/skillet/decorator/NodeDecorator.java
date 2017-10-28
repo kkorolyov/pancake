@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.skillet.decorator;
 
-import dev.kkorolyov.pancake.skillet.UIDecorator;
-
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -105,6 +104,17 @@ public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extend
 					.findFirst()
 					.ifPresent(entry -> entry.getValue().run());
 		});
+		return (D) this;
+	}
+
+	/**
+	 * Sets a property value.
+	 * @param propertyFunction retrieves the property from the decorated node
+	 * @param value new property value
+	 * @return {@code this}
+	 */
+	public <V> D property(Function<T, ObjectProperty<V>> propertyFunction, V value) {
+			propertyFunction.apply(object).setValue(value);
 		return (D) this;
 	}
 

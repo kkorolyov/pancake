@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.skillet.ui.component;
 
-import dev.kkorolyov.pancake.platform.storage.Attribute;
-import dev.kkorolyov.pancake.platform.storage.Component;
-import dev.kkorolyov.pancake.platform.storage.Component.ComponentChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.GenericComponent;
+import dev.kkorolyov.pancake.skillet.model.GenericComponent.ComponentChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.Storable.StorableChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.StorableListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
-import dev.kkorolyov.pancake.skillet.ui.attribute.AttributePanel;
+import dev.kkorolyov.pancake.skillet.ui.attribute.AutoDisplayer;
+import dev.kkorolyov.pancake.skillet.ui.attribute.Displayer;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -18,12 +18,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import java.util.stream.Collectors;
 
-import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 
 /**
- * Displays a {@link Component}.
+ * Displays a {@link GenericComponent}.
  */
-public class ComponentPanel implements Panel, StorableListener<Component> {
+public class ComponentPanel implements Panel, StorableListener<GenericComponent> {
+	private static Displayer<Object> autoDisplayer = new AutoDisplayer();
+
 	private final VBox content = new VBox();
 	private final TitledPane root = new TitledPane();
 
@@ -33,9 +35,11 @@ public class ComponentPanel implements Panel, StorableListener<Component> {
 	 * Constructs a new component display.
 	 * @param component displayed component
 	 */
-	public ComponentPanel(Component component) {
-		content.getChildren().addAll(component.getAttributes().stream()
-				.map(attribute -> new AttributePanel(attribute).getRoot())
+	public ComponentPanel(GenericComponent component) {
+		content.getChildren().addAll(component.stream()
+				.map(entry -> decorate(autoDisplayer.display(entry))
+						.id(entry.getKey())
+						.get())
 				.collect(Collectors.toList()));
 
 		decorate(root)
@@ -78,15 +82,13 @@ public class ComponentPanel implements Panel, StorableListener<Component> {
 	}
 
 	@Override
-	public void changed(Component target, StorableChangeEvent event) {
+	public void changed(GenericComponent target, StorableChangeEvent event) {
 		if (ComponentChangeEvent.ADD == event) {
-			for (Attribute attribute : target.getAttributes()) {
-				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(attribute.getName()))) {
-					content.getChildren().add(new AttributePanel(attribute).getRoot());
-				}
-			}
+			target.stream()
+					.filter(entry -> content.getChildren().stream().noneMatch(node -> node.getId().equals(entry.getKey())))
+					.forEach(entry -> content.getChildren().add(autoDisplayer.display(entry)));
 		} else if (ComponentChangeEvent.REMOVE == event) {
-			content.getChildren().removeIf(next -> target.getAttributes().stream().noneMatch(attribute -> attribute.getName().equals(next.getId())));
+			content.getChildren().removeIf(next -> target.stream().noneMatch(entry -> entry.getKey().equals(next.getId())));
 		}
 	}
 }

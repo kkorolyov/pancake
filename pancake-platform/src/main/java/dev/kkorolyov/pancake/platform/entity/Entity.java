@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * A single entity found in the game world. Consists of a unique ID and a set of distinctly-typed {@code Component} objects.
@@ -113,6 +114,15 @@ public class Entity implements Comparable<Entity> {
 	/** @return entity ID */
 	public int getId() {
 		return id;
+	}
+
+	/** @return all components */
+	public Iterable<Component> getComponents() {
+		return components.values();
+	}
+	/** @return all components as a stream */
+	public Stream<Component> streamComponents() {
+		return components.values().stream();
 	}
 
 	/** Checks for equality by ID. */

@@ -1,7 +1,5 @@
 package dev.kkorolyov.pancake.skillet.decorator;
 
-import dev.kkorolyov.pancake.skillet.UIDecorator;
-
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;

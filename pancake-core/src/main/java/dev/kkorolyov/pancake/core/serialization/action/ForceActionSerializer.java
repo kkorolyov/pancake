@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.core.serialization.action;
 
 import dev.kkorolyov.pancake.core.action.ForceAction;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
-import dev.kkorolyov.pancake.platform.storage.serialization.action.ActionSerializer;
-import dev.kkorolyov.pancake.platform.storage.serialization.string.VectorStringSerializer;
+import dev.kkorolyov.pancake.platform.serialization.action.ActionSerializer;
+import dev.kkorolyov.pancake.platform.serialization.string.VectorStringSerializer;
 
 /**
  * Serializes {@link ForceAction}.

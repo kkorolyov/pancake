@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.platform.storage.Component;
-import dev.kkorolyov.pancake.platform.storage.Entity;
+import dev.kkorolyov.pancake.skillet.model.GenericComponent;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentList;
 import dev.kkorolyov.pancake.skillet.ui.entity.EntityTabPane;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 
 public class Skillet extends Application {
 	private static final String ENTITY_FILE_EXTENSION = ".mfn";
@@ -31,7 +31,7 @@ public class Skillet extends Application {
 	private Stage stage;
 
 	private final ComponentFactory componentFactory = new ComponentFactory();
-	private Entity entity;
+	private GenericEntity entity;
 
 	private final EntityTabPane entityTabPane = new EntityTabPane();
 	private final ComponentList componentList = new ComponentList(componentFactory);
@@ -116,7 +116,7 @@ public class Skillet extends Application {
 	}
 
 	private void newEntity() {
-		entityTabPane.add(new Entity());
+		entityTabPane.add(new GenericEntity());
 	}
 	private void saveEntity() {
 		if (entity == null) return;
@@ -135,11 +135,11 @@ public class Skillet extends Application {
 
 		File result = chooser.showOpenDialog(stage);
 		if (result != null) {
-			Iterable<Component> components = resourceHandler.load(result.toString());
+			Iterable<GenericComponent> components = resourceHandler.load(result.toString());
 
 			componentFactory.add(components, false);
 
-			entityTabPane.add(new Entity(result.getName().replaceAll(ENTITY_FILE_EXTENSION, ""), components));
+			entityTabPane.add(new GenericEntity(result.getName().replaceAll(ENTITY_FILE_EXTENSION, ""), components));
 		}
 	}
 
@@ -149,7 +149,7 @@ public class Skillet extends Application {
 
 		List<File> results = chooser.showOpenMultipleDialog(stage);
 		if (results != null) {
-			List<Component> addedComponents = new ArrayList<>();
+			List<GenericComponent> addedComponents = new ArrayList<>();
 
 			for (File file : results) {
 				resourceHandler.load(file.toString()).forEach(addedComponents::add);

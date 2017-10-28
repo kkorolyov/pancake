@@ -1,0 +1,3 @@
+dev.kkorolyov.pancake.platform.serialization.action.MultiStageActionSerializer
+dev.kkorolyov.pancake.platform.serialization.action.CollectiveActionSerializer
+dev.kkorolyov.pancake.platform.serialization.action.RegisteredActionSerializer
