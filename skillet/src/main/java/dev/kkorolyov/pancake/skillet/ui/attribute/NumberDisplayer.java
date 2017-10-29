@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.platform.serialization.string.NumberStringSerialize
 
 import javafx.scene.Node;
 import javafx.scene.control.Spinner;
-import javafx.scene.input.KeyCombination;
 import java.math.BigDecimal;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
@@ -30,7 +29,7 @@ public class NumberDisplayer extends Displayer<BigDecimal> {
 		return simpleDisplay(entry.getKey(),
 				decorate(new Spinner<Double>(-Float.MAX_VALUE, Float.MAX_VALUE, entry.getValue().floatValue(), .1))
 						.patterns(SEMI_NUMBER_PATTERN, NUMBER_PATTERN)
-						.press(10, 1, KeyCombination.SHIFT_DOWN)
+						.press(10, 1)
 						.change(Spinner::valueProperty,
 								(target, oldValue, newValue) -> entry.setValue(new BigDecimal(newValue)))
 						.get());

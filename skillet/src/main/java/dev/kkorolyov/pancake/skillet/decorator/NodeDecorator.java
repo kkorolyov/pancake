@@ -3,12 +3,14 @@ package dev.kkorolyov.pancake.skillet.decorator;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.ScrollEvent;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
@@ -104,6 +106,16 @@ public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extend
 					.findFirst()
 					.ifPresent(entry -> entry.getValue().run());
 		});
+		return (D) this;
+	}
+
+	/**
+	 * Sets a scroll event procedure
+	 * @param eventHandler scroll event handler
+	 * @return {@code this}
+	 */
+	public D scroll(EventHandler<? super ScrollEvent> eventHandler) {
+		object.setOnScroll(eventHandler);
 		return (D) this;
 	}
 

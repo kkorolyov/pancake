@@ -86,9 +86,10 @@ public final class Resources {
 		return stream;
 	}
 	private static boolean logRetrieval(String streamType, String path, boolean success) {
-		if (success) log.debug("Retrieved {} stream at path: {}", streamType, path);
-		else log.warning("Unable to find {} stream at path: {}", streamType, path);
-
+		if (log != null) {	// TODO Can happen during the back-forth initialization of Resources and Config
+			if (success) log.debug("Retrieved {} stream at path: {}", streamType, path);
+			else log.warning("Unable to find {} stream at path: {}", streamType, path);
+		}
 		return success;
 	}
 }

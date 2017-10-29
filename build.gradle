@@ -165,22 +165,14 @@ configure([	// Core-reliant
 	}
 }
 
-configure([	// SimpleFiles-reliant
-		platform,
-		skillet
-]) {
-	dependencies {
-		implementation 'dev.kkorolyov:simple-files:1.+'
-	}
-}
-
 project(':pancake-platform') {
 	description = "Main Pancake engine platform"
 
 	dependencies {
 		api(
 				'dev.kkorolyov:simple-logs:3.+',
-				'dev.kkorolyov:simple-props:4.+'
+				'dev.kkorolyov:simple-props:4.+',
+				'dev.kkorolyov:simple-files:1.+'
 		)
 	}
 }

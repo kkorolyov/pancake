@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.platform.math.Vector;
 
 import javafx.scene.Node;
 import javafx.scene.control.Spinner;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.HBox;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
@@ -35,7 +34,7 @@ public class VectorDisplayer extends Displayer<Vector> {
 	private static Spinner<Double> buildSpinner(Vector vector, Function<Vector, Float> extractor, BiConsumer<Vector, Float> applier) {
 		return decorate(new Spinner<Double>(-Float.MAX_VALUE, Float.MAX_VALUE, extractor.apply(vector), .1))
 				.patterns(NumberDisplayer.SEMI_NUMBER_PATTERN, NumberDisplayer.NUMBER_PATTERN)
-				.press(10, 1, KeyCombination.SHIFT_DOWN)
+				.press(10, 1)
 				.change(Spinner::valueProperty,
 						(target, oldValue, newValue) -> applier.accept(vector, newValue.floatValue()))
 				.get();

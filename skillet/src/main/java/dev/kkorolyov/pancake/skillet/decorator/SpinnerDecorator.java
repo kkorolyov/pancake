@@ -48,15 +48,20 @@ public class SpinnerDecorator<T extends Spinner> extends RegionDecorator<T, Spin
 	}
 
 	/**
-	 * Applies key press procedures to the spinner invoking the decorated spinner's increment/decrement methods.
-	 * @param standard number of steps to increment/decrement by when an arrow key is pressed.
-	 * @param modified number of steps to increment/decrement by when {@code modifier} is pressed along with an arrow key.
-	 * @param modifier key modifier
+	 * Sets the number of steps the decorated spinner is changed by when arrow keys or scroll events are applied to it.
+	 * @param standard standard number of steps to increment/decrement by
+	 * @param modified number of steps to increment/decrement by when ALT is also held
 	 * @return {@code this}
 	 */
-	public SpinnerDecorator<T> press(int standard, int modified, Modifier modifier) {
+	public SpinnerDecorator<T> press(int standard, int modified) {
 		decorate(object.getEditor())
-				.press(buildSpinnerProcedures(standard, modified, modifier));
+				.press(buildSpinnerProcedures(standard, modified, KeyCombination.ALT_DOWN));
+		decorate(object)
+				.scroll(e -> {
+					int steps = e.isAltDown() ? modified : standard;
+
+					if (e.getDeltaY() < 0) { object.decrement(steps); } else object.increment(steps);
+				});
 		return this;
 	}
 
