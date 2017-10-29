@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.skillet;
 
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
-import dev.kkorolyov.pancake.skillet.model.Storable;
+import dev.kkorolyov.pancake.skillet.model.Model;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * Provides fresh instances of various components by name.
  */
-public class ComponentFactory extends Storable<ComponentFactory> {
+public class ComponentFactory extends Model<ComponentFactory> {
 	private final Map<String, GenericComponent> components = new LinkedHashMap<>();
 
 	/**
@@ -79,7 +79,7 @@ public class ComponentFactory extends Storable<ComponentFactory> {
 		components.clear();
 	}
 
-	public enum ComponentFactoryChangeEvent implements StorableChangeEvent {
+	public enum ComponentFactoryChangeEvent implements ModelChangeEvent {
 		ADD,
 		REMOVE
 	}

@@ -3,8 +3,8 @@ package dev.kkorolyov.pancake.skillet.ui.entity;
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
 import dev.kkorolyov.pancake.skillet.model.GenericEntity;
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentPanel;
 
@@ -17,7 +17,7 @@ import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 /**
  * Displays an {@link GenericEntity}.
  */
-public class EntityPanel implements Panel, StorableListener<GenericEntity> {
+public class EntityPanel implements Panel, ModelListener<GenericEntity> {
 	private final VBox content;
 	private final ScrollPane root;
 
@@ -45,7 +45,7 @@ public class EntityPanel implements Panel, StorableListener<GenericEntity> {
 	}
 
 	@Override
-	public void changed(GenericEntity target, StorableChangeEvent event) {
+	public void changed(GenericEntity target, ModelChangeEvent event) {
 		if (EntityChangeEvent.ADD == event) {
 			for (GenericComponent component : target.getComponents()) {
 				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(component.getName()))) {

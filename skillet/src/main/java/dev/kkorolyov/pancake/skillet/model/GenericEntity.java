@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * A container of distinct components.
  */
-public class GenericEntity extends Storable<GenericEntity> implements Iterable<GenericComponent> {
+public class GenericEntity extends Model<GenericEntity> implements Iterable<GenericComponent> {
 	private String name;
 	private final Map<String, GenericComponent> components = new LinkedHashMap<>();
 
@@ -98,7 +98,7 @@ public class GenericEntity extends Storable<GenericEntity> implements Iterable<G
 	/**
 	 * A change to an entity.
 	 */
-	public enum EntityChangeEvent implements StorableChangeEvent {
+	public enum EntityChangeEvent implements ModelChangeEvent {
 		NAME,
 		ADD,
 		REMOVE

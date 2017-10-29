@@ -4,8 +4,8 @@ import dev.kkorolyov.pancake.skillet.ComponentFactory;
 import dev.kkorolyov.pancake.skillet.ComponentFactory.ComponentFactoryChangeEvent;
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
 import dev.kkorolyov.pancake.skillet.model.GenericEntity;
-import dev.kkorolyov.pancake.skillet.model.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.Node;
@@ -24,7 +24,7 @@ import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 /**
  * Displays a list of components which may be added to the designed entity.
  */
-public class ComponentList implements Panel, StorableListener<ComponentFactory> {
+public class ComponentList implements Panel, ModelListener<ComponentFactory> {
 	private final Map<String, Button> componentButtons = new HashMap<>();
 	private final VBox content = new VBox();
 	private final VBox root = new VBox(
@@ -70,7 +70,7 @@ public class ComponentList implements Panel, StorableListener<ComponentFactory> 
 	}
 
 	@Override
-	public void changed(ComponentFactory target, StorableChangeEvent event) {
+	public void changed(ComponentFactory target, ModelChangeEvent event) {
 		if (ComponentFactoryChangeEvent.ADD == event) {
 			target.getNames()
 					.forEach(name ->

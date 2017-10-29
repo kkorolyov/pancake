@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.skillet.ui.entity;
 
 import dev.kkorolyov.pancake.skillet.model.GenericEntity;
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.Node;
@@ -18,7 +18,7 @@ import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 /**
  * Displays editing entities as selectable tabs.
  */
-public class EntityTabPane implements Panel, StorableListener<GenericEntity> {
+public class EntityTabPane implements Panel, ModelListener<GenericEntity> {
 	private final Map<GenericEntity, Tab> entities = new HashMap<>();
 	private final TabPane root = new TabPane();
 
@@ -85,7 +85,7 @@ public class EntityTabPane implements Panel, StorableListener<GenericEntity> {
 	}
 
 	@Override
-	public void changed(GenericEntity target, StorableChangeEvent event) {
+	public void changed(GenericEntity target, ModelChangeEvent event) {
 		if (EntityChangeEvent.REMOVE == event) entitySelected(target);
 	}
 }

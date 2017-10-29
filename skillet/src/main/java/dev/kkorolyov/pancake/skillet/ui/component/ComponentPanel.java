@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.skillet.ui.component;
 
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
 import dev.kkorolyov.pancake.skillet.model.GenericComponent.ComponentChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.attribute.AutoDisplayer;
 import dev.kkorolyov.pancake.skillet.ui.attribute.Displayer;
@@ -23,7 +23,7 @@ import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 /**
  * Displays a {@link GenericComponent}.
  */
-public class ComponentPanel implements Panel, StorableListener<GenericComponent> {
+public class ComponentPanel implements Panel, ModelListener<GenericComponent> {
 	private static Displayer<Object> autoDisplayer = new AutoDisplayer();
 
 	private final VBox content = new VBox();
@@ -82,7 +82,7 @@ public class ComponentPanel implements Panel, StorableListener<GenericComponent>
 	}
 
 	@Override
-	public void changed(GenericComponent target, StorableChangeEvent event) {
+	public void changed(GenericComponent target, ModelChangeEvent event) {
 		if (ComponentChangeEvent.ADD == event) {
 			target.stream()
 					.filter(entry -> content.getChildren().stream().noneMatch(node -> node.getId().equals(entry.getKey())))

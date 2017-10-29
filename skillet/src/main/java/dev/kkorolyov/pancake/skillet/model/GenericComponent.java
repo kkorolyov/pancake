@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * Contains an attribute map.
  */
-public class GenericComponent extends Storable<GenericComponent> implements Component, Iterable<Entry<String, Object>> {
+public class GenericComponent extends Model<GenericComponent> implements Component, Iterable<Entry<String, Object>> {
 	private final String name;
 	private final Map<String, Object> attributes;
 
@@ -53,7 +53,7 @@ public class GenericComponent extends Storable<GenericComponent> implements Comp
 	/**
 	 * A change to a component.
 	 */
-	public enum ComponentChangeEvent implements StorableChangeEvent {
+	public enum ComponentChangeEvent implements ModelChangeEvent {
 		ADD,
 		REMOVE
 	}
