@@ -18,6 +18,6 @@ public class AutoContextualSerializer<I, O, C, P extends ContextualSerializer<I,
 	}
 	@Override
 	public O write(I in, C context) {
-		return null;
+		return write(in, provider -> provider.write(in, context));
 	}
 }
