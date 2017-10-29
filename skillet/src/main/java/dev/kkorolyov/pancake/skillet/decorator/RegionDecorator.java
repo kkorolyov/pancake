@@ -38,4 +38,17 @@ public class RegionDecorator<T extends Region, D extends RegionDecorator<T, D>> 
 
 		return (D) this;
 	}
+
+	/**
+	 * Sets a preferred size.
+	 * @param prefWidth preferred width, or {@code null}
+	 * @param prefHeight preferred height, or {@code null}
+	 * @return {@code this}
+	 */
+	public D prefSize(Double prefWidth, Double prefHeight) {
+		if (prefWidth != null) object.setPrefWidth(prefWidth);
+		if (prefHeight != null) object.setPrefHeight(prefHeight);
+
+		return (D) this;
+	}
 }

@@ -1,9 +1,9 @@
 package dev.kkorolyov.pancake.skillet.ui.entity;
 
-import dev.kkorolyov.pancake.platform.storage.Entity;
-import dev.kkorolyov.pancake.platform.storage.Entity.EntityChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.Node;
@@ -13,12 +13,12 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
-import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 
 /**
  * Editable label displaying an entity name.
  */
-public class EntityLabel implements Panel, StorableListener<Entity> {
+public class EntityLabel implements Panel, ModelListener<GenericEntity> {
 	private final Label label = new Label();
 	private final TextField textField = new TextField();
 	private final VBox root = new VBox();
@@ -27,7 +27,7 @@ public class EntityLabel implements Panel, StorableListener<Entity> {
 	 * Constructs a new entity tab.
 	 * @param entity associated entity
 	 */
-	public EntityLabel(Entity entity) {
+	public EntityLabel(GenericEntity entity) {
 		decorate(label)
 				.styleClass("entity-name")
 				.minSize(10.0, null)
@@ -61,7 +61,7 @@ public class EntityLabel implements Panel, StorableListener<Entity> {
 	}
 
 	@Override
-	public void changed(Entity target, StorableChangeEvent event) {
+	public void changed(GenericEntity target, ModelChangeEvent event) {
 		if (EntityChangeEvent.NAME == event) {
 			label.setText(target.getName());
 			textField.setText(target.getName());

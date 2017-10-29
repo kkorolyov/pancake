@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.specbase
 
-import dev.kkorolyov.pancake.platform.storage.serialization.AutoContextualSerializer
-import dev.kkorolyov.pancake.platform.storage.serialization.ContextualSerializer
+import dev.kkorolyov.pancake.platform.serialization.AutoContextualSerializer
+import dev.kkorolyov.pancake.platform.serialization.ContextualSerializer
 /**
  * Base specification for {@link ContextualSerializer} implementations.
  * Verifies contextual {@code read} and {@code write}.

@@ -23,6 +23,8 @@ public final class Config {
 		reloadLogging();
 	}
 
+	private Config() {}
+
 	/**
 	 * Reloads configuration file.
 	 */

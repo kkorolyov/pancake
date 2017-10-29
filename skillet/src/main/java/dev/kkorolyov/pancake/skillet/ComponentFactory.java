@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.skillet;
 
-import dev.kkorolyov.pancake.platform.storage.Component;
-import dev.kkorolyov.pancake.platform.storage.Storable;
+import dev.kkorolyov.pancake.skillet.model.GenericComponent;
+import dev.kkorolyov.pancake.skillet.model.Model;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -11,17 +11,17 @@ import java.util.Optional;
 /**
  * Provides fresh instances of various components by name.
  */
-public class ComponentFactory extends Storable<ComponentFactory> {
-	private final Map<String, Component> components = new LinkedHashMap<>();
+public class ComponentFactory extends Model<ComponentFactory> {
+	private final Map<String, GenericComponent> components = new LinkedHashMap<>();
 
 	/**
 	 * Provides a copy of a component.
 	 * @param name name of component to copy
 	 * @return clone of component of name {@code name}, or {@code null} if no such component
 	 */
-	public Component get(String name) {
+	public GenericComponent get(String name) {
 		return Optional.of(components.get(name))
-				.map(Storable::copy)
+				.map(GenericComponent::copy)
 				.orElse(null);
 	}
 
@@ -41,7 +41,7 @@ public class ComponentFactory extends Storable<ComponentFactory> {
 	 * @param overwrite {@code true} overwrites any existing component with the same name
 	 * @return {@code this}
 	 */
-	public ComponentFactory add(Component component, boolean overwrite) {
+	public ComponentFactory add(GenericComponent component, boolean overwrite) {
 		if (overwrite || !contains(component.getName())) {
 			components.put(component.getName(), component);
 
@@ -55,8 +55,8 @@ public class ComponentFactory extends Storable<ComponentFactory> {
 	 * @param overwrite {@code true} overwrites any existing component with the same name
 	 * @return {@code this}
 	 */
-	public ComponentFactory add(Iterable<Component> components, boolean overwrite) {
-		for (Component component : components) add(component, overwrite);
+	public ComponentFactory add(Iterable<GenericComponent> components, boolean overwrite) {
+		for (GenericComponent component : components) add(component, overwrite);
 		return this;
 	}
 
@@ -64,8 +64,8 @@ public class ComponentFactory extends Storable<ComponentFactory> {
 	 * @param name removed component name
 	 * @return removed component, or {@code null} if no such component
 	 */
-	public Component remove(String name) {
-		Component removed = components.remove(name);
+	public GenericComponent remove(String name) {
+		GenericComponent removed = components.remove(name);
 
 		if (removed != null) changed(ComponentFactoryChangeEvent.REMOVE);
 
@@ -79,7 +79,7 @@ public class ComponentFactory extends Storable<ComponentFactory> {
 		components.clear();
 	}
 
-	public enum ComponentFactoryChangeEvent implements StorableChangeEvent {
+	public enum ComponentFactoryChangeEvent implements ModelChangeEvent {
 		ADD,
 		REMOVE
 	}

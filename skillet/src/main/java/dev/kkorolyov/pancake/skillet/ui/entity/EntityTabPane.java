@@ -1,9 +1,9 @@
 package dev.kkorolyov.pancake.skillet.ui.entity;
 
-import dev.kkorolyov.pancake.platform.storage.Entity;
-import dev.kkorolyov.pancake.platform.storage.Entity.EntityChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.StorableListener;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.Node;
@@ -13,16 +13,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 
 /**
  * Displays editing entities as selectable tabs.
  */
-public class EntityTabPane implements Panel, StorableListener<Entity> {
-	private final Map<Entity, Tab> entities = new HashMap<>();
+public class EntityTabPane implements Panel, ModelListener<GenericEntity> {
+	private final Map<GenericEntity, Tab> entities = new HashMap<>();
 	private final TabPane root = new TabPane();
 
-	private Consumer<Entity> entitySelected;
+	private Consumer<GenericEntity> entitySelected;
 
 	/**
 	 * Constructs a new entity tab pane.
@@ -36,7 +36,7 @@ public class EntityTabPane implements Panel, StorableListener<Entity> {
 	 * Adds a new entity tab if it does not yet exist.
 	 * @param entity associated entity
 	 */
-	public void add(Entity entity) {
+	public void add(GenericEntity entity) {
 		entities.computeIfAbsent(entity, k -> {
 			Tab tab = decorate(new Tab())
 					.id(entity.getName())
@@ -60,21 +60,21 @@ public class EntityTabPane implements Panel, StorableListener<Entity> {
 		});
 	}
 
-	private void entitySelected(Entity entity) {
+	private void entitySelected(GenericEntity entity) {
 		if (entity != null) entity.register(this);
 
 		if (entitySelected != null) entitySelected.accept(entity);
 	}
 	/** @param entitySelected listener invoked with the selected entity when an entity is selected */
-	public void onEntitySelected(Consumer<Entity> entitySelected) {
+	public void onEntitySelected(Consumer<GenericEntity> entitySelected) {
 		this.entitySelected = entitySelected;
 	}
 
-	private void entityUnselected(Entity entity) {
+	private void entityUnselected(GenericEntity entity) {
 		entity.unregister(this);
 	}
 
-	private void entityClosed(Entity entity) {
+	private void entityClosed(GenericEntity entity) {
 		entities.remove(entity);
 		if (entities.isEmpty()) entitySelected(null);
 	}
@@ -85,7 +85,7 @@ public class EntityTabPane implements Panel, StorableListener<Entity> {
 	}
 
 	@Override
-	public void changed(Entity target, StorableChangeEvent event) {
+	public void changed(GenericEntity target, ModelChangeEvent event) {
 		if (EntityChangeEvent.REMOVE == event) entitySelected(target);
 	}
 }

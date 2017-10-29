@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.skillet.ui.component;
 
-import dev.kkorolyov.pancake.platform.storage.Component;
-import dev.kkorolyov.pancake.platform.storage.Entity;
-import dev.kkorolyov.pancake.platform.storage.Storable.StorableChangeEvent;
-import dev.kkorolyov.pancake.platform.storage.StorableListener;
 import dev.kkorolyov.pancake.skillet.ComponentFactory;
 import dev.kkorolyov.pancake.skillet.ComponentFactory.ComponentFactoryChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.GenericComponent;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity;
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
+import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.Node;
@@ -19,12 +19,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 
-import static dev.kkorolyov.pancake.skillet.UIDecorator.decorate;
+import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 
 /**
  * Displays a list of components which may be added to the designed entity.
  */
-public class ComponentList implements Panel, StorableListener<ComponentFactory> {
+public class ComponentList implements Panel, ModelListener<ComponentFactory> {
 	private final Map<String, Button> componentButtons = new HashMap<>();
 	private final VBox content = new VBox();
 	private final VBox root = new VBox(
@@ -35,8 +35,8 @@ public class ComponentList implements Panel, StorableListener<ComponentFactory> 
 					.compact()
 					.get());
 
-	private Entity lastKnown;
-	private Consumer<Component> componentSelected;
+	private GenericEntity lastKnown;
+	private Consumer<GenericComponent> componentSelected;
 
 	/**
 	 * Constructs a new component list.
@@ -50,17 +50,17 @@ public class ComponentList implements Panel, StorableListener<ComponentFactory> 
 	 * Disables buttons of all components present in {@code entity}.
 	 * Enables buttons of all others.
 	 */
-	public void refreshComponents(Entity entity) {
+	public void refreshComponents(GenericEntity entity) {
 		lastKnown = entity;
 
 		componentButtons.forEach((name, button) -> button.setDisable(lastKnown == null || lastKnown.containsComponent(name)));
 	}
 
-	private void componentSelected(Component component) {
+	private void componentSelected(GenericComponent component) {
 		if (componentSelected != null) componentSelected.accept(component);
 	}
 	/** @param componentSelected listener invoked with the selected component when a component is selected */
-	public void onComponentSelected(Consumer<Component> componentSelected) {
+	public void onComponentSelected(Consumer<GenericComponent> componentSelected) {
 		this.componentSelected = componentSelected;
 	}
 
@@ -70,7 +70,7 @@ public class ComponentList implements Panel, StorableListener<ComponentFactory> 
 	}
 
 	@Override
-	public void changed(ComponentFactory target, StorableChangeEvent event) {
+	public void changed(ComponentFactory target, ModelChangeEvent event) {
 		if (ComponentFactoryChangeEvent.ADD == event) {
 			target.getNames()
 					.forEach(name ->
