@@ -6,3 +6,6 @@ out/
 # IDE
 .idea/
 *.iml
+
+# Resources
+*.mfn
