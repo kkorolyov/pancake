@@ -35,6 +35,7 @@ public abstract class Displayer<T> {
 						.tooltip(getTooltipText())
 						.get())
 				.right(value)
+				.minSize(0.0, null)
 				.get();
 	}
 
