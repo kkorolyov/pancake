@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"dev.kkorolyov.pancake.core.action"},{"l":"dev.kkorolyov.pancake.core.component"},{"l":"dev.kkorolyov.pancake.core.component.movement"},{"l":"dev.kkorolyov.pancake.core.event"},{"l":"dev.kkorolyov.pancake.core.system"}]
