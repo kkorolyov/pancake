@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution
 
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -44,6 +45,7 @@ class SpawnerSpec extends Specification {
 		position << [new Vector(randFloat(), 0, 0), new Vector(0, randFloat(), 0), new Vector(0, 0 , randFloat())]
 	}
 
+	@Ignore	// TODO This
 	def "clone's transform's distance from origin between min/max radii"() {
 		templateSupplier.get()>> [new Transform(new Vector(1, 1, 1))]
 

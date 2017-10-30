@@ -53,6 +53,19 @@ public class MultiStageAction extends Action {
 		armingOption = null;
 	}
 
+	/** @return action applied on activation, or {@code null} */
+	public Action getStart() {
+		return start;
+	}
+	/** @return action applied on first post-activation signal, or {@code null} */
+	public Action getHold() {
+		return hold;
+	}
+	/** @return action applied on deactivation, or {@code null} */
+	public Action getEnd() {
+		return end;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;

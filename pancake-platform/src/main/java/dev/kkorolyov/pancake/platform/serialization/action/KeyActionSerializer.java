@@ -55,7 +55,6 @@ public class KeyActionSerializer extends ActionSerializer<KeyAction> {
 
 	@Override
 	public String write(KeyAction in, ActionRegistry context) {
-		// TODO
-		return null;
+		return in.getInputs() + "=" + actionSerializer.write(in.getDelegate(), context);
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * An {@link Action} which applies a collection of contained, delegate actions.
+ * An {@link Action} which applies a collection of delegate actions.
  */
 public class CollectiveAction extends Action {
 	private final Set<Action> delegates = new HashSet<>();
@@ -31,6 +31,11 @@ public class CollectiveAction extends Action {
 	@Override
 	protected void apply(Entity entity) {
 		for (Action delegate : delegates) delegate.accept(entity);
+	}
+
+	/** @return all delegate actions */
+	public Set<Action> getDelegates() {
+		return delegates;
 	}
 
 	@Override

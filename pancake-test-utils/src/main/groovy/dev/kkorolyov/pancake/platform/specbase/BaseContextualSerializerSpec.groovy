@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.platform.specbase
 
 import dev.kkorolyov.pancake.platform.serialization.AutoContextualSerializer
 import dev.kkorolyov.pancake.platform.serialization.ContextualSerializer
+
 /**
  * Base specification for {@link ContextualSerializer} implementations.
  * Verifies contextual {@code read} and {@code write}.
@@ -22,7 +23,7 @@ abstract class BaseContextualSerializerSpec<I, O, C> extends BaseSerializerSpec<
 	def "writes contextually"() {
 		expect:
 		reps.every {k, v ->
-			serializer.write(k, context) == v
+			serializer.read(serializer.write(k, context), context) == k
 		}
 	}
 

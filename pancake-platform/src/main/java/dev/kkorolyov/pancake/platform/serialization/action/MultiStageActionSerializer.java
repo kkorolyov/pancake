@@ -10,6 +10,7 @@ import dev.kkorolyov.pancake.platform.serialization.ContextualSerializer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Serializes multi-stage actions.
@@ -40,7 +41,8 @@ public class MultiStageActionSerializer extends ActionSerializer<MultiStageActio
 	}
 	@Override
 	public String write(MultiStageAction in, ActionRegistry context) {
-		// TODO
-		return null;
+		return Stream.of(in.getStart(), in.getHold(), in.getEnd())
+				.map(action -> action == null ? "" : autoSerializer.write(action, context))
+				.collect(Collectors.joining(","));
 	}
 }

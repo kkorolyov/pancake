@@ -30,7 +30,8 @@ public class CollectiveActionSerializer extends ActionSerializer<CollectiveActio
 	}
 	@Override
 	public String write(CollectiveAction in, ActionRegistry context) {
-		// TODO
-		return null;
+		return in.getDelegates().stream()
+				.map(delegate -> autoSerializer.write(delegate, context))
+				.collect(Collectors.joining(", ", "{", "}"));
 	}
 }

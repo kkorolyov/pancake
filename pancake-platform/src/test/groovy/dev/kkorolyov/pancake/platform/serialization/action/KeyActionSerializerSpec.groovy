@@ -11,14 +11,14 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
 
 class KeyActionSerializerSpec extends BaseContextualSerializerSpec<KeyAction, String, ActionRegistry> {
 	List<Enum> inputs = KeyCode.values() + MouseButton.values()
-	MultiStageAction delegate = Mock()
-	String delegateS = randString()
+	MultiStageAction delegateAction = Mock()
+	String delegateActionS = randString()
 
 	def setup() {
-		reps << [(new KeyAction(delegate, inputs)): "$inputs = $delegateS"]
+		reps << [(new KeyAction(delegateAction, inputs)): "$inputs=$delegateActionS"]
 		context = Mock(ActionRegistry) {
-			get({this.&hasOut}) >> {inRep(it[0])}
-			getName({this.&hasIn}) >> {outRep(it[0])}
+			get(delegateActionS) >> delegateAction
+			getName(delegateAction) >> delegateActionS
 		}
 		serializer = new KeyActionSerializer()
 	}

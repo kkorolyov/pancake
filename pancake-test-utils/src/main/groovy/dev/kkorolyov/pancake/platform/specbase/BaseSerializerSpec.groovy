@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.platform.serialization.AutoSerializer
 import dev.kkorolyov.pancake.platform.serialization.Serializer
 
 import spock.lang.Specification
+
 /**
  * Base specification for {@link Serializer} implementations.
  * Verifies {@code read} and {@code write} between representations mapped to each other.
@@ -28,7 +29,7 @@ abstract class BaseSerializerSpec<I, O, S extends Serializer<I, O>> extends Spec
 
 		expect:
 		reps.every {k,v ->
-			serializer.write(k) == v
+			serializer.read(serializer.write(k)) == k
 		}
 	}
 
