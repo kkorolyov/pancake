@@ -6,86 +6,67 @@ import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter
 
-import spock.lang.Ignore
 import spock.lang.Specification
 
+import java.util.function.Consumer
 import java.util.stream.Stream
 
 import static SpecUtilities.randFloat
 import static SpecUtilities.setField
 
 class GameEngineSpec extends Specification {
+	float dt = randFloat()
 	Signature signature = Mock()
 	Comparator<Entity> comparator = Mock()
+	Entity entity = Mock()
+	Stream<Entity> entityStream = Mock(Stream) {
+		sequential() >> it
+		forEach(_) >> {Consumer<Entity> consumer -> consumer.accept(entity)}
+		// TODO Spock bug with Stream.of
+	}
 	EventBroadcaster events = Mock()
 	PerformanceCounter performanceCounter = Mock()
-	EntityPool entities = Mock()
-	GameSystem system = Mock()
-	GameSystem[] systems = (0..10).collect {it -> Mock(GameSystem) {
+	EntityPool entities = Mock() {
+		get(signature, comparator) >> entityStream
+	}
+	GameSystem system = Mock() {
 		getSignature() >> signature
 		getComparator() >> comparator
-	}}
-
-	GameEngine engine = new GameEngine(events, entities, systems)
+	}
+	GameEngine engine = new GameEngine(events, entities, system)
 
 	def setup() {
 		setField("performanceCounter", engine, performanceCounter)
-
-		entities.get(signature, comparator) >> Mock(Stream) {
-			sequential() >> it
-		}
 	}
 
-	def "invokes 'before' and 'after' on each system on update"() {
+	def "invokes 'before' and 'after' on systems on update"() {
 		when:
 		engine.update(dt)
 
 		then:
-		systems.each {
-			1 * it.before(dt)
-			1 * it.after(dt)
+		with(system) {
+			1 * before(dt)
+			1 * after(dt)
 		}
-
-		where:
-		dt << randFloat()
 	}
 
-	@Ignore
 	def "invokes 'update' on system for each relevant entity on update"() {
 		when:
 		engine.update(dt)
 
 		then:
-		entities.get(signature, comparator) >> Mock(Stream) {
-			sequential() >> it
-			iterator() >> Mock(Iterator) {
-				next() >>> [(1..10).collect {it2 -> entity}, false]
-				hasNext() >>> [(1..10).collect {it2 -> true}, false] >> { println "test"}
-			}
-		}
-		// TODO Mocked stream is weird
-
-		systems.each {
-			1 * it.update(entity, dt)
-		}
+		1 * system.update(entity, dt)
 
 		where:
-		dt << randFloat()
 		entity << Mock(Entity)
 	}
 	def "does not invoke 'update' on system if no relevant entities"() {
-		entities.get(_, _) >> []
-
 		when:
 		engine.update(dt)
 
 		then:
-		systems.each {
-			0 * it.update(_, dt)
-		}
-
-		where:
-		dt << randFloat()
+		1 * entityStream.forEach(_) >> {}
+		0 * system.update(_, dt)
 	}
 
 	def "shares services with added system"() {
