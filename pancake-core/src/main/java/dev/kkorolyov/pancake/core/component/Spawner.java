@@ -72,11 +72,12 @@ public class Spawner implements Component {
 	private void randomPosition(Vector position) {
 		float radius = minRadius + (radiusDifference * rand.nextFloat());
 		float theta = 2 * PI * rand.nextFloat();
-		float phi = 2 * PI * rand.nextFloat();
+		float u = (rand.nextBoolean() ? 1 : -1) * rand.nextFloat();
+		float v = (float) (radius * Math.sqrt(1 - u * u));
 
-		float x = (float) (radius * Math.cos(theta));
-		float y = (float) (radius * Math.sin(theta));
-		float z = (float) (radius * Math.sin(phi));
+		float x = (float) (v * Math.cos(theta));
+		float y = (float) (v * Math.sin(theta));
+		float z = radius * u;
 
 		if (position.getX() != 0) position.setX(x);
 		if (position.getY() != 0) position.setY(y);

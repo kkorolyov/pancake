@@ -33,6 +33,7 @@ class GameEngineSpec extends Specification {
 		getSignature() >> signature
 		getComparator() >> comparator
 	}
+
 	GameEngine engine = new GameEngine(events, entities, system)
 
 	def setup() {
