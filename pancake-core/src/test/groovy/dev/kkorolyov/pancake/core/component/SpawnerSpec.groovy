@@ -4,54 +4,86 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution
 
-import spock.lang.Ignore
-import spock.lang.Shared
 import spock.lang.Specification
 
 import java.util.function.Supplier
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
 class SpawnerSpec extends Specification {
-	@Shared float minRadius = 12.43
-	@Shared float maxRadius = 24.1
-	@Shared float interval = 0.5
-	@Shared Vector origin = new Vector(5, 4, 3)
-
+	float minRadius = randFloat()
+	float maxRadius = randFloat() + minRadius
+	float interval = randFloat()
+	Vector origin = randVector()
 	Supplier<Iterable<Component>> templateSupplier = Mock()
 	WeightedDistribution<Supplier<Iterable<Component>>> templates = Mock() {
-		it.get() >> templateSupplier
+		get() >> templateSupplier
 	}
 
 	Spawner spawner = new Spawner(minRadius, maxRadius, interval, templates)
 
+	def "modifies supplied clone components"() {
+		Vector position = Mock() {
+			getX() >> 1
+			getY() >> 1
+			getZ() >> 1
+		}
+		templateSupplier.get() >> [new Transform(position)]
+
+		when:
+		spawner.spawn(origin)
+
+		then:
+		1 * position.setX(_)
+		1 * position.setY(_)
+		1 * position.setZ(_)
+	}
+
 	def "moves clone's transform to origin"() {
-		templateSupplier.get() >> [new Transform(new Vector())]	// All 0 for no randomization
+		templateSupplier.get() >> [new Transform(new Vector())]
 
-		expect:
-		(spawner.spawn(origin)[0] as Transform).position == origin
+		when:
+		Transform clone = spawner.spawn(origin)[0] as Transform
+
+		then:
+		clone.position == origin
 	}
 
-	def "randomizes all non-zero transform position components"() {
-		templateSupplier.get() >> [new Transform(new Vector(position))]
+	def "clone is positioned between min/max radii around origin"() {
+		templateSupplier.get() >> [new Transform(new Vector(1, 1, 1))]
 
-		expect:
-		Vector clonePosition = (spawner.spawn(new Vector())[0] as Transform).position	// Easier 0 component comparison
-		(position.getX() != 0) ? (position.getX() != clonePosition.getX()) : (position.getX() == clonePosition.getX())
-		(position.getY() != 0) ? (position.getY() != clonePosition.getY()) : (position.getY() == clonePosition.getY())
-		(position.getZ() != 0) ? (position.getZ() != clonePosition.getZ()) : (position.getZ() == clonePosition.getZ())
+		when:
+		Transform clone = spawner.spawn(origin)[0] as Transform
 
-		where:
-		position << [new Vector(randFloat(), 0, 0), new Vector(0, randFloat(), 0), new Vector(0, 0 , randFloat())]
+		then:
+		clone.position.distance(origin) >= minRadius
+		clone.position.distance(origin) <= maxRadius
 	}
 
-	@Ignore	// TODO This
-	def "clone's transform's distance from origin between min/max radii"() {
-		templateSupplier.get()>> [new Transform(new Vector(1, 1, 1))]
+	def "does nothing if interval not yet elapsed"() {
+		when:
+		def result = spawner.spawn(origin, (interval / 2) as float)
 
-		expect:
-		float distance = (spawner.spawn(origin)[0] as Transform).position.distance(origin)
-		distance >= minRadius
-		distance <= maxRadius
+		then:
+		result == null
+		0 * templateSupplier.get()
+	}
+	def "spawns if interval elapsed"() {
+		when:
+		spawner.spawn(origin, interval)
+
+		then:
+		1 * templateSupplier.get() >> []
+	}
+
+	def "does nothing if inactive"() {
+		when:
+		spawner.setActive(false)
+		def result = spawner.spawn(origin, interval)
+
+		then:
+		result == null
+		0 * templateSupplier.get()
 	}
 }
