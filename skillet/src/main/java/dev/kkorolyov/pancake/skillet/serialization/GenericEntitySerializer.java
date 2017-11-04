@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Serializes {@link GenericEntity}.
  */
 public class GenericEntitySerializer extends StringSerializer<GenericEntity> {
-	private static final String PATTERN = new EntityStringSerializer().pattern();
+	private static final String PATTERN = new EntityStringSerializer(null).pattern();
 	private static final String SPLIT_PATTERN = ",\\s*(?=\\w+\\s*\\{)";
 	private static final Pattern NAME_PATTERN = Pattern.compile("\\w+(?=\\s*\\[)");
 	private static final StringSerializer<GenericComponent> componentSerializer = new GenericComponentSerializer();

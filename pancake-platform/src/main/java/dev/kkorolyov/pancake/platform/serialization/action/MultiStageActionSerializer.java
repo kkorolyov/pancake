@@ -4,8 +4,8 @@ import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
-import dev.kkorolyov.pancake.platform.serialization.AutoContextualSerializer;
-import dev.kkorolyov.pancake.platform.serialization.ContextualSerializer;
+import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
+import dev.kkorolyov.pancake.platform.serialization.Serializer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,21 +16,22 @@ import java.util.stream.Stream;
  * Serializes multi-stage actions.
  */
 public class MultiStageActionSerializer extends ActionSerializer<MultiStageAction> {
-	private static final ContextualSerializer<Action, String, ActionRegistry> autoSerializer = new AutoContextualSerializer(ActionSerializer.class);
-
+	private final Serializer<Action, String> autoSerializer;
 	private final float holdThreshold = Float.parseFloat(Config.config.get("holdThreshold"));
 
 	/**
 	 * Constructs a new multi-stage action serializer.
+	 * @param context associated action registry
 	 */
-	public MultiStageActionSerializer() {
-		super(".*(,.*){2}");
+	public MultiStageActionSerializer(ActionRegistry context) {
+		super("\\{.*(,.*){2}}", context);
+		autoSerializer = new AutoSerializer<>(ActionSerializer.class, context);
 	}
 
 	@Override
-	public MultiStageAction read(String out, ActionRegistry context) {
-		List<Action> actions = Arrays.stream(out.split(",\\s?(?![^{]*})"))
-				.map(actionS -> actionS.length() <= 0 ? null : autoSerializer.read(actionS, context))
+	public MultiStageAction read(String out) {
+		List<Action> actions = Arrays.stream(out.substring(1, out.length() - 1).split(",\\s?(?![^\\[]*])"))
+				.map(actionS -> actionS.length() <= 0 ? null : autoSerializer.read(actionS))
 				.collect(Collectors.toList());
 
 		return new MultiStageAction(
@@ -40,9 +41,9 @@ public class MultiStageActionSerializer extends ActionSerializer<MultiStageActio
 				holdThreshold);
 	}
 	@Override
-	public String write(MultiStageAction in, ActionRegistry context) {
+	public String write(MultiStageAction in) {
 		return Stream.of(in.getStart(), in.getHold(), in.getEnd())
-				.map(action -> action == null ? "" : autoSerializer.write(action, context))
-				.collect(Collectors.joining(","));
+				.map(action -> action == null ? "" : autoSerializer.write(action))
+				.collect(Collectors.joining(",", "{", "}"));
 	}
 }

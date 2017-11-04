@@ -9,17 +9,18 @@ import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 public class RegisteredActionSerializer extends ActionSerializer<Action> {
 	/**
 	 * Constructs a new registered action serializer.
+	 * @param context associated action registry
 	 */
-	public RegisteredActionSerializer() {
-		super("[_a-zA-Z]+");
+	public RegisteredActionSerializer(ActionRegistry context) {
+		super("[_a-zA-Z]+", context);
 	}
 
 	@Override
-	public Action read(String out, ActionRegistry context) {
+	public Action read(String out) {
 		return context.get(out);
 	}
 	@Override
-	public String write(Action in, ActionRegistry context) {
+	public String write(Action in) {
 		return context.getName(in);
 	}
 }
