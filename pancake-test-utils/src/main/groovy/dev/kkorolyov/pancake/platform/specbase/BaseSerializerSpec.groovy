@@ -18,14 +18,14 @@ abstract class BaseSerializerSpec<I, O> extends Specification {
 
 	def "reads"() {
 		expect:
-		reps.every {k, v ->
-			serializer.read(v) == k
+		reps.each {k, v ->
+			assert serializer.read(v) == k
 		}
 	}
 	def "writes"() {
 		expect:
-		reps.every {k,v ->
-			serializer.read(serializer.write(k)) == k
+		reps.each {k,v ->
+			assert serializer.read(serializer.write(k)) == k
 		}
 	}
 
