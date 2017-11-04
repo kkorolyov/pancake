@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.platform.serialization.action;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
-import dev.kkorolyov.pancake.platform.serialization.AutoContextualSerializer;
-import dev.kkorolyov.pancake.platform.serialization.ContextualSerializer;
+import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
+import dev.kkorolyov.pancake.platform.serialization.Serializer;
 import dev.kkorolyov.pancake.platform.serialization.action.ActionContainerSerializer.ActionContainer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 
@@ -12,35 +12,30 @@ import java.util.Objects;
 /**
  * Serializes actions associated with some identifier.
  */
-public class ActionContainerSerializer extends StringSerializer<ActionContainer> implements ContextualSerializer<ActionContainer, String, ActionRegistry> {
-	private static final ContextualSerializer<Action, String, ActionRegistry> autoSerializer = new AutoContextualSerializer(ActionSerializer.class);
+public class ActionContainerSerializer extends StringSerializer<ActionContainer> {
+	private final ActionRegistry context;
+	private final Serializer<Action, String> autoSerializer;
 
 	/**
 	 * Constructs a new action container serializer.
+	 * @param context associated action registry
 	 */
-	public ActionContainerSerializer() {
+	public ActionContainerSerializer(ActionRegistry context) {
 		super("[_a-zA-Z]+\\s*=\\s*.+");
+		this.context = context;
+		autoSerializer = new AutoSerializer<>(ActionSerializer.class, context);
 	}
 
 	@Override
 	public ActionContainer read(String out) {
-		return read(out, new ActionRegistry());
-	}
-	@Override
-	public ActionContainer read(String out, ActionRegistry context) {
 		String[] split = out.split("\\s?=\\s?");
 		String name = split[0], actionS = split[1];
 
-		return new ActionContainer(name, autoSerializer.read(actionS, context));
+		return new ActionContainer(name, autoSerializer.read(actionS));
 	}
-
 	@Override
 	public String write(ActionContainer in) {
-		return write(in, new ActionRegistry());
-	}
-	@Override
-	public String write(ActionContainer in, ActionRegistry context) {
-		return in.name + "=" + autoSerializer.write(in.action, context);
+		return in.name + "=" + autoSerializer.write(in.action);
 	}
 
 	/**

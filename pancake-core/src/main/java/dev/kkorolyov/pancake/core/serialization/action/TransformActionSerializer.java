@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.core.serialization.action;
 
 import dev.kkorolyov.pancake.core.action.TransformAction;
-import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.serialization.action.ActionSerializer;
 import dev.kkorolyov.pancake.platform.serialization.string.NumberStringSerializer;
@@ -21,11 +20,11 @@ public class TransformActionSerializer extends ActionSerializer<TransformAction>
 	 * Constructs a new transform action serializer.
 	 */
 	public TransformActionSerializer() {
-		super(PREFIX + "\\{" + positionSerializer.pattern() + "(,\\s?" + rotationSerializer.pattern() + ")?}");
+		super(PREFIX + "\\{" + positionSerializer.pattern() + "(,\\s?" + rotationSerializer.pattern() + ")?}", null);
 	}
 
 	@Override
-	public TransformAction read(String out, ActionRegistry context) {
+	public TransformAction read(String out) {
 		Vector position = positionSerializer.match(out)
 				.orElseThrow(IllegalStateException::new);
 		Float rotation = rotationSerializer.match(positionSerializer.consume(out))
@@ -35,7 +34,7 @@ public class TransformActionSerializer extends ActionSerializer<TransformAction>
 		return new TransformAction(position, rotation);
 	}
 	@Override
-	public String write(TransformAction in, ActionRegistry context) {
+	public String write(TransformAction in) {
 		StringBuilder builder = new StringBuilder(PREFIX);
 		builder.append("{").append(positionSerializer.write(in.getPosition()));
 

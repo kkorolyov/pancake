@@ -1,12 +1,9 @@
 package dev.kkorolyov.pancake.platform.serialization.string.entity;
 
-
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
-import dev.kkorolyov.pancake.platform.serialization.ContextualSerializer;
 import dev.kkorolyov.pancake.platform.serialization.Serializer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 
@@ -25,35 +22,30 @@ import java.util.stream.Collectors;
  * ]
  * </pre>
  */
-public class EntityStringSerializer extends StringSerializer<Entity> implements ContextualSerializer<Entity, String, EntityPool> {
+public class EntityStringSerializer extends StringSerializer<Entity> {
 	private static final Pattern COMPONENT_PATTERN = Pattern.compile("\\w+\\s?\\{[\\s\\S]+}");
-	private static final Serializer<Component, String> componentSerializer = new AutoSerializer(ComponentStringSerializer.class);
+
+	private final EntityPool context;
+	private final Serializer<Component, String> componentSerializer = new AutoSerializer(ComponentStringSerializer.class);
 
 	/**
 	 * Constructs a new entity string serializer.
+	 * @param context associated entity pool
 	 */
-	public EntityStringSerializer() {
+	public EntityStringSerializer(EntityPool context) {
 		super("\\w+\\s?\\[[\\s\\S]+(,\\s*[\\s\\S]+)*\\s*]");
+		this.context = context;
 	}
 
 	@Override
 	public Entity read(String out) {
-		return read(out, new EntityPool(new EventBroadcaster()));
-	}
-	@Override
-	public String write(Entity in) {
-		return write(in, new EntityPool(new EventBroadcaster()));
-	}
-
-	@Override
-	public Entity read(String out, EntityPool context) {
 		return context.create(COMPONENT_PATTERN.matcher(out).results()
 				.map(MatchResult::group)
 				.map(componentSerializer::read)
 				.collect(Collectors.toList()));
 	}
 	@Override
-	public String write(Entity in, EntityPool context) {
+	public String write(Entity in) {
 		return in.getId() + in.streamComponents()
 				.map(componentSerializer::write)
 				.collect(Collectors.joining("," + System.lineSeparator() + "\t", "{" + System.lineSeparator() + "\t", System.lineSeparator() + "}"));

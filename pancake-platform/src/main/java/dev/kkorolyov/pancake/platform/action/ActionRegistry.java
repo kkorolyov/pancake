@@ -21,8 +21,8 @@ public class ActionRegistry {
 
 	private final Map<String, Action> actions = new HashMap<>();
 
-	private final ActionContainerSerializer actionContainerSerializer = new ActionContainerSerializer();
-	private final KeyActionSerializer keyActionSerializer = new KeyActionSerializer();
+	private final ActionContainerSerializer actionContainerSerializer = new ActionContainerSerializer(this);
+	private final KeyActionSerializer keyActionSerializer = new KeyActionSerializer(this);
 
 	/**
 	 * Retrieves an action by name.
@@ -67,7 +67,7 @@ public class ActionRegistry {
 		Arrays.stream(Resources.string(path).split("\\R"))
 				.filter(actionContainerSerializer::accepts)
 				.peek(actionS -> log.info("Parsing action: {}", actionS))
-				.map(actionS -> actionContainerSerializer.read(actionS, this))
+				.map(actionContainerSerializer::read)
 				.peek(actionContainer -> log.debug("Parsed to {}={}", actionContainer.name, actionContainer.action))
 				.forEach(container -> put(container.name, container.action));
 		return this;
@@ -83,7 +83,7 @@ public class ActionRegistry {
 		return Arrays.stream(Resources.string(path).split("\\R"))
 				.filter(keyActionSerializer::accepts)
 				.peek(actionS -> log.info("Parsing key action: {}", actionS))
-				.map(actionS -> keyActionSerializer.read(actionS, this))
+				.map(keyActionSerializer::read)
 				.peek(keyAction -> log.debug("Parsed to {}", keyAction))
 				.collect(Collectors.toList());
 	}
