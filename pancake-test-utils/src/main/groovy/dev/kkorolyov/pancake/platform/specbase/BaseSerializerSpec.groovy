@@ -5,39 +5,35 @@ import dev.kkorolyov.pancake.platform.serialization.Serializer
 
 import spock.lang.Specification
 
+import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
+
 /**
  * Base specification for {@link Serializer} implementations.
  * Verifies {@code read} and {@code write} between representations mapped to each other.
  */
-abstract class BaseSerializerSpec<I, O, S extends Serializer<I, O>> extends Specification {
-	static Set<String> ignore = []
-
+abstract class BaseSerializerSpec<I, O> extends Specification {
 	Map<I, O> reps = [:]
 
-	S serializer
+	Serializer<I, O> serializer
 
 	def "reads"() {
-		if ('reads' in ignore) return
-
 		expect:
 		reps.every {k, v ->
 			serializer.read(v) == k
 		}
 	}
 	def "writes"() {
-		if ('writes' in ignore) return
-
 		expect:
 		reps.every {k,v ->
 			serializer.read(serializer.write(k)) == k
 		}
 	}
 
-	protected AutoSerializer mockAutoSerializer(List<? super I> inList, List<O> outList) {
-		return Mock(AutoSerializer) {
+	protected <T> void mockAutoSerializer(List<T> inList, List<O> outList) {
+		setField("autoSerializer", serializer, Mock(AutoSerializer) {
 			read({it in outList}) >> {inList[outList.indexOf(it[0])]}
 			write({it in inList}) >> {outList[inList.indexOf(it[0])]}
-		}
+		})
 	}
 
 	protected boolean hasIn(I inRep) {
