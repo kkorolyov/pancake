@@ -2,7 +2,9 @@ package dev.kkorolyov.pancake.skillet;
 
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
 import dev.kkorolyov.pancake.skillet.model.GenericEntity;
+import dev.kkorolyov.pancake.skillet.model.Workspace;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentList;
+import dev.kkorolyov.pancake.skillet.ui.entity.EntityList;
 import dev.kkorolyov.pancake.skillet.ui.entity.EntityTabPane;
 
 import javafx.application.Application;
@@ -28,13 +30,13 @@ import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 public class Skillet extends Application {
 	private static final String ENTITY_FILE_EXTENSION = ".mfn";
 
+	private final Workspace workspace = new Workspace();
+
 	private Stage stage;
 
-	private final ComponentFactory componentFactory = new ComponentFactory();
-	private GenericEntity entity;
-
+	private final EntityList entityList = new EntityList(workspace);
+	private final ComponentList componentList = new ComponentList(workspace.getComponentFactory());
 	private final EntityTabPane entityTabPane = new EntityTabPane();
-	private final ComponentList componentList = new ComponentList(componentFactory);
 
 	private final ResourceHandler resourceHandler = new ResourceHandler();
 
@@ -46,15 +48,18 @@ public class Skillet extends Application {
 	public void start(Stage primaryStage) {
 		stage = primaryStage;
 
-		entityTabPane.onEntitySelected(selected -> {
-			entity = selected;
-			componentList.refreshComponents(entity);
-		});
+		workspace.register(entityTabPane);
 
-		componentList.onComponentSelected(component -> {
-			entity.addComponent(component);
-			componentList.refreshComponents(entity);
-		});
+		entityTabPane
+				.onEntitySelected(selected -> {
+					workspace.setActiveEntity(selected);
+					componentList.setEntity(selected);
+				});
+
+		componentList.onComponentSelected(component ->
+				workspace.getActiveEntity()
+						.ifPresent(entity -> entity.addComponent(component))
+		);
 
 		addDefaultComponents();
 
@@ -103,31 +108,32 @@ public class Skillet extends Application {
 			}
 		});
 
-		root.setCenter(entityTabPane.getRoot());
+		root.setLeft(entityList.getRoot());
 		root.setRight(componentList.getRoot());
+		root.setCenter(entityTabPane.getRoot());
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 	private void addDefaultComponents() {
-		componentFactory.add(
+		workspace.getComponentFactory().add(
 				resourceHandler.load("defaults" + ENTITY_FILE_EXTENSION),
 				false);
 	}
 
 	private void newEntity() {
-		entityTabPane.add(new GenericEntity());
+		workspace.newEntity();
 	}
 	private void saveEntity() {
-		if (entity == null) return;
+		workspace.getActiveEntity().ifPresent(entity -> {
+			FileChooser chooser = buildFileChooser();
+			chooser.setInitialFileName(entity.getName() + ENTITY_FILE_EXTENSION);
 
-		FileChooser chooser = buildFileChooser();
-		chooser.setInitialFileName(entity.getName() + ENTITY_FILE_EXTENSION);
-
-		File result = chooser.showSaveDialog(stage);
-		if (result != null) {
-			resourceHandler.save(entity, result.toString());
-		}
+			File result = chooser.showSaveDialog(stage);
+			if (result != null) {
+				resourceHandler.save(entity, result.toString());
+			}
+		});
 	}
 	private void loadEntity() {
 		FileChooser chooser = buildFileChooser();
@@ -137,9 +143,7 @@ public class Skillet extends Application {
 		if (result != null) {
 			Iterable<GenericComponent> components = resourceHandler.load(result.toString());
 
-			componentFactory.add(components, false);
-
-			entityTabPane.add(new GenericEntity(result.getName().replaceAll(ENTITY_FILE_EXTENSION, ""), components));
+			workspace.addEntity(new GenericEntity(result.getName().replaceAll(ENTITY_FILE_EXTENSION, ""), components));
 		}
 	}
 
@@ -154,7 +158,7 @@ public class Skillet extends Application {
 			for (File file : results) {
 				resourceHandler.load(file.toString()).forEach(addedComponents::add);
 			}
-			componentFactory.add(addedComponents, false);
+			workspace.getComponentFactory().add(addedComponents, false);
 
 			Alert addedComponentsInfo = new Alert(
 					AlertType.INFORMATION,

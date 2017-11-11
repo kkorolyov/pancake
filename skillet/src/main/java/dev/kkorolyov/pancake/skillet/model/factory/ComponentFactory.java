@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet;
+package dev.kkorolyov.pancake.skillet.model.factory;
 
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
 import dev.kkorolyov.pancake.skillet.model.Model;
@@ -77,6 +77,8 @@ public class ComponentFactory extends Model<ComponentFactory> {
 	 */
 	public void clear() {
 		components.clear();
+
+		changed(ComponentFactoryChangeEvent.REMOVE);
 	}
 
 	public enum ComponentFactoryChangeEvent implements ModelChangeEvent {

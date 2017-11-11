@@ -10,7 +10,7 @@ public class MenuItemDecorator<T extends MenuItem> extends UIDecorator<T> {
 	 * Constructs a new MenuItem decorator.
 	 * @param object decorated object
 	 */
-	public MenuItemDecorator(T object) {
+	MenuItemDecorator(T object) {
 		super(object);
 	}
 

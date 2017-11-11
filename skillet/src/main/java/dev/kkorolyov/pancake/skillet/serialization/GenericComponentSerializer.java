@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Serializes {@link GenericComponent}.
  */
 public class GenericComponentSerializer extends ComponentStringSerializer<GenericComponent> {
-	private static final Pattern namePattern = Pattern.compile("\\w+(?=\\{)");
+	private static final Pattern NAME_PATTERN = Pattern.compile("\\w+(?=\\{)");
 
 	/**
 	 * Constructs a new generic component string serializer.
@@ -21,7 +21,7 @@ public class GenericComponentSerializer extends ComponentStringSerializer<Generi
 
 	@Override
 	public GenericComponent read(String out) {
-		String name = namePattern.matcher(out).results()
+		String name = NAME_PATTERN.matcher(out).results()
 				.findFirst()
 				.map(MatchResult::group)
 				.orElseThrow(() -> new IllegalArgumentException("Does not contain a component name: " + out));

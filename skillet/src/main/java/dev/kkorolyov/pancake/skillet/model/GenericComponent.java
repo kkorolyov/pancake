@@ -49,12 +49,4 @@ public class GenericComponent extends Model<GenericComponent> implements Compone
 	public GenericComponent copy() {
 		return new GenericComponent(name, new HashMap<>(attributes));
 	}
-
-	/**
-	 * A change to a component.
-	 */
-	public enum ComponentChangeEvent implements ModelChangeEvent {
-		ADD,
-		REMOVE
-	}
 }

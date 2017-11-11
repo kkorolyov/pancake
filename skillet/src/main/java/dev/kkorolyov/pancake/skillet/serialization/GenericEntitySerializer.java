@@ -32,7 +32,7 @@ public class GenericEntitySerializer extends StringSerializer<GenericEntity> {
 				.findFirst()
 				.map(MatchResult::group)
 				.orElseThrow(() -> new IllegalArgumentException("Does not contain an entity name: " + out));
-		Iterable<GenericComponent> components = Arrays.stream(out.split(SPLIT_PATTERN))
+		Iterable<GenericComponent> components = Arrays.stream(out.split(SPLIT_PATTERN))	// Split beforehand because matches() is greedy
 				.flatMap(componentSerializer::matches)
 				.collect(Collectors.toList());
 
