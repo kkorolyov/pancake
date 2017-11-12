@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.skillet;
+package dev.kkorolyov.pancake.skillet.model.factory;
 
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
 import dev.kkorolyov.pancake.skillet.model.Model;
@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.skillet.model.Model;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -77,6 +78,21 @@ public class ComponentFactory extends Model<ComponentFactory> {
 	 */
 	public void clear() {
 		components.clear();
+
+		changed(ComponentFactoryChangeEvent.REMOVE);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		ComponentFactory o = (ComponentFactory) obj;
+		return Objects.equals(components, o.components);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(components);
 	}
 
 	public enum ComponentFactoryChangeEvent implements ModelChangeEvent {

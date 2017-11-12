@@ -46,6 +46,7 @@ public class EntityPanel implements Panel, ModelListener<GenericEntity> {
 
 	@Override
 	public void changed(GenericEntity target, ModelChangeEvent event) {
+		// TODO Don't count on node ID as component marker
 		if (EntityChangeEvent.ADD == event) {
 			for (GenericComponent component : target.getComponents()) {
 				if (content.getChildren().stream().noneMatch(node -> node.getId().equals(component.getName()))) {

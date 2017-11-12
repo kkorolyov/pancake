@@ -15,11 +15,7 @@ import java.util.regex.Pattern;
  * Decorates {@link Spinner}s.
  */
 public class SpinnerDecorator<T extends Spinner> extends RegionDecorator<T, SpinnerDecorator<T>> {
-	/**
-	 * Constructs a new Spinner decorator.
-	 * @param object decorated object
-	 */
-	public SpinnerDecorator(T object) {
+	protected SpinnerDecorator(T object) {
 		super(object);
 	}
 

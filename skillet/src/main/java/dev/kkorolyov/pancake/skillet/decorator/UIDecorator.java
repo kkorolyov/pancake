@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.skillet.decorator;
 
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -54,6 +55,10 @@ public abstract class UIDecorator<O> {
 		return new SpinnerDecorator<>(spinner);
 	}
 
+	/** @return decorator around {@code contextMenu} */
+	public static <T extends ContextMenu> ContextMenuDecorator<T> decorate(T contextMenu) {
+		return new ContextMenuDecorator<>(contextMenu);
+	}
 	/** @return decorator around {@code menuItem} */
 	public static <T extends MenuItem> MenuItemDecorator<T> decorate(T menuItem) {
 		return new MenuItemDecorator<>(menuItem);

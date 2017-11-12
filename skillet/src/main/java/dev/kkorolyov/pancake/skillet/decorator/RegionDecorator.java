@@ -6,11 +6,7 @@ import javafx.scene.layout.Region;
  * Decorates {@link Region}s.
  */
 public class RegionDecorator<T extends Region, D extends RegionDecorator<T, D>> extends NodeDecorator<T, D> {
-	/**
-	 * Constructs a new Region decorator.
-	 * @param object decorated object
-	 */
-	public RegionDecorator(T object) {
+	protected RegionDecorator(T object) {
 		super(object);
 	}
 

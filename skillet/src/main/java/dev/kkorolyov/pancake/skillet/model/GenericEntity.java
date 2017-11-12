@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * A container of distinct components.
@@ -89,10 +91,28 @@ public class GenericEntity extends Model<GenericEntity> implements Iterable<Gene
 	public Collection<GenericComponent> getComponents() {
 		return components.values();
 	}
+	/** @return stream over components */
+	public Stream<GenericComponent> streamComponents() {
+		return getComponents().stream();
+	}
 
 	@Override
 	public Iterator<GenericComponent> iterator() {
 		return getComponents().iterator();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		GenericEntity o = (GenericEntity) obj;
+		return Objects.equals(name, o.name)
+				&& Objects.equals(components, o.components);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, components);
 	}
 
 	/**

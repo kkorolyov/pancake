@@ -1,8 +1,9 @@
 package dev.kkorolyov.pancake.skillet;
 
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
-import dev.kkorolyov.pancake.skillet.model.GenericEntity;
+import dev.kkorolyov.pancake.skillet.model.Workspace;
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentList;
+import dev.kkorolyov.pancake.skillet.ui.entity.EntityList;
 import dev.kkorolyov.pancake.skillet.ui.entity.EntityTabPane;
 
 import javafx.application.Application;
@@ -19,24 +20,22 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 
 public class Skillet extends Application {
-	private static final String ENTITY_FILE_EXTENSION = ".mfn";
+	private static final String WORKSPACE_FILE_EXTENSION = ".mfn";
+
+	private final Workspace workspace = new Workspace();
+	private final ResourceHandler resourceHandler = new ResourceHandler();
 
 	private Stage stage;
 
-	private final ComponentFactory componentFactory = new ComponentFactory();
-	private GenericEntity entity;
-
+	private final EntityList entityList = new EntityList(workspace);
+	private final ComponentList componentList = new ComponentList(workspace.getComponentFactory());
 	private final EntityTabPane entityTabPane = new EntityTabPane();
-	private final ComponentList componentList = new ComponentList(componentFactory);
-
-	private final ResourceHandler resourceHandler = new ResourceHandler();
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -46,19 +45,22 @@ public class Skillet extends Application {
 	public void start(Stage primaryStage) {
 		stage = primaryStage;
 
-		entityTabPane.onEntitySelected(selected -> {
-			entity = selected;
-			componentList.refreshComponents(entity);
-		});
+		workspace.register(entityTabPane);
 
-		componentList.onComponentSelected(component -> {
-			entity.addComponent(component);
-			componentList.refreshComponents(entity);
-		});
+		entityTabPane
+				.onEntitySelected(selected -> {
+					workspace.setActiveEntity(selected);
+					componentList.setEntity(selected);
+				});
+
+		componentList.onComponentSelected(component ->
+				workspace.getActiveEntity()
+						.ifPresent(entity -> entity.addComponent(component))
+		);
 
 		addDefaultComponents();
 
-		primaryStage.setTitle("Skillet - Pancake Entity Designer");
+		primaryStage.setTitle("Skillet - Pancake Design Workspace");
 		primaryStage.getIcons().add(new Image("pancake-icon.png"));
 
 		BorderPane root = new BorderPane();
@@ -70,10 +72,10 @@ public class Skillet extends Application {
 								.action(this::newEntity)
 								.get(),
 						decorate(new MenuItem("_Save"))
-								.action(this::saveEntity)
+								.action(this::saveWorkspace)
 								.get(),
 						decorate(new MenuItem("_Open"))
-								.action(this::loadEntity)
+								.action(this::loadWorkspace)
 								.get()),
 				new Menu("_Components", null,
 						decorate(new MenuItem("_Load"))
@@ -91,10 +93,10 @@ public class Skillet extends Application {
 						newEntity();
 						break;
 					case S:
-						saveEntity();
+						saveWorkspace();
 						break;
 					case O:
-						loadEntity();
+						loadWorkspace();
 						break;
 					case L:
 						loadComponents();
@@ -103,44 +105,36 @@ public class Skillet extends Application {
 			}
 		});
 
-		root.setCenter(entityTabPane.getRoot());
+		root.setLeft(entityList.getRoot());
 		root.setRight(componentList.getRoot());
+		root.setCenter(entityTabPane.getRoot());
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
 	private void addDefaultComponents() {
-		componentFactory.add(
-				resourceHandler.load("defaults" + ENTITY_FILE_EXTENSION),
+		workspace.getComponentFactory().add(
+				resourceHandler.load("defaults" + WORKSPACE_FILE_EXTENSION).getComponents(),
 				false);
 	}
 
 	private void newEntity() {
-		entityTabPane.add(new GenericEntity());
+		workspace.newEntity();
 	}
-	private void saveEntity() {
-		if (entity == null) return;
-
+	private void saveWorkspace() {
 		FileChooser chooser = buildFileChooser();
-		chooser.setInitialFileName(entity.getName() + ENTITY_FILE_EXTENSION);
+		chooser.setTitle("Save Workspace");
+		chooser.setInitialFileName("workspace" + WORKSPACE_FILE_EXTENSION);
 
 		File result = chooser.showSaveDialog(stage);
-		if (result != null) {
-			resourceHandler.save(entity, result.toString());
-		}
+		if (result != null) resourceHandler.save(workspace, result.toString());
 	}
-	private void loadEntity() {
+	private void loadWorkspace() {
 		FileChooser chooser = buildFileChooser();
-		chooser.setTitle("Open Entity");
+		chooser.setTitle("Load Workspace");
 
 		File result = chooser.showOpenDialog(stage);
-		if (result != null) {
-			Iterable<GenericComponent> components = resourceHandler.load(result.toString());
-
-			componentFactory.add(components, false);
-
-			entityTabPane.add(new GenericEntity(result.getName().replaceAll(ENTITY_FILE_EXTENSION, ""), components));
-		}
+		if (result != null) workspace.addWorkspace(resourceHandler.load(result.toString()));
 	}
 
 	private void loadComponents() {
@@ -149,12 +143,12 @@ public class Skillet extends Application {
 
 		List<File> results = chooser.showOpenMultipleDialog(stage);
 		if (results != null) {
-			List<GenericComponent> addedComponents = new ArrayList<>();
+			List<GenericComponent> addedComponents = results.stream()
+					.map(file -> resourceHandler.load(file.toString()))	// To workspaces
+					.flatMap(Workspace::streamComponents)
+					.collect(Collectors.toList());
 
-			for (File file : results) {
-				resourceHandler.load(file.toString()).forEach(addedComponents::add);
-			}
-			componentFactory.add(addedComponents, false);
+			workspace.getComponentFactory().add(addedComponents, false);
 
 			Alert addedComponentsInfo = new Alert(
 					AlertType.INFORMATION,
@@ -170,7 +164,7 @@ public class Skillet extends Application {
 
 	private FileChooser buildFileChooser() {
 		FileChooser chooser = new FileChooser();
-		chooser.getExtensionFilters().add(new ExtensionFilter("Pancake Entities", "*" + ENTITY_FILE_EXTENSION));
+		chooser.getExtensionFilters().add(new ExtensionFilter("Skillet Workspaces", "*" + WORKSPACE_FILE_EXTENSION));
 		chooser.setInitialDirectory(new File("").getAbsoluteFile());
 
 		return chooser;

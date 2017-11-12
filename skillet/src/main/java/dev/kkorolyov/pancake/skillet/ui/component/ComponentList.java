@@ -1,11 +1,12 @@
 package dev.kkorolyov.pancake.skillet.ui.component;
 
-import dev.kkorolyov.pancake.skillet.ComponentFactory;
-import dev.kkorolyov.pancake.skillet.ComponentFactory.ComponentFactoryChangeEvent;
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
 import dev.kkorolyov.pancake.skillet.model.GenericEntity;
+import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent;
 import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
 import dev.kkorolyov.pancake.skillet.model.ModelListener;
+import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory;
+import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory.ComponentFactoryChangeEvent;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 
 import javafx.scene.Node;
@@ -25,7 +26,7 @@ import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
  * Displays a list of components which may be added to the designed entity.
  */
 public class ComponentList implements Panel, ModelListener<ComponentFactory> {
-	private final Map<String, Button> componentButtons = new HashMap<>();
+	private final Map<String, Button> buttons = new HashMap<>();
 	private final VBox content = new VBox();
 	private final VBox root = new VBox(
 			decorate(new Label("Components"))
@@ -36,6 +37,9 @@ public class ComponentList implements Panel, ModelListener<ComponentFactory> {
 					.get());
 
 	private GenericEntity lastKnown;
+	private final ModelListener<GenericEntity> entityListener = (target, event) -> {
+		if (EntityChangeEvent.ADD == event || EntityChangeEvent.REMOVE == event) refreshComponents();
+	};
 	private Consumer<GenericComponent> componentSelected;
 
 	/**
@@ -46,14 +50,16 @@ public class ComponentList implements Panel, ModelListener<ComponentFactory> {
 		componentFactory.register(this);
 	}
 
-	/**
-	 * Disables buttons of all components present in {@code entity}.
-	 * Enables buttons of all others.
-	 */
-	public void refreshComponents(GenericEntity entity) {
-		lastKnown = entity;
+	public void setEntity(GenericEntity entity) {
+		if (lastKnown != null) lastKnown.unregister(entityListener);
 
-		componentButtons.forEach((name, button) -> button.setDisable(lastKnown == null || lastKnown.containsComponent(name)));
+		lastKnown = entity;
+		if (lastKnown != null) lastKnown.register(entityListener);
+
+		refreshComponents();
+	}
+	private void refreshComponents() {
+		buttons.forEach((name, button) -> button.setDisable(lastKnown == null || lastKnown.containsComponent(name)));
 	}
 
 	private void componentSelected(GenericComponent component) {
@@ -74,17 +80,17 @@ public class ComponentList implements Panel, ModelListener<ComponentFactory> {
 		if (ComponentFactoryChangeEvent.ADD == event) {
 			target.getNames()
 					.forEach(name ->
-							componentButtons.computeIfAbsent(name, k -> {
+							buttons.computeIfAbsent(name, k -> {
 								Button button = decorate(new Button(k))
 										.maxSize(Double.MAX_VALUE, null)
-										.action(() -> componentSelected(target.get(name)))
+										.action(() -> componentSelected(target.get(k)))
 										.get();
 
 								content.getChildren().add(button);
 								return button;
 							}));
 		} else if (ComponentFactoryChangeEvent.REMOVE == event) {
-			Iterator<Entry<String, Button>> it = componentButtons.entrySet().iterator();
+			Iterator<Entry<String, Button>> it = buttons.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<String, Button> next = it.next();
 				if (!target.contains(next.getKey())) {
@@ -93,6 +99,6 @@ public class ComponentList implements Panel, ModelListener<ComponentFactory> {
 				}
 			}
 		}
-		refreshComponents(lastKnown);
+		refreshComponents();
 	}
 }

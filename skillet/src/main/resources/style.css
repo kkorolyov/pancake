@@ -58,10 +58,7 @@
 }
 
 .entity-content, 
-.component-content {
-	-fx-background-color: accent-light;
-}
-
+.component-content,
 .attribute-content {
 	-fx-background-color: accent-light;
 }

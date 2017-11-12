@@ -1,9 +1,6 @@
 package dev.kkorolyov.pancake.skillet.ui.component;
 
 import dev.kkorolyov.pancake.skillet.model.GenericComponent;
-import dev.kkorolyov.pancake.skillet.model.GenericComponent.ComponentChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent;
-import dev.kkorolyov.pancake.skillet.model.ModelListener;
 import dev.kkorolyov.pancake.skillet.ui.Panel;
 import dev.kkorolyov.pancake.skillet.ui.attribute.AutoDisplayer;
 import dev.kkorolyov.pancake.skillet.ui.attribute.Displayer;
@@ -23,7 +20,7 @@ import static dev.kkorolyov.pancake.skillet.decorator.UIDecorator.decorate;
 /**
  * Displays a {@link GenericComponent}.
  */
-public class ComponentPanel implements Panel, ModelListener<GenericComponent> {
+public class ComponentPanel implements Panel {
 	private static Displayer<Object> autoDisplayer = new AutoDisplayer();
 
 	private final VBox content = new VBox();
@@ -64,8 +61,6 @@ public class ComponentPanel implements Panel, ModelListener<GenericComponent> {
 				.content(decorate(content)
 						.styleClass("component-content")
 						.get());
-
-		component.register(this);
 	}
 
 	private void componentRemoveAction() {
@@ -79,16 +74,5 @@ public class ComponentPanel implements Panel, ModelListener<GenericComponent> {
 	@Override
 	public TitledPane getRoot() {
 		return root;
-	}
-
-	@Override
-	public void changed(GenericComponent target, ModelChangeEvent event) {
-		if (ComponentChangeEvent.ADD == event) {
-			target.stream()
-					.filter(entry -> content.getChildren().stream().noneMatch(node -> node.getId().equals(entry.getKey())))
-					.forEach(entry -> content.getChildren().add(autoDisplayer.display(entry)));
-		} else if (ComponentChangeEvent.REMOVE == event) {
-			content.getChildren().removeIf(next -> target.stream().noneMatch(entry -> entry.getKey().equals(next.getId())));
-		}
 	}
 }

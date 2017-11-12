@@ -20,11 +20,7 @@ import java.util.function.Supplier;
  * Decorates {@link Node}s.
  */
 public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extends UIDecorator<T> {
-	/**
-	 * Constructs a new Node decorator.
-	 * @param object decorated object
-	 */
-	public NodeDecorator(T object) {
+	protected NodeDecorator(T object) {
 		super(object);
 	}
 
@@ -152,9 +148,9 @@ public class NodeDecorator<T extends Node, D extends NodeDecorator<T, D>> extend
 	 * @param contextMenuSupplier provides the context menu to attach
 	 * @return {@code this}
 	 */
-	public <C extends ContextMenu> D contextMenu(Supplier<C> contextMenuSupplier, T node) {
-		node.setOnContextMenuRequested(e -> {
-			contextMenuSupplier.get().show(node, e.getScreenX(), e.getScreenY());
+	public <C extends ContextMenu> D contextMenu(Supplier<C> contextMenuSupplier) {
+		object.setOnContextMenuRequested(e -> {
+			contextMenuSupplier.get().show(object, e.getScreenX(), e.getScreenY());
 			e.consume();
 		});
 		return (D) this;
