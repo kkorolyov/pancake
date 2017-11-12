@@ -1,8 +1,6 @@
 package dev.kkorolyov.pancake.skillet.model;
 
-import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory;
-import dev.kkorolyov.pancake.skillet.serialization.GenericEntitySerializer;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -19,8 +17,6 @@ public class Workspace extends Model<Workspace> {
 
 	private final Collection<GenericEntity> entities = new LinkedHashSet<>();
 	private GenericEntity activeEntity;
-
-	private final StringSerializer<GenericEntity> entitySerializer = new GenericEntitySerializer();
 
 	/** @return workspace component factory */
 	public ComponentFactory getComponentFactory() {
@@ -118,6 +114,22 @@ public class Workspace extends Model<Workspace> {
 		changed(WorkspaceChangeEvent.ACTIVE);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		Workspace o = (Workspace) obj;
+		return Objects.equals(componentFactory, o.componentFactory)
+				&& Objects.equals(entities, o.entities)
+				&& Objects.equals(activeEntity, o.activeEntity);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(componentFactory,
+				entities,
+				activeEntity);
+	}
 	/**
 	 * A change to a workspace.
 	 */

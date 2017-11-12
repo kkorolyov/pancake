@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.skillet;
 
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 import dev.kkorolyov.pancake.skillet.model.Workspace;
-import dev.kkorolyov.pancake.skillet.serialization.WorkspaceStringSerializer;
+import dev.kkorolyov.pancake.skillet.serialization.WorkspaceSerializer;
 
 import static dev.kkorolyov.pancake.platform.Resources.string;
 
@@ -10,7 +10,7 @@ import static dev.kkorolyov.pancake.platform.Resources.string;
  * Handles filesystem resources and I/O.
  */
 public class ResourceHandler {
-	private final StringSerializer<Workspace> workspaceSerializer = new WorkspaceStringSerializer();
+	private final StringSerializer<Workspace> workspaceSerializer = new WorkspaceSerializer();
 
 	/**
 	 * Loads a workspace from a resource.

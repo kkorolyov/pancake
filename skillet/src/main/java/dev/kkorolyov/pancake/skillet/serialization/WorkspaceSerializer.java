@@ -6,14 +6,14 @@ import dev.kkorolyov.pancake.skillet.model.Workspace;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class WorkspaceStringSerializer extends StringSerializer<Workspace> {
+public class WorkspaceSerializer extends StringSerializer<Workspace> {
 	private static final String SPLIT_PATTERN = ",\\s*(?=\\w+\\s*\\[)";
 	private static final GenericEntitySerializer entitySerializer = new GenericEntitySerializer();
 
 	/**
 	 * Constructs a new workspace string serializer.
 	 */
-	public WorkspaceStringSerializer() {
+	public WorkspaceSerializer() {
 		super(entitySerializer.pattern() + "(,\\s*" + entitySerializer.pattern() + ")*");
 	}
 
@@ -21,8 +21,8 @@ public class WorkspaceStringSerializer extends StringSerializer<Workspace> {
 	public Workspace read(String out) {
 		Workspace workspace = new Workspace();
 
-		Arrays.stream(out.split(SPLIT_PATTERN))
-				.flatMap(entitySerializer::matches)	// Split beforehand because matches() is greedy
+		Arrays.stream(out.split(SPLIT_PATTERN))	// Split beforehand because matches() is greedy
+				.flatMap(entitySerializer::matches)
 				.forEach(workspace::addEntity);
 
 		return workspace;

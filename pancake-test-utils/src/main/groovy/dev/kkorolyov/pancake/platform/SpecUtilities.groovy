@@ -89,9 +89,12 @@ class SpecUtilities {
 	static float randFloat() {
 		return rand.nextInt(Integer.MAX_VALUE) * rand.nextFloat()
 	}
-	/** @return random String */
-	static String randString() {
-		return UUID.randomUUID().toString()
+	/**
+	 * @return random String using UUID
+	 * @param delimiter optional delimiter between UUID segments
+	 */
+	static String randString(String delimiter = "") {
+		return UUID.randomUUID().toString().replaceAll("-", delimiter)
 	}
 
 	/** @return random KeyCode */
