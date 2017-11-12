@@ -54,9 +54,7 @@ public class ComponentList implements Panel, ModelListener<ComponentFactory> {
 		if (lastKnown != null) lastKnown.unregister(entityListener);
 
 		lastKnown = entity;
-		if (lastKnown == null) return;
-
-		lastKnown.register(entityListener);
+		if (lastKnown != null) lastKnown.register(entityListener);
 
 		refreshComponents();
 	}

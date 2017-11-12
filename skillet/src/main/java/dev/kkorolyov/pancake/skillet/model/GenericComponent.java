@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -48,5 +49,19 @@ public class GenericComponent extends Model<GenericComponent> implements Compone
 	/** @return deep copy of {@code this} */
 	public GenericComponent copy() {
 		return new GenericComponent(name, new HashMap<>(attributes));
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+
+		GenericComponent o = (GenericComponent) obj;
+		return Objects.equals(name, o.name)
+				&& Objects.equals(attributes, o.attributes);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(name, attributes);
 	}
 }

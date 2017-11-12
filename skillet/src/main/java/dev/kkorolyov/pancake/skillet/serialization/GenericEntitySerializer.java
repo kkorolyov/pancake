@@ -38,10 +38,9 @@ public class GenericEntitySerializer extends StringSerializer<GenericEntity> {
 
 		return new GenericEntity(name, components);
 	}
-
 	@Override
 	public String write(GenericEntity in) {
-		return in.getName() + in.getComponents().stream()
+		return in.getName() + in.streamComponents()
 				.map(componentSerializer::write)
 				.collect(Collectors.joining("," + System.lineSeparator() + "\t", "[" + System.lineSeparator() + "\t", System.lineSeparator() + "]"));
 	}

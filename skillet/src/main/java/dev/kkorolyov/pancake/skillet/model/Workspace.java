@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A self-contained context representing a single Skillet project.
@@ -23,6 +25,17 @@ public class Workspace extends Model<Workspace> {
 	/** @return workspace component factory */
 	public ComponentFactory getComponentFactory() {
 		return componentFactory;
+	}
+
+	/**
+	 * Adds all entities in a workspace to this workspace.
+	 * @param workspace workspace with entities to add
+	 * @return {@code this}
+	 */
+	public Workspace addWorkspace(Workspace workspace) {
+		workspace.streamEntities()
+				.forEach(this::addEntity);
+		return this;
 	}
 
 	/**
@@ -73,6 +86,19 @@ public class Workspace extends Model<Workspace> {
 	/** @return all entities in this workspace */
 	public Iterable<GenericEntity> getEntities() {
 		return entities;
+	}
+	/** @return stream over all entities */
+	public Stream<GenericEntity> streamEntities() {
+		return entities.stream();
+	}
+
+	/** all components of all entities */
+	public Iterable<GenericComponent> getComponents() {
+		return streamComponents().collect(Collectors.toList());
+	}
+	/** @return stream over all components of all entities */
+	public Stream<GenericComponent> streamComponents() {
+		return streamEntities().flatMap(GenericEntity::streamComponents);
 	}
 
 	/** @return last entity set as active */

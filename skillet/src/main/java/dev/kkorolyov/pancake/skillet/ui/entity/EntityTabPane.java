@@ -91,6 +91,7 @@ public class EntityTabPane implements Panel, ModelListener<Workspace> {
 					tabs.remove(entry.getKey());
 					root.getTabs().remove(entry.getValue());
 				});
+		if (tabs.isEmpty()) entitySelected(null);
 	}
 
 	@Override

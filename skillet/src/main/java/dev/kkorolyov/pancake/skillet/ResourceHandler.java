@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.skillet;
 
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
-import dev.kkorolyov.pancake.skillet.model.GenericEntity;
-import dev.kkorolyov.pancake.skillet.serialization.GenericEntitySerializer;
+import dev.kkorolyov.pancake.skillet.model.Workspace;
+import dev.kkorolyov.pancake.skillet.serialization.WorkspaceStringSerializer;
 
 import static dev.kkorolyov.pancake.platform.Resources.string;
 
@@ -10,22 +10,22 @@ import static dev.kkorolyov.pancake.platform.Resources.string;
  * Handles filesystem resources and I/O.
  */
 public class ResourceHandler {
-	private final StringSerializer<GenericEntity> entitySerializer = new GenericEntitySerializer();
+	private final StringSerializer<Workspace> workspaceSerializer = new WorkspaceStringSerializer();
 
 	/**
-	 * Loads an entity from a resource.
+	 * Loads a workspace from a resource.
 	 * @param path path to resource to load
-	 * @return loaded entity
+	 * @return loaded workspace
 	 */
-	public GenericEntity load(String path) {
-		return entitySerializer.read(string(path));
+	public Workspace load(String path) {
+		return workspaceSerializer.read(string(path));
 	}
 	/**
-	 * Saves an entity to a resource.
-	 * @param entity entity to save
+	 * Saves a workspace to a resource.
+	 * @param workspace workspace to save
 	 * @param path path to resource to save as
 	 */
-	public void save(GenericEntity entity, String path) {
-		string(path, entitySerializer.write(entity));
+	public void save(Workspace workspace, String path) {
+		string(path, workspaceSerializer.write(workspace));
 	}
 }

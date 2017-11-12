@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * A container of distinct components.
@@ -88,6 +89,10 @@ public class GenericEntity extends Model<GenericEntity> implements Iterable<Gene
 	/** @return	entity components */
 	public Collection<GenericComponent> getComponents() {
 		return components.values();
+	}
+	/** @return stream over components */
+	public Stream<GenericComponent> streamComponents() {
+		return getComponents().stream();
 	}
 
 	@Override
