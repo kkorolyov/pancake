@@ -8,11 +8,7 @@ import javafx.scene.control.Labeled;
  * Decorates {@link Labeled} implementors.
  */
 public class LabeledDecorator<T extends Labeled, D extends LabeledDecorator<T, D>> extends RegionDecorator<T, D> {
-	/**
-	 * Constructs a new Labeled decorator.
-	 * @param object decorated object
-	 */
-	public LabeledDecorator(T object) {
+	protected LabeledDecorator(T object) {
 		super(object);
 	}
 

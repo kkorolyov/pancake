@@ -7,11 +7,7 @@ import javafx.scene.control.MenuItem;
  * Decorates {@link ContextMenu}s.
  */
 public class ContextMenuDecorator<T extends ContextMenu> extends UIDecorator<T> {
-	/**
-	 * Constructs a ContextMenu decorator.
-	 * @param object decorated object
-	 */
-	ContextMenuDecorator(T object) {
+	protected ContextMenuDecorator(T object) {
 		super(object);
 	}
 

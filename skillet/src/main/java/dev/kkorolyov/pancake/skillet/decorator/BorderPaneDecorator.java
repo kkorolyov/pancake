@@ -8,11 +8,7 @@ import javafx.scene.layout.BorderPane;
  * Decorates {@link BorderPane}s.
  */
 public class BorderPaneDecorator<T extends BorderPane, D extends BorderPaneDecorator<T, D>> extends RegionDecorator<T, D> {
-	/**
-	 * Constructs a new BorderPane decorator.
-	 * @param object decorated object
-	 */
-	public BorderPaneDecorator(T object) {
+	protected BorderPaneDecorator(T object) {
 		super(object);
 	}
 

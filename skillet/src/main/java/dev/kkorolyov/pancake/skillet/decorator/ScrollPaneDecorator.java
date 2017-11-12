@@ -6,11 +6,7 @@ import javafx.scene.control.ScrollPane;
  * Decorates {@link ScrollPane}s.
  */
 public class ScrollPaneDecorator<T extends ScrollPane> extends RegionDecorator<T, ScrollPaneDecorator<T>> {
-	/**
-	 * Constructs a new ScrollPane decorator.
-	 * @param object decorated object
-	 */
-	public ScrollPaneDecorator(T object) {
+	protected ScrollPaneDecorator(T object) {
 		super(object);
 	}
 

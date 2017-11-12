@@ -46,7 +46,7 @@ public class EntityList implements Panel, ModelListener<Workspace> {
 							.maxSize(Double.MAX_VALUE, null)
 							.action(() -> workspace.setActiveEntity(k))
 							.contextMenu(() -> decorate(new ContextMenu())
-									.item("Delete", () -> workspace.removeEntity(k))
+									.item("Remove", () -> workspace.removeEntity(k))
 									.get())
 							.get();
 

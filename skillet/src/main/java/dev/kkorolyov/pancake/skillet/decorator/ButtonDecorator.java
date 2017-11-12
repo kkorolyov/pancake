@@ -6,11 +6,7 @@ import javafx.scene.control.ButtonBase;
  * Decorates {@link ButtonBase} implementors.
  */
 public class ButtonDecorator<T extends ButtonBase, D extends ButtonDecorator<T, D>> extends LabeledDecorator<T, D> {
-	/**
-	 * Constructs a new Button decorator.
-	 * @param object decorated object
-	 */
-	public ButtonDecorator(T object) {
+	protected ButtonDecorator(T object) {
 		super(object);
 	}
 

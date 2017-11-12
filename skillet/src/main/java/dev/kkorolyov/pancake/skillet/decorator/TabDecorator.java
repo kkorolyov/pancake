@@ -9,11 +9,7 @@ import java.util.function.Function;
  * Decorates {@link Tab}s.
  */
 public class TabDecorator<T extends Tab> extends UIDecorator<T> {
-	/**
-	 * Constructs a new Tab decorator.
-	 * @param object decorated object
-	 */
-	public TabDecorator(T object) {
+	protected TabDecorator(T object) {
 		super(object);
 	}
 
