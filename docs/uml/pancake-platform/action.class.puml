@@ -1,0 +1,62 @@
+@startuml
+
+abstract class Action {
+	-signature: Signature
+
+	#Action(componentTypes: Class<? extends Component>...)
+
+	{abstract} #apply(Entity)
+	+accept(Entity)
+}
+Action -> dev.kkorolyov.pancake.platform.entity.Entity
+
+class CollectiveAction {
+	-delegates: Set<Action>
+}
+Action <|-- CollectiveAction
+
+class FreeFormAction {
+	-consumer: Consumer<Entity>
+}
+Action <|-- FreeFormAction
+
+class KeyAction {
+	-delegate: MultiStageAction
+	-inputs: Set<Enum>
+
+	+arm(inputs: Set<Enum>, dt: float)
+}
+Action <|-- KeyAction
+KeyAction --> MultiStageAction
+
+class MultiStageAction {
+	-start: Action
+	-hold: Action
+	-end: Action
+
+	-holdTime: float
+
+	-armingOption: ArmingOption
+	-state: State
+
+	+arm(ArmingOption, dt: float)
+}
+Action <|-- MultiStageAction
+MultiStageAction +-- ArmingOption
+MultiStageAction +-- State
+enum ArmingOption
+
+class ActionRegistry {
+	-actions: Map<String, Action>
+
+	+get(String): Action
+	+getName(Action): String
+
+	+put(String, Action)
+	+put(path: String)
+
+	+readKeys(path: String): Iterable<KeyAction>
+}
+ActionRegistry o- Action
+
+@enduml
