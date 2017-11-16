@@ -1,0 +1,53 @@
+@startuml
+
+class Camera {
+	-position: Vector
+	-unitPixels: Vector
+	-output: Vector
+	-halfSize: Vector
+	__
+	+getAbsolutePosition(relative: Vector): Vector
+	+getRelativePosition(absolute: Vector): Vector
+}
+Camera o-- dev.kkorolyov.pancake.platform.math.Vector
+
+class CompositeImage {
+	-images: [Image]
+	-size: Vector
+	__
+	+add(CompositeImage)
+	+add(Image)
+	..
+	+remove(Image)
+	+clear(): int
+}
+CompositeImage .|> Iterable
+CompositeImage o-- javafx.scene.image.Image
+CompositeImage o-- dev.kkorolyov.pancake.platform.math.Vector
+
+class ImageRegistry {
+	-images: {String, CompositeImage}
+	__
+	get(name: String): CompositeImage
+	..
+	put(path: String)
+	put(name: String, image: CompositeImage)
+}
+ImageRegistry o-- CompositeImage
+
+class SoundRegistry {
+	-resourceDistributions: {String, WeightedDistribution}
+	-cache: {String, AudioClip}
+	-cacheSize: int
+	__
+	+get(name: String): AudioClip
+	-getResource(name: String): String
+	..
+	+put(path: String)
+	+put(name: String, resource: String)
+	+put(name: String, resource: String, weight: int)
+}
+SoundRegistry o-- dev.kkorolyov.pancake.platform.math.WeightedDistribution
+SoundRegistry o-- javafx.scene.media.AudioClip
+
+@enduml
