@@ -40,8 +40,7 @@ public abstract class Launcher extends Application {
 	protected final GameEngine engine = new GameEngine(events, entities);
 	protected final GameLoop gameLoop = new GameLoop(engine);
 
-	protected Launcher() {
-		LauncherConfig config = config();
+	protected Launcher(LauncherConfig config) {
 		config.verify();
 
 		canvas = announce(new Canvas(), CANVAS_CREATED);
@@ -51,9 +50,6 @@ public abstract class Launcher extends Application {
 		title = config.title;
 		setSize(config.size.getX(), config.size.getY());
 	}
-
-	/** @return configuration defining basic properties */
-	protected abstract LauncherConfig config();
 
 	/**
 	 * All initialization code should go here.
