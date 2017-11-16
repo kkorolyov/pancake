@@ -77,7 +77,8 @@ public class AutoSerializer<I, O, P extends Serializer<I, O>> implements Seriali
 		Class<?> c = child;
 
 		do {
-			if (parent.equals(c)) { return Optional.of(degree); } else degree++;
+			if (parent.equals(c)) return Optional.of(degree);
+			else degree++;
 		} while ((c = c.getSuperclass()) != null);
 
 		return Optional.empty();

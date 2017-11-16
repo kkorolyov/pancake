@@ -9,16 +9,16 @@ import java.util.Map;
 /**
  * Serializes components to strings.
  * A serialized component matches the pattern {@code PREFIX{key: val,...}}, i.e. a unique identifier followed by a map.
- * @param <T> component instance type
+ * @param <I> component instance type
  */
-public abstract class ComponentStringSerializer<T extends Component> extends StringSerializer<T> {
+public abstract class ComponentStringSerializer<I extends Component> extends StringSerializer<I> {
 	private static final StringSerializer<Map<String, Object>> mapSerializer = new MapStringSerializer();
 
 	/**
 	 * Constructs a new component string serializer.
 	 * @param prefix accepted component prefix
 	 */
-	public ComponentStringSerializer(String prefix) {
+	protected ComponentStringSerializer(String prefix) {
 		super(prefix + mapSerializer.pattern());
 	}
 
