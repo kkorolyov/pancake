@@ -23,7 +23,7 @@ public abstract class GameSystem {
 	 * Constructs a new system with arbitrary entity order.
 	 * @param signature defines all components an entity must have to be affected by this system
 	 */
-	public GameSystem(Signature signature) {
+	protected GameSystem(Signature signature) {
 		this(signature, null);
 	}
 	/**
@@ -31,7 +31,7 @@ public abstract class GameSystem {
 	 * @param signature defines all components an entity must have to be affected by this system
 	 * @param comparator defines the order in which entities are supplied to this system
 	 */
-	public GameSystem(Signature signature, Comparator<Entity> comparator) {
+	protected GameSystem(Signature signature, Comparator<Entity> comparator) {
 		this.signature = signature;
 		this.comparator = comparator;
 	}
