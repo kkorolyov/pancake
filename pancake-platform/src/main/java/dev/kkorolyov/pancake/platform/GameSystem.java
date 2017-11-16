@@ -37,15 +37,6 @@ public abstract class GameSystem {
 	}
 
 	/**
-	 * Invoked when this system is attached to a {@link GameEngine}.
-	 */
-	public void attach() {}
-	/**
-	 * Invoked when this system is detached from a {@link GameEngine}.
-	 */
-	public void detach() {}
-
-	/**
 	 * Function invoked on each entity affected by this system.
 	 * @param dt seconds elapsed since last update
 	 */
@@ -61,6 +52,25 @@ public abstract class GameSystem {
 	 * @param dt seconds elapsed since last update
 	 */
 	public void after(float dt) {}
+
+	/**
+	 * Invoked when this system is attached to a {@link GameEngine}.
+	 */
+	public void attach() {}
+	/**
+	 * Invoked when this system is detached from a {@link GameEngine}.
+	 */
+	public void detach() {}
+
+	/**
+	 * Used by a {@link GameEngine} to share services.
+	 * @param events shared event broadcaster
+	 * @param performanceCounter shared performance counter
+	 */
+	void share(EventBroadcaster events, PerformanceCounter performanceCounter) {
+		this.events = events;
+		this.performanceCounter = performanceCounter;
+	}
 
 	/**
 	 * Registers to receive broadcasts of an event.
@@ -90,7 +100,7 @@ public abstract class GameSystem {
 	}
 
 	/** @return current performance counter usages */
-	public Iterable<Usage> usages() {
+	protected Iterable<Usage> usages() {
 		return performanceCounter.usages();
 	}
 
@@ -101,15 +111,5 @@ public abstract class GameSystem {
 	/** @return required entity order */
 	public Comparator<Entity> getComparator() {
 		return comparator;
-	}
-
-	/**
-	 * Used by a {@link GameEngine} to share services.
-	 * @param events shared event broadcaster
-	 * @param performanceCounter shared performance counter
-	 */
-	void share(EventBroadcaster events, PerformanceCounter performanceCounter) {
-		this.events = events;
-		this.performanceCounter = performanceCounter;
 	}
 }
