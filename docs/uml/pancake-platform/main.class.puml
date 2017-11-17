@@ -1,26 +1,99 @@
 @startuml
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+class GameLoop {
+	-engine: GameEngine
+	-last: long
+	__
+	+handle(now: long)
 }
+GameLoop .u.|> javafx.animation.AnimationTimer
+GameLoop o-- GameEngine
 
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+class GameEngine {
+	-events: EventBroadcaster
+	-entities: EntityPool
+	-performanceCounter: PerformanceCounter
+	-systems: {GameSystem, Limiter}
+	__
+	+GameEngine(EventBroadcaster, EntityPool, [GameSystem])
+	--
+	+update(dt: float)
+	..
+	+add(GameSystem)
+	+add(GameSystem, updateInterval: float)
+	+remove(GameSystem)
+}
+GameEngine o-r- EventBroadcaster
+GameEngine o-l- EntityPool
+GameEngine o-- utility.PerformanceCounter
+GameEngine o-- GameSystem
+GameEngine --> utility.Limiter
+
+abstract class GameSystem {
+	-signature: Signature
+	-comparator: Comparator<Entity>
+	..
+	-events: EventBroadcaster
+	-performanceCounter: PerformanceCounter
+	__
+	{abstract} +update(Entity, dt: float)
+	..
+	+before(dt: float)
+	+after(dt: float)
+	..
+	+attach()
+	+detach()
+	+share(EventBroadcaster, PerformanceCounter)
+	..
+	+register(event: String, receiver: Consumer<?>)
+	+unregister(event: String, receiver: Consumer<?>)
+	..
+	+enqueue(event: String, payload: Object)
+	..
+	#usages(): [Usage]
+}
+GameSystem o-- dev.kkorolyov.pancake.platform.entity.Signature
+GameSystem --> dev.kkorolyov.pancake.platform.entity.Entity
+GameSystem -u-> EventBroadcaster
+GameSystem --> utility.PerformanceCounter
+
+package utility {
+	class Limiter {
+		-duration: float
+		-elapsed: float
+		__
+		+Limiter(duration: float)
+		--
+		+isReady(dt: float): boolean
+		+isReady(): boolean
+	}
+
+	class PerformanceCounter {
+		{static} -MAX_TIME: long
+		{static} -SAMPLES: int
+		..
+		-systemUsage: {GameSystem, Usage}
+		-start: long
+		__
+		+start()
+		+end(GameSystem)
+		..
+		+usages(): [Usage]
+	}
+	PerformanceCounter +-- Usage
+	class Usage {
+		-system: GameSystem
+		-systemName: String
+		..
+		-samples: long[]
+		-counter: int
+		-value: long
+		__
+		-Usage(GameSystem, samples: int)
+		--
+		-add(sample: long)
+		+exceedsMax(): boolean
+	}
 }
 
 @enduml
