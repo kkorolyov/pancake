@@ -16,7 +16,7 @@ public abstract class ActionSerializer<I extends Action> extends StringSerialize
 	 * @param pattern accepted regex pattern
 	 * @param context associated action registry
 	 */
-	public ActionSerializer(String pattern, ActionRegistry context) {
+	protected ActionSerializer(String pattern, ActionRegistry context) {
 		super(pattern);
 		this.context = context;
 	}

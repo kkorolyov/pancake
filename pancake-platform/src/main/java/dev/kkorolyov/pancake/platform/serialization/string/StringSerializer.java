@@ -18,7 +18,7 @@ public abstract class StringSerializer<I> implements Serializer<I, String> {
 	 * Constructs a new string serializer.
 	 * @param pattern accepted regex pattern
 	 */
-	public StringSerializer(String pattern) {
+	protected StringSerializer(String pattern) {
 		this.pattern = Pattern.compile(pattern);
 	}
 

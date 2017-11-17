@@ -39,12 +39,11 @@ public class FunctionalTest extends Launcher {
 		Application.launch(args);
 	}
 
-	@Override
-	protected LauncherConfig config() {
-		return new LauncherConfig()
+	public FunctionalTest() {
+		super(new LauncherConfig()
 				.title("Killstreek Functional Test")
 				.size(640, 640)
-				.unitPixels(new Vector(64, -64, 1));
+				.unitPixels(new Vector(64, -64, 1)));
 	}
 
 	@Override

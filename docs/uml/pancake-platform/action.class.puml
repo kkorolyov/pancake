@@ -1,0 +1,74 @@
+@startuml
+
+abstract class Action {
+	-signature: Signature
+	__
+	#Action([Class<? extends Component>])
+	--
+	{abstract} #apply(Entity)
+	+accept(Entity)
+}
+Action .u.|> Consumer
+Action -> dev.kkorolyov.pancake.platform.entity.Entity
+
+class CollectiveAction {
+	-delegates: {Action}
+}
+Action <|-- CollectiveAction
+
+class FreeFormAction {
+	-consumer: Consumer<Entity>
+}
+Action <|-- FreeFormAction
+
+class KeyAction {
+	-delegate: MultiStageAction
+	-inputs: {Enum}
+	__
+	+arm(inputs: {Enum}, dt: float)
+}
+Action <|-- KeyAction
+KeyAction -> MultiStageAction
+
+class MultiStageAction {
+	-start: Action
+	-hold: Action
+	-end: Action
+	..
+	-holdTime: float
+	..
+	-armingOption: ArmingOption
+	-state: State
+	__
+	+arm(ArmingOption, dt: float)
+}
+Action <|-- MultiStageAction
+MultiStageAction +-- ArmingOption
+MultiStageAction +-- State
+enum ArmingOption {
+	+ACTIVATE
+	+DEACTIVATE
+}
+abstract class State {
+	{static} -INACTIVE: State
+	{static} -ACTIVE: State
+	{static} -DECAYED: State
+
+	{abstract} ~apply(Entity, client: MultiStageAction)
+	~accept(Action, Entity)
+}
+
+class ActionRegistry {
+	-actions: {String, Action}
+	__
+	+get(String): Action
+	+getName(Action): String
+	..
+	+put(String, Action): ActionRegistry
+	+put(path: String): ActionRegistry
+	..
+	+readKeys(path: String): Iterable<KeyAction>
+}
+ActionRegistry o- Action
+
+@enduml

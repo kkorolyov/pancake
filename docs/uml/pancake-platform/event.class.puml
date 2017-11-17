@@ -1,0 +1,16 @@
+@startuml
+
+class EventBroadcaster {
+	-receivers: {String, {Consumer<?>}}
+	-eventQueue: Queue<String>
+	-payloadQueue: Queue<Object>
+	__
+	+register(event: String, receiver: Consumer<?>)
+	+unregister(event: String, receiver: Consumer<?>)
+	..
+	+enqueue(event: String, payload: Object): int
+	..
+	+broadcast(): int
+}
+
+@enduml

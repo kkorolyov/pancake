@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.ServiceLoader;
 
 /**
  * Central game management module.
@@ -25,7 +24,7 @@ public class GameEngine {
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
 	public GameEngine(EventBroadcaster events, EntityPool entities) {
-		this(events, entities, ServiceLoader.load(GameSystem.class));
+		this(events, entities, Resources.providers(GameSystem.class));
 	}
 	/**
 	 * @see #GameEngine(EventBroadcaster, EntityPool, Iterable)

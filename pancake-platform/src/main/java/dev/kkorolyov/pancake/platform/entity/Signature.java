@@ -11,10 +11,6 @@ public class Signature {
 	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
 	private static long indexCounter;
 
-	private static long indexOf(Class<? extends Component> type) {
-		return indexMap.computeIfAbsent(type, k -> indexCounter++);
-	}
-
 	private long signature;
 
 	/**
@@ -37,6 +33,10 @@ public class Signature {
 		}
 	}
 
+	private static long maskOf(Class<? extends Component> type) {
+		return indexMap.computeIfAbsent(type, k -> 1L << indexCounter++);
+	}
+
 	/**
 	 * Checks if a subset of this signature matches {@code other}.
 	 * @param other signature to check against
@@ -51,19 +51,14 @@ public class Signature {
 	 * @param type added component type
 	 */
 	public void add(Class<? extends Component> type) {
-		signature |= getMask(type);
+		signature |= maskOf(type);
 	}
 	/**
 	 * Removes a component type from this signature.
 	 * @param type removed component type
 	 */
 	public void remove(Class<? extends Component> type) {
-		signature &= ~getMask(type);
-	}
-
-	/** @return mask consisting of a single 1 bit in {@code type's} bit index */
-	private long getMask(Class<? extends Component> type) {
-		return 1 << indexOf(type);
+		signature &= ~maskOf(type);
 	}
 
 	@Override

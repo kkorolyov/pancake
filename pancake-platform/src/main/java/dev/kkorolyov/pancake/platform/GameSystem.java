@@ -23,7 +23,7 @@ public abstract class GameSystem {
 	 * Constructs a new system with arbitrary entity order.
 	 * @param signature defines all components an entity must have to be affected by this system
 	 */
-	public GameSystem(Signature signature) {
+	protected GameSystem(Signature signature) {
 		this(signature, null);
 	}
 	/**
@@ -31,19 +31,10 @@ public abstract class GameSystem {
 	 * @param signature defines all components an entity must have to be affected by this system
 	 * @param comparator defines the order in which entities are supplied to this system
 	 */
-	public GameSystem(Signature signature, Comparator<Entity> comparator) {
+	protected GameSystem(Signature signature, Comparator<Entity> comparator) {
 		this.signature = signature;
 		this.comparator = comparator;
 	}
-
-	/**
-	 * Invoked when this system is attached to a {@link GameEngine}.
-	 */
-	public void attach() {}
-	/**
-	 * Invoked when this system is detached from a {@link GameEngine}.
-	 */
-	public void detach() {}
 
 	/**
 	 * Function invoked on each entity affected by this system.
@@ -61,6 +52,25 @@ public abstract class GameSystem {
 	 * @param dt seconds elapsed since last update
 	 */
 	public void after(float dt) {}
+
+	/**
+	 * Invoked when this system is attached to a {@link GameEngine}.
+	 */
+	public void attach() {}
+	/**
+	 * Invoked when this system is detached from a {@link GameEngine}.
+	 */
+	public void detach() {}
+
+	/**
+	 * Used by a {@link GameEngine} to share services.
+	 * @param events shared event broadcaster
+	 * @param performanceCounter shared performance counter
+	 */
+	void share(EventBroadcaster events, PerformanceCounter performanceCounter) {
+		this.events = events;
+		this.performanceCounter = performanceCounter;
+	}
 
 	/**
 	 * Registers to receive broadcasts of an event.
@@ -90,7 +100,7 @@ public abstract class GameSystem {
 	}
 
 	/** @return current performance counter usages */
-	public Iterable<Usage> usages() {
+	protected Iterable<Usage> usages() {
 		return performanceCounter.usages();
 	}
 
@@ -101,15 +111,5 @@ public abstract class GameSystem {
 	/** @return required entity order */
 	public Comparator<Entity> getComparator() {
 		return comparator;
-	}
-
-	/**
-	 * Used by a {@link GameEngine} to share services.
-	 * @param events shared event broadcaster
-	 * @param performanceCounter shared performance counter
-	 */
-	void share(EventBroadcaster events, PerformanceCounter performanceCounter) {
-		this.events = events;
-		this.performanceCounter = performanceCounter;
 	}
 }

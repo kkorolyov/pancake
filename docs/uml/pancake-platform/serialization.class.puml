@@ -1,0 +1,116 @@
+@startuml
+
+interface Serializer<I, O> {
+	+read(out: O): I
+	+write(in: I): O
+	..
+	+accepts(out: O): boolean
+}
+
+class AutoSerializer<I, O, P extends Serializer<I, O>> {
+	{static} -providerMap: {ProviderKey, [? extends Serializer]}
+	..
+	-exceptionGenerator: Function<Object, RuntimeException>
+	-providerType: Class<P>
+	-providerParameters: Object[]
+	-providers: [P]
+	__
+	+AutoSerializer(providerType: Class<P>, parameters: [Object])
+	--
+	-getNearestProvider(in: I): Optional<P>
+	-computeDegree(parent: Type, child: Class<?>): Optional<Integer>
+	..
+	-providers(): Stream<P>
+}
+AutoSerializer .u.|> Serializer
+AutoSerializer +-- ProviderKey
+class ProviderKey {
+	-providerType: Class<? extends Serializer>
+	-parameters: Object[]
+}
+
+package string {
+	abstract class StringSerializer<I> {
+		-pattern: Pattern
+		__
+		#StringSerializer(pattern: String)
+		..
+		+consume(out: String): String
+		..
+		+match(out: String): Optional<I>
+		+matches(out: String): Stream<I>
+		..
+		+pattern(): String
+	}
+	StringSerializer .u.|> .Serializer
+
+	MapStringSerializer -u-|> StringSerializer
+	MapStringSerializer --> AutoSerializer
+	MapStringSerializer --> StringSerializer
+
+	NumberStringSerializer -u-|> StringSerializer
+
+	StringStringSerializer -u-|> StringSerializer
+
+	URIStringSerializer -u-|> StringSerializer
+
+	VectorStringSerializer -u-|> StringSerializer
+	VectorStringSerializer --> NumberStringSerializer
+
+	package action {
+		abstract class ActionSerializer<I extends Action> {
+			#context: ActionRegistry
+			__
+			#ActionSerializer(pattern: String, context: ActionRegistry)
+		}
+		ActionSerializer --|> StringSerializer
+
+		CollectiveActionSerializer -u-|> ActionSerializer
+		CollectiveActionSerializer --> AutoSerializer
+		CollectiveActionSerializer --> ActionSerializer
+
+		KeyActionSerializer -u-|> ActionSerializer
+		KeyActionSerializer --> AutoSerializer
+		KeyActionSerializer --> ActionSerializer
+
+		MultiStageActionSerializer -u-|> ActionSerializer
+		MultiStageActionSerializer --> AutoSerializer
+		MultiStageActionSerializer --> ActionSerializer
+
+		RegisteredActionSerializer -u-|> ActionSerializer
+
+		class ActionContainerSerializer {
+			-context: ActionRegistry
+			__
+			+ActionContainerSerializer(context: ActionRegistry)
+		}
+		ActionContainerSerializer -u---|> StringSerializer
+		ActionContainerSerializer --> AutoSerializer
+		ActionContainerSerializer --> ActionSerializer
+		ActionContainerSerializer +-- ActionContainer
+		class ActionContainer {
+			-name: String
+			-action: Action
+		}
+	}
+
+	package entity {
+		abstract class ComponentStringSerializer<I extends Component> {
+			#ComponentStringSerializer(prefix: String)
+			--
+			#readMap(out: String): {String, Object}
+			#writeMap(in: {String, Object}): String
+		}
+		ComponentStringSerializer --|> StringSerializer
+		ComponentStringSerializer --> MapStringSerializer
+
+		class EntityStringSerializer {
+			-context: EntityPool
+		}
+		EntityStringSerializer --|> StringSerializer
+		EntityStringSerializer --> AutoSerializer
+		EntityStringSerializer -> ComponentStringSerializer
+	}
+}
+
+@enduml
