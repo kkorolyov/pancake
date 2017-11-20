@@ -33,25 +33,20 @@ class Skillet : Application() {
 	private val resourceHandler: ResourceHandler = ResourceHandler()
 
 	private val entityList: EntityList = EntityList(workspace)
-	private val componentList: ComponentList = ComponentList(workspace.componentFactory)
-	private val entityTabPane: EntityTabPane = EntityTabPane(
+	private val componentList: ComponentList = ComponentList(workspace.componentFactory,
+			componentSelected = { component ->
+				workspace.activeEntity.ifPresent { it.addComponent(component) }
+			})
+	private val entityTabPane: EntityTabPane = EntityTabPane(workspace,
 			entitySelected = {
 				workspace.setActiveEntity(it)
-				componentList.setEntity(it)
-			}
-	)
+				componentList.refreshComponents(it)
+			})
 
 	private lateinit var stage: Stage
 
 	override fun start(primaryStage: Stage?) {
 		stage = primaryStage ?: throw NullPointerException()
-
-		workspace.register(entityTabPane)
-
-		componentList.onComponentSelected { component ->
-			workspace.activeEntity
-					.ifPresent { entity -> entity.addComponent(component) }
-		}
 
 		workspace.componentFactory.add(
 				resourceHandler.load("defaults$WORKSPACE_FILE_EXTENSION").components,
@@ -61,8 +56,6 @@ class Skillet : Application() {
 		stage.icons.add(Image("pancake-icon.png"))
 
 		val root = BorderPane()
-
-		root
 				.top(MenuBar(
 						Menu("_Entity")
 								.item("_New", this::newEntity)

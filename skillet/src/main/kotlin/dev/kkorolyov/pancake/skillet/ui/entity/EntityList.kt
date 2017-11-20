@@ -52,11 +52,11 @@ class EntityList(workspace: Workspace) : Panel, ModelListener<Workspace> {
 		}
 	}
 	private fun removeOldEntities(workspace: Workspace) {
-		buttons
-				.filter { !workspace.containsEntity(it.key) }
-				.forEach {
-					buttons.remove(it.key)
-					content.children -= it.value
+		// TODO contain() operator
+		buttons.filter { !workspace.containsEntity(it.key) }
+				.forEach { entity, button ->
+					buttons -= entity
+					content.children -= button
 				}
 	}
 

@@ -16,7 +16,7 @@ import javafx.scene.layout.VBox
  * Displays a [GenericEntity].
  */
 class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
-	private val components: MutableMap<GenericComponent, ComponentPanel> = HashMap()
+	private val panels: MutableMap<GenericComponent, ComponentPanel> = HashMap()
 
 	private val content: VBox = VBox()
 	override val root: ScrollPane = ScrollPane(content)
@@ -29,10 +29,11 @@ class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
 
 	private fun addNewComponents(entity: GenericEntity) {
 		entity.components.forEach {
-			components.computeIfAbsent(it) {
-				val component = ComponentPanel(it)
-						.onComponentRemoved { entity.removeComponent(it.name) }
-
+			panels.computeIfAbsent(it) {
+				val component = ComponentPanel(it,
+						componentRemoved = {
+							entity.removeComponent(it.name)
+						})
 				content.children += component.root
 
 				component
@@ -40,11 +41,11 @@ class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
 		}
 	}
 	private fun removeOldComponents(entity: GenericEntity) {
-		components
-				.filter { !entity.containsComponent(it.key.name) }
-				.forEach {
-					entity.removeComponent(it.key.name)
-					content.children -= it.value.root
+		// TODO contain() operator
+		panels.filter { !entity.containsComponent(it.key.name) }
+				.forEach { component, panel ->
+					panels -= component
+					content.children -= panel.root
 				}
 	}
 

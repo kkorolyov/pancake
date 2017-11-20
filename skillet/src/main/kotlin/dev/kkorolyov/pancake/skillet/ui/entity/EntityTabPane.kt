@@ -12,10 +12,12 @@ import javafx.scene.control.TabPane
 
 /**
  * Displays editable entity tabs.
+ * @param workspace workspace containing editable entities
  * @param entitySelected listener invoked with the selected entity when an entity is selected
  * @param entityClosed listener invoked with the closed entity when its editor is closed
  */
 class EntityTabPane(
+		workspace: Workspace,
 		var entitySelected: (GenericEntity?) -> Unit = {},
 		var entityClosed: (GenericEntity) -> Unit = {}
 ) : Panel, ModelListener<Workspace> {
@@ -23,6 +25,10 @@ class EntityTabPane(
 
 	override val root: TabPane = TabPane()
 			.styleClass("entity-tabs")
+
+	init {
+		workspace.register(this)
+	}
 
 	/**
 	 * Adds a new entity tab if it does not yet exist and selects it.
@@ -46,11 +52,11 @@ class EntityTabPane(
 	}
 
 	private fun removeOldEntities(workspace: Workspace) {
-		tabs
-				.filter { !workspace.containsEntity(it.key) }
-				.forEach {
-					tabs -= it.key
-					root.tabs -= it.value
+		// TODO contain() operator
+		tabs.filter { !workspace.containsEntity(it.key) }
+				.forEach { entity, tab ->
+					tabs -= entity
+					root.tabs -= tab
 				}
 		if (tabs.isEmpty()) entitySelected(null)
 	}
