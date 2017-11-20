@@ -34,15 +34,15 @@ fun <T : Spinner<Any>> T.patterns(valid: Pattern, committed: Pattern): T {
  */
 fun <T : Spinner<Any>> T.press(standard: Int, modified: Int): T {
 	editor.press(mapOf(
-			KeyCodeCombination(KeyCode.UP) to { increment(standard) },
-			KeyCodeCombination(KeyCode.DOWN) to { decrement(standard) },
-			KeyCodeCombination(KeyCode.UP, KeyCombination.ALT_DOWN) to { increment(modified) },
-			KeyCodeCombination(KeyCode.DOWN, KeyCombination.ALT_DOWN) to { decrement(modified) }
+			KeyCodeCombination(KeyCode.UP) to { _ -> increment(standard) },
+			KeyCodeCombination(KeyCode.DOWN) to { _ -> decrement(standard) },
+			KeyCodeCombination(KeyCode.UP, KeyCombination.ALT_DOWN) to { _ -> increment(modified) },
+			KeyCodeCombination(KeyCode.DOWN, KeyCombination.ALT_DOWN) to { _ -> decrement(modified) }
 	))
-	scroll { e ->
-		val steps = if (e.isAltDown) modified else standard
+	scroll {
+		val steps = if (it.isAltDown) modified else standard
 
-		if (e.deltaY < 0) decrement(steps)
+		if (it.deltaY < 0) decrement(steps)
 		else increment(steps)
 	}
 	return this

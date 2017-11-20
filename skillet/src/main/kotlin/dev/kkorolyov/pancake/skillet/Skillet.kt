@@ -22,15 +22,24 @@ fun main(vararg args: String) {
 	Application.launch(Skillet::class.java, *args)
 }
 
-private const val WORKSPACE_FILE_EXTENSION = ".mfn"
-
+/**
+ * Skillet application entry point.
+ */
 class Skillet : Application() {
+	companion object {
+		private const val WORKSPACE_FILE_EXTENSION = ".mfn"
+	}
 	private val workspace: Workspace = Workspace()
 	private val resourceHandler: ResourceHandler = ResourceHandler()
 
 	private val entityList: EntityList = EntityList(workspace)
 	private val componentList: ComponentList = ComponentList(workspace.componentFactory)
-	private val entityTabPane: EntityTabPane = EntityTabPane()
+	private val entityTabPane: EntityTabPane = EntityTabPane(
+			entitySelected = {
+				workspace.setActiveEntity(it)
+				componentList.setEntity(it)
+			}
+	)
 
 	private lateinit var stage: Stage
 
@@ -39,10 +48,6 @@ class Skillet : Application() {
 
 		workspace.register(entityTabPane)
 
-		entityTabPane.onEntitySelected {
-			workspace.setActiveEntity(it)
-			componentList.setEntity(it)
-		}
 		componentList.onComponentSelected { component ->
 			workspace.activeEntity
 					.ifPresent { entity -> entity.addComponent(component) }
@@ -90,7 +95,7 @@ class Skillet : Application() {
 	}
 	private fun saveWorkspace() {
 		val chooser = buildFileChooser()
-		chooser.title = "Save Workpsace"
+		chooser.title = "Save Workspace"
 		chooser.initialFileName = "workspace$WORKSPACE_FILE_EXTENSION"
 
 		val result = chooser.showSaveDialog(stage)

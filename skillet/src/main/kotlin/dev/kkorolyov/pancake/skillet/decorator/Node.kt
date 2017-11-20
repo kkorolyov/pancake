@@ -30,37 +30,37 @@ fun <T : Node> T.tooltip(tooltip: String): T {
 /**
  * Sets the mouse clicked procedure.
  * @param clicks number of clicks required to invoke `procedure`
- * @param procedure procedure to invoke on click
+ * @param procedure attached click procedure, invoked with receiver
  */
-fun <T : Node> T.click(clicks: Int = 1, procedure: () -> Unit): T {
-	setOnMouseClicked { if (it.clickCount == clicks) procedure() }
+fun <T : Node> T.click(clicks: Int = 1, procedure: (T) -> Unit): T {
+	setOnMouseClicked { if (it.clickCount == clicks) procedure(this) }
 	return this
 }
 
 /**
  * Sets the key press procedure.
  * @param keys set of keys which invoke `procedure`
- * @param procedure attached press procedure
+ * @param procedure attached press procedure, invoked with receiver
  */
-fun <T : Node> T.press(vararg keys: KeyCode, procedure: () -> Unit): T =
+fun <T : Node> T.press(vararg keys: KeyCode, procedure: (T) -> Unit): T =
 		press(*keys.map { key -> KeyCodeCombination(key) }.toTypedArray(), procedure = procedure)
 /**
  * Sets the key press procedure.
  * @param keyCombinations set of key combinations which invoke `procedure`
- * @param procedure attached press procedure
+ * @param procedure attached press procedure, invoked with receiver
  */
-fun <T : Node> T.press(vararg keyCombinations: KeyCombination, procedure: () -> Unit): T {
-	setOnKeyPressed { if (keyCombinations.any { keyCombination -> keyCombination.match(it) }) procedure() }
+fun <T : Node> T.press(vararg keyCombinations: KeyCombination, procedure: (T) -> Unit): T {
+	setOnKeyPressed { if (keyCombinations.any { keyCombination -> keyCombination.match(it) }) procedure(this) }
 	return this
 }
 /**
  * Sets multiple key press procedures.
- * @param keyProcedures map of key combinations to invoked procedures
+ * @param keyProcedures map of key combinations to procedures invoked with receiver
  */
-fun <T : Node> T.press(keyProcedures: Map<out KeyCombination, () -> Unit>): T {
+fun <T : Node> T.press(keyProcedures: Map<out KeyCombination, (T) -> Unit>): T {
 	setOnKeyPressed {
 		keyProcedures.entries.firstOrNull { entry -> entry.key.match(it) }
-				?.value?.invoke()
+				?.value?.invoke(this)
 	}
 	return this
 }
