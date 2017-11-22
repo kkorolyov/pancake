@@ -23,7 +23,7 @@ class ComponentPanel(
 		componentRemoved: (GenericComponent) -> Unit = {}
 ) : Panel {
 	companion object {
-		private val autoDisplayer: Displayer<Any> = AutoDisplayer()
+		private val autoDisplayer: Displayer<Any> = AutoDisplayer
 	}
 	private val content: VBox = VBox()
 			.styleClass("component-content")

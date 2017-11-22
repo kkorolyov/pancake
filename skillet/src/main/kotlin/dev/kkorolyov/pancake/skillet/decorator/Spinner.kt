@@ -13,7 +13,7 @@ import java.util.regex.Pattern
  * @param valid pattern which all entered text must match
  * @param committed pattern which entered and committed text must match
  */
-fun <T : Spinner<Any>> T.patterns(valid: Pattern, committed: Pattern): T {
+fun <T : Spinner<*>> T.patterns(valid: Pattern, committed: Pattern): T {
 	isEditable = true
 	editor.setOnAction {
 		if (committed.matcher(editor.text).matches()) commitValue()
@@ -32,7 +32,7 @@ fun <T : Spinner<Any>> T.patterns(valid: Pattern, committed: Pattern): T {
  * @param standard standard number of steps to increment/decrement by
  * @param modified number of steps to increment/decrement by when `ALT` is also held
  */
-fun <T : Spinner<Any>> T.press(standard: Int, modified: Int): T {
+fun <T : Spinner<*>> T.press(standard: Int, modified: Int): T {
 	editor.press(mapOf(
 			KeyCodeCombination(KeyCode.UP) to { _ -> increment(standard) },
 			KeyCodeCombination(KeyCode.DOWN) to { _ -> decrement(standard) },

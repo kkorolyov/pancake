@@ -184,7 +184,10 @@ project(':skillet') {
 	apply plugin: 'application'
 
 	dependencies {
-		implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+		implementation(
+				'org.jetbrains.kotlin:kotlin-stdlib',
+				'org.jetbrains.kotlin:kotlin-reflect'
+		)
 	}
 
 	description = "Standalone application for designing and exporting entities"
