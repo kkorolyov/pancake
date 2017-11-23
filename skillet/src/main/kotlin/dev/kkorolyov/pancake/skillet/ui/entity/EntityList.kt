@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.skillet.decorator.*
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
 import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
-import dev.kkorolyov.pancake.skillet.model.ModelListener
+import dev.kkorolyov.pancake.skillet.model.Model.ModelListener
 import dev.kkorolyov.pancake.skillet.model.Workspace
 import dev.kkorolyov.pancake.skillet.model.Workspace.WorkspaceChangeEvent
 import dev.kkorolyov.pancake.skillet.ui.Panel
@@ -33,18 +33,20 @@ class EntityList(workspace: Workspace) : Panel, ModelListener<Workspace> {
 	}
 
 	private fun addNewEntities(workspace: Workspace) {
-		workspace.entities.forEach {
+		workspace.getEntities().forEach {
 			buttons.computeIfAbsent(it) {
 				val button = Button(it.name)
 						.maxSize(Double.MAX_VALUE)
-						.action { workspace.setActiveEntity(it) }
+						.action { workspace.activeEntity = it }
 						.contextMenu {
 							ContextMenu()
 									.item("Remove") { workspace.removeEntity(it) }
 						}
-				it.register { target, event ->
-					if (EntityChangeEvent.NAME == event) button.text = target.name
-				}
+				it.register(object : ModelListener<GenericEntity> {
+					override fun changed(target: GenericEntity, event: ModelChangeEvent) {
+						if (EntityChangeEvent.NAME == event) button.text = target.name
+					}
+				})
 				content.children += button
 
 				button
@@ -52,8 +54,7 @@ class EntityList(workspace: Workspace) : Panel, ModelListener<Workspace> {
 		}
 	}
 	private fun removeOldEntities(workspace: Workspace) {
-		// TODO contain() operator
-		buttons.filter { !workspace.containsEntity(it.key) }
+		buttons.filter { it.key !in workspace }
 				.forEach { entity, button ->
 					buttons -= entity
 					content.children -= button

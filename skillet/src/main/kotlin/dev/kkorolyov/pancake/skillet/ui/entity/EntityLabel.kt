@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.skillet.decorator.*
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
 import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
-import dev.kkorolyov.pancake.skillet.model.ModelListener
+import dev.kkorolyov.pancake.skillet.model.Model.ModelListener
 import dev.kkorolyov.pancake.skillet.ui.Panel
 import javafx.scene.Node
 import javafx.scene.control.Label

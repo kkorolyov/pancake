@@ -7,7 +7,7 @@ import dev.kkorolyov.pancake.skillet.decorator.styleClass
 import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
-import dev.kkorolyov.pancake.skillet.model.ModelListener
+import dev.kkorolyov.pancake.skillet.model.Model.ModelListener
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory.ComponentFactoryChangeEvent
 import dev.kkorolyov.pancake.skillet.ui.Panel
@@ -44,7 +44,7 @@ class ComponentList(
 	 * @param entity entity according to which to disable/enable component buttons
 	 */
 	fun refreshComponents(entity: GenericEntity?) {
-		buttons.forEach { name, button -> button.isDisable = entity?.containsComponent(name) ?: true }
+		buttons.forEach { name, button -> button.isDisable = entity?.contains(name) ?: true }
 	}
 
 	private fun addNewComponents(componentFactory: ComponentFactory) {
@@ -52,7 +52,7 @@ class ComponentList(
 			buttons.computeIfAbsent(it) {
 				val button = Button(it)
 						.maxSize(Double.MAX_VALUE)
-						.action { componentSelected(componentFactory.get(it)) }
+						.action { componentSelected(componentFactory[it]!!) }	// Should never be null
 
 				content.children += button
 

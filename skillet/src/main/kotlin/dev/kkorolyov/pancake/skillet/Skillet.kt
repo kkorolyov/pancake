@@ -35,11 +35,11 @@ class Skillet : Application() {
 	private val entityList: EntityList = EntityList(workspace)
 	private val componentList: ComponentList = ComponentList(workspace.componentFactory,
 			componentSelected = { component ->
-				workspace.activeEntity.ifPresent { it.addComponent(component) }
+				workspace.activeEntity?.plusAssign(component)
 			})
 	private val entityTabPane: EntityTabPane = EntityTabPane(workspace,
 			entitySelected = {
-				workspace.setActiveEntity(it)
+				workspace.activeEntity = it
 				componentList.refreshComponents(it)
 			})
 
@@ -49,7 +49,7 @@ class Skillet : Application() {
 		stage = primaryStage ?: throw NullPointerException()
 
 		workspace.componentFactory.add(
-				resourceHandler.load("defaults$WORKSPACE_FILE_EXTENSION").components,
+				resourceHandler.load("defaults$WORKSPACE_FILE_EXTENSION").getComponents(),
 				false)
 
 		stage.title = "Skillet - Pancake Design Workspace"
@@ -109,7 +109,7 @@ class Skillet : Application() {
 		if (results != null) {
 			val addedComponents = results
 					.map { file -> resourceHandler.load(file.toString()) }
-					.flatMap { workspace -> workspace.components }
+					.flatMap(Workspace::getComponents)
 
 			workspace.componentFactory.add(addedComponents, false)
 

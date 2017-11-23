@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.skillet.ui.entity
 import dev.kkorolyov.pancake.skillet.decorator.*
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
-import dev.kkorolyov.pancake.skillet.model.ModelListener
+import dev.kkorolyov.pancake.skillet.model.Model.ModelListener
 import dev.kkorolyov.pancake.skillet.model.Workspace
 import dev.kkorolyov.pancake.skillet.model.Workspace.WorkspaceChangeEvent
 import dev.kkorolyov.pancake.skillet.ui.Panel
@@ -52,8 +52,7 @@ class EntityTabPane(
 	}
 
 	private fun removeOldEntities(workspace: Workspace) {
-		// TODO contain() operator
-		tabs.filter { !workspace.containsEntity(it.key) }
+		tabs.filter { it.key !in workspace }
 				.forEach { entity, tab ->
 					tabs -= entity
 					root.tabs -= tab
@@ -64,7 +63,7 @@ class EntityTabPane(
 	override fun changed(target: Workspace, event: ModelChangeEvent) {
 		when(event) {
 			// TODO Replace this Optional
-			WorkspaceChangeEvent.ACTIVE -> { target.activeEntity.ifPresent(this::add) }
+			WorkspaceChangeEvent.ACTIVE -> { target.activeEntity?.let(this::add) }
 			WorkspaceChangeEvent.REMOVE -> { removeOldEntities(target) }
 		}
 	}

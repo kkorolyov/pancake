@@ -16,11 +16,12 @@ import javafx.scene.shape.Rectangle
 
 /**
  * Displays a [GenericComponent].
+ * @param component displayed component
  * @param componentRemoved listener invoked with the associated component when it is removed
  */
 class ComponentPanel(
 		component: GenericComponent,
-		componentRemoved: (GenericComponent) -> Unit = {}
+		var componentRemoved: (GenericComponent) -> Unit = {}
 ) : Panel {
 	companion object {
 		private val autoDisplayer: Displayer<Any> = AutoDisplayer
@@ -31,8 +32,7 @@ class ComponentPanel(
 			.styleClass("component")
 
 	init {
-		component.map(autoDisplayer::display)
-				.forEach { content.children += it }
+		for (display in component.attributes.entries.map(autoDisplayer::display)) content.children += display
 		root
 				.contentDisplay(GRAPHIC_ONLY)
 				.graphic(BorderPane()

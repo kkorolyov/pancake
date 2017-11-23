@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
 import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
-import dev.kkorolyov.pancake.skillet.model.ModelListener
+import dev.kkorolyov.pancake.skillet.model.Model.ModelListener
 import dev.kkorolyov.pancake.skillet.ui.Panel
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentPanel
 import javafx.scene.control.ScrollPane
@@ -32,7 +32,7 @@ class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
 			panels.computeIfAbsent(it) {
 				val component = ComponentPanel(it,
 						componentRemoved = {
-							entity.removeComponent(it.name)
+							entity -= it.name
 						})
 				content.children += component.root
 
@@ -41,8 +41,7 @@ class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
 		}
 	}
 	private fun removeOldComponents(entity: GenericEntity) {
-		// TODO contain() operator
-		panels.filter { !entity.containsComponent(it.key.name) }
+		panels.filter { it.key.name !in entity }
 				.forEach { component, panel ->
 					panels -= component
 					content.children -= panel.root
