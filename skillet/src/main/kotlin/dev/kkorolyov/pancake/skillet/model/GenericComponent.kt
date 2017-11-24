@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.skillet.model
 
+import dev.kkorolyov.pancake.platform.entity.Component
+
 /**
  * A map of attributes.
  * @param name component name
@@ -8,7 +10,7 @@ package dev.kkorolyov.pancake.skillet.model
 data class GenericComponent(
 		var name: String,
 		val attributes: MutableMap<String, Any>
-) : Model<GenericComponent>() {
+) : Model<GenericComponent>(), Component {
 	/** @param attribute attribute to add */
 	operator fun plusAssign(attribute: Pair<String, Any>) {
 		attributes += attribute

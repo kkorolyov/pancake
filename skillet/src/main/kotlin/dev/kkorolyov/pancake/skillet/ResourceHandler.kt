@@ -7,19 +7,17 @@ import dev.kkorolyov.pancake.skillet.serialization.WorkspaceSerializer
 /**
  * Handles workspace I/O.
  */
-class ResourceHandler {
-	private val workspaceSerializer = WorkspaceSerializer()
-
+object ResourceHandler {
 	/**
 	 * Loads a workspace from a resource.
 	 * @param path path to resource to load
 	 * @return loaded workspace
 	 */
-	fun load(path: String): Workspace = workspaceSerializer.read(string(path))
+	fun load(path: String): Workspace = WorkspaceSerializer.read(string(path))
 	/**
 	 * Saves a workspace to a resource.
 	 * @param workspace workspace to save
 	 * @param path path to resource to save as
 	 */
-	fun save(workspace: Workspace, path: String) = string(path, workspaceSerializer.write(workspace))
+	fun save(workspace: Workspace, path: String) = string(path, WorkspaceSerializer.write(workspace))
 }

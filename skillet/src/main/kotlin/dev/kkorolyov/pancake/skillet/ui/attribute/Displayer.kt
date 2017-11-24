@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
 /**
  * Displays an attribute.
  */
-abstract class Displayer<T : Any>(val acceptedType: KClass<in T>) {
+abstract class Displayer<T : Any>(private val acceptedType: KClass<in T>) {
 	/**
 	 * Generates a displayable representation of a attribute.
 	 * @param attribute attribute to display

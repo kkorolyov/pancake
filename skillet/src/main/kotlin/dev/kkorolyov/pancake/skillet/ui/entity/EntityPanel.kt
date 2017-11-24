@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox
 
 /**
  * Displays a [GenericEntity].
+ * @param entity displayed entity
  */
 class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
 	private val panels: MutableMap<GenericComponent, ComponentPanel> = HashMap()

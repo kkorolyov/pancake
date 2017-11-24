@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox
 
 /**
  * Displays a list of components which may be added to the designed entity.
+ * @param componentFactory displayed component factory
  * @param componentSelected listener invoked with the selected component when a component is selected
  */
 class ComponentList(

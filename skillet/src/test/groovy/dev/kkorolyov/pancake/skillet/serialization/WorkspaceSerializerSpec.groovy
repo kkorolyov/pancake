@@ -12,7 +12,7 @@ class WorkspaceSerializerSpec extends BaseSerializerSpec {
 
 	def setup() {
 		Workspace workspace = new Workspace()
-		entities.forEach {workspace.&addEntity}
+		entities.forEach {workspace.&add}
 		reps << [(workspace): entitiesS]
 
 		serializer = new WorkspaceSerializer()

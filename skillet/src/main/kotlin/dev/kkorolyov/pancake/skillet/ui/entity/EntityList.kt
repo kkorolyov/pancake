@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox
 
 /**
  * Displays entities available in the [Workspace].
+ * @param workspace workspace containing displayed entities
  */
 class EntityList(workspace: Workspace) : Panel, ModelListener<Workspace> {
 	private val buttons: MutableMap<GenericEntity, Button> = HashMap()
@@ -33,7 +34,7 @@ class EntityList(workspace: Workspace) : Panel, ModelListener<Workspace> {
 	}
 
 	private fun addNewEntities(workspace: Workspace) {
-		workspace.getEntities().forEach {
+		workspace.entities.forEach {
 			buttons.computeIfAbsent(it) {
 				val button = Button(it.name)
 						.maxSize(Double.MAX_VALUE)

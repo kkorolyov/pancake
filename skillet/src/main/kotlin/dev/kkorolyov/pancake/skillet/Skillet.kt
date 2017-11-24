@@ -30,7 +30,6 @@ class Skillet : Application() {
 		private const val WORKSPACE_FILE_EXTENSION = ".mfn"
 	}
 	private val workspace: Workspace = Workspace()
-	private val resourceHandler: ResourceHandler = ResourceHandler()
 
 	private val entityList: EntityList = EntityList(workspace)
 	private val componentList: ComponentList = ComponentList(workspace.componentFactory,
@@ -49,7 +48,7 @@ class Skillet : Application() {
 		stage = primaryStage ?: throw NullPointerException()
 
 		workspace.componentFactory.add(
-				resourceHandler.load("defaults$WORKSPACE_FILE_EXTENSION").getComponents(),
+				ResourceHandler.load("defaults$WORKSPACE_FILE_EXTENSION").components,
 				false)
 
 		stage.title = "Skillet - Pancake Design Workspace"
@@ -92,14 +91,14 @@ class Skillet : Application() {
 		chooser.initialFileName = "workspace$WORKSPACE_FILE_EXTENSION"
 
 		val result = chooser.showSaveDialog(stage)
-		if (result != null) resourceHandler.save(workspace, result.toString())
+		if (result != null) ResourceHandler.save(workspace, result.toString())
 	}
 	private fun loadWorkspace() {
 		val chooser = buildFileChooser()
 		chooser.title = "Load Workspace"
 
 		val result = chooser.showOpenDialog(stage)
-		if (result != null) workspace.addWorkspace(resourceHandler.load(result.toString()))
+		if (result != null) workspace.addWorkspace(ResourceHandler.load(result.toString()))
 	}
 	private fun loadComponents() {
 		val chooser = buildFileChooser()
@@ -108,16 +107,14 @@ class Skillet : Application() {
 		val results = chooser.showOpenMultipleDialog(stage)
 		if (results != null) {
 			val addedComponents = results
-					.map { file -> resourceHandler.load(file.toString()) }
-					.flatMap(Workspace::getComponents)
+					.map { file -> ResourceHandler.load(file.toString()) }
+					.flatMap(Workspace::components)
 
 			workspace.componentFactory.add(addedComponents, false)
 
 			val addedComponentsInfo = Alert(
 					Alert.AlertType.INFORMATION,
-					addedComponents.joinToString(System.lineSeparator()) {
-						component -> "${component.name} - ${component.attributes.size} attributes"
-					})
+					addedComponents.joinToString(System.lineSeparator()) { "${it.name} - ${it.attributes.size} attributes" })
 			addedComponentsInfo.title = "Added components"
 			addedComponentsInfo.headerText = addedComponentsInfo.title
 

@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox
 
 /**
  * Editable label displaying an entity name.
+ * @param entity displayed entity
  */
 class EntityLabel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
 	private val label: Label = Label(entity.name)

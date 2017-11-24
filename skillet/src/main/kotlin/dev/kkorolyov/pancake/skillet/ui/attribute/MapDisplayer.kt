@@ -14,8 +14,6 @@ import kotlin.collections.MutableMap.MutableEntry
  * Displays maps.
  */
 object MapDisplayer : Displayer<Map<String, Any>>(Map::class) {
-	private val autoDisplayer: Displayer<Any> = AutoDisplayer
-
 	override fun display(attribute: MutableEntry<String, Map<String, Any>>): Node =
 			TitledPane()
 					.styleClass("attribute")
@@ -23,7 +21,7 @@ object MapDisplayer : Displayer<Map<String, Any>>(Map::class) {
 							.styleClass("attribute-name")
 							.tooltip(getTooltipText()))
 					.content(VBox(*attribute.value.entries
-							.map { autoDisplayer.display(it as MutableEntry) }
+							.map { AutoDisplayer.display(it as MutableEntry) }
 							.toTypedArray())
 							.styleClass("attribute-content"))
 }

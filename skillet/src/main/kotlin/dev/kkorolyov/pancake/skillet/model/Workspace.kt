@@ -7,9 +7,15 @@ import java.util.*
  * A self-contained context representing a single Skillet project.
  */
 class Workspace : Model<Workspace>() {
+	/** Attached component factory */
 	val componentFactory: ComponentFactory = ComponentFactory()
 
-	private val entities: MutableCollection<GenericEntity> = LinkedHashSet()
+	private val _entities: MutableCollection<GenericEntity> = LinkedHashSet()
+	/** All entities */
+	val entities: Iterable<GenericEntity> get() = _entities
+	/** Components of all entities */
+	val components: Iterable<GenericComponent> get() = entities.flatMap(GenericEntity::components)
+
 	var activeEntity: GenericEntity? = null
 		/**
 		 * @param entity entity to set as active
@@ -30,7 +36,7 @@ class Workspace : Model<Workspace>() {
 	 * @return `this`
 	 */
 	fun addWorkspace(workspace: Workspace): Workspace {
-		workspace.entities.forEach { add(it) }
+		workspace._entities.forEach { add(it) }
 		return this
 	}
 
@@ -46,7 +52,7 @@ class Workspace : Model<Workspace>() {
 	}
 
 	/** @return `true` if this workspace contains `entity` */
-	operator fun contains(entity: GenericEntity): Boolean = entities.contains(entity)
+	operator fun contains(entity: GenericEntity): Boolean = _entities.contains(entity)
 
 	/** @see [add] */
 	operator fun plusAssign(entity: GenericEntity) {
@@ -59,7 +65,7 @@ class Workspace : Model<Workspace>() {
 	 * @return `this`
 	 */
 	fun add(entity: GenericEntity): Workspace {
-		entities.add(entity)
+		_entities.add(entity)
 		activeEntity = entity
 
 		componentFactory.add(entity.components, false)
@@ -74,17 +80,12 @@ class Workspace : Model<Workspace>() {
 	 * @return `true` if this workspace contained `entity` and it was removed
 	 */
 	fun removeEntity(entity: GenericEntity): Boolean {
-		val result = entities.remove(entity)
+		val result = _entities.remove(entity)
 
 		if (result) changed(WorkspaceChangeEvent.REMOVE)
 
 		return result
 	}
-
-	/** @return all entities */
-	fun getEntities(): Iterable<GenericEntity> = entities
-	/** @return all components of all entities */
-	fun getComponents(): Iterable<GenericComponent> = entities.flatMap(GenericEntity::components)
 
 	override fun equals(other: Any?): Boolean {
 		if (this == other) return true
@@ -92,11 +93,11 @@ class Workspace : Model<Workspace>() {
 
 		other as Workspace
 		return componentFactory == other.componentFactory
-				&& entities == other.entities
+				&& _entities == other._entities
 				&& activeEntity == other.activeEntity
 	}
 	override fun hashCode(): Int = Objects.hash(componentFactory,
-			entities,
+			_entities,
 			activeEntity)
 
 	/**
