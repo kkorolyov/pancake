@@ -8,7 +8,7 @@ private val namePattern = """\w+(?=\{)""".toRegex()
 object GenericComponentSerializer : ComponentStringSerializer<GenericComponent>("""\w+""") {
 	override fun read(out: String): GenericComponent =
 			GenericComponent(
-					namePattern.matchEntire(out)?.groups?.first()?.value
+					namePattern.find(out)?.value
 							?: throw IllegalArgumentException("Does not contain a component name: $out"),
 					readMap(out))
 	override fun write(`in`: GenericComponent): String =
