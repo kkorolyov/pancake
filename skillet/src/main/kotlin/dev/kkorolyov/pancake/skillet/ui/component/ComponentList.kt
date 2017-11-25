@@ -6,8 +6,8 @@ import dev.kkorolyov.pancake.skillet.decorator.maxSize
 import dev.kkorolyov.pancake.skillet.decorator.styleClass
 import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
-import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
-import dev.kkorolyov.pancake.skillet.model.Model.ModelListener
+import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
+import dev.kkorolyov.pancake.skillet.model.ModelListener
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory.ComponentFactoryChangeEvent
 import dev.kkorolyov.pancake.skillet.ui.Panel
@@ -24,7 +24,13 @@ import javafx.scene.layout.VBox
 class ComponentList(
 		componentFactory: ComponentFactory,
 		var componentSelected: (GenericComponent) -> Unit = {}
-) : Panel, ModelListener<ComponentFactory> {
+) : Panel {
+	private var lastKnown: GenericEntity? = null
+	private val lastKnownListener: ModelListener<GenericEntity> = {target, event ->
+		when (event) {
+			EntityChangeEvent.ADD, EntityChangeEvent.REMOVE -> refreshComponents(target)
+		}
+	}
 	private val buttons: MutableMap<String, Button> = HashMap()
 
 	private val content: VBox = VBox()
@@ -35,9 +41,12 @@ class ComponentList(
 					.compact())
 
 	init {
-		componentFactory.register(this)
-		addNewComponents(componentFactory)
-		refreshComponents(null)
+		componentFactory.register({ target, event ->
+			when (event) {
+				ComponentFactoryChangeEvent.ADD -> { addNewComponents(target) }
+				ComponentFactoryChangeEvent.REMOVE -> { removeOldComponents(target) }
+			}
+		})
 	}
 
 	/**
@@ -45,6 +54,10 @@ class ComponentList(
 	 * @param entity entity according to which to disable/enable component buttons
 	 */
 	fun refreshComponents(entity: GenericEntity?) {
+		if (lastKnown !== null && lastKnown !== entity) lastKnown?.unregister(lastKnownListener)
+		lastKnown = entity
+		lastKnown?.register(lastKnownListener)
+
 		buttons.forEach { name, button -> button.isDisable = entity?.contains(name) ?: true }
 	}
 
@@ -53,13 +66,18 @@ class ComponentList(
 			buttons.computeIfAbsent(it) {
 				val button = Button(it)
 						.maxSize(Double.MAX_VALUE)
-						.action { componentSelected(componentFactory[it]!!) }	// Should never be null
-
+						.apply {
+							action {
+								val component = componentFactory[it]!!	// Should never be null
+								lastKnown?.plusAssign(component)
+								componentSelected(component)
+							}
+						}
 				content.children += button
-
 				button
 			}
 		}
+		refreshComponents(lastKnown)
 	}
 	private fun removeOldComponents(componentFactory: ComponentFactory) {
 		buttons.filter { it.key !in componentFactory }
@@ -67,12 +85,5 @@ class ComponentList(
 					buttons -= name
 					content.children -= button
 				}
-	}
-
-	override fun changed(target: ComponentFactory, event: ModelChangeEvent) {
-		when (event) {
-			ComponentFactoryChangeEvent.ADD -> { addNewComponents(target) }
-			ComponentFactoryChangeEvent.REMOVE -> { removeOldComponents(target) }
-		}
 	}
 }

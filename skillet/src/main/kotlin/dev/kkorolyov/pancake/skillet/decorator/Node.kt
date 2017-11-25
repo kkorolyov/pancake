@@ -70,7 +70,10 @@ fun <T : Node> T.press(keyProcedures: Map<out KeyCombination, (T) -> Unit>): T {
  * @param eventHandler scroll event handler
  */
 fun <T : Node> T.scroll(eventHandler: (ScrollEvent) -> Unit): T {
-	setOnScroll(eventHandler)
+	setOnScroll {
+		eventHandler(it)
+		it.consume()
+	}
 	return this
 }
 

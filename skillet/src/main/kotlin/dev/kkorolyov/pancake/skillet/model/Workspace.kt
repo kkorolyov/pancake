@@ -1,7 +1,9 @@
 package dev.kkorolyov.pancake.skillet.model
 
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory
-import java.util.*
+import java.util.Collections
+import java.util.IdentityHashMap
+import java.util.Objects
 
 /**
  * A self-contained context representing a single Skillet project.
@@ -10,7 +12,7 @@ class Workspace : Model<Workspace>() {
 	/** Attached component factory */
 	val componentFactory: ComponentFactory = ComponentFactory()
 
-	private val _entities: MutableCollection<GenericEntity> = LinkedHashSet()
+	private val _entities: MutableCollection<GenericEntity> = Collections.newSetFromMap(IdentityHashMap())
 	/** All entities */
 	val entities: Iterable<GenericEntity> get() = _entities
 	/** Components of all entities */
@@ -22,9 +24,9 @@ class Workspace : Model<Workspace>() {
 		 * @throws IllegalArgumentException if `entity` is not in this workspace
 		 */
 		set(entity) {
-			if (field == entity) return
+			if (field === entity) return
 
-			if (entity != null && entity !in this) throw IllegalArgumentException("Active entity ($entity) must be in the workspace")
+			if (entity !== null && entity !in this) throw IllegalArgumentException("Active entity ($entity) must be in the workspace")
 
 			field = entity
 			changed(WorkspaceChangeEvent.ACTIVE)

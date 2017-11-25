@@ -13,7 +13,7 @@ object WorkspaceSerializer : StringSerializer<Workspace>("""(,\s*${GenericEntity
 			Workspace().apply {
 				out.split(splitPattern)	// Split beforehand because matches() is greedy
 						.flatMap { Iterable { GenericEntitySerializer.matches(it).iterator() } }
-						.forEach { this.add(it) }
+						.forEach { add(it) }
 			}
 	override fun write(`in`: Workspace): String =
 			`in`.entities.joinToString(",${System.lineSeparator()}") { GenericEntitySerializer.write(it) }

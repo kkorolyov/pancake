@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.skillet.model
 
-import java.util.*
+import java.util.Objects
+
 
 /**
  * A container of distinct components.
@@ -8,10 +9,15 @@ import java.util.*
  * @param components entity components
  */
 class GenericEntity(
-		var name: String = "",
+		name: String = "",
 		components: Iterable<GenericComponent> = emptyList()
 ) : Model<GenericEntity>() {
-	private val _components: MutableMap<String, GenericComponent> = LinkedHashMap()
+	var name: String = name
+		set(value) {
+			field = value
+			changed(EntityChangeEvent.NAME)
+		}
+	private val _components: MutableMap<String, GenericComponent> = HashMap()
 	val components: Iterable<GenericComponent> get() = _components.values
 
 	init {

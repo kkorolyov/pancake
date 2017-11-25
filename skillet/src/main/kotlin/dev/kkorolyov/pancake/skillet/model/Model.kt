@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.skillet.model
 
+import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
+
 /**
  * Data model which emits change events.
  */
@@ -12,7 +14,7 @@ abstract class Model<T : Model<T>> {
 	 * @return number of listeners which received event
 	 */
 	protected fun changed(event: ModelChangeEvent): Int =
-			this.listeners.onEach { it.changed(this as T, event) }.size
+			this.listeners.onEach { it(this as T, event) }.size
 
 	/**
 	 * @param listener new listener
@@ -34,12 +36,9 @@ abstract class Model<T : Model<T>> {
 	 */
 	interface ModelChangeEvent
 
-	/**
-	 * Listens for change events on a `Model`.
-	 */
-	interface ModelListener<T : Model<T>> {
-		fun changed(target: T, event: ModelChangeEvent)
-	}
 }
 
-
+/**
+ * Listens for change events on a `Model`.
+ */
+typealias ModelListener<T> = (target: T, event: ModelChangeEvent) -> Unit

@@ -5,8 +5,6 @@ import dev.kkorolyov.pancake.skillet.decorator.styleClass
 import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
-import dev.kkorolyov.pancake.skillet.model.Model.ModelChangeEvent
-import dev.kkorolyov.pancake.skillet.model.Model.ModelListener
 import dev.kkorolyov.pancake.skillet.ui.Panel
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentPanel
 import javafx.scene.control.ScrollPane
@@ -16,25 +14,28 @@ import javafx.scene.layout.VBox
  * Displays a [GenericEntity].
  * @param entity displayed entity
  */
-class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
+class EntityPanel(entity: GenericEntity) : Panel {
 	private val panels: MutableMap<GenericComponent, ComponentPanel> = HashMap()
 
 	private val content: VBox = VBox()
-	override val root: ScrollPane = ScrollPane(content)
 			.styleClass("entity-content")
+	override val root: ScrollPane = ScrollPane(content)
 			.compact()
 
 	init {
-		entity.register(this)
+		entity.register({ target, event ->
+			when (event) {
+				EntityChangeEvent.ADD -> { addNewComponents(target) }
+				EntityChangeEvent.REMOVE -> { removeOldComponents(target) }
+			}
+		})
+		addNewComponents(entity)
 	}
 
 	private fun addNewComponents(entity: GenericEntity) {
 		entity.components.forEach {
 			panels.computeIfAbsent(it) {
-				val component = ComponentPanel(it,
-						componentRemoved = {
-							entity -= it.name
-						})
+				val component = ComponentPanel(it, entity)
 				content.children += component.root
 
 				component
@@ -47,12 +48,5 @@ class EntityPanel(entity: GenericEntity) : Panel, ModelListener<GenericEntity> {
 					panels -= component
 					content.children -= panel.root
 				}
-	}
-
-	override fun changed(target: GenericEntity, event: ModelChangeEvent) {
-		when(event) {
-			EntityChangeEvent.ADD -> { addNewComponents(target) }
-			EntityChangeEvent.REMOVE -> { removeOldComponents(target) }
-		}
 	}
 }

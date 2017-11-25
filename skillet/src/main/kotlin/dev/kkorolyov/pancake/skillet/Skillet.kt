@@ -1,6 +1,10 @@
 package dev.kkorolyov.pancake.skillet
 
-import dev.kkorolyov.pancake.skillet.decorator.*
+import dev.kkorolyov.pancake.skillet.decorator.center
+import dev.kkorolyov.pancake.skillet.decorator.item
+import dev.kkorolyov.pancake.skillet.decorator.left
+import dev.kkorolyov.pancake.skillet.decorator.right
+import dev.kkorolyov.pancake.skillet.decorator.top
 import dev.kkorolyov.pancake.skillet.model.Workspace
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentList
 import dev.kkorolyov.pancake.skillet.ui.entity.EntityList
@@ -32,15 +36,9 @@ class Skillet : Application() {
 	private val workspace: Workspace = Workspace()
 
 	private val entityList: EntityList = EntityList(workspace)
-	private val componentList: ComponentList = ComponentList(workspace.componentFactory,
-			componentSelected = { component ->
-				workspace.activeEntity?.plusAssign(component)
-			})
+	private val componentList: ComponentList = ComponentList(workspace.componentFactory)
 	private val entityTabPane: EntityTabPane = EntityTabPane(workspace,
-			entitySelected = {
-				workspace.activeEntity = it
-				componentList.refreshComponents(it)
-			})
+			entitySelected = { componentList.refreshComponents(it) })
 
 	private lateinit var stage: Stage
 
