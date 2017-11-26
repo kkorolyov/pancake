@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.skillet.ui.attribute
 
-import dev.kkorolyov.pancake.skillet.decorator.tooltip
+import dev.kkorolyov.pancake.skillet.tooltip
 import javafx.scene.Node
 import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
@@ -23,11 +23,14 @@ abstract class Displayer<T : Any>(private val acceptedType: KClass<in T>) {
 
 	protected fun simpleDisplay(name: String, value: Node): Node =
 			BorderPane().apply {
+				styleClass += "attribute"
 				left = Label("$name: ").apply {
 					styleClass += "attribute-name"
 					tooltip(getTooltipText())
 				}
-				right = value
+				right = value.apply {
+					styleClass += "attribute-content"
+				}
 				minWidth = 0.0
 			}
 

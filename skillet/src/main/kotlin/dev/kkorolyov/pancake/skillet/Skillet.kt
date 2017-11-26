@@ -1,10 +1,5 @@
 package dev.kkorolyov.pancake.skillet
 
-import dev.kkorolyov.pancake.skillet.decorator.center
-import dev.kkorolyov.pancake.skillet.decorator.item
-import dev.kkorolyov.pancake.skillet.decorator.left
-import dev.kkorolyov.pancake.skillet.decorator.right
-import dev.kkorolyov.pancake.skillet.decorator.top
 import dev.kkorolyov.pancake.skillet.model.Workspace
 import dev.kkorolyov.pancake.skillet.ui.component.ComponentList
 import dev.kkorolyov.pancake.skillet.ui.entity.EntityList
@@ -52,18 +47,20 @@ class Skillet : Application() {
 		stage.title = "Skillet - Pancake Design Workspace"
 		stage.icons.add(Image("pancake-icon.png"))
 
-		val root = BorderPane()
-				.top(MenuBar(
-						Menu("_Entity")
-								.item("_New", this::newEntity)
-								.item("_Save", this::saveWorkspace)
-								.item("_Open", this::loadWorkspace),
-						Menu("_Components")
-								.item("_Load", this::loadComponents)))
-				.left(entityList.root)
-				.right(componentList.root)
-				.center(entityTabPane.root)
-
+		val root = BorderPane().apply {
+			top = MenuBar(
+					Menu("_Entity").apply {
+						item("_New", { newEntity() })
+						item("_Save", { saveWorkspace() })
+						item("_Open", { loadWorkspace() })
+					},
+					Menu("_Components").apply {
+						item("_Load") { loadComponents() }
+					})
+			left = entityList.root
+			right = componentList.root
+			center = entityTabPane.root
+		}
 		stage.scene = Scene(root, 480.0, 480.0)
 		stage.scene.stylesheets.add("style.css")
 		stage.scene.addEventHandler(KeyEvent.KEY_PRESSED) { e ->

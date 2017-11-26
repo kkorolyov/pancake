@@ -1,9 +1,8 @@
 package dev.kkorolyov.pancake.skillet.ui.attribute
 
 import dev.kkorolyov.pancake.platform.math.Vector
-import dev.kkorolyov.pancake.skillet.decorator.change
-import dev.kkorolyov.pancake.skillet.decorator.patterns
-import dev.kkorolyov.pancake.skillet.decorator.press
+import dev.kkorolyov.pancake.skillet.patterns
+import dev.kkorolyov.pancake.skillet.press
 import javafx.scene.Node
 import javafx.scene.control.Spinner
 import javafx.scene.layout.HBox
@@ -19,10 +18,11 @@ object VectorDisplayer : Displayer<Vector>(Vector::class) {
 					))
 
 	private fun buildSpinner(vector: Vector, extractor: (Vector) -> Float, applier: (Vector, Float) -> Unit): Spinner<Double> =
-			Spinner<Double>(-Float.MAX_VALUE.toDouble(), Float.MAX_VALUE.toDouble(), extractor(vector).toDouble(), .1)
-					.patterns(NumberDisplayer.SEMI_NUMBER_PATTERN, NumberDisplayer.NUMBER_PATTERN)
-					.press(10, 1)
-					.change(Spinner<Double>::valueProperty, {_, _, newValue ->
-						applier(vector, newValue.toFloat())
-					})
+			Spinner<Double>(-Float.MAX_VALUE.toDouble(), Float.MAX_VALUE.toDouble(), extractor(vector).toDouble(), .1).apply {
+				patterns(NumberDisplayer.SEMI_NUMBER_PATTERN, NumberDisplayer.NUMBER_PATTERN)
+				press(10, 1)
+				valueProperty().addListener {_, _, newValue ->
+					applier(vector, newValue.toFloat())
+				}
+			}
 }

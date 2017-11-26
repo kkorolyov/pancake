@@ -1,9 +1,6 @@
 package dev.kkorolyov.pancake.skillet.ui.component
 
-import dev.kkorolyov.pancake.skillet.decorator.action
-import dev.kkorolyov.pancake.skillet.decorator.compact
-import dev.kkorolyov.pancake.skillet.decorator.maxSize
-import dev.kkorolyov.pancake.skillet.decorator.styleClass
+import dev.kkorolyov.pancake.skillet.compact
 import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
@@ -11,6 +8,7 @@ import dev.kkorolyov.pancake.skillet.model.ModelListener
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory.ComponentFactoryChangeEvent
 import dev.kkorolyov.pancake.skillet.ui.Panel
+import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
@@ -33,12 +31,21 @@ class ComponentList(
 	}
 	private val buttons: MutableMap<String, Button> = HashMap()
 
-	private val content: VBox = VBox()
-	override val root: VBox = VBox(
-			Label("Components")
-					.styleClass("panel-header"),
-			ScrollPane(content)
-					.compact())
+	private val content: VBox = VBox().apply {
+		styleClass += "panel-content"
+	}
+	override val root: VBox = VBox().apply {
+		styleClass += "panel"
+		children += listOf(
+				Label("Components").apply {
+					styleClass += "panel-header"
+					maxWidth = Double.MAX_VALUE
+					alignment = Pos.CENTER
+				},
+				ScrollPane(content).apply {
+					compact()
+				})
+	}
 
 	init {
 		componentFactory.register({ target, event ->
@@ -63,18 +70,16 @@ class ComponentList(
 
 	private fun addNewComponents(componentFactory: ComponentFactory) {
 		componentFactory.names.forEach {
-			buttons.computeIfAbsent(it) {
-				val button = Button(it)
-						.maxSize(Double.MAX_VALUE)
-						.apply {
-							action {
-								val component = componentFactory[it]!!	// Should never be null
-								lastKnown?.plusAssign(component)
-								componentSelected(component)
-							}
-						}
-				content.children += button
-				button
+			buttons.computeIfAbsent(it) { name ->
+				Button(name).apply {
+					maxWidth = Double.MAX_VALUE
+					setOnAction {
+						val component = componentFactory[name]!!  // Should never be null
+						lastKnown?.plusAssign(component)
+						componentSelected(component)
+					}
+					content.children += this
+				}
 			}
 		}
 		refreshComponents(lastKnown)

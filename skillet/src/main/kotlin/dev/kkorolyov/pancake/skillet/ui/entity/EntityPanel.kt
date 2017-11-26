@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.skillet.ui.entity
 
-import dev.kkorolyov.pancake.skillet.decorator.compact
-import dev.kkorolyov.pancake.skillet.decorator.styleClass
+import dev.kkorolyov.pancake.skillet.compact
 import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
@@ -17,10 +16,12 @@ import javafx.scene.layout.VBox
 class EntityPanel(entity: GenericEntity) : Panel {
 	private val panels: MutableMap<GenericComponent, ComponentPanel> = HashMap()
 
-	private val content: VBox = VBox()
-			.styleClass("entity-content")
-	override val root: ScrollPane = ScrollPane(content)
-			.compact()
+	private val content: VBox = VBox().apply {
+		styleClass += "entity-content"
+	}
+	override val root: ScrollPane = ScrollPane(content).apply {
+		compact()
+	}
 
 	init {
 		entity.register({ target, event ->
@@ -35,10 +36,9 @@ class EntityPanel(entity: GenericEntity) : Panel {
 	private fun addNewComponents(entity: GenericEntity) {
 		entity.components.forEach {
 			panels.computeIfAbsent(it) {
-				val component = ComponentPanel(it, entity)
-				content.children += component.root
-
-				component
+				ComponentPanel(it, entity).apply {
+					this@EntityPanel.content.children += root
+				}
 			}
 		}
 	}

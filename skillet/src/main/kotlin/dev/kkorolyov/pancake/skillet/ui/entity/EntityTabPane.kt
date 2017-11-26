@@ -1,10 +1,5 @@
 package dev.kkorolyov.pancake.skillet.ui.entity
 
-import dev.kkorolyov.pancake.skillet.decorator.change
-import dev.kkorolyov.pancake.skillet.decorator.close
-import dev.kkorolyov.pancake.skillet.decorator.content
-import dev.kkorolyov.pancake.skillet.decorator.graphic
-import dev.kkorolyov.pancake.skillet.decorator.styleClass
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.Workspace
 import dev.kkorolyov.pancake.skillet.model.Workspace.WorkspaceChangeEvent
@@ -26,8 +21,9 @@ class EntityTabPane(
 ) : Panel {
 	private val tabs: MutableMap<GenericEntity, Tab> = IdentityHashMap()
 
-	override val root: TabPane = TabPane()
-			.styleClass("entity-tabs")
+	override val root: TabPane = TabPane().apply {
+		styleClass += "entity-tabs"
+	}
 
 	init {
 		workspace.register({ target, event ->
@@ -44,24 +40,22 @@ class EntityTabPane(
 	 */
 	fun add(entity: GenericEntity) {
 		val tab = tabs.computeIfAbsent(entity) {
-			val tab = Tab()
-					.styleClass("entity-tab")
-					.graphic(EntityLabel(it).root)
-					.content(EntityPanel(it).root)
-					.change(Tab::selectedProperty) { _, _, newValue ->
-						if (newValue) {
-							workspace.activeEntity = entity
-							entitySelected(entity)
-						}
+			Tab().apply {
+				styleClass += "entity-tab"
+				graphic = EntityLabel(entity).root
+				content = EntityPanel(entity).root
+				selectedProperty().addListener { _, _, newValue ->
+					if (newValue) {
+						workspace.activeEntity = entity
+						entitySelected(entity)
 					}
-					.close {
-						workspace.activeEntity = null
-						entityClosed(entity)
-					}
-
-			root.tabs += tab
-
-			tab
+				}
+				setOnClosed {
+					workspace.activeEntity = null
+					entityClosed(entity)
+				}
+				root.tabs += this
+			}
 		}
 		if (tab !in root.tabs) root.tabs += tab
 		root.selectionModel.select(tab)
