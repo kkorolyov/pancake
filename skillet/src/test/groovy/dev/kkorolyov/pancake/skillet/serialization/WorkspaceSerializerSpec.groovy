@@ -4,8 +4,6 @@ import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.Workspace
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
-
 class WorkspaceSerializerSpec extends BaseSerializerSpec {
 	Iterable<GenericEntity> entities = []
 	String entitiesS = ""
@@ -16,6 +14,5 @@ class WorkspaceSerializerSpec extends BaseSerializerSpec {
 		reps << [(workspace): entitiesS]
 
 		serializer = new WorkspaceSerializer()
-		setField("entitySerializer", serializer, Mock(GenericEntitySerializer))
 	}
 }

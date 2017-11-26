@@ -90,8 +90,8 @@ class Workspace : Model<Workspace>() {
 	}
 
 	override fun equals(other: Any?): Boolean {
-		if (this == other) return true
-		if (other == null || !this::class.isInstance(other)) return false
+		if (this === other) return true
+		if (other === null || !this::class.isInstance(other)) return false
 
 		other as Workspace
 		return componentFactory == other.componentFactory
