@@ -22,14 +22,16 @@
 	-fx-background-color: accent-light;
 }
 
+.panel {
+	-fx-background-color: main;
+
+	-fx-min-width: 8em;
+}
 .panel-header {
 	-fx-background-color: accent-light;
 	-fx-text-fill: accent-light-text;
 
 	-fx-padding: 8px;
-}
-.panel-header .content {
-	-fx-background-color: transparent;
 }
 
 .scroll-pane {
@@ -58,8 +60,7 @@
 }
 
 .entity-content, 
-.component-content,
-.attribute-content {
+.component-content {
 	-fx-background-color: accent-light;
 }
 

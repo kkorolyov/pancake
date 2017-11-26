@@ -5,7 +5,10 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath 'dev.kkorolyov:full-doc:1.+'
+		classpath(
+				'dev.kkorolyov:full-doc:1.+',
+				'org.jetbrains.kotlin:kotlin-gradle-plugin:1.+'
+		)
 	}
 }
 plugins {
@@ -132,14 +135,6 @@ configure([	// Libraries
 	}
 }
 
-configure([	// Applications
-    skillet,
-		killstreek
-]) {
-	apply plugin: 'java'
-	apply plugin: 'application'	// Run
-}
-
 configure([	// Platform-reliant
     core,
 		skillet,
@@ -185,12 +180,25 @@ project(':pancake-core') {
 }
 
 project(':skillet') {
+	apply plugin: 'kotlin'
+	apply plugin: 'application'
+
+	dependencies {
+		implementation(
+				'org.jetbrains.kotlin:kotlin-stdlib',
+				'org.jetbrains.kotlin:kotlin-reflect'
+		)
+	}
+
 	description = "Standalone application for designing and exporting entities"
 
 	mainClassName = 'dev.kkorolyov.pancake.skillet.Skillet'
 }
 
 project(':killstreek') {
+	apply plugin: 'java'
+	apply plugin: 'application'
+
 	description = "Top-down ARPG with dynamic RNG system"
 
 	mainClassName = 'dev.kkorolyov.killstreek.Launcher'

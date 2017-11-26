@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
-import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
 
 class GenericEntitySerializerSpec extends BaseSerializerSpec {
 	String name = randString()
@@ -13,13 +12,9 @@ class GenericEntitySerializerSpec extends BaseSerializerSpec {
 	String componentsS = "[]"
 
 	def setup() {
-		reps << [(new GenericEntity(name, components)): "$name$components"]
+		reps << [(new GenericEntity(name, components)): "$name$componentsS"]
 
 		serializer = new GenericEntitySerializer()
-		setField("componentSerializer", serializer, Mock(GenericComponentSerializer) {
-			read(componentsS) >> components
-			write({components.&contains}) >> componentsS
-		})
 	}
 
 	def "complains if no name"() {
