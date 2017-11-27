@@ -13,9 +13,8 @@ import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.layout.BorderPane
-import javafx.stage.FileChooser
+import javafx.stage.FileChooser.ExtensionFilter
 import javafx.stage.Stage
-import java.io.File
 
 fun main(vararg args: String) {
 	Application.launch(Skillet::class.java, *args)
@@ -39,6 +38,7 @@ class Skillet : Application() {
 
 	override fun start(primaryStage: Stage?) {
 		stage = primaryStage ?: throw NullPointerException()
+		ResourceHandler.stage = stage
 
 		workspace.componentFactory.add(
 				ResourceHandler.load("defaults$WORKSPACE_FILE_EXTENSION").components,
@@ -81,27 +81,18 @@ class Skillet : Application() {
 		workspace.newEntity()
 	}
 	private fun saveWorkspace() {
-		val chooser = buildFileChooser()
-		chooser.title = "Save Workspace"
-		chooser.initialFileName = "workspace$WORKSPACE_FILE_EXTENSION"
-
-		val result = chooser.showSaveDialog(stage)
-		if (result != null) ResourceHandler.save(workspace, result.toString())
+		ResourceHandler.chooseSave("Save Workspace", "workspace$WORKSPACE_FILE_EXTENSION", ExtensionFilter("Skillet Workspaces", "*$WORKSPACE_FILE_EXTENSION"))?.let {
+			ResourceHandler.save(workspace, it.toString())
+		}
 	}
 	private fun loadWorkspace() {
-		val chooser = buildFileChooser()
-		chooser.title = "Load Workspace"
-
-		val result = chooser.showOpenDialog(stage)
-		if (result != null) workspace.addWorkspace(ResourceHandler.load(result.toString()))
+		ResourceHandler.chooseLoad("Load Workspace", extensionFilters = ExtensionFilter("Skillet Workspaces", "*$WORKSPACE_FILE_EXTENSION"))?.let {
+			workspace.addWorkspace(ResourceHandler.load(it.toString()))
+		}
 	}
 	private fun loadComponents() {
-		val chooser = buildFileChooser()
-		chooser.title = "Load Components"
-
-		val results = chooser.showOpenMultipleDialog(stage)
-		if (results != null) {
-			val addedComponents = results
+		ResourceHandler.chooseLoadMultiple("Load Components", ExtensionFilter("Components", "*$WORKSPACE_FILE_EXTENSION"))?.let {
+			val addedComponents = it
 					.map { file -> ResourceHandler.load(file.toString()) }
 					.flatMap(Workspace::components)
 
@@ -115,13 +106,5 @@ class Skillet : Application() {
 
 			addedComponentsInfo.show()
 		}
-	}
-
-	private fun buildFileChooser(): FileChooser {
-		val chooser = FileChooser()
-		chooser.extensionFilters.add(FileChooser.ExtensionFilter("Skillet Workspaces", "*$WORKSPACE_FILE_EXTENSION"))
-		chooser.initialDirectory = File("").absoluteFile
-
-		return chooser
 	}
 }
