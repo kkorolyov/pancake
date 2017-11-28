@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.math.Vector;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.DoubleStream;
 
 /**
  * Serializes {@link Vector}.
@@ -34,9 +34,8 @@ public class VectorStringSerializer extends StringSerializer<Vector> {
 	}
 	@Override
 	public String write(Vector in) {
-		return Stream.of(in.getX(), in.getY(), in.getZ())
-				.map(BigDecimal::valueOf)
-				.map(Object::toString)
+		return DoubleStream.of(in.getX(), in.getY(), in.getZ())
+				.mapToObj(String::valueOf)
 				.collect(Collectors.joining(",", "(", ")"));
 	}
 }

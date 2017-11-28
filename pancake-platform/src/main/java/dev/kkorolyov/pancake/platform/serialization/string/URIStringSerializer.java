@@ -7,7 +7,7 @@ import java.net.URI;
  */
 public class URIStringSerializer extends StringSerializer<URI> {
 	public URIStringSerializer() {
-		super("[a-zA-Z]+://.+");
+		super("[a-zA-Z]+:.+");
 	}
 
 	@Override
