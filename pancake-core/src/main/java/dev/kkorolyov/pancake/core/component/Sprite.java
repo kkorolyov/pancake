@@ -1,14 +1,18 @@
 package dev.kkorolyov.pancake.core.component;
 
-import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.media.Animated;
 import dev.kkorolyov.pancake.platform.media.CompositeImage;
+import dev.kkorolyov.pancake.platform.media.Renderable;
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 /**
  * A dynamic image.
  */
-public class Sprite implements Component {
-	private CompositeImage image;
+public class Sprite implements Renderable, Animated {
+	private final CompositeImage image;
 
 	private final Vector origin = new Vector();
 	private final Vector frames = new Vector();
@@ -17,7 +21,7 @@ public class Sprite implements Component {
 	private float frameInterval;
 	private float currentFrameTime;
 	private int frame;
-	private boolean stopped;
+	private boolean active;
 
 	/**
 	 * Constructs a new static sprite.
@@ -34,17 +38,24 @@ public class Sprite implements Component {
 	 * @param frameInterval seconds between frame changes
 	 */
 	public Sprite(CompositeImage image, int xFrames, int yFrames, float frameInterval) {
-		setImage(image);
-		setFrames(xFrames, yFrames);
+		this.image = image;
+		frames.set(xFrames, yFrames);
 		setFrameInterval(frameInterval);
+
+		frameSize.set(image.getSize().getX() / frames.getX(), image.getSize().getY() / frames.getY());
 	}
 
-	/**
-	 * Changes to the next frame, if enough time has elapsed.
-	 * @param dt seconds elapsed since previous invocation of this method
-	 */
-	public void update(float dt) {
-		if (isStopped()) return;
+	@Override
+	public void render(GraphicsContext g, Vector position) {
+		for (Image layer : image) {
+			g.drawImage(layer, origin.getX(), origin.getY(), frameSize.getX(), frameSize.getY(),
+					position.getX(), position.getY(), frameSize.getX(), frameSize.getY());
+		}
+	}
+
+	@Override
+	public void tick(float dt) {
+		if (!isActive()) return;
 
 		currentFrameTime += dt;
 		if (currentFrameTime < Math.abs(frameInterval)) return;
@@ -53,98 +64,52 @@ public class Sprite implements Component {
 		currentFrameTime = 0;
 	}
 
-	/** @return {@code true} if {@link #update(float)} is disabled */
-	public boolean isStopped() {
-		return stopped || frameInterval == 0;
+	@Override
+	public boolean isActive() {
+		return active && frameInterval != 0;
 	}
-	/**
-	 * @param stopped {@code true} disables {@link #update(float)}, {@code false} enables
-	 * @param reset if {@code true}, sets the current frame to {@code 0}
-	 */
-	public void stop(boolean stopped, boolean reset) {
-		this.stopped = stopped;
-
-		if (reset) setFrame(0);
+	@Override
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
-	/** @return coordinate of upper-left corner of the current frame */
-	public Vector getOrigin() {
-		return origin;
-	}
-	/** @return dimensions of a single frame */
-	public Vector getSize() {
-		return frameSize;
-	}
-
-	/** @return sprite image */
-	public CompositeImage getImage() {
-		return image;
-	}
-
-	/** @param image new sprite image */
-	public void setImage(CompositeImage image) {
-		this.image = image;
-
-		applyFrameSize();
-	}
-	/** @return index of current frame, starting from {@code 0} */
+	@Override
 	public int getFrame() {
 		return frame;
 	}
-
-	/** @param frame new current frame */
+	@Override
 	public void setFrame(int frame) {
-		this.frame = Math.floorMod(frame, getLength());
+		this.frame = Math.floorMod(frame, length());
 
 		origin.set((int) (this.frame % frames.getX()) * frameSize.getX(),
-							 (int) (this.frame / frames.getX()) * frameSize.getY());
+				(int) (this.frame / frames.getX()) * frameSize.getY());
 	}
 
-	/** @return number of frames along x and y axes on this sprite's image */
-	public Vector getFrames() {
-		return frames;
-	}
-
-	/**
-	 * @param xFrames number of frames along x-axis on this sprite's image
-	 * @param yFrames number of frames along y-axis on this sprite's image
-	 */
-	public void setFrames(int xFrames, int yFrames) {
-		frames.set(xFrames, yFrames);
-
-		applyFrameSize();
-	}
-
-	/** @return total number of frames */
-	public int getLength() {
-		return (int) (frames.getX() * frames.getY());
-	}
-
-	private void applyFrameSize() {
-		frameSize.set(image.getSize().getX() / frames.getX(), image.getSize().getY() / frames.getY());
-	}
-
-	/** @return seconds between frame changes */
+	@Override
 	public float getFrameInterval() {
 		return frameInterval;
 	}
-
-	/** @param frameInterval new seconds between frame changes */
+	@Override
 	public void setFrameInterval(float frameInterval) {
 		this.frameInterval = frameInterval;
 	}
 
 	@Override
+	public int length() {
+		return (int) (frames.getX() * frames.getY());
+	}
+
+	@Override
 	public String toString() {
 		return "Sprite{" +
-					 "image=" + image +
-					 ", origin=" + origin +
-					 ", frames=" + frames +
-					 ", frameSize=" + frameSize +
-					 ", frameInterval=" + frameInterval +
-					 ", currentFrameTime=" + currentFrameTime +
-					 ", frame=" + frame +
-					 ", stopped=" + stopped +
-					 '}';
+				"image=" + image +
+				", origin=" + origin +
+				", frames=" + frames +
+				", frameSize=" + frameSize +
+				", frameInterval=" + frameInterval +
+				", currentFrameTime=" + currentFrameTime +
+				", frame=" + frame +
+				", active=" + active +
+				'}';
 	}
 }

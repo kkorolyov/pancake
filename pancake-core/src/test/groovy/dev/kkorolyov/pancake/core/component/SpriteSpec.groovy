@@ -30,12 +30,12 @@ class SpriteSpec extends Specification {	// TODO Too many inline values
 		sprite = new Sprite(image, 3, 3, frameInterval)
 
 		when:
-		sprite.update(frameInterval)
+		sprite.tick(frameInterval)
 		then:
 		sprite.getFrame() == 1
 
 		when:
-		sprite.update(frameInterval * 2 as float)
+		sprite.tick(frameInterval * 2 as float)
 		then:
 		sprite.getFrame() == 3
 	}
@@ -43,12 +43,12 @@ class SpriteSpec extends Specification {	// TODO Too many inline values
 		sprite = new Sprite(image, 2, 2, -frameInterval)
 
 		when:
-		sprite.update(frameInterval)
+		sprite.tick(frameInterval)
 		then:
 		sprite.getFrame() == 3
 		
 		when:
-		sprite.update(frameInterval * 2 as float)
+		sprite.tick(frameInterval * 2 as float)
 		then:
 		sprite.getFrame() == 1
 	}
@@ -64,7 +64,7 @@ class SpriteSpec extends Specification {	// TODO Too many inline values
 
 		when:
 		sprite.stop(true, false)
-		sprite.update(frameInterval)
+		sprite.tick(frameInterval)
 
 		then:
 		sprite.getFrame() == 0
