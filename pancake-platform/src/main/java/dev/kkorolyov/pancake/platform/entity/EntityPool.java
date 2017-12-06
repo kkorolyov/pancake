@@ -54,6 +54,15 @@ public class EntityPool {
 	}
 
 	/**
+	 * Retrieves an entity by ID.
+	 * @param id entity ID
+	 * @return entity bound to {@code id}, or {@code null}
+	 */
+	public Entity get(int id) {
+		return entities.get(id);
+	}
+
+	/**
 	 * Returns a stream over all entities with a signature subset matching {@code signature}.
 	 * @param signature signature defining a set of component types
 	 * @param comparator comparator defining entity order, {@code null} results in no sorting

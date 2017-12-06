@@ -65,4 +65,9 @@ public class ChainSystem extends GameSystem {
 
 		return distance.getMagnitude();
 	}
+
+	@Override
+	public void after(float dt) {
+		sortedAnchors.clear();
+	}
 }
