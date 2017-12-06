@@ -37,4 +37,9 @@ public class Graphic implements Component, Renderable {
 	public void render(GraphicsContext g, Vector position) {
 		delegate.render(g, position);
 	}
+
+	@Override
+	public Vector size() {
+		return delegate.size();
+	}
 }

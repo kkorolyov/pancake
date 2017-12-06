@@ -14,4 +14,7 @@ public interface Renderable {
 	 * @param position render position in px from the top-left corner of the render medium
 	 */
 	void render(GraphicsContext g, Vector position);
+
+	/** @return size in px */
+	Vector size();
 }

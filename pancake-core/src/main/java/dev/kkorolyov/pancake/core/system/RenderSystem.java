@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.Sprite;
+import dev.kkorolyov.pancake.core.component.Graphic;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.GameSystem;
@@ -13,13 +13,10 @@ import dev.kkorolyov.simplelogs.Logger;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Rotate;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 
 import static dev.kkorolyov.pancake.platform.event.Events.CAMERA_CREATED;
 import static dev.kkorolyov.pancake.platform.event.Events.CANVAS_CREATED;
@@ -37,8 +34,6 @@ public class RenderSystem extends GameSystem {
 	private Camera camera;
 	private final Rotate rotate = new Rotate();
 
-	private final Set<Sprite> tickedSprites = new HashSet<>();
-
 	private float last;
 
 	/**
@@ -46,7 +41,7 @@ public class RenderSystem extends GameSystem {
 	 */
 	public RenderSystem() {
 		super(new Signature(Transform.class,
-												Sprite.class),
+												Graphic.class),
 					Comparator.comparing(entity -> entity.get(Transform.class).getPosition().getZ()));
 	}
 	@Override
@@ -60,21 +55,15 @@ public class RenderSystem extends GameSystem {
 
 	@Override
 	public void before(float dt) {
-		tickedSprites.clear();
-
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	@Override
 	public void update(Entity entity, float dt) {
 		Transform transform = entity.get(Transform.class);
-		Sprite sprite = entity.get(Sprite.class);
+		Graphic graphic = entity.get(Graphic.class);
 
-		if (!tickedSprites.contains(sprite)) {
-			sprite.update(dt);
-			tickedSprites.add(sprite);
-		}
-		draw(transform, sprite);
+		draw(transform, graphic);
 	}
 
 	@Override
@@ -84,16 +73,13 @@ public class RenderSystem extends GameSystem {
 		drawDebug();
 	}
 
-	private void draw(Transform transform, Sprite sprite) {
+	private void draw(Transform transform, Graphic graphic) {
 		Vector drawPosition = camera.getRelativePosition(transform.getPosition());
 
 		rotate(transform.getRotation(), drawPosition);	// Rotate around transform origin
-		drawPosition.sub(sprite.getSize(), .5f);	// Sprite top-left corner
+		drawPosition.sub(graphic.size(), .5f);	// Sprite top-left corner
 
-		for (Image image : sprite.getImage()) {
-			g.drawImage(image, sprite.getOrigin().getX(), sprite.getOrigin().getY(), sprite.getSize().getX(), sprite.getSize().getY(),
-									drawPosition.getX(), drawPosition.getY(), sprite.getSize().getX(), sprite.getSize().getY());
-		}
+		graphic.render(g, drawPosition);
 	}
 
 	private void drawDebug() {

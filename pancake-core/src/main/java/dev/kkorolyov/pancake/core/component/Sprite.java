@@ -54,6 +54,11 @@ public class Sprite implements Renderable, Animated {
 	}
 
 	@Override
+	public Vector size() {
+		return frameSize;
+	}
+
+	@Override
 	public void tick(float dt) {
 		if (!isActive()) return;
 
