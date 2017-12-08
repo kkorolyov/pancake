@@ -2,14 +2,14 @@ package dev.kkorolyov.killstreek;
 
 import dev.kkorolyov.killstreek.component.Damage;
 import dev.kkorolyov.killstreek.component.Health;
-import dev.kkorolyov.pancake.core.component.Animation;
+import dev.kkorolyov.killstreek.media.Sprite;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Chain;
-import dev.kkorolyov.pancake.core.component.Graphic;
 import dev.kkorolyov.pancake.core.component.Input;
 import dev.kkorolyov.pancake.core.component.Spawner;
-import dev.kkorolyov.pancake.core.component.Sprite;
 import dev.kkorolyov.pancake.core.component.Transform;
+import dev.kkorolyov.pancake.core.component.media.Animation;
+import dev.kkorolyov.pancake.core.component.media.Graphic;
 import dev.kkorolyov.pancake.core.component.movement.Damping;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core.component;
+package dev.kkorolyov.pancake.core.component.media;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector;

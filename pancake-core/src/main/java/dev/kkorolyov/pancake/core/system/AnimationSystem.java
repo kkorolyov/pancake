@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.Animation;
+import dev.kkorolyov.pancake.core.component.media.Animation;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;

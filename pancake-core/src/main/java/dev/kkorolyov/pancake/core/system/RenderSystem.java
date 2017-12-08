@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.Graphic;
 import dev.kkorolyov.pancake.core.component.Transform;
+import dev.kkorolyov.pancake.core.component.media.Graphic;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;

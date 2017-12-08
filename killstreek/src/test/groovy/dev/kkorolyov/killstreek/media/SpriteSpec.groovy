@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core.component
+package dev.kkorolyov.killstreek.media
 
 import dev.kkorolyov.pancake.platform.media.CompositeImage
 

@@ -1,6 +1,6 @@
 package dev.kkorolyov.killstreek.item
 
-import dev.kkorolyov.pancake.core.component.Sprite
+import dev.kkorolyov.killstreek.media.Sprite
 import dev.kkorolyov.pancake.platform.entity.Entity
 
 import spock.lang.Shared
