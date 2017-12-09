@@ -42,6 +42,11 @@ public class Health implements Component {
 		return value.get() < 0;
 	}
 
+	/** @return percentage of current health with respect to max health */
+	public float getPercentage() {
+		return value.get().floatValue() / value.getMaximum();
+	}
+
 	/** @return health value */
 	public BoundedValue<Integer> getValue() {
 		return value;

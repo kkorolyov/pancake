@@ -2,6 +2,7 @@ package dev.kkorolyov.killstreek;
 
 import dev.kkorolyov.killstreek.component.Damage;
 import dev.kkorolyov.killstreek.component.Health;
+import dev.kkorolyov.killstreek.media.HealthBar;
 import dev.kkorolyov.killstreek.media.Sprite;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Chain;
@@ -18,6 +19,7 @@ import dev.kkorolyov.pancake.platform.Launcher;
 import dev.kkorolyov.pancake.platform.action.FreeFormAction;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
 
@@ -37,7 +39,8 @@ import static dev.kkorolyov.pancake.platform.event.Events.CREATED;
 import static dev.kkorolyov.pancake.platform.event.Events.DESTROYED;
 
 public class FunctionalTest extends Launcher {
-	private static final Random rand = new Random();
+	private static final Random RAND = new Random();
+	private static final Vector HEALTH_BAR_SIZE = new Vector(1, .25f);
 
 	private final Transform playerTransform = new Transform(new Vector(), randRotation());
 	private int player;
@@ -51,6 +54,8 @@ public class FunctionalTest extends Launcher {
 				.title("Killstreek Functional Test")
 				.size(640, 640)
 				.unitPixels(new Vector(64, -64, 1)));
+
+		HEALTH_BAR_SIZE.scale(camera.getUnitPixels().getX());
 	}
 
 	@Override
@@ -96,8 +101,13 @@ public class FunctionalTest extends Launcher {
 		addCamera();
 	}
 	private void initEvents() {
+		Signature damageSig = new Signature(Damage.class);
+
 		events.register(Events.COLLIDED, (Entity[] colliders) -> {
-			if (player == colliders[0].getId()) colliders[1].add(new Damage(1));
+			if (player == colliders[0].getId()) {
+				if (colliders[1].contains(damageSig)) colliders[1].get(Damage.class).reset();
+				else colliders[1].add(new Damage(1));
+			}
 		});
 
 		events.register(CREATED, (Entity e) -> {
@@ -148,6 +158,9 @@ public class FunctionalTest extends Launcher {
 	}
 
 	private void addObject(Vector position, Bounds bounds, Graphic graphic) {
+		Health health = new Health(20);
+
+		// Object
 		entities.create(
 				new Transform(position, randRotation()),
 				new Velocity(),
@@ -156,7 +169,15 @@ public class FunctionalTest extends Launcher {
 				new Chain(null, 0, playerTransform.getPosition()),
 				bounds,
 				graphic,
-				new Health(10)
+				health
+		);
+		// Its health bar
+		entities.create(
+				new Transform(new Vector()),
+				new Chain(position, 0),
+				new Graphic(new HealthBar(health, HEALTH_BAR_SIZE)),
+				health,
+				new Damage()	// To be visible to DamageSystem
 		);
 	}
 
@@ -193,6 +214,6 @@ public class FunctionalTest extends Launcher {
 	}
 
 	private static float randRotation() {
-		return rand.nextInt(360);
+		return RAND.nextInt(360);
 	}
 }

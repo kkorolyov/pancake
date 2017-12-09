@@ -58,16 +58,12 @@ public class ChainSystem extends GameSystem {
 
 			transform.setRotation((float) (-distance.getTheta() * 180 / Math.PI + 90));
 		}
+		sortedAnchors.clear();
 	}
 	private float findDistance(Vector parent, Vector child) {
 		distance.set(child);
 		distance.sub(parent);
 
 		return distance.getMagnitude();
-	}
-
-	@Override
-	public void after(float dt) {
-		sortedAnchors.clear();
 	}
 }
