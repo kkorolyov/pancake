@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -104,12 +105,12 @@ public final class Resources {
 							return in.lines()
 									.map(name -> instantiate(name, parameters))
 									.map(providerType::cast)
-									.collect(Collectors.toSet())	// Intermediate collection to allow closing the reader
+									.collect(Collectors.toCollection(LinkedHashSet::new))	// Intermediate collection to allow closing the reader
 									.stream();
 						} catch (IOException e) {
 							throw new UncheckedIOException(e);
 						}
-					}).collect(Collectors.toSet());
+					}).collect(Collectors.toCollection(LinkedHashSet::new));
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}

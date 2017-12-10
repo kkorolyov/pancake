@@ -1,7 +1,7 @@
 package dev.kkorolyov.killstreek.component;
 
-import dev.kkorolyov.killstreek.utility.BoundedValue;
 import dev.kkorolyov.pancake.platform.entity.Component;
+import dev.kkorolyov.pancake.platform.math.BoundedValue;
 
 /**
  * Maintains an entity's state of existence.
@@ -40,6 +40,11 @@ public class Health implements Component {
 	/** @return {@code true} if current health {@code < 0} */
 	public boolean isSuperDead() {
 		return value.get() < 0;
+	}
+
+	/** @return percentage of current health with respect to max health */
+	public float getPercentage() {
+		return value.get().floatValue() / value.getMaximum();
 	}
 
 	/** @return health value */

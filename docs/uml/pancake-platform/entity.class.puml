@@ -38,6 +38,7 @@ class EntityPool {
 	--
 	+applyActions()
 	..
+	+get(id: int): Entity
 	+get(Signature, Comparator<Entity>): Stream<Entity>
 	..
 	+create([Component]): Entity

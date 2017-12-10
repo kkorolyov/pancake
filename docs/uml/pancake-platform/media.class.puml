@@ -1,5 +1,20 @@
 @startuml
 
+interface Animated {
+	-active: boolean
+	-frame: int
+	-frameInterval: float
+	__
+	+tick(dt: float)
+	+length(): int
+}
+
+interface Renderable {
+	+render(g: GraphicsContext, position: Vector)
+	+size(): Vector
+}
+Renderable -[hidden]u- Animated
+
 class Camera {
 	-position: Vector
 	-unitPixels: Vector
@@ -21,7 +36,6 @@ class CompositeImage {
 	+remove(Image)
 	+clear(): int
 }
-CompositeImage .|> Iterable
 CompositeImage o-- javafx.scene.image.Image
 CompositeImage o-- dev.kkorolyov.pancake.platform.math.Vector
 

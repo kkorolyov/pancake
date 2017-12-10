@@ -66,7 +66,7 @@ public class CollisionSystem extends GameSystem {
 						Vector velocity = entity.get(Velocity.class).getVelocity();
 						velocity.add(mtv, velocity.getMagnitude());
 					}
-					enqueue(Events.COLLIDED, new Object[]{entity, other});	// TODO New Object[] may be a performance detriment
+					enqueue(Events.COLLIDED, new Entity[]{entity, other});	// TODO New Object[] may be a performance detriment
 				}
 			}
 			done.add(entity);

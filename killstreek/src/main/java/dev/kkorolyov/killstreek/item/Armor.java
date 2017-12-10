@@ -1,7 +1,7 @@
 package dev.kkorolyov.killstreek.item;
 
-import dev.kkorolyov.killstreek.utility.BoundedValue;
-import dev.kkorolyov.pancake.core.component.Sprite;
+import dev.kkorolyov.killstreek.media.Sprite;
+import dev.kkorolyov.pancake.platform.math.BoundedValue;
 
 /**
  * A defensive equippable.

@@ -1,4 +1,4 @@
-package dev.kkorolyov.killstreek.utility;
+package dev.kkorolyov.pancake.platform.math;
 
 /**
  * A value between minimum and maximum bounds.
