@@ -194,7 +194,7 @@ public class FunctionalTest extends Launcher {
 						)));
 		spawner.setActive(false);
 
-		Graphic graphic = new Graphic(new Sprite(images.get("player"), 4, 3, 1 / 60f));
+		Sprite sprite = new Sprite(images.get("player"), 4, 3, 1 / 60f);
 
 		player = entities.create(
 				playerTransform,
@@ -203,7 +203,8 @@ public class FunctionalTest extends Launcher {
 				new Damping(PLAYER_DAMPING),
 				new Bounds(BOX, RADIUS),
 				spawner,
-				graphic,
+				new Animation(sprite),
+				new Graphic(sprite),
 				new Input(true, actions.readKeys("config/keys"))
 		).getId();
 	}

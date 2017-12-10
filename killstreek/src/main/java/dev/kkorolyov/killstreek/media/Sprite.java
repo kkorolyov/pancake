@@ -21,7 +21,7 @@ public class Sprite implements Renderable, Animated {
 	private float frameInterval;
 	private float currentFrameTime;
 	private int frame;
-	private boolean active;
+	private boolean active = true;
 
 	/**
 	 * Constructs a new static sprite.
@@ -65,7 +65,7 @@ public class Sprite implements Renderable, Animated {
 		currentFrameTime += dt;
 		if (currentFrameTime < Math.abs(frameInterval)) return;
 
-		setFrame(frame + (int) (currentFrameTime / frameInterval));	// Reversed if negative
+		setFrame(frame + Math.round(currentFrameTime / frameInterval));	// Reversed if negative
 		currentFrameTime = 0;
 	}
 

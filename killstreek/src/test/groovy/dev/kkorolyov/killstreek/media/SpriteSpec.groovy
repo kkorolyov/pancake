@@ -1,69 +1,67 @@
 package dev.kkorolyov.killstreek.media
 
+import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.media.CompositeImage
+import javafx.scene.canvas.GraphicsContext
+import javafx.scene.image.Image
 
 import spock.lang.Shared
 import spock.lang.Specification
 
-class SpriteSpec extends Specification {	// TODO Too many inline values
-	@Shared CompositeImage image = Mock() {
-		it.getSize() >> new Vector(1, 1)
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
+import static java.lang.Math.round
+
+class SpriteSpec extends Specification {
+	@Shared int xFrames = 5
+	@Shared int yFrames = 10
+	@Shared float frameInterval = 0.1
+	Image[] layers = (1..4).collect { Mock(Image) }
+	CompositeImage image = Mock() {
+		getSize() >> new Vector(1, 1)
+		iterator() >> layers.iterator()
 	}
-	@Shared float frameInterval = 1
 
-	Sprite sprite = new Sprite(image)
+	GraphicsContext g = GroovyMock()
+	Vector position = randVector()
 
-	def "resets to frame 0 on stop with reset=true"() {
-		sprite = new Sprite(image, 2, 2, 0)
-		sprite.setFrame(3)
+	Sprite sprite = new Sprite(image, xFrames, yFrames, frameInterval)
 
-		expect:
-		sprite.getFrame() == 3
-
+	def "renders all image layers"() {
 		when:
-		sprite.stop(false, true)
+		sprite.render(g, position)
+
 		then:
-		sprite.getFrame() == 0
+		layers.each {
+			g.drawImage(it, _, _, _, _, _, _, _, _)
+		}
 	}
 
 	def "steps 1 frame each frameInterval"() {
-		sprite = new Sprite(image, 3, 3, frameInterval)
-
 		when:
-		sprite.tick(frameInterval)
-		then:
-		sprite.getFrame() == 1
+		sprite.tick(step as float)
 
-		when:
-		sprite.tick(frameInterval * 2 as float)
 		then:
-		sprite.getFrame() == 3
+		sprite.getFrame() == round(step / frameInterval)
+
+		where:
+		step << (frameInterval..<(frameInterval * xFrames * yFrames))
 	}
 	def "negative frameInterval steps backwards"() {
-		sprite = new Sprite(image, 2, 2, -frameInterval)
+		sprite = new Sprite(image, xFrames, yFrames, -frameInterval)
 
 		when:
-		sprite.tick(frameInterval)
-		then:
-		sprite.getFrame() == 3
-		
-		when:
-		sprite.tick(frameInterval * 2 as float)
-		then:
-		sprite.getFrame() == 1
-	}
-	def "0 frameInterval is stopped"() {
-		sprite = new Sprite(image, 2, 2, 0)
+		sprite.tick(step as float)
 
-		expect:
-		sprite.isStopped()
+		then:
+		sprite.getFrame() == round(xFrames * yFrames - step / frameInterval)
+
+		where:
+		step << (frameInterval..<(frameInterval * xFrames * yFrames))
 	}
 
-	def "does not update if stopped"() {
-		sprite = new Sprite(image, 2, 2, frameInterval)
-
+	def "does not update if inactive"() {
 		when:
-		sprite.stop(true, false)
+		sprite.setActive(false)
 		sprite.tick(frameInterval)
 
 		then:
