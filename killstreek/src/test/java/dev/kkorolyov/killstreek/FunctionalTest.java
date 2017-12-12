@@ -158,11 +158,12 @@ public class FunctionalTest extends Launcher {
 	}
 
 	private void addObject(Vector position, Bounds bounds, Graphic graphic) {
+		Transform transform = new Transform(position, randRotation());
 		Health health = new Health(20);
 
 		// Object
 		entities.create(
-				new Transform(position, randRotation()),
+				transform,
 				new Velocity(),
 				new Force(OBJECT_MASS),
 				new Damping(OBJECT_DAMPING),
@@ -173,8 +174,7 @@ public class FunctionalTest extends Launcher {
 		);
 		// Its health bar
 		entities.create(
-				new Transform(new Vector()),
-				new Chain(position, 0),
+				new Transform(new Vector(0, .3f, 1), 0, transform, true),
 				new Graphic(new HealthBar(health, HEALTH_BAR_SIZE)),
 				health,
 				new Damage()	// To be visible to DamageSystem

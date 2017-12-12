@@ -20,6 +20,8 @@ import static dev.kkorolyov.pancake.platform.event.Events.SCENE_CREATED;
  * Applies actions using current player input.
  */
 public class InputSystem extends GameSystem {
+	private static final float HALF_PI = (float) (.5 * Math.PI);
+
 	private final Set<Enum> pressedKeys = new HashSet<>();
 	private final Vector relCursor = new Vector();
 	private final Vector cursor = new Vector();	// TODO What to do with this?
@@ -55,7 +57,7 @@ public class InputSystem extends GameSystem {
 			cursor.set(camera.getAbsolutePosition(relCursor));
 			cursor.sub(transform.getPosition());
 
-			transform.setRotation((float) (-cursor.getTheta() * 180 / Math.PI + 90));
+			transform.setRotation(cursor.getTheta() - HALF_PI);
 		}
 	}
 }

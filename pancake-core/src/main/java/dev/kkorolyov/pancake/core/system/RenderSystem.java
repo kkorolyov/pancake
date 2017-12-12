@@ -74,9 +74,9 @@ public class RenderSystem extends GameSystem {
 	}
 
 	private void draw(Transform transform, Graphic graphic) {
-		Vector drawPosition = camera.getRelativePosition(transform.getPosition());
+		Vector drawPosition = camera.getRelativePosition(transform.getGlobalPosition());
 
-		rotate(transform.getRotation(), drawPosition);	// Rotate around transform origin
+		rotate((float) -Math.toDegrees(transform.getGlobalRotation()), drawPosition);	// Rotate around transform origin
 		drawPosition.sub(graphic.size(), .5f);	// Sprite top-left corner
 
 		graphic.render(g, drawPosition);

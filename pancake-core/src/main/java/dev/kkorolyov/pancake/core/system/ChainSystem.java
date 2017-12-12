@@ -14,6 +14,8 @@ import java.util.TreeMap;
  * Repositions chained entities.
  */
 public class ChainSystem extends GameSystem {
+	private static final float HALF_PI = (float) (.5 * Math.PI);
+
 	private final Vector distance = new Vector();
 	private final NavigableMap<Float, Vector> sortedAnchors = new TreeMap<>();
 
@@ -56,7 +58,7 @@ public class ChainSystem extends GameSystem {
 			distance.set(sortedAnchors.firstEntry().getValue());
 			distance.sub(transform.getPosition());
 
-			transform.setRotation((float) (-distance.getTheta() * 180 / Math.PI + 90));
+			transform.setRotation(distance.getTheta() - HALF_PI);
 		}
 		sortedAnchors.clear();
 	}

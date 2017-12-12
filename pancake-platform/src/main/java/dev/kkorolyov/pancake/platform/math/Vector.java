@@ -41,6 +41,33 @@ public class Vector {
 	}
 
 	/**
+	 * Returns a new vector formed by the addition of vectors to an initial vector.
+	 * @param vI initial vector
+	 * @param vN added vectors
+	 * @return vector formed by {@code v1 + vN}
+	 */
+	public static Vector add(Vector vI, Vector... vN) {
+		Vector result = new Vector(vI);
+
+		for (Vector v : vN) result.add(v);
+
+		return result;
+	}
+	/**
+	 * Returns a new vector formed by the subtraction of vectors from an initial vector.
+	 * @param vI initial vector
+	 * @param vN subtracted vectors
+	 * @return vector formed by {@code v1 - vN}
+	 */
+	public static Vector sub(Vector vI, Vector... vN) {
+		Vector result = new Vector(vI);
+
+		for (Vector v : vN) result.sub(v);
+
+		return result;
+	}
+
+	/**
 	 * Translates the head of this vector along 2 axes.
 	 * @see #translate(float, float, float)
 	 */
@@ -88,33 +115,6 @@ public class Vector {
 	}
 
 	/**
-	 * Returns a new vector formed by the addition of vectors to an initial vector.
-	 * @param vI initial vector
-	 * @param vN added vectors
-	 * @return vector formed by {@code v1 + vN}
-	 */
-	public static Vector add(Vector vI, Vector... vN) {
-		Vector result = new Vector(vI);
-
-		for (Vector v : vN) result.add(v);
-
-		return result;
-	}
-	/**
-	 * Returns a new vector formed by the subtraction of vectors from an initial vector.
-	 * @param vI initial vector
-	 * @param vN subtracted vectors
-	 * @return vector formed by {@code v1 - vN}
-	 */
-	public static Vector sub(Vector vI, Vector... vN) {
-		Vector result = new Vector(vI);
-
-		for (Vector v : vN) result.sub(v);
-
-		return result;
-	}
-
-	/**
 	 * Transforms this vector by adding another vector to it.
 	 * This is equivalent to translating this vector by the other vector's components.
 	 * @param other vector to add
@@ -150,6 +150,19 @@ public class Vector {
 	 */
 	public void sub(Vector other, float scale) {
 		add(other, -scale);
+	}
+
+	/**
+	 * Rotates this vector in 3D space.
+	 * @param theta radians to rotate x-y plane projection by, with respect to the positive x-axis
+	 * @param phi radians to alter angle with the positive z-axis by
+	 */
+	public void rotate(float theta, float phi) {
+		float newX = (float) (x * Math.cos(theta) - y * Math.sin(theta));
+		float newY = (float) (x * Math.sin(theta) + y * Math.cos(theta));
+		float newZ = z;	// TODO
+
+		set(newX, newY, newZ);
 	}
 
 	/**
