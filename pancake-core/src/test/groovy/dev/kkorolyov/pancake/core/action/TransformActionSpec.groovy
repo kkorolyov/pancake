@@ -19,7 +19,7 @@ class TransformActionSpec extends Specification {
 	Vector transformRotation = Mock()
 	Transform transform = Mock() {
 		getPosition() >> transformPosition
-		getRotation() >> transformRotation
+		getOrientation() >> transformRotation
 	}
 	Entity entity = Mock() {
 		contains(signature) >> true

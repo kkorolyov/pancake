@@ -29,6 +29,6 @@ class ForceActionSpec extends Specification {
 		action.accept(entity)
 
 		then:
-		forceForce.add(force)
+		1 * forceForce.add(force)
 	}
 }
