@@ -12,11 +12,11 @@ import java.util.Objects;
  */
 public class TransformAction extends Action {
 	private final Vector position;
-	private final Float rotation;
+	private final Vector rotation;
 
 	/**
 	 * Constructs a new transform action which only alters position.
-	 * @see #TransformAction(Vector, Float)
+	 * @see #TransformAction(Vector, Vector)
 	 */
 	public TransformAction(Vector position) {
 		this(position, null);
@@ -26,7 +26,7 @@ public class TransformAction extends Action {
 	 * @param position position to set on accepted entities
 	 * @param rotation rotation to set on accepted entities
 	 */
-	public TransformAction(Vector position, Float rotation) {
+	public TransformAction(Vector position, Vector rotation) {
 		super(Transform.class);
 
 		this.position = position;
@@ -38,7 +38,7 @@ public class TransformAction extends Action {
 		Transform entityTransform = entity.get(Transform.class);
 
 		entityTransform.getPosition().set(position);
-		if (rotation != null) entityTransform.setRotation(rotation);
+		if (rotation != null) entityTransform.getOrientation().set(rotation);
 	}
 
 	/** @return position vector set on accepted entities */
@@ -46,7 +46,7 @@ public class TransformAction extends Action {
 		return position;
 	}
 	/** @return rotation set on accepted entities, or {@code null} */
-	public Float getRotation() {
+	public Vector getRotation() {
 		return rotation;
 	}
 

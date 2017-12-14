@@ -69,100 +69,119 @@ public class Vector {
 
 	/**
 	 * Translates the head of this vector along 2 axes.
+	 * @return {@code this}
 	 * @see #translate(float, float, float)
 	 */
-	public void translate(float dx, float dy) {
-		translate(dx, dy, 0);
+	public Vector translate(float dx, float dy) {
+		return translate(dx, dy, 0);
 	}
 	/**
 	 * Translates the head of this vector along 3 axes.
 	 * @param dx change along x-axis
 	 * @param dy change along y-axis
 	 * @param dz change along z-axis
+	 * @return {@code this}
 	 */
-	public void translate(float dx, float dy, float dz) {
+	public Vector translate(float dx, float dy, float dz) {
 		x += dx;
 		y += dy;
 		z += dz;
+
+		return this;
 	}
 
 	/**
 	 * Scales this vector by a scalar.
 	 * @param value value to scale by
+	 * @return {@code this}
 	 */
-	public void scale(float value) {
+	public Vector scale(float value) {
 		x *= value;
 		y *= value;
 		z *= value;
+
+		return this;
 	}
 	/**
 	 * Scales this vector by another vector, scaling each component individually by the other vector's respective component.
 	 * @param other vector to scale by
+	 * @return {@code this}
 	 */
-	public void scale(Vector other) {
+	public Vector scale(Vector other) {
 		x *= other.x;
 		y *= other.y;
 		z *= other.z;
+
+		return this;
 	}
 	/**
 	 * Scales this vector by the inverse of another vector, dividing each component individually by the other vector's respective component.
 	 * @param other vector to inverse scale by
+	 * @return {@code this}
 	 */
-	public void invScale(Vector other) {
+	public Vector invScale(Vector other) {
 		x /= other.x;
 		y /= other.y;
 		z /= other.z;
+
+		return this;
 	}
 
 	/**
 	 * Transforms this vector by adding another vector to it.
 	 * This is equivalent to translating this vector by the other vector's components.
 	 * @param other vector to add
+	 * @return {@code this}
 	 * @see #add(Vector, float)
 	 */
-	public void add(Vector other) {
-		translate(other.x, other.y, other.z);
+	public Vector add(Vector other) {
+		return translate(other.x, other.y, other.z);
 	}
 	/**
 	 * Transforms this vector by adding a scaled vector to it.
 	 * @param other vector to add with scaling
 	 * @param scale proportion of other vector's component values to add
+	 * @return {@code this}
 	 * @see #add(Vector)
 	 */
-	public void add(Vector other, float scale) {
-		translate(other.x * scale, other.y * scale, other.z * scale);
+	public Vector add(Vector other, float scale) {
+		return translate(other.x * scale, other.y * scale, other.z * scale);
 	}
 
 	/**
 	 * Transforms this vector by subtracting another vector from it.
 	 * This is equivalent to translating this vector by the negative of the other vector's components.
 	 * @param other vector to subtract
+	 * @return {@code this}
 	 * @see #sub(Vector, float)
 	 */
-	public void sub(Vector other) {
-		translate(-other.x, -other.y, -other.z);
+	public Vector sub(Vector other) {
+		return translate(-other.x, -other.y, -other.z);
 	}
 	/**
 	 * Transforms this vector by subtracting a scaled vector from it.
 	 * @param other vector to subtract with scaling
 	 * @param scale proportion of other vector's component values to subtract
+	 * @return {@code this}
 	 * @see #sub(Vector)
 	 */
-	public void sub(Vector other, float scale) {
-		add(other, -scale);
+	public Vector sub(Vector other, float scale) {
+		return add(other, -scale);
 	}
 
 	/**
-	 * Rotates this vector in 3D space.
-	 * @param theta radians to rotate x-y plane projection by, with respect to the positive x-axis
+	 * Pivots this vector around its origin.
+	 * @param theta radians to pivot x-y plane projection by, with respect to the positive x-axis
 	 * @param phi radians to alter angle with the positive z-axis by
 	 */
-	public void rotate(float theta, float phi) {
+	public Vector pivot(float theta, float phi) {
 		float newX = (float) (x * Math.cos(theta) - y * Math.sin(theta));
 		float newY = (float) (x * Math.sin(theta) + y * Math.cos(theta));
 		float newZ = z;	// TODO
 
 		set(newX, newY, newZ);
+
+		return this;
 	}
 
 	/**
@@ -202,9 +221,11 @@ public class Vector {
 
 	/**
 	 * Scales this vector to a unit vector pointing in the original direction.
+	 * @return this
 	 */
-	public void normalize() {
-		scale(1 / getMagnitude());
+	public Vector normalize() {
+		float magnitude = getMagnitude();
+		return magnitude != 0 ? scale(1 / getMagnitude()) : this;
 	}
 
 	/**

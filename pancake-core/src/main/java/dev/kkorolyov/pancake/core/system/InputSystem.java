@@ -20,11 +20,9 @@ import static dev.kkorolyov.pancake.platform.event.Events.SCENE_CREATED;
  * Applies actions using current player input.
  */
 public class InputSystem extends GameSystem {
-	private static final float HALF_PI = (float) (.5 * Math.PI);
-
 	private final Set<Enum> pressedKeys = new HashSet<>();
 	private final Vector relCursor = new Vector();
-	private final Vector cursor = new Vector();	// TODO What to do with this?
+	private final Vector transformToCursor = new Vector();	// TODO What to do with this?
 	private Camera camera;
 
 	/**
@@ -54,10 +52,10 @@ public class InputSystem extends GameSystem {
 		}
 		Transform transform = entity.get(Transform.class);
 		if (entity.get(Input.class).facesCursor() && transform != null) {
-			cursor.set(camera.getAbsolutePosition(relCursor));
-			cursor.sub(transform.getPosition());
+			transformToCursor.set(camera.getAbsolutePosition(relCursor));
+			transformToCursor.sub(transform.getPosition());
 
-			transform.setRotation(cursor.getTheta() - HALF_PI);
+			transform.getOrientation().set(transformToCursor.getPhi(), 0, transformToCursor.getTheta());
 		}
 	}
 }

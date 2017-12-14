@@ -33,6 +33,7 @@ public class RenderSystem extends GameSystem {
 
 	private Camera camera;
 	private final Rotate rotate = new Rotate();
+	private final Vector rotateVector = new Vector();
 
 	private float last;
 
@@ -76,7 +77,10 @@ public class RenderSystem extends GameSystem {
 	private void draw(Transform transform, Graphic graphic) {
 		Vector drawPosition = camera.getRelativePosition(transform.getGlobalPosition());
 
-		rotate((float) -Math.toDegrees(transform.getGlobalRotation()), drawPosition);	// Rotate around transform origin
+		rotateVector.set(transform.getGlobalOrientation());
+		rotateVector.add(graphic.getOrientationOffset());
+
+		rotate((float) -Math.toDegrees(rotateVector.getZ()), drawPosition);	// Rotate around transform origin
 		drawPosition.sub(graphic.size(), .5f);	// Sprite top-left corner
 
 		graphic.render(g, drawPosition);
