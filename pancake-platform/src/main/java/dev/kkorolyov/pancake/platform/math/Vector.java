@@ -173,6 +173,7 @@ public class Vector {
 	 * Pivots this vector around its origin.
 	 * @param theta radians to pivot x-y plane projection by, with respect to the positive x-axis
 	 * @param phi radians to alter angle with the positive z-axis by
+	 * @return {@code this}
 	 */
 	public Vector pivot(float theta, float phi) {
 		float newX = (float) (x * Math.cos(theta) - y * Math.sin(theta));
