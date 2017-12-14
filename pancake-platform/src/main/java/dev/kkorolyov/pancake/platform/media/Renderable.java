@@ -18,4 +18,7 @@ public interface Renderable {
 
 	/** @return size in px */
 	Vector size();
+
+	/** @return angular offset used for padding orientation calculations */
+	Vector getOrientationOffset();
 }

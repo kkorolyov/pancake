@@ -8,17 +8,18 @@ import dev.kkorolyov.pancake.platform.math.Vector
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
 class TransformActionSpec extends Specification {
 	@Shared Vector position = randVector()
-	@Shared Float rotation = randFloat()
+	@Shared Vector rotation = randVector()
 	@Shared Signature signature = new Signature(Transform)
 
 	Vector transformPosition = Mock()
+	Vector transformRotation = Mock()
 	Transform transform = Mock() {
 		getPosition() >> transformPosition
+		getRotation() >> transformRotation
 	}
 	Entity entity = Mock() {
 		contains(signature) >> true
@@ -40,7 +41,7 @@ class TransformActionSpec extends Specification {
 		action.accept(entity)
 
 		then:
-		1 * transform.setRotation(rotation)
+		1 * transformRotation.set(rotation)
 	}
 	def "does not set rotation if null"() {
 		when:
@@ -48,6 +49,6 @@ class TransformActionSpec extends Specification {
 		action.accept(entity)
 
 		then:
-		0 * transform.setRotation(_)
+		0 * transformRotation.set(_)
 	}
 }

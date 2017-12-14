@@ -14,7 +14,7 @@ import java.util.TreeMap;
  * Repositions chained entities.
  */
 public class ChainSystem extends GameSystem {
-	private final Vector distance = new Vector();
+	private final Vector transformToAnchor = new Vector();
 	private final NavigableMap<Float, Vector> sortedAnchors = new TreeMap<>();
 
 	/**
@@ -37,15 +37,15 @@ public class ChainSystem extends GameSystem {
 		Vector anchor = chain.getPositionAnchor();
 		if (anchor == null) return;
 
-		distance.set(anchor);
-		distance.sub(transform.getPosition());
+		transformToAnchor.set(anchor);
+		transformToAnchor.sub(transform.getPosition());
 
-		float gap = distance.getMagnitude() - chain.getPlay();
+		float gap = transformToAnchor.getMagnitude() - chain.getPlay();
 		if (gap > 0) {
-			distance.normalize();
-			distance.scale(gap);
+			transformToAnchor.normalize();
+			transformToAnchor.scale(gap);
 
-			transform.getPosition().add(distance);
+			transform.getPosition().add(transformToAnchor);
 		}
 	}
 	private void updateRotationAnchors(Chain chain, Transform transform) {
@@ -53,17 +53,17 @@ public class ChainSystem extends GameSystem {
 			sortedAnchors.put(findDistance(transform.getPosition(), anchor), anchor);
 		}
 		if (sortedAnchors.size() > 0) {
-			distance.set(sortedAnchors.firstEntry().getValue());
-			distance.sub(transform.getPosition());
+			transformToAnchor.set(sortedAnchors.firstEntry().getValue());
+			transformToAnchor.sub(transform.getPosition());
 
-			transform.setRotation((float) (-distance.getTheta() * 180 / Math.PI + 90));
+			transform.getOrientation().set(transformToAnchor.getPhi(), 0, transformToAnchor.getTheta());
 		}
 		sortedAnchors.clear();
 	}
 	private float findDistance(Vector parent, Vector child) {
-		distance.set(child);
-		distance.sub(parent);
+		transformToAnchor.set(child);
+		transformToAnchor.sub(parent);
 
-		return distance.getMagnitude();
+		return transformToAnchor.getMagnitude();
 	}
 }

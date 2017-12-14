@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
  */
 public class Sprite implements Renderable, Animated {
 	private final CompositeImage image;
+	private final Vector orientationOffset;
 
 	private final Vector origin = new Vector();
 	private final Vector frames = new Vector();
@@ -25,24 +26,27 @@ public class Sprite implements Renderable, Animated {
 
 	/**
 	 * Constructs a new static sprite.
-	 * @param image sprite image
+	 * @see #Sprite(CompositeImage, Vector, int, int, float)
 	 */
-	public Sprite(CompositeImage image) {
-		this(image, 1, 1, 0);
+	public Sprite(CompositeImage image, Vector orientationOffset) {
+		this(image, orientationOffset, 1, 1, 0);
 	}
 	/**
 	 * Constructs a new animated sprite.
 	 * @param image sprite sheet
+	 * @param orientationOffset angle vector used for padding sprite orientation calculation
 	 * @param xFrames number of frames in {@code image} along x-axis
 	 * @param yFrames number of frames in {@code image} along y-axis
 	 * @param frameInterval seconds between frame changes
 	 */
-	public Sprite(CompositeImage image, int xFrames, int yFrames, float frameInterval) {
+	public Sprite(CompositeImage image, Vector orientationOffset, int xFrames, int yFrames, float frameInterval) {
 		this.image = image;
-		frames.set(xFrames, yFrames);
-		setFrameInterval(frameInterval);
+		this.orientationOffset = orientationOffset;
 
+		frames.set(xFrames, yFrames);
 		frameSize.set(image.getSize().getX() / frames.getX(), image.getSize().getY() / frames.getY());
+
+		setFrameInterval(frameInterval);
 	}
 
 	@Override
@@ -56,6 +60,11 @@ public class Sprite implements Renderable, Animated {
 	@Override
 	public Vector size() {
 		return frameSize;
+	}
+
+	@Override
+	public Vector getOrientationOffset() {
+		return orientationOffset;
 	}
 
 	@Override

@@ -41,6 +41,11 @@ import static dev.kkorolyov.pancake.platform.event.Events.DESTROYED;
 public class FunctionalTest extends Launcher {
 	private static final Random RAND = new Random();
 	private static final Vector HEALTH_BAR_SIZE = new Vector(1, .25f);
+	private static final Vector SPRITE_ORIENTATION_OFFSET = new Vector(0, 0, (float) (-.5 * Math.PI));
+
+	private final Graphic groundGraphic = new Graphic(null);
+	private final Graphic boxGraphic = new Graphic(null);
+	private final Graphic sphereGraphic = new Graphic(null);
 
 	private final Transform playerTransform = new Transform(new Vector(), randRotation());
 	private int player;
@@ -69,6 +74,10 @@ public class FunctionalTest extends Launcher {
 
 	private void initImages() {
 		images.put("config/images");
+
+		groundGraphic.setDelegate(new Sprite(images.get("ground"), new Vector(), 3, 2, 0));
+		boxGraphic.setDelegate(new Sprite(images.get("box"), SPRITE_ORIENTATION_OFFSET));
+		sphereGraphic.setDelegate(new Sprite(images.get("sphere"), SPRITE_ORIENTATION_OFFSET));
 	}
 	private void initSounds() {
 		sounds.put("config/sounds");
@@ -119,12 +128,11 @@ public class FunctionalTest extends Launcher {
 	}
 
 	private void addGround() {
-		Graphic ground = new Graphic(new Sprite(images.get("ground"), 3, 2, 0));
 		for (int i = -15; i <= 15; i += 2) {
 			for (int j = -15; j <= 15; j += 2) {
 				entities.create(
 						new Transform(new Vector(i, j, -1)),
-						ground
+						groundGraphic
 				);
 			}
 		}
@@ -133,36 +141,35 @@ public class FunctionalTest extends Launcher {
 		entities.create(
 				new Transform(new Vector(-3, 0), randRotation()),
 				new Bounds(new Vector(3, 3)),
-				new Graphic(new Sprite(images.get("box")))
+				new Graphic(boxGraphic)
 		);
 	}
 	private void addBoxes(int num) {
-		Graphic graphic = new Graphic(new Sprite(images.get("box")));
 		int line = (int) Math.sqrt(num);
 
 		for (int i = 1; i <= line; i++) {
 			for (int j = 1; j <= line; j++) {
-				addObject(new Vector(i, -j), new Bounds(BOX), graphic);
+				addObject(new Vector(i, -j), new Bounds(BOX), boxGraphic);
 			}
 		}
 	}
 	private void addSpheres(int num) {
-		Graphic graphic = new Graphic(new Sprite(images.get("sphere")));
 		int line = (int) Math.sqrt(num);
 
 		for (int i = 1; i <= line; i++) {
 			for (int j = 1; j <= line; j++) {
-				addObject(new Vector(i, j), new Bounds(RADIUS), graphic);
+				addObject(new Vector(i, j), new Bounds(RADIUS), sphereGraphic);
 			}
 		}
 	}
 
 	private void addObject(Vector position, Bounds bounds, Graphic graphic) {
+		Transform transform = new Transform(position, randRotation());
 		Health health = new Health(20);
 
 		// Object
 		entities.create(
-				new Transform(position, randRotation()),
+				transform,
 				new Velocity(),
 				new Force(OBJECT_MASS),
 				new Damping(OBJECT_DAMPING),
@@ -173,8 +180,7 @@ public class FunctionalTest extends Launcher {
 		);
 		// Its health bar
 		entities.create(
-				new Transform(new Vector()),
-				new Chain(position, 0),
+				new Transform(new Vector(0, .3f, 1), transform, false),
 				new Graphic(new HealthBar(health, HEALTH_BAR_SIZE)),
 				health,
 				new Damage()	// To be visible to DamageSystem
@@ -182,6 +188,9 @@ public class FunctionalTest extends Launcher {
 	}
 
 	private void addPlayer() {
+		Sprite sprite = new Sprite(images.get("player"), SPRITE_ORIENTATION_OFFSET, 4, 3, 1 / 60f);
+
+		Transform transform = playerTransform;
 		Spawner spawner = new Spawner(1, 4, .1f,
 				new WeightedDistribution<Supplier<Iterable<Component>>>()
 						.add(1, () -> Arrays.asList(
@@ -190,14 +199,13 @@ public class FunctionalTest extends Launcher {
 								new Force(OBJECT_MASS),
 								new Damping(OBJECT_DAMPING),
 								new Bounds(BOX, RADIUS),
-								new Graphic(new Sprite(images.get("sphere")))
+								sphereGraphic
 						)));
 		spawner.setActive(false);
-
-		Sprite sprite = new Sprite(images.get("player"), 4, 3, 1 / 60f);
+		Health health = new Health(100);
 
 		player = entities.create(
-				playerTransform,
+				transform,
 				new Velocity(MAX_SPEED),
 				new Force(PLAYER_MASS),
 				new Damping(PLAYER_DAMPING),
@@ -205,8 +213,13 @@ public class FunctionalTest extends Launcher {
 				spawner,
 				new Animation(sprite),
 				new Graphic(sprite),
-				new Input(true, actions.readKeys("config/keys"))
+				new Input(true, actions.readKeys("config/keys")),
+				health
 		).getId();
+		entities.create(
+				new Transform(new Vector(0, .3f, 1), transform, false),
+				new Graphic(new HealthBar(health, HEALTH_BAR_SIZE))
+		);
 	}
 
 	private void addCamera() {
@@ -214,7 +227,7 @@ public class FunctionalTest extends Launcher {
 				new Chain(playerTransform.getPosition(), 1));
 	}
 
-	private static float randRotation() {
-		return RAND.nextInt(360);
+	private static Vector randRotation() {
+		return new Vector(RAND.nextFloat(), RAND.nextFloat(), RAND.nextFloat());
 	}
 }

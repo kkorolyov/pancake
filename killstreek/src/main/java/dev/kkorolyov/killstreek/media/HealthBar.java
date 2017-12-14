@@ -12,6 +12,8 @@ import javafx.scene.paint.Paint;
  * A rendered health bar.
  */
 public class HealthBar implements Renderable {
+	private static final Vector ORIENTATION_OFFSET = new Vector();
+
 	private final Health health;
 	private final Vector size;
 
@@ -50,5 +52,10 @@ public class HealthBar implements Renderable {
 	@Override
 	public Vector size() {
 		return size;
+	}
+
+	@Override
+	public Vector getOrientationOffset() {
+		return ORIENTATION_OFFSET;
 	}
 }

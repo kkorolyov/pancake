@@ -42,4 +42,9 @@ public class Graphic implements Component, Renderable {
 	public Vector size() {
 		return delegate.size();
 	}
+
+	@Override
+	public Vector getOrientationOffset() {
+		return delegate.getOrientationOffset();
+	}
 }
