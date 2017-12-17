@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 /**
@@ -61,6 +62,20 @@ public class Entity implements Comparable<Entity> {
 	 */
 	public <T extends Component> T get(Class<T> type) {
 		return type.cast(components.get(type));
+	}
+	/**
+	 * Invokes {@code consumer} with this entity's component of type {@code type}, if it exists.
+	 * @param type type of component to get
+	 * @param consumer consumer invoked with the retrieved component if it exists
+	 * @return whether this entity contains a component of type {@code type} and {@code consumer} was invoked with it
+	 */
+	public <T extends Component> boolean get(Class<T> type, Consumer<? super T> consumer) {
+		T component = get(type);
+		if (component != null) {
+			consumer.accept(component);
+			return true;
+		}
+		return false;
 	}
 
 	/**

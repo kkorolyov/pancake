@@ -89,15 +89,11 @@ public class FunctionalTest extends Launcher {
 				.put("STOP_WALK", new FreeFormAction(e -> e.get(Animation.class).setActive(false),
 						Animation.class))
 
-				.put("TOGGLE_ANIMATION", new FreeFormAction(e -> {
-					Animation animation = e.get(Animation.class);
-					animation.setActive(!animation.isActive());
-				}, Animation.class))
+				.put("TOGGLE_ANIMATION", new FreeFormAction(e ->
+						e.get(Animation.class, animation -> animation.setActive(!animation.isActive())), Animation.class))
 
-				.put("TOGGLE_SPAWNER", new FreeFormAction(e -> {
-					Spawner spawner = e.get(Spawner.class);
-					spawner.setActive(!spawner.isActive());
-				}, Spawner.class))
+				.put("TOGGLE_SPAWNER", new FreeFormAction(e -> e
+						.get(Spawner.class, spawner -> spawner.setActive(!spawner.isActive())), Spawner.class))
 
 				.put("config/actions");
 	}

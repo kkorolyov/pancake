@@ -15,6 +15,7 @@ class Entity {
 	+matches(Signature): boolean
 	..
 	+get(type: Class<T extends Component>): T
+	+get(type: Class<T extends Component>, Consumer<? super T>): boolean
 	+add(Component): boolean
 	+remove(type: Class<T extends Component>): boolean
 	..
