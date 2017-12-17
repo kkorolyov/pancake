@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.skillet.model
 
 import dev.kkorolyov.pancake.platform.entity.Component
+import dev.kkorolyov.pancake.skillet.serialization.GenericComponentSerializer
 
 /**
  * A map of attributes.
@@ -33,4 +34,6 @@ data class GenericComponent(
 	operator fun set(name: String, value: Any) {
 		attributes[name] = value
 	}
+
+	fun copy(): GenericComponent = GenericComponentSerializer.read(GenericComponentSerializer.write(this))
 }

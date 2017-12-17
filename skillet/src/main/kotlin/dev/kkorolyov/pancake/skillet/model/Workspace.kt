@@ -47,7 +47,7 @@ class Workspace : Model<Workspace>() {
 	 * @return new entity
 	 */
 	fun newEntity(): GenericEntity {
-		val entity = GenericEntity()
+		val entity = GenericEntity("untitled")
 		add(entity)
 
 		return entity

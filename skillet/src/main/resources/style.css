@@ -25,13 +25,28 @@
 .panel {
 	-fx-background-color: main;
 
-	-fx-min-width: 8em;
+	-fx-pref-width: 8em;
 }
 .panel-header {
 	-fx-background-color: accent-light;
 	-fx-text-fill: accent-light-text;
 
-	-fx-padding: 8px;
+	-fx-padding: 8;
+	-fx-max-width: 1024;
+	-fx-alignment: center;
+}
+.panel-content {
+	-fx-background-color: main;
+}
+
+.list-view .list-cell:odd,
+.list-view .list-cell:even {
+	-fx-background-color: accent-light;
+	-fx-text-fill: accent-light-text;
+}
+.list-view .list-cell:focused {
+	-fx-background-color: accent-dark;
+	-fx-text-fill: accent-dark-text;
 }
 
 .scroll-pane {

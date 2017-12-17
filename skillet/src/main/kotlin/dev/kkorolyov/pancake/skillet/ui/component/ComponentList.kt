@@ -8,7 +8,6 @@ import dev.kkorolyov.pancake.skillet.model.ModelListener
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory
 import dev.kkorolyov.pancake.skillet.model.factory.ComponentFactory.ComponentFactoryChangeEvent
 import dev.kkorolyov.pancake.skillet.ui.Panel
-import javafx.geometry.Pos
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.ScrollPane
@@ -39,8 +38,6 @@ class ComponentList(
 		children += listOf(
 				Label("Components").apply {
 					styleClass += "panel-header"
-					maxWidth = Double.MAX_VALUE
-					alignment = Pos.CENTER
 				},
 				ScrollPane(content).apply {
 					compact()
@@ -74,9 +71,10 @@ class ComponentList(
 				Button(name).apply {
 					maxWidth = Double.MAX_VALUE
 					setOnAction {
-						val component = componentFactory[name]!!  // Should never be null
-						lastKnown?.plusAssign(component)
-						componentSelected(component)
+						componentFactory[name]!!.let {	// Should never be null
+							lastKnown?.plusAssign(it)
+							componentSelected(it)
+						}
 					}
 					content.children += this
 				}
