@@ -1,6 +1,6 @@
 DEFAULT[
 	Transform{
-		position: (0,0,0), rotation: 0
+		position: (0,0,0), orientation: (0,0,0)
 	},
 	Bounds{
 		box: (0,0,0), radius: 0
@@ -14,7 +14,7 @@ DEFAULT[
 	Velocity{
 		velocity: (0,0,0), maxSpeed: (0,0,0)
 	},
-	Sprite{
-		image: "", imageURI: file:///c/test
+	Graphic{
+		id: "", file: file:///
 	}
 ]

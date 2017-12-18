@@ -17,7 +17,7 @@ class GenericEntity(
 			field = value
 			changed(EntityChangeEvent.NAME)
 		}
-	private val _components: MutableMap<String, GenericComponent> = HashMap()
+	private val _components: MutableMap<String, GenericComponent> = LinkedHashMap()
 	val components: Iterable<GenericComponent> get() = _components.values
 
 	init {

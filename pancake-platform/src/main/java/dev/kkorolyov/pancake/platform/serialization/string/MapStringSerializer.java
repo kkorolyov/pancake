@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
 import dev.kkorolyov.pancake.platform.serialization.Serializer;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class MapStringSerializer extends StringSerializer<Map<String, Object>> {
 		return Arrays.stream(s.substring(1, s.length() - 1).split(",\\s*(?=\\w+:)"))
 				.map(String::trim)
 				.map(property -> property.split("\\s?:\\s?", 2))
-				.collect(Collectors.toMap(split -> split[0], split -> autoSerializer.read(split[1])));
+				.collect(Collectors.toMap(split -> split[0], split -> autoSerializer.read(split[1]), (o1, o2) -> o1, LinkedHashMap::new));
 	}
 	@Override
 	public String write(Map<String, Object> map) {

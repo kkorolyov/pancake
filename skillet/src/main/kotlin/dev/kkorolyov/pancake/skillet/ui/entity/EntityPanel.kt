@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.skillet.ui.entity
 
 import dev.kkorolyov.pancake.skillet.compact
-import dev.kkorolyov.pancake.skillet.model.GenericComponent
 import dev.kkorolyov.pancake.skillet.model.GenericEntity
 import dev.kkorolyov.pancake.skillet.model.GenericEntity.EntityChangeEvent
 import dev.kkorolyov.pancake.skillet.ui.Panel
@@ -14,7 +13,7 @@ import javafx.scene.layout.VBox
  * @param entity displayed entity
  */
 class EntityPanel(entity: GenericEntity) : Panel {
-	private val panels: MutableMap<GenericComponent, ComponentPanel> = HashMap()
+	private val panels: MutableMap<String, ComponentPanel> = HashMap()
 
 	private val content: VBox = VBox().apply {
 		styleClass += "entity-content"
@@ -34,16 +33,16 @@ class EntityPanel(entity: GenericEntity) : Panel {
 	}
 
 	private fun addNewComponents(entity: GenericEntity) {
-		entity.components.forEach {
-			panels.computeIfAbsent(it) {
-				ComponentPanel(it, entity).apply {
-					this@EntityPanel.content.children += root
+		entity.components.forEach { component ->
+			panels.computeIfAbsent(component.name) {
+				ComponentPanel(component, entity).apply {
+					content.children += root
 				}
 			}
 		}
 	}
 	private fun removeOldComponents(entity: GenericEntity) {
-		panels.filter { it.key.name !in entity }
+		panels.filter { it.key !in entity }
 				.forEach { component, panel ->
 					panels -= component
 					content.children -= panel.root
