@@ -4,7 +4,9 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.serialization.string.MapStringSerializer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Serializes components to strings.
@@ -28,5 +30,11 @@ public abstract class ComponentStringSerializer<I extends Component> extends Str
 	}
 	protected String writeMap(Map<String, Object> in) {
 		return mapSerializer.write(in);
+	}
+
+	@Override
+	public Stream<I> matches(String out) {
+		return Arrays.stream(out.split(",\\s*(?=\\w+\\{)"))
+				.flatMap(super::matches);
 	}
 }
