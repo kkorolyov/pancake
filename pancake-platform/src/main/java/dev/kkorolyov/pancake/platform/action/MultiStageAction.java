@@ -1,8 +1,9 @@
 package dev.kkorolyov.pancake.platform.action;
 
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * An {@link Action} which applies a different action depending on its current state.
@@ -30,7 +31,7 @@ public class MultiStageAction extends Action {
 
 	/**
 	 * Arms this action to move to the next state in its state sequence, according to the given arming option.
-	 * The next time {@link #apply(Entity)} is invoked on this action, its state will change according to the current arming option.
+	 * The next time {@link #apply(UUID, EntityPool)} is invoked on this action, its state will change according to the current arming option.
 	 * @param armingOption option influencing the next state this action moves to after its next application
 	 * @param dt seconds elapsed since the last invocation of this method
 	 * @return {@code this}
@@ -47,8 +48,8 @@ public class MultiStageAction extends Action {
 	 * Disarms after application.
 	 */
 	@Override
-	protected void apply(Entity entity) {
-		if (armingOption != null) state.apply(entity, this);
+	protected void apply(UUID id, EntityPool entities) {
+		if (armingOption != null) state.apply(id, entities, this);
 
 		armingOption = null;
 	}
@@ -93,10 +94,10 @@ public class MultiStageAction extends Action {
 	private static abstract class State {
 		static final State INACTIVE = new State() {
 			@Override
-			void apply(Entity entity, MultiStageAction client) {
+			void apply(UUID id, EntityPool entities, MultiStageAction client) {
 				switch (client.armingOption) {
 					case ACTIVATE:
-						accept(client.start, entity);
+						accept(id, entities, client.start);
 
 						client.holdTime = 0;
 						client.state = ACTIVE;
@@ -106,18 +107,18 @@ public class MultiStageAction extends Action {
 		};
 		static final State ACTIVE = new State() {
 			@Override
-			void apply(Entity entity, MultiStageAction client) {
+			void apply(UUID id, EntityPool entities, MultiStageAction client) {
 				switch (client.armingOption) {
 					case ACTIVATE:
 						if (Float.compare(client.holdTime, client.holdThreshold) >= 0) {
-							accept(client.hold, entity);
+							accept(id, entities, client.hold);
 
 							client.holdTime = 0;
 							client.state = DECAYED;
 						}
 						break;
 					case DEACTIVATE:
-						accept(client.end, entity);
+						accept(id, entities, client.end);
 
 						client.holdTime = 0;
 						client.state = INACTIVE;
@@ -127,10 +128,10 @@ public class MultiStageAction extends Action {
 		};
 		static final State DECAYED = new State() {
 			@Override
-			void apply(Entity entity, MultiStageAction client) {
+			void apply(UUID id, EntityPool entities, MultiStageAction client) {
 				switch (client.armingOption) {
 					case DEACTIVATE:
-						accept(client.end, entity);
+						accept(id, entities, client.end);
 
 						client.holdTime = 0;
 						client.state = INACTIVE;
@@ -139,10 +140,10 @@ public class MultiStageAction extends Action {
 			}
 		};
 
-		abstract void apply(Entity entity, MultiStageAction client);
+		abstract void apply(UUID id, EntityPool entities, MultiStageAction client);
 
-		void accept(Action action, Entity entity) {
-			if (action != null) action.accept(entity);
+		void accept(UUID id, EntityPool entities, Action action) {
+			if (action != null) action.accept(id, entities);
 		}
 	}
 }

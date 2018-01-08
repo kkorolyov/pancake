@@ -1,11 +1,12 @@
 package dev.kkorolyov.pancake.platform.action;
 
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * An {@link Action} which applies a collection of delegate actions.
@@ -29,8 +30,8 @@ public class CollectiveAction extends Action {
 	 * Applies all contained, accepting actions to an entity.
 	 */
 	@Override
-	protected void apply(Entity entity) {
-		for (Action delegate : delegates) delegate.accept(entity);
+	protected void apply(UUID id, EntityPool entities) {
+		for (Action delegate : delegates) delegate.accept(id, entities);
 	}
 
 	/** @return all delegate actions */

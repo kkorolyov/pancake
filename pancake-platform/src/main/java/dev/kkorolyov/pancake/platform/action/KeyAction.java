@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption;
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Wraps a {@link MultiStageAction} and uses collections of {@link KeyCode} and {@link MouseButton} objects to arm.
@@ -53,8 +54,8 @@ public class KeyAction extends Action {
 	}
 
 	@Override
-	protected void apply(Entity entity) {
-		delegate.apply(entity);
+	protected void apply(UUID id, EntityPool entities) {
+		delegate.accept(id, entities);
 	}
 
 	/** @return wrapped multi-stage action */
