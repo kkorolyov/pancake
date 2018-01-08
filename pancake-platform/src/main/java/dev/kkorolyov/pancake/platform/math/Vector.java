@@ -262,28 +262,33 @@ public class Vector {
 
 	/**
 	 * Sets the head of this vector while retaining the current z-axis value.
+	 * @return {@code this}
 	 * @see #set(float, float, float)
 	 */
-	public void set(float x, float y) {
-		set(x, y, z);
+	public Vector set(float x, float y) {
+		return set(x, y, z);
 	}
 	/**
 	 * Sets the head of this vector.
 	 * @param x new head x-coordinate
 	 * @param y new head y-coordinate
 	 * @param z new head z-coordinate
+	 * @return {@code this}
 	 */
-	public void set(float x, float y, float z) {
+	public Vector set(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+
+		return this;
 	}
 	/**
 	 * Sets this vector equal to another vector.
 	 * @param match vector to match
+	 * @return {@code this}
 	 */
-	public void set(Vector match) {
-		set(match.x, match.y, match.z);
+	public Vector set(Vector match) {
+		return set(match.x, match.y, match.z);
 	}
 
 	/** @return head x-coordinate */

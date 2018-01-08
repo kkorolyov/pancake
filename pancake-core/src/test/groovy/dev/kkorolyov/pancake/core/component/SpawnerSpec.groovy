@@ -16,21 +16,21 @@ class SpawnerSpec extends Specification {
 	float maxRadius = randFloat() + minRadius
 	float interval = randFloat()
 	Vector origin = randVector()
-	Supplier<Iterable<Component>> templateSupplier = Mock()
+
+	Vector position = Spy(new Vector(1, 1, 1))
+	Transform transform = Mock() {
+		getPosition() >> position
+	}
+	Supplier<Iterable<Component>> templateSupplier = Mock() {
+		get() >> [transform]
+	}
 	WeightedDistribution<Supplier<Iterable<Component>>> templates = Mock() {
 		get() >> templateSupplier
 	}
 
 	Spawner spawner = new Spawner(minRadius, maxRadius, interval, templates)
 
-	def "modifies supplied clone components"() {
-		Vector position = Mock() {
-			getX() >> 1
-			getY() >> 1
-			getZ() >> 1
-		}
-		templateSupplier.get() >> [new Transform(position)]
-
+	def "modifies clone's transform"() {
 		when:
 		spawner.spawn(origin)
 
@@ -39,26 +39,20 @@ class SpawnerSpec extends Specification {
 		1 * position.setY(_)
 		1 * position.setZ(_)
 	}
-
-	def "moves clone's transform to origin"() {
-		templateSupplier.get() >> [new Transform(new Vector())]
-
+	def "adds origin to clone's transform"() {
 		when:
-		Transform clone = spawner.spawn(origin)[0] as Transform
+		spawner.spawn(origin)
 
 		then:
-		clone.position == origin
+		1 * position.add(origin)
 	}
-
-	def "clone is positioned between min/max radii around origin"() {
-		templateSupplier.get() >> [new Transform(new Vector(1, 1, 1))]
-
+	def "clone's transform is positioned between min/max radii around origin"() {
 		when:
-		Transform clone = spawner.spawn(origin)[0] as Transform
+		spawner.spawn(origin)
 
 		then:
-		clone.position.distance(origin) >= minRadius
-		clone.position.distance(origin) <= maxRadius
+		position.distance(origin) >= minRadius
+		position.distance(origin) <= maxRadius
 	}
 
 	def "does nothing if interval not yet elapsed"() {
@@ -74,7 +68,7 @@ class SpawnerSpec extends Specification {
 		spawner.spawn(origin, interval)
 
 		then:
-		1 * templateSupplier.get() >> []
+		1 * templateSupplier.get() >> [transform]
 	}
 
 	def "does nothing if inactive"() {

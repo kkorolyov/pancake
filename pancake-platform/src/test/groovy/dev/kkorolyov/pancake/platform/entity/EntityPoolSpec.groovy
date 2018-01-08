@@ -2,31 +2,14 @@ package dev.kkorolyov.pancake.platform.entity
 
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster
 
-import spock.lang.Shared
 import spock.lang.Specification
 
 class EntityPoolSpec extends Specification {
-	@Shared EventBroadcaster events = Mock()
-	@Shared Component component = new Component() {}
-	@Shared Signature signature
-	@Shared Comparator<Entity> increasing = new Comparator<Entity>() {
-		@Override
-		int compare(Entity e1, Entity e2) {
-			return e1.getId() <=> e2.getId()
-		}
-	}
-	@Shared Comparator<Entity> decreasing = new Comparator<Entity>() {
-		@Override
-		int compare(Entity e1, Entity e2) {
-			return e2.getId() <=> e1.getId()
-		}
-	}
+	EventBroadcaster events = Mock()
+	Component component = Mock()
+	Signature signature = new Signature(component.class)
 
 	EntityPool entities = new EntityPool(events)
-
-	def setupSpec() {
-		signature = new Signature(component.class)
-	}
 
 	def "uses unique IDs"() {
 		expect:
@@ -55,8 +38,21 @@ class EntityPoolSpec extends Specification {
 		Entity e1 = entities.create(component)
 		Entity e2 = entities.create(component)
 
+		Comparator<Entity> e1First = new Comparator<Entity>() {
+			@Override
+			int compare(Entity o1, Entity o2) {
+				return o1.is(e1) ? -1 : 1
+			}
+		}
+		Comparator<Entity> e2First = new Comparator<Entity>() {
+			@Override
+			int compare(Entity o1, Entity o2) {
+				return o1.is(e2) ? -1 : 1
+			}
+		}
+
 		expect:
-		entities.get(signature, increasing).collect() == [e1, e2]
-		entities.get(signature, decreasing).collect() == [e2, e1]
+		entities.get(signature, e1First).collect() == [e1, e2]
+		entities.get(signature, e2First).collect() == [e2, e1]
 	}
 }

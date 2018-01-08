@@ -34,9 +34,7 @@ public class Chain implements Component {
 	 */
 	public Chain(Vector positionAnchor, float play, Iterable<Vector> rotationAnchors) {
 		setPositionAnchor(positionAnchor, play);
-		if (rotationAnchors != null) {
-			for (Vector rotationAnchor : rotationAnchors) addRotationAnchor(rotationAnchor);
-		}
+		rotationAnchors.forEach(this::addRotationAnchor);
 	}
 
 	/** @return positional anchor, or {@code null} if not set */
