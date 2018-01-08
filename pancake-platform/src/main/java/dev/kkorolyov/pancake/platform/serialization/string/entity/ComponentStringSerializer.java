@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
@@ -14,14 +15,24 @@ import java.util.stream.Stream;
  * @param <I> component instance type
  */
 public abstract class ComponentStringSerializer<I extends Component> extends StringSerializer<I> {
+	/** Base pattern matching all component string serializers */
+	public static final String BASE_PATTERN;
+	private static final Pattern NAME_PATTERN = Pattern.compile("\\w+");
 	private static final StringSerializer<Map<String, Object>> mapSerializer = new MapStringSerializer();
+
+	static {
+		BASE_PATTERN = NAME_PATTERN + mapSerializer.pattern();
+	}
 
 	/**
 	 * Constructs a new component string serializer.
 	 * @param prefix accepted component prefix
+	 * @throws IllegalArgumentException if {@code prefix} does not match the required pattern
 	 */
 	protected ComponentStringSerializer(String prefix) {
 		super(prefix + mapSerializer.pattern());
+
+		if (!NAME_PATTERN.matcher(prefix).matches()) throw new IllegalArgumentException("Provided prefix [" + prefix + "] does not match required pattern: " + NAME_PATTERN);
 	}
 
 	protected Map<String, Object> readMap(String out) {
@@ -34,7 +45,7 @@ public abstract class ComponentStringSerializer<I extends Component> extends Str
 
 	@Override
 	public Stream<I> matches(String out) {
-		return Arrays.stream(out.split(",\\s*(?=\\w+\\{)"))
+		return Arrays.stream(out.split(",\\s*(?=" + pattern() + ")"))
 				.flatMap(super::matches);
 	}
 }
