@@ -1,7 +1,9 @@
 package dev.kkorolyov.pancake.platform.entity;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -11,6 +13,7 @@ public class Signature {
 	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
 	private static long indexCounter;
 
+	private final Collection<Class<? extends Component>> types = new HashSet<>();
 	private long signature;
 
 	/**
@@ -51,6 +54,7 @@ public class Signature {
 	 * @param type added component type
 	 */
 	public void add(Class<? extends Component> type) {
+		types.add(type);
 		signature |= maskOf(type);
 	}
 	/**
@@ -58,7 +62,18 @@ public class Signature {
 	 * @param type removed component type
 	 */
 	public void remove(Class<? extends Component> type) {
+		types.remove(type);
 		signature &= ~maskOf(type);
+	}
+
+	/** @return number of types composing this signature */
+	public int size() {
+		return types.size();
+	}
+
+	/** @return types composing this signature */
+	public Collection<Class<? extends Component>> getTypes() {
+		return types;
 	}
 
 	@Override
