@@ -1,12 +1,13 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter.Usage;
 
 import java.util.Comparator;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -14,7 +15,7 @@ import java.util.function.Consumer;
  */
 public abstract class GameSystem {
 	private final Signature signature;
-	private final Comparator<Entity> comparator;
+	private final Comparator<UUID> comparator;
 
 	private EventBroadcaster events;
 	private PerformanceCounter performanceCounter;
@@ -31,7 +32,7 @@ public abstract class GameSystem {
 	 * @param signature defines all components an entity must have to be affected by this system
 	 * @param comparator defines the order in which entities are supplied to this system
 	 */
-	protected GameSystem(Signature signature, Comparator<Entity> comparator) {
+	protected GameSystem(Signature signature, Comparator<UUID> comparator) {
 		this.signature = signature;
 		this.comparator = comparator;
 	}
@@ -40,7 +41,7 @@ public abstract class GameSystem {
 	 * Function invoked on each entity affected by this system.
 	 * @param dt seconds elapsed since last update
 	 */
-	public abstract void update(Entity entity, float dt);
+	public abstract void update(UUID id, EntityPool entities, float dt);
 
 	/**
 	 * Function invoked at the beginning of an update cycle.
@@ -109,7 +110,7 @@ public abstract class GameSystem {
 		return signature;
 	}
 	/** @return required entity order */
-	public Comparator<Entity> getComparator() {
+	public Comparator<UUID> getComparator() {
 		return comparator;
 	}
 }

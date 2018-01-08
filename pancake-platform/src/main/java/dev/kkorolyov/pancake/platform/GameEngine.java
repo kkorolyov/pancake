@@ -69,7 +69,7 @@ public class GameEngine {
 
 			entities.get(system.getSignature(), system.getComparator())
 							.sequential()	// Avoid asynchronous update issues
-							.forEach(entity -> system.update(entity, dt));
+							.forEach(id -> system.update(id, entities, dt));
 
 			system.after(dt);
 
