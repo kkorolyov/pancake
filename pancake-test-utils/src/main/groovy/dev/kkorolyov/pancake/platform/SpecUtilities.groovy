@@ -14,25 +14,28 @@ class SpecUtilities {
 	private static final Random rand = new Random()
 
 	/**
+	 * Reflectively gets a field's value.
+	 * @see #getField(java.lang.String, java.lang.Class, java.lang.Object)
+	 */
+	static Object getField(String field, Object object) {
+		return getField(field, object.class, object)
+	}
+	/**
 	 * Reflectively gets a static field's value.
-	 * @param field field name
-	 * @param c static field owner
-	 * @return class {@code c's} value for {@code field}
+	 * @see #getField(java.lang.String, java.lang.Class, java.lang.Object)
 	 */
 	static Object getField(String field, Class<?> c) {
-		Field f = c.getDeclaredField(field)
-		f.setAccessible(true)
-
-		return f.get(null)
+		return getField(field, c, null)
 	}
 	/**
 	 * Reflectively gets a field's value.
 	 * @param field field name
+	 * @param c declaring class
 	 * @param object field owner
-	 * @return {@code object's} value for {@code field}
+	 * @return {@code object's} value for {@code field} defined by class {@code c}
 	 */
-	static Object getField(String field, Object object) {
-		Field f = object.class.getDeclaredField(field)
+	static Object getField(String field, Class<?> c, Object object) {
+		Field f = c.getDeclaredField(field)
 		f.setAccessible(true)
 
 		return f.get(object)
@@ -40,12 +43,17 @@ class SpecUtilities {
 
 	/**
 	 * Reflectively sets a field's value
-	 * @param field field name
-	 * @param object field owner
-	 * @param value new field value
+	 * @see #setField(java.lang.String, java.lang.Class, java.lang.Object, java.lang.Object)
 	 */
 	static void setField(String field, Object object, Object value) {
 		setField(field, object.class, object, value)
+	}
+	/**
+	 * Reflectively sets a static field's value.
+	 * @see #setField(java.lang.String, java.lang.Class, java.lang.Object, java.lang.Object)
+	 */
+	static void setField(String field, Class<?> c, Object value) {
+		setField(field, c, null, value)
 	}
 	/**
 	 * Reflectively sets a field's value
