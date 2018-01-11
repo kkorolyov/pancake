@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake.platform
 
-import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster
@@ -17,11 +16,11 @@ import static SpecUtilities.setField
 class GameEngineSpec extends Specification {
 	float dt = randFloat()
 	Signature signature = Mock()
-	Comparator<Entity> comparator = Mock()
-	Entity entity = Mock()
-	Stream<Entity> entityStream = Mock(Stream) {
+	Comparator<UUID> comparator = Mock()
+	UUID id = UUID.randomUUID()
+	Stream<UUID> entityStream = Mock(Stream) {
 		sequential() >> it
-		forEach(_) >> {Consumer<Entity> consumer -> consumer.accept(entity)}
+		forEach(_) >> {Consumer<UUID> consumer -> consumer.accept(id)}
 		// TODO Spock bug with Stream.of
 	}
 	EventBroadcaster events = Mock()
@@ -56,10 +55,7 @@ class GameEngineSpec extends Specification {
 		engine.update(dt)
 
 		then:
-		1 * system.update(entity, dt)
-
-		where:
-		entity << Mock(Entity)
+		1 * system.update(id, entities, dt)
 	}
 	def "does not invoke 'update' on system if no relevant entities"() {
 		when:
@@ -67,7 +63,7 @@ class GameEngineSpec extends Specification {
 
 		then:
 		1 * entityStream.forEach(_) >> {}
-		0 * system.update(_, dt)
+		0 * system.update(_, entities, dt)
 	}
 
 	def "shares services with added system"() {

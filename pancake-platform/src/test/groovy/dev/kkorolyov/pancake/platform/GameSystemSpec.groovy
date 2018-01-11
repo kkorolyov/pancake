@@ -1,9 +1,8 @@
 package dev.kkorolyov.pancake.platform
 
-import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster
 
-import spock.lang.Shared
 import spock.lang.Specification
 
 import java.util.function.Consumer
@@ -11,15 +10,13 @@ import java.util.function.Consumer
 import static SpecUtilities.setField
 
 class GameSystemSpec extends Specification {
-	@Shared String event = UUID.randomUUID().toString()
-	@Shared Object payload = Mock()
-	@Shared Consumer<?> receiver = {payload -> return}
+	String event = UUID.randomUUID().toString()
+	Object payload = Mock()
+	Consumer<?> receiver = {payload -> return}
 	EventBroadcaster events = Mock()
+	Signature signature = Mock()
 
-	GameSystem system = new GameSystem(null) {
-		@Override
-		void update(Entity entity, float dt) {}
-	}
+	GameSystem system = Spy(constructorArgs: [signature])
 
 	def setup() {
 		setField("events", GameSystem, system, events)

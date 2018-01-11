@@ -6,53 +6,72 @@ import spock.lang.Specification
 
 class EntityPoolSpec extends Specification {
 	EventBroadcaster events = Mock()
-	Component component = Mock()
+	Component component = mockComponent()
 	Signature signature = new Signature(component.class)
 
 	EntityPool entities = new EntityPool(events)
 
-	def "uses unique IDs"() {
+	def "create provides unique ID"() {
 		expect:
-		entities.create(component).getId() != entities.create(component).getId()
+		entities.create(mockComponent()) != entities.create(mockComponent())
 	}
-	def "reuses IDs of destroyed entities"() {
-		Entity entity = entities.create(component)
-
+	def "create adds to pool"() {
 		when:
-		entities.destroy(entity)
+		UUID id = entities.create(component)
 
 		then:
-		entities.create(component).getId() == entity.getId()
+		++entities.get(id).iterator() == component
+	}
+	def "created entity has specified components"() {
+		when:
+		UUID id = entities.create(component)
+
+		then:
+		Component otherComponent = new Component() {}
+
+		with(entities) {
+			get(id, component.class) == component
+			get(id, component.class) != mockComponent()
+			get(id, otherComponent.class) == null
+		}
 	}
 
-	def "created entity has specified components"() {
-		Entity entity = entities.create(component)
+	def "destroy removes entity"() {
+		when:
+		UUID id = entities.create(component)
 
-		expect:
-		entity.get(component.class) == component
-		entity.get(component.class) != new Component() {}
-		entity.get(new Component() {}.class) == null
+		then:
+		with(entities) {
+			destroy(id) == 1
+			!get(id).iterator().hasNext()
+		}
 	}
 
 	def "gets entities in comparator order"() {
-		Entity e1 = entities.create(component)
-		Entity e2 = entities.create(component)
+		UUID e1 = entities.create(component)
+		UUID e2 = entities.create(component)
 
-		Comparator<Entity> e1First = new Comparator<Entity>() {
+		Comparator<UUID> e1First = new Comparator<UUID>() {
 			@Override
-			int compare(Entity o1, Entity o2) {
+			int compare(UUID o1, UUID o2) {
 				return o1.is(e1) ? -1 : 1
 			}
 		}
-		Comparator<Entity> e2First = new Comparator<Entity>() {
+		Comparator<UUID> e2First = new Comparator<UUID>() {
 			@Override
-			int compare(Entity o1, Entity o2) {
+			int compare(UUID o1, UUID o2) {
 				return o1.is(e2) ? -1 : 1
 			}
 		}
 
 		expect:
-		entities.get(signature, e1First).collect() == [e1, e2]
-		entities.get(signature, e2First).collect() == [e2, e1]
+		with(entities) {
+			get(signature, e1First).collect() == [e1, e2]
+			get(signature, e2First).collect() == [e2, e1]
+		}
+	}
+
+	private static Component mockComponent() {
+		return new Component() {}
 	}
 }

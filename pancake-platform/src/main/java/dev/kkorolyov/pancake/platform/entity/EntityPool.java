@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.event.Events;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -103,6 +104,12 @@ public class EntityPool {
 		return result;
 	}
 
+	/**
+	 * @see #create(Iterable)
+	 */
+	public UUID create(Component... components) {
+		return create(Arrays.asList(components));
+	}
 	/**
 	 * Adds an entity to the pool.
 	 * @param components components defining entity, if this collection contains multiple instances of the same component type, the last-encountered overrides the rest
