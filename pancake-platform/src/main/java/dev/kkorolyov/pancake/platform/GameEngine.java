@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
+import dev.kkorolyov.pancake.platform.event.ManagedEventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 
@@ -15,21 +15,21 @@ import java.util.Map.Entry;
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public class GameEngine {
-	private final EventBroadcaster events;
-	private final EntityPool entities;
+	private final ManagedEventBroadcaster events;
+	private final ManagedEntityPool entities;
 	private final PerformanceCounter performanceCounter = new PerformanceCounter();
 	private final Map<GameSystem, Limiter> systems = new LinkedHashMap<>();
 
 	/**
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
-	public GameEngine(EventBroadcaster events, EntityPool entities) {
+	public GameEngine(ManagedEventBroadcaster events, ManagedEntityPool entities) {
 		this(events, entities, Resources.providers(GameSystem.class));
 	}
 	/**
-	 * @see #GameEngine(EventBroadcaster, EntityPool, Iterable)
+	 * @see #GameEngine(ManagedEventBroadcaster, ManagedEntityPool, Iterable)
 	 */
-	public GameEngine(EventBroadcaster events, EntityPool entities, GameSystem... systems) {
+	public GameEngine(ManagedEventBroadcaster events, ManagedEntityPool entities, GameSystem... systems) {
 		this(events, entities, Arrays.asList(systems));
 	}
 	/**
@@ -38,7 +38,7 @@ public class GameEngine {
 	 * @param entities attached entity pool
 	 * @param systems attached systems
 	 */
-	public GameEngine(EventBroadcaster events, EntityPool entities, Iterable<GameSystem> systems) {
+	public GameEngine(ManagedEventBroadcaster events, ManagedEntityPool entities, Iterable<GameSystem> systems) {
 		this.events = events;
 		this.entities = entities;
 
@@ -69,7 +69,7 @@ public class GameEngine {
 
 			entities.get(system.getSignature(), system.getComparator())
 							.sequential()	// Avoid asynchronous update issues
-							.forEach(id -> system.update(id, entities, dt));
+							.forEach(id -> system.update(id, dt));
 
 			system.after(dt);
 
@@ -86,7 +86,7 @@ public class GameEngine {
 	 * @param updateInterval minimum elapsed seconds between updates of {@code system}, constrained {@code >= 0}
 	 */
 	public void add(GameSystem system, float updateInterval) {
-		system.share(events, performanceCounter);
+		system.share(entities, events, performanceCounter);
 
 		systems.put(system, new Limiter(Math.max(0, updateInterval)));
 
@@ -95,7 +95,7 @@ public class GameEngine {
 
 	/** @param system removed system */
 	public void remove(GameSystem system) {
-		system.share(null, null);
+		system.share(null, null, null);
 
 		systems.remove(system);
 

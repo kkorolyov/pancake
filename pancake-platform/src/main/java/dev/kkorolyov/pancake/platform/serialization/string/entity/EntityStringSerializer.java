@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.serialization.string.entity;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
 import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
 import dev.kkorolyov.pancake.platform.serialization.Serializer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
@@ -25,14 +25,14 @@ import java.util.stream.Stream;
 public class EntityStringSerializer extends StringSerializer<UUID> {
 	private static final String COMPONENT_PATTERN = ComponentStringSerializer.BASE_PATTERN;
 
-	private final EntityPool context;
+	private final ManagedEntityPool context;
 	private final Serializer<Component, String> componentSerializer = new AutoSerializer(ComponentStringSerializer.class);
 
 	/**
 	 * Constructs a new entity string serializer.
 	 * @param context associated entity pool
 	 */
-	public EntityStringSerializer(EntityPool context) {
+	public EntityStringSerializer(ManagedEntityPool context) {
 		super("\\[\\s*" + COMPONENT_PATTERN + "(,\\s*" + COMPONENT_PATTERN + ")*\\s*]");
 		this.context = context;
 	}
