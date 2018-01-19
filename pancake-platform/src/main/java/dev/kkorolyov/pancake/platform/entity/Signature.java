@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * A distinct combination of registered component types.
  */
-public class Signature {
+public class Signature implements Comparable<Signature> {
 	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
 	private static long indexCounter;
 
@@ -87,5 +87,10 @@ public class Signature {
 	@Override
 	public int hashCode() {
 		return Objects.hash(signature);
+	}
+
+	@Override
+	public int compareTo(Signature o) {
+		return Long.compare(signature, o.signature);
 	}
 }

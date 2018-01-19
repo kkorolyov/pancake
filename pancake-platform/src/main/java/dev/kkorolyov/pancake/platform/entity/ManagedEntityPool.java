@@ -3,15 +3,18 @@ package dev.kkorolyov.pancake.platform.entity;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
+import java.util.Queue;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -25,9 +28,14 @@ import static dev.kkorolyov.pancake.platform.event.Events.DESTROYED;
  * An {@link EntityPool} implementation with exposed management methods.
  */
 public class ManagedEntityPool implements EntityPool {
-	private final Map<Class<? extends Component>, Map<UUID, Component>> components = new HashMap<>();
-	private final Map<UUID, Collection<Action>> actions = new LinkedHashMap<>();
+	private final Map<Class<? extends Component>, Map<Integer, Component>> components = new HashMap<>();
+	private final Map<Integer, Collection<Action>> actions = new LinkedHashMap<>();
 	private final EventBroadcaster events;
+
+	private int counter = 0;
+	private final Queue<Integer> reclaimedIds = new ArrayDeque<>();
+
+	private final Set<Integer> bySignatureTempResult = new HashSet<>();
 
 	/**
 	 * Constructs an empty entity pool.
@@ -37,28 +45,28 @@ public class ManagedEntityPool implements EntityPool {
 		this.events = events;
 
 		this.events.register(CREATE, (Consumer<Iterable<Component>>) this::create);
-		this.events.register(DESTROY, (Consumer<UUID>) this::destroy);
+		this.events.register(DESTROY, (Consumer<Integer>) this::destroy);
 	}
 
 	@Override
-	public boolean contains(UUID id, Signature signature) {
+	public boolean contains(int id, Signature signature) {
 		return signature.getTypes().stream()
 				.allMatch(type -> get(id, type) != null);
 	}
 
 	@Override
-	public Stream<Component> get(UUID id) {
+	public Stream<Component> get(int id) {
 		return components.values().stream()
 				.map(componentMap -> componentMap.get(id))
 				.filter(Objects::nonNull);
 	}
 
 	@Override
-	public <T extends Component> T get(UUID id, Class<T> type) {
-		return type.cast(getComponentMap(type).get(id));
+	public <T extends Component> T get(int id, Class<T> type) {
+		return type.cast(components.get(type).get(id));
 	}
 	@Override
-	public <T extends Component, R> R get(UUID id, Class<T> type, Function<T, R> function) {
+	public <T extends Component, R> R get(int id, Class<T> type, Function<T, R> function) {
 		T component = get(id, type);
 
 		return component != null
@@ -66,35 +74,25 @@ public class ManagedEntityPool implements EntityPool {
 				: null;
 	}
 
-	@Override
-	public Stream<UUID> get(Signature signature, Comparator<UUID> comparator) {
-		Stream<UUID> result;
+	/**
+	 * Invokes an action on all entities masking a signature.
+	 * @param signature signature defining a set of component types
+	 * @param action action to invoke on each matching entity
+	 */
+	public void get(Signature signature, Consumer<Integer> action) {
+		Iterator<Class<? extends Component>> it = signature.getTypes().iterator();
 
-		switch(signature.size()) {
-			case 0:
-				result = Stream.empty();
-				break;
-			case 1:
-				result = getComponentMap(signature.getTypes().iterator().next()).keySet().stream();
-				break;
-			default:
-				result = signature.getTypes().stream()
-						.reduce(new HashSet<>(getComponentMap(signature.getTypes().iterator().next()).keySet()), (tempResult, type) -> {
-							tempResult.removeIf(id -> !getComponentMap(type).containsKey(id));
-							return tempResult;
-						}, (set1, set2) -> set1)  // Will only ever be 1 set
-						.stream();
-				break;
-		}
-		if (comparator != null) result = result.sorted(comparator);
+		bySignatureTempResult.clear();
+		bySignatureTempResult.addAll(getComponentMap(it.next()).keySet());
+		while (it.hasNext()) bySignatureTempResult.retainAll(getComponentMap(it.next()).keySet());
 
-		return result;
+		bySignatureTempResult.forEach(action);
 	}
 
 	/**
 	 * @see #create(Iterable)
 	 */
-	public UUID create(Component... components) {
+	public int create(Component... components) {
 		return create(Arrays.asList(components));
 	}
 	/**
@@ -102,8 +100,10 @@ public class ManagedEntityPool implements EntityPool {
 	 * @param components components defining entity, if this collection contains multiple instances of the same component type, the last-encountered overrides the rest
 	 * @return ID assigned to entity
 	 */
-	public UUID create(Iterable<Component> components) {
-		UUID id = UUID.randomUUID();
+	public int create(Iterable<Component> components) {
+		int id = reclaimedIds.isEmpty()
+				? counter++
+				: reclaimedIds.remove();
 
 		components.forEach(component -> add(id, component));
 		events.enqueue(CREATED, id);
@@ -115,42 +115,43 @@ public class ManagedEntityPool implements EntityPool {
 	 * @param id ID of entity to remove
 	 * @return number of components which were bound to {@code id} and removed
 	 */
-	public long destroy(UUID id) {
+	public long destroy(int id) {
 		long count = components.values().stream()
 				.map(componentMap -> componentMap.remove(id))
 				.filter(Objects::nonNull)
 				.count();
 
-		if (count > 0) events.enqueue(DESTROYED, id);
-
+		if (count > 0) {
+			events.enqueue(DESTROYED, id);
+			reclaimedIds.add(id);
+		}
 		return count;
 	}
 
 	/**
 	 * Adds or replaces a component on an entity.
-	 * Replaces the entity's current component of the same type bound if it exists.
+	 * Replaces the entity's current component of the same type if it exists.
 	 * @param id ID of entity to alter
 	 * @param component component to set
 	 */
-	public void add(UUID id, Component component) {
-		getComponentMap(component.getClass()).put(id, component);
+	public void add(int id, Component component) {
+		components.computeIfAbsent(component.getClass(), k -> new HashMap<>()).put(id, component);
 	}
 	/**
 	 * Removes a component from an entity.
 	 * @param id ID of entity to alter
 	 * @param type type of component to remove
 	 */
-	public void remove(UUID id, Class<? extends Component> type) {
+	public void remove(int id, Class<? extends Component> type) {
 		getComponentMap(type).remove(id);
 	}
 
-
-	private Map<UUID, Component> getComponentMap(Class<? extends Component> type) {
-		return components.computeIfAbsent(type, k -> new HashMap<>());
+	private Map<Integer, Component> getComponentMap(Class<? extends Component> type) {
+		return components.getOrDefault(type, Collections.emptyMap());
 	}
 
 	@Override
-	public void add(UUID id, Action action) {
+	public void add(int id, Action action) {
 		actions.computeIfAbsent(id, k -> new HashSet<>())
 				.add(action);
 	}

@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Wraps a {@link MultiStageAction} and uses collections of {@link KeyCode} and {@link MouseButton} objects to arm.
@@ -54,7 +53,7 @@ public class KeyAction extends Action {
 	}
 
 	@Override
-	protected void apply(UUID id, EntityPool entities) {
+	protected void apply(int id, EntityPool entities) {
 		delegate.accept(id, entities);
 	}
 
@@ -70,7 +69,7 @@ public class KeyAction extends Action {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+		if (obj == null || getClass() != obj.getClass()) return false;
 
 		KeyAction o = (KeyAction) obj;
 		return Objects.equals(delegate, o.delegate)

@@ -7,7 +7,6 @@ import dev.kkorolyov.pancake.platform.serialization.Serializer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 
 import java.util.Arrays;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,7 +21,7 @@ import java.util.stream.Stream;
  * ]
  * </pre>
  */
-public class EntityStringSerializer extends StringSerializer<UUID> {
+public class EntityStringSerializer extends StringSerializer<Integer> {
 	private static final String COMPONENT_PATTERN = ComponentStringSerializer.BASE_PATTERN;
 
 	private final ManagedEntityPool context;
@@ -38,20 +37,20 @@ public class EntityStringSerializer extends StringSerializer<UUID> {
 	}
 
 	@Override
-	public UUID read(String out) {
+	public Integer read(String out) {
 		return context.create(Arrays.stream(out.split(",\\s*(?=" + COMPONENT_PATTERN + ")"))
 						.map(componentSerializer::read)
 						.collect(Collectors.toList()));
 	}
 	@Override
-	public String write(UUID in) {
+	public String write(Integer in) {
 		return context.get(in)
 				.map(componentSerializer::write)
 				.collect(Collectors.joining("," + System.lineSeparator() + "\t", "{" + System.lineSeparator() + "\t", System.lineSeparator() + "}"));
 	}
 
 	@Override
-	public Stream<UUID> matches(String out) {
+	public Stream<Integer> matches(String out) {
 		return Arrays.stream(out.split(",\\s*(?=" + pattern()  + ")"))
 				.flatMap(super::matches);
 	}

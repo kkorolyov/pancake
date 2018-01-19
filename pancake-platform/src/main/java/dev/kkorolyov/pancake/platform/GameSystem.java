@@ -42,7 +42,7 @@ public abstract class GameSystem {
 	 * @param id ID of entity to update
 	 * @param dt seconds elapsed since last update
 	 */
-	public abstract void update(UUID id, float dt);
+	public abstract void update(int id, float dt);
 
 	/**
 	 * Function invoked at the beginning of an update cycle.
