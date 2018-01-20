@@ -7,12 +7,13 @@ import org.spockframework.mock.MockUtil
 import spock.lang.Shared
 import spock.lang.Specification
 
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
 import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
 
 class ActionSpec extends Specification {
 	@Shared MockUtil detector = new MockUtil()
 
-	UUID id = UUID.randomUUID()
+	int id = randInt()
 	EntityPool entities = Mock()
 	Signature signature = Mock()
 

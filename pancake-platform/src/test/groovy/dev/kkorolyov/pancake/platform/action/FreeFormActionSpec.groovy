@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import java.util.function.BiConsumer
 
 class FreeFormActionSpec extends ActionSpec {
-	BiConsumer<UUID, EntityPool> consumer = Mock()
+	BiConsumer<Integer, EntityPool> consumer = Mock()
 
 	@Override
 	FreeFormAction initAction() {

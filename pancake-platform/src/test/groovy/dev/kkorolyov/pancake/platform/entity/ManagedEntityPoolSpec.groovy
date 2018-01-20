@@ -4,12 +4,12 @@ import dev.kkorolyov.pancake.platform.event.EventBroadcaster
 
 import spock.lang.Specification
 
-class EntityPoolSpec extends Specification {
+class ManagedEntityPoolSpec extends Specification {
 	EventBroadcaster events = Mock()
 	Component component = mockComponent()
 	Signature signature = new Signature(component.class)
 
-	EntityPool entities = new EntityPool(events)
+	ManagedEntityPool entities = new ManagedEntityPool(events)
 
 	def "create provides unique ID"() {
 		expect:
@@ -17,14 +17,14 @@ class EntityPoolSpec extends Specification {
 	}
 	def "create adds to pool"() {
 		when:
-		UUID id = entities.create(component)
+		int id = entities.create(component)
 
 		then:
 		++entities.get(id).iterator() == component
 	}
 	def "created entity has specified components"() {
 		when:
-		UUID id = entities.create(component)
+		int id = entities.create(component)
 
 		then:
 		Component otherComponent = new Component() {}
@@ -38,7 +38,7 @@ class EntityPoolSpec extends Specification {
 
 	def "destroy removes entity"() {
 		when:
-		UUID id = entities.create(component)
+		int id = entities.create(component)
 
 		then:
 		with(entities) {
@@ -47,28 +47,18 @@ class EntityPoolSpec extends Specification {
 		}
 	}
 
-	def "gets entities in comparator order"() {
-		UUID e1 = entities.create(component)
-		UUID e2 = entities.create(component)
+	def "invokes on each matching entity"() {
+		int e1 = entities.create(component)
+		int e2 = entities.create(component)
+		int eBad = entities.create(new Component() {})
 
-		Comparator<UUID> e1First = new Comparator<UUID>() {
-			@Override
-			int compare(UUID o1, UUID o2) {
-				return o1.is(e1) ? -1 : 1
-			}
-		}
-		Comparator<UUID> e2First = new Comparator<UUID>() {
-			@Override
-			int compare(UUID o1, UUID o2) {
-				return o1.is(e2) ? -1 : 1
-			}
-		}
+		Set<Integer> seen = []
 
-		expect:
-		with(entities) {
-			get(signature, e1First).collect() == [e1, e2]
-			get(signature, e2First).collect() == [e2, e1]
-		}
+		when:
+		entities.forEachMatching(signature, { seen.add(it) })
+
+		then:
+		seen == [e1, e2].toSet()
 	}
 
 	private static Component mockComponent() {

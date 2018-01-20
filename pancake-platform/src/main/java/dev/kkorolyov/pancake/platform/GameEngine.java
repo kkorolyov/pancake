@@ -67,7 +67,7 @@ public class GameEngine {
 
 			system.before(dt);
 
-			entities.get(system.getSignature(), id -> system.update(id, dt));
+			entities.forEachMatching(system.getSignature(), id -> system.update(id, dt));
 
 			system.after(dt);
 

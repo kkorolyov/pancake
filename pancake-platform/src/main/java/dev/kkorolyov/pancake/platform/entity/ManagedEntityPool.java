@@ -63,7 +63,7 @@ public class ManagedEntityPool implements EntityPool {
 
 	@Override
 	public <T extends Component> T get(int id, Class<T> type) {
-		return type.cast(components.get(type).get(id));
+		return type.cast(getComponentMap(type).get(id));
 	}
 	@Override
 	public <T extends Component, R> R get(int id, Class<T> type, Function<T, R> function) {
@@ -79,7 +79,7 @@ public class ManagedEntityPool implements EntityPool {
 	 * @param signature signature defining a set of component types
 	 * @param action action to invoke on each matching entity
 	 */
-	public void get(Signature signature, Consumer<Integer> action) {
+	public void forEachMatching(Signature signature, Consumer<Integer> action) {
 		Iterator<Class<? extends Component>> it = signature.getTypes().iterator();
 
 		bySignatureTempResult.clear();
