@@ -1,18 +1,18 @@
 package dev.kkorolyov.killstreek.item;
 
 import dev.kkorolyov.killstreek.media.Sprite;
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
 
 import java.util.NoSuchElementException;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * Applies effects to entities.
  */
 public abstract class Item {
 	/**	An effect which does nothing, used for padding the pool of random effects */
-	public static final Consumer<Entity> NOOP_EFFECT = entity -> {};
+	public static final BiConsumer<Integer, EntityPool> NOOP_EFFECT = (id, entities) -> {};
 	private static int idCounter;
 
 	private static int generateId() {
@@ -22,7 +22,7 @@ public abstract class Item {
 	private final int id;
 	private final String name;
 	private final Sprite sprite;
-	private final WeightedDistribution<Consumer<Entity>> effects = new WeightedDistribution<>();
+	private final WeightedDistribution<BiConsumer<Integer, EntityPool>> effects = new WeightedDistribution<>();
 
 	/**
 	 * Constructs a new item with a unique ID.
@@ -37,11 +37,12 @@ public abstract class Item {
 
 	/**
 	 * Applies a randomly-select effect from this item's effect pool to an entity.
-	 * @param entity entity receiving effect
+	 * @param id ID of entity receiving effect
+	 * @param entities entity pool containing entities
 	 * @throws NoSuchElementException if this item has no effects
 	 */
-	public void apply(Entity entity) {
-		effects.get().accept(entity);
+	public void apply(int id, EntityPool entities) {
+		effects.get().accept(id, entities);
 	}
 
 	/**
@@ -49,7 +50,7 @@ public abstract class Item {
 	 * @param effect effect on entity
 	 * @return {@code this}
 	 */
-	public Item addEffect(Consumer<Entity> effect) {
+	public Item addEffect(BiConsumer<Integer, EntityPool> effect) {
 		return addEffect(effect, 1);
 	}
 	/**
@@ -58,7 +59,7 @@ public abstract class Item {
 	 * @param weight effect frequency in relation to all other effects of this item
 	 * @return {@code this}
 	 */
-	public Item addEffect(Consumer<Entity> effect, int weight) {
+	public Item addEffect(BiConsumer<Integer, EntityPool> effect, int weight) {
 		effects.add(weight, effect);
 		return this;
 	}

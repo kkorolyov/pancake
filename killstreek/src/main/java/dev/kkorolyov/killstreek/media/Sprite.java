@@ -79,6 +79,11 @@ public class Sprite implements Renderable, Animated {
 	}
 
 	@Override
+	public void toggle() {
+		setActive(!isActive());
+	}
+
+	@Override
 	public boolean isActive() {
 		return active && frameInterval != 0;
 	}
