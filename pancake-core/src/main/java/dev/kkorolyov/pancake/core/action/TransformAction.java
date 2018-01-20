@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.core.action;
 
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 import java.util.Objects;
@@ -34,8 +34,8 @@ public class TransformAction extends Action {
 	}
 
 	@Override
-	protected void apply(Entity entity) {
-		Transform entityTransform = entity.get(Transform.class);
+	protected void apply(int id, EntityPool entities) {
+		Transform entityTransform = entities.get(id, Transform.class);
 
 		entityTransform.getPosition().set(position);
 		if (rotation != null) entityTransform.getOrientation().set(rotation);

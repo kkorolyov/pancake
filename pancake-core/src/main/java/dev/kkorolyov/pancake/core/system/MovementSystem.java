@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 
 /**
@@ -19,9 +18,9 @@ public class MovementSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		Transform transform = entity.get(Transform.class);
-		Velocity velocity = entity.get(Velocity.class);
+	public void update(int id, float dt) {
+		Transform transform = entities.get(id, Transform.class);
+		Velocity velocity = entities.get(id, Velocity.class);
 
 		velocity.move(transform.getPosition(), dt);
 	}

@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.media.Animation;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 
 import java.util.HashSet;
@@ -19,8 +18,8 @@ public class AnimationSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		Animation animation = entity.get(Animation.class);
+	public void update(int id, float dt) {
+		Animation animation = entities.get(id, Animation.class);
 
 		if (!tickedAnimations.contains(animation)) {
 			animation.tick(dt);

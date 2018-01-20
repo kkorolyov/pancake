@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.media.Graphic;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
@@ -16,7 +15,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.transform.Rotate;
-import java.util.Comparator;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.NavigableMap;
+import java.util.Set;
+import java.util.TreeMap;
 
 import static dev.kkorolyov.pancake.platform.event.Events.CAMERA_CREATED;
 import static dev.kkorolyov.pancake.platform.event.Events.CANVAS_CREATED;
@@ -35,6 +38,8 @@ public class RenderSystem extends GameSystem {
 	private final Rotate rotate = new Rotate();
 	private final Vector rotateVector = new Vector();
 
+	private final NavigableMap<Float, Set<Integer>> drawBuckets = new TreeMap<>();
+
 	private float last;
 
 	/**
@@ -42,33 +47,36 @@ public class RenderSystem extends GameSystem {
 	 */
 	public RenderSystem() {
 		super(new Signature(Transform.class,
-												Graphic.class),
-					Comparator.comparing(entity -> entity.get(Transform.class).getPosition().getZ()));
+												Graphic.class));
 	}
 	@Override
 	public void attach() {
-		register(CANVAS_CREATED, (Canvas canvas) -> {
+		events.register(CANVAS_CREATED, (Canvas canvas) -> {
 			this.canvas = canvas;
 			this.g = canvas.getGraphicsContext2D();
 		});
-		register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
+		events.register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
 	}
 
 	@Override
 	public void before(float dt) {
+		for (Collection<Integer> bucket : drawBuckets.values()) bucket.clear();
 		g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		Transform transform = entity.get(Transform.class);
-		Graphic graphic = entity.get(Graphic.class);
-
-		draw(transform, graphic);
+	public void update(int id, float dt) {
+		drawBuckets.computeIfAbsent(entities.get(id, Transform.class).getPosition().getZ(), k -> new HashSet<>())
+				.add(id);
 	}
 
 	@Override
 	public void after(float dt) {
+		for (Collection<Integer> bucket : drawBuckets.values()) {
+			for (int id : bucket) {
+				draw(entities.get(id, Transform.class), entities.get(id, Graphic.class));
+			}
+		}
 		rotate(0, null);
 
 		drawDebug();

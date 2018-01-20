@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.core.component.Spawner;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 
 import static dev.kkorolyov.pancake.core.event.Events.SPAWN;
@@ -30,21 +29,21 @@ public class SpawnSystem extends GameSystem {
 	}
 	@Override
 	public void attach() {
-		register(SPAWN, (Entity e) -> {
-			Spawner spawner = e.get(Spawner.class);
-			Transform transform = e.get(Transform.class);
+		events.register(SPAWN, (Integer id) -> {
+			Spawner spawner = entities.get(id, Spawner.class);
+			Transform transform = entities.get(id, Transform.class);
 
 			Iterable<Component> clone = spawner.spawn(transform.getPosition());
-			enqueue(CREATE, clone);
+			events.enqueue(CREATE, clone);
 		});
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		Spawner spawner = entity.get(Spawner.class);
-		Transform transform = entity.get(Transform.class);
+	public void update(int id, float dt) {
+		Spawner spawner = entities.get(id, Spawner.class);
+		Transform transform = entities.get(id, Transform.class);
 
 		Iterable<Component> clone = spawner.spawn(transform.getPosition(), dt);
-		if (clone != null) enqueue(CREATE, clone);
+		if (clone != null) events.enqueue(CREATE, clone);
 	}
 }

@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.core.component.movement.Damping;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 
 /**
@@ -21,10 +20,10 @@ public class DampingSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		Damping damping = entity.get(Damping.class);
-		Velocity velocity = entity.get(Velocity.class);
-		Force force = entity.get(Force.class);
+	public void update(int id, float dt) {
+		Damping damping = entities.get(id, Damping.class);
+		Velocity velocity = entities.get(id, Velocity.class);
+		Force force = entities.get(id, Force.class);
 
 		damping.damp(velocity.getVelocity(), force.getForce());
 	}
