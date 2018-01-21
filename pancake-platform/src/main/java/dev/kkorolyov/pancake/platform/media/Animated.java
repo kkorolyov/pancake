@@ -10,6 +10,11 @@ public interface Animated {
 	 */
 	void tick(float dt);
 
+	/**
+	 * Toggles active status.
+	 */
+	void toggle();
+
 	/** @return whether {@link #tick(float)} is enabled */
 	boolean isActive();
 	/** @param active {@code true} enables {@link #tick(float)}, {@code false} disables */

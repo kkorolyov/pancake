@@ -7,14 +7,14 @@ import java.util.function.Consumer
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
 
-class EventBroadcasterSpec extends Specification {
+class ManagedEventBroadcasterSpec extends Specification {
 	@Shared String event = "SomeEvent"
 	@Shared Consumer<?> receiver = {t, rt -> 1}
 
 	Map<String, Set<Consumer<?>>> receivers = Mock()
 	HashSet<Consumer<?>> receiverSet = Mock()
 
-	EventBroadcaster eventBroadcaster = new EventBroadcaster()
+	ManagedEventBroadcaster eventBroadcaster = new ManagedEventBroadcaster()
 
 	def setup() {
 		setField("receivers", eventBroadcaster, receivers)

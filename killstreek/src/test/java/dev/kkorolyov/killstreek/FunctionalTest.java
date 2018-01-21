@@ -18,7 +18,6 @@ import dev.kkorolyov.pancake.core.event.Events;
 import dev.kkorolyov.pancake.platform.Launcher;
 import dev.kkorolyov.pancake.platform.action.FreeFormAction;
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
@@ -48,7 +47,7 @@ public class FunctionalTest extends Launcher {
 	private final Graphic sphereGraphic = new Graphic(null);
 
 	private final Transform playerTransform = new Transform(new Vector(), randRotation());
-	private int player;
+	private long player;
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -84,16 +83,16 @@ public class FunctionalTest extends Launcher {
 	}
 	private void initActions() {
 		actions
-				.put("WALK", new FreeFormAction(e -> e.get(Animation.class).setActive(true),
+				.put("WALK", new FreeFormAction((id, entities) -> entities.get(id, Animation.class).setActive(true),
 						Animation.class))
-				.put("STOP_WALK", new FreeFormAction(e -> e.get(Animation.class).setActive(false),
+				.put("STOP_WALK", new FreeFormAction((id, entities) -> entities.get(id, Animation.class).setActive(false),
 						Animation.class))
 
-				.put("TOGGLE_ANIMATION", new FreeFormAction(e ->
-						e.get(Animation.class, animation -> animation.setActive(!animation.isActive())), Animation.class))
+				.put("TOGGLE_ANIMATION", new FreeFormAction((id, entities) ->
+						entities.get(id, Animation.class).toggle(), Animation.class))
 
-				.put("TOGGLE_SPAWNER", new FreeFormAction(e -> e
-						.get(Spawner.class, spawner -> spawner.setActive(!spawner.isActive())), Spawner.class))
+				.put("TOGGLE_SPAWNER", new FreeFormAction((id, entities) ->
+						entities.get(id, Spawner.class).toggle(), Spawner.class))
 
 				.put("config/actions");
 	}
@@ -108,17 +107,19 @@ public class FunctionalTest extends Launcher {
 	private void initEvents() {
 		Signature damageSig = new Signature(Damage.class);
 
-		events.register(Events.COLLIDED, (Entity[] colliders) -> {
-			if (player == colliders[0].getId()) {
-				if (colliders[1].contains(damageSig)) colliders[1].get(Damage.class).reset();
-				else colliders[1].add(new Damage(1));
+		events.register(Events.COLLIDED, (int[] colliders) -> {
+			if (player == colliders[0]) {
+				if (entities.contains(colliders[1], damageSig)) {
+					entities.get(colliders[1], Damage.class).reset();
+				}
+				else entities.add(colliders[1], new Damage(1));
 			}
 		});
 
-		events.register(CREATED, (Entity e) -> {
-			if (player == e.getId()) sounds.get("spawn").play();
+		events.register(CREATED, (Integer e) -> {
+			if (player == e) sounds.get("spawn").play();
 		});
-		events.register(DESTROYED, (Entity e) -> {
+		events.register(DESTROYED, (Integer e) -> {
 			sounds.get("spawn").play();
 		});
 	}
@@ -211,7 +212,7 @@ public class FunctionalTest extends Launcher {
 				new Graphic(sprite),
 				new Input(true, actions.readKeys("config/keys")),
 				health
-		).getId();
+		);
 		entities.create(
 				new Transform(new Vector(0, .3f, 1), transform, false),
 				new Graphic(new HealthBar(health, HEALTH_BAR_SIZE))

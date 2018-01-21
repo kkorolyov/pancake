@@ -1,29 +1,46 @@
 package dev.kkorolyov.pancake.platform.action
 
-import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
+import org.spockframework.mock.MockUtil
 
+import spock.lang.Shared
 import spock.lang.Specification
 
-class ActionSpec extends Specification {
-	Entity entity = Mock()
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
+import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
 
-	Action action = Spy()
+class ActionSpec extends Specification {
+	@Shared MockUtil detector = new MockUtil()
+
+	int id = randInt()
+	EntityPool entities = Mock()
+	Signature signature = Mock()
+
+	Action action
+
+	def setup() {
+		action = initAction()
+		setField("signature", Action, action, signature)
+	}
+	Action initAction() {
+		return Spy(Action)
+	}
 
 	def "does nothing if entity signature does not contain action's signature"() {
 		when:
-		action.accept(entity)
+		action.accept(id, entities)
 
 		then:
-		1 * entity.contains(_ as Signature) >> false
-		0 * action.apply(_)
+		1 * entities.contains(id, signature) >> false
+		if (detector.isMock(action)) 0 * action.apply(_, _)
 	}
 	def "applies if entity signature contains action's signature"() {
 		when:
-		action.accept(entity)
+		action.accept(id, entities)
 
 		then:
-		1 * entity.contains(_ as Signature) >> true
-		1 * action.apply(entity) >> {}
+		1 * entities.contains(id, signature) >> true
+		if (detector.isMock(action)) 1 * action.apply(id, entities) >> {}
 	}
 }

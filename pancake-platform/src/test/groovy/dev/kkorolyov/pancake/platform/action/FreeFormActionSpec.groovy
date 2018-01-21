@@ -1,24 +1,23 @@
 package dev.kkorolyov.pancake.platform.action
 
-import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.entity.Signature
+import dev.kkorolyov.pancake.platform.entity.EntityPool
 
-import spock.lang.Specification
+import java.util.function.BiConsumer
 
-import java.util.function.Consumer
+class FreeFormActionSpec extends ActionSpec {
+	BiConsumer<Integer, EntityPool> consumer = Mock()
 
-class FreeFormActionSpec extends Specification {
-	Entity entity = Mock()
-	Consumer<Entity> consumer = Mock()
-
-	FreeFormAction action = new FreeFormAction(consumer)
+	@Override
+	FreeFormAction initAction() {
+		return new FreeFormAction(consumer)
+	}
 
 	def "applies consumer on entity"() {
 		when:
-		action.accept(entity)
+		action.accept(id, entities)
 
 		then:
-		1 * entity.contains(_ as Signature) >> true
-		1 * consumer.accept(entity)
+		1 * entities.contains(id, signature) >> true
+		1 * consumer.accept(id, entities)
 	}
 }

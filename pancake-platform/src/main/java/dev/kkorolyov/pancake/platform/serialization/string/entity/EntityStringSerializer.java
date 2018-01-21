@@ -1,15 +1,14 @@
 package dev.kkorolyov.pancake.platform.serialization.string.entity;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
 import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
 import dev.kkorolyov.pancake.platform.serialization.Serializer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
+import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Serializes entities to strings.
@@ -22,32 +21,37 @@ import java.util.stream.Collectors;
  * ]
  * </pre>
  */
-public class EntityStringSerializer extends StringSerializer<Entity> {
-	private static final Pattern COMPONENT_PATTERN = Pattern.compile("\\w+\\s?\\{[\\s\\S]+}");
+public class EntityStringSerializer extends StringSerializer<Integer> {
+	private static final String COMPONENT_PATTERN = ComponentStringSerializer.BASE_PATTERN;
 
-	private final EntityPool context;
+	private final ManagedEntityPool context;
 	private final Serializer<Component, String> componentSerializer = new AutoSerializer(ComponentStringSerializer.class);
 
 	/**
 	 * Constructs a new entity string serializer.
 	 * @param context associated entity pool
 	 */
-	public EntityStringSerializer(EntityPool context) {
-		super("\\w+\\s?\\[[\\s\\S]+(,\\s*[\\s\\S]+)*\\s*]");
+	public EntityStringSerializer(ManagedEntityPool context) {
+		super("\\[\\s*" + COMPONENT_PATTERN + "(,\\s*" + COMPONENT_PATTERN + ")*\\s*]");
 		this.context = context;
 	}
 
 	@Override
-	public Entity read(String out) {
-		return context.create(COMPONENT_PATTERN.matcher(out).results()
-				.map(MatchResult::group)
-				.map(componentSerializer::read)
-				.collect(Collectors.toList()));
+	public Integer read(String out) {
+		return context.create(Arrays.stream(out.split(",\\s*(?=" + COMPONENT_PATTERN + ")"))
+						.map(componentSerializer::read)
+						.collect(Collectors.toList()));
 	}
 	@Override
-	public String write(Entity in) {
-		return in.getId() + in.streamComponents()
+	public String write(Integer in) {
+		return context.get(in)
 				.map(componentSerializer::write)
 				.collect(Collectors.joining("," + System.lineSeparator() + "\t", "{" + System.lineSeparator() + "\t", System.lineSeparator() + "}"));
+	}
+
+	@Override
+	public Stream<Integer> matches(String out) {
+		return Arrays.stream(out.split(",\\s*(?=" + pattern()  + ")"))
+				.flatMap(super::matches);
 	}
 }

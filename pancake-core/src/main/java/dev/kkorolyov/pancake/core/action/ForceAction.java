@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.core.action;
 
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 import java.util.Objects;
@@ -24,8 +24,8 @@ public class ForceAction extends Action {
 	}
 
 	@Override
-	protected void apply(Entity entity) {
-		entity.get(Force.class)
+	protected void apply(int id, EntityPool entities) {
+		entities.get(id, Force.class)
 				.getForce().add(force);
 	}
 

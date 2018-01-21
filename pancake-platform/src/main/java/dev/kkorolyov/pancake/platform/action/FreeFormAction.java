@@ -1,22 +1,22 @@
 package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * An action implementable using a lambda.
  */
 public class FreeFormAction extends Action {
-	private final Consumer<Entity> consumer;
+	private final BiConsumer<Integer, EntityPool> consumer;
 
 	/**
-	 * @see #FreeFormAction(Consumer, Iterable)
+	 * @see #FreeFormAction(BiConsumer, Iterable)
 	 */
 	@SafeVarargs
-	public FreeFormAction(Consumer<Entity> consumer, Class<? extends Component>... componentTypes) {
+	public FreeFormAction(BiConsumer<Integer, EntityPool> consumer, Class<? extends Component>... componentTypes) {
 		this(consumer, Arrays.asList(componentTypes));
 	}
 	/**
@@ -24,14 +24,14 @@ public class FreeFormAction extends Action {
 	 * @param consumer consumer invoked on accepted entities
 	 * @param componentTypes minimum component types required by {@code consumer}
 	 */
-	public FreeFormAction(Consumer<Entity> consumer, Iterable<Class<? extends Component>> componentTypes) {
+	public FreeFormAction(BiConsumer<Integer, EntityPool> consumer, Iterable<Class<? extends Component>> componentTypes) {
 		super(componentTypes);
 
 		this.consumer = consumer;
 	}
 
 	@Override
-	protected void apply(Entity entity) {
-		consumer.accept(entity);
+	protected void apply(int id, EntityPool entities) {
+		consumer.accept(id, entities);
 	}
 }

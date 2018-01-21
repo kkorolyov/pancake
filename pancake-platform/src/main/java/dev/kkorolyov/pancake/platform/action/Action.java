@@ -1,17 +1,16 @@
 package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 /**
- * An atomic alteration of an {@link Entity}.
+ * An atomic alteration of an entity.
  * All actions attached to an entity are applied at the beginning of a tick, before any game systems receive the entity.
  */
-public abstract class Action implements Consumer<Entity> {
+public abstract class Action {
 	private final Signature signature;
 
 	/**
@@ -31,16 +30,16 @@ public abstract class Action implements Consumer<Entity> {
 
 	/**
 	 * Alters an entity in some way.
-	 * @param entity entity to alter
+	 * @param id ID of entity to alter
+	 * @param entities current entity context
 	 */
-	protected abstract void apply(Entity entity);
+	protected abstract void apply(int id, EntityPool entities);
 
 	/**
 	 * Applies this action to an entity if this action's signature is contained by the entity's.
 	 * Otherwise, does nothing.
 	 */
-	@Override
-	public void accept(Entity entity) {
-		if (entity.contains(signature)) apply(entity);
+	public void accept(int id, EntityPool entities) {
+		if (entities.contains(id, signature)) apply(id, entities);
 	}
 }

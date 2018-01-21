@@ -3,7 +3,6 @@ package dev.kkorolyov.killstreek.system;
 import dev.kkorolyov.killstreek.component.Damage;
 import dev.kkorolyov.killstreek.component.Health;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 
 import static dev.kkorolyov.killstreek.event.Events.DAMAGE;
@@ -31,18 +30,18 @@ public class DamageSystem extends GameSystem {
 	}
 	@Override
 	public void attach() {
-		register(DAMAGE, (Entity e) -> e.get(Damage.class).reset());
+		events.register(DAMAGE, (Integer id) -> entities.get(id, Damage.class).reset());
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		Health health = entity.get(Health.class);
-		Damage damage = entity.get(Damage.class);
+	public void update(int id, float dt) {
+		Health health = entities.get(id, Health.class);
+		Damage damage = entities.get(id, Damage.class);
 
 		damage.apply(health, dt);
 
 		if (health.isDead()) {
-			enqueue(DESTROY, entity);
+			events.enqueue(DESTROY, id);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.action;
 
-import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -29,8 +29,8 @@ public class CollectiveAction extends Action {
 	 * Applies all contained, accepting actions to an entity.
 	 */
 	@Override
-	protected void apply(Entity entity) {
-		for (Action delegate : delegates) delegate.accept(entity);
+	protected void apply(int id, EntityPool entities) {
+		for (Action delegate : delegates) delegate.accept(id, entities);
 	}
 
 	/** @return all delegate actions */
@@ -41,7 +41,7 @@ public class CollectiveAction extends Action {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) return false;
+		if (obj == null || getClass() != obj.getClass()) return false;
 
 		CollectiveAction o = (CollectiveAction) obj;
 		return Objects.equals(delegates, o.delegates);

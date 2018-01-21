@@ -15,14 +15,14 @@ public class MapStringSerializer extends StringSerializer<Map<String, Object>> {
 	private static final Serializer<Object, String> autoSerializer = new AutoSerializer(StringSerializer.class);
 
 	public MapStringSerializer() {
-		super("\\{\\s*\\w+\\s?:[\\s\\S]+(,\\s*\\w+\\s?:[\\s\\S]+)*}");
+		super("\\{\\s*\\w+:[\\s\\S]+(,\\s*\\w+:[\\s\\S]+)*}");
 	}
 
 	@Override
 	public Map<String, Object> read(String s) {
 		return Arrays.stream(s.substring(1, s.length() - 1).split(",\\s*(?=\\w+:)"))
 				.map(String::trim)
-				.map(property -> property.split("\\s?:\\s?", 2))
+				.map(property -> property.split(":\\s?", 2))
 				.collect(Collectors.toMap(split -> split[0], split -> autoSerializer.read(split[1]), (o1, o2) -> o1, LinkedHashMap::new));
 	}
 	@Override

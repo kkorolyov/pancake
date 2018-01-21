@@ -84,6 +84,13 @@ public class Spawner implements Component {
 		if (position.getZ() != 0) position.setZ(z);
 	}
 
+	/**
+	 * Toggles active status.
+	 */
+	public void toggle() {
+		setActive(!isActive());
+	}
+
 	/** @return {@code true} if this spawner provides clones at a regular interval */
 	public boolean isActive() {
 		return interval > 0;

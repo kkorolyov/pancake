@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.core.component.Input;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.action.KeyAction;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
@@ -33,7 +32,7 @@ public class InputSystem extends GameSystem {
 	}
 	@Override
 	public void attach() {
-		register(SCENE_CREATED, (Scene scene) -> {
+		events.register(SCENE_CREATED, (Scene scene) -> {
 			scene.setOnMouseMoved(e -> relCursor.set((float) e.getX(), (float) e.getY()));
 
 			scene.setOnMousePressed((e) -> pressedKeys.add(e.getButton()));
@@ -42,16 +41,16 @@ public class InputSystem extends GameSystem {
 			scene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
 			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
 		});
-		register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
+		events.register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		for (KeyAction keyAction : entity.get(Input.class).getActions()) {
-			entity.add(keyAction.arm(pressedKeys, dt));
+	public void update(int id, float dt) {
+		for (KeyAction keyAction : entities.get(id, Input.class).getActions()) {
+			entities.add(id, keyAction.arm(pressedKeys, dt));
 		}
-		Transform transform = entity.get(Transform.class);
-		if (entity.get(Input.class).facesCursor() && transform != null) {
+		Transform transform = entities.get(id, Transform.class);
+		if (entities.get(id, Input.class).facesCursor() && transform != null) {
 			transformToCursor.set(camera.getAbsolutePosition(relCursor));
 			transformToCursor.sub(transform.getPosition());
 

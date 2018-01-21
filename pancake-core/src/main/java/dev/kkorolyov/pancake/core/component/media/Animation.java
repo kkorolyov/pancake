@@ -36,6 +36,11 @@ public class Animation implements Component, Animated {
 	}
 
 	@Override
+	public void toggle() {
+		delegate.toggle();
+	}
+
+	@Override
 	public boolean isActive() {
 		return delegate.isActive();
 	}

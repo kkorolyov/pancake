@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.Chain;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
@@ -26,9 +25,9 @@ public class ChainSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		Chain chain = entity.get(Chain.class);
-		Transform transform = entity.get(Transform.class);
+	public void update(int id, float dt) {
+		Chain chain = entities.get(id, Chain.class);
+		Transform transform = entities.get(id, Transform.class);
 
 		updatePositionAnchor(chain, transform);
 		updateRotationAnchors(chain, transform);

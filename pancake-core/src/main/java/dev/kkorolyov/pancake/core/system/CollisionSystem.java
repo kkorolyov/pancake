@@ -6,7 +6,6 @@ import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.event.Events;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Collider;
 import dev.kkorolyov.pancake.platform.math.Vector;
@@ -28,8 +27,8 @@ public class CollisionSystem extends GameSystem {
 	private static final Signature MOVEABLE = new Signature(Velocity.class, Force.class);
 
 	// TODO Better collision detection alg (Current n^2)
-	private final Set<Entity> done = new LinkedHashSet<>();
-	private final Queue<Entity> moved = new ArrayDeque<>();
+	private final Set<Integer> done = new LinkedHashSet<>();
+	private final Queue<Integer> moved = new ArrayDeque<>();
 
 	/**
 	 * Constructs a new collision system.
@@ -40,45 +39,45 @@ public class CollisionSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, float dt) {
-		((entity.contains(MOVEABLE) && entity.get(Velocity.class).getVelocity().getMagnitude() > 0)
+	public void update(int id, float dt) {
+		((entities.contains(id, MOVEABLE) && entities.get(id, Velocity.class).getVelocity().getMagnitude() > 0)
 				? moved
-				: done).add(entity);
+				: done).add(id);
 	}
 
 	@Override
 	public void after(float dt) {
 		while (!moved.isEmpty()) {
-			Entity entity = moved.remove();
+			int movedId = moved.remove();
 
-			for (Entity other : done) {
-				Vector mtv = intersection(entity, other);
+			for (int otherId : done) {
+				Vector mtv = intersection(movedId, otherId);
 
 				if (mtv != null) {
-					entity.get(Transform.class).getPosition().add(mtv);
+					entities.get(movedId, Transform.class).getPosition().add(mtv);
 
-					if (other.contains(MOVEABLE)) {	// Entities in "moved" are already verified to be MOVEABLE
-						Collider.elasticCollide(entity.get(Transform.class).getPosition(), entity.get(Velocity.class).getVelocity(), entity.get(Force.class).getMass(),
-								other.get(Transform.class).getPosition(), other.get(Velocity.class).getVelocity(), other.get(Force.class).getMass());
+					if (entities.contains(otherId, MOVEABLE)) {	// Entities in "moved" are already verified to be MOVEABLE
+						Collider.elasticCollide(entities.get(movedId, Transform.class).getPosition(), entities.get(movedId, Velocity.class).getVelocity(), entities.get(movedId, Force.class).getMass(),
+								entities.get(otherId, Transform.class).getPosition(), entities.get(otherId, Velocity.class).getVelocity(), entities.get(otherId, Force.class).getMass());
 					} else {
 						mtv.normalize();
 
-						Vector velocity = entity.get(Velocity.class).getVelocity();
+						Vector velocity = entities.get(movedId, Velocity.class).getVelocity();
 						velocity.add(mtv, velocity.getMagnitude());
 					}
-					enqueue(Events.COLLIDED, new Entity[]{entity, other});	// TODO New Object[] may be a performance detriment
+					events.enqueue(Events.COLLIDED, new int[]{movedId, otherId});	// TODO New Object[] may be a performance detriment
 				}
 			}
-			done.add(entity);
+			done.add(movedId);
 		}
 		done.clear();
 	}
-	private Vector intersection(Entity e1, Entity e2) {	// TODO Optimize performance
-		Transform t1 = e1.get(Transform.class);
-		Transform t2 = e2.get(Transform.class);
+	private Vector intersection(int e1, int e2) {	// TODO Optimize performance
+		Transform t1 = entities.get(e1, Transform.class);
+		Transform t2 = entities.get(e2, Transform.class);
 
-		Bounds b1 = e1.get(Bounds.class);
-		Bounds b2 = e2.get(Bounds.class);
+		Bounds b1 = entities.get(e1, Bounds.class);
+		Bounds b2 = entities.get(e2, Bounds.class);
 
 		switch (b1.getIntersectionType(b2)) {
 			case BOX_BOX:

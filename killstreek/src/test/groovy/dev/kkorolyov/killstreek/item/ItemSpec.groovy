@@ -1,18 +1,19 @@
 package dev.kkorolyov.killstreek.item
 
 import dev.kkorolyov.killstreek.media.Sprite
-import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.entity.EntityPool
 
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.util.function.Consumer
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
 
 class ItemSpec extends Specification {
 	@Shared String name = "item"
 	@Shared Sprite sprite = Mock()
-	@Shared Consumer<Entity> effect = {e -> e.toString()}
-	Entity entity = Mock()
+
+	int id = randInt()
+	EntityPool entities = Mock()
 
 	Item item = new Item(name, sprite) {
 		@Override
@@ -22,17 +23,19 @@ class ItemSpec extends Specification {
 	}
 
 	def "apply affects"() {
+		Set<Integer> affected = []
+
 		when:
-		item.addEffect(effect)
-		item.apply(entity)
+		item.addEffect({ id, entities -> affected.add(id) })
+		item.apply(id, entities)
 
 		then:
-		1 * entity.toString()
+		affected == [id].toSet()
 	}
 
 	def "apply excepts if no effects"() {
 		when:
-		item.apply(entity)
+		item.apply(id, entities)
 
 		then:
 		thrown(NoSuchElementException)
