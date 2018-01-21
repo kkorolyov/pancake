@@ -32,7 +32,7 @@ public abstract class ComponentStringSerializer<I extends Component> extends Str
 	protected ComponentStringSerializer(String prefix) {
 		super(prefix + mapSerializer.pattern());
 
-		if (!NAME_PATTERN.matcher(prefix).matches()) throw new IllegalArgumentException("Provided prefix [" + prefix + "] does not match required pattern: " + NAME_PATTERN);
+		if (!NAME_PATTERN.matcher(prefix).matches() && !NAME_PATTERN.toString().equals(prefix)) throw new IllegalArgumentException("Provided prefix [" + prefix + "] does not match required pattern: " + NAME_PATTERN);
 	}
 
 	protected Map<String, Object> readMap(String out) {
