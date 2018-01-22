@@ -5,15 +5,14 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.action.KeyAction;
 import dev.kkorolyov.pancake.platform.entity.Signature;
+import dev.kkorolyov.pancake.platform.event.CameraCreated;
+import dev.kkorolyov.pancake.platform.event.SceneCreated;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
 
 import javafx.scene.Scene;
 import java.util.HashSet;
 import java.util.Set;
-
-import static dev.kkorolyov.pancake.platform.event.Events.CAMERA_CREATED;
-import static dev.kkorolyov.pancake.platform.event.Events.SCENE_CREATED;
 
 /**
  * Applies actions using current player input.
@@ -32,16 +31,18 @@ public class InputSystem extends GameSystem {
 	}
 	@Override
 	public void attach() {
-		events.register(SCENE_CREATED, (Scene scene) -> {
+		events.register(SceneCreated.class, se -> {
+			Scene scene = se.getScene();
+
 			scene.setOnMouseMoved(e -> relCursor.set((float) e.getX(), (float) e.getY()));
 
-			scene.setOnMousePressed((e) -> pressedKeys.add(e.getButton()));
-			scene.setOnMouseReleased((e) -> pressedKeys.remove(e.getButton()));
+			scene.setOnMousePressed(e -> pressedKeys.add(e.getButton()));
+			scene.setOnMouseReleased(e -> pressedKeys.remove(e.getButton()));
 
 			scene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
 			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
 		});
-		events.register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
+		events.register(CameraCreated.class, e -> camera = e.getCamera());
 	}
 
 	@Override

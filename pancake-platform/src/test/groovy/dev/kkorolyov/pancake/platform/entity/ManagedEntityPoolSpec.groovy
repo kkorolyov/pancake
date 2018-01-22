@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.entity
 
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster
+import dev.kkorolyov.pancake.platform.event.management.EventBroadcaster
 
 import spock.lang.Specification
 

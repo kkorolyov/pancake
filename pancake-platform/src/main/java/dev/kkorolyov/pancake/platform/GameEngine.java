@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
-import dev.kkorolyov.pancake.platform.event.ManagedEventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 

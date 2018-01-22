@@ -5,6 +5,8 @@ import dev.kkorolyov.pancake.core.component.media.Graphic;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Signature;
+import dev.kkorolyov.pancake.platform.event.CameraCreated;
+import dev.kkorolyov.pancake.platform.event.CanvasCreated;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter.Usage;
@@ -20,9 +22,6 @@ import java.util.HashSet;
 import java.util.NavigableMap;
 import java.util.Set;
 import java.util.TreeMap;
-
-import static dev.kkorolyov.pancake.platform.event.Events.CAMERA_CREATED;
-import static dev.kkorolyov.pancake.platform.event.Events.CANVAS_CREATED;
 
 /**
  * Renders all game entities.
@@ -51,11 +50,11 @@ public class RenderSystem extends GameSystem {
 	}
 	@Override
 	public void attach() {
-		events.register(CANVAS_CREATED, (Canvas canvas) -> {
-			this.canvas = canvas;
-			this.g = canvas.getGraphicsContext2D();
+		events.register(CanvasCreated.class, e -> {
+			canvas = e.getCanvas();
+			g = canvas.getGraphicsContext2D();
 		});
-		events.register(CAMERA_CREATED, (Camera camera) -> this.camera = camera);
+		events.register(CameraCreated.class, e -> camera = e.getCamera());
 	}
 
 	@Override

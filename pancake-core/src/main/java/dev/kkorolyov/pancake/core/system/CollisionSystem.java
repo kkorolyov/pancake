@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
-import dev.kkorolyov.pancake.core.event.Events;
+import dev.kkorolyov.pancake.core.event.EntitiesCollided;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Collider;
@@ -65,7 +65,7 @@ public class CollisionSystem extends GameSystem {
 						Vector velocity = entities.get(movedId, Velocity.class).getVelocity();
 						velocity.add(mtv, velocity.getMagnitude());
 					}
-					events.enqueue(Events.COLLIDED, new int[]{movedId, otherId});	// TODO New Object[] may be a performance detriment
+					events.enqueue(new EntitiesCollided(movedId, otherId));
 				}
 			}
 			done.add(movedId);
