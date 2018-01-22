@@ -2,7 +2,10 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
-import dev.kkorolyov.pancake.platform.event.ManagedEventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.CameraCreated;
+import dev.kkorolyov.pancake.platform.event.CanvasCreated;
+import dev.kkorolyov.pancake.platform.event.SceneCreated;
+import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
 import dev.kkorolyov.pancake.platform.media.ImageRegistry;
@@ -15,10 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import static dev.kkorolyov.pancake.platform.event.Events.CAMERA_CREATED;
-import static dev.kkorolyov.pancake.platform.event.Events.CANVAS_CREATED;
-import static dev.kkorolyov.pancake.platform.event.Events.SCENE_CREATED;
 
 /**
  * Provides a framework to configure and launch Pancake games.
@@ -43,9 +42,13 @@ public abstract class Launcher extends Application {
 	protected Launcher(LauncherConfig config) {
 		config.verify();
 
-		canvas = announce(new Canvas(), CANVAS_CREATED);
-		scene = announce(new Scene(new Group(canvas)), SCENE_CREATED);
-		camera = announce(new Camera(new Vector(), config.unitPixels, 0, 0), CAMERA_CREATED);
+		canvas = new Canvas();
+		scene = new Scene(new Group(canvas));
+		camera = new Camera(new Vector(), config.unitPixels, 0, 0);
+
+		events.enqueue(new CanvasCreated(canvas));
+		events.enqueue(new SceneCreated(scene));
+		events.enqueue(new CameraCreated(camera));
 
 		title = config.title;
 		setSize(config.size.getX(), config.size.getY());
@@ -60,10 +63,11 @@ public abstract class Launcher extends Application {
 	 *   - Configuration file application
 	 * </pre>
 	 */
+	@Override
 	public abstract void init() throws Exception;
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		primaryStage.setTitle(title);
 		primaryStage.getIcons().add(new Image("pancake-icon.png"));
 		primaryStage.setScene(scene);
@@ -81,11 +85,6 @@ public abstract class Launcher extends Application {
 		canvas.setHeight(height);
 
 		camera.setSize(width, height);
-	}
-
-	private <T> T announce(T object, String event) {
-		events.enqueue(event, object);
-		return object;
 	}
 
 	/**

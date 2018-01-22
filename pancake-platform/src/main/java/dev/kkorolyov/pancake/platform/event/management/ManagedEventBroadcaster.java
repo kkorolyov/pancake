@@ -1,4 +1,6 @@
-package dev.kkorolyov.pancake.platform.event;
+package dev.kkorolyov.pancake.platform.event.management;
+
+import dev.kkorolyov.pancake.platform.event.Event;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -12,26 +14,24 @@ import java.util.function.Consumer;
  * An {@link EventBroadcaster} implementation with exposed management methods.
  */
 public class ManagedEventBroadcaster implements EventBroadcaster {
-	private final Map<String, Set<Consumer<?>>> receivers = new HashMap<>();
-	private final Queue<String> eventQueue = new ArrayDeque<>();
-	private final Queue<Object> payloadQueue = new ArrayDeque<>();
+	private final Map<Class<? extends Event>, Set<Consumer<?>>> receivers = new HashMap<>();
+	private final Queue<Event> eventQueue = new ArrayDeque<>();
 
 	@Override
-	public void register(String event, Consumer<?> receiver) {
-		receivers.computeIfAbsent(event, k -> new HashSet<>()).add(receiver);
+	public <E extends Event> void register(Class<E> type, Consumer<? super E> receiver) {
+		receivers.computeIfAbsent(type, k -> new HashSet<>()).add(receiver);
 	}
 	@Override
-	public boolean unregister(String event, Consumer<?> receiver) {
-		Set<Consumer<?>> set = receivers.get(event);
+	public <E extends Event> boolean unregister(Class<E> type, Consumer<? super E> receiver) {
+		Set<Consumer<?>> set = receivers.get(type);
 		return (set != null) && set.remove(receiver);
 	}
 
 	@Override
-	public int enqueue(String event, Object payload) {
+	public int enqueue(Event event) {
 		eventQueue.add(event);
-		payloadQueue.add(payload);
 
-		Set<Consumer<?>> eventReceivers = receivers.get(event);
+		Set<Consumer<?>> eventReceivers = receivers.get(event.getClass());
 		return (eventReceivers == null) ? 0 : eventReceivers.size();
 	}
 
@@ -43,13 +43,12 @@ public class ManagedEventBroadcaster implements EventBroadcaster {
 		int size = eventQueue.size();
 
 		while (!eventQueue.isEmpty()) {
-			String event = eventQueue.remove();
-			Object payload = payloadQueue.remove();
+			Event event = eventQueue.remove();
 
-			Set<Consumer<?>> eventReceivers = receivers.get(event);
+			Set<Consumer<?>> eventReceivers = receivers.get(event.getClass());
 			if (eventReceivers != null) {
 				for (Consumer eventReceiver : eventReceivers) {
-					eventReceiver.accept(payload);
+					eventReceiver.accept(event);
 				}
 			}
 		}

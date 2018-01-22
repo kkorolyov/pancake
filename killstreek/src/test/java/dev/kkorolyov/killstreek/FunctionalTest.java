@@ -14,11 +14,13 @@ import dev.kkorolyov.pancake.core.component.media.Graphic;
 import dev.kkorolyov.pancake.core.component.movement.Damping;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
-import dev.kkorolyov.pancake.core.event.Events;
+import dev.kkorolyov.pancake.core.event.EntitiesCollided;
 import dev.kkorolyov.pancake.platform.Launcher;
 import dev.kkorolyov.pancake.platform.action.FreeFormAction;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Signature;
+import dev.kkorolyov.pancake.platform.event.EntityCreated;
+import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
 
@@ -34,8 +36,6 @@ import static dev.kkorolyov.killstreek.Constants.OBJECT_MASS;
 import static dev.kkorolyov.killstreek.Constants.PLAYER_DAMPING;
 import static dev.kkorolyov.killstreek.Constants.PLAYER_MASS;
 import static dev.kkorolyov.killstreek.Constants.RADIUS;
-import static dev.kkorolyov.pancake.platform.event.Events.CREATED;
-import static dev.kkorolyov.pancake.platform.event.Events.DESTROYED;
 
 public class FunctionalTest extends Launcher {
 	private static final Random RAND = new Random();
@@ -63,7 +63,7 @@ public class FunctionalTest extends Launcher {
 	}
 
 	@Override
-	public void init() throws Exception {
+	public void init() {
 		initImages();
 		initSounds();
 		initActions();
@@ -107,19 +107,19 @@ public class FunctionalTest extends Launcher {
 	private void initEvents() {
 		Signature damageSig = new Signature(Damage.class);
 
-		events.register(Events.COLLIDED, (int[] colliders) -> {
-			if (player == colliders[0]) {
-				if (entities.contains(colliders[1], damageSig)) {
-					entities.get(colliders[1], Damage.class).reset();
+		events.register(EntitiesCollided.class, e -> {
+			if (player == e.getCollided()[0]) {
+				if (entities.contains(e.getCollided()[1], damageSig)) {
+					entities.get(e.getCollided()[1], Damage.class).reset();
 				}
-				else entities.add(colliders[1], new Damage(1));
+				else entities.add(e.getCollided()[1], new Damage(1));
 			}
 		});
 
-		events.register(CREATED, (Integer e) -> {
-			if (player == e) sounds.get("spawn").play();
+		events.register(EntityCreated.class, e -> {
+			if (player == e.getId()) sounds.get("spawn").play();
 		});
-		events.register(DESTROYED, (Integer e) -> {
+		events.register(EntityDestroyed.class, e -> {
 			sounds.get("spawn").play();
 		});
 	}

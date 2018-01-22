@@ -1,7 +1,11 @@
 package dev.kkorolyov.pancake.platform.entity;
 
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.CreateEntity;
+import dev.kkorolyov.pancake.platform.event.DestroyEntity;
+import dev.kkorolyov.pancake.platform.event.EntityCreated;
+import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
+import dev.kkorolyov.pancake.platform.event.management.EventBroadcaster;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -18,11 +22,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
-
-import static dev.kkorolyov.pancake.platform.event.Events.CREATE;
-import static dev.kkorolyov.pancake.platform.event.Events.CREATED;
-import static dev.kkorolyov.pancake.platform.event.Events.DESTROY;
-import static dev.kkorolyov.pancake.platform.event.Events.DESTROYED;
 
 /**
  * An {@link EntityPool} implementation with exposed management methods.
@@ -44,8 +43,8 @@ public class ManagedEntityPool implements EntityPool {
 	public ManagedEntityPool(EventBroadcaster events) {
 		this.events = events;
 
-		this.events.register(CREATE, (Consumer<Iterable<Component>>) this::create);
-		this.events.register(DESTROY, (Consumer<Integer>) this::destroy);
+		this.events.register(CreateEntity.class, e -> create(e.getComponents()));
+		this.events.register(DestroyEntity.class, e -> destroy(e.getId()));
 	}
 
 	@Override
@@ -106,7 +105,7 @@ public class ManagedEntityPool implements EntityPool {
 				: reclaimedIds.remove();
 
 		components.forEach(component -> add(id, component));
-		events.enqueue(CREATED, id);
+		events.enqueue(new EntityCreated(id));
 
 		return id;
 	}
@@ -122,7 +121,7 @@ public class ManagedEntityPool implements EntityPool {
 				.count();
 
 		if (count > 0) {
-			events.enqueue(DESTROYED, id);
+			events.enqueue(new EntityDestroyed(id));
 			reclaimedIds.add(id);
 		}
 		return count;

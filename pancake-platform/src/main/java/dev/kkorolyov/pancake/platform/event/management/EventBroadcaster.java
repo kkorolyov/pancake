@@ -1,4 +1,6 @@
-package dev.kkorolyov.pancake.platform.event;
+package dev.kkorolyov.pancake.platform.event.management;
+
+import dev.kkorolyov.pancake.platform.event.Event;
 
 import java.util.function.Consumer;
 
@@ -8,23 +10,22 @@ import java.util.function.Consumer;
 public interface EventBroadcaster {
 	/**
 	 * Registers to receive broadcasts of an event.
-	 * @param event event identifier
+	 * @param type event type
 	 * @param receiver action invoked on event reception
 	 */
-	void register(String event, Consumer<?> receiver);
+	<E extends Event> void register(Class<E> type, Consumer<? super E> receiver);
 	/**
 	 * Removes a receiver from a set of registered receivers
-	 * @param event event identifier
+	 * @param type event type
 	 * @param receiver removed receiver
 	 * @return {@code true} if {@code receiver} was present and removed
 	 */
-	boolean unregister(String event, Consumer<?> receiver);
+	<E extends Event> boolean unregister(Class<E> type, Consumer<? super E> receiver);
 
 	/**
 	 * Queues an event to broadcast to all registered receivers.
-	 * @param event event identifier
-	 * @param payload event payload
+	 * @param event event to queue
 	 * @return number of receivers registered to event
 	 */
-	int enqueue(String event, Object payload);
+	int enqueue(Event event);
 }
