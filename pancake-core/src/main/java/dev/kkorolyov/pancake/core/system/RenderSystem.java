@@ -12,10 +12,12 @@ import dev.kkorolyov.pancake.platform.media.Camera;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter.Usage;
 import dev.kkorolyov.simplelogs.Logger;
 
+import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -114,6 +116,25 @@ public class RenderSystem extends GameSystem {
 						g.strokeText(usage.toString(), 0, y += LINE_HEIGHT);
 						g.setStroke(previous);
 					}
+					break;
+				case "id":
+					TextAlignment previousAlign = g.getTextAlign();;
+					VPos previousBaseline = g.getTextBaseline();
+
+					g.setTextAlign(TextAlignment.CENTER);
+					g.setTextBaseline(VPos.CENTER);
+
+					for (Collection<Integer> bucket : drawBuckets.values()) {
+						for (int id : bucket) {
+							Vector drawPosition = camera.getRelativePosition(
+									entities.get(id, Transform.class).getGlobalPosition()
+							).translate(0, entities.get(id, Graphic.class).size().getY() * .5f);
+
+							g.strokeText(String.valueOf(id), drawPosition.getX(), drawPosition.getY());
+						}
+					}
+					g.setTextAlign(previousAlign);
+					g.setTextBaseline(previousBaseline);
 					break;
 				default:
 					log.warning("Unknown renderInfo arg: {}", arg);
