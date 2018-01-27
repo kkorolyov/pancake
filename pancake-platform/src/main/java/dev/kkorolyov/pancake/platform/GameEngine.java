@@ -73,6 +73,7 @@ public class GameEngine {
 
 			performanceCounter.end(system);
 		}
+		performanceCounter.tick();
 	}
 
 	/** @param system added system */

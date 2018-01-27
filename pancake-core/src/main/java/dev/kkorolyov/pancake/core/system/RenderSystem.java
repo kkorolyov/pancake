@@ -41,8 +41,6 @@ public class RenderSystem extends GameSystem {
 
 	private final NavigableMap<Float, Set<Integer>> drawBuckets = new TreeMap<>();
 
-	private float last;
-
 	/**
 	 * Constructs a new render system.
 	 */
@@ -104,9 +102,7 @@ public class RenderSystem extends GameSystem {
 		for (String arg : args) {
 			switch (arg) {
 				case "fps":
-					float now = System.nanoTime();
-					g.strokeText("FPS: " + Math.round(1e9 / (now - last)), 0, y += LINE_HEIGHT);
-					last = now;
+					g.strokeText("FPS: " + getTps(), 0, y += LINE_HEIGHT);
 					break;
 				case "usage":
 					for (Usage usage : usages()) {
