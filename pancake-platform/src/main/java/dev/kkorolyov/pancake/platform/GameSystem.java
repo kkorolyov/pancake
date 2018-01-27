@@ -76,9 +76,13 @@ public abstract class GameSystem {
 		this.performanceCounter = performanceCounter;
 	}
 
+	/** @return average ticks per second */
+	protected long getTps() {
+		return performanceCounter.getTps();
+	}
 	/** @return current performance counter usages */
 	protected Iterable<Usage> usages() {
-		return performanceCounter.usages();
+		return performanceCounter.getUsages();
 	}
 
 	/** @return component signature */
