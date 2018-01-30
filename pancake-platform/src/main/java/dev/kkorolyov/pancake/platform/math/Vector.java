@@ -8,6 +8,38 @@ import java.util.Objects;
 public class Vector {
 	private float x, y, z;
 
+	/** @return vector with all components equal to {@code value} */
+	public static Vector all(float value) {
+		return new Vector(value, value, value);
+	}
+
+	/**
+	 * Returns a new vector formed by the addition of vectors to an initial vector.
+	 * @param vI initial vector
+	 * @param vN added vectors
+	 * @return vector formed by {@code v1 + vN}
+	 */
+	public static Vector add(Vector vI, Vector... vN) {
+		Vector result = new Vector(vI);
+
+		for (Vector v : vN) result.add(v);
+
+		return result;
+	}
+	/**
+	 * Returns a new vector formed by the subtraction of vectors from an initial vector.
+	 * @param vI initial vector
+	 * @param vN subtracted vectors
+	 * @return vector formed by {@code v1 - vN}
+	 */
+	public static Vector sub(Vector vI, Vector... vN) {
+		Vector result = new Vector(vI);
+
+		for (Vector v : vN) result.sub(v);
+
+		return result;
+	}
+
 	/**
 	 * Constructs a vector with a head at {@code (0, 0, 0)}.
 	 */
@@ -41,33 +73,6 @@ public class Vector {
 	}
 
 	/**
-	 * Returns a new vector formed by the addition of vectors to an initial vector.
-	 * @param vI initial vector
-	 * @param vN added vectors
-	 * @return vector formed by {@code v1 + vN}
-	 */
-	public static Vector add(Vector vI, Vector... vN) {
-		Vector result = new Vector(vI);
-
-		for (Vector v : vN) result.add(v);
-
-		return result;
-	}
-	/**
-	 * Returns a new vector formed by the subtraction of vectors from an initial vector.
-	 * @param vI initial vector
-	 * @param vN subtracted vectors
-	 * @return vector formed by {@code v1 - vN}
-	 */
-	public static Vector sub(Vector vI, Vector... vN) {
-		Vector result = new Vector(vI);
-
-		for (Vector v : vN) result.sub(v);
-
-		return result;
-	}
-
-	/**
 	 * Translates the head of this vector along 2 axes.
 	 * @return {@code this}
 	 * @see #translate(float, float, float)
@@ -83,9 +88,9 @@ public class Vector {
 	 * @return {@code this}
 	 */
 	public Vector translate(float dx, float dy, float dz) {
-		x += dx;
-		y += dy;
-		z += dz;
+		setX(x + dx);
+		setY(y + dy);
+		setZ(z + dz);
 
 		return this;
 	}
@@ -96,9 +101,9 @@ public class Vector {
 	 * @return {@code this}
 	 */
 	public Vector scale(float value) {
-		x *= value;
-		y *= value;
-		z *= value;
+		setX(x * value);
+		setY(y * value);
+		setZ(z * value);
 
 		return this;
 	}
@@ -108,9 +113,9 @@ public class Vector {
 	 * @return {@code this}
 	 */
 	public Vector scale(Vector other) {
-		x *= other.x;
-		y *= other.y;
-		z *= other.z;
+		setX(x * other.x);
+		setY(y * other.y);
+		setZ(z * other.z);
 
 		return this;
 	}
@@ -120,9 +125,9 @@ public class Vector {
 	 * @return {@code this}
 	 */
 	public Vector invScale(Vector other) {
-		x /= other.x;
-		y /= other.y;
-		z /= other.z;
+		setX(x / other.x);
+		setY(y / other.y);
+		setZ(z / other.z);
 
 		return this;
 	}
@@ -276,9 +281,9 @@ public class Vector {
 	 * @return {@code this}
 	 */
 	public Vector set(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		setX(x);
+		setY(y);
+		setZ(z);
 
 		return this;
 	}

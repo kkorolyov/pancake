@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
+import dev.kkorolyov.pancake.platform.math.BoundedVector;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 /**
@@ -8,14 +9,14 @@ import dev.kkorolyov.pancake.platform.math.Vector;
  * Damping values are in the interval {@code [0, 1]}, essentially translating to {@code [immediate stop, no damping]}.
  */
 public class Damping implements Component {
-	private final Vector damping = new Vector();
+	private final Vector damping;
 
 	/**
 	 * Constructs a new damping component with equal damping across all axes.
 	 * @param damping damping along all axes
 	 */
 	public Damping(float damping) {
-		setDamping(damping);
+		this.damping = new BoundedVector(Vector.all(damping), Vector.all(0), Vector.all(1));
 	}
 	
 	/**
@@ -35,38 +36,8 @@ public class Damping implements Component {
 		return (velocity < 0 ? force >= 0 : force <= 0) ? damping : 1;
 	}
 	
-	/**
-	 * If altering damping values, it is recommended to avoid altering this vector directly, and instead use one of the {@link #setDamping(float)} methods, which constrain parameter values.
-	 * @return damping vector
-	 * @see #setDamping(float, float, float)
-	 */
+	/** @return damping vector, constrained {@code [0, 1]} along all axes */
 	public Vector getDamping() {
 		return damping;
-	}
-	
-	/** @param damping new x, y, and z axes damping */
-	public void setDamping(float damping) {
-		setDamping(damping, damping, damping);
-	}
-	/**
-	 * Sets x and y axes values while retaining the z-axis value.
-	 * @param dx new x-axis damping
-	 * @param dy new y-axis damping
-	 */
-	public void setDamping(float dx, float dy) {
-		setDamping(dx, dy, damping.getZ());
-	}
-	/**
-	 * All values are constrained in the interval {@code [0, 1]}.
-	 * @param dx new x-axis damping
-	 * @param dy new y-axis damping
-	 * @param dz new z-axis damping
-	 */
-	public void setDamping(float dx, float dy, float dz) {
-		damping.set(constrain(dx), constrain(dy), constrain(dz));
-	}
-
-	private float constrain(float value) {
-		return Math.max(0, Math.min(1, value));
 	}
 }
