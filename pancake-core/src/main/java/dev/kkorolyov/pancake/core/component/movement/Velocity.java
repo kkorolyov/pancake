@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
+import dev.kkorolyov.pancake.platform.math.BoundedVector;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 /**
@@ -28,7 +29,7 @@ public class Velocity implements Component {
 	 * @param maxSpeed vector defining maximum speed along each axis
 	 */
 	public Velocity(Vector maxSpeed) {
-		this.maxSpeed = maxSpeed;
+		this.maxSpeed = new BoundedVector(maxSpeed, Vector.all(0), Vector.all(Float.MAX_VALUE));
 	}
 
 	/**
@@ -70,35 +71,8 @@ public class Velocity implements Component {
 	public Vector getVelocity() {
 		return velocity;
 	}
-
-	/**
-	 * If altering max speed values, it is recommended to avoid altering this vector directly, and instead use one of the {@link #setMaxSpeed(float)} methods, which constrain parameter values.
-	 * @return maximum speed vector
-	 * @see #setMaxSpeed(float, float, float)
-	 */
+	/** @return maximum speed vector, constrained {@code > 0} along all axes */
 	public Vector getMaxSpeed() {
 		return maxSpeed;
-	}
-
-	/** @param maxSpeed new x, y, and z axes max speed */
-	public void setMaxSpeed(float maxSpeed) {
-		setMaxSpeed(maxSpeed, maxSpeed, maxSpeed);
-	}
-	/**
-	 * Sets x and y axes values while retaining the z-axis value.
-	 * @param vx new x-axis max speed
-	 * @param vy new y-axis max speed
-	 */
-	public void setMaxSpeed(float vx, float vy) {
-		setMaxSpeed(vx, vy, maxSpeed.getZ());
-	}
-	/**
-	 * All values are constrained {@code >= 0}.
-	 * @param vx new x-axis max speed
-	 * @param vy new y-axis max speed
-	 * @param vz new z-axis max speed
-	 */
-	public void setMaxSpeed(float vx, float vy, float vz) {
-		maxSpeed.set(Math.abs(vx), Math.abs(vy), Math.abs(vz));
 	}
 }

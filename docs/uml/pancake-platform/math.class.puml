@@ -29,20 +29,24 @@ class Vector {
 	+Vector(x, y, z)
 	+Vector(original: Vector)
 	--
-	+translate(dx: float, dy: float)
-	+translate(dx: float, dy: float, dz: float)
+	{static} +all(value: float): Vector
+	{static} +add(vI: Vector, vN: Vector...): Vector
+	{static} +sub(vI: Vector, vN: Vector...): Vector
+	--
+	+translate(dx: float, dy: float): Vector
+	+translate(dx: float, dy: float, dz: float): Vector
 	..
-	+scale(value: float)
-	+scale(other: Vector)
-	+invScale(other: Vector)
+	+scale(value: float): Vector
+	+scale(other: Vector): Vector
+	+invScale(other: Vector): Vector
 	..
 	{static} +add([Vector]): Vector
 	{static} +sub([Vector]): Vector
 	..
-	+add(other: Vector)
-	+add(other: Vector, scale: float)
-	+sub(other: Vector)
-	+sub(other: Vector, scale: float)
+	+add(other: Vector): Vector
+	+add(other: Vector, scale: float): Vector
+	+sub(other: Vector): Vector
+	+sub(other: Vector, scale: float): Vector
 	..
 	+dot(other: Vector): float
 	+project(other: Vector): Vector
@@ -50,7 +54,7 @@ class Vector {
 	+distance(other: Vector): float
 	+angle(other: Vector): float
 	..
-	+normalize(other: Vector)
+	+normalize(other: Vector): Vector
 	..
 	+getMagnitude(): float
 	+getDirection(): Vector
@@ -58,9 +62,18 @@ class Vector {
 	+getTheta(): float
 	+getPhi(): float
 	..
-	+set(x: float, y: float)
-	+set(x: float,  y: float, z: float)
-	+set(match: Vector)
+	+set(x: float, y: float): Vector
+	+set(x: float,  y: float, z: float): Vector
+	+set(match: Vector): Vector
+}
+Vector <|-- BoundedVector
+
+class BoundedVector {
+	+BoundedVector(Vector, min: Vector, max: Vector)
+	__
+	+setX(x: float): Vector
+	+setY(y: float): Vector
+	+setZ(z: float): Vector
 }
 
 class WeightedDistribution<T> {
