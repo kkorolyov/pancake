@@ -1,18 +1,19 @@
 package dev.kkorolyov.killstreek.item;
 
 import dev.kkorolyov.killstreek.media.Sprite;
+import dev.kkorolyov.pancake.platform.action.Action;
+import dev.kkorolyov.pancake.platform.action.FreeFormAction;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
 
 import java.util.NoSuchElementException;
-import java.util.function.BiConsumer;
 
 /**
  * Applies effects to entities.
  */
 public abstract class Item {
 	/**	An effect which does nothing, used for padding the pool of random effects */
-	public static final BiConsumer<Integer, EntityPool> NOOP_EFFECT = (id, entities) -> {};
+	public static final Action NOOP_EFFECT = new FreeFormAction((id, entities) -> {});
 	private static int idCounter;
 
 	private static int generateId() {
@@ -22,7 +23,7 @@ public abstract class Item {
 	private final int id;
 	private final String name;
 	private final Sprite sprite;
-	private final WeightedDistribution<BiConsumer<Integer, EntityPool>> effects = new WeightedDistribution<>();
+	private final WeightedDistribution<Action> effects = new WeightedDistribution<>();
 
 	/**
 	 * Constructs a new item with a unique ID.
@@ -50,7 +51,7 @@ public abstract class Item {
 	 * @param effect effect on entity
 	 * @return {@code this}
 	 */
-	public Item addEffect(BiConsumer<Integer, EntityPool> effect) {
+	public Item addEffect(Action effect) {
 		return addEffect(effect, 1);
 	}
 	/**
@@ -59,7 +60,7 @@ public abstract class Item {
 	 * @param weight effect frequency in relation to all other effects of this item
 	 * @return {@code this}
 	 */
-	public Item addEffect(BiConsumer<Integer, EntityPool> effect, int weight) {
+	public Item addEffect(Action effect, int weight) {
 		effects.add(weight, effect);
 		return this;
 	}
