@@ -20,7 +20,7 @@ class DampingSpec extends Specification {
 	}
 
 	def "damps all velocity axes when force zero"() {
-		Vector velocity = new Vector(1, 1, 1)
+		Vector velocity = Vector.all(1)
 		Vector force = new Vector()
 		Vector expectedVelocity = new Vector(dampValue,
 				dampValue,
@@ -61,38 +61,18 @@ class DampingSpec extends Specification {
 
 	def "constrains damping to >= 0"() {
 		when:
-		damping.setDamping(value)
+		damping.getDamping().set(value, value, value)
 		then:
-		damping.getDamping() == new Vector()
-
-		when:
-		damping.setDamping(value, value)
-		then:
-		damping.getDamping() == new Vector()
-
-		when:
-		damping.setDamping(value, value, value)
-		then:
-		damping.getDamping() == new Vector()
+		damping.getDamping() == Vector.all(0)
 
 		where:
 		value << (-1000..0)
 	}
 	def "constrains damping to <= 1"() {
 		when:
-		damping.setDamping(value)
+		damping.getDamping().set(value, value, value)
 		then:
-		damping.getDamping() == new Vector(1, 1, 1)
-
-		when:
-		damping.setDamping(value, value)
-		then:
-		damping.getDamping() == new Vector(1, 1, 1)
-
-		when:
-		damping.setDamping(value, value, value)
-		then:
-		damping.getDamping() == new Vector(1, 1, 1)
+		damping.getDamping() == Vector.all(1)
 
 		where:
 		value << (1..1000)
