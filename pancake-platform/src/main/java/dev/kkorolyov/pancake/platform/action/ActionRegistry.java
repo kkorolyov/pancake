@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.Resources;
-import dev.kkorolyov.pancake.platform.serialization.action.ActionContainerSerializer;
-import dev.kkorolyov.pancake.platform.serialization.action.KeyActionSerializer;
+import dev.kkorolyov.pancake.platform.serialization.string.action.ActionContainerStringSerializer;
+import dev.kkorolyov.pancake.platform.serialization.string.action.KeyActionStringSerializer;
 import dev.kkorolyov.simplelogs.Logger;
 
 import java.util.Arrays;
@@ -21,8 +21,8 @@ public class ActionRegistry {
 
 	private final Map<String, Action> actions = new HashMap<>();
 
-	private final ActionContainerSerializer actionContainerSerializer = new ActionContainerSerializer(this);
-	private final KeyActionSerializer keyActionSerializer = new KeyActionSerializer(this);
+	private final ActionContainerStringSerializer actionContainerStringSerializer = new ActionContainerStringSerializer(this);
+	private final KeyActionStringSerializer keyActionStringSerializer = new KeyActionStringSerializer(this);
 
 	/**
 	 * Retrieves an action by name.
@@ -65,9 +65,9 @@ public class ActionRegistry {
 	 */
 	public ActionRegistry put(String path) {
 		Arrays.stream(Resources.string(path).split("\\R"))
-				.filter(actionContainerSerializer::accepts)
+				.filter(actionContainerStringSerializer::accepts)
 				.peek(actionS -> log.info("Parsing action: {}", actionS))
-				.map(actionContainerSerializer::read)
+				.map(actionContainerStringSerializer::read)
 				.peek(actionContainer -> log.debug("Parsed to {}={}", actionContainer.name, actionContainer.action))
 				.forEach(container -> put(container.name, container.action));
 		return this;
@@ -81,9 +81,9 @@ public class ActionRegistry {
 	 */
 	public Iterable<KeyAction> readKeys(String path) {
 		return Arrays.stream(Resources.string(path).split("\\R"))
-				.filter(keyActionSerializer::accepts)
+				.filter(keyActionStringSerializer::accepts)
 				.peek(actionS -> log.info("Parsing key action: {}", actionS))
-				.map(keyActionSerializer::read)
+				.map(keyActionStringSerializer::read)
 				.peek(keyAction -> log.debug("Parsed to {}", keyAction))
 				.collect(Collectors.toList());
 	}

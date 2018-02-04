@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action;
+package dev.kkorolyov.pancake.platform.serialization.string.action;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 /**
  * Serializes collective actions.
  */
-public class CollectiveActionSerializer extends ActionSerializer<CollectiveAction> {
+public class CollectiveActionStringSerializer extends ActionStringSerializer<CollectiveAction> {
 	private final Serializer<Action, String> autoSerializer;
 
 	/**
 	 * Constructs a new collective action serializer
 	 * @param context associated action registry
 	 */
-	public CollectiveActionSerializer(ActionRegistry context) {
+	public CollectiveActionStringSerializer(ActionRegistry context) {
 		super("\\[.+(,\\s?.+)+]", context);
-		autoSerializer = new AutoSerializer<>(ActionSerializer.class, context);
+		autoSerializer = new AutoSerializer<>(ActionStringSerializer.class, context);
 	}
 
 	@Override

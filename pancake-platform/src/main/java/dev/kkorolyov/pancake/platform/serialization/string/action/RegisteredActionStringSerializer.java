@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action;
+package dev.kkorolyov.pancake.platform.serialization.string.action;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
@@ -6,12 +6,12 @@ import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 /**
  * Serializes actions found in the {@link ActionRegistry}.
  */
-public class RegisteredActionSerializer extends ActionSerializer<Action> {
+public class RegisteredActionStringSerializer extends ActionStringSerializer<Action> {
 	/**
 	 * Constructs a new registered action serializer.
 	 * @param context associated action registry
 	 */
-	public RegisteredActionSerializer(ActionRegistry context) {
+	public RegisteredActionStringSerializer(ActionRegistry context) {
 		super("[_a-zA-Z]+", context);
 	}
 

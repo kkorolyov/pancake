@@ -1,18 +1,18 @@
-package dev.kkorolyov.pancake.platform.serialization.action;
+package dev.kkorolyov.pancake.platform.serialization.string.action;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
 import dev.kkorolyov.pancake.platform.serialization.Serializer;
-import dev.kkorolyov.pancake.platform.serialization.action.ActionContainerSerializer.ActionContainer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
+import dev.kkorolyov.pancake.platform.serialization.string.action.ActionContainerStringSerializer.ActionContainer;
 
 import java.util.Objects;
 
 /**
  * Serializes actions associated with some identifier.
  */
-public class ActionContainerSerializer extends StringSerializer<ActionContainer> {
+public class ActionContainerStringSerializer extends StringSerializer<ActionContainer> {
 	private final ActionRegistry context;
 	private final Serializer<Action, String> autoSerializer;
 
@@ -20,10 +20,10 @@ public class ActionContainerSerializer extends StringSerializer<ActionContainer>
 	 * Constructs a new action container serializer.
 	 * @param context associated action registry
 	 */
-	public ActionContainerSerializer(ActionRegistry context) {
+	public ActionContainerStringSerializer(ActionRegistry context) {
 		super("[_a-zA-Z]+\\s*=\\s*.+");
 		this.context = context;
-		autoSerializer = new AutoSerializer<>(ActionSerializer.class, context);
+		autoSerializer = new AutoSerializer<>(ActionStringSerializer.class, context);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action;
+package dev.kkorolyov.pancake.platform.serialization.string.action;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
@@ -15,16 +15,16 @@ import java.util.stream.Collectors;
 /**
  * Serializes key actions.
  */
-public class KeyActionSerializer extends ActionSerializer<KeyAction> {
+public class KeyActionStringSerializer extends ActionStringSerializer<KeyAction> {
 	private final Serializer<Action, String> autoSerializer;
 
 	/**
 	 * Constructs a new key action serializer.
 	 * @param context associated action registry
 	 */
-	public KeyActionSerializer(ActionRegistry context) {
+	public KeyActionStringSerializer(ActionRegistry context) {
 		super("\\[[_a-zA-Z]+(,\\s*[_a-zA-Z]+)*]\\s*=\\s*.*", context);
-		autoSerializer = new AutoSerializer<>(ActionSerializer.class, context);
+		autoSerializer = new AutoSerializer<>(ActionStringSerializer.class, context);
 	}
 
 	@Override

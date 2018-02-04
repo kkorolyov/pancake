@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core.serialization.action
+package dev.kkorolyov.pancake.core.serialization.string.action
 
 import dev.kkorolyov.pancake.core.action.TransformAction
 import dev.kkorolyov.pancake.platform.math.Vector

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action;
+package dev.kkorolyov.pancake.platform.serialization.string.action;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.action.Action;
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 /**
  * Serializes multi-stage actions.
  */
-public class MultiStageActionSerializer extends ActionSerializer<MultiStageAction> {
+public class MultiStageActionStringSerializer extends ActionStringSerializer<MultiStageAction> {
 	private final Serializer<Action, String> autoSerializer;
 	private final float holdThreshold = Float.parseFloat(Config.config.get("holdThreshold"));
 
@@ -23,9 +23,9 @@ public class MultiStageActionSerializer extends ActionSerializer<MultiStageActio
 	 * Constructs a new multi-stage action serializer.
 	 * @param context associated action registry
 	 */
-	public MultiStageActionSerializer(ActionRegistry context) {
+	public MultiStageActionStringSerializer(ActionRegistry context) {
 		super("\\{.*(,.*){2}}", context);
-		autoSerializer = new AutoSerializer<>(ActionSerializer.class, context);
+		autoSerializer = new AutoSerializer<>(ActionStringSerializer.class, context);
 	}
 
 	@Override

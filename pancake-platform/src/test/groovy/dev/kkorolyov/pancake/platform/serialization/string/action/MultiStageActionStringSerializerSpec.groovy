@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action
+package dev.kkorolyov.pancake.platform.serialization.string.action
 
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.action.ActionRegistry
@@ -9,7 +9,7 @@ import java.util.stream.Collectors
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.*
 
-class MultiStageActionSerializerSpec extends BaseSerializerSpec<MultiStageAction, String> {
+class MultiStageActionStringSerializerSpec extends BaseSerializerSpec<MultiStageAction, String> {
 	float holdThreshold = randFloat()
 	List<Action> actions = (1..3).collect {Mock(Action)}
 	List<String> actionsS = actions.collect {randString()}
@@ -17,7 +17,7 @@ class MultiStageActionSerializerSpec extends BaseSerializerSpec<MultiStageAction
 	def setup() {
 		reps << [(new MultiStageAction(actions[0], actions[1], actions[2], holdThreshold)): actionsS.stream().collect(Collectors.joining(", ", "{", "}"))]
 
-		serializer = new MultiStageActionSerializer(Mock(ActionRegistry))
+		serializer = new MultiStageActionStringSerializer(Mock(ActionRegistry))
 		mockAutoSerializer(actions, actionsS)
 		setField("holdThreshold", serializer, holdThreshold)
 	}

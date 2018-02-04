@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action
+package dev.kkorolyov.pancake.platform.serialization.string.action
 
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.action.ActionRegistry
@@ -8,20 +8,20 @@ import java.lang.reflect.Constructor
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
 
-class ActionContainerSerializerSpec extends BaseSerializerSpec<ActionContainerSerializer.ActionContainer, String> {
+class ActionContainerStringSerializerSpec extends BaseSerializerSpec<ActionContainerStringSerializer.ActionContainer, String> {
 	String name = randString()
 	Action action = Mock()
 	String actionS = randString()
 
 	def setup() {
-		serializer = new ActionContainerSerializer(new ActionRegistry())
+		serializer = new ActionContainerStringSerializer(new ActionRegistry())
 		mockAutoSerializer([action], [actionS])
 
 		reps << [(newActionContainer()): "$name=$actionS"]
 	}
 
-	private ActionContainerSerializer.ActionContainer newActionContainer() {
-		Constructor<ActionContainerSerializer.ActionContainer> constructor = ActionContainerSerializer.ActionContainer.getDeclaredConstructor(ActionContainerSerializer, String, Action)
+	private ActionContainerStringSerializer.ActionContainer newActionContainer() {
+		Constructor<ActionContainerStringSerializer.ActionContainer> constructor = ActionContainerStringSerializer.ActionContainer.getDeclaredConstructor(ActionContainerStringSerializer, String, Action)
 		constructor.setAccessible(true)
 
 		return constructor.newInstance(serializer, name, action)

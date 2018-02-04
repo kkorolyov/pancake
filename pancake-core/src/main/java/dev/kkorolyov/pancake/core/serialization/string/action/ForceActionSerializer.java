@@ -1,13 +1,13 @@
-package dev.kkorolyov.pancake.core.serialization.action;
+package dev.kkorolyov.pancake.core.serialization.string.action;
 
 import dev.kkorolyov.pancake.core.action.ForceAction;
-import dev.kkorolyov.pancake.platform.serialization.action.ActionSerializer;
 import dev.kkorolyov.pancake.platform.serialization.string.VectorStringSerializer;
+import dev.kkorolyov.pancake.platform.serialization.string.action.ActionStringSerializer;
 
 /**
  * Serializes {@link ForceAction}.
  */
-public class ForceActionSerializer extends ActionSerializer<ForceAction> {
+public class ForceActionSerializer extends ActionStringSerializer<ForceAction> {
 	private static final String PREFIX = "FORCE";
 	private static final VectorStringSerializer forceSerializer = new VectorStringSerializer();
 

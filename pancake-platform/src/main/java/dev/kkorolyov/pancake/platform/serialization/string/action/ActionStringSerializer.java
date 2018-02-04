@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action;
+package dev.kkorolyov.pancake.platform.serialization.string.action;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
@@ -8,7 +8,7 @@ import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
  * Serializes actions to strings.
  * @param <I> raw action instance type
  */
-public abstract class ActionSerializer<I extends Action> extends StringSerializer<I> {
+public abstract class ActionStringSerializer<I extends Action> extends StringSerializer<I> {
 	protected final ActionRegistry context;
 
 	/**
@@ -16,7 +16,7 @@ public abstract class ActionSerializer<I extends Action> extends StringSerialize
 	 * @param pattern accepted regex pattern
 	 * @param context associated action registry
 	 */
-	protected ActionSerializer(String pattern, ActionRegistry context) {
+	protected ActionStringSerializer(String pattern, ActionRegistry context) {
 		super(pattern);
 		this.context = context;
 	}

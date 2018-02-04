@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.serialization.action
+package dev.kkorolyov.pancake.platform.serialization.string.action
 
 import dev.kkorolyov.pancake.platform.action.ActionRegistry
 import dev.kkorolyov.pancake.platform.action.KeyAction
@@ -9,7 +9,7 @@ import javafx.scene.input.MouseButton
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
 
-class KeyActionSerializerSpec extends BaseSerializerSpec<KeyAction, String> {
+class KeyActionStringSerializerSpec extends BaseSerializerSpec<KeyAction, String> {
 	List<Enum> inputs = KeyCode.values() + MouseButton.values()
 	MultiStageAction delegateAction = Mock()
 	String delegateActionS = randString()
@@ -17,7 +17,7 @@ class KeyActionSerializerSpec extends BaseSerializerSpec<KeyAction, String> {
 	def setup() {
 		reps << [(new KeyAction(delegateAction, inputs)): "$inputs=$delegateActionS"]
 
-		serializer = new KeyActionSerializer(Mock(ActionRegistry))
+		serializer = new KeyActionStringSerializer(Mock(ActionRegistry))
 		mockAutoSerializer([delegateAction], [delegateActionS])
 	}
 }

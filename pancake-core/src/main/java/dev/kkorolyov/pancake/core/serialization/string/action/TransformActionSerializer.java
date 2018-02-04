@@ -1,9 +1,9 @@
-package dev.kkorolyov.pancake.core.serialization.action;
+package dev.kkorolyov.pancake.core.serialization.string.action;
 
 import dev.kkorolyov.pancake.core.action.TransformAction;
 import dev.kkorolyov.pancake.platform.math.Vector;
-import dev.kkorolyov.pancake.platform.serialization.action.ActionSerializer;
 import dev.kkorolyov.pancake.platform.serialization.string.VectorStringSerializer;
+import dev.kkorolyov.pancake.platform.serialization.string.action.ActionStringSerializer;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * Serializes {@link TransformAction}.
  */
-public class TransformActionSerializer extends ActionSerializer<TransformAction> {
+public class TransformActionSerializer extends ActionStringSerializer<TransformAction> {
 	private static final String PREFIX = "TRANSFORM";
 	private static final VectorStringSerializer vectorSerializer = new VectorStringSerializer();
 

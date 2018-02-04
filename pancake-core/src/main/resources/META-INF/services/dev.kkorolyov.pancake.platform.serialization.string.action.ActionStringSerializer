@@ -1,0 +1,2 @@
+dev.kkorolyov.pancake.core.serialization.string.action.ForceActionSerializer
+dev.kkorolyov.pancake.core.serialization.string.action.TransformActionSerializer
