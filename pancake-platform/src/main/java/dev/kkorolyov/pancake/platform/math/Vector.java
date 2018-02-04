@@ -14,28 +14,26 @@ public class Vector {
 	}
 
 	/**
-	 * Returns a new vector formed by the addition of vectors to an initial vector.
-	 * @param vI initial vector
-	 * @param vN added vectors
-	 * @return vector formed by {@code v1 + vN}
+	 * Returns a new vector formed by the addition of all given vectors.
+	 * @param vectors vectors to add
+	 * @return vector formed by addition of all {@code vectors}
 	 */
-	public static Vector add(Vector vI, Vector... vN) {
-		Vector result = new Vector(vI);
+	public static Vector add(Vector... vectors) {
+		Vector result = new Vector();
 
-		for (Vector v : vN) result.add(v);
+		for (Vector v : vectors) result.add(v);
 
 		return result;
 	}
 	/**
-	 * Returns a new vector formed by the subtraction of vectors from an initial vector.
-	 * @param vI initial vector
-	 * @param vN subtracted vectors
-	 * @return vector formed by {@code v1 - vN}
+	 * Returns a new vector formed by the subtraction of all given vectors.
+	 * @param vectors vectors to subtract
+	 * @return vector formed by subtraction of all {@code vectors}
 	 */
-	public static Vector sub(Vector vI, Vector... vN) {
-		Vector result = new Vector(vI);
+	public static Vector sub(Vector... vectors) {
+		Vector result = new Vector();
 
-		for (Vector v : vN) result.sub(v);
+		for (Vector v : vectors) result.sub(v);
 
 		return result;
 	}

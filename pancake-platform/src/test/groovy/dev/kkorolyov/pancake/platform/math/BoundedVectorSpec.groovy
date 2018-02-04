@@ -6,8 +6,8 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
 class BoundedVectorSpec extends Specification {
 	Vector vector = randVector()
-	Vector min = Vector.sub(vector, Vector.all(1000))
-	Vector max = Vector.add(vector, Vector.all(500))
+	Vector min = new Vector(vector).sub(Vector.all(1000))
+	Vector max = new Vector(vector).add(Vector.all(500))
 
 	BoundedVector boundedVector = new BoundedVector(vector, min, max)
 

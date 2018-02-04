@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * A value represented as the average of its previous several samples.
  */
-public class AveragedValue implements Comparable<Number> {
+public class AveragedValue {
 	private long[] samples;
 	private long value;
 	private int counter;
@@ -46,11 +46,6 @@ public class AveragedValue implements Comparable<Number> {
 	public AveragedValue setSamples(int samples) {
 		this.samples = Arrays.copyOf(this.samples, samples);
 		return this;
-	}
-
-	@Override
-	public int compareTo(Number o) {
-		return Long.compare(value, o.longValue());
 	}
 
 	@Override
