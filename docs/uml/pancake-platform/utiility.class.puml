@@ -1,0 +1,42 @@
+@startuml
+
+class Limiter {
+	-duration: float
+	-elapsed: float
+	__
+	+Limiter(duration: float)
+	--
+	+isReady(dt: float): boolean
+	+isReady(): boolean
+}
+
+class PerformanceCounter {
+	-maxTime: long
+	-samples: int
+	..
+	-last: long
+	-tick: AveragedValue
+	-start: long
+	-systemUsage: {GameSystem, Usage}
+	__
+	+start()
+	+end(GameSystem)
+	..
+	+getTps(): long
+	+getUsages(): [Usage]
+}
+PerformanceCounter +-- Usage
+class Usage {
+	-systemName: String
+	-value: AveragedValue
+	-maxTime: long
+	__
+	-Usage(GameSystem, samples: int, maxTime: long)
+	--
+	-add(sample: long)
+	..
+	+getValue(): long
+	+exceedsMax(): boolean
+}
+
+@enduml

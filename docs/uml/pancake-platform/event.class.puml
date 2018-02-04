@@ -1,16 +1,50 @@
 @startuml
 
-class EventBroadcaster {
-	-receivers: {String, {Consumer<?>}}
-	-eventQueue: Queue<String>
-	-payloadQueue: Queue<Object>
+interface Event
+Event <|.. CameraCreated
+Event <|..CanvasCreated
+Event <|.. SceneCreated
+Event <|.. CreateEntity
+Event <|.. DestroyEntity
+Event <|.. EntityCreated
+Event <|.. EntityDestroyed
+
+class CameraCreated {
+	-Camera
+}
+class CanvasCreated {
+	-Canvas
+}
+class SceneCreated {
+	-Scene
+}
+class CreateEntity {
+	-components: [Component]
+}
+class DestroyEntity {
+	-id: int
+}
+class EntityCreated {
+	-id: int
+}
+class EntityDestroyed {
+	-id: int
+}
+
+interface EventBroadcaster {
+	+register(type: Class<E extends Event>, receiver: Consumer<? super E>)
+	+unregister(type: Class<E extends Event>, receiver: Consumer<? super E>)
+	..
+	+enqueue(Event): int
+}
+EventBroadcaster o- Event
+
+class ManagedEventBroadcaster {
+	-receivers: {Class<? extends Event>, {Consumer<?>}}
+	-eventQueue: Queue<Event>
 	__
-	+register(event: String, receiver: Consumer<?>)
-	+unregister(event: String, receiver: Consumer<?>)
-	..
-	+enqueue(event: String, payload: Object): int
-	..
 	+broadcast(): int
 }
+ManagedEventBroadcaster .u.|> EventBroadcaster
 
 @enduml

@@ -2,57 +2,12 @@
 
 interface Component
 
-class Entity {
-	-id: int
-	-signature: Signature
-	..
-	-components: {Class<? extends Component>, Component}
-	-actions: [Action]
-	__
-	+Entity(id: int, components: [Component])
-	--
-	+contains(Signature): boolean
-	+matches(Signature): boolean
-	..
-	+get(type: Class<T extends Component>): T
-	+get(type: Class<T extends Component>, Consumer<? super T>): boolean
-	+add(Component): boolean
-	+remove(type: Class<T extends Component>): boolean
-	..
-	+add(Action): Entity
-	+applyActions(): int
-	..
-	+streamComponents(): Stream<Component>
-}
-Entity .u.|> Comparable
-Entity o-- Signature
-Entity o-l- Component
-Entity o- dev.kkorolyov.pancake.platform.action.Action
-
-class EntityPool {
-	-idCounter: int
-	-reclaimedIds: Queue<Integer>
-	-entities: {Integer, Entity}
-	-events: EventBroadcaster
-	__
-	+EntityPool(events: EventBroadcaster)
-	--
-	+applyActions()
-	..
-	+get(id: int): Entity
-	+get(Signature, Comparator<Entity>): Stream<Entity>
-	..
-	+create([Component]): Entity
-	+destroy(Entity): boolean
-}
-EntityPool o-- Entity
-EntityPool --> Component
-EntityPool --> Signature
-EntityPool o- dev.kkorolyov.pancake.platform.event.EventBroadcaster
-
 class Signature {
-	{static} -masks: {Class<? extends Component>, Long}
+	{static} -indexMap: {Class<? extends Component>, Long}
 	{static} -indexCounter: long
+	..
+	-types: {Class<? extends Component?}
+	-signature: long
 	__
 	+Signature([Class<? extends Component])
 	--
@@ -62,6 +17,50 @@ class Signature {
 	..
 	+add(Class<? extends Component>)
 	+remove(Class<? extends Component>)
+	..
+	+size(): int
+	+getTypes(): {Class<? extends Component>}
 }
+Signature .u.|> Comparable
+
+interface EntityPool {
+	+contains(id: int, Signature): boolean
+	..
+	+get(id: int): Stream<Component>
+	..
+	+get(id: int, type: Class<T extends Component>): T
+	+get(id: int, type: Class<T extends Component>, Function<T, R>): R
+	..
+	+add(id: int, Action)
+}
+EntityPool -u-> Component
+EntityPool -l-> Signature
+EntityPool -r-> dev.kkorolyov.pancake.platform.action.Action
+
+class ManagedEntityPool {
+	-components: {Class<? extends Component, {Integer, Component}}
+	-actions: {Integer, [Action]}
+	-events: EventBroadcaster
+	..
+	-counter: int
+	-reclaimedIds: Queue<Integer>
+	__
+	+ManagedEntityPool(events: EventBroadcaster)
+	--
+	+forEachMatching(Signature, action: Consumer<Integer>)
+	..
+	+create([Component]): int
+	+destroy(id: int): long
+	..
+	+add(id: int, Component)
+	+remove(id: int, type: Class<? extends Component>)
+	..
+	-getComponentMap(Class<? extends Component>): {Integer, Component}
+	..
+	+add(id: int, Action)
+	+applyActions()
+}
+ManagedEntityPool .u.|> EntityPool
+ManagedEntityPool o- dev.kkorolyov.pancake.platform.event.EventBroadcaster
 
 @enduml

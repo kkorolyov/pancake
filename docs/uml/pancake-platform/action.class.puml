@@ -5,10 +5,9 @@ abstract class Action {
 	__
 	#Action([Class<? extends Component>])
 	--
-	{abstract} #apply(Entity)
-	+accept(Entity)
+	{abstract} #apply(id: int, entities: EntityPool)
+	+accept(id: int, entities: EntityPool)
 }
-Action .u.|> Consumer
 Action -> dev.kkorolyov.pancake.platform.entity.Entity
 
 class CollectiveAction {
@@ -17,7 +16,7 @@ class CollectiveAction {
 Action <|-- CollectiveAction
 
 class FreeFormAction {
-	-consumer: Consumer<Entity>
+	-consumer: BiConsumer<Integer, EntityPool>
 }
 Action <|-- FreeFormAction
 
@@ -37,8 +36,8 @@ class MultiStageAction {
 	..
 	-holdTime: float
 	..
-	-armingOption: ArmingOption
-	-state: State
+	-ArmingOption
+	-State
 	__
 	+arm(ArmingOption, dt: float)
 }
@@ -54,19 +53,21 @@ abstract class State {
 	{static} -ACTIVE: State
 	{static} -DECAYED: State
 
-	{abstract} ~apply(Entity, client: MultiStageAction)
-	~accept(Action, Entity)
+	{abstract} ~apply(id: int, entities: EntityPool, client: MultiStageAction)
+	~accept(id: int, entities: EntityPool, Action)
 }
 
 class ActionRegistry {
 	-actions: {String, Action}
+	..
+	-ActionContainerSerializer
+	-KeyActionSerializer
 	__
-	+get(String): Action
+	+get(name: String): Action
 	+getName(Action): String
+	+put(name: String, Action): ActionRegistry
 	..
-	+put(String, Action): ActionRegistry
 	+put(path: String): ActionRegistry
-	..
 	+readKeys(path: String): Iterable<KeyAction>
 }
 ActionRegistry o- Action
