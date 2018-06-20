@@ -1,0 +1,137 @@
+{
+    "compileClasspath": {
+        "dev.kkorolyov:pancake-platform": {
+            "project": true
+        },
+        "dev.kkorolyov:simple-files": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.1.1"
+        },
+        "dev.kkorolyov:simple-logs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "3.1"
+        },
+        "dev.kkorolyov:simple-props": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "4.2"
+        },
+        "org.spockframework:spock-core": {
+            "locked": "1.1-groovy-2.4",
+            "requested": "1.1-groovy-2.+"
+        }
+    },
+    "default": {
+        "dev.kkorolyov:pancake-platform": {
+            "project": true
+        },
+        "dev.kkorolyov:simple-files": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.1.1"
+        },
+        "dev.kkorolyov:simple-logs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "3.1"
+        },
+        "dev.kkorolyov:simple-props": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "4.2"
+        },
+        "org.spockframework:spock-core": {
+            "locked": "1.1-groovy-2.4",
+            "requested": "1.1-groovy-2.+"
+        }
+    },
+    "runtimeClasspath": {
+        "dev.kkorolyov:pancake-platform": {
+            "project": true
+        },
+        "dev.kkorolyov:simple-files": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.1.1"
+        },
+        "dev.kkorolyov:simple-logs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "3.1"
+        },
+        "dev.kkorolyov:simple-props": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "4.2"
+        },
+        "org.spockframework:spock-core": {
+            "locked": "1.1-groovy-2.4",
+            "requested": "1.1-groovy-2.+"
+        }
+    },
+    "testCompileClasspath": {
+        "dev.kkorolyov:pancake-platform": {
+            "project": true
+        },
+        "dev.kkorolyov:simple-files": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.1.1"
+        },
+        "dev.kkorolyov:simple-logs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "3.1"
+        },
+        "dev.kkorolyov:simple-props": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "4.2"
+        },
+        "org.spockframework:spock-core": {
+            "locked": "1.1-groovy-2.4",
+            "requested": "1.1-groovy-2.+"
+        }
+    },
+    "testRuntimeClasspath": {
+        "dev.kkorolyov:pancake-platform": {
+            "project": true
+        },
+        "dev.kkorolyov:simple-files": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.1.1"
+        },
+        "dev.kkorolyov:simple-logs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "3.1"
+        },
+        "dev.kkorolyov:simple-props": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "4.2"
+        },
+        "org.spockframework:spock-core": {
+            "locked": "1.1-groovy-2.4",
+            "requested": "1.1-groovy-2.+"
+        }
+    }
+}
