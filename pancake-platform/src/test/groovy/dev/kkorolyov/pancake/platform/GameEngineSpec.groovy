@@ -9,9 +9,9 @@ import spock.lang.Specification
 
 import java.util.function.Consumer
 
-import static SpecUtilities.randFloat
-import static SpecUtilities.setField
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
+import static dev.kkorolyov.simplespecs.SpecUtilities.randFloat
+import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
+import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class GameEngineSpec extends Specification {
 	float dt = randFloat()

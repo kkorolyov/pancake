@@ -7,8 +7,8 @@ import org.spockframework.mock.MockUtil
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
-import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
+import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
+import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class ActionSpec extends Specification {
 	@Shared MockUtil detector = new MockUtil()

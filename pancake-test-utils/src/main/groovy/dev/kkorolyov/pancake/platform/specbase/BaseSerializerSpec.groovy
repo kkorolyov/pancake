@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.serialization.Serializer
 
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
+import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 /**
  * Base specification for {@link Serializer} implementations.

@@ -7,7 +7,7 @@ import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import java.util.stream.Collectors
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
+import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 
 class CollectiveActionStringSerializerSpec extends BaseSerializerSpec<CollectiveAction, String> {
 	List<Action> actions = (1..5).collect {Mock(Action)}

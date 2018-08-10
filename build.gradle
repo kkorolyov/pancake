@@ -169,6 +169,7 @@ project(':pancake-test-utils') {
 	dependencies {
 		implementation(
 				'org.spockframework:spock-core:1.1-groovy-2.+',
+				'dev.kkorolyov:simple-specs:1.+',
 				platform
 		)
 	}

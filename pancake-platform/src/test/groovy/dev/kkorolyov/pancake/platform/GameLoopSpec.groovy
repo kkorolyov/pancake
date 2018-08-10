@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.platform
 
 import spock.lang.Specification
 
-import static SpecUtilities.randLong
+import static dev.kkorolyov.simplespecs.SpecUtilities.randLong
 
 class GameLoopSpec extends Specification {
 	GameEngine engine = Mock()

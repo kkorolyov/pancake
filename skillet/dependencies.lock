@@ -22,10 +22,10 @@
             "locked": "4.2"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.2.50"
+            "locked": "1.2.60"
         },
         "org.jetbrains.kotlin:kotlin-stdlib": {
-            "locked": "1.2.50"
+            "locked": "1.2.60"
         }
     },
     "default": {
@@ -51,24 +51,24 @@
             "locked": "4.2"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         },
         "org.jetbrains.kotlin:kotlin-stdlib": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         }
     },
-    "kapt": {
-        "org.jetbrains.kotlin:kotlin-annotation-processing-gradle": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+    "kotlinCompilerClasspath": {
+        "org.jetbrains.kotlin:kotlin-compiler-embeddable": {
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         }
     },
-    "kaptTest": {
-        "org.jetbrains.kotlin:kotlin-annotation-processing-gradle": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+    "kotlinCompilerPluginClasspath": {
+        "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable": {
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         }
     },
     "runtimeClasspath": {
@@ -94,17 +94,17 @@
             "locked": "4.2"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         },
         "org.jetbrains.kotlin:kotlin-stdlib": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         }
     },
     "testCompileClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.6",
+            "locked": "3.2.7",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-platform": {
@@ -136,12 +136,12 @@
             "requested": "1.+"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         },
         "org.jetbrains.kotlin:kotlin-stdlib": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         },
         "org.objenesis:objenesis": {
             "locked": "1.4",
@@ -154,7 +154,7 @@
     },
     "testRuntimeClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.6",
+            "locked": "3.2.7",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-platform": {
@@ -185,16 +185,19 @@
             "locked": "4.2"
         },
         "dev.kkorolyov:simple-specs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-test-utils"
+            ],
             "locked": "1.0.1",
             "requested": "1.+"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         },
         "org.jetbrains.kotlin:kotlin-stdlib": {
-            "locked": "1.2.50",
-            "requested": "1.2.50"
+            "locked": "1.2.60",
+            "requested": "1.2.60"
         },
         "org.objenesis:objenesis": {
             "locked": "1.4",
