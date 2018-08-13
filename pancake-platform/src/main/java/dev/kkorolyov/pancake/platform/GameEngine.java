@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
 import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
+import dev.kkorolyov.simplefiles.Providers;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -24,7 +25,7 @@ public class GameEngine {
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
 	public GameEngine(ManagedEventBroadcaster events, ManagedEntityPool entities) {
-		this(events, entities, Resources.providers(GameSystem.class));
+		this(events, entities, Providers.fromConfig(GameSystem.class).findAll(system -> true));
 	}
 	/**
 	 * @see #GameEngine(ManagedEventBroadcaster, ManagedEntityPool, Iterable)
@@ -44,7 +45,7 @@ public class GameEngine {
 
 		systems.forEach(this::add);
 	}
-	
+
 	/**
 	 * Proceeds the simulation by 1 tick.
 	 * <pre>
