@@ -85,7 +85,7 @@
     },
     "testCompileClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.6",
+            "locked": "3.2.7",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-core": {
@@ -130,7 +130,7 @@
     },
     "testRuntimeClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.6",
+            "locked": "3.2.7",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-core": {
@@ -165,6 +165,9 @@
             "locked": "4.2"
         },
         "dev.kkorolyov:simple-specs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-test-utils"
+            ],
             "locked": "1.0.1",
             "requested": "1.+"
         },

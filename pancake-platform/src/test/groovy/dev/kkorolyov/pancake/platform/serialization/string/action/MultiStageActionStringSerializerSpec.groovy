@@ -7,7 +7,9 @@ import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import java.util.stream.Collectors
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.*
+import static dev.kkorolyov.simplespecs.SpecUtilities.randFloat
+import static dev.kkorolyov.simplespecs.SpecUtilities.randString
+import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class MultiStageActionStringSerializerSpec extends BaseSerializerSpec<MultiStageAction, String> {
 	float holdThreshold = randFloat()

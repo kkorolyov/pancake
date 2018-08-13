@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import java.lang.reflect.Constructor
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
+import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 
 class ActionContainerStringSerializerSpec extends BaseSerializerSpec<ActionContainerStringSerializer.ActionContainer, String> {
 	String name = randString()

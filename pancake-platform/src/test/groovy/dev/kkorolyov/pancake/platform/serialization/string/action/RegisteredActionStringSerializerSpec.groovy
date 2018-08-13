@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.action.ActionRegistry
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
+import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 
 class RegisteredActionStringSerializerSpec extends BaseSerializerSpec<Action, String> {
 	def setup() {
