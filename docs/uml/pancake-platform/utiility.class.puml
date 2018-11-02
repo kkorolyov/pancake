@@ -1,10 +1,10 @@
 @startuml
 
 class Limiter {
-	-duration: float
+	-frequency: float
 	-elapsed: float
 	__
-	+Limiter(duration: float)
+	+Limiter(frequency: float)
 	--
 	+isReady(dt: float): boolean
 	+isReady(): boolean
