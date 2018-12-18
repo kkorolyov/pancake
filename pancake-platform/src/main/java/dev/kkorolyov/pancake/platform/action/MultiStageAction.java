@@ -1,13 +1,13 @@
 package dev.kkorolyov.pancake.platform.action;
 
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 
 import java.util.Objects;
 
 /**
  * An {@link Action} which applies a different action depending on its current state.
  */
-public class MultiStageAction extends Action {
+public class MultiStageAction implements Action {
 	private final Action start, hold, end;
 	private final float holdThreshold;
 	private float holdTime;
@@ -21,7 +21,12 @@ public class MultiStageAction extends Action {
 	 * @param end action applied when this action is "deactivated"
 	 * @param holdThreshold minimum number of seconds this action must remain in the "active" state before moving on to the "decayed" state
 	 */
-	public MultiStageAction(Action start, Action hold, Action end, float holdThreshold) {
+	public MultiStageAction(
+			Action start,
+			Action hold,
+			Action end,
+			float holdThreshold // TODO Migrate to ns
+	) {
 		this.start = start;
 		this.hold = hold;
 		this.end = end;
@@ -30,7 +35,7 @@ public class MultiStageAction extends Action {
 
 	/**
 	 * Arms this action to move to the next state in its state sequence, according to the given arming option.
-	 * The next time {@link Action#apply(int, EntityPool)} is invoked on this action, its state will change according to the current arming option.
+	 * The next time {@link Action#apply(Entity)} is invoked on this action, its state will change according to the current arming option.
 	 * @param armingOption option influencing the next state this action moves to after its next application
 	 * @param dt seconds elapsed since the last invocation of this method
 	 * @return {@code this}
@@ -47,8 +52,8 @@ public class MultiStageAction extends Action {
 	 * Disarms after application.
 	 */
 	@Override
-	protected void apply(int id, EntityPool entities) {
-		if (armingOption != null) state.apply(id, entities, this);
+	public void apply(Entity entity) {
+		if (armingOption != null) state.apply(entity, this);
 
 		armingOption = null;
 	}
@@ -93,10 +98,10 @@ public class MultiStageAction extends Action {
 	private static abstract class State {
 		static final State INACTIVE = new State() {
 			@Override
-			void apply(int id, EntityPool entities, MultiStageAction client) {
+			void apply(Entity entity, MultiStageAction client) {
 				switch (client.armingOption) {
 					case ACTIVATE:
-						accept(id, entities, client.start);
+						invokeNullable(client.start, entity);
 
 						client.holdTime = 0;
 						client.state = ACTIVE;
@@ -106,18 +111,18 @@ public class MultiStageAction extends Action {
 		};
 		static final State ACTIVE = new State() {
 			@Override
-			void apply(int id, EntityPool entities, MultiStageAction client) {
+			void apply(Entity entity, MultiStageAction client) {
 				switch (client.armingOption) {
 					case ACTIVATE:
 						if (Float.compare(client.holdTime, client.holdThreshold) >= 0) {
-							accept(id, entities, client.hold);
+							invokeNullable(client.hold, entity);
 
 							client.holdTime = 0;
 							client.state = DECAYED;
 						}
 						break;
 					case DEACTIVATE:
-						accept(id, entities, client.end);
+						invokeNullable(client.end, entity);
 
 						client.holdTime = 0;
 						client.state = INACTIVE;
@@ -127,10 +132,10 @@ public class MultiStageAction extends Action {
 		};
 		static final State DECAYED = new State() {
 			@Override
-			void apply(int id, EntityPool entities, MultiStageAction client) {
+			void apply(Entity entity, MultiStageAction client) {
 				switch (client.armingOption) {
 					case DEACTIVATE:
-						accept(id, entities, client.end);
+						invokeNullable(client.end, entity);
 
 						client.holdTime = 0;
 						client.state = INACTIVE;
@@ -139,10 +144,10 @@ public class MultiStageAction extends Action {
 			}
 		};
 
-		abstract void apply(int id, EntityPool entities, MultiStageAction client);
+		abstract void apply(Entity entity, MultiStageAction client);
 
-		void accept(int id, EntityPool entities, Action action) {
-			if (action != null) action.accept(id, entities);
+		void invokeNullable(Action action, Entity entity) {
+			if (action != null) action.apply(entity);
 		}
 	}
 }

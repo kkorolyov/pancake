@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.action;
 
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,15 +10,15 @@ import java.util.Set;
 /**
  * An {@link Action} which applies a collection of delegate actions.
  */
-public class CollectiveAction extends Action {
+public class CollectiveAction implements Action {
 	private final Set<Action> delegates = new HashSet<>();
 
-	/** @see #CollectiveAction(Iterable)  */
+	/** @see #CollectiveAction(Iterable) */
 	public CollectiveAction(Action... delegates) {
 		this(Arrays.asList(delegates));
 	}
 	/**
-	 * Constructs a new collective action.
+	 * Constructs a new collective action
 	 * @param delegates contained actions, duplicates are ignored
 	 */
 	public CollectiveAction(Iterable<Action> delegates) {
@@ -29,8 +29,8 @@ public class CollectiveAction extends Action {
 	 * Applies all contained, accepting actions to an entity.
 	 */
 	@Override
-	protected void apply(int id, EntityPool entities) {
-		for (Action delegate : delegates) delegate.accept(id, entities);
+	public void apply(Entity entity) {
+		for (Action delegate : delegates) delegate.apply(entity);
 	}
 
 	/** @return all delegate actions */
