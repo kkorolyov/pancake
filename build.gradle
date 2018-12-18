@@ -160,7 +160,7 @@ project(':pancake-platform') {
 				'dev.kkorolyov:simple-props:4.+',
 				'dev.kkorolyov:simple-files:1.+',
 				'dev.kkorolyov:simple-funcs:1.+',
-				'dev.kkorolyov:simple-structs:1.+'
+				'dev.kkorolyov:simple-structs:2.+'
 		)
 	}
 }

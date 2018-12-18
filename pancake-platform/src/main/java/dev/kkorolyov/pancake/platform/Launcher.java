@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.action.ActionRegistry;
-import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.CameraCreated;
 import dev.kkorolyov.pancake.platform.event.CanvasCreated;
 import dev.kkorolyov.pancake.platform.event.SceneCreated;
@@ -34,7 +34,7 @@ public abstract class Launcher extends Application {
 	protected final ActionRegistry actions = new ActionRegistry();
 
 	protected final ManagedEventBroadcaster events = new ManagedEventBroadcaster();
-	protected final ManagedEntityPool entities = new ManagedEntityPool(events);
+	protected final EntityPool entities = new EntityPool(events);
 
 	protected final GameEngine engine = new GameEngine(events, entities);
 	protected final GameLoop gameLoop = new GameLoop(engine);
@@ -78,7 +78,9 @@ public abstract class Launcher extends Application {
 		primaryStage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) ->
 				setSize((float) canvas.getWidth(), (float) (canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue())));
 
-		gameLoop.start();
+		primaryStage.setOnCloseRequest(e -> gameLoop.stop());
+
+		new Thread(gameLoop::start).start();
 	}
 	private void setSize(float width, float height) {
 		canvas.setWidth(width);

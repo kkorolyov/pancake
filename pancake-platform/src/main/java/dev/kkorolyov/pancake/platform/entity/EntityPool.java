@@ -1,45 +1,150 @@
 package dev.kkorolyov.pancake.platform.entity;
 
-import dev.kkorolyov.pancake.platform.action.Action;
+import dev.kkorolyov.pancake.platform.event.CreateEntity;
+import dev.kkorolyov.pancake.platform.event.DestroyEntity;
+import dev.kkorolyov.pancake.platform.event.EntityCreated;
+import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
+import dev.kkorolyov.pancake.platform.event.management.EventBroadcaster;
+import dev.kkorolyov.simplestructs.FacetedBundle;
 
-import java.util.function.Function;
+import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Stream;
+
+import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
+import static java.util.Collections.singleton;
 
 /**
  * A set of uniquely-identified "component-bag" entities.
  */
-public interface EntityPool {
-	/** @return whether entity with ID {@code id} masks {@code signature} */
-	boolean contains(int id, Signature signature);
+public class EntityPool {
+	private final FacetedBundle<Integer, Class<? extends Component>, ManagedEntity> entities = new FacetedBundle<>();
+	private final EventBroadcaster events;
+
+	private int counter = 0;
+	private final Queue<Integer> reclaimedIds = new ArrayDeque<>();
 
 	/**
-	 * @param id entity ID
-	 * @return stream over all components of entity with ID {@code id}
+	 * Constructs an empty entity pool.
+	 * @param events registered event broadcaster
 	 */
-	Stream<Component> get(int id);
+	public EntityPool(EventBroadcaster events) {
+		this.events = events;
+
+		this.events.register(CreateEntity.class, e -> create().add(e.getComponents()));
+		this.events.register(DestroyEntity.class, e -> destroy(e.getId()));
+	}
 
 	/**
-	 * Retrieves a component for a particular entity.
-	 * @param id entity IDw
-	 * @param type type of component
-	 * @return component of type {@code type} for entity with ID {@code id}, or {@code null} if does not exist
+	 * @param id ID of entity to get
+	 * @return entity with ID {@code id}, or {@code null} if no such entity
 	 */
-	<T extends Component> T get(int id, Class<T> type);
-	/**
-	 * Invokes a function on a component if it exists.
-	 * @param id entity ID
-	 * @param type component type
-	 * @param function function to invoke
-	 * @param <T> component type
-	 * @param <R> return type
-	 * @return function return value, or {@code null} if a component of type {@code type} does not exist for entity with ID {@code id}
-	 */
-	<T extends Component, R> R get(int id, Class<T> type, Function<T, R> function);
+	public ManagedEntity get(int id) {
+		FacetedBundle.Entry<Class<? extends Component>, ManagedEntity> entry = entities.get(id);
+		return entry != null ? entry.getElement() : null;
+	}
 
 	/**
-	 * Adds an action to an entity to be applied at the beginning of the next tick.
-	 * @param id ID of entity to add action to
-	 * @param action action to add
+	 * @param signature signature to match
+	 * @return stream over all entities in this pool masking {@code signature}
 	 */
-	void add(int id, Action action);
+	public Stream<ManagedEntity> stream(Signature signature) {
+		return entities.stream(signature.getTypes());
+	}
+
+	/**
+	 * Creates a new, empty entity attached to this pool.
+	 * @return created entity
+	 */
+	public ManagedEntity create() {
+		int id = reclaimedIds.isEmpty()
+				? counter++
+				: reclaimedIds.remove();
+
+		ManagedEntity entity = new ManagedEntity(id);
+
+		entities.put(entity.getId(), entity);
+		events.enqueue(new EntityCreated(id));
+
+		return entity;
+	}
+	/**
+	 * Removes an entity from this pool.
+	 * @param id ID of entity to remove
+	 */
+	public void destroy(int id) {
+		if (entities.remove(id)) {
+			events.enqueue(new EntityDestroyed(id));
+			reclaimedIds.add(id);
+		}
+	}
+
+	/**
+	 * An {@link Entity} implementation attached to its owning {@link EntityPool} and with exposed management methods.
+	 */
+	public class ManagedEntity implements Entity {
+		private final int id;
+		private final Map<Class<? extends Component>, Component> components = new HashMap<>();
+
+		private ManagedEntity(int id) {
+			this.id = id;
+		}
+
+		public ManagedEntity add(Component component, Component... components) {
+			return add(append(singleton(component), components));
+		}
+		/**
+		 * @param components components to add or replace existing components of the same type
+		 * @return {@code this}
+		 */
+		public ManagedEntity add(Iterable<Component> components) {
+			for (Component component : components) {
+				this.components.put(component.getClass(), component);
+
+				entities.get(id).addFacets(component.getClass());
+			}
+			return this;
+		}
+
+		/**
+		 * @param componentTypes classes of components to remove
+		 * @return {@code this}
+		 */
+		public ManagedEntity remove(Iterable<Class<? extends Component>> componentTypes) {
+			for (Class<? extends Component> type : componentTypes) {
+				components.remove(type);
+
+				entities.get(id).removeFacets(type);
+			}
+			return this;
+		}
+
+		@Override
+		public <T extends Component> T get(Class<T> c) {
+			return (T) components.get(c);
+		}
+
+		@Override
+		public Stream<Component> stream() {
+			return components.values().stream();
+		}
+
+		@Override
+		public int getId() {
+			return id;
+		}
+
+		@Override
+		public Iterator<Component> iterator() {
+			return components.values().iterator();
+		}
+
+		@Override
+		public int compareTo(Entity o) {
+			return Integer.compare(id, o.getId());
+		}
+	}
 }
