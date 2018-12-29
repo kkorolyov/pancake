@@ -31,7 +31,7 @@ public class Animation implements Component, Animated {
 	}
 
 	@Override
-	public void tick(float dt) {
+	public void tick(long dt) {
 		delegate.tick(dt);
 	}
 
@@ -59,11 +59,11 @@ public class Animation implements Component, Animated {
 	}
 
 	@Override
-	public float getFrameInterval() {
+	public long getFrameInterval() {
 		return delegate.getFrameInterval();
 	}
 	@Override
-	public void setFrameInterval(float frameInterval) {
+	public void setFrameInterval(long frameInterval) {
 		delegate.setFrameInterval(frameInterval);
 	}
 
