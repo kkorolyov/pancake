@@ -5,17 +5,14 @@ import spock.lang.Shared
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
-class MultiStageActionSpec extends ActionSpec {
+class MultiStageActionSpec {
 	@Shared float holdThreshold = 0
 	@Shared float dt = 0
 	Action start = Mock()
 	Action hold = Mock()
 	Action end = Mock()
 
-	@Override
-	MultiStageAction initAction() {
-		return new MultiStageAction(start, hold, end, holdThreshold)
-	}
+	Action action = new MultiStageAction(start, hold, end, holdThreshold)
 
 	def "does nothing if not armed before applied"() {
 		when:

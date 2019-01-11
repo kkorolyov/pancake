@@ -10,15 +10,12 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randMouseButton
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
-class KeyActionSpec extends ActionSpec {
+class KeyActionSpec {
 	@Shared float dt = 0
 	@Shared Set<Enum> inputs = [KeyCode.A, MouseButton.PRIMARY]
 	MultiStageAction delegate = Mock()
 
-	@Override
-	KeyAction initAction() {
-		return new KeyAction(delegate, inputs)
-	}
+	Action action = new KeyAction(delegate, inputs)
 
 	def "accepts inputs of valid types"() {
 		when:

@@ -4,6 +4,7 @@ import dev.kkorolyov.killstreek.component.Damage;
 import dev.kkorolyov.killstreek.component.Health;
 import dev.kkorolyov.killstreek.media.HealthBar;
 import dev.kkorolyov.killstreek.media.Sprite;
+import dev.kkorolyov.pancake.core.component.ActionQueue;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Chain;
 import dev.kkorolyov.pancake.core.component.Input;
@@ -16,13 +17,12 @@ import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.event.EntitiesCollided;
 import dev.kkorolyov.pancake.platform.Launcher;
-import dev.kkorolyov.pancake.platform.action.FreeFormAction;
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.Signature;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EntityCreated;
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
 import dev.kkorolyov.pancake.platform.math.Vector;
-import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
+import dev.kkorolyov.simplestructs.WeightedDistribution;
 
 import javafx.application.Application;
 import java.util.Arrays;
@@ -47,7 +47,7 @@ public class FunctionalTest extends Launcher {
 	private final Graphic sphereGraphic = new Graphic(null);
 
 	private final Transform playerTransform = new Transform(new Vector(), randRotation());
-	private long player;
+	private int player;
 
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -83,16 +83,12 @@ public class FunctionalTest extends Launcher {
 	}
 	private void initActions() {
 		actions
-				.put("WALK", new FreeFormAction((id, entities) -> entities.get(id, Animation.class).setActive(true),
-						Animation.class))
-				.put("STOP_WALK", new FreeFormAction((id, entities) -> entities.get(id, Animation.class).setActive(false),
-						Animation.class))
+				.put("WALK", entity -> entity.get(Animation.class).setActive(true))
+				.put("STOP_WALK", entity -> entity.get(Animation.class).setActive(false))
 
-				.put("TOGGLE_ANIMATION", new FreeFormAction((id, entities) ->
-						entities.get(id, Animation.class).toggle(), Animation.class))
+				.put("TOGGLE_ANIMATION", entity -> entity.get(Animation.class).toggle())
 
-				.put("TOGGLE_SPAWNER", new FreeFormAction((id, entities) ->
-						entities.get(id, Spawner.class).toggle(), Spawner.class))
+				.put("TOGGLE_SPAWNER", entity -> entity.get(Spawner.class).toggle())
 
 				.put("config/actions");
 	}
@@ -105,14 +101,14 @@ public class FunctionalTest extends Launcher {
 		addCamera();
 	}
 	private void initEvents() {
-		Signature damageSig = new Signature(Damage.class);
-
 		events.register(EntitiesCollided.class, e -> {
 			if (player == e.getCollided()[0]) {
-				if (entities.contains(e.getCollided()[1], damageSig)) {
-					entities.get(e.getCollided()[1], Damage.class).reset();
+				EntityPool.ManagedEntity other = entities.get(e.getCollided()[1]);
+				if (other.get(Damage.class) != null) {
+					other.get(Damage.class).reset();
+				} else {
+					other.add(new Damage(1));
 				}
-				else entities.add(e.getCollided()[1], new Damage(1));
 			}
 		});
 
@@ -127,19 +123,21 @@ public class FunctionalTest extends Launcher {
 	private void addGround() {
 		for (int i = -15; i <= 15; i += 2) {
 			for (int j = -15; j <= 15; j += 2) {
-				entities.create(
-						new Transform(new Vector(i, j, -1)),
-						groundGraphic
-				);
+				entities.create()
+						.add(
+								new Transform(new Vector(i, j, -1)),
+								groundGraphic
+						);
 			}
 		}
 	}
 	private void addWall() {
-		entities.create(
-				new Transform(new Vector(-3, 0), randRotation()),
-				new Bounds(new Vector(3, 3)),
-				new Graphic(boxGraphic)
-		);
+		entities.create()
+				.add(
+						new Transform(new Vector(-3, 0), randRotation()),
+						new Bounds(new Vector(3, 3)),
+						new Graphic(boxGraphic)
+				);
 	}
 	private void addBoxes(int num) {
 		int line = (int) Math.sqrt(num);
@@ -165,63 +163,76 @@ public class FunctionalTest extends Launcher {
 		Health health = new Health(20);
 
 		// Object
-		entities.create(
-				transform,
-				new Velocity(),
-				new Force(OBJECT_MASS),
-				new Damping(OBJECT_DAMPING),
-				new Chain(null, 0, playerTransform.getPosition()),
-				bounds,
-				graphic,
-				health
-		);
+		entities.create()
+				.add(
+						transform,
+						new Velocity(),
+						new Force(OBJECT_MASS),
+						new Damping(OBJECT_DAMPING),
+						new Chain(null, 0, playerTransform.getPosition()),
+						bounds,
+						graphic,
+						health
+				);
 		// Its health bar
-		entities.create(
-				new Transform(new Vector(0, .3f, 1), transform, false),
-				new Graphic(new HealthBar(health, HEALTH_BAR_SIZE)),
-				health,
-				new Damage()	// To be visible to DamageSystem
-		);
+		entities.create()
+				.add(
+						new Transform(new Vector(0, .3f, 1), transform, false),
+						new Graphic(new HealthBar(health, HEALTH_BAR_SIZE)),
+						health,
+						new Damage()  // To be visible to DamageSystem
+				);
 	}
 
 	private void addPlayer() {
-		Sprite sprite = new Sprite(images.get("player"), SPRITE_ORIENTATION_OFFSET, 4, 3, 1 / 60f);
+		Sprite sprite = new Sprite(images.get("player"), SPRITE_ORIENTATION_OFFSET, 4, 3, (long) (1e9 / 60));
 
 		Transform transform = playerTransform;
 		Spawner spawner = new Spawner(1, 4, .1f,
 				new WeightedDistribution<Supplier<Iterable<Component>>>()
-						.add(1, () -> Arrays.asList(
-								new Transform(new Vector(1, 1), randRotation()),
-								new Velocity(),
-								new Force(OBJECT_MASS),
-								new Damping(OBJECT_DAMPING),
-								new Bounds(BOX, RADIUS),
-								sphereGraphic
-						)));
+						.add(
+								() -> Arrays.asList(
+										new Transform(new Vector(1, 1), randRotation()),
+										new Velocity(),
+										new Force(OBJECT_MASS),
+										new Damping(OBJECT_DAMPING),
+										new Bounds(BOX, RADIUS),
+										sphereGraphic
+								),
+								1
+						)
+		);
 		spawner.setActive(false);
 		Health health = new Health(100);
 
-		player = entities.create(
-				transform,
-				new Velocity(MAX_SPEED),
-				new Force(PLAYER_MASS),
-				new Damping(PLAYER_DAMPING),
-				new Bounds(BOX, RADIUS),
-				spawner,
-				new Animation(sprite),
-				new Graphic(sprite),
-				new Input(true, actions.readKeys("config/keys")),
-				health
-		);
-		entities.create(
-				new Transform(new Vector(0, .3f, 1), transform, false),
-				new Graphic(new HealthBar(health, HEALTH_BAR_SIZE))
-		);
+		player = entities.create()
+				.add(
+						transform,
+						new Velocity(MAX_SPEED),
+						new Force(PLAYER_MASS),
+						new Damping(PLAYER_DAMPING),
+						new Bounds(BOX, RADIUS),
+						spawner,
+						new Animation(sprite),
+						new Graphic(sprite),
+						new Input(true, actions.readKeys("config/keys")),
+						health,
+						new ActionQueue()
+				)
+				.getId();
+		entities.create()
+				.add(
+						new Transform(new Vector(0, .3f, 1), transform, false),
+						new Graphic(new HealthBar(health, HEALTH_BAR_SIZE))
+				);
 	}
 
 	private void addCamera() {
-		entities.create(new Transform(camera.getPosition()),  // Chained camera
-				new Chain(playerTransform.getPosition(), 1));
+		entities.create()
+				.add(
+						new Transform(camera.getPosition()),  // Chained camera
+						new Chain(playerTransform.getPosition(), 1)
+				);
 	}
 
 	private static Vector randRotation() {

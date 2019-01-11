@@ -1,15 +1,16 @@
 package dev.kkorolyov.pancake.core.action
 
 import dev.kkorolyov.pancake.core.component.Transform
-import dev.kkorolyov.pancake.platform.entity.EntityPool
+import dev.kkorolyov.pancake.platform.action.Action
+import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.math.Vector
 
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
+import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
 
 class TransformActionSpec extends Specification {
 	@Shared Vector position = randVector()
@@ -23,16 +24,15 @@ class TransformActionSpec extends Specification {
 		getOrientation() >> transformRotation
 	}
 	int id = randInt()
-	EntityPool entities = Mock() {
-		contains(id, signature) >> true
-		get(id, Transform) >> transform
+	Entity entity = Mock() {
+		get(Transform) >> transform
 	}
 
-	TransformAction action = new TransformAction(position, rotation)
+	Action action = new TransformAction(position, rotation)
 
 	def "sets position"() {
 		when:
-		action.accept(id, entities)
+		action.apply(entity)
 
 		then:
 		1 * transformPosition.set(position)
@@ -40,7 +40,7 @@ class TransformActionSpec extends Specification {
 
 	def "sets rotation"() {
 		when:
-		action.accept(id, entities)
+		action.apply(entity)
 
 		then:
 		1 * transformRotation.set(rotation)
@@ -48,7 +48,7 @@ class TransformActionSpec extends Specification {
 	def "does not set rotation if null"() {
 		when:
 		action = new TransformAction(position)
-		action.accept(id, entities)
+		action.apply(entity)
 
 		then:
 		0 * transformRotation.set(_)

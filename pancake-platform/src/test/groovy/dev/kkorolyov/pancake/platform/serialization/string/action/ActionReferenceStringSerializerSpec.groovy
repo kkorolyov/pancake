@@ -6,11 +6,11 @@ import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 
-class RegisteredActionStringSerializerSpec extends BaseSerializerSpec<Action, String> {
+class ActionReferenceStringSerializerSpec extends BaseSerializerSpec<Action, String> {
 	def setup() {
 		reps << [(Mock(Action)): randString()]
 
-		serializer = new RegisteredActionStringSerializer(Mock(ActionRegistry) {
+		serializer = new ActionReferenceStringSerializer(Mock(ActionRegistry) {
 			get({this.&hasOut}) >> {inRep(it[0])}
 			getName({this.&hasIn}) >> {outRep(it[0])}
 		})

@@ -1,18 +1,18 @@
 package dev.kkorolyov.killstreek.item
 
 import dev.kkorolyov.killstreek.media.Sprite
-import dev.kkorolyov.pancake.platform.action.FreeFormAction
+import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
 
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
-
 class ItemSpec extends Specification {
-	@Shared String name = "item"
-	@Shared Sprite sprite = Mock()
+	@Shared
+	String name = "item"
+	@Shared
+	Sprite sprite = Mock()
 
 	int id = randInt()
 	EntityPool entities = Mock() {
@@ -27,10 +27,10 @@ class ItemSpec extends Specification {
 	}
 
 	def "apply affects"() {
-		Set<Integer> affected = []
+		Set<Entity> affected = []
 
 		when:
-		item.addEffect(new FreeFormAction({ id, entities -> affected.add(id) }))
+		item.addEffect({ entity -> affected.add(entity) })
 		item.apply(id, entities)
 
 		then:

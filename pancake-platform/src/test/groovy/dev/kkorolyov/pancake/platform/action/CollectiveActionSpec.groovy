@@ -1,12 +1,9 @@
 package dev.kkorolyov.pancake.platform.action
 
-class CollectiveActionSpec extends ActionSpec {
-	List<Action> subActions = (1..4).collect {Mock(Action)}
+class CollectiveActionSpec {
+	List<Action> subActions = (1..4).collect { Mock(Action) }
 
-	@Override
-	CollectiveAction initAction() {
-		return new CollectiveAction(subActions)
-	}
+	Action action = new CollectiveAction(subActions)
 
 	def "applies all subactions if accepted"() {
 		when:
