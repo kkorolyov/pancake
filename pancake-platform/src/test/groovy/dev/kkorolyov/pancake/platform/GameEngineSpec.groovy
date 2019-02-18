@@ -1,28 +1,30 @@
 package dev.kkorolyov.pancake.platform
 
+import dev.kkorolyov.pancake.platform.entity.Component
+import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster
 import dev.kkorolyov.pancake.platform.utility.Limiter
-import dev.kkorolyov.pancake.platform.utility.PerformanceCounter
 
 import spock.lang.Specification
 
-import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
+import static dev.kkorolyov.simplespecs.SpecUtilities.getField
 import static dev.kkorolyov.simplespecs.SpecUtilities.randLong
-import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class GameEngineSpec extends Specification {
 	long dt = randLong()
-	int id = randInt()
-	Signature signature = new Signature(Object)
+	Signature signature = new Signature(MockComponent)
 	ManagedEventBroadcaster events = Mock()
-	PerformanceCounter performanceCounter = Mock()
+
 	EntityPool entities = new EntityPool(events)
+	Entity entity = entities.create()
+			.add(new MockComponent())
+
 	GameSystem deadSystem = Mock() {
 		getSignature() >> signature
 		getLimiter() >> Mock(Limiter)
-		setResources() >> it
+		setResources(_) >> it
 	}
 	GameSystem readySystem = Mock() {
 		getSignature() >> signature
@@ -33,11 +35,7 @@ class GameEngineSpec extends Specification {
 		setResources(_) >> it
 	}
 
-	GameEngine engine = new GameEngine(events, entities, readySystem)
-
-	def setup() {
-		setField("performanceCounter", engine, performanceCounter)
-	}
+	GameEngine engine = new GameEngine(events, entities, readySystem, deadSystem)
 
 	def "invokes 'before' and 'after' on ready systems on update"() {
 		when:
@@ -59,15 +57,18 @@ class GameEngineSpec extends Specification {
 		engine.update(dt)
 
 		then:
-		1 * readySystem.update(id, dt)
+		1 * readySystem.update(entity, dt)
+		0 * deadSystem.update(_, _)
 	}
 	def "does not invoke 'update' on system if no relevant entities"() {
 		when:
 		engine.update(dt)
 
 		then:
-		1 * entities.forEachMatching(signature, _) >> {}
-		0 * readySystem.update(_, dt)
+		1 * readySystem.getSignature() >> new Signature(new Component() {}.class)
+
+		0 * readySystem.update(_, _)
+		0 * deadSystem.update(_, _)
 	}
 
 	def "shares services with added system"() {
@@ -75,7 +76,7 @@ class GameEngineSpec extends Specification {
 		engine.add(readySystem)
 
 		then:
-		1 * readySystem.setResources(new SharedResources(events, performanceCounter))
+		1 * readySystem.setResources(new SharedResources(events, getField("performanceCounter", engine)))
 	}
 	def "unshares services from removed system"() {
 		when:
@@ -99,4 +100,6 @@ class GameEngineSpec extends Specification {
 		then:
 		1 * readySystem.detach()
 	}
+
+	class MockComponent implements Component {}
 }
