@@ -3,10 +3,12 @@ package dev.kkorolyov.killstreek.item
 import dev.kkorolyov.killstreek.media.Sprite
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
-import dev.kkorolyov.pancake.platform.entity.Signature
+import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster
 
 import spock.lang.Shared
 import spock.lang.Specification
+
+import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
 
 class ItemSpec extends Specification {
 	@Shared
@@ -15,9 +17,8 @@ class ItemSpec extends Specification {
 	Sprite sprite = Mock()
 
 	int id = randInt()
-	EntityPool entities = Mock() {
-		contains(id, new Signature()) >> true
-	}
+	Entity entity = new EntityPool(new ManagedEventBroadcaster())
+			.create()
 
 	Item item = new Item(name, sprite) {
 		@Override
@@ -31,15 +32,15 @@ class ItemSpec extends Specification {
 
 		when:
 		item.addEffect({ entity -> affected.add(entity) })
-		item.apply(id, entities)
+		item.apply(entity)
 
 		then:
-		affected == [id].toSet()
+		affected == [entity].toSet()
 	}
 
 	def "apply excepts if no effects"() {
 		when:
-		item.apply(id, entities)
+		item.apply(entity)
 
 		then:
 		thrown(NoSuchElementException)
