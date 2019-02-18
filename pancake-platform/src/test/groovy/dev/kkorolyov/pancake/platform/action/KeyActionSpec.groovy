@@ -1,21 +1,25 @@
 package dev.kkorolyov.pancake.platform.action
 
+import dev.kkorolyov.pancake.platform.entity.Entity
 import javafx.scene.input.KeyCode
 import javafx.scene.input.MouseButton
 
 import spock.lang.Shared
+import spock.lang.Specification
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randKeyCode
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randMouseButton
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
-class KeyActionSpec {
+class KeyActionSpec extends Specification {
 	@Shared float dt = 0
 	@Shared Set<Enum> inputs = [KeyCode.A, MouseButton.PRIMARY]
+	@Shared Entity entity = Mock()
+
 	MultiStageAction delegate = Mock()
 
-	Action action = new KeyAction(delegate, inputs)
+	KeyAction action = new KeyAction(delegate, inputs)
 
 	def "accepts inputs of valid types"() {
 		when:
@@ -50,7 +54,7 @@ class KeyActionSpec {
 	def "inclusive superset of inputs translates to ACTIVATE"() {
 		when:
 		action.arm(values, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
 		1 * delegate.arm(ACTIVATE, dt)
@@ -61,7 +65,7 @@ class KeyActionSpec {
 	def "exclusive subset of inputs translates to DEACTIVATE"() {
 		when:
 		action.arm(values, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
 		1 * delegate.arm(DEACTIVATE, dt)
