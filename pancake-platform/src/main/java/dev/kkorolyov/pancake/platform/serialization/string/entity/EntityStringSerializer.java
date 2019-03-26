@@ -33,7 +33,7 @@ public class EntityStringSerializer extends StringSerializer<Entity> {
 	 * @param context associated entity pool
 	 */
 	public EntityStringSerializer(EntityPool context) {
-		super("\\[\\s*" + COMPONENT_PATTERN + "(,\\s*" + COMPONENT_PATTERN + ")*\\s*]");
+		super("\\[\\s*(" + COMPONENT_PATTERN + "(,\\s*" + COMPONENT_PATTERN + ")*)?\\s*]");
 		this.context = context;
 	}
 

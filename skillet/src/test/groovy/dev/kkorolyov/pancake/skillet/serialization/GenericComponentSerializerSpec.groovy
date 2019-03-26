@@ -5,8 +5,8 @@ import dev.kkorolyov.pancake.platform.serialization.string.entity.ComponentStrin
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 import dev.kkorolyov.pancake.skillet.model.GenericComponent
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
-import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
+import static dev.kkorolyov.simplespecs.SpecUtilities.randString
+import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class GenericComponentSerializerSpec extends BaseSerializerSpec {
 	String name = randString()
