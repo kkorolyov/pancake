@@ -2,14 +2,14 @@ package dev.kkorolyov.pancake.core.component
 
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector
-import dev.kkorolyov.pancake.platform.math.WeightedDistribution
+import dev.kkorolyov.simplestructs.WeightedDistribution
 
 import spock.lang.Specification
 
 import java.util.function.Supplier
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
+import static dev.kkorolyov.simplespecs.SpecUtilities.randFloat
 
 class SpawnerSpec extends Specification {
 	float minRadius = randFloat()

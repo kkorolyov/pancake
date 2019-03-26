@@ -6,13 +6,13 @@ import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 /**
  * Serializes actions found in the {@link ActionRegistry}.
  */
-public class RegisteredActionStringSerializer extends ActionStringSerializer<Action> {
+public class ActionReferenceStringSerializer extends ActionStringSerializer<Action> {
 	/**
 	 * Constructs a new registered action serializer.
 	 * @param context associated action registry
 	 */
-	public RegisteredActionStringSerializer(ActionRegistry context) {
-		super("[_a-zA-Z]+", context);
+	public ActionReferenceStringSerializer(ActionRegistry context) {
+		super("\\w+", context);
 	}
 
 	@Override

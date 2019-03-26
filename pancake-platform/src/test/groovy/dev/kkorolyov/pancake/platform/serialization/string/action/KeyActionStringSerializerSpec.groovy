@@ -18,6 +18,6 @@ class KeyActionStringSerializerSpec extends BaseSerializerSpec<KeyAction, String
 		reps << [(new KeyAction(delegateAction, inputs)): "$inputs=$delegateActionS"]
 
 		serializer = new KeyActionStringSerializer(Mock(ActionRegistry))
-		mockAutoSerializer([delegateAction], [delegateActionS])
+		mockAutoSerializer([(delegateAction): delegateActionS])
 	}
 }

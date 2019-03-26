@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.core.action;
 
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 import java.util.Objects;
@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Sets a transform.
  */
-public class TransformAction extends Action {
+public class TransformAction implements Action {
 	private final Vector position;
 	private final Vector rotation;
 
@@ -27,15 +27,13 @@ public class TransformAction extends Action {
 	 * @param rotation rotation to set on accepted entities
 	 */
 	public TransformAction(Vector position, Vector rotation) {
-		super(Transform.class);
-
 		this.position = position;
 		this.rotation = rotation;
 	}
 
 	@Override
-	protected void apply(int id, EntityPool entities) {
-		Transform entityTransform = entities.get(id, Transform.class);
+	public void apply(Entity entity) {
+		Transform entityTransform = entity.get(Transform.class);
 
 		entityTransform.getPosition().set(position);
 		if (rotation != null) entityTransform.getOrientation().set(rotation);

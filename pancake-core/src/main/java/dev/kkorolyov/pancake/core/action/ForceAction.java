@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.core.action;
 
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 import java.util.Objects;
@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Applies a force.
  */
-public class ForceAction extends Action {
+public class ForceAction implements Action {
 	private final Vector force;
 
 	/**
@@ -18,14 +18,12 @@ public class ForceAction extends Action {
 	 * @param force force to add to accepted entities
 	 */
 	public ForceAction(Vector force) {
-		super(Force.class);
-
 		this.force = force;
 	}
 
 	@Override
-	protected void apply(int id, EntityPool entities) {
-		entities.get(id, Force.class)
+	public void apply(Entity entity) {
+		entity.get(Force.class)
 				.getForce().add(force);
 	}
 

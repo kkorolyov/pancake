@@ -9,6 +9,12 @@
             ],
             "locked": "1.1.1"
         },
+        "dev.kkorolyov:simple-funcs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.3"
+        },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
@@ -24,6 +30,12 @@
         "dev.kkorolyov:simple-specs": {
             "locked": "1.0.1",
             "requested": "1.+"
+        },
+        "dev.kkorolyov:simple-structs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "2.0-SNAPSHOT"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -40,6 +52,12 @@
             ],
             "locked": "1.1.1"
         },
+        "dev.kkorolyov:simple-funcs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.3"
+        },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
@@ -55,6 +73,12 @@
         "dev.kkorolyov:simple-specs": {
             "locked": "1.0.1",
             "requested": "1.+"
+        },
+        "dev.kkorolyov:simple-structs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "2.0-SNAPSHOT"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -71,6 +95,12 @@
             ],
             "locked": "1.1.1"
         },
+        "dev.kkorolyov:simple-funcs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.3"
+        },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
@@ -86,6 +116,12 @@
         "dev.kkorolyov:simple-specs": {
             "locked": "1.0.1",
             "requested": "1.+"
+        },
+        "dev.kkorolyov:simple-structs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "2.0-SNAPSHOT"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -102,6 +138,12 @@
             ],
             "locked": "1.1.1"
         },
+        "dev.kkorolyov:simple-funcs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.3"
+        },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
@@ -117,6 +159,12 @@
         "dev.kkorolyov:simple-specs": {
             "locked": "1.0.1",
             "requested": "1.+"
+        },
+        "dev.kkorolyov:simple-structs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "2.0-SNAPSHOT"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -133,6 +181,12 @@
             ],
             "locked": "1.1.1"
         },
+        "dev.kkorolyov:simple-funcs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "1.3"
+        },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
@@ -148,6 +202,12 @@
         "dev.kkorolyov:simple-specs": {
             "locked": "1.0.1",
             "requested": "1.+"
+        },
+        "dev.kkorolyov:simple-structs": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "2.0-SNAPSHOT"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",

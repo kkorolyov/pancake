@@ -86,7 +86,7 @@ class Skillet : Application() {
 		}
 	}
 	private fun loadWorkspace() {
-		ResourceHandler.chooseLoad("Load Workspace", extensionFilters = ExtensionFilter("Skillet Workspaces", "*$WORKSPACE_FILE_EXTENSION"))?.let {
+		ResourceHandler.chooseLoad("Load Workspace", extensionFilters = *arrayOf(ExtensionFilter("Skillet Workspaces", "*$WORKSPACE_FILE_EXTENSION")))?.let {
 			workspace.addWorkspace(ResourceHandler.load(it.toString()))
 		}
 	}

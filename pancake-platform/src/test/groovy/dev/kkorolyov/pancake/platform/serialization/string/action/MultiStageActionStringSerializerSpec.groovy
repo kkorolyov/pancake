@@ -13,14 +13,15 @@ import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class MultiStageActionStringSerializerSpec extends BaseSerializerSpec<MultiStageAction, String> {
 	float holdThreshold = randFloat()
-	List<Action> actions = (1..3).collect {Mock(Action)}
-	List<String> actionsS = actions.collect {randString()}
+	Map<Action, String> inOut = (1..3).collectEntries {
+		[(Mock(Action)): randString()]
+	}
 
 	def setup() {
-		reps << [(new MultiStageAction(actions[0], actions[1], actions[2], holdThreshold)): actionsS.stream().collect(Collectors.joining(", ", "{", "}"))]
+		reps << [(new MultiStageAction(inOut.keySet()[0], inOut.keySet()[1], inOut.keySet()[2], holdThreshold)): inOut.values().stream().collect(Collectors.joining(", ", "{", "}"))]
 
 		serializer = new MultiStageActionStringSerializer(Mock(ActionRegistry))
-		mockAutoSerializer(actions, actionsS)
+		mockAutoSerializer(inOut)
 		setField("holdThreshold", serializer, holdThreshold)
 	}
 }

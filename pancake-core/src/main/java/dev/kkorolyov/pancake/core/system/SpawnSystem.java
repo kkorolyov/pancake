@@ -2,11 +2,12 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Spawner;
 import dev.kkorolyov.pancake.core.component.Transform;
-import dev.kkorolyov.pancake.core.event.Spawn;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Component;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.CreateEntity;
+import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 /**
  * Spawns entity clones from spawner entities.
@@ -16,26 +17,18 @@ public class SpawnSystem extends GameSystem {
 	 * Constructs a new spawn system.
 	 */
 	public SpawnSystem() {
-		super(new Signature(Spawner.class,
-												Transform.class));
-	}
-	@Override
-	public void attach() {
-		events.register(Spawn.class, e -> {
-			Spawner spawner = entities.get(e.getId(), Spawner.class);
-			Transform transform = entities.get(e.getId(), Transform.class);
-
-			Iterable<Component> clone = spawner.spawn(transform.getPosition());
-			events.enqueue(new CreateEntity(clone));
-		});
+		super(
+				new Signature(Spawner.class, Transform.class),
+				new Limiter(0)
+		);
 	}
 
 	@Override
-	public void update(int id, float dt) {
-		Spawner spawner = entities.get(id, Spawner.class);
-		Transform transform = entities.get(id, Transform.class);
+	public void update(Entity entity, long dt) {
+		Spawner spawner = entity.get(Spawner.class);
+		Transform transform = entity.get(Transform.class);
 
 		Iterable<Component> clone = spawner.spawn(transform.getPosition(), dt);
-		if (clone != null) events.enqueue(new CreateEntity(clone));
+		if (clone != null) resources.events.enqueue(new CreateEntity(clone));
 	}
 }

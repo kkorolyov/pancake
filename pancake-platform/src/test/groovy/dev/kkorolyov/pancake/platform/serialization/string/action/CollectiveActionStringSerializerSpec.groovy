@@ -10,13 +10,14 @@ import java.util.stream.Collectors
 import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 
 class CollectiveActionStringSerializerSpec extends BaseSerializerSpec<CollectiveAction, String> {
-	List<Action> actions = (1..5).collect {Mock(Action)}
-	List<String> actionsS = actions.collect {randString()}
+	Map<Action, String> inOut = (1..5).collectEntries {
+		[(Mock(Action)): randString()]
+	}
 
 	def setup() {
-		reps << [(new CollectiveAction(actions)): actionsS.stream().collect(Collectors.joining(", ", "[", "]"))]
+		reps << [(new CollectiveAction(inOut.keySet())): inOut.values().stream().collect(Collectors.joining(", ", "[", "]"))]
 
 		serializer = new CollectiveActionStringSerializer(Mock(ActionRegistry))
-		mockAutoSerializer(actions, actionsS)
+		mockAutoSerializer(inOut)
 	}
 }

@@ -1,3 +1,4 @@
+dev.kkorolyov.pancake.core.system.ActionSystem
 dev.kkorolyov.pancake.core.system.InputSystem
 dev.kkorolyov.pancake.core.system.DampingSystem
 dev.kkorolyov.pancake.core.system.AccelerationSystem

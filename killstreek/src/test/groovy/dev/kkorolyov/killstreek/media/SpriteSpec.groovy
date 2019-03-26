@@ -14,7 +14,7 @@ import static java.lang.Math.round
 class SpriteSpec extends Specification {
 	@Shared int xFrames = 5
 	@Shared int yFrames = 10
-	@Shared float frameInterval = 0.1
+	@Shared long frameInterval = 1
 	@Shared Vector orientationOffset = new Vector()
 	Collection<Image> layers = (1..4).collect { Mock(Image) }
 	CompositeImage image = Mock() {
@@ -40,7 +40,7 @@ class SpriteSpec extends Specification {
 
 	def "steps 1 frame each frameInterval"() {
 		when:
-		sprite.tick(step as float)
+		sprite.tick(step)
 
 		then:
 		sprite.getFrame() == round(step / frameInterval)
@@ -52,7 +52,7 @@ class SpriteSpec extends Specification {
 		sprite = new Sprite(image, orientationOffset, xFrames, yFrames, -frameInterval)
 
 		when:
-		sprite.tick(step as float)
+		sprite.tick(step)
 
 		then:
 		sprite.getFrame() == round(xFrames * yFrames - step / frameInterval)

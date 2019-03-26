@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.platform.action;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.Resources;
-import dev.kkorolyov.pancake.platform.serialization.string.action.ActionContainerStringSerializer;
+import dev.kkorolyov.pancake.platform.serialization.string.action.ActionAssignmentStringSerializer;
 import dev.kkorolyov.pancake.platform.serialization.string.action.KeyActionStringSerializer;
 import dev.kkorolyov.simplelogs.Logger;
 
@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +20,7 @@ public class ActionRegistry {
 
 	private final Map<String, Action> actions = new HashMap<>();
 
-	private final ActionContainerStringSerializer actionContainerStringSerializer = new ActionContainerStringSerializer(this);
+	private final ActionAssignmentStringSerializer actionAssignmentStringSerializer = new ActionAssignmentStringSerializer(this);
 	private final KeyActionStringSerializer keyActionStringSerializer = new KeyActionStringSerializer(this);
 
 	/**
@@ -35,15 +34,14 @@ public class ActionRegistry {
 	/**
 	 * Returns the name under which an action is stored in this registry.
 	 * @param action action to get associated name for
-	 * @return name bound to {@code action}
-	 * @throws NoSuchElementException if this registry does not contain {@code action}
+	 * @return name bound to {@code action}, or {@code null} if no such action
 	 */
 	public String getName(Action action) {
 		return actions.entrySet().stream()
 				.filter(entry -> entry.getValue().equals(action))
 				.findFirst()
 				.map(Entry::getKey)
-				.orElseThrow(NoSuchElementException::new);
+				.orElse(null);
 	}
 
 	/**
@@ -65,11 +63,10 @@ public class ActionRegistry {
 	 */
 	public ActionRegistry put(String path) {
 		Arrays.stream(Resources.string(path).split("\\R"))
-				.filter(actionContainerStringSerializer::accepts)
+				.filter(actionAssignmentStringSerializer::accepts)
 				.peek(actionS -> log.info("Parsing action: {}", actionS))
-				.map(actionContainerStringSerializer::read)
-				.peek(actionContainer -> log.debug("Parsed to {}={}", actionContainer.name, actionContainer.action))
-				.forEach(container -> put(container.name, container.action));
+				.forEach(actionAssignmentStringSerializer::read);
+
 		return this;
 	}
 

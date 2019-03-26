@@ -19,14 +19,14 @@ public class Sprite implements Renderable, Animated {
 	private final Vector frames = new Vector();
 	private final Vector frameSize = new Vector();
 
-	private float frameInterval;
-	private float currentFrameTime;
+	private long frameInterval;
+	private long currentFrameTime;
 	private int frame;
 	private boolean active = true;
 
 	/**
 	 * Constructs a new static sprite.
-	 * @see #Sprite(CompositeImage, Vector, int, int, float)
+	 * @see #Sprite(CompositeImage, Vector, int, int, long)
 	 */
 	public Sprite(CompositeImage image, Vector orientationOffset) {
 		this(image, orientationOffset, 1, 1, 0);
@@ -37,9 +37,9 @@ public class Sprite implements Renderable, Animated {
 	 * @param orientationOffset angle vector used for padding sprite orientation calculation
 	 * @param xFrames number of frames in {@code image} along x-axis
 	 * @param yFrames number of frames in {@code image} along y-axis
-	 * @param frameInterval seconds between frame changes
+	 * @param frameInterval {@code ns} between frame changes
 	 */
-	public Sprite(CompositeImage image, Vector orientationOffset, int xFrames, int yFrames, float frameInterval) {
+	public Sprite(CompositeImage image, Vector orientationOffset, int xFrames, int yFrames, long frameInterval) {
 		this.image = image;
 		this.orientationOffset = orientationOffset;
 
@@ -68,7 +68,7 @@ public class Sprite implements Renderable, Animated {
 	}
 
 	@Override
-	public void tick(float dt) {
+	public void tick(long dt) {
 		if (!isActive()) return;
 
 		currentFrameTime += dt;
@@ -105,11 +105,11 @@ public class Sprite implements Renderable, Animated {
 	}
 
 	@Override
-	public float getFrameInterval() {
+	public long getFrameInterval() {
 		return frameInterval;
 	}
 	@Override
-	public void setFrameInterval(float frameInterval) {
+	public void setFrameInterval(long frameInterval) {
 		this.frameInterval = frameInterval;
 	}
 

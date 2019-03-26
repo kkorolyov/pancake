@@ -24,4 +24,13 @@ class SpecUtilities {
 	static Vector randVector() {
 		return new Vector(randFloat(Integer.MAX_VALUE), randFloat(Integer.MAX_VALUE), randFloat(Integer.MAX_VALUE))
 	}
+
+	/**
+	 * Wraps a float in a {@code BigDecimal}.
+	 * @param value float value to wrap
+	 * @return {@code value} as a {@code BigDecimal}
+	 */
+	static BigDecimal bigDecimal(float value) {
+		return BigDecimal.valueOf(value)
+	}
 }

@@ -18,21 +18,23 @@ abstract class BaseSerializerSpec<I, O> extends Specification {
 
 	def "reads"() {
 		expect:
-		reps.each {k, v ->
+		reps.each { k, v ->
 			assert serializer.read(v) == k
 		}
 	}
 	def "writes"() {
 		expect:
-		reps.each {k,v ->
+		reps.each { k, v ->
 			assert serializer.read(serializer.write(k)) == k
 		}
 	}
 
-	protected <T> void mockAutoSerializer(List<T> inList, List<O> outList) {
+	protected <T> void mockAutoSerializer(Map<T, O> inOut) {
 		setField("autoSerializer", serializer, Mock(AutoSerializer) {
-			read({it in outList}) >> {inList[outList.indexOf(it[0])]}
-			write({it in inList}) >> {outList[inList.indexOf(it[0])]}
+			inOut.each { i, o ->
+				it.read(o) >> i
+				it.write(i) >> o
+			}
 		})
 	}
 
@@ -47,7 +49,7 @@ abstract class BaseSerializerSpec<I, O> extends Specification {
 		return reps[(inRep)]
 	}
 	protected I inRep(O outRep) {
-		return reps.findResult(null) {k, v ->
+		return reps.findResult(null) { k, v ->
 			if (v == outRep) return k
 		}
 	}

@@ -1,114 +1,116 @@
 package dev.kkorolyov.pancake.platform.action
 
+import dev.kkorolyov.pancake.platform.entity.Entity
+
 import spock.lang.Shared
+import spock.lang.Specification
 
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
-class MultiStageActionSpec extends ActionSpec {
+class MultiStageActionSpec extends Specification {
 	@Shared float holdThreshold = 0
 	@Shared float dt = 0
+	@Shared Entity entity = Mock()
+
 	Action start = Mock()
 	Action hold = Mock()
 	Action end = Mock()
 
-	@Override
-	MultiStageAction initAction() {
-		return new MultiStageAction(start, hold, end, holdThreshold)
-	}
+	MultiStageAction action = new MultiStageAction(start, hold, end, holdThreshold)
 
 	def "does nothing if not armed before applied"() {
 		when:
-		action.accept(id, entities)
+		action.apply(entity)
 
 		then:
-		0 * _.accept(_)
+		0 * _.apply(_)
 	}
 
 	def "avoids invoking null delegate actions"() {
 		when:
 		action = new MultiStageAction(null, null, null, holdThreshold)
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(DEACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		0 * _.accept(_)
+		0 * _.apply(_)
 	}
 
 	def "{ACTIVATE} -> start"() {
 		when:
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		1 * start.accept(id, entities)
+		1 * start.apply(entity)
 		0 * _.accept(_)
 	}
 	def "{DEACTIVATE} -> none"() {
 		when:
 		action.arm(DEACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		0 * _.accept(_)
+		0 * _.apply(_)
 	}
 
 	def "{ACTIVATE, ACTIVATE} -> start, hold"() {
 		when:
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		1 * start.accept(id, entities)
-		1 * hold.accept(id, entities)
-		0 * _.accept(_)
+		1 * start.apply(entity)
+		1 * hold.apply(entity)
+		0 * _.apply(_)
 	}
 	def "{ACTIVATE, DEACTIVATE} -> start, end"() {
 		when:
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(DEACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		1 * start.accept(id, entities)
-		1 * end.accept(id, entities)
-		0 * _.accept(_)
+		1 * start.apply(entity)
+		1 * end.apply(entity)
+		0 * _.apply(_)
 	}
 
 	def "{ACTIVATE, ACTIVATE, ACTIVATE} -> start, hold, none"() {
 		when:
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		1 * start.accept(id, entities)
-		1 * hold.accept(id, entities)
-		0 * _.accept(_)
+		1 * start.apply(entity)
+		1 * hold.apply(entity)
+		0 * _.apply(_)
 	}
 	def "{ACTIVATE, ACTIVATE, DEACTIVATE} -> start, hold, end"() {
 		when:
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(DEACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		1 * start.accept(id, entities)
-		1 * hold.accept(id, entities)
-		1 * end.accept(id, entities)
+		1 * start.apply(entity)
+		1 * hold.apply(entity)
+		1 * end.apply(entity)
 	}
 
 	def "{ACTIVATE, ACTIVATE(before holdThreshold)} -> start, none"() {
@@ -118,12 +120,12 @@ class MultiStageActionSpec extends ActionSpec {
 
 		when:
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 		action.arm(ACTIVATE, dt)
-				.apply(id, entities)
+				.apply(entity)
 
 		then:
-		1 * start.accept(id, entities)
-		0 * _.accept(_)
+		1 * start.apply(entity)
+		0 * _.apply(_)
 	}
 }
