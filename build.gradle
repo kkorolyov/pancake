@@ -45,6 +45,9 @@ subprojects {
 		maven {
 			url 'https://dl.bintray.com/kkorolyov/java'  // SimpleTools
 		}
+		maven {
+			url 'https://dl.bintray.com/kkorolyov/groovy'  // SimpleSpecs
+		}
 	}
 }
 
