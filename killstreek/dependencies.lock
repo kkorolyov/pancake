@@ -34,7 +34,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "2.0-SNAPSHOT"
+            "locked": "2.0"
         }
     },
     "default": {
@@ -75,7 +75,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "2.0-SNAPSHOT"
+            "locked": "2.0"
         }
     },
     "runtimeClasspath": {
@@ -116,12 +116,12 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "2.0-SNAPSHOT"
+            "locked": "2.0"
         }
     },
     "testCompileClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.9",
+            "locked": "3.2.10",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-core": {
@@ -165,7 +165,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "2.0-SNAPSHOT"
+            "locked": "2.0"
         },
         "org.objenesis:objenesis": {
             "locked": "1.4",
@@ -178,7 +178,7 @@
     },
     "testRuntimeClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.9",
+            "locked": "3.2.10",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-core": {
@@ -229,7 +229,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "2.0-SNAPSHOT"
+            "locked": "2.0"
         },
         "org.objenesis:objenesis": {
             "locked": "1.4",

@@ -17,7 +17,7 @@
             "requested": "4.+"
         },
         "dev.kkorolyov:simple-structs": {
-            "locked": "2.0-SNAPSHOT",
+            "locked": "2.0",
             "requested": "2.+"
         }
     },
@@ -39,7 +39,7 @@
             "requested": "4.+"
         },
         "dev.kkorolyov:simple-structs": {
-            "locked": "2.0-SNAPSHOT",
+            "locked": "2.0",
             "requested": "2.+"
         }
     },
@@ -61,13 +61,13 @@
             "requested": "4.+"
         },
         "dev.kkorolyov:simple-structs": {
-            "locked": "2.0-SNAPSHOT",
+            "locked": "2.0",
             "requested": "2.+"
         }
     },
     "testCompileClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.9",
+            "locked": "3.2.10",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-test-utils": {
@@ -94,7 +94,7 @@
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-structs": {
-            "locked": "2.0-SNAPSHOT",
+            "locked": "2.0",
             "requested": "2.+"
         },
         "org.objenesis:objenesis": {
@@ -108,7 +108,7 @@
     },
     "testRuntimeClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.9",
+            "locked": "3.2.10",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-platform": {
@@ -159,7 +159,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "2.0-SNAPSHOT",
+            "locked": "2.0",
             "requested": "2.+"
         },
         "org.objenesis:objenesis": {
