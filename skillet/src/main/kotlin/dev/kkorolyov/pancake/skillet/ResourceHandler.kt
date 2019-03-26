@@ -33,8 +33,8 @@ object ResourceHandler {
 	 * @param extensionFilters optional extension filters
 	 * @return chosen file
 	 */
-	fun chooseLoad(title: String = "", initialDirectory:File = File("").absoluteFile, vararg extensionFilters: ExtensionFilter): File? =
-			buildFileChooser(title, initialDirectory = initialDirectory, extensionFilters = *extensionFilters).showOpenDialog(stage)
+	fun chooseLoad(title: String = "", initialDirectory: File? = File("").absoluteFile, vararg extensionFilters: ExtensionFilter): File? =
+			buildFileChooser(title, initialDirectory = initialDirectory ?: File(""), extensionFilters = *extensionFilters).showOpenDialog(stage)
 	/**
 	 * Opens a file chooser to load multiple files.
 	 * @param title file chooser title

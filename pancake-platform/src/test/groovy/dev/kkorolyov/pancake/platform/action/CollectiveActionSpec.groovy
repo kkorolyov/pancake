@@ -1,31 +1,24 @@
 package dev.kkorolyov.pancake.platform.action
 
-class CollectiveActionSpec extends ActionSpec {
-	List<Action> subActions = (1..4).collect {Mock(Action)}
+import dev.kkorolyov.pancake.platform.entity.Entity
 
-	@Override
-	CollectiveAction initAction() {
-		return new CollectiveAction(subActions)
-	}
+import spock.lang.Shared
+import spock.lang.Specification
 
-	def "applies all subactions if accepted"() {
+class CollectiveActionSpec extends Specification {
+	@Shared Entity entity = Mock()
+
+	List<Action> subActions = (1..4).collect { Mock(Action) }
+
+	Action action = new CollectiveAction(subActions)
+
+	def "applies all subactions"() {
 		when:
-		action.accept(id, entities)
+		action.apply(entity)
 
 		then:
-		1 * entities.contains(id, signature) >> true
 		subActions.each {
-			1 * it.accept(id, entities)
-		}
-	}
-	def "applies no subactions if not accepted"() {
-		when:
-		action.accept(id, entities)
-
-		then:
-		1 * entities.contains(id, signature) >> false
-		subActions.each {
-			0 * it.accept(_, _)
+			1 * it.apply(entity)
 		}
 	}
 }

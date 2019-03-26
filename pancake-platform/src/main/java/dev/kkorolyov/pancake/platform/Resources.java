@@ -6,21 +6,11 @@ import dev.kkorolyov.simplefiles.stream.OutStrategy;
 import dev.kkorolyov.simplefiles.stream.StreamStrategies;
 import dev.kkorolyov.simplelogs.Logger;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * Provides access to resources.
@@ -88,60 +78,6 @@ public final class Resources {
 	 */
 	public static void string(String path, String s) {
 		Files.bytes(out(path), s.getBytes(StandardCharsets.UTF_8));
-	}
-
-	/**
-	 * Returns all service providers of a type.
-	 * Providers are instantiated using the constructor matching the types of {@code parameters}.
-	 * If providers do not contain a constructor matching {@code parameters}, the no-arg constructor is used instead.
-	 * @param providerType provider base type
-	 * @param parameters constructor parameters for new instances of {@code providerType}
-	 */
-	public static <T> Collection<T> providers(Class<T> providerType, Object... parameters) {
-		try {
-			return Collections.list(ClassLoader.getSystemResources("META-INF/services/" + providerType.getName())).stream()
-					.flatMap(url -> {
-						try (BufferedReader in = Files.read(url.openStream())) {
-							return in.lines()
-									.map(name -> instantiate(name, parameters))
-									.map(providerType::cast)
-									.collect(Collectors.toCollection(LinkedHashSet::new))	// Intermediate collection to allow closing the reader
-									.stream();
-						} catch (IOException e) {
-							throw new UncheckedIOException(e);
-						}
-					}).collect(Collectors.toCollection(LinkedHashSet::new));
-		} catch (IOException e) {
-			throw new UncheckedIOException(e);
-		}
-	}
-	private static Object instantiate(String name, Object... parameters) {
-		Class<?> c;
-		try {
-			c = Class.forName(name);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-		Constructor<?> constructor;
-		boolean noArg = false;
-		try {
-			constructor = c.getConstructor(
-					Arrays.stream(parameters)
-					.map(Object::getClass)
-					.toArray(Class[]::new));
-		} catch (NoSuchMethodException e) {
-			try {
-				constructor = c.getConstructor();
-				noArg = true;
-			} catch (NoSuchMethodException e1) {
-				throw new RuntimeException(c + " contains no constructor matching parameters " + Arrays.toString(parameters) + " nor a no-arg constructor");
-			}
-		}
-		try {
-			return constructor.newInstance(noArg ? null : parameters);
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	private static <T extends Closeable> T logRetrieval(String streamType, String path, T stream) {

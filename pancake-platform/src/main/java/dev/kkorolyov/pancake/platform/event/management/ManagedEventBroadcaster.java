@@ -18,8 +18,9 @@ public class ManagedEventBroadcaster implements EventBroadcaster {
 	private final Queue<Event> eventQueue = new ArrayDeque<>();
 
 	@Override
-	public <E extends Event> void register(Class<E> type, Consumer<? super E> receiver) {
+	public <E extends Event> EventBroadcaster register(Class<E> type, Consumer<? super E> receiver) {
 		receivers.computeIfAbsent(type, k -> new HashSet<>()).add(receiver);
+		return this;
 	}
 	@Override
 	public <E extends Event> boolean unregister(Class<E> type, Consumer<? super E> receiver) {
@@ -45,11 +46,9 @@ public class ManagedEventBroadcaster implements EventBroadcaster {
 		while (!eventQueue.isEmpty()) {
 			Event event = eventQueue.remove();
 
-			Set<Consumer<?>> eventReceivers = receivers.get(event.getClass());
-			if (eventReceivers != null) {
-				for (Consumer eventReceiver : eventReceivers) {
-					eventReceiver.accept(event);
-				}
+			Set<Consumer<?>> eventReceivers = receivers.getOrDefault(event.getClass(), Set.of());
+			for (Consumer eventReceiver : eventReceivers) {
+				eventReceiver.accept(event);
 			}
 		}
 		return size;

@@ -1,11 +1,10 @@
 package dev.kkorolyov.pancake.platform.serialization;
 
-import dev.kkorolyov.pancake.platform.Resources;
+import dev.kkorolyov.simplefiles.Providers;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,12 +19,12 @@ import java.util.stream.Stream;
  * Serializes using the most appropriate provider of some {@link Serializer} type.
  */
 public class AutoSerializer<I, O, P extends Serializer<I, O>> implements Serializer<I, O> {
-	private static final Map<ProviderKey, Collection<? extends Serializer>> providerMap = new HashMap<>();
+	private static final Map<ProviderKey, Providers<? extends Serializer>> providerMap = new HashMap<>();
 
 	private final Function<Object, RuntimeException> exceptionGenerator;
 	private final Class<P> providerType;
 	private final Object[] providerParameters;
-	private Collection<P> providers;
+	private Providers<P> providers;
 
 	/**
 	 * Constructs a new auto serializer.
@@ -85,7 +84,7 @@ public class AutoSerializer<I, O, P extends Serializer<I, O>> implements Seriali
 	}
 
 	private Stream<P> providers() {
-		if (providers == null) providers = (Collection<P>) providerMap.computeIfAbsent(new ProviderKey(providerType, providerParameters), k -> Resources.providers(k.providerType, k.parameters));
+		if (providers == null) providers = (Providers<P>) providerMap.computeIfAbsent(new ProviderKey(providerType, providerParameters), k -> Providers.fromConfig(k.providerType, k.parameters));
 
 		return providers.stream();
 	}

@@ -1,9 +1,9 @@
 package dev.kkorolyov.pancake.platform.media;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simpleprops.Properties;
+import dev.kkorolyov.simplestructs.WeightedDistribution;
 
 import javafx.scene.media.AudioClip;
 import java.net.URL;
@@ -114,7 +114,7 @@ public class SoundRegistry {
 			log.info("No resource list for name={}, creating new...", name);
 			return new WeightedDistribution<>();
 		});
-		resources.add(weight, resource);
+		resources.add(resource, weight);
 	}
 
 	/** @return maximum size of audio file cache */

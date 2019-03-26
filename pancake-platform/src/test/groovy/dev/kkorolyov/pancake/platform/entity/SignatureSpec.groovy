@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.platform.entity
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.getField
+import static dev.kkorolyov.simplespecs.SpecUtilities.getField
 
 class SignatureSpec extends Specification {
 	@Shared

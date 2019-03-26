@@ -1,14 +1,17 @@
 package dev.kkorolyov.pancake.core.system;
 
+import dev.kkorolyov.pancake.core.component.ActionQueue;
 import dev.kkorolyov.pancake.core.component.Input;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.action.KeyAction;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.CameraCreated;
 import dev.kkorolyov.pancake.platform.event.SceneCreated;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.Camera;
+import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 import javafx.scene.Scene;
 import java.util.HashSet;
@@ -20,38 +23,45 @@ import java.util.Set;
 public class InputSystem extends GameSystem {
 	private final Set<Enum> pressedKeys = new HashSet<>();
 	private final Vector relCursor = new Vector();
-	private final Vector transformToCursor = new Vector();	// TODO What to do with this?
+	private final Vector transformToCursor = new Vector();  // TODO What to do with this?
 	private Camera camera;
 
 	/**
 	 * Constructs a new input system.
 	 */
 	public InputSystem() {
-		super(new Signature(Input.class));
+		super(
+				new Signature(Input.class, ActionQueue.class),
+				new Limiter(0)
+		);
 	}
 	@Override
 	public void attach() {
-		events.register(SceneCreated.class, se -> {
-			Scene scene = se.getScene();
+		resources.events
+				.register(SceneCreated.class, se -> {
+					Scene scene = se.getScene();
 
-			scene.setOnMouseMoved(e -> relCursor.set((float) e.getX(), (float) e.getY()));
+					scene.setOnMouseMoved(e -> relCursor.set((float) e.getX(), (float) e.getY()));
 
-			scene.setOnMousePressed(e -> pressedKeys.add(e.getButton()));
-			scene.setOnMouseReleased(e -> pressedKeys.remove(e.getButton()));
+					scene.setOnMousePressed(e -> pressedKeys.add(e.getButton()));
+					scene.setOnMouseReleased(e -> pressedKeys.remove(e.getButton()));
 
-			scene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
-			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
-		});
-		events.register(CameraCreated.class, e -> camera = e.getCamera());
+					scene.setOnKeyPressed(e -> pressedKeys.add(e.getCode()));
+					scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+				})
+				.register(CameraCreated.class, e -> camera = e.getCamera());
 	}
 
 	@Override
-	public void update(int id, float dt) {
-		for (KeyAction keyAction : entities.get(id, Input.class).getActions()) {
-			entities.add(id, keyAction.arm(pressedKeys, dt));
+	public void update(Entity entity, long dt) {
+		Input input = entity.get(Input.class);
+		Transform transform = entity.get(Transform.class);
+
+		for (KeyAction keyAction : input.getActions()) {
+			// TODO Remove seconds conversion
+			entity.get(ActionQueue.class).enqueue(keyAction.arm(pressedKeys, dt / 1e9f));
 		}
-		Transform transform = entities.get(id, Transform.class);
-		if (entities.get(id, Input.class).facesCursor() && transform != null) {
+		if (input.facesCursor() && transform != null) {
 			transformToCursor.set(camera.getAbsolutePosition(relCursor));
 			transformToCursor.sub(transform.getPosition());
 

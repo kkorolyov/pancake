@@ -1,14 +1,13 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
-import dev.kkorolyov.pancake.platform.utility.Limiter;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
+import dev.kkorolyov.simplefiles.Providers;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 /**
  * Central game management module.
@@ -16,20 +15,21 @@ import java.util.Map.Entry;
  */
 public class GameEngine {
 	private final ManagedEventBroadcaster events;
-	private final ManagedEntityPool entities;
+	private final EntityPool entities;
 	private final PerformanceCounter performanceCounter = new PerformanceCounter();
-	private final Map<GameSystem, Limiter> systems = new LinkedHashMap<>();
+	private final Collection<GameSystem> systems = new LinkedHashSet<>();
+	private final SharedResources resources;
 
 	/**
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
-	public GameEngine(ManagedEventBroadcaster events, ManagedEntityPool entities) {
-		this(events, entities, Resources.providers(GameSystem.class));
+	public GameEngine(ManagedEventBroadcaster events, EntityPool entities) {
+		this(events, entities, Providers.fromConfig(GameSystem.class).findAll(system -> true));
 	}
 	/**
-	 * @see #GameEngine(ManagedEventBroadcaster, ManagedEntityPool, Iterable)
+	 * @see #GameEngine(ManagedEventBroadcaster, EntityPool, Iterable)
 	 */
-	public GameEngine(ManagedEventBroadcaster events, ManagedEntityPool entities, GameSystem... systems) {
+	public GameEngine(ManagedEventBroadcaster events, EntityPool entities, GameSystem... systems) {
 		this(events, entities, Arrays.asList(systems));
 	}
 	/**
@@ -38,13 +38,14 @@ public class GameEngine {
 	 * @param entities attached entity pool
 	 * @param systems attached systems
 	 */
-	public GameEngine(ManagedEventBroadcaster events, ManagedEntityPool entities, Iterable<GameSystem> systems) {
+	public GameEngine(ManagedEventBroadcaster events, EntityPool entities, Iterable<GameSystem> systems) {
 		this.events = events;
 		this.entities = entities;
+		resources = new SharedResources(events, performanceCounter);
 
 		systems.forEach(this::add);
 	}
-	
+
 	/**
 	 * Proceeds the simulation by 1 tick.
 	 * <pre>
@@ -52,52 +53,39 @@ public class GameEngine {
 	 * All entities apply each of their attached actions
 	 * Each system updates all entities it is applicable to
 	 * </pre>
-	 * @param dt seconds elapsed since last update
+	 * @param dt {@code ns} elapsed since last update
 	 */
-	public void update(float dt) {
+	public void update(long dt) {
 		events.broadcast();
-		entities.applyActions();
 
-		for (Entry<GameSystem, Limiter> entry : systems.entrySet()) {
-			if (!entry.getValue().isReady(dt)) continue;
+		for (GameSystem system : systems) {
+			if (system.getLimiter().isReady(dt)) {
+				long systemDt = system.getLimiter().consumeElapsed();
 
-			GameSystem system = entry.getKey();
+				performanceCounter.start();
 
-			performanceCounter.start();
+				system.before(systemDt);
 
-			system.before(dt);
+				entities.stream(system.getSignature()).forEach(entity -> system.update(entity, systemDt));
 
-			entities.forEachMatching(system.getSignature(), id -> system.update(id, dt));
+				system.after(systemDt);
 
-			system.after(dt);
-
-			performanceCounter.end(system);
+				performanceCounter.end(system);
+			}
 		}
 		performanceCounter.tick();
 	}
 
-	/** @param system added system */
+	/** @param system system to add */
 	public void add(GameSystem system) {
-		add(system, 0);
-	}
-	/**
-	 * @param system added system
-	 * @param updateInterval minimum elapsed seconds between updates of {@code system}, constrained {@code >= 0}
-	 */
-	public void add(GameSystem system, float updateInterval) {
-		system.share(entities, events, performanceCounter);
-
-		systems.put(system, new Limiter(Math.max(0, updateInterval)));
-
+		systems.add(system.setResources(resources));
 		system.attach();
 	}
-
 	/** @param system removed system */
 	public void remove(GameSystem system) {
-		system.share(null, null, null);
-
-		systems.remove(system);
-
-		system.detach();
+		if (systems.remove(system)) {
+			system.detach();
+			system.setResources(null);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 buildscript {
 	repositories {
 		maven {
-			url 'https://dl.bintray.com/kkorolyov/groovy'	// FullDoc
+			url 'https://dl.bintray.com/kkorolyov/groovy'  // FullDoc
 		}
 	}
 	dependencies {
@@ -16,7 +16,8 @@ plugins {
 	id 'java-library'
 	id 'groovy'
 	id 'maven-publish'
-	id 'com.jfrog.bintray' version '1.7.3'
+	id 'com.jfrog.bintray' version '1.8.0'
+	id 'nebula.dependency-lock' version '5.0.6'
 }
 apply plugin: 'dev.kkorolyov.full-doc'
 
@@ -33,11 +34,13 @@ fulldoc {
 }
 
 subprojects {
+	apply plugin: 'nebula.dependency-lock'
+
 	group = 'dev.kkorolyov'
-	version = '1.0'
+	version = '0.1'
 
 	repositories {
-		mavenLocal()  // TODO For early dev only
+		mavenLocal()  // FIXME For early dev only
 		jcenter()  // Most things
 		maven {
 			url 'https://dl.bintray.com/kkorolyov/java'  // SimpleTools
@@ -52,28 +55,33 @@ def core = project(':pancake-core')
 def skillet = project(':skillet')
 def killstreek = project(':killstreek')
 
-configure([	// Testable
-		platform,
-		core,
-		skillet,
-		killstreek
-]) {
+configure(
+		[  // Testable
+				platform,
+				core,
+				skillet,
+				killstreek
+		]
+) {
 	apply plugin: 'groovy'
 
 	dependencies {
 		testImplementation(
 				'org.spockframework:spock-core:1.1-groovy-2.+',
-				'net.bytebuddy:byte-buddy:1.+',
-				'org.objenesis:objenesis:2.+',
+				'cglib:cglib-nodep:3.+',
+				'org.objenesis:objenesis:1.+',
+				'dev.kkorolyov:simple-specs:1.+',
 				testUtils
 		)
 	}
 }
 
-configure([	// Libraries
-		platform,
-		core
-]) {project ->
+configure(
+		[  // Libraries
+				platform,
+				core
+		]
+) {project ->
 	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
 	apply plugin: 'com.jfrog.bintray'
@@ -104,7 +112,11 @@ configure([	// Libraries
 		bintray {
 			user = System.getenv('BINTRAY_USER')
 			key = System.getenv('BINTRAY_KEY')
+
 			publications = ['pancake']
+			publish = true
+			override = true
+
 			pkg {
 				repo = 'java'
 				name = project.name
@@ -116,37 +128,24 @@ configure([	// Libraries
 			}
 		}
 	}
-
-	task releaseLocal(dependsOn: [javadoc, test, publishToMavenLocal]) {
-		group 'publishing'
-		description "Prepares all release resources and publishes to the local Maven repo"
-
-		doLast {
-			println "Released ${project.name}-${project.version} locally"
-		}
-	}
-	task releaseBintray(dependsOn: [releaseLocal, bintrayUpload]) {
-		group 'publishing'
-		description "Releases to Bintray"
-
-		doLast {
-			println "Released ${project.name}-${project.version} to Bintray"
-		}
-	}
 }
 
-configure([	// Platform-reliant
-    core,
-		skillet,
-		killstreek
-]) {
+configure(
+		[  // Platform-reliant
+				core,
+				skillet,
+				killstreek
+		]
+) {
 	dependencies {
 		implementation platform
 	}
 }
-configure([	// Core-reliant
-    killstreek
-]) {
+configure(
+		[  // Core-reliant
+				killstreek
+		]
+) {
 	dependencies {
 		implementation core
 	}
@@ -159,7 +158,9 @@ project(':pancake-platform') {
 		api(
 				'dev.kkorolyov:simple-logs:3.+',
 				'dev.kkorolyov:simple-props:4.+',
-				'dev.kkorolyov:simple-files:1.+'
+				'dev.kkorolyov:simple-files:1.+',
+				'dev.kkorolyov:simple-funcs:1.+',
+				'dev.kkorolyov:simple-structs:2.+'
 		)
 	}
 }
@@ -170,6 +171,7 @@ project(':pancake-test-utils') {
 	dependencies {
 		implementation(
 				'org.spockframework:spock-core:1.1-groovy-2.+',
+				'dev.kkorolyov:simple-specs:1.+',
 				platform
 		)
 	}

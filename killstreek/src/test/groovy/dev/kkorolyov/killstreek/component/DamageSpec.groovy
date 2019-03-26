@@ -3,11 +3,13 @@ package dev.kkorolyov.killstreek.component
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
+import static dev.kkorolyov.simplespecs.SpecUtilities.randLong
 
 class DamageSpec extends Specification {
-	@Shared int value = 10
-	@Shared float duration = 1
+	@Shared
+	int value = 10
+	@Shared
+	long duration = 100
 	Health health = Mock()
 
 	Damage damage = new Damage(value, duration)
@@ -15,7 +17,7 @@ class DamageSpec extends Specification {
 	def "no-arg-constructed damage starts expired"() {
 		when:
 		damage = new Damage()
-		damage.apply(health, randFloat())
+		damage.apply(health, randLong())
 
 		then:
 		0 * health.change(_ as int)
@@ -24,7 +26,7 @@ class DamageSpec extends Specification {
 	def "value without duration applies full damage immediately"() {
 		when:
 		damage.setValue(value)
-		damage.apply(health, randFloat())
+		damage.apply(health, randLong())
 
 		then:
 		1 * health.change(-value)
@@ -33,7 +35,7 @@ class DamageSpec extends Specification {
 		Health health = Spy(Health, constructorArgs: [value * 2])
 
 		when:
-		while (damage.apply(health, duration / ticks as float)) {}
+		while (damage.apply(health, duration / ticks as long)) {}
 
 		then:
 		(1..value).each {
@@ -48,7 +50,7 @@ class DamageSpec extends Specification {
 	def "returns true when damage applied"() {
 		when:
 		damage.setValue(value)
-		boolean applied =	damage.apply(health, randFloat())
+		boolean applied = damage.apply(health, randLong())
 
 		then:
 		1 * health.change(-value)
@@ -56,8 +58,8 @@ class DamageSpec extends Specification {
 	}
 	def "returns false when no damage applied"() {
 		when:
-		damage.setValue(value, -randFloat())
-		boolean applied = damage.apply(health, randFloat())
+		damage.setValue(value, -randLong())
+		boolean applied = damage.apply(health, randLong())
 
 		then:
 		0 * health.change(_ as int)

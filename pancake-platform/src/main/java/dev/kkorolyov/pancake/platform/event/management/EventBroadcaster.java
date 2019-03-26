@@ -12,8 +12,9 @@ public interface EventBroadcaster {
 	 * Registers to receive broadcasts of an event.
 	 * @param type event type
 	 * @param receiver action invoked on event reception
+	 * @return {@code this}
 	 */
-	<E extends Event> void register(Class<E> type, Consumer<? super E> receiver);
+	<E extends Event> EventBroadcaster register(Class<E> type, Consumer<? super E> receiver);
 	/**
 	 * Removes a receiver from a set of registered receivers
 	 * @param type event type

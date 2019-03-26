@@ -7,7 +7,7 @@ import spock.lang.Specification
 
 import java.util.function.Consumer
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.setField
+import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class ManagedEventBroadcasterSpec extends Specification {
 	@Shared Event event = new Event() {}

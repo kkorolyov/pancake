@@ -2,9 +2,8 @@ package dev.kkorolyov.killstreek.item;
 
 import dev.kkorolyov.killstreek.media.Sprite;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.action.FreeFormAction;
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.math.WeightedDistribution;
+import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.simplestructs.WeightedDistribution;
 
 import java.util.NoSuchElementException;
 
@@ -12,8 +11,8 @@ import java.util.NoSuchElementException;
  * Applies effects to entities.
  */
 public abstract class Item {
-	/**	An effect which does nothing, used for padding the pool of random effects */
-	public static final Action NOOP_EFFECT = new FreeFormAction((id, entities) -> {});
+	/** An effect which does nothing, used for padding the pool of random effects */
+	public static final Action NOOP_EFFECT = entity -> {};
 	private static int idCounter;
 
 	private static int generateId() {
@@ -38,12 +37,11 @@ public abstract class Item {
 
 	/**
 	 * Applies a randomly-select effect from this item's effect pool to an entity.
-	 * @param id ID of entity receiving effect
-	 * @param entities entity pool containing entities
+	 * @param entity entity receiving effect
 	 * @throws NoSuchElementException if this item has no effects
 	 */
-	public void apply(int id, EntityPool entities) {
-		effects.get().accept(id, entities);
+	public void apply(Entity entity) {
+		effects.get().apply(entity);
 	}
 
 	/**
@@ -61,7 +59,7 @@ public abstract class Item {
 	 * @return {@code this}
 	 */
 	public Item addEffect(Action effect, int weight) {
-		effects.add(weight, effect);
+		effects.add(effect, weight);
 		return this;
 	}
 

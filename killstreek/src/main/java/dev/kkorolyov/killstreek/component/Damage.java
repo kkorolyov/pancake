@@ -7,11 +7,11 @@ import dev.kkorolyov.pancake.platform.entity.Component;
  */
 public class Damage implements Component {
 	private int value;
-	private float effectiveValue;
+	private double effectiveValue;
 	private int remaining;
 
-	private float duration;
-	private float elapsed;
+	private long duration;
+	private long elapsed;
 
 	/**
 	 * Constructs a new, expired damage.
@@ -29,9 +29,9 @@ public class Damage implements Component {
 	/**
 	 * Constructs a new damage.
 	 * @param value damage value
-	 * @param duration seconds over which to distribute applied damage, values close to {@code 0} result in effectively immediate damage application
+	 * @param duration {@code ns} over which to distribute applied damage, values close to (but not at) {@code 0} result in effectively immediate damage application
 	 */
-	public Damage(int value, float duration) {
+	public Damage(int value, long duration) {
 		setValue(value, duration);
 	}
 
@@ -40,18 +40,20 @@ public class Damage implements Component {
 	 * If this damage has a duration, the appropriate portion of its value is applied instead.
 	 * If this damage has expired, this method does nothing.
 	 * @param health damaged health
-	 * @param dt seconds elapsed since previous invocation of this method
+	 * @param dt {@code ns} elapsed since previous invocation of this method
 	 * @return {@code false} if expired, else {@code true}
 	 */
-	public boolean apply(Health health, float dt) {
+	public boolean apply(Health health, long dt) {
 		if (isExpired()) return false;
 		elapsed += dt;
 
-		effectiveValue += (isExpired()) ? remaining : value * dt;
-		if (Float.compare(Math.abs(effectiveValue), 1) >= 0) {
-			remaining -= (int) effectiveValue;
+		effectiveValue += (isExpired()) ? remaining : value * (Math.min((double) dt / duration, 1));
+		if (Double.compare(Math.abs(effectiveValue), 1) >= 0) {
+			int removed = (int) -effectiveValue;
 
-			health.change((int) -effectiveValue);
+			remaining += removed;
+
+			health.change(removed);
 			effectiveValue = 0;
 		}
 		return true;
@@ -78,14 +80,14 @@ public class Damage implements Component {
 	 * @return {@code this}
 	 */
 	public Damage setValue(int value) {
-		return setValue(value, Float.MIN_NORMAL);
+		return setValue(value, 1);
 	}
 	/**
 	 * @param value new damage value
-	 * @param duration seconds over which to distribute applied damage, values close to {@code 0} result in effectively immediate damage application
+	 * @param duration seconds over which to distribute applied damage, values close to (but not at) {@code 0} result in effectively immediate damage application
 	 * @return {@code this}
 	 */
-	public Damage setValue(int value, float duration) {
+	public Damage setValue(int value, long duration) {
 		this.value = value;
 		effectiveValue = 0;
 		remaining = value;

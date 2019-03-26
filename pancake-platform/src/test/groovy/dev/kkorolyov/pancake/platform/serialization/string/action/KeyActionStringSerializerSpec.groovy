@@ -7,7 +7,7 @@ import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 import javafx.scene.input.KeyCode
 import javafx.scene.input.MouseButton
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
+import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 
 class KeyActionStringSerializerSpec extends BaseSerializerSpec<KeyAction, String> {
 	List<Enum> inputs = KeyCode.values() + MouseButton.values()
@@ -18,6 +18,6 @@ class KeyActionStringSerializerSpec extends BaseSerializerSpec<KeyAction, String
 		reps << [(new KeyAction(delegateAction, inputs)): "$inputs=$delegateActionS"]
 
 		serializer = new KeyActionStringSerializer(Mock(ActionRegistry))
-		mockAutoSerializer([delegateAction], [delegateActionS])
+		mockAutoSerializer([(delegateAction): delegateActionS])
 	}
 }

@@ -5,19 +5,19 @@ package dev.kkorolyov.pancake.platform.media;
  */
 public interface Animated {
 	/**
-	 * If active, proceeds to the next frame if {@code dt + } seconds since the previous frame change is {@code >= abs(frameInterval)}.
-	 * @param dt seconds elapsed since previous invocation of this method
+	 * If active, proceeds to the next frame if {@code dt + ns} since the previous frame change is {@code >= abs(frameInterval)}.
+	 * @param dt {@code ns} elapsed since previous invocation of this method
 	 */
-	void tick(float dt);
+	void tick(long dt);
 
 	/**
 	 * Toggles active status.
 	 */
 	void toggle();
 
-	/** @return whether {@link #tick(float)} is enabled */
+	/** @return whether {@link #tick(long)} is enabled */
 	boolean isActive();
-	/** @param active {@code true} enables {@link #tick(float)}, {@code false} disables */
+	/** @param active {@code true} enables {@link #tick(long)}, {@code false} disables */
 	void setActive(boolean active);
 
 	/** @return current frame number */
@@ -25,11 +25,10 @@ public interface Animated {
 	/** @param frame frame number to jump to */
 	void setFrame(int frame);
 
-	/** @return seconds between frame changes, negative means the animation runs in reverse */
-	float getFrameInterval();
-	/** @param frameInterval seconds between frame changes, may be negative to run in reverse */
-	void setFrameInterval(float frameInterval);
-	/** @return total number of animation frames */
+	/** @return {@code ns} between frame changes, negative means the animation runs in reverse */
+	long getFrameInterval();
+	/** @param frameInterval {@code ns} between frame changes, may be negative to run in reverse */
+	void setFrameInterval(long frameInterval);
 
 	/** @return total number of frames */
 	int length();

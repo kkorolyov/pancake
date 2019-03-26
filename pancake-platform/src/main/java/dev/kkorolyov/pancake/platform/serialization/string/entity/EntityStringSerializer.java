@@ -1,7 +1,8 @@
 package dev.kkorolyov.pancake.platform.serialization.string.entity;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.entity.ManagedEntityPool;
+import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
 import dev.kkorolyov.pancake.platform.serialization.Serializer;
 import dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
@@ -21,37 +22,38 @@ import java.util.stream.Stream;
  * ]
  * </pre>
  */
-public class EntityStringSerializer extends StringSerializer<Integer> {
+public class EntityStringSerializer extends StringSerializer<Entity> {
 	private static final String COMPONENT_PATTERN = ComponentStringSerializer.BASE_PATTERN;
 
-	private final ManagedEntityPool context;
+	private final EntityPool context;
 	private final Serializer<Component, String> componentSerializer = new AutoSerializer(ComponentStringSerializer.class);
 
 	/**
 	 * Constructs a new entity string serializer.
 	 * @param context associated entity pool
 	 */
-	public EntityStringSerializer(ManagedEntityPool context) {
+	public EntityStringSerializer(EntityPool context) {
 		super("\\[\\s*" + COMPONENT_PATTERN + "(,\\s*" + COMPONENT_PATTERN + ")*\\s*]");
 		this.context = context;
 	}
 
 	@Override
-	public Integer read(String out) {
-		return context.create(Arrays.stream(out.split(",\\s*(?=" + COMPONENT_PATTERN + ")"))
+	public Entity read(String out) {
+		return context.create()
+				.add(Arrays.stream(out.split(",\\s*(?=" + COMPONENT_PATTERN + ")"))
 						.map(componentSerializer::read)
 						.collect(Collectors.toList()));
 	}
 	@Override
-	public String write(Integer in) {
-		return context.get(in)
+	public String write(Entity in) {
+		return in.stream()
 				.map(componentSerializer::write)
 				.collect(Collectors.joining("," + System.lineSeparator() + "\t", "{" + System.lineSeparator() + "\t", System.lineSeparator() + "}"));
 	}
 
 	@Override
-	public Stream<Integer> matches(String out) {
-		return Arrays.stream(out.split(",\\s*(?=" + pattern()  + ")"))
+	public Stream<Entity> matches(String out) {
+		return Arrays.stream(out.split(",\\s*(?=" + pattern() + ")"))
 				.flatMap(super::matches);
 	}
 }

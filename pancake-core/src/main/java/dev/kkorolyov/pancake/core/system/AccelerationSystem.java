@@ -3,7 +3,9 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
+import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 /**
  * Accelerates entities by force.
@@ -14,16 +16,18 @@ public class AccelerationSystem extends GameSystem {
 	 * Constructs a new acceleration system.
 	 */
 	public AccelerationSystem() {
-		super(new Signature(Velocity.class,
-												Force.class));
+		super(
+				new Signature(Velocity.class, Force.class),
+				new Limiter(0)
+		);
 	}
 
 	@Override
-	public void update(int id, float dt) {
-		Velocity velocity = entities.get(id, Velocity.class);
-		Force force = entities.get(id, Force.class);
+	public void update(Entity entity, long dt) {
+		Velocity velocity = entity.get(Velocity.class);
+		Force force = entity.get(Force.class);
 
-		force.accelerate(velocity.getVelocity(), dt);
+		force.accelerate(velocity.getVelocity(), dt / 1e9f);
 		velocity.cap();
 	}
 }

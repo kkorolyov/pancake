@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.bigDecimal
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
+import static dev.kkorolyov.simplespecs.SpecUtilities.randFloat
 
 class ForceActionSerializerSpec extends BaseSerializerSpec<ForceAction, String> {
 	float x = randFloat(), y = randFloat(), z = randFloat()

@@ -36,6 +36,7 @@ public class Input implements Component {
 	public Iterable<KeyAction> getActions() {
 		return keyActions;
 	}
+
 	/**
 	 * Clears existing actions before applying new {@code keyActions}.
 	 * @param keyActions actions to listen for
@@ -50,11 +51,7 @@ public class Input implements Component {
 	public void setActions(Iterable<KeyAction> keyActions) {
 		this.keyActions.clear();
 
-		if (keyActions != null) {
-			for (KeyAction action : keyActions) {
-				this.keyActions.add(action);
-			}
-		}
+		keyActions.forEach(this.keyActions::add);
 	}
 
 	/** @return whether this controller requests that its containing entity faces the mouse cursor */

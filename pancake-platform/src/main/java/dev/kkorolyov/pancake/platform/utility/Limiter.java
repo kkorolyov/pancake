@@ -1,47 +1,41 @@
 package dev.kkorolyov.pancake.platform.utility;
 
 /**
- * A timer which is ready after a set number of seconds have passed.
+ * A timer which is ready after a set number of {@code ns} have elapsed since its previous ready state.
  */
 public class Limiter {
-	private float duration;
-	private float elapsed;
+	private long frequency;
+	private long elapsed;
 
 	/**
 	 * Constructs a new limiter.
-	 * @param duration seconds between which when this limiter is ready
+	 * @param frequency minimum {@code ns} that must elapse between ready states
 	 */
-	public Limiter(float duration) {
-		this.duration = duration;
+	public Limiter(long frequency) {
+		this.frequency = Math.max(0, frequency);
 	}
 
 	/**
 	 * Adds elapsed time to this limiter and checks its ready state.
-	 * @param dt additional elapsed seconds
-	 * @return {@code true} if {@code >= duration} seconds have passed since the last time this was ready
+	 * @param dt additional elapsed {@code ns}
+	 * @return {@code true} if {@code >= frequency ns} have elapsed since the last time this was ready
 	 */
 	public boolean isReady(float dt) {
 		elapsed += dt;
-		boolean isReady = isReady();
-
-		if (isReady) elapsed = 0;
-		return isReady;
+		return isReady();
 	}
-	/** @return {@code true} if {@code >= duration} seconds have passed since the last time this was ready */
+	/** @return {@code true} if {@code >= frequency ns} have elapsed since the last time this was ready */
 	public boolean isReady() {
-		return elapsed >= duration;
+		return elapsed >= frequency;
 	}
 
-	/** @return limiter duration in seconds */
-	public float getDuration() {
-		return duration;
-	}
 	/**
-	 * Sets a new limiter duration and resets elapsed time.
-	 * @param duration new seconds between which this limiter is ready
+	 * Returns elapsed {@code ns} since last consumption of this limiter and resets {@code elapsed}.
+	 * @return elapsed {@code ns} since last consumption
 	 */
-	public void setDuration(float duration) {
-		this.duration = duration;
-		elapsed = Math.min(0, duration);
+	public long consumeElapsed() {
+		long result = elapsed;
+		elapsed = 0;
+		return result;
 	}
 }

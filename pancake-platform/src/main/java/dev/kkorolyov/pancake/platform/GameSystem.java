@@ -1,96 +1,74 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.event.management.EventBroadcaster;
-import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
-import dev.kkorolyov.pancake.platform.utility.PerformanceCounter.Usage;
-
-import java.util.Comparator;
-import java.util.UUID;
+import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 /**
  * Performs work on entities matching a certain component signature.
  */
 public abstract class GameSystem {
 	private final Signature signature;
-	private final Comparator<UUID> comparator;
+	private final Limiter limiter;
 
-	protected EntityPool entities;
-	protected EventBroadcaster events;
-	private PerformanceCounter performanceCounter;
+	protected SharedResources resources;
 
-	/**
-	 * Constructs a new system with arbitrary entity order.
-	 * @param signature defines all components an entity must have to be affected by this system
-	 */
-	protected GameSystem(Signature signature) {
-		this(signature, null);
-	}
 	/**
 	 * Constructs a new system.
 	 * @param signature defines all components an entity must have to be affected by this system
-	 * @param comparator defines the order in which entities are supplied to this system
+	 * @param limiter determines frequency of updates of this system
 	 */
-	protected GameSystem(Signature signature, Comparator<UUID> comparator) {
+	protected GameSystem(Signature signature, Limiter limiter) {
 		this.signature = signature;
-		this.comparator = comparator;
+		this.limiter = limiter;
 	}
 
 	/**
 	 * Function invoked on each entity affected by this system.
-	 * @param id ID of entity to update
-	 * @param dt seconds elapsed since last update
+	 * @param entity entity to update
+	 * @param dt {@code ns} elapsed since last {@code update} to this system
 	 */
-	public abstract void update(int id, float dt);
+	public abstract void update(Entity entity, long dt);
 
 	/**
 	 * Function invoked at the beginning of an update cycle.
-	 * @param dt seconds elapsed since last update
+	 * Intended for any static pre-update logic.
+	 * @param dt {@code ns} elapsed since last update to this system
 	 */
-	public void before(float dt) {}
+	public void before(long dt) {}
 	/**
 	 * Function invoked at the end of an update cycle.
-	 * @param dt seconds elapsed since last update
+	 * Intended for any static post-update logic.
+	 * @param dt {@code ns} elapsed since last update to this system
 	 */
-	public void after(float dt) {}
+	public void after(long dt) {}
 
 	/**
 	 * Invoked when this system is attached to a {@link GameEngine}.
+	 * Intended for one-time initialization logic, such as registering event receivers.
 	 */
 	public void attach() {}
 	/**
 	 * Invoked when this system is detached from a {@link GameEngine}.
+	 * Intended for one-time teardown logic, such as clearing event receivers.
 	 */
 	public void detach() {}
 
-	/**
-	 * Used by a {@link GameEngine} to share services.
-	 * @param entities shared entity pool
-	 * @param events shared event broadcaster
-	 * @param performanceCounter shared performance counter
-	 */
-	void share(EntityPool entities, EventBroadcaster events, PerformanceCounter performanceCounter) {
-		this.entities = entities;
-		this.events = events;
-		this.performanceCounter = performanceCounter;
-	}
-
-	/** @return average ticks per second */
-	protected long getTps() {
-		return performanceCounter.getTps();
-	}
-	/** @return current performance counter usages */
-	protected Iterable<Usage> usages() {
-		return performanceCounter.getUsages();
-	}
-
-	/** @return component signature */
+	/** @return system required component signature */
 	public Signature getSignature() {
 		return signature;
 	}
-	/** @return required entity order */
-	public Comparator<UUID> getComparator() {
-		return comparator;
+	/** @return system update limiter */
+	public Limiter getLimiter() {
+		return limiter;
+	}
+
+	/**
+	 * @param resources shared by {@link GameEngine} this system is attached to
+	 * @return {@code this}
+	 */
+	GameSystem setResources(SharedResources resources) {
+		this.resources = resources;
+		return this;
 	}
 }
