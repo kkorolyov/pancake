@@ -5,6 +5,7 @@ import dev.kkorolyov.killstreek.component.Health;
 import dev.kkorolyov.killstreek.media.HealthBar;
 import dev.kkorolyov.killstreek.media.Sprite;
 import dev.kkorolyov.pancake.core.component.ActionQueue;
+import dev.kkorolyov.pancake.core.component.AudioEmitter;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Chain;
 import dev.kkorolyov.pancake.core.component.Input;
@@ -25,6 +26,7 @@ import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.simplestructs.WeightedDistribution;
 
 import javafx.application.Application;
+import javafx.scene.media.MediaPlayer;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -79,7 +81,7 @@ public class FunctionalTest extends Launcher {
 		sphereGraphic.setDelegate(new Sprite(images.get("sphere"), SPRITE_ORIENTATION_OFFSET));
 	}
 	private void initSounds() {
-		sounds.put("config/sounds");
+		audio.put("config/audio");
 	}
 	private void initActions() {
 		actions
@@ -104,19 +106,22 @@ public class FunctionalTest extends Launcher {
 		events.register(EntitiesCollided.class, e -> {
 			if (player == e.getCollided()[0]) {
 				EntityPool.ManagedEntity other = entities.get(e.getCollided()[1]);
-				if (other.get(Damage.class) != null) {
-					other.get(Damage.class).reset();
-				} else {
-					other.add(new Damage(1));
+				// May be destroyed
+				if (other != null) {
+					if (other.get(Damage.class) != null) {
+						other.get(Damage.class).reset();
+					} else {
+						other.add(new Damage(1));
+					}
 				}
 			}
 		});
 
 		events.register(EntityCreated.class, e -> {
-			if (player == e.getId()) sounds.get("spawn").play();
+			if (player == e.getId()) new MediaPlayer(audio.get("spawn")).play();
 		});
 		events.register(EntityDestroyed.class, e -> {
-			sounds.get("spawn").play();
+			new MediaPlayer(audio.get("spawn")).play();
 		});
 	}
 
@@ -136,7 +141,8 @@ public class FunctionalTest extends Launcher {
 				.add(
 						new Transform(new Vector(-3, 0), randRotation()),
 						new Bounds(new Vector(3, 3)),
-						new Graphic(boxGraphic)
+						boxGraphic,
+						new AudioEmitter().enqueue(audio.get("wall"))
 				);
 	}
 	private void addBoxes(int num) {

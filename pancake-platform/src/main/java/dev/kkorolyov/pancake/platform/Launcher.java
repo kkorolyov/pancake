@@ -7,9 +7,9 @@ import dev.kkorolyov.pancake.platform.event.CanvasCreated;
 import dev.kkorolyov.pancake.platform.event.SceneCreated;
 import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
 import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.media.AudioRegistry;
 import dev.kkorolyov.pancake.platform.media.Camera;
 import dev.kkorolyov.pancake.platform.media.ImageRegistry;
-import dev.kkorolyov.pancake.platform.media.SoundRegistry;
 
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -30,7 +30,7 @@ public abstract class Launcher extends Application {
 	protected final Camera camera;
 
 	protected final ImageRegistry images = new ImageRegistry();
-	protected final SoundRegistry sounds = new SoundRegistry();
+	protected final AudioRegistry audio = new AudioRegistry();
 	protected final ActionRegistry actions = new ActionRegistry();
 
 	protected final ManagedEventBroadcaster events = new ManagedEventBroadcaster();
