@@ -8,7 +8,6 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
-import static java.util.Collections.singleton;
 
 /**
  * A collection of queued actions to apply to containing entities.
@@ -18,7 +17,7 @@ public class ActionQueue implements Component {
 
 	/** @see #enqueue(Iterable) */
 	public ActionQueue enqueue(Action action, Action... actions) {
-		return enqueue(append(singleton(action), actions));
+		return enqueue(append(action, actions));
 	}
 	/**
 	 * @param actions actions to add to this queue

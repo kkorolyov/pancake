@@ -15,7 +15,6 @@ import java.util.Queue;
 import java.util.stream.Stream;
 
 import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
-import static java.util.Collections.singleton;
 
 /**
  * A set of uniquely-identified "component-bag" entities.
@@ -93,8 +92,9 @@ public class EntityPool {
 			this.id = id;
 		}
 
+		/** @see #add(Iterable) */
 		public ManagedEntity add(Component component, Component... components) {
-			return add(append(singleton(component), components));
+			return add(append(component, components));
 		}
 		/**
 		 * @param components components to add or replace existing components of the same type
