@@ -37,6 +37,18 @@
             ],
             "locked": "2.0"
         },
+        "org.openjfx:javafx-base": {
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-controls": {
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-graphics": {
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
             "requested": "1.1-groovy-2.+"
@@ -79,6 +91,33 @@
                 "dev.kkorolyov:pancake-platform"
             ],
             "locked": "2.0"
+        },
+        "org.openjfx:javafx-base": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-controls": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-graphics": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-media": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
@@ -123,6 +162,33 @@
             ],
             "locked": "2.0"
         },
+        "org.openjfx:javafx-base": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-controls": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-graphics": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-media": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2"
+        },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
             "requested": "1.1-groovy-2.+"
@@ -166,6 +232,18 @@
             ],
             "locked": "2.0"
         },
+        "org.openjfx:javafx-base": {
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-controls": {
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-graphics": {
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",
             "requested": "1.1-groovy-2.+"
@@ -208,6 +286,33 @@
                 "dev.kkorolyov:pancake-platform"
             ],
             "locked": "2.0"
+        },
+        "org.openjfx:javafx-base": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-controls": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-graphics": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2",
+            "requested": "11.+"
+        },
+        "org.openjfx:javafx-media": {
+            "firstLevelTransitive": [
+                "dev.kkorolyov:pancake-platform"
+            ],
+            "locked": "11.0.2"
         },
         "org.spockframework:spock-core": {
             "locked": "1.1-groovy-2.4",

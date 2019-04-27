@@ -162,7 +162,7 @@ project(":pancake-platform") {
 	}
 
 	configure<JavaFXOptions> {
-		version = "12.+"
+		version = "11.+"
 		modules = listOf("javafx.controls", "javafx.media")
 	}
 }
@@ -179,7 +179,7 @@ project(":pancake-test-utils") {
 	}
 
 	configure<JavaFXOptions> {
-		version = "12.+"
+		version = "11.+"
 		modules = listOf("javafx.controls")
 	}
 }
@@ -190,7 +190,7 @@ project(":pancake-core") {
 	description = "Collection of general, reusable systems and components for the Pancake engine"
 
 	configure<JavaFXOptions> {
-		version = "12.+"
+		version = "11.+"
 		modules = listOf("javafx.graphics", "javafx.media")
 	}
 }
@@ -212,8 +212,8 @@ project(":skillet") {
 	}
 
 	configure<JavaFXOptions> {
-		version = "12.+"
-		modules = listOf("javafx.controls", "javafx.graphics")
+		version = "11.+"
+		modules = listOf("javafx.controls")
 	}
 }
 
@@ -229,7 +229,7 @@ project(":killstreek") {
 	}
 
 	configure<JavaFXOptions> {
-		version = "12.+"
+		version = "11.+"
 		modules = listOf("javafx.media")
 	}
 }
