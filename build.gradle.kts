@@ -1,5 +1,6 @@
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import dev.kkorolyov.FullDocExtension
+import org.gradle.api.JavaVersion.VERSION_11
 import org.openjfx.gradle.JavaFXOptions
 
 buildscript {
@@ -32,7 +33,11 @@ repositories {
 
 configure<FullDocExtension> {
 	src = "docs"
-	out = "$buildDir/docs"
+	out = "${project.buildDir}/docs"
+}
+
+java {
+	sourceCompatibility = VERSION_11
 }
 
 subprojects {
@@ -111,8 +116,8 @@ configure(
 	// Bintray upload
 	afterEvaluate {
 		bintray {
-			user = System.getenv("BINTRAY_USER")
-			key = System.getenv("BINTRAY_KEY")
+			user = project.findProperty("bintrayUser") as? String
+			key = project.findProperty("bintrayKey") as? String
 
 			setPublications("pancake")
 			publish = true
