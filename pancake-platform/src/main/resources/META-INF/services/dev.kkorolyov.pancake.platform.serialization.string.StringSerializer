@@ -1,5 +1,0 @@
-dev.kkorolyov.pancake.platform.serialization.string.VectorStringSerializer
-dev.kkorolyov.pancake.platform.serialization.string.NumberStringSerializer
-dev.kkorolyov.pancake.platform.serialization.string.StringStringSerializer
-dev.kkorolyov.pancake.platform.serialization.string.URIStringSerializer
-dev.kkorolyov.pancake.platform.serialization.string.MapStringSerializer

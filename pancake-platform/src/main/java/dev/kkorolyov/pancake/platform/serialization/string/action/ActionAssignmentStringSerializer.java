@@ -14,6 +14,9 @@ public class ActionAssignmentStringSerializer extends StringSerializer<Action> {
 	private final ActionRegistry context;
 	private final Serializer<Action, String> autoSerializer;
 
+	public ActionAssignmentStringSerializer() {
+		this(null);
+	}
 	/**
 	 * Constructs a new action container serializer.
 	 * @param context associated action registry

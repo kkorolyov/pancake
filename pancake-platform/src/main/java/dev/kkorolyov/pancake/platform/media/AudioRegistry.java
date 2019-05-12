@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.platform.media;
 
 import dev.kkorolyov.pancake.platform.Config;
+import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simpleprops.Properties;
 import dev.kkorolyov.simplestructs.WeightedDistribution;
 
 import javafx.scene.media.Media;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -80,16 +80,7 @@ public class AudioRegistry {
 
 		for (String name : soundConfig.keys()) {
 			for (String resource : soundConfig.getArray(name)) {
-				String url = resource;
-
-				if (!resource.contains("//")) {
-					// TODO Currently, only tries classpath
-					URL systemUrl = ClassLoader.getSystemResource(resource);
-					if (systemUrl == null) throw new NoSuchElementException("No such system resource: " + resource);
-
-					url = systemUrl.toExternalForm();
-				}
-				put(name, url);
+				put(name, resource.contains("//") ? resource : Resources.toFileUri(resource));
 			}
 			log.info("Parsed sound entry: {}", name);
 		}

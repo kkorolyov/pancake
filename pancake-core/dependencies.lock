@@ -7,7 +7,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.1.1"
+            "locked": "1.2"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -54,7 +54,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.1.1"
+            "locked": "1.2"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -116,7 +116,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.1.1"
+            "locked": "1.2"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -185,7 +185,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.1.1"
+            "locked": "1.2"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -254,7 +254,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.1.1"
+            "locked": "1.2"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [

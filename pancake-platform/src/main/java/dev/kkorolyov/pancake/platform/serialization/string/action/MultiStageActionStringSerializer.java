@@ -19,6 +19,9 @@ public class MultiStageActionStringSerializer extends ActionStringSerializer<Mul
 	private final Serializer<Action, String> autoSerializer;
 	private final float holdThreshold = Float.parseFloat(Config.config.get("holdThreshold"));
 
+	public MultiStageActionStringSerializer() {
+		this(null);
+	}
 	/**
 	 * Constructs a new multi-stage action serializer.
 	 * @param context associated action registry
