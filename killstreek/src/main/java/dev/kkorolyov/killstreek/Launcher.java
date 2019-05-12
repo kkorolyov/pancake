@@ -17,7 +17,6 @@ import dev.kkorolyov.pancake.core.component.movement.Damping;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.event.EntitiesCollided;
-import dev.kkorolyov.pancake.platform.Launcher;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EntityCreated;
@@ -31,15 +30,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import static dev.kkorolyov.killstreek.Constants.BOX;
-import static dev.kkorolyov.killstreek.Constants.MAX_SPEED;
-import static dev.kkorolyov.killstreek.Constants.OBJECT_DAMPING;
-import static dev.kkorolyov.killstreek.Constants.OBJECT_MASS;
-import static dev.kkorolyov.killstreek.Constants.PLAYER_DAMPING;
-import static dev.kkorolyov.killstreek.Constants.PLAYER_MASS;
-import static dev.kkorolyov.killstreek.Constants.RADIUS;
-
-public class FunctionalTest extends Launcher {
+public class Launcher extends dev.kkorolyov.pancake.platform.Launcher {
 	private static final Random RAND = new Random();
 	private static final Vector HEALTH_BAR_SIZE = new Vector(1, .25f);
 	private static final Vector SPRITE_ORIENTATION_OFFSET = new Vector(0, 0, (float) (-.5 * Math.PI));
@@ -52,10 +43,11 @@ public class FunctionalTest extends Launcher {
 	private int player;
 
 	public static void main(String[] args) {
+		System.out.println(System.getProperty("user.dir"));
 		Application.launch(args);
 	}
 
-	public FunctionalTest() {
+	public Launcher() {
 		super(new LauncherConfig()
 				.title("Killstreek Functional Test")
 				.size(640, 640)
@@ -150,7 +142,7 @@ public class FunctionalTest extends Launcher {
 
 		for (int i = 1; i <= line; i++) {
 			for (int j = 1; j <= line; j++) {
-				addObject(new Vector(i, -j), new Bounds(BOX), boxGraphic);
+				addObject(new Vector(i, -j), new Bounds(Constants.BOX), boxGraphic);
 			}
 		}
 	}
@@ -159,7 +151,7 @@ public class FunctionalTest extends Launcher {
 
 		for (int i = 1; i <= line; i++) {
 			for (int j = 1; j <= line; j++) {
-				addObject(new Vector(i, j), new Bounds(RADIUS), sphereGraphic);
+				addObject(new Vector(i, j), new Bounds(Constants.RADIUS), sphereGraphic);
 			}
 		}
 	}
@@ -173,8 +165,8 @@ public class FunctionalTest extends Launcher {
 				.add(
 						transform,
 						new Velocity(),
-						new Force(OBJECT_MASS),
-						new Damping(OBJECT_DAMPING),
+						new Force(Constants.OBJECT_MASS),
+						new Damping(Constants.OBJECT_DAMPING),
 						new Chain(null, 0, playerTransform.getPosition()),
 						bounds,
 						graphic,
@@ -200,9 +192,9 @@ public class FunctionalTest extends Launcher {
 								() -> Arrays.asList(
 										new Transform(new Vector(1, 1), randRotation()),
 										new Velocity(),
-										new Force(OBJECT_MASS),
-										new Damping(OBJECT_DAMPING),
-										new Bounds(BOX, RADIUS),
+										new Force(Constants.OBJECT_MASS),
+										new Damping(Constants.OBJECT_DAMPING),
+										new Bounds(Constants.BOX, Constants.RADIUS),
 										sphereGraphic
 								),
 								1
@@ -214,10 +206,10 @@ public class FunctionalTest extends Launcher {
 		player = entities.create()
 				.add(
 						transform,
-						new Velocity(MAX_SPEED),
-						new Force(PLAYER_MASS),
-						new Damping(PLAYER_DAMPING),
-						new Bounds(BOX, RADIUS),
+						new Velocity(Constants.MAX_SPEED),
+						new Force(Constants.PLAYER_MASS),
+						new Damping(Constants.PLAYER_DAMPING),
+						new Bounds(Constants.BOX, Constants.RADIUS),
 						spawner,
 						new Animation(sprite),
 						new Graphic(sprite),

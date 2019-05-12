@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 public class CollectiveActionStringSerializer extends ActionStringSerializer<CollectiveAction> {
 	private final Serializer<Action, String> autoSerializer;
 
+	public CollectiveActionStringSerializer() {
+		this(null);
+	}
 	/**
 	 * Constructs a new collective action serializer
 	 * @param context associated action registry

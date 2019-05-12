@@ -1,7 +1,7 @@
 {
     "compileClasspath": {
         "dev.kkorolyov:simple-files": {
-            "locked": "1.1.1",
+            "locked": "1.2",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
@@ -39,7 +39,7 @@
     },
     "default": {
         "dev.kkorolyov:simple-files": {
-            "locked": "1.1.1",
+            "locked": "1.2",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
@@ -77,7 +77,7 @@
     },
     "runtimeClasspath": {
         "dev.kkorolyov:simple-files": {
-            "locked": "1.1.1",
+            "locked": "1.2",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
@@ -122,7 +122,7 @@
             "project": true
         },
         "dev.kkorolyov:simple-files": {
-            "locked": "1.1.1",
+            "locked": "1.2",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
@@ -188,7 +188,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.1.1",
+            "locked": "1.2",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {

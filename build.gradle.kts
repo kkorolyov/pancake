@@ -230,7 +230,7 @@ project(":killstreek") {
 	description = "Top-down ARPG with dynamic RNG system"
 
 	configure<JavaApplication> {
-		mainClassName = "dev.kkorolyov.killstreek.Launcher"
+		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.Launcher"
 	}
 
 	configure<JavaFXOptions> {

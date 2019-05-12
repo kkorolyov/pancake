@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.media;
 
 import dev.kkorolyov.pancake.platform.Config;
+import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simpleprops.Properties;
 
@@ -44,7 +45,7 @@ public class ImageRegistry {
 				CompositeImage other = get(base);
 
 				if (other != null) image.add(other);
-				else image.add(new Image(base));
+				else image.add(new Image(Resources.toFileUri(base)));
 			}
 			put(name, image);
 			log.info("Parsed image entry: {}={}", name, image);

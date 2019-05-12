@@ -109,6 +109,7 @@ public class RenderSystem extends GameSystem {
 		graphic.render(g, drawPosition);
 	}
 
+	// TODO Move to dedicated platform DebugRenderer
 	private void drawDebug() {
 		String[] args = Config.config.getArray("renderInfo");
 		if (args == null) return;
