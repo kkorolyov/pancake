@@ -1,0 +1,9 @@
+# Binds arbitrary sets of keys to actions
+
+[W]=MOVE_UP
+[S]=MOVE_DOWN
+[A]=MOVE_LEFT
+[D]=MOVE_RIGHT
+[ESCAPE]=RESET
+[SHIFT]=TOGGLE_ANIMATION
+[CONTROL]=TOGGLE_SPAWNER

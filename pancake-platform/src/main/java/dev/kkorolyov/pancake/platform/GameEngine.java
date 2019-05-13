@@ -24,7 +24,7 @@ public class GameEngine {
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
 	public GameEngine(ManagedEventBroadcaster events, EntityPool entities) {
-		this(events, entities, Providers.fromConfig(GameSystem.class).findAll(system -> true));
+		this(events, entities, Providers.fromDescriptor(GameSystem.class).findAll(system -> true));
 	}
 	/**
 	 * @see #GameEngine(ManagedEventBroadcaster, EntityPool, Iterable)

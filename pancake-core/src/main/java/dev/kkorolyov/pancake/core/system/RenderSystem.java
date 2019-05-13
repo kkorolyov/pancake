@@ -72,7 +72,7 @@ public class RenderSystem extends GameSystem {
 
 	@Override
 	public void update(Entity entity, long dt) {
-		drawBuckets.computeIfAbsent(entity.get(Transform.class).getPosition().getZ(), k -> new HashSet<>())
+		drawBuckets.computeIfAbsent(entity.get(Transform.class).getGlobalPosition().getZ(), k -> new HashSet<>())
 				.add(entity);
 	}
 
@@ -109,6 +109,7 @@ public class RenderSystem extends GameSystem {
 		graphic.render(g, drawPosition);
 	}
 
+	// TODO Move to dedicated platform DebugRenderer
 	private void drawDebug() {
 		String[] args = Config.config.getArray("renderInfo");
 		if (args == null) return;

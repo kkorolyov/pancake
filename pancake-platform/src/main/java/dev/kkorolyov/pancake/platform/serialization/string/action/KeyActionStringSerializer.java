@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
 public class KeyActionStringSerializer extends ActionStringSerializer<KeyAction> {
 	private final Serializer<Action, String> autoSerializer;
 
+	public KeyActionStringSerializer() {
+		this(null);
+	}
 	/**
 	 * Constructs a new key action serializer.
 	 * @param context associated action registry

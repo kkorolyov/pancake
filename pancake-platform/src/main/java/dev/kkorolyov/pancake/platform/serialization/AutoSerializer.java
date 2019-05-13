@@ -84,7 +84,7 @@ public class AutoSerializer<I, O, P extends Serializer<I, O>> implements Seriali
 	}
 
 	private Stream<P> providers() {
-		if (providers == null) providers = (Providers<P>) providerMap.computeIfAbsent(new ProviderKey(providerType, providerParameters), k -> Providers.fromConfig(k.providerType, k.parameters));
+		if (providers == null) providers = (Providers<P>) providerMap.computeIfAbsent(new ProviderKey(providerType, providerParameters), k -> Providers.fromDescriptor(k.providerType, k.parameters));
 
 		return providers.stream();
 	}

@@ -7,6 +7,9 @@ import dev.kkorolyov.pancake.platform.action.ActionRegistry;
  * Serializes actions found in the {@link ActionRegistry}.
  */
 public class ActionReferenceStringSerializer extends ActionStringSerializer<Action> {
+	public ActionReferenceStringSerializer() {
+		this(null);
+	}
 	/**
 	 * Constructs a new registered action serializer.
 	 * @param context associated action registry
