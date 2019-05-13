@@ -231,10 +231,22 @@ project(":killstreek") {
 
 	configure<JavaApplication> {
 		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.Launcher"
+
+		applicationDefaultJvmArgs = listOf("-Xmx4G")
 	}
 
 	configure<JavaFXOptions> {
 		version = "11.+"
 		modules = listOf("javafx.media")
+	}
+
+	tasks.register<Exec>("exec") {
+		dependsOn("installDist")
+
+		workingDir = tasks.named<Sync>("installDist").get().destinationDir
+		commandLine = listOf("sh", "bin/killstreek")
+
+		description = "Executes the distribution"
+		group = "distribution"
 	}
 }
