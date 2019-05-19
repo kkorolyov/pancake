@@ -111,7 +111,7 @@ public class RenderSystem extends GameSystem {
 
 	// TODO Move to dedicated platform DebugRenderer
 	private void drawDebug() {
-		String[] args = Config.config.getArray("renderInfo");
+		String[] args = Config.config().getArray("renderInfo");
 		if (args == null) return;
 
 		double y = 0;
