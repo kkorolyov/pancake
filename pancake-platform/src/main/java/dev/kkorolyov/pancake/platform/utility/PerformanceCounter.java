@@ -14,8 +14,8 @@ import java.util.Map;
 public class PerformanceCounter {
 	private static final Logger log = Config.getLogger(PerformanceCounter.class);
 
-	private final long maxTime = Long.parseLong(Config.config.get("maxTime"));
-	private final int samples = Math.max(1, Integer.parseInt(Config.config.get("samples")));
+	private final long maxTime = Long.parseLong(Config.config().get("maxTime"));
+	private final int samples = Math.max(1, Integer.parseInt(Config.config().get("samples")));
 
 	private long last;
 	private final AveragedValue tick = new AveragedValue(samples);
