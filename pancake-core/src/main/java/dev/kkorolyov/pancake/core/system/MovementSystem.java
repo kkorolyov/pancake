@@ -17,7 +17,7 @@ public class MovementSystem extends GameSystem {
 	public MovementSystem() {
 		super(
 				new Signature(Transform.class, Velocity.class),
-				new Limiter(0)
+				Limiter.fromConfig(MovementSystem.class)
 		);
 	}
 

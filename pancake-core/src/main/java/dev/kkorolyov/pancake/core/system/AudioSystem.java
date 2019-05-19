@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.AudioEmitter;
 import dev.kkorolyov.pancake.core.component.Transform;
+import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
@@ -14,8 +15,6 @@ import dev.kkorolyov.pancake.platform.utility.Limiter;
  * Starts and stops audio clips.
  */
 public class AudioSystem extends GameSystem {
-	private static final double CENTRAL_RADIUS = 2;
-
 	private Camera camera;
 	private final Vector relativeEmitter = new Vector();
 
@@ -25,7 +24,7 @@ public class AudioSystem extends GameSystem {
 	public AudioSystem() {
 		super(
 				new Signature(AudioEmitter.class, Transform.class),
-				new Limiter(0)
+				Limiter.fromConfig(AudioSystem.class)
 		);
 	}
 
@@ -43,9 +42,11 @@ public class AudioSystem extends GameSystem {
 				.set(position)
 				.sub(camera.getPosition());
 
+		double centralRadius = Double.parseDouble(Config.config(getClass()).get("centralRadius"));
+
 		emitter.apply(
-				CENTRAL_RADIUS / relativeEmitter.getMagnitude(),
-				relativeEmitter.getX() / CENTRAL_RADIUS
+				centralRadius / relativeEmitter.getMagnitude(),
+				relativeEmitter.getX() / centralRadius
 		);
 	}
 }

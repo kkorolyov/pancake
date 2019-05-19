@@ -27,8 +27,8 @@ public final class Config {
 	private static final Map<String, Properties> configs = new HashMap<>();
 
 	static {
-		reloadConfig();
 		reloadLogging();
+		reloadConfig();
 	}
 
 	private Config() {}
@@ -44,10 +44,12 @@ public final class Config {
 		Properties config = configs.computeIfAbsent(name, k -> new Properties());
 		config.clear();
 
-		in(getDefaultsFileName(name), config::load);
-		in(getFileName(name), config::load);
-
-		LOG.info("Reloaded config [{}]: {}", name, config);
+		if (in(getDefaultsFileName(name), config::load)) {
+			LOG.info("Reloaded default config [{}]", name);
+		}
+		if (in(getFileName(name), config::load)) {
+			LOG.info("Reloaded config [{}]", name);
+		}
 	}
 
 	private static Stream<String> streamSystemConfigNames() {

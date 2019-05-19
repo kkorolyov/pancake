@@ -1,5 +1,10 @@
 package dev.kkorolyov.pancake.platform.utility;
 
+import dev.kkorolyov.pancake.platform.Config;
+import dev.kkorolyov.pancake.platform.GameSystem;
+
+import java.util.Optional;
+
 /**
  * A timer which is ready after a set number of {@code ns} have elapsed since its previous ready state.
  */
@@ -13,6 +18,19 @@ public class Limiter {
 	 */
 	public Limiter(long frequency) {
 		this.frequency = Math.max(0, frequency);
+	}
+
+	/**
+	 * @param c game system to get limiter configuration for
+	 * @return limiter using TPS specified in {@code c}'s configuration; or no limit if no configuration
+	 */
+	public static Limiter fromConfig(Class<? extends GameSystem> c) {
+		return new Limiter(
+				Optional.ofNullable(Config.config(c).get("tps"))
+						.map(Integer::parseInt)
+						.map(tps -> (long) (1e9 / tps))
+						.orElse(0L)
+		);
 	}
 
 	/**

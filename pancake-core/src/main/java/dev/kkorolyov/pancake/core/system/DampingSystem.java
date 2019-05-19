@@ -18,7 +18,7 @@ public class DampingSystem extends GameSystem {
 	public DampingSystem() {
 		super(
 				new Signature(Damping.class, Velocity.class, Force.class),
-				new Limiter(0)
+				Limiter.fromConfig(DampingSystem.class)
 		);
 	}
 

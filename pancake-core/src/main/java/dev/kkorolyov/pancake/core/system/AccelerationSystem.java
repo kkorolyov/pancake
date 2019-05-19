@@ -18,7 +18,7 @@ public class AccelerationSystem extends GameSystem {
 	public AccelerationSystem() {
 		super(
 				new Signature(Velocity.class, Force.class),
-				new Limiter(0)
+				Limiter.fromConfig(AccelerationSystem.class)
 		);
 	}
 
