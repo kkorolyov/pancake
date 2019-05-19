@@ -52,7 +52,7 @@ public class RenderSystem extends GameSystem {
 	public RenderSystem() {
 		super(
 				new Signature(Transform.class, Graphic.class),
-				new Limiter(0)
+				Limiter.fromConfig(RenderSystem.class)
 		);
 	}
 	@Override

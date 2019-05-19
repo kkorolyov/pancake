@@ -32,7 +32,7 @@ public class InputSystem extends GameSystem {
 	public InputSystem() {
 		super(
 				new Signature(Input.class, ActionQueue.class),
-				new Limiter(0)
+				Limiter.fromConfig(InputSystem.class)
 		);
 	}
 	@Override

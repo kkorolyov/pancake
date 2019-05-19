@@ -21,7 +21,7 @@ public class ActionSystem extends GameSystem {
 	public ActionSystem() {
 		super(
 				new Signature(ActionQueue.class),
-				new Limiter(0)
+				Limiter.fromConfig(ActionSystem.class)
 		);
 	}
 

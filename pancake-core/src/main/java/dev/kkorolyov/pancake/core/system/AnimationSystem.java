@@ -18,7 +18,7 @@ public class AnimationSystem extends GameSystem {
 	public AnimationSystem() {
 		super(
 				new Signature(Animation.class),
-				new Limiter(0)
+				Limiter.fromConfig(AnimationSystem.class)
 		);
 	}
 

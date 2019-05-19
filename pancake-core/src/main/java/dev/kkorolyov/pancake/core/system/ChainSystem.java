@@ -24,7 +24,7 @@ public class ChainSystem extends GameSystem {
 	public ChainSystem() {
 		super(
 				new Signature(Transform.class, Chain.class),
-				new Limiter(0)
+				Limiter.fromConfig(ChainSystem.class)
 		);
 	}
 

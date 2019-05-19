@@ -36,7 +36,7 @@ public class CollisionSystem extends GameSystem {
 	public CollisionSystem() {
 		super(
 				new Signature(Transform.class, Bounds.class),
-				new Limiter(0)
+				Limiter.fromConfig(CollisionSystem.class)
 		);
 	}
 

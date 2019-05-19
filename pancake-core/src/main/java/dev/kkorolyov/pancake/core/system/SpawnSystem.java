@@ -19,7 +19,7 @@ public class SpawnSystem extends GameSystem {
 	public SpawnSystem() {
 		super(
 				new Signature(Spawner.class, Transform.class),
-				new Limiter(0)
+				Limiter.fromConfig(SpawnSystem.class)
 		);
 	}
 
