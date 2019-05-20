@@ -1,3 +1,4 @@
+
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import dev.kkorolyov.FullDocExtension
 import org.gradle.api.JavaVersion.VERSION_11
@@ -73,7 +74,7 @@ configure(
 	apply(plugin = "groovy")
 
 	dependencies {
-		testImplementation("org.spockframework:spock-core:1.1-groovy-2.+")
+		testImplementation("org.spockframework:spock-core:1.3-groovy-2.+")
 		testImplementation("cglib:cglib-nodep:3.+")
 		testImplementation("org.objenesis:objenesis:1.+")
 		testImplementation("dev.kkorolyov:simple-specs:1.+")
