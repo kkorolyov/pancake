@@ -1,4 +1,6 @@
 module dev.kkorolyov.killstreek {
+	requires kotlin.stdlib;
+
 	requires javafx.graphics;
 	requires javafx.media;
 

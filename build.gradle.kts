@@ -206,12 +206,12 @@ project(":skillet") {
 	apply(plugin = "application")
 	apply(plugin = "org.openjfx.javafxplugin")
 
+	description = "Standalone application for designing and exporting entities"
+
 	dependencies {
 		implementation(kotlin("stdlib-jdk8"))
 		implementation(kotlin("reflect"))
 	}
-
-	description = "Standalone application for designing and exporting entities"
 
 	configure<JavaApplication> {
 		mainClassName = "dev.kkorolyov.pancake.skillet.Skillet"
@@ -224,11 +224,15 @@ project(":skillet") {
 }
 
 project(":killstreek") {
-	apply(plugin = "java")
+	apply(plugin = "kotlin")
 	apply(plugin = "application")
 	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "Top-down ARPG with dynamic RNG system"
+
+	dependencies {
+		implementation(kotlin("stdlib-jdk8"))
+	}
 
 	configure<JavaApplication> {
 		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.Launcher"
@@ -242,7 +246,7 @@ project(":killstreek") {
 	}
 
 	tasks.register<Exec>("exec") {
-		dependsOn("installDist")
+		dependsOn("clean", "installDist")
 
 		workingDir = tasks.named<Sync>("installDist").get().destinationDir
 		commandLine = listOf("sh", "bin/killstreek")
