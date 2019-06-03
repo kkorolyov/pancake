@@ -115,7 +115,7 @@ class Launcher : PancakeLauncher(
 
 		for (i in 1..line) {
 			for (j in 1..line) {
-				addObject(Vector(i.toFloat(), -j.toFloat()), Bounds(Constants.BOX), boxGraphic)
+				addObject(Vector(i.toFloat(), -j.toFloat()), Bounds(BOX), boxGraphic)
 			}
 		}
 	}
@@ -125,7 +125,7 @@ class Launcher : PancakeLauncher(
 
 		for (i in 1..line) {
 			for (j in 1..line) {
-				addObject(Vector(i.toFloat(), j.toFloat()), Bounds(Constants.RADIUS), sphereGraphic)
+				addObject(Vector(i.toFloat(), j.toFloat()), Bounds(RADIUS), sphereGraphic)
 			}
 		}
 	}
@@ -139,8 +139,8 @@ class Launcher : PancakeLauncher(
 				.add(
 						transform,
 						Velocity(),
-						Force(Constants.OBJECT_MASS),
-						Damping(Constants.OBJECT_DAMPING),
+						Force(OBJECT_MASS),
+						Damping(OBJECT_DAMPING),
 						Chain(null, 0f, playerTransform.position),
 						bounds,
 						graphic,
@@ -151,8 +151,7 @@ class Launcher : PancakeLauncher(
 				.add(
 						Transform(Vector(0f, .3f, 1f), transform, false),
 						Graphic(HealthBar(health, healthBarSize)),
-						health,
-						Damage()  // To be visible to DamageSystem
+						health
 				)
 	}
 
@@ -174,9 +173,9 @@ class Launcher : PancakeLauncher(
 							listOf(
 									Transform(Vector(1f, 1f), randRotation()),
 									Velocity(),
-									Force(Constants.OBJECT_MASS),
-									Damping(Constants.OBJECT_DAMPING),
-									Bounds(Constants.BOX, Constants.RADIUS),
+									Force(OBJECT_MASS),
+									Damping(OBJECT_DAMPING),
+									Bounds(BOX, RADIUS),
 									sphereGraphic
 							)
 						},
@@ -195,10 +194,10 @@ class Launcher : PancakeLauncher(
 		return entities.create()
 				.add(
 						playerTransform,
-						Velocity(Constants.MAX_SPEED),
-						Force(Constants.PLAYER_MASS),
-						Damping(Constants.PLAYER_DAMPING),
-						Bounds(Constants.BOX, Constants.RADIUS),
+						Velocity(MAX_SPEED),
+						Force(PLAYER_MASS),
+						Damping(PLAYER_DAMPING),
+						Bounds(BOX, RADIUS),
 						spawner,
 						Animation(sprite),
 						Graphic(sprite),
