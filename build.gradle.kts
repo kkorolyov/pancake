@@ -1,4 +1,3 @@
-
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import dev.kkorolyov.FullDocExtension
 import org.gradle.api.JavaVersion.VERSION_11
@@ -237,7 +236,7 @@ project(":killstreek") {
 	configure<JavaApplication> {
 		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.Launcher"
 
-		applicationDefaultJvmArgs = listOf("-Xmx4G")
+		applicationDefaultJvmArgs = listOf("-Xmx2G", "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5006")
 	}
 
 	configure<JavaFXOptions> {

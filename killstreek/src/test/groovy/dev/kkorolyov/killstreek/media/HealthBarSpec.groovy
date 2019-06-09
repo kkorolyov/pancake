@@ -8,7 +8,6 @@ import javafx.scene.paint.Paint
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randFloat
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
 class HealthBarSpec extends Specification {
