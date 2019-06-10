@@ -4,6 +4,7 @@ module dev.kkorolyov.killstreek {
 	requires javafx.graphics;
 	requires javafx.media;
 
+	requires simple.funcs;
 	requires simple.structs;
 
 	requires dev.kkorolyov.pancake.core;
