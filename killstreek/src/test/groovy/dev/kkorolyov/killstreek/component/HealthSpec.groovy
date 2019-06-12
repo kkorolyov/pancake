@@ -33,7 +33,7 @@ class HealthSpec extends Specification {
 		health.getValue().set(value)
 
 		then:
-		health.isDead()
+		health.isDead
 
 		where:
 		value << (0..-100)

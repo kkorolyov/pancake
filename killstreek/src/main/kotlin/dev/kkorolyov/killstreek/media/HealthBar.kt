@@ -22,10 +22,10 @@ class HealthBar(
 		val initialStroke = g.stroke
 		val initialWidth = g.lineWidth
 
-		val x = position.x.toDouble()
-		val y = position.y.toDouble()
-		val w = (size.x * health.percentage).toDouble()
-		val h = size.y.toDouble()
+		val x = position.x
+		val y = position.y
+		val w = (size.x * health.percentage)
+		val h = size.y
 
 		g.fill = Color.RED
 		g.fillRect(x, y, w, h)

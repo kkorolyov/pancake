@@ -40,10 +40,10 @@ public class KeyAction implements Action {
 	/**
 	 * Arms the wrapped action after translating the intersection of expected inputs and given inputs into a {@link MultiStageAction.ArmingOption}.
 	 * @param inputs current inputs
-	 * @param dt seconds elapsed since the last invocation of this method
+	 * @param dt {@code ns} elapsed since the last invocation of this method
 	 * @return {@code this}
 	 */
-	public KeyAction arm(Set<Enum> inputs, float dt) {
+	public KeyAction arm(Set<Enum> inputs, long dt) {
 		delegate.arm(
 				inputs.containsAll(this.inputs)
 						? ArmingOption.ACTIVATE

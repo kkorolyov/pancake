@@ -44,7 +44,7 @@ public class RenderSystem extends GameSystem {
 	private final Rotate rotate = new Rotate();
 	private final Vector rotateVector = new Vector();
 
-	private final NavigableMap<Float, Set<Entity>> drawBuckets = new TreeMap<>();
+	private final NavigableMap<Double, Set<Entity>> drawBuckets = new TreeMap<>();
 
 	/**
 	 * Constructs a new render system.
@@ -103,7 +103,7 @@ public class RenderSystem extends GameSystem {
 		rotateVector.set(transform.getGlobalOrientation());
 		rotateVector.add(graphic.getOrientationOffset());
 
-		rotate((float) -Math.toDegrees(rotateVector.getZ()), drawPosition);  // Rotate around transform origin
+		rotate(-Math.toDegrees(rotateVector.getZ()), drawPosition);  // Rotate around transform origin
 		drawPosition.sub(graphic.size(), .5f);  // Sprite top-left corner
 
 		graphic.render(g, drawPosition);
@@ -155,7 +155,7 @@ public class RenderSystem extends GameSystem {
 		}
 	}
 
-	private void rotate(float angle, Vector pivot) {
+	private void rotate(double angle, Vector pivot) {
 		rotate.setAngle(angle);
 
 		if (pivot != null) {

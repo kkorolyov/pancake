@@ -6,9 +6,9 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 class DampingSpec extends Specification {
-	@Shared float dampValue = 0.5
-	@Shared float mini = 0.001
-	@Shared float micro = 0.000001
+	@Shared double dampValue = 0.5
+	@Shared double mini = 0.001
+	@Shared double micro = 0.000001
 
 	Damping damping = new Damping(dampValue)
 

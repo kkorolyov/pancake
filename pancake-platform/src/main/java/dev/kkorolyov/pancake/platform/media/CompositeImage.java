@@ -44,8 +44,8 @@ public class CompositeImage implements Iterable<Image> {
 	public void add(Image image) {
 		images.add(image);
 
-		if (image.getWidth() > size.getX()) size.setX((float) image.getWidth());
-		if (image.getHeight() > size.getY()) size.setY((float) image.getHeight());
+		if (image.getWidth() > size.getX()) size.setX(image.getWidth());
+		if (image.getHeight() > size.getY()) size.setY(image.getHeight());
 	}
 	/**
 	 * Removes an image from the composition.

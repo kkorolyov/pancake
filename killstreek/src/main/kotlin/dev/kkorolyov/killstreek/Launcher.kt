@@ -33,16 +33,16 @@ fun main(args: Array<String>) {
 }
 
 private val rand: ThreadLocalRandom = ThreadLocalRandom.current()
-private val healthBarSize: Vector = Vector(1f, .25f)
-private val spriteOrientationOffset = Vector(0f, 0f, (-.5 * Math.PI).toFloat())
+private val healthBarSize: Vector = Vector(1.0, .25)
+private val spriteOrientationOffset = Vector(0.0, 0.0, (-.5 * Math.PI))
 
-private fun randRotation(): Vector = Vector(rand.nextFloat(), rand.nextFloat(), rand.nextFloat())
+private fun randRotation(): Vector = Vector(rand.nextDouble(), rand.nextDouble(), rand.nextDouble())
 
 class Launcher : PancakeLauncher(
 		LauncherConfig()
 				.title("Killstreek Functional Test")
-				.size(640f, 640f)
-				.unitPixels(Vector(64f, -64f, 1f))
+				.size(640.0, 640.0)
+				.unitPixels(Vector(64.0, -64.0, 1.0))
 ) {
 	private val groundGraphic by lazy { Graphic(Sprite(images.get("ground"), Vector(), 3, 2, 0)) }
 	private val boxGraphic by lazy { Graphic(Sprite(images.get("box"), spriteOrientationOffset)) }
@@ -93,7 +93,7 @@ class Launcher : PancakeLauncher(
 			for (j in -15..15 step 2) {
 				entities.create()
 						.add(
-								Transform(Vector(i.toFloat(), j.toFloat(), -1f)),
+								Transform(Vector(i.toDouble(), j.toDouble(), -1.0)),
 								groundGraphic
 						)
 			}
@@ -103,8 +103,8 @@ class Launcher : PancakeLauncher(
 	private fun addWall() {
 		entities.create()
 				.add(
-						Transform(Vector(-3f, 0f), randRotation()),
-						Bounds(Vector(3f, 3f)),
+						Transform(Vector(-3.0, 0.0), randRotation()),
+						Bounds(Vector(3.0, 3.0)),
 						boxGraphic,
 						AudioEmitter().enqueue(audio.get("wall"))
 				)
@@ -115,7 +115,7 @@ class Launcher : PancakeLauncher(
 
 		for (i in 1..line) {
 			for (j in 1..line) {
-				addObject(Vector(i.toFloat(), -j.toFloat()), Bounds(BOX), boxGraphic)
+				addObject(Vector(i.toDouble(), -j.toDouble()), Bounds(BOX), boxGraphic)
 			}
 		}
 	}
@@ -125,7 +125,7 @@ class Launcher : PancakeLauncher(
 
 		for (i in 1..line) {
 			for (j in 1..line) {
-				addObject(Vector(i.toFloat(), j.toFloat()), Bounds(RADIUS), sphereGraphic)
+				addObject(Vector(i.toDouble(), j.toDouble()), Bounds(RADIUS), sphereGraphic)
 			}
 		}
 	}
@@ -141,7 +141,7 @@ class Launcher : PancakeLauncher(
 						Velocity(),
 						Force(OBJECT_MASS),
 						Damping(OBJECT_DAMPING),
-						Chain(null, 0f, playerTransform.position),
+						Chain(null, 0.0, playerTransform.position),
 						bounds,
 						graphic,
 						health
@@ -149,7 +149,7 @@ class Launcher : PancakeLauncher(
 		// Its health bar
 		entities.create()
 				.add(
-						Transform(Vector(0f, .3f, 1f), transform, false),
+						Transform(Vector(0.0, .3, 1.0), transform, false),
 						Graphic(HealthBar(health, healthBarSize)),
 						health
 				)
@@ -159,7 +159,7 @@ class Launcher : PancakeLauncher(
 		entities.create()
 				.add(
 						Transform(camera.position),
-						Chain(playerTransform.position, 1f)
+						Chain(playerTransform.position, 1.0)
 				)
 	}
 
@@ -167,11 +167,11 @@ class Launcher : PancakeLauncher(
 		val sprite = Sprite(images.get("player"), spriteOrientationOffset, 4, 3, (1e9 / 60).toLong())
 
 		val spawner = Spawner(
-				1f, 4f, .1f, WeightedDistribution<Supplier<Iterable<Component>>>()
+				1.0, 4.0, .1, WeightedDistribution<Supplier<Iterable<Component>>>()
 				.add(
-						Supplier<Iterable<Component>> {
+						Supplier {
 							listOf(
-									Transform(Vector(1f, 1f), randRotation()),
+									Transform(Vector(1.0, 1.0), randRotation()),
 									Velocity(),
 									Force(OBJECT_MASS),
 									Damping(OBJECT_DAMPING),
@@ -188,7 +188,7 @@ class Launcher : PancakeLauncher(
 
 		entities.create()
 				.add(
-						Transform(Vector(0f, .3f, 1f), playerTransform, false),
+						Transform(Vector(0.0, .3, 1.0), playerTransform, false),
 						Graphic(HealthBar(health, healthBarSize))
 				)
 		return entities.create()

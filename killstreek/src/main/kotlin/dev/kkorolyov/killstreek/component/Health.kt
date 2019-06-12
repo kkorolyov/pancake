@@ -10,15 +10,15 @@ import dev.kkorolyov.pancake.platform.math.BoundedValue
  */
 class Health(max: Int, current: Int = max) : Component {
 	/** health value */
-	val value = BoundedValue<Int>(null, max, current)
+	val value: BoundedValue<Int> = BoundedValue<Int>(null, max, current)
 
 	/** percentage of current health with respect to max health */
-	val percentage: Float get() = value.get().toFloat() / value.maximum
+	val percentage: Double get() = value.get().toDouble() / value.maximum.toDouble()
 
 	/** whether current health {@code <= 0} */
-	val dead: Boolean get() = value.get() <= 0
+	val isDead: Boolean get() = value.get() <= 0
 	/** whether current health {@code < 0} */
-	val superDead: Boolean get() = value.get() < 0
+	val isSuperDead: Boolean get() = value.get() < 0
 
 	/**
 	 * Applies a change to current health.

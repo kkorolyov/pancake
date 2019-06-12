@@ -13,7 +13,7 @@ import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOptio
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
 class KeyActionSpec extends Specification {
-	@Shared float dt = 0
+	@Shared long dt = 0
 	@Shared Set<Enum> inputs = [KeyCode.A, MouseButton.PRIMARY]
 	@Shared Entity entity = Mock()
 

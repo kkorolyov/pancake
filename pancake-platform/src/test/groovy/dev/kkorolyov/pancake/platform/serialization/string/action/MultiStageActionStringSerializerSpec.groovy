@@ -7,12 +7,12 @@ import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import java.util.stream.Collectors
 
-import static dev.kkorolyov.simplespecs.SpecUtilities.randFloat
+import static dev.kkorolyov.simplespecs.SpecUtilities.randLong
 import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class MultiStageActionStringSerializerSpec extends BaseSerializerSpec<MultiStageAction, String> {
-	float holdThreshold = randFloat()
+	long holdThreshold = randLong()
 	Map<Action, String> inOut = (1..3).collectEntries {
 		[(Mock(Action)): randString()]
 	}

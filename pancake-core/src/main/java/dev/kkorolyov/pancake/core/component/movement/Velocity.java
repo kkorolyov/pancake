@@ -15,13 +15,13 @@ public class Velocity implements Component {
 	 * Constructs a new velocity with effectively infinite max speed.
 	 */
 	public Velocity() {
-		this(Float.MAX_VALUE);
+		this(Double.MAX_VALUE);
 	}
 	/**
 	 * Constructs a new velocity.
 	 * @param maxSpeed maximum speed along all axes
 	 */
-	public Velocity(float maxSpeed) {
+	public Velocity(double maxSpeed) {
 		this(new Vector(maxSpeed, maxSpeed, maxSpeed));
 	}
 	/**
@@ -29,7 +29,7 @@ public class Velocity implements Component {
 	 * @param maxSpeed vector defining maximum speed along each axis
 	 */
 	public Velocity(Vector maxSpeed) {
-		this.maxSpeed = new BoundedVector(maxSpeed, Vector.all(0), Vector.all(Float.MAX_VALUE));
+		this.maxSpeed = new BoundedVector(maxSpeed, Vector.all(0), Vector.all(Double.MAX_VALUE));
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class Velocity implements Component {
 				cap(velocity.getZ(), maxSpeed.getZ()));
 		return velocity;
 	}
-	private static float cap(float velocity, float maxSpeed) {
+	private static double cap(double velocity, double maxSpeed) {
 		return velocity < 0 ? Math.max(velocity, -maxSpeed) : Math.min(velocity, maxSpeed);
 	}
 
@@ -52,8 +52,8 @@ public class Velocity implements Component {
 				round(velocity.getZ()));
 		return velocity;
 	}
-	private static float round(float value) {
-		return Float.compare(0, value) == 0 ? 0 : value;
+	private static double round(double value) {
+		return Double.compare(0, value) == 0 ? 0 : value;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Velocity implements Component {
 	 * @param seconds seconds used in movement calculation
 	 * @return {@code position} after movement applied
 	 */
-	public Vector move(Vector position, float seconds) {
+	public Vector move(Vector position, double seconds) {
 		position.add(velocity, seconds);
 		return position;
 	}

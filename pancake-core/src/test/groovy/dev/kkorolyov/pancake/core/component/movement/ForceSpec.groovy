@@ -6,7 +6,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 class ForceSpec extends Specification {
-	@Shared float mass = 1
+	@Shared double mass = 1
 
 	Force force = new Force(mass)
 
@@ -24,7 +24,7 @@ class ForceSpec extends Specification {
 		force.getForce().set(forceComponent, forceComponent, forceComponent)
 		Vector velocity = new Vector(1 ,1 ,1)
 		Vector expectedVelocity = new Vector(velocity)
-		expectedVelocity.add(force.getForce(), dt / mass as float)
+		expectedVelocity.add(force.getForce(), dt / mass)
 
 		when:
 		force.accelerate(velocity, dt)

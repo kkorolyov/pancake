@@ -2,11 +2,11 @@ package dev.kkorolyov.killstreek
 
 import dev.kkorolyov.pancake.platform.math.Vector
 
-const val MAX_SPEED = 50f
-const val OBJECT_MASS = .1f
-const val PLAYER_MASS = 10f
-const val OBJECT_DAMPING = .9f
-const val PLAYER_DAMPING = .5f
+const val MAX_SPEED = 50.0
+const val OBJECT_MASS = .1
+const val PLAYER_MASS = 10.0
+const val OBJECT_DAMPING = .9
+const val PLAYER_DAMPING = .5
 
-val BOX = Vector(1f, 1f)
-val RADIUS = BOX.x / 2
+val BOX = Vector(1.0, 1.0)
+val RADIUS = BOX.x / 2.0

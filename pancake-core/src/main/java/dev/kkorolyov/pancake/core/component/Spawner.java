@@ -11,14 +11,14 @@ import java.util.function.Supplier;
  * Provides clones of entity templates between 2 radii around some position.
  */
 public class Spawner implements Component {
-	private static final float PI = (float) Math.PI;
+	private static final double PI = Math.PI;
 	private static final Random rand = new Random();
 
-	private float minRadius;
-	private float radiusDifference;
+	private double minRadius;
+	private double radiusDifference;
 
-	private float interval;
-	private float sinceLast;
+	private double interval;
+	private double sinceLast;
 
 	private WeightedDistribution<Supplier<Iterable<Component>>> templates;
 
@@ -29,7 +29,7 @@ public class Spawner implements Component {
 	 * @param interval minimum seconds between spawns when active; negative implies inactive with {@code abs(interval)} interval
 	 * @param templates generators of randomly-selected templates to clone and spawn; each template should contain a {@link Transform} where non-zero position components denote axes to randomize
 	 */
-	public Spawner(float minRadius, float maxRadius, float interval, WeightedDistribution<Supplier<Iterable<Component>>> templates) {
+	public Spawner(double minRadius, double maxRadius, double interval, WeightedDistribution<Supplier<Iterable<Component>>> templates) {
 		setRadius(minRadius, maxRadius);
 		setInterval(interval);
 		setTemplates(templates);
@@ -41,7 +41,7 @@ public class Spawner implements Component {
 	 * @param dt seconds since last invocation of this method
 	 * @return random template clone randomly positioned around {@code origin}, or {@code null} if inactive or the last invocation of this method happened within the spawn interval
 	 */
-	public Iterable<Component> spawn(Vector origin, float dt) {
+	public Iterable<Component> spawn(Vector origin, double dt) {
 		if (!isActive()) return null;
 
 		sinceLast += dt;
@@ -70,14 +70,14 @@ public class Spawner implements Component {
 		return clone;
 	}
 	private void randomPosition(Vector position) {
-		float radius = minRadius + (radiusDifference * rand.nextFloat());
-		float theta = 2 * PI * rand.nextFloat();
-		float u = (rand.nextBoolean() ? 1 : -1) * rand.nextFloat();
-		float v = (float) (radius * Math.sqrt(1 - u * u));
+		double radius = minRadius + (radiusDifference * rand.nextDouble());
+		double theta = 2 * PI * rand.nextDouble();
+		double u = (rand.nextBoolean() ? 1 : -1) * rand.nextDouble();
+		double v = radius * Math.sqrt(1 - u * u);
 
-		float x = (float) (v * Math.cos(theta));
-		float y = (float) (v * Math.sin(theta));
-		float z = radius * u;
+		double x = v * Math.cos(theta);
+		double y = v * Math.sin(theta);
+		double z = radius * u;
 
 		if (position.getX() != 0) position.setX(x);
 		if (position.getY() != 0) position.setY(y);
@@ -104,17 +104,17 @@ public class Spawner implements Component {
 	 * @param minRadius radius past which clones are spawned
 	 * @param maxRadius radius within which clones are spawned
 	 */
-	public void setRadius(float minRadius, float maxRadius) {
+	public void setRadius(double minRadius, double maxRadius) {
 		this.minRadius = Math.max(0, minRadius);
 		radiusDifference = Math.max(this.minRadius, maxRadius) - this.minRadius;
 	}
 
 	/** @return minimum seconds between spawns when active; negative implies inactive with {@code abs(interval)} interval */
-	public float getInterval() {
+	public double getInterval() {
 		return interval;
 	}
 	/** @param interval new minimum seconds between spawns when active; negative implies inactive with {@code abs(interval)} interval */
-	public void setInterval(float interval) {
+	public void setInterval(double interval) {
 		this.interval = Math.abs(interval);
 		sinceLast = 0;
 	}

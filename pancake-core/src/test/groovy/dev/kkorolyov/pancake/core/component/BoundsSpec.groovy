@@ -5,11 +5,14 @@ import dev.kkorolyov.pancake.platform.math.Vector
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.core.component.Bounds.*
+import static dev.kkorolyov.pancake.core.component.Bounds.BOX_BOX
+import static dev.kkorolyov.pancake.core.component.Bounds.BOX_SPHERE
+import static dev.kkorolyov.pancake.core.component.Bounds.SPHERE_BOX
+import static dev.kkorolyov.pancake.core.component.Bounds.SPHERE_SPHERE
 
 class BoundsSpec extends Specification {
 	@Shared Vector box = new Vector()
-	@Shared float radius = 1
+	@Shared double radius = 1
 
 	Bounds bounds = new Bounds(box, radius)
 

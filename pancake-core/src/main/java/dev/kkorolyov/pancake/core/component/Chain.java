@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class Chain implements Component {
 	private Vector positionAnchor;
-	private float play;
+	private double play;
 	private final Set<Vector> rotationAnchors = new HashSet<>();
 
 	/**
@@ -23,7 +23,7 @@ public class Chain implements Component {
 	 * @param play maximum distance between {@code positionAnchor} and the chained entity
 	 * @param rotationAnchors chained rotational anchors
 	 */
-	public Chain(Vector positionAnchor, float play, Vector... rotationAnchors) {
+	public Chain(Vector positionAnchor, double play, Vector... rotationAnchors) {
 		this(positionAnchor, play, Arrays.asList(rotationAnchors));
 	}
 	/**
@@ -32,7 +32,7 @@ public class Chain implements Component {
 	 * @param play maximum distance between {@code positionAnchor} and the chained entity
 	 * @param rotationAnchors chained rotational anchors
 	 */
-	public Chain(Vector positionAnchor, float play, Iterable<Vector> rotationAnchors) {
+	public Chain(Vector positionAnchor, double play, Iterable<Vector> rotationAnchors) {
 		setPositionAnchor(positionAnchor, play);
 		rotationAnchors.forEach(this::addRotationAnchor);
 	}
@@ -47,11 +47,11 @@ public class Chain implements Component {
 	}
 
 	/** @return maximum distance this chain's positional anchor may move without being followed */
-	public float getPlay() {
+	public double getPlay() {
 		return play;
 	}
 	/** @param play new positional anchor play threshold */
-	public void setPlay(float play) {
+	public void setPlay(double play) {
 		setPositionAnchor(positionAnchor, play);
 	}
 
@@ -59,7 +59,7 @@ public class Chain implements Component {
 	 * @param anchor new positional anchor
 	 * @param play maximum distance {@code anchor} may move without this chain following
 	 */
-	public void setPositionAnchor(Vector anchor, float play) {
+	public void setPositionAnchor(Vector anchor, double play) {
 		this.positionAnchor = anchor;
 		this.play = play;
 	}

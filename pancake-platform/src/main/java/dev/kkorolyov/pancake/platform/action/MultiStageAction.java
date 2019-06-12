@@ -9,8 +9,8 @@ import java.util.Objects;
  */
 public class MultiStageAction implements Action {
 	private final Action start, hold, end;
-	private final float holdThreshold;
-	private float holdTime;
+	private final long holdThreshold;
+	private long holdTime;
 	private ArmingOption armingOption;
 	private State state = State.INACTIVE;
 
@@ -19,13 +19,13 @@ public class MultiStageAction implements Action {
 	 * @param start action applied when this action is "activated"
 	 * @param hold action applied the first time this action is signalled after it has been "activated"
 	 * @param end action applied when this action is "deactivated"
-	 * @param holdThreshold minimum number of seconds this action must remain in the "active" state before moving on to the "decayed" state
+	 * @param holdThreshold minimum number of {@code ns} this action must remain in the "active" state before moving on to the "decayed" state
 	 */
 	public MultiStageAction(
 			Action start,
 			Action hold,
 			Action end,
-			float holdThreshold // TODO Migrate to ns
+			long holdThreshold
 	) {
 		this.start = start;
 		this.hold = hold;
@@ -37,10 +37,10 @@ public class MultiStageAction implements Action {
 	 * Arms this action to move to the next state in its state sequence, according to the given arming option.
 	 * The next time {@link Action#apply(Entity)} is invoked on this action, its state will change according to the current arming option.
 	 * @param armingOption option influencing the next state this action moves to after its next application
-	 * @param dt seconds elapsed since the last invocation of this method
+	 * @param dt {@code ns} elapsed since the last invocation of this method
 	 * @return {@code this}
 	 */
-	public MultiStageAction arm(ArmingOption armingOption, float dt) {
+	public MultiStageAction arm(ArmingOption armingOption, long dt) {
 		this.armingOption = armingOption;
 		holdTime += dt;
 		return this;
@@ -77,10 +77,10 @@ public class MultiStageAction implements Action {
 		if (obj == null || getClass() != obj.getClass()) return false;
 
 		MultiStageAction o = (MultiStageAction) obj;
-		return Objects.equals(start, o.start)
-				&& Objects.equals(hold, o.hold)
-				&& Objects.equals(end, o.end)
-				&& Float.compare(holdThreshold, o.holdThreshold) == 0;
+		return holdThreshold == o.holdThreshold &&
+				Objects.equals(start, o.start) &&
+				Objects.equals(hold, o.hold) &&
+				Objects.equals(end, o.end);
 	}
 	@Override
 	public int hashCode() {
@@ -114,7 +114,7 @@ public class MultiStageAction implements Action {
 			void apply(Entity entity, MultiStageAction client) {
 				switch (client.armingOption) {
 					case ACTIVATE:
-						if (Float.compare(client.holdTime, client.holdThreshold) >= 0) {
+						if (client.holdTime >= client.holdThreshold) {
 							invokeNullable(client.hold, entity);
 
 							client.holdTime = 0;

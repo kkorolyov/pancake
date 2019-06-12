@@ -74,15 +74,15 @@ public abstract class Launcher extends Application {
 		primaryStage.show();
 
 		primaryStage.widthProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) ->
-				setSize((float) (canvas.getWidth() + newValue.doubleValue() - oldValue.doubleValue()), (float) canvas.getHeight()));
+				setSize(canvas.getWidth() + newValue.doubleValue() - oldValue.doubleValue(), canvas.getHeight()));
 		primaryStage.heightProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) ->
-				setSize((float) canvas.getWidth(), (float) (canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue())));
+				setSize(canvas.getWidth(), canvas.getHeight() + newValue.doubleValue() - oldValue.doubleValue()));
 
 		primaryStage.setOnCloseRequest(e -> gameLoop.stop());
 
 		new Thread(gameLoop::start).start();
 	}
-	private void setSize(float width, float height) {
+	private void setSize(double width, double height) {
 		canvas.setWidth(width);
 		canvas.setHeight(height);
 
@@ -109,7 +109,7 @@ public abstract class Launcher extends Application {
 			return this;
 		}
 
-		public LauncherConfig size(float width, float height) {
+		public LauncherConfig size(double width, double height) {
 			this.size = new Vector(width, height);
 			return this;
 		}
