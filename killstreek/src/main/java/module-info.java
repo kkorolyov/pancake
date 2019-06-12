@@ -1,7 +1,10 @@
 module dev.kkorolyov.killstreek {
+	requires kotlin.stdlib;
+
 	requires javafx.graphics;
 	requires javafx.media;
 
+	requires simple.funcs;
 	requires simple.structs;
 
 	requires dev.kkorolyov.pancake.core;
@@ -11,5 +14,6 @@ module dev.kkorolyov.killstreek {
 	exports dev.kkorolyov.killstreek.system to simple.files;
 
 	provides dev.kkorolyov.pancake.platform.GameSystem with
-			dev.kkorolyov.killstreek.system.DamageSystem;
+			dev.kkorolyov.killstreek.system.DamageSystem,
+			dev.kkorolyov.killstreek.system.GcSystem;
 }
