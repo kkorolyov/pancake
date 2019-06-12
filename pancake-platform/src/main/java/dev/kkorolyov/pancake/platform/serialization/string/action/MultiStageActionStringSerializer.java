@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  */
 public class MultiStageActionStringSerializer extends ActionStringSerializer<MultiStageAction> {
 	private final Serializer<Action, String> autoSerializer;
-	private final float holdThreshold = Float.parseFloat(Config.config().get("holdThreshold"));
+	private final long holdThreshold = (long) (Float.parseFloat(Config.config().get("holdThreshold")) * 1e9);
 
 	public MultiStageActionStringSerializer() {
 		this(null);
@@ -41,7 +41,8 @@ public class MultiStageActionStringSerializer extends ActionStringSerializer<Mul
 				actions.get(0),
 				actions.get(1),
 				actions.get(2),
-				holdThreshold);
+				holdThreshold
+		);
 	}
 	@Override
 	public String write(MultiStageAction in) {

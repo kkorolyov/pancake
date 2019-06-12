@@ -19,15 +19,15 @@ public class BoundedVector extends Vector {
 	}
 
 	@Override
-	public void setX(float x) {
+	public void setX(double x) {
 		super.setX(Math.max(min.getX(), Math.min(max.getX(), x)));
 	}
 	@Override
-	public void setY(float y) {
+	public void setY(double y) {
 		super.setY(Math.max(min.getY(), Math.min(max.getY(), y)));
 	}
 	@Override
-	public void setZ(float z) {
+	public void setZ(double z) {
 		super.setZ(Math.max(min.getZ(), Math.min(max.getZ(), z)));
 	}
 }

@@ -38,7 +38,7 @@ public class Limiter {
 	 * @param dt additional elapsed {@code ns}
 	 * @return {@code true} if {@code >= frequency ns} have elapsed since the last time this was ready
 	 */
-	public boolean isReady(float dt) {
+	public boolean isReady(long dt) {
 		elapsed += dt;
 		return isReady();
 	}

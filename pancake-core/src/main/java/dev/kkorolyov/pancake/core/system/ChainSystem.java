@@ -16,7 +16,7 @@ import java.util.TreeMap;
  */
 public class ChainSystem extends GameSystem {
 	private final Vector transformToAnchor = new Vector();
-	private final NavigableMap<Float, Vector> sortedAnchors = new TreeMap<>();
+	private final NavigableMap<Double, Vector> sortedAnchors = new TreeMap<>();
 
 	/**
 	 * Constructs a new chain system.
@@ -43,7 +43,7 @@ public class ChainSystem extends GameSystem {
 		transformToAnchor.set(anchor);
 		transformToAnchor.sub(transform.getPosition());
 
-		float gap = transformToAnchor.getMagnitude() - chain.getPlay();
+		double gap = transformToAnchor.getMagnitude() - chain.getPlay();
 		if (gap > 0) {
 			transformToAnchor.normalize();
 			transformToAnchor.scale(gap);
@@ -63,7 +63,7 @@ public class ChainSystem extends GameSystem {
 		}
 		sortedAnchors.clear();
 	}
-	private float findDistance(Vector parent, Vector child) {
+	private double findDistance(Vector parent, Vector child) {
 		transformToAnchor.set(child);
 		transformToAnchor.sub(parent);
 

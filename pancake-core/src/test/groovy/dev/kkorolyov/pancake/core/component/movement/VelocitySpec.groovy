@@ -6,7 +6,8 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 class VelocitySpec extends Specification {
-	@Shared float maxSpeedValue = 15
+	@Shared
+	double maxSpeedValue = 15
 
 	Velocity velocity = new Velocity(maxSpeedValue)
 
@@ -37,7 +38,7 @@ class VelocitySpec extends Specification {
 		velocity.getVelocity() == velocity.getMaxSpeed()
 
 		where:
-		velocityValue << (2..20).collect {maxSpeedValue * it as float}
+		velocityValue << (2..20).collect { maxSpeedValue * it }
 	}
 	def "caps absolute value of all axes"() {
 		velocity.getVelocity().set(velocityValue, velocityValue, velocityValue)
@@ -54,7 +55,7 @@ class VelocitySpec extends Specification {
 		flip == velocity.getMaxSpeed()
 
 		where:
-		velocityValue << (-1..-20).collect {maxSpeedValue * it as float}
+		velocityValue << (-1..-20).collect { maxSpeedValue * it }
 	}
 	def "leaves values <= cap alone"() {
 		velocity.getVelocity().set(velocityComponent, velocityComponent, velocityComponent)
@@ -67,7 +68,7 @@ class VelocitySpec extends Specification {
 		velocity.getVelocity() == expectedVelocity
 
 		where:
-		velocityComponent << (-maxSpeedValue..maxSpeedValue).collect {it as float}
+		velocityComponent << (-maxSpeedValue..maxSpeedValue).collect { it }
 	}
 
 	def "moves all axes"() {

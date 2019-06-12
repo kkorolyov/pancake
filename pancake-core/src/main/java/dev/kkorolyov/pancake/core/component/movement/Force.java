@@ -8,13 +8,13 @@ import dev.kkorolyov.pancake.platform.math.Vector;
  */
 public class Force implements Component {
 	private final Vector force = new Vector();
-	private float mass, invMass;
+	private double mass, invMass;
 
 	/**
 	 * Constructs a new force.
 	 * @param mass mass in {@code kg}
 	 */
-	public Force(float mass) {
+	public Force(double mass) {
 		setMass(mass);
 	}
 	
@@ -24,7 +24,7 @@ public class Force implements Component {
 	 * @param seconds seconds used in acceleration calculation
 	 * @return {@code velocity} after acceleration
 	 */
-	public Vector accelerate(Vector velocity, float seconds) {
+	public Vector accelerate(Vector velocity, double seconds) {
 		velocity.add(force, invMass * seconds);	// a = f/m, v' = v + at
 		return velocity;
 	}
@@ -35,11 +35,11 @@ public class Force implements Component {
 	}
 
 	/** @return mass in {@code kg} */
-	public float getMass() {
+	public double getMass() {
 		return mass;
 	}
 	/** @param mass new mass */
-	public void setMass(float mass) {
+	public void setMass(double mass) {
 		this.mass = mass;
 		invMass = 1 / mass;
 	}

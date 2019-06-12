@@ -5,10 +5,10 @@ import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.bigDecimal
-import static dev.kkorolyov.simplespecs.SpecUtilities.randFloat
+import static dev.kkorolyov.simplespecs.SpecUtilities.randDouble 
 
 class ForceActionSerializerSpec extends BaseSerializerSpec<ForceAction, String> {
-	float x = randFloat(), y = randFloat(), z = randFloat()
+	double x = randDouble(), y = randDouble(), z = randDouble()
 	Vector force = new Vector(x, y, z)
 
 	def setup() {

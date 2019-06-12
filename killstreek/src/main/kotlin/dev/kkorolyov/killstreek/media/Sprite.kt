@@ -22,7 +22,7 @@ class Sprite(
 		private var frameInterval: Long = 0
 ) : Renderable, Animated {
 	private val origin = Vector()
-	private val frames = Vector(xFrames.toFloat(), yFrames.toFloat())
+	private val frames = Vector(xFrames.toDouble(), yFrames.toDouble())
 	private val frameSize = Vector(image.size.x / frames.x, image.size.y / frames.y)
 
 	private var currentFrameTime: Long = 0
@@ -32,8 +32,8 @@ class Sprite(
 	override fun render(g: GraphicsContext, position: Vector) {
 		for (layer in image) {
 			g.drawImage(
-					layer, origin.x.toDouble(), origin.y.toDouble(), frameSize.x.toDouble(), frameSize.y.toDouble(),
-					position.x.toDouble(), position.y.toDouble(), frameSize.x.toDouble(), frameSize.y.toDouble()
+					layer, origin.x, origin.y, frameSize.x, frameSize.y,
+					position.x, position.y, frameSize.x, frameSize.y
 			)
 		}
 	}
@@ -47,7 +47,7 @@ class Sprite(
 		currentFrameTime += dt
 		if (currentFrameTime < Math.abs(frameInterval)) return
 
-		frame += Math.round((currentFrameTime / frameInterval).toFloat())  // Reversed if negative
+		frame += Math.round((currentFrameTime / frameInterval).toDouble()).toInt()  // Reversed if negative
 		currentFrameTime = 0
 	}
 

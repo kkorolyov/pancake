@@ -23,8 +23,8 @@ public class VectorStringSerializer extends StringSerializer<Vector> {
 
 	@Override
 	public Vector read(String out) {
-		List<Float> components = numberSerializer.matches(out)
-				.map(BigDecimal::floatValue)
+		List<Double> components = numberSerializer.matches(out)
+				.map(BigDecimal::doubleValue)
 				.collect(Collectors.toList());
 
 		return new Vector(

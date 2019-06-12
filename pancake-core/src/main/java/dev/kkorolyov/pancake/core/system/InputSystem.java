@@ -41,7 +41,7 @@ public class InputSystem extends GameSystem {
 				.register(SceneCreated.class, se -> {
 					Scene scene = se.getScene();
 
-					scene.setOnMouseMoved(e -> relCursor.set((float) e.getX(), (float) e.getY()));
+					scene.setOnMouseMoved(e -> relCursor.set(e.getX(), e.getY()));
 
 					scene.setOnMousePressed(e -> pressedKeys.add(e.getButton()));
 					scene.setOnMouseReleased(e -> pressedKeys.remove(e.getButton()));
@@ -58,8 +58,7 @@ public class InputSystem extends GameSystem {
 		Transform transform = entity.get(Transform.class);
 
 		for (KeyAction keyAction : input.getActions()) {
-			// TODO Remove seconds conversion
-			entity.get(ActionQueue.class).enqueue(keyAction.arm(pressedKeys, dt / 1e9f));
+			entity.get(ActionQueue.class).enqueue(keyAction.arm(pressedKeys, dt));
 		}
 		if (input.facesCursor() && transform != null) {
 			transformToCursor.set(camera.getAbsolutePosition(relCursor));

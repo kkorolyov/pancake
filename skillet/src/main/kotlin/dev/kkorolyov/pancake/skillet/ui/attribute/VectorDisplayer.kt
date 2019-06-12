@@ -10,19 +10,21 @@ import kotlin.collections.MutableMap.MutableEntry
 
 object VectorDisplayer : Displayer<Vector>(Vector::class) {
 	override fun display(attribute: MutableEntry<String, Vector>): Node =
-			simpleDisplay(attribute.key,
+			simpleDisplay(
+					attribute.key,
 					HBox(
 							buildSpinner(attribute.value, Vector::getX, Vector::setX),
 							buildSpinner(attribute.value, Vector::getY, Vector::setY),
 							buildSpinner(attribute.value, Vector::getZ, Vector::setZ)
-					))
+					)
+			)
 
-	private fun buildSpinner(vector: Vector, extractor: (Vector) -> Float, applier: (Vector, Float) -> Unit): Spinner<Double> =
-			Spinner<Double>(-Float.MAX_VALUE.toDouble(), Float.MAX_VALUE.toDouble(), extractor(vector).toDouble(), .1).apply {
+	private fun buildSpinner(vector: Vector, extractor: (Vector) -> Double, applier: (Vector, Double) -> Unit): Spinner<Double> =
+			Spinner<Double>(-Double.MAX_VALUE, Double.MAX_VALUE, extractor(vector), .1).apply {
 				patterns(NumberDisplayer.SEMI_NUMBER_PATTERN, NumberDisplayer.NUMBER_PATTERN)
 				press(10, 1)
-				valueProperty().addListener {_, _, newValue ->
-					applier(vector, newValue.toFloat())
+				valueProperty().addListener { _, _, newValue ->
+					applier(vector, newValue)
 				}
 			}
 }
