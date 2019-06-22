@@ -14,11 +14,17 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.event.management;
 	exports dev.kkorolyov.pancake.platform.math;
 	exports dev.kkorolyov.pancake.platform.media;
+	exports dev.kkorolyov.pancake.platform.media.audio;
+	exports dev.kkorolyov.pancake.platform.media.graphic;
 	exports dev.kkorolyov.pancake.platform.serialization.string;
 	exports dev.kkorolyov.pancake.platform.serialization.string.action;
 	exports dev.kkorolyov.pancake.platform.utility;
 
+	// System
 	uses dev.kkorolyov.pancake.platform.GameSystem;
+	// Media factories
+	uses dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
+	// Serializers
 	uses dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
 	uses dev.kkorolyov.pancake.platform.serialization.string.action.ActionStringSerializer;
 

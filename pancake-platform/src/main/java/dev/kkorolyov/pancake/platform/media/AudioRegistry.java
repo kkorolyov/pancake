@@ -2,11 +2,13 @@ package dev.kkorolyov.pancake.platform.media;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.Resources;
+import dev.kkorolyov.pancake.platform.media.audio.Audio;
+import dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
+import dev.kkorolyov.simplefiles.Providers;
 import dev.kkorolyov.simplelogs.Logger;
 import dev.kkorolyov.simpleprops.Properties;
 import dev.kkorolyov.simplestructs.WeightedDistribution;
 
-import javafx.scene.media.Media;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,8 +26,10 @@ public class AudioRegistry {
 	private static final int DEFAULT_CACHE_SIZE = 15;
 	private static final Logger log = Config.getLogger(AudioRegistry.class);
 
+	private static final AudioFactory AUDIO_FACTORY = Providers.fromDescriptor(AudioFactory.class).get(t -> true);
+
 	private final Map<String, WeightedDistribution<String>> resourceDistributions = new HashMap<>();
-	private final Map<String, Media> cache;
+	private final Map<String, Audio> cache;
 	private int cacheSize;
 
 	/**
@@ -58,8 +62,8 @@ public class AudioRegistry {
 	 * @return randomly-selected sound associated with {@code name}
 	 * @throws NoSuchElementException if no audio associated with {@code name}
 	 */
-	public Media get(String name) {
-		return cache.computeIfAbsent(getResource(name), Media::new);
+	public Audio get(String name) {
+		return cache.computeIfAbsent(getResource(name), AUDIO_FACTORY::get);
 	}
 	private String getResource(String name) {
 		WeightedDistribution<String> resources = resourceDistributions.get(name);
