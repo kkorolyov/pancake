@@ -1,10 +1,8 @@
 package dev.kkorolyov.pancake.core.component.media;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.math.Vector;
-import dev.kkorolyov.pancake.platform.media.Renderable;
-
-import javafx.scene.canvas.GraphicsContext;
+import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
+import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
 
 /**
  * A swappable visual representation.
@@ -34,17 +32,7 @@ public class Graphic implements Component, Renderable {
 	}
 
 	@Override
-	public void render(GraphicsContext g, Vector position) {
-		delegate.render(g, position);
-	}
-
-	@Override
-	public Vector size() {
-		return delegate.size();
-	}
-
-	@Override
-	public Vector getOrientationOffset() {
-		return delegate.getOrientationOffset();
+	public void render(RenderTransform transform) {
+		delegate.render(transform);
 	}
 }

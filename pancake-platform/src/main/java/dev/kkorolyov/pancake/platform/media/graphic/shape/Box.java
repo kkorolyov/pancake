@@ -1,11 +1,11 @@
-package dev.kkorolyov.pancake.platform.media.graphic;
+package dev.kkorolyov.pancake.platform.media.graphic.shape;
 
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 /**
- * A renderable static image.
+ * A 2 or 3 dimensional box.
  */
-public abstract class Image implements Renderable {
+public abstract class Box extends Shape<Box> {
 	private final Vector size = new Vector();
 
 	/** @return mutable size vector */

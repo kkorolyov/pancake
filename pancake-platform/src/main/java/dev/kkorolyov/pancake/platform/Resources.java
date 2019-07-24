@@ -1,6 +1,9 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
+import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.simplefiles.Files;
+import dev.kkorolyov.simplefiles.Providers;
 import dev.kkorolyov.simplefiles.stream.InStrategy;
 import dev.kkorolyov.simplefiles.stream.OutStrategy;
 import dev.kkorolyov.simplefiles.stream.StreamStrategies;
@@ -17,6 +20,11 @@ import java.util.function.Consumer;
  * Provides access to resources.
  */
 public final class Resources {
+	/** Service-loaded audio factory */
+	public static final AudioFactory AUDIO_FACTORY = Providers.fromDescriptor(AudioFactory.class).get(t -> true);
+	/** Service-loaded render medium */
+	public static final RenderMedium RENDER_MEDIUM = Providers.fromDescriptor(RenderMedium.class).get(t -> true);
+
 	private static final InStrategy[] IN_STRATEGIES = {
 			StreamStrategies.IN_PATH,
 			StreamStrategies.IN_CLASSPATH

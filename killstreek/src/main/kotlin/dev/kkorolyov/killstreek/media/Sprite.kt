@@ -2,18 +2,16 @@ package dev.kkorolyov.killstreek.media
 
 import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.media.Animated
-import dev.kkorolyov.pancake.platform.media.CompositeImage
-import dev.kkorolyov.pancake.platform.media.Renderable
-import javafx.scene.canvas.GraphicsContext
+import dev.kkorolyov.pancake.platform.media.graphic.Image
+import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform
+import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 
 /**
  * A dynamic image.
  */
 class Sprite(
 		/** sprite sheet */
-		private val image: CompositeImage,
-		/** angle vector used for padding sprite orientation calculation */
-		private val orientationOffset: Vector,
+		private val image: Image,
 		/** number of frames in {@code image} along x-axis */
 		xFrames: Int = 1,
 		/** number of frames in {@code image} along y-axis */
@@ -29,7 +27,8 @@ class Sprite(
 	private var frame: Int = 0
 	private var isActive: Boolean = true
 
-	override fun render(g: GraphicsContext, position: Vector) {
+	override fun render(transform: RenderTransform) {
+		image.render(transform)
 		for (layer in image) {
 			g.drawImage(
 					layer, origin.x, origin.y, frameSize.x, frameSize.y,
@@ -37,9 +36,6 @@ class Sprite(
 			)
 		}
 	}
-
-	override fun size(): Vector = frameSize
-	override fun getOrientationOffset(): Vector = orientationOffset
 
 	override fun tick(dt: Long) {
 		if (!isActive) return

@@ -1,14 +1,12 @@
 package dev.kkorolyov.pancake.platform.media.graphic;
 
-import dev.kkorolyov.pancake.platform.math.Vector;
-
 /**
  * Something drawable on a {@link RenderMedium}.
  */
 public interface Renderable {
 	/**
-	 * Renders the current state of {@code this} on the associated {@link RenderMedium} at {@code position}.
-	 * @param position position to render the center of {@code this} at
+	 * Renders the current state of {@code this} on the associated {@link RenderMedium} according to {@code transform}.
+	 * @param transform rendering configuration
 	 */
-	void render(Vector position);
+	void render(RenderTransform transform);
 }

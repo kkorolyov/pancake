@@ -173,15 +173,24 @@ public class Vector {
 	}
 
 	/**
+	 * Pivots this vector around its origin according to {@code other}.
+	 * @param other pivot vector
+	 * @return {@code this}
+	 * @see #pivot(double, double)
+	 */
+	public Vector pivot(Vector other) {
+		return pivot(other.getZ(), other.getX());
+	}
+	/**
 	 * Pivots this vector around its origin.
 	 * @param theta radians to pivot x-y plane projection by, with respect to the positive x-axis
 	 * @param phi radians to alter angle with the positive z-axis by
 	 * @return {@code this}
 	 */
 	public Vector pivot(double theta, double phi) {
-		double newX = (double) (x * Math.cos(theta) - y * Math.sin(theta));
-		double newY = (double) (x * Math.sin(theta) + y * Math.cos(theta));
-		double newZ = z;	// TODO
+		double newX = x * Math.cos(theta) - y * Math.sin(theta);
+		double newY = x * Math.sin(theta) + y * Math.cos(theta);
+		double newZ = z;  // TODO
 
 		set(newX, newY, newZ);
 
@@ -209,9 +218,9 @@ public class Vector {
 
 	/** @return Euclidean distance between this vector and {@code other} */
 	public double distance(Vector other) {
-		return (double) Math.sqrt(Math.pow(x - other.x, 2) +
-														 Math.pow(y - other.y, 2) +
-														 Math.pow(z - other.z, 2));
+		return Math.sqrt(Math.pow(x - other.x, 2) +
+				Math.pow(y - other.y, 2) +
+				Math.pow(z - other.z, 2));
 	}
 
 	/**
@@ -220,7 +229,7 @@ public class Vector {
 	 * @return angle between vectors
 	 */
 	public double angle(Vector other) {
-		return (double) Math.acos(dot(other) / (getMagnitude() * other.getMagnitude()));
+		return Math.acos(dot(other) / (getMagnitude() * other.getMagnitude()));
 	}
 
 	/**
@@ -237,7 +246,7 @@ public class Vector {
 	 * @return magnitude of this vector
 	 */
 	public double getMagnitude() {
-		return (double) Math.sqrt(dot(this));
+		return Math.sqrt(dot(this));
 	}
 	/**
 	 * Calculates and returns the vector with {@code magnitude = 1} and same direction as this vector.
@@ -253,14 +262,14 @@ public class Vector {
 	 * @return azimuthal angle in radians
 	 */
 	public double getTheta() {
-		return (double) Math.atan2(y, x);
+		return Math.atan2(y, x);
 	}
 	/**
 	 * Calculates and returns the angle between the positive z-axis and this vector.
 	 * @return polar angle in radians
 	 */
 	public double getPhi() {
-		return (double) Math.acos(z / getMagnitude());
+		return Math.acos(z / getMagnitude());
 	}
 
 	/**

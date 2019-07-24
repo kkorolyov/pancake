@@ -1,42 +1,34 @@
 package dev.kkorolyov.pancake.platform.media;
 
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.media.graphic.Image;
+import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 
-import javafx.scene.image.Image;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+
+import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
 
 /**
  * An image formed by layering a collection of base images.
  */
-public class CompositeImage implements Iterable<Image> {
+public class CompositeImage extends Image {
 	private final List<Image> images = new ArrayList<>();
-	private final Vector size = new Vector();
 
 	/**
 	 * Constructs a new composite image.
-	 * @param images images forming final image, in order of first to last rendered
+	 * @see #CompositeImage(Iterable)
 	 */
-	public CompositeImage(Image... images) {
-		this(Arrays.asList(images));
+	public CompositeImage(Image image, Image... images) {
+		this(append(image, images));
 	}
 	/**
 	 * Constructs a new composite image.
 	 * @param images images forming final image, in order of first to last rendered
 	 */
 	public CompositeImage(Iterable<Image> images) {
-		for (Image image : images) add(image);
+		images.forEach(this::add);
 	}
 
-	/**
-	 * Adds all images from a composite image to the composition.
-	 * @param image composition containing images to add
-	 */
-	public void add(CompositeImage image) {
-		for (Image base : image) add(base);
-	}
 	/**
 	 * Adds an image to the top of the composition.
 	 * @param image added image
@@ -44,8 +36,10 @@ public class CompositeImage implements Iterable<Image> {
 	public void add(Image image) {
 		images.add(image);
 
-		if (image.getWidth() > size.getX()) size.setX(image.getWidth());
-		if (image.getHeight() > size.getY()) size.setY(image.getHeight());
+		getSize().set(
+				Math.max(getSize().getX(), image.getSize().getX()),
+				Math.max(getSize().getY(), image.getSize().getY())
+		);
 	}
 	/**
 	 * Removes an image from the composition.
@@ -66,14 +60,10 @@ public class CompositeImage implements Iterable<Image> {
 		return size;
 	}
 
-	/** @return vector defining minimum width and height in px encompassing all images in the composition */
-	public Vector getSize() {
-		return size;
-	}
-
-	/** @return iterator over all base images in render order */
 	@Override
-	public Iterator<Image> iterator() {
-		return images.iterator();
+	public void render(RenderTransform transform) {
+		for (Image image : images) {
+			image.render(transform);
+		}
 	}
 }
