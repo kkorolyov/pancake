@@ -39,7 +39,7 @@ public class AudioRegistry {
 	 * @param cacheSize maximum size of audio file cache
 	 */
 	public AudioRegistry(int cacheSize) {
-		cache = new LinkedHashMap<>(cacheSize) {
+		cache = new LinkedHashMap<>(this.cacheSize = Math.max(cacheSize, 0)) {
 			private static final long serialVersionUID = -4374897957713259831L;
 
 			@Override
@@ -47,8 +47,6 @@ public class AudioRegistry {
 				return size() > getCacheSize();
 			}
 		};
-		setCacheSize(cacheSize);
-
 		log.debug("Constructed a new SoundPool with cacheSize={}", getCacheSize());
 	}
 

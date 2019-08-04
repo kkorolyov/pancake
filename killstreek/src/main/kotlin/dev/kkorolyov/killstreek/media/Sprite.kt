@@ -1,40 +1,33 @@
 package dev.kkorolyov.killstreek.media
 
-import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.media.Animated
+import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
+import dev.kkorolyov.pancake.platform.media.graphic.Viewport
 
 /**
  * A dynamic image.
  */
 class Sprite(
-		/** sprite sheet */
-		private val image: Image,
-		/** number of frames in {@code image} along x-axis */
-		xFrames: Int = 1,
-		/** number of frames in {@code image} along y-axis */
-		yFrames: Int = 1,
+		/** layered sprite sheets */
+		private val sheets: CompositeRenderable<Image>,
+		/** sprite sheet partioning scheme */
+		private val viewport: Viewport,
 		/** {@code ns} between frame changes */
 		private var frameInterval: Long = 0
 ) : Renderable, Animated {
-	private val origin = Vector()
-	private val frames = Vector(xFrames.toDouble(), yFrames.toDouble())
-	private val frameSize = Vector(image.size.x / frames.x, image.size.y / frames.y)
-
 	private var currentFrameTime: Long = 0
 	private var frame: Int = 0
 	private var isActive: Boolean = true
 
+	init {
+		sheets.forEach { it.viewport = viewport }
+	}
+
 	override fun render(transform: RenderTransform) {
-		image.render(transform)
-		for (layer in image) {
-			g.drawImage(
-					layer, origin.x, origin.y, frameSize.x, frameSize.y,
-					position.x, position.y, frameSize.x, frameSize.y
-			)
-		}
+		sheets.render(transform)
 	}
 
 	override fun tick(dt: Long) {
@@ -59,11 +52,7 @@ class Sprite(
 	override fun getFrame(): Int = frame
 	override fun setFrame(frame: Int) {
 		this.frame = Math.floorMod(frame, length())
-
-		origin.set(
-				(frame % frames.x).toInt() * frameSize.x,
-				(frame / frames.x) * frameSize.y
-		)
+		viewport.set(this.frame)
 	}
 
 	override fun getFrameInterval(): Long = frameInterval
@@ -71,5 +60,5 @@ class Sprite(
 		this.frameInterval = frameInterval
 	}
 
-	override fun length(): Int = (frames.x * frames.y).toInt()
+	override fun length(): Int = viewport.length()
 }

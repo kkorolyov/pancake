@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.math.Vector;
 /**
  * Transform settings for rendering a {@link Renderable}.
  */
-public class RenderTransform {
+public final class RenderTransform {
 	private final Vector position = new Vector();
 	private final Vector rotation = new Vector();
 	private final Vector scale = new Vector();

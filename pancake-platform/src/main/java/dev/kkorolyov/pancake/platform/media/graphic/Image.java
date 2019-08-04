@@ -1,15 +1,18 @@
 package dev.kkorolyov.pancake.platform.media.graphic;
 
-import dev.kkorolyov.pancake.platform.math.Vector;
-
 /**
  * A renderable static image.
  */
 public abstract class Image implements Renderable {
-	private final Vector size = new Vector();
+	private Viewport viewport;
 
-	/** @return mutable size vector */
-	public Vector getSize() {
-		return size;
+	/** @return viewport scoping rendered portion of this image, or {@code null} */
+	public Viewport getViewport() {
+		return viewport;
+	}
+	/** @param viewport viewport scoping rendered portion of this image */
+	public Image setViewport(Viewport viewport) {
+		this.viewport = viewport;
+		return this;
 	}
 }
