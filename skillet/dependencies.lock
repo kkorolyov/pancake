@@ -34,12 +34,12 @@
             "locked": "2.0"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.openjfx:javafx-base": {
             "locked": "11.0.2",
@@ -89,12 +89,12 @@
             "locked": "2.0"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.openjfx:javafx-base": {
             "firstLevelTransitive": [
@@ -159,12 +159,12 @@
             "locked": "2.0"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.openjfx:javafx-base": {
             "locked": "11.0.2",
@@ -181,13 +181,13 @@
     },
     "kotlinCompilerClasspath": {
         "org.jetbrains.kotlin:kotlin-compiler-embeddable": {
-            "locked": "1.3.31"
+            "locked": "1.3.41"
         }
     },
     "kotlinCompilerPluginClasspath": {
         "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         }
     },
     "runtimeClasspath": {
@@ -225,12 +225,12 @@
             "locked": "2.0"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.openjfx:javafx-base": {
             "firstLevelTransitive": [
@@ -306,12 +306,12 @@
             "locked": "2.0"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.objenesis:objenesis": {
             "locked": "1.4",
@@ -380,12 +380,12 @@
             "locked": "2.0"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.objenesis:objenesis": {
             "locked": "1.4",
@@ -460,12 +460,12 @@
             "locked": "2.0"
         },
         "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
+            "locked": "1.3.41",
+            "requested": "1.3.41"
         },
         "org.objenesis:objenesis": {
             "locked": "1.4",

@@ -14,7 +14,7 @@ buildscript {
 plugins {
 	`java-library`
 	groovy
-	kotlin("jvm") version "1.3.31"
+	kotlin("jvm") version "1.3.41"
 	id("org.openjfx.javafxplugin") version "0.0.7"
 
 	`maven-publish`
