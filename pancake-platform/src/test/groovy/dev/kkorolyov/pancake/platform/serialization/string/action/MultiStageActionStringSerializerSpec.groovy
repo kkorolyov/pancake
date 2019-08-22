@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.serialization.string.action
 
+import dev.kkorolyov.pancake.platform.Registry
 import dev.kkorolyov.pancake.platform.action.Action
-import dev.kkorolyov.pancake.platform.action.ActionRegistry
 import dev.kkorolyov.pancake.platform.action.MultiStageAction
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
@@ -20,7 +20,7 @@ class MultiStageActionStringSerializerSpec extends BaseSerializerSpec<MultiStage
 	def setup() {
 		reps << [(new MultiStageAction(inOut.keySet()[0], inOut.keySet()[1], inOut.keySet()[2], holdThreshold)): inOut.values().stream().collect(Collectors.joining(", ", "{", "}"))]
 
-		serializer = new MultiStageActionStringSerializer(Mock(ActionRegistry))
+		serializer = new MultiStageActionStringSerializer(Mock(Registry))
 		mockAutoSerializer(inOut)
 		setField("holdThreshold", serializer, holdThreshold)
 	}

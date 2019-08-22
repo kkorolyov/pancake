@@ -1,15 +1,16 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.action.ActionRegistry;
+import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.CameraCreated;
 import dev.kkorolyov.pancake.platform.event.CanvasCreated;
 import dev.kkorolyov.pancake.platform.event.SceneCreated;
 import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
 import dev.kkorolyov.pancake.platform.math.Vector;
-import dev.kkorolyov.pancake.platform.media.AudioRegistry;
 import dev.kkorolyov.pancake.platform.media.Camera;
-import dev.kkorolyov.pancake.platform.media.ImageRegistry;
+import dev.kkorolyov.pancake.platform.serialization.AutoSerializer;
+import dev.kkorolyov.pancake.platform.serialization.Serializer;
+import dev.kkorolyov.pancake.platform.serialization.string.action.ActionStringSerializer;
 
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
@@ -29,9 +30,10 @@ public abstract class Launcher extends Application {
 
 	protected final Camera camera;
 
-	protected final ImageRegistry images = new ImageRegistry();
-	protected final AudioRegistry audio = new AudioRegistry();
-	protected final ActionRegistry actions = new ActionRegistry();
+	protected final Registry<String, Action> actions = new Registry<>(
+			Serializer.identity(),
+			context -> new AutoSerializer<>(ActionStringSerializer.class, context)
+	);
 
 	protected final ManagedEventBroadcaster events = new ManagedEventBroadcaster();
 	protected final EntityPool entities = new EntityPool(events);

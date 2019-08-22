@@ -15,7 +15,7 @@ public class ForceActionSerializer extends ActionStringSerializer<ForceAction> {
 	 * Constructs a new force action serializer.
 	 */
 	public ForceActionSerializer() {
-		super(PREFIX + "\\{" + forceSerializer.pattern() + "}", null);
+		super(PREFIX + "\\{" + forceSerializer.pattern() + "}");
 	}
 
 	@Override

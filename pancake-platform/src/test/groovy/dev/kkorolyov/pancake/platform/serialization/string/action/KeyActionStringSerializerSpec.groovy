@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.serialization.string.action
 
-import dev.kkorolyov.pancake.platform.action.ActionRegistry
+import dev.kkorolyov.pancake.platform.Registry
 import dev.kkorolyov.pancake.platform.action.KeyAction
 import dev.kkorolyov.pancake.platform.action.MultiStageAction
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
@@ -17,7 +17,7 @@ class KeyActionStringSerializerSpec extends BaseSerializerSpec<KeyAction, String
 	def setup() {
 		reps << [(new KeyAction(delegateAction, inputs)): "$inputs=$delegateActionS"]
 
-		serializer = new KeyActionStringSerializer(Mock(ActionRegistry))
+		serializer = new KeyActionStringSerializer(Mock(Registry))
 		mockAutoSerializer([(delegateAction): delegateActionS])
 	}
 }

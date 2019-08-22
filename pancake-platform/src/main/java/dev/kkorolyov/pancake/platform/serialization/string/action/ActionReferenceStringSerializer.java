@@ -1,12 +1,13 @@
 package dev.kkorolyov.pancake.platform.serialization.string.action;
 
+import dev.kkorolyov.pancake.platform.Registry;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.action.ActionRegistry;
 
 /**
- * Serializes actions found in the {@link ActionRegistry}.
+ * Serializes action resources found in an {@link Action} {@link Registry}.
  */
-public class ActionReferenceStringSerializer extends ActionStringSerializer<Action> {
+public final class ActionReferenceStringSerializer extends ActionStringSerializer<Action> {
+	// Module service provider
 	public ActionReferenceStringSerializer() {
 		this(null);
 	}
@@ -14,7 +15,7 @@ public class ActionReferenceStringSerializer extends ActionStringSerializer<Acti
 	 * Constructs a new registered action serializer.
 	 * @param context associated action registry
 	 */
-	public ActionReferenceStringSerializer(ActionRegistry context) {
+	public ActionReferenceStringSerializer(Registry<String, Action> context) {
 		super("\\w+", context);
 	}
 
@@ -24,6 +25,6 @@ public class ActionReferenceStringSerializer extends ActionStringSerializer<Acti
 	}
 	@Override
 	public String write(Action in) {
-		return context.getName(in);
+		return context.getKeys(in).iterator().next();
 	}
 }

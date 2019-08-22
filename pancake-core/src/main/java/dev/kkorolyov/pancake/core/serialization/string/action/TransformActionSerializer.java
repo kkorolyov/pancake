@@ -19,7 +19,7 @@ public class TransformActionSerializer extends ActionStringSerializer<TransformA
 	 * Constructs a new transform action serializer.
 	 */
 	public TransformActionSerializer() {
-		super(PREFIX + "\\{" + vectorSerializer.pattern() + "(,\\s?" + vectorSerializer.pattern() + ")?}", null);
+		super(PREFIX + "\\{" + vectorSerializer.pattern() + "(,\\s?" + vectorSerializer.pattern() + ")?}");
 	}
 
 	@Override

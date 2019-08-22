@@ -17,6 +17,7 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.media.audio;
 	exports dev.kkorolyov.pancake.platform.media.graphic;
 	exports dev.kkorolyov.pancake.platform.media.graphic.shape;
+	exports dev.kkorolyov.pancake.platform.serialization;
 	exports dev.kkorolyov.pancake.platform.serialization.string;
 	exports dev.kkorolyov.pancake.platform.serialization.string.action;
 	exports dev.kkorolyov.pancake.platform.utility;

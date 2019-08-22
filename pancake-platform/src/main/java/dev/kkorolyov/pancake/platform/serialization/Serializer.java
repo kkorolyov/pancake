@@ -6,6 +6,25 @@ package dev.kkorolyov.pancake.platform.serialization;
  * @param <O> serialized instance type
  */
 public interface Serializer<I, O> {
+	/** @return serializer converting between same-type input and output without any additional processing */
+	static <T> Serializer<T, T> identity() {
+		return new Serializer<>() {
+			@Override
+			public T read(T out) {
+				return out;
+			}
+			@Override
+			public T write(T in) {
+				return in;
+			}
+
+			@Override
+			public boolean accepts(T out) {
+				return true;
+			}
+		};
+	}
+
 	/**
 	 * Deserializes an instance representation.
 	 * @param out serialized representation

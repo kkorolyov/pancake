@@ -32,7 +32,7 @@ public final class Resources {
 	private static final OutStrategy[] OUT_STRATEGIES = {
 			StreamStrategies.OUT_PATH
 	};
-	private static final Logger log = Config.getLogger(Resources.class);
+	private static final Logger LOG = Config.getLogger(Resources.class);
 
 	private Resources() {}
 
@@ -103,9 +103,9 @@ public final class Resources {
 		return stream;
 	}
 	private static boolean logRetrieval(String streamType, String path, boolean success) {
-		if (log != null) {	// TODO Can happen during the back-forth initialization of Resources and Config
-			if (success) log.debug("Retrieved {} stream at path: {}", streamType, path);
-			else log.warning("Unable to find {} stream at path: {}", streamType, path);
+		if (LOG != null) {	// FIXME Can happen during the back-forth initialization of Resources and Config
+			if (success) LOG.debug("Retrieved {} stream at path: {}", streamType, path);
+			else LOG.warning("Unable to find {} stream at path: {}", streamType, path);
 		}
 		return success;
 	}

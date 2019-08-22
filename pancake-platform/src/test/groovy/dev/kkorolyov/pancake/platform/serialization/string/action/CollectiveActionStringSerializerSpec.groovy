@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.serialization.string.action
 
+import dev.kkorolyov.pancake.platform.Registry
 import dev.kkorolyov.pancake.platform.action.Action
-import dev.kkorolyov.pancake.platform.action.ActionRegistry
 import dev.kkorolyov.pancake.platform.action.CollectiveAction
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
@@ -17,7 +17,7 @@ class CollectiveActionStringSerializerSpec extends BaseSerializerSpec<Collective
 	def setup() {
 		reps << [(new CollectiveAction(inOut.keySet())): inOut.values().stream().collect(Collectors.joining(", ", "[", "]"))]
 
-		serializer = new CollectiveActionStringSerializer(Mock(ActionRegistry))
+		serializer = new CollectiveActionStringSerializer(Mock(Registry))
 		mockAutoSerializer(inOut)
 	}
 }
