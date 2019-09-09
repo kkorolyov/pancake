@@ -13,7 +13,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.4"
+            "locked": "1.5-SNAPSHOT"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -60,7 +60,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.4"
+            "locked": "1.5-SNAPSHOT"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -122,7 +122,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.4"
+            "locked": "1.5-SNAPSHOT"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -172,7 +172,7 @@
     },
     "testCompileClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.12",
+            "locked": "3.3.0",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-platform": {
@@ -191,7 +191,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.4"
+            "locked": "1.5-SNAPSHOT"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -238,7 +238,7 @@
     },
     "testRuntimeClasspath": {
         "cglib:cglib-nodep": {
-            "locked": "3.2.12",
+            "locked": "3.3.0",
             "requested": "3.+"
         },
         "dev.kkorolyov:pancake-platform": {
@@ -260,7 +260,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.4"
+            "locked": "1.5-SNAPSHOT"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
