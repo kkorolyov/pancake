@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.platform.serialization.string.action
 
-import dev.kkorolyov.pancake.platform.Registry
 import dev.kkorolyov.pancake.platform.action.KeyAction
 import dev.kkorolyov.pancake.platform.action.MultiStageAction
+import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 import javafx.scene.input.KeyCode
 import javafx.scene.input.MouseButton

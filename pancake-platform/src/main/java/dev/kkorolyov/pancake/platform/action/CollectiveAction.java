@@ -21,7 +21,7 @@ public class CollectiveAction implements Action {
 	 * Constructs a new collective action
 	 * @param delegates contained actions, duplicates are ignored
 	 */
-	public CollectiveAction(Iterable<Action> delegates) {
+	public CollectiveAction(Iterable<? extends Action> delegates) {
 		delegates.forEach(this.delegates::add);
 	}
 

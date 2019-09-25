@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.serialization.string.action
 
-import dev.kkorolyov.pancake.platform.Registry
 import dev.kkorolyov.pancake.platform.action.Action
+import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.specbase.BaseSerializerSpec
 
 import static dev.kkorolyov.simplespecs.SpecUtilities.randString

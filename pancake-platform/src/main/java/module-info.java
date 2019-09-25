@@ -19,25 +19,18 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.media.graphic.shape;
 	exports dev.kkorolyov.pancake.platform.serialization;
 	exports dev.kkorolyov.pancake.platform.serialization.string;
-	exports dev.kkorolyov.pancake.platform.serialization.string.action;
 	exports dev.kkorolyov.pancake.platform.utility;
 
 	// System
 	uses dev.kkorolyov.pancake.platform.GameSystem;
 	// Media factories
 	uses dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
-	// Serializers
-	uses dev.kkorolyov.pancake.platform.serialization.string.StringSerializer;
-	uses dev.kkorolyov.pancake.platform.serialization.string.action.ActionStringSerializer;
+	// Resource reader factories
+	uses dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.ActionResource;
+	uses dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.AudioResource;
+	uses dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.RenderableResource;
 
-	provides dev.kkorolyov.pancake.platform.serialization.string.StringSerializer with
-			dev.kkorolyov.pancake.platform.serialization.string.VectorStringSerializer,
-			dev.kkorolyov.pancake.platform.serialization.string.NumberStringSerializer,
-			dev.kkorolyov.pancake.platform.serialization.string.StringStringSerializer,
-			dev.kkorolyov.pancake.platform.serialization.string.URIStringSerializer,
-			dev.kkorolyov.pancake.platform.serialization.string.MapStringSerializer;
-	provides dev.kkorolyov.pancake.platform.serialization.string.action.ActionStringSerializer with
-			dev.kkorolyov.pancake.platform.serialization.string.action.MultiStageActionStringSerializer,
-			dev.kkorolyov.pancake.platform.serialization.string.action.CollectiveActionStringSerializer,
-			dev.kkorolyov.pancake.platform.serialization.string.action.ActionReferenceStringSerializer;
+	provides dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.ActionResource with dev.kkorolyov.pancake.platform.registry.properties.ActionResourceReaderFactory;
+	provides dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.AudioResource with dev.kkorolyov.pancake.platform.registry.properties.AudioResourceReaderFactory;
+	provides dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.RenderableResource with dev.kkorolyov.pancake.platform.registry.properties.RenderableResourceReaderFactory;
 }
