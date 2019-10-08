@@ -24,10 +24,10 @@ public interface RegistryLoader<K, V> {
 	 */
 	static <V> RegistryLoader<String, V> fromProperties(
 			Properties props,
-			Function<? super Registry<? super String, ? super V>, ? extends Converter<? super String, Optional<? extends V>>> resourceReader
+			Function<? super Registry<? super String, ? extends V>, ? extends Converter<String, Optional<? extends V>>> resourceReader
 	) {
 		return registry -> {
-			Converter<? super String, Optional<? extends V>> reader = resourceReader.apply(registry);
+			Converter<? super String, ? extends Optional<? extends V>> reader = resourceReader.apply(registry);
 			for (Map.Entry<String, String> prop : props) {
 				reader.convert(prop.getValue())
 						.ifPresentOrElse(
@@ -42,5 +42,5 @@ public interface RegistryLoader<K, V> {
 	 * Applies loaded resources to a given registry.
 	 * @param registry registry to load
 	 */
-	void load(Registry<? super K, ? super V> registry);
+	void load(Registry<? super K, V> registry);
 }

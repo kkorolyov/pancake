@@ -17,6 +17,7 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.media.audio;
 	exports dev.kkorolyov.pancake.platform.media.graphic;
 	exports dev.kkorolyov.pancake.platform.media.graphic.shape;
+	exports dev.kkorolyov.pancake.platform.registry;
 	exports dev.kkorolyov.pancake.platform.serialization;
 	exports dev.kkorolyov.pancake.platform.serialization.string;
 	exports dev.kkorolyov.pancake.platform.utility;
@@ -26,11 +27,11 @@ module dev.kkorolyov.pancake.platform {
 	// Media factories
 	uses dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
 	// Resource reader factories
-	uses dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.ActionResource;
-	uses dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.AudioResource;
-	uses dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.RenderableResource;
+	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource;
+	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.AudioResource;
+	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.RenderableResource;
 
-	provides dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.ActionResource with dev.kkorolyov.pancake.platform.registry.properties.ActionResourceReaderFactory;
-	provides dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.AudioResource with dev.kkorolyov.pancake.platform.registry.properties.AudioResourceReaderFactory;
-	provides dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.RenderableResource with dev.kkorolyov.pancake.platform.registry.properties.RenderableResourceReaderFactory;
+	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource with dev.kkorolyov.pancake.platform.registry.internal.ActionResourceReaderFactory;
+	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.AudioResource with dev.kkorolyov.pancake.platform.registry.internal.AudioResourceReaderFactory;
+	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.RenderableResource with dev.kkorolyov.pancake.platform.registry.internal.RenderableResourceReaderFactory;
 }

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.registry.properties;
+package dev.kkorolyov.pancake.platform.registry.internal;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.action.Action;
@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.platform.action.CollectiveAction;
 import dev.kkorolyov.pancake.platform.action.KeyAction;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
 import dev.kkorolyov.pancake.platform.registry.Registry;
+import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory;
 import dev.kkorolyov.simplefuncs.convert.Converter;
 
 import javafx.scene.input.KeyCode;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 /**
- * {@link dev.kkorolyov.pancake.platform.registry.properties.ResourceReaderFactory.ActionResource} provided by the pancake platform.
+ * {@link ResourceReaderFactory.ActionResource} provided by the pancake platform.
  */
 public final class ActionResourceReaderFactory implements ResourceReaderFactory.ActionResource {
 	private static final Pattern REFERENCE_PATTERN = Pattern.compile("\\w+");
@@ -108,7 +109,7 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 	}
 
 	@Override
-	public Converter<String, ? extends Optional<? extends Action>> get(Registry<? super String, ? extends Action> registry) {
+	public Converter<String, Optional<? extends Action>> get(Registry<? super String, ? extends Action> registry) {
 		return Converter.reducing(
 				reference(registry),
 				collective(registry),

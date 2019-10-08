@@ -1,9 +1,8 @@
-package dev.kkorolyov.pancake.platform.registry.properties;
+package dev.kkorolyov.pancake.platform.registry;
 
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.media.audio.Audio;
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
-import dev.kkorolyov.pancake.platform.registry.Registry;
 import dev.kkorolyov.simplefiles.Providers;
 import dev.kkorolyov.simplefuncs.convert.Converter;
 
@@ -19,7 +18,7 @@ public interface ResourceReaderFactory<T> {
 	 * @param registry registry to attach generated reader to
 	 * @return resource reader attached to {@code registry} reading {@code registry}-type resources from strings
 	 */
-	Converter<String, ? extends Optional<? extends T>> get(Registry<? super String, ? extends T> registry);
+	Converter<String, Optional<? extends T>> get(Registry<? super String, ? extends T> registry);
 
 	/**
 	 * Generates {@link Action} resource readers.
@@ -42,7 +41,7 @@ public interface ResourceReaderFactory<T> {
 	 * @param <T> resource reader factory type
 	 * @return reduced converter from converters supplied by all providers of type {@code c} on the module path
 	 */
-	static <T> Converter<String, ? extends Optional<? extends T>> reduce(Class<? extends ResourceReaderFactory<T>> c, Registry<? super String, ? extends T> registry) {
+	static <T> Converter<String, Optional<? extends T>> reduce(Class<? extends ResourceReaderFactory<T>> c, Registry<? super String, ? extends T> registry) {
 		return Converter.reducing(
 				Providers.fromDescriptor(c).stream()
 						.map(factory -> factory.get(registry))

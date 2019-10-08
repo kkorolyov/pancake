@@ -1,6 +1,7 @@
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import dev.kkorolyov.FullDocExtension
 import org.gradle.api.JavaVersion.VERSION_11
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openjfx.gradle.JavaFXOptions
 
 buildscript {
@@ -228,6 +229,10 @@ project(":killstreek") {
 	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "Top-down ARPG with dynamic RNG system"
+
+	tasks.withType<KotlinCompile> {
+		kotlinOptions.jvmTarget = "11"
+	}
 
 	dependencies {
 		implementation(kotlin("stdlib-jdk8"))

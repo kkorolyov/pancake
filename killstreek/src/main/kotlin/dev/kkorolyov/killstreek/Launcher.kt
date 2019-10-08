@@ -17,13 +17,22 @@ import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
 import dev.kkorolyov.pancake.core.component.movement.Velocity
 import dev.kkorolyov.pancake.core.event.EntitiesCollided
+import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.event.EntityCreated
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed
 import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.registry.Registry
+import dev.kkorolyov.pancake.platform.registry.RegistryLoader
+import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory
+import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource
+import dev.kkorolyov.simplefuncs.convert.Converter
+import dev.kkorolyov.simpleprops.Properties
 import dev.kkorolyov.simplestructs.WeightedDistribution
 import javafx.application.Application
 import javafx.scene.media.MediaPlayer
+import java.nio.file.Paths
+import java.util.Optional
 import java.util.concurrent.ThreadLocalRandom
 import java.util.function.Supplier
 import dev.kkorolyov.pancake.platform.Launcher as PancakeLauncher
@@ -69,6 +78,8 @@ class Launcher : PancakeLauncher(
 	}
 
 	private fun initActions() {
+		RegistryLoader.fromProperties<Action>(Properties(Paths.get("config/actions"))) { ResourceReaderFactory.reduce(ActionResource::class.java, it) as Converter<String, Optional<out Action>>? }.load(Registry<String, Action>())
+
 		actions
 				.put("WALK") { it.get(Animation::class.java).isActive = true }
 				.put("STOP_WALK") { it.get(Animation::class.java).isActive = false }

@@ -6,6 +6,7 @@ module dev.kkorolyov.killstreek {
 
 	requires simple.funcs;
 	requires simple.structs;
+	requires simple.props;
 
 	requires dev.kkorolyov.pancake.core;
 	requires dev.kkorolyov.pancake.platform;
