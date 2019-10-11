@@ -5,7 +5,7 @@
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5-SNAPSHOT",
+            "locked": "1.5",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -43,7 +43,7 @@
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5-SNAPSHOT",
+            "locked": "1.5",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -81,7 +81,7 @@
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5-SNAPSHOT",
+            "locked": "1.5",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -126,7 +126,7 @@
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5-SNAPSHOT",
+            "locked": "1.5",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -195,7 +195,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT",
+            "locked": "1.5",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {

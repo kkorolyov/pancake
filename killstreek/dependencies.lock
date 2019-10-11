@@ -16,7 +16,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT"
+            "locked": "1.5"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -73,7 +73,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT"
+            "locked": "1.5"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -145,7 +145,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT"
+            "locked": "1.5"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -213,7 +213,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT"
+            "locked": "1.5"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -292,7 +292,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT"
+            "locked": "1.5"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -365,7 +365,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT"
+            "locked": "1.5"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
@@ -442,7 +442,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5-SNAPSHOT"
+            "locked": "1.5"
         },
         "dev.kkorolyov:simple-logs": {
             "firstLevelTransitive": [
