@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * {@link ResourceReaderFactory.ActionResource} provided by the pancake platform.
@@ -51,7 +51,7 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 						Arrays.stream(COLLECTIVE_SPLIT_PATTERN.split(in.substring(1, in.length() - 1)))
 								.map(autoConverter::convert)
 								.flatMap(Optional::stream)
-								.collect(Collectors.toSet())
+								.collect(toSet())
 				)
 		);
 	}
