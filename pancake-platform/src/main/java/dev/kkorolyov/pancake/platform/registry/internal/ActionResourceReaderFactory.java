@@ -25,14 +25,14 @@ import static java.util.stream.Collectors.toSet;
 public final class ActionResourceReaderFactory implements ResourceReaderFactory.ActionResource {
 	private static final Pattern REFERENCE_PATTERN = Pattern.compile("\\w+");
 
-	private static final Pattern COLLECTIVE_SPLIT_PATTERN = Pattern.compile(",\\s?");
-	private static final Pattern COLLECTIVE_PATTERN = Pattern.compile("\\[.+(" + COLLECTIVE_SPLIT_PATTERN + ".+)*]");
+	private static final Pattern COLLECTIVE_PATTERN = Pattern.compile("\\[.+(,\\s*.+)*]");
+	private static final Pattern COLLECTIVE_SPLIT_PATTERN = Pattern.compile(",\\s*");
 
-	private static final Pattern MULTI_STAGE_SPLIT_PATTERN = Pattern.compile(",\\s?(?![^\\[]*])");
 	private static final Pattern MULTI_STAGE_PATTERN = Pattern.compile("\\{.*(,.*){2}}");
+	private static final Pattern MULTI_STAGE_SPLIT_PATTERN = Pattern.compile(",\\s*(?![^\\[]*])");
 	private static final long MULTI_STAGE_HOLD_THRESHOLD = (long) (Double.parseDouble(Config.config().get("holdThreshold")) * 1e9);
 
-	private static final Pattern KEY_PATTERN = Pattern.compile("\\[[_a-zA-Z]+(,\\s*[_a-zA-Z]+)*]\\s*=\\s*.*");
+	private static final Pattern KEY_PATTERN = Pattern.compile("\\[[_a-zA-Z]+(,\\s*[_a-zA-Z]+)*]\\s*=\\s*.+");
 	private static final Pattern KEY_SPLIT_PATTERN = Pattern.compile("\\s*=\\s*");
 	private static final Pattern KEY_SPLIT_KEY_PATTERN = Pattern.compile(",\\s*");
 
