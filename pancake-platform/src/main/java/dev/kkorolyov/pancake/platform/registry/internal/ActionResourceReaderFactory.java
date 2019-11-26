@@ -38,15 +38,15 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 	private static final Pattern KEY_SPLIT_PATTERN = Pattern.compile("\\s*=\\s*");
 	private static final Pattern KEY_SPLIT_KEY_PATTERN = Pattern.compile(",\\s*");
 
-	private final Function<? super Registry<? super String, ? extends Action>, ? extends Converter<String, ? extends Optional<? extends Action>>> autoConverter;
+	private final Function<? super Registry<? super String, ? extends Action>, ? extends Converter<? super String, ? extends Optional<? extends Action>>> autoConverter;
 
 	/**
 	 * Constructs a new action resource reader factory.
 	 */
 	public ActionResourceReaderFactory() {
-		this(memoize(registry -> ResourceReaderFactory.reduce(ActionResource.class, registry)));
+		this(memoize(registry -> ResourceReaderFactory.get(ActionResource.class, registry)));
 	}
-	private ActionResourceReaderFactory(Function<? super Registry<? super String, ? extends Action>, ? extends Converter<String, ? extends Optional<? extends Action>>> autoConverter) {
+	private ActionResourceReaderFactory(Function<? super Registry<? super String, ? extends Action>, ? extends Converter<? super String, ? extends Optional<? extends Action>>> autoConverter) {
 		this.autoConverter = autoConverter;
 	}
 

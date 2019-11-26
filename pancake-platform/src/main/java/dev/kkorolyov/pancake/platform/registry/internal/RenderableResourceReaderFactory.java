@@ -10,8 +10,10 @@ import dev.kkorolyov.simplefuncs.convert.Converter;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
+import static dev.kkorolyov.simplefuncs.function.Memoizer.memoize;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -23,20 +25,27 @@ public final class RenderableResourceReaderFactory implements ResourceReaderFact
 	private static final Pattern COMPOSITE_SPLIT_PATTERN = Pattern.compile(",\\s?");
 	private static final Pattern COMPOSITE_PATTERN = Pattern.compile("\\[.+(" + COMPOSITE_SPLIT_PATTERN + ".+)*]");
 
+	private final Function<? super Registry<? super String, ? extends Renderable>, ? extends Converter<? super String, ? extends Optional<? extends Renderable>>> autoConverter;
+
+	public RenderableResourceReaderFactory() {
+		this(memoize(registry -> ResourceReaderFactory.get(RenderableResource.class, registry)));
+	}
+	private RenderableResourceReaderFactory(Function<? super Registry<? super String, ? extends Renderable>, ? extends Converter<? super String, ? extends Optional<? extends Renderable>>> autoConverter) {
+		this.autoConverter = autoConverter;
+	}
+
 	private static Converter<String, Optional<Image>> image() {
 		return Converter.selective(
 				in -> IMAGE_PATTERN.matcher(in).matches(),
 				Resources.RENDER_MEDIUM::getImage
 		);
 	}
-	private static Converter<String, Optional<CompositeRenderable<Renderable>>> composite(Registry<? super String, ? extends Renderable> registry) {
-		Converter<String, ? extends Optional<? extends Renderable>> autoConverter = generateAutoConverter(registry);
-
+	private Converter<String, Optional<CompositeRenderable<Renderable>>> composite(Registry<? super String, ? extends Renderable> registry) {
 		return Converter.selective(
 				in -> COMPOSITE_PATTERN.matcher(in).matches(),
 				in -> new CompositeRenderable<>(
 						Arrays.stream(COMPOSITE_SPLIT_PATTERN.split(in.substring(1, in.length() - 1)))
-								.map(autoConverter::convert)
+								.map(autoConverter.apply(registry)::convert)
 								.flatMap(Optional::stream)
 								.collect(toList())
 				)
@@ -44,7 +53,7 @@ public final class RenderableResourceReaderFactory implements ResourceReaderFact
 	}
 
 	private static Converter<String, ? extends Optional<? extends Renderable>> generateAutoConverter(Registry<? super String, ? extends Renderable> registry) {
-		return ResourceReaderFactory.reduce(RenderableResource.class, registry);
+		return ResourceReaderFactory.get(RenderableResource.class, registry);
 	}
 
 	@Override

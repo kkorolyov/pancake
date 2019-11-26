@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 /**
  * Generates resource readers attached to a {@link Registry} reading resources from strings.
+ * Clients can obtain a module-path-loaded instance of a resource reader using {@link #get(Class, Registry)} with the relevant provider type.
  * @param <T> resource type
  */
 public interface ResourceReaderFactory<T> {
@@ -41,7 +42,7 @@ public interface ResourceReaderFactory<T> {
 	 * @param <T> resource reader factory type
 	 * @return reduced converter from converters supplied by all providers of type {@code c} on the module path
 	 */
-	static <T> Converter<String, Optional<? extends T>> reduce(Class<? extends ResourceReaderFactory<T>> c, Registry<? super String, ? extends T> registry) {
+	static <T> Converter<String, Optional<? extends T>> get(Class<? extends ResourceReaderFactory<T>> c, Registry<? super String, ? extends T> registry) {
 		return Converter.reducing(
 				Providers.fromDescriptor(c).stream()
 						.map(factory -> factory.get(registry))
