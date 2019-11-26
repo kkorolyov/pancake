@@ -1,11 +1,11 @@
 {
     "compileClasspath": {
         "dev.kkorolyov:simple-files": {
-            "locked": "1.2",
+            "locked": "1.3",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5",
+            "locked": "1.6",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -39,11 +39,11 @@
     },
     "default": {
         "dev.kkorolyov:simple-files": {
-            "locked": "1.2",
+            "locked": "1.3",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5",
+            "locked": "1.6",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -77,11 +77,11 @@
     },
     "runtimeClasspath": {
         "dev.kkorolyov:simple-files": {
-            "locked": "1.2",
+            "locked": "1.3",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5",
+            "locked": "1.6",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -122,11 +122,11 @@
             "project": true
         },
         "dev.kkorolyov:simple-files": {
-            "locked": "1.2",
+            "locked": "1.3",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
-            "locked": "1.5",
+            "locked": "1.6",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {
@@ -188,14 +188,14 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.2",
+            "locked": "1.3",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.5",
+            "locked": "1.6",
             "requested": "1.+"
         },
         "dev.kkorolyov:simple-logs": {

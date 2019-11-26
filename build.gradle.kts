@@ -1,4 +1,3 @@
-
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import dev.kkorolyov.FullDocExtension
 import org.gradle.api.JavaVersion.VERSION_11
@@ -57,6 +56,13 @@ subprojects {
 		jcenter()  // Most things
 		maven(url = "https://dl.bintray.com/kkorolyov/java")  // SimpleTools
 		maven(url = "https://dl.bintray.com/kkorolyov/groovy")  // SimpleSpecs
+	}
+
+	tasks.register("refreshLock") {
+		dependsOn("generateLock", "saveLock")
+
+		group = "locking"
+		description = "Refreshes and updates dependency locks"
 	}
 }
 

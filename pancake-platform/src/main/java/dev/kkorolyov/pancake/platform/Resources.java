@@ -21,9 +21,9 @@ import java.util.function.Consumer;
  */
 public final class Resources {
 	/** Service-loaded audio factory */
-	public static final AudioFactory AUDIO_FACTORY = Providers.fromDescriptor(AudioFactory.class).find(t -> true).orElse(null);
+	public static final AudioFactory AUDIO_FACTORY = Providers.fromDescriptor(AudioFactory.class).find().orElse(null);
 	/** Service-loaded render medium */
-	public static final RenderMedium RENDER_MEDIUM = Providers.fromDescriptor(RenderMedium.class).find(t -> true).orElse(null);
+	public static final RenderMedium RENDER_MEDIUM = Providers.fromDescriptor(RenderMedium.class).find().orElse(null);
 
 	private static final InStrategy[] IN_STRATEGIES = {
 			StreamStrategies.IN_PATH,
