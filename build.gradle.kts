@@ -68,8 +68,12 @@ subprojects {
 
 // Projects
 val platform: Project = project(":pancake-platform")
-val testUtils: Project = project(":pancake-test-utils")
 val core: Project = project(":pancake-core")
+val testUtils: Project = project(":pancake-test-utils")
+
+val renderJavaFX: Project = project(":render-javafx")
+val audioJavaFX: Project = project(":audio-javafx")
+
 val skillet: Project = project(":skillet")
 val killstreek: Project = project(":killstreek")
 
@@ -78,6 +82,8 @@ configure(
 		listOf(
 				platform,
 				core,
+				renderJavaFX,
+				audioJavaFX,
 				skillet,
 				killstreek
 		)
@@ -150,6 +156,8 @@ configure(
 configure(
 		listOf(
 				core,
+				renderJavaFX,
+				audioJavaFX,
 				skillet,
 				killstreek
 		)
@@ -183,6 +191,16 @@ project(":pancake-platform") {
 		modules = listOf("javafx.controls", "javafx.media")
 	}
 }
+project(":pancake-core") {
+	apply(plugin = "org.openjfx.javafxplugin")
+
+	description = "Collection of general, reusable systems and components for the Pancake engine"
+
+	configure<JavaFXOptions> {
+		version = "11.+"
+		modules = listOf("javafx.graphics", "javafx.media")
+	}
+}
 project(":pancake-test-utils") {
 	apply(plugin = "groovy")
 	apply(plugin = "org.openjfx.javafxplugin")
@@ -201,10 +219,22 @@ project(":pancake-test-utils") {
 	}
 }
 
-project(":pancake-core") {
+project(":render-javafx") {
+	apply(plugin = "kotlin")
 	apply(plugin = "org.openjfx.javafxplugin")
 
-	description = "Collection of general, reusable systems and components for the Pancake engine"
+	description = "JavaFX RenderMedium implementation"
+
+	configure<JavaFXOptions> {
+		version = "11.+"
+		modules = listOf("javafx.graphics", "javafx.media")
+	}
+}
+project(":audio-javafx") {
+	apply(plugin = "kotlin")
+	apply(plugin = "org.openjfx.javafxplugin")
+
+	description = "JavaFX AudioFactory implementation"
 
 	configure<JavaFXOptions> {
 		version = "11.+"
