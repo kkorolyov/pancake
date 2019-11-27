@@ -7,7 +7,6 @@ import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.simplefuncs.convert.Converter
-import dev.kkorolyov.simplespecs.SpecUtilities
 
 import spock.lang.Shared
 import spock.lang.Specification
@@ -15,6 +14,7 @@ import spock.lang.Specification
 import java.util.function.Function
 
 import static dev.kkorolyov.simplefuncs.function.Memoizer.memoize
+import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class RenderableResourceReaderFactorySpec extends Specification {
 	@Shared
@@ -29,15 +29,15 @@ class RenderableResourceReaderFactorySpec extends Specification {
 	Converter<String, Optional<Renderable>> converter
 
 	def setup() {
-		SpecUtilities.setField("RENDER_MEDIUM", Resources, renderMedium)
+		setField("RENDER_MEDIUM", Resources, renderMedium)
+
 		converter = factory.get(registry)
 	}
 
 	def "reads reference"() {
-		when:
 		registry.put(name, renderable)
 
-		then:
+		expect:
 		converter.convert(name).orElse(null) == renderable
 
 		where:
