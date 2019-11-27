@@ -36,31 +36,29 @@ class ActionResourceReaderFactorySpec extends Specification {
 	Converter<String, Optional<Action>> converter = factory.get(registry)
 
 	def "reads reference"() {
-		when:
-		Map<String, Action> referenceToAction = references.collectEntries { [(it): Mock(Action)] }
-		referenceToAction.each(registry.&put)
+		registry.put(name, action)
 
-		then:
-		referenceToAction.each { key, action ->
-			converter.convert(key).orElse(null) == action
-		}
+		expect:
+		converter.convert(name).orElse(null) == action
+
+		where:
+		name << references
+		action << references.collect { Mock(Action) }
 	}
 
 	def "reads collective"() {
-		when:
 		Map<String, Action> referenceToAction = references.collectEntries { [(it): Mock(Action)] }
 		referenceToAction.each(registry.&put)
 
-		then:
+		expect:
 		converter.convert(references as String).orElse(null) == new CollectiveAction(referenceToAction.values())
 	}
 
 	def "reads multi-stage"() {
-		when:
 		Map<String, Action> stageToAction = multiStages.collectEntries { [(it): Mock(Action)] }
 		stageToAction.each(registry.&put)
 
-		then:
+		expect:
 		converter.convert("{${multiStages.join(',')}}" as String).orElse(null) == new MultiStageAction(
 				stageToAction.values()[0],
 				stageToAction.values()[1],
@@ -70,11 +68,10 @@ class ActionResourceReaderFactorySpec extends Specification {
 	}
 
 	def "reads key"() {
-		when:
 		Map<String, Action> referenceToAction = references.collectEntries { [(it): Mock(Action)] }
 		referenceToAction.each(registry.&put)
 
-		then:
+		expect:
 		converter.convert("($mouseButton, $keyCode)=${references}" as String).orElse(null) == new KeyAction(
 				new MultiStageAction(new CollectiveAction(referenceToAction.values()), null, null, 0),
 				[mouseButton, keyCode]

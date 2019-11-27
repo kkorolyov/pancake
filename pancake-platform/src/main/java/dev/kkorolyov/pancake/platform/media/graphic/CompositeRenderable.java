@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.platform.media.graphic;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 
 import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
 
@@ -36,5 +37,18 @@ public final class CompositeRenderable<T extends Renderable> implements Renderab
 	@Override
 	public Iterator<T> iterator() {
 		return delegates.iterator();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+
+		CompositeRenderable<?> o = (CompositeRenderable<?>) obj;
+		return Objects.equals(delegates, o.delegates);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(delegates);
 	}
 }
