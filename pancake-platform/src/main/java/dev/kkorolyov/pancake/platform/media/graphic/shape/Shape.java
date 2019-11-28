@@ -9,7 +9,7 @@ import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
 public abstract class Shape<T extends Shape> implements Renderable {
 	private Color fill;
 	private Color stroke;
-	private double strokeWidth;
+	private Double strokeWidth;
 
 	/** @return inner color */
 	public Color getFill() {
@@ -32,10 +32,10 @@ public abstract class Shape<T extends Shape> implements Renderable {
 	}
 
 	/** @return outline width in {@code px} */
-	public double getStrokeWidth() {
+	public Double getStrokeWidth() {
 		return strokeWidth;
 	}
-	public T setStrokeWidth(double strokeWidth) {
+	public T setStrokeWidth(Double strokeWidth) {
 		this.strokeWidth = strokeWidth;
 		return (T) this;
 	}
