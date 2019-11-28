@@ -238,7 +238,7 @@ project(":audio-javafx") {
 
 	configure<JavaFXOptions> {
 		version = "11.+"
-		modules = listOf("javafx.graphics", "javafx.media")
+		modules = listOf("javafx.media")
 	}
 }
 
