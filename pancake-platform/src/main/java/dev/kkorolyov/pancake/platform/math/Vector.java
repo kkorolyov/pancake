@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.math;
 
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 /**
  * A vector defined as a head at some point in 3 dimensions and a tail at {@code (0, 0, 0)}.
@@ -38,11 +39,24 @@ public class Vector {
 		return result;
 	}
 
+	/** @see #Vector(double...) */
+	public Vector(Iterable<Number> components) {
+		this(
+				StreamSupport.stream(components.spliterator(), false)
+						.mapToDouble(Number::doubleValue)
+						.toArray()
+		);
+	}
 	/**
-	 * Constructs a vector with a head at {@code (0, 0, 0)}.
+	 * Constructs a vector described by {@code components}.
 	 */
-	public Vector() {
-		this(0, 0, 0);
+	public Vector(double... components) {
+		// FIXME Store components as array
+		this(
+				components.length > 0 ? components[0] : 0,
+				components.length > 1 ? components[1] : 0,
+				components.length > 2 ? components[2] : 0
+		);
 	}
 	/**
 	 * Constructs a vector with a head at {@code (x, y, 0)}.

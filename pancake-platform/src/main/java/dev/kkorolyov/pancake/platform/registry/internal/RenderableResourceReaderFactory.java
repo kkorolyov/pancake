@@ -25,8 +25,8 @@ public final class RenderableResourceReaderFactory implements ResourceReaderFact
 
 	private static final Pattern IMAGE_PATTERN = Pattern.compile("(?i)IMG(?-i)\\(([\\w.\\-]+)\\)");
 
-	private static final Pattern COMPOSITE_PATTERN = Pattern.compile("\\[.+(,\\s?.+)*]");
-	private static final Pattern COMPOSITE_SPLIT_PATTERN = Pattern.compile(",\\s?");
+	private static final Pattern COMPOSITE_PATTERN = Pattern.compile("\\[.+(,\\s*.+)*]");
+	private static final Pattern COMPOSITE_SPLIT_PATTERN = Pattern.compile(",\\s*");
 
 	private final Function<? super Registry<? super String, ? extends Renderable>, ? extends Converter<? super String, ? extends Optional<? extends Renderable>>> autoConverter;
 
