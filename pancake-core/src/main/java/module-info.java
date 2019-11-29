@@ -1,7 +1,4 @@
 module dev.kkorolyov.pancake.core {
-	requires javafx.graphics;
-	requires javafx.media;
-
 	requires simple.funcs;
 	requires simple.logs;
 	requires simple.structs;

@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
-import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster
+import dev.kkorolyov.pancake.platform.event.internal.ManagedEventBroadcaster
 import dev.kkorolyov.pancake.platform.utility.Limiter
 
 import spock.lang.Specification

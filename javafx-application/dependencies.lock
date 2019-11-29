@@ -7,7 +7,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.3"
+            "locked": "1.3.1"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -33,19 +33,11 @@
             ],
             "locked": "2.0"
         },
-        "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
-        },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
             "locked": "1.3.31",
             "requested": "1.3.31"
         },
         "org.openjfx:javafx-base": {
-            "locked": "11.0.2",
-            "requested": "11.+"
-        },
-        "org.openjfx:javafx-controls": {
             "locked": "11.0.2",
             "requested": "11.+"
         },
@@ -62,7 +54,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.3"
+            "locked": "1.3.1"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -88,19 +80,11 @@
             ],
             "locked": "2.0"
         },
-        "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
-        },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
             "locked": "1.3.31",
             "requested": "1.3.31"
         },
         "org.openjfx:javafx-base": {
-            "locked": "11.0.2",
-            "requested": "11.+"
-        },
-        "org.openjfx:javafx-controls": {
             "locked": "11.0.2",
             "requested": "11.+"
         },
@@ -117,7 +101,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.3"
+            "locked": "1.3.1"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -143,19 +127,11 @@
             ],
             "locked": "2.0"
         },
-        "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
-        },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
             "locked": "1.3.31",
             "requested": "1.3.31"
         },
         "org.openjfx:javafx-base": {
-            "locked": "11.0.2",
-            "requested": "11.+"
-        },
-        "org.openjfx:javafx-controls": {
             "locked": "11.0.2",
             "requested": "11.+"
         },
@@ -183,7 +159,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.3"
+            "locked": "1.3.1"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -209,19 +185,11 @@
             ],
             "locked": "2.0"
         },
-        "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
-        },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
             "locked": "1.3.31",
             "requested": "1.3.31"
         },
         "org.openjfx:javafx-base": {
-            "locked": "11.0.2",
-            "requested": "11.+"
-        },
-        "org.openjfx:javafx-controls": {
             "locked": "11.0.2",
             "requested": "11.+"
         },
@@ -245,7 +213,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.3"
+            "locked": "1.3.1"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -275,10 +243,6 @@
             ],
             "locked": "2.0"
         },
-        "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
-        },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
             "locked": "1.3.31",
             "requested": "1.3.31"
@@ -288,10 +252,6 @@
             "requested": "1.+"
         },
         "org.openjfx:javafx-base": {
-            "locked": "11.0.2",
-            "requested": "11.+"
-        },
-        "org.openjfx:javafx-controls": {
             "locked": "11.0.2",
             "requested": "11.+"
         },
@@ -319,7 +279,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.3"
+            "locked": "1.3.1"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -349,10 +309,6 @@
             ],
             "locked": "2.0"
         },
-        "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
-        },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
             "locked": "1.3.31",
             "requested": "1.3.31"
@@ -362,10 +318,6 @@
             "requested": "1.+"
         },
         "org.openjfx:javafx-base": {
-            "locked": "11.0.2",
-            "requested": "11.+"
-        },
-        "org.openjfx:javafx-controls": {
             "locked": "11.0.2",
             "requested": "11.+"
         },
@@ -396,7 +348,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-platform"
             ],
-            "locked": "1.3"
+            "locked": "1.3.1"
         },
         "dev.kkorolyov:simple-funcs": {
             "firstLevelTransitive": [
@@ -429,10 +381,6 @@
             ],
             "locked": "2.0"
         },
-        "org.jetbrains.kotlin:kotlin-reflect": {
-            "locked": "1.3.31",
-            "requested": "1.3.31"
-        },
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8": {
             "locked": "1.3.31",
             "requested": "1.3.31"
@@ -452,8 +400,7 @@
             "firstLevelTransitive": [
                 "dev.kkorolyov:pancake-test-utils"
             ],
-            "locked": "11.0.2",
-            "requested": "11.+"
+            "locked": "11.0.2"
         },
         "org.openjfx:javafx-graphics": {
             "firstLevelTransitive": [

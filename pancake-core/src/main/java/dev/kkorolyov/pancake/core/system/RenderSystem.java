@@ -7,8 +7,6 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.event.CameraCreated;
-import dev.kkorolyov.pancake.platform.media.Camera;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text;
@@ -31,7 +29,6 @@ public class RenderSystem extends GameSystem {
 	private static final int LINE_HEIGHT = 14;
 	private static final Logger log = Config.getLogger(RenderSystem.class);
 
-	private Camera camera;
 	private final RenderTransform renderTransform = new RenderTransform();
 
 	private final NavigableMap<Double, Set<Entity>> drawBuckets = new TreeMap<>();
@@ -44,11 +41,6 @@ public class RenderSystem extends GameSystem {
 				new Signature(Transform.class, Graphic.class),
 				Limiter.fromConfig(RenderSystem.class)
 		);
-	}
-	@Override
-	public void attach() {
-		resources.events
-				.register(CameraCreated.class, e -> camera = e.getCamera());
 	}
 
 	@Override
@@ -82,7 +74,7 @@ public class RenderSystem extends GameSystem {
 		graphic.render(
 				renderTransform
 						.reset()
-						.setPosition(camera.getRelativePosition(transform.getGlobalPosition()))
+						.setPosition(Resources.RENDER_MEDIUM.getCamera().getRelativePosition(transform.getGlobalPosition()))
 						.setRotation(transform.getGlobalOrientation())
 		);
 	}

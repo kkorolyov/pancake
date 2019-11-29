@@ -71,8 +71,8 @@ val platform: Project = project(":pancake-platform")
 val core: Project = project(":pancake-core")
 val testUtils: Project = project(":pancake-test-utils")
 
-val renderJavaFX: Project = project(":render-javafx")
-val audioJavaFX: Project = project(":audio-javafx")
+val javaFXApplication: Project = project(":javafx-application")
+val javaFXAudio: Project = project(":javafx-audio")
 
 val skillet: Project = project(":skillet")
 val killstreek: Project = project(":killstreek")
@@ -82,8 +82,8 @@ configure(
 		listOf(
 				platform,
 				core,
-				renderJavaFX,
-				audioJavaFX,
+				javaFXApplication,
+				javaFXAudio,
 				skillet,
 				killstreek
 		)
@@ -156,8 +156,8 @@ configure(
 configure(
 		listOf(
 				core,
-				renderJavaFX,
-				audioJavaFX,
+				javaFXApplication,
+				javaFXAudio,
 				skillet,
 				killstreek
 		)
@@ -174,8 +174,6 @@ configure(listOf(killstreek)) {
 }
 
 project(":pancake-platform") {
-	apply(plugin = "org.openjfx.javafxplugin")
-
 	description = "Main Pancake engine platform"
 
 	dependencies {
@@ -185,21 +183,9 @@ project(":pancake-platform") {
 		api("dev.kkorolyov:simple-funcs:1.+")
 		api("dev.kkorolyov:simple-structs:2.+")
 	}
-
-	configure<JavaFXOptions> {
-		version = "11.+"
-		modules = listOf("javafx.controls", "javafx.media")
-	}
 }
 project(":pancake-core") {
-	apply(plugin = "org.openjfx.javafxplugin")
-
 	description = "Collection of general, reusable systems and components for the Pancake engine"
-
-	configure<JavaFXOptions> {
-		version = "11.+"
-		modules = listOf("javafx.graphics", "javafx.media")
-	}
 }
 project(":pancake-test-utils") {
 	apply(plugin = "groovy")
@@ -219,22 +205,30 @@ project(":pancake-test-utils") {
 	}
 }
 
-project(":render-javafx") {
+project(":javafx-application") {
 	apply(plugin = "kotlin")
 	apply(plugin = "org.openjfx.javafxplugin")
 
-	description = "JavaFX RenderMedium implementation"
+	description = "JavaFX Application and RenderMedium implementation"
+
+	dependencies {
+		implementation(kotlin("stdlib-jdk8"))
+	}
 
 	configure<JavaFXOptions> {
 		version = "11.+"
-		modules = listOf("javafx.graphics", "javafx.media")
+		modules = listOf("javafx.graphics")
 	}
 }
-project(":audio-javafx") {
+project(":javafx-audio") {
 	apply(plugin = "kotlin")
 	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "JavaFX AudioFactory implementation"
+
+	dependencies {
+		implementation(kotlin("stdlib-jdk8"))
+	}
 
 	configure<JavaFXOptions> {
 		version = "11.+"

@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.application.Application;
 import dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.simplefiles.Files;
@@ -20,6 +21,8 @@ import java.util.function.Consumer;
  * Provides access to resources.
  */
 public final class Resources {
+	/** Service-loaded application executor */
+	public static final Application APPLICATION = Providers.fromDescriptor(Application.class).find().orElse(null);
 	/** Service-loaded audio factory */
 	public static final AudioFactory AUDIO_FACTORY = Providers.fromDescriptor(AudioFactory.class).find().orElse(null);
 	/** Service-loaded render medium */

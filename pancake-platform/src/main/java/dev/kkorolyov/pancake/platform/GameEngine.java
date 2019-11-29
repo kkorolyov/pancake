@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.internal.ManagedEventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 import dev.kkorolyov.simplefiles.Providers;
 
@@ -24,7 +24,7 @@ public class GameEngine {
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
 	public GameEngine(ManagedEventBroadcaster events, EntityPool entities) {
-		this(events, entities, Providers.fromDescriptor(GameSystem.class).findAll(system -> true));
+		this(events, entities, Providers.fromDescriptor(GameSystem.class).stream()::iterator);
 	}
 	/**
 	 * @see #GameEngine(ManagedEventBroadcaster, EntityPool, Iterable)

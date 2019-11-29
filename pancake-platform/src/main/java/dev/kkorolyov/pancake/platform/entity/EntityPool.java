@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.platform.event.CreateEntity;
 import dev.kkorolyov.pancake.platform.event.DestroyEntity;
 import dev.kkorolyov.pancake.platform.event.EntityCreated;
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
-import dev.kkorolyov.pancake.platform.event.management.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.simplestructs.FacetedBundle;
 
 import java.util.ArrayDeque;

@@ -98,32 +98,14 @@
             "requested": "1.3.31"
         },
         "org.openjfx:javafx-base": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform"
-            ],
             "locked": "11.0.2",
             "requested": "11.+"
         },
-        "org.openjfx:javafx-controls": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-platform"
-            ],
-            "locked": "11.0.2"
-        },
         "org.openjfx:javafx-graphics": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform"
-            ],
             "locked": "11.0.2",
             "requested": "11.+"
         },
         "org.openjfx:javafx-media": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform"
-            ],
             "locked": "11.0.2",
             "requested": "11.+"
         }
@@ -238,32 +220,14 @@
             "requested": "1.3.31"
         },
         "org.openjfx:javafx-base": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform"
-            ],
             "locked": "11.0.2",
             "requested": "11.+"
         },
-        "org.openjfx:javafx-controls": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-platform"
-            ],
-            "locked": "11.0.2"
-        },
         "org.openjfx:javafx-graphics": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform"
-            ],
             "locked": "11.0.2",
             "requested": "11.+"
         },
         "org.openjfx:javafx-media": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform"
-            ],
             "locked": "11.0.2",
             "requested": "11.+"
         }
@@ -479,8 +443,6 @@
         },
         "org.openjfx:javafx-base": {
             "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform",
                 "dev.kkorolyov:pancake-test-utils"
             ],
             "locked": "11.0.2",
@@ -488,25 +450,18 @@
         },
         "org.openjfx:javafx-controls": {
             "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-platform",
                 "dev.kkorolyov:pancake-test-utils"
             ],
             "locked": "11.0.2"
         },
         "org.openjfx:javafx-graphics": {
             "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform",
                 "dev.kkorolyov:pancake-test-utils"
             ],
             "locked": "11.0.2",
             "requested": "11.+"
         },
         "org.openjfx:javafx-media": {
-            "firstLevelTransitive": [
-                "dev.kkorolyov:pancake-core",
-                "dev.kkorolyov:pancake-platform"
-            ],
             "locked": "11.0.2",
             "requested": "11.+"
         },

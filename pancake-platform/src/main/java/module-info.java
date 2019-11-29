@@ -1,6 +1,4 @@
 module dev.kkorolyov.pancake.platform {
-	requires javafx.media;
-
 	requires simple.files;
 	requires simple.funcs;
 	requires simple.logs;
@@ -9,9 +7,9 @@ module dev.kkorolyov.pancake.platform {
 
 	exports dev.kkorolyov.pancake.platform;
 	exports dev.kkorolyov.pancake.platform.action;
+	exports dev.kkorolyov.pancake.platform.application;
 	exports dev.kkorolyov.pancake.platform.entity;
 	exports dev.kkorolyov.pancake.platform.event;
-	exports dev.kkorolyov.pancake.platform.event.management;
 	exports dev.kkorolyov.pancake.platform.math;
 	exports dev.kkorolyov.pancake.platform.media;
 	exports dev.kkorolyov.pancake.platform.media.audio;

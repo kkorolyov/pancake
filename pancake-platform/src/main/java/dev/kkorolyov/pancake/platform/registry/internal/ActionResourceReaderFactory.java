@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
 import dev.kkorolyov.pancake.platform.Config;
+import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.CollectiveAction;
 import dev.kkorolyov.pancake.platform.action.KeyAction;
@@ -9,8 +10,6 @@ import dev.kkorolyov.pancake.platform.registry.Registry;
 import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory;
 import dev.kkorolyov.simplefuncs.convert.Converter;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -100,13 +99,8 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 									? (MultiStageAction) action
 									: new MultiStageAction(action, null, null, 0),  // Hold threshold irrelevant
 							Arrays.stream(KEY_SPLIT_KEY_PATTERN.split(keysS.substring(1, keysS.length() - 1)))
-									.map(s -> {
-										try {
-											return KeyCode.valueOf(s);
-										} catch (IllegalArgumentException e) {
-											return MouseButton.valueOf(s);
-										}
-									}).collect(toList())
+									.map(Resources.APPLICATION::toInput)
+									.collect(toList())
 					);
 				}
 		);

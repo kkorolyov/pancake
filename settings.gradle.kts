@@ -3,8 +3,8 @@ include("pancake-platform")
 include("pancake-core")
 include("pancake-test-utils")
 
-include("render-javafx")
-include("audio-javafx")
+include("javafx-application")
+include("javafx-audio")
 
 include("skillet")
 include("killstreek")
