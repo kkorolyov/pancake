@@ -14,7 +14,7 @@ import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Box
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text
-import dev.kkorolyov.simplefuncs.function.Memoizer
+import dev.kkorolyov.simplefuncs.function.Memoizer.memoize
 import javafx.event.EventHandler
 import javafx.scene.Group
 import javafx.scene.Scene
@@ -22,7 +22,6 @@ import javafx.scene.canvas.Canvas
 import javafx.scene.input.KeyCode
 import javafx.scene.input.MouseButton
 import javafx.stage.Stage
-import java.util.function.Function
 import javafx.application.Application as FxApplication
 import javafx.scene.image.Image as FxImage
 
@@ -101,11 +100,11 @@ private class Runner(private val config: Config, private val gameLoop: GameLoop)
 class JavaFxRenderMedium : RenderMedium {
 	private val camera: Camera = Camera(Vector(), Vector(), 0.0, 0.0)
 	private val g: EnhancedGraphicsContext = EnhancedGraphicsContext(canvas.graphicsContext2D)
-	private val fxImageRetriever: Function<in String, out FxImage> = Memoizer.memoize { uri -> FxImage(uri) }
+	private val imageCache: (String) -> FxImage = memoize<String, FxImage>(::FxImage)::apply
 
 	override fun getCamera(): Camera = camera
 
-	override fun getImage(uri: String): Image = JavaFxImage(fxImageRetriever.apply(uri), g)
+	override fun getImage(uri: String): Image = JavaFxImage(imageCache(uri), g)
 
 	override fun getBox(): Box = JavaFxBox(g)
 	override fun getText(): Text = JavaFxText(g)
