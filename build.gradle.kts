@@ -71,8 +71,8 @@ val platform: Project = project(":pancake-platform")
 val core: Project = project(":pancake-core")
 val testUtils: Project = project(":pancake-test-utils")
 
-val javaFXApplication: Project = project(":javafx-application")
-val javaFXAudio: Project = project(":javafx-audio")
+val javaFxApplication: Project = project(":javafx-application")
+val javaFxAudio: Project = project(":javafx-audio")
 
 val skillet: Project = project(":skillet")
 val killstreek: Project = project(":killstreek")
@@ -82,8 +82,8 @@ configure(
 		listOf(
 				platform,
 				core,
-				javaFXApplication,
-				javaFXAudio,
+				javaFxApplication,
+				javaFxAudio,
 				skillet,
 				killstreek
 		)
@@ -156,8 +156,8 @@ configure(
 configure(
 		listOf(
 				core,
-				javaFXApplication,
-				javaFXAudio,
+				javaFxApplication,
+				javaFxAudio,
 				skillet,
 				killstreek
 		)
@@ -271,6 +271,8 @@ project(":killstreek") {
 
 	dependencies {
 		implementation(kotlin("stdlib-jdk8"))
+		implementation(javaFxApplication)
+		implementation(javaFxAudio)
 	}
 
 	configure<JavaApplication> {

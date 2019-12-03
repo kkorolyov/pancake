@@ -1,6 +1,4 @@
-package dev.kkorolyov.pancake.platform.event.internal
-
-import dev.kkorolyov.pancake.platform.event.Event
+package dev.kkorolyov.pancake.platform.event
 
 import spock.lang.Shared
 import spock.lang.Specification
@@ -16,7 +14,7 @@ class ManagedEventBroadcasterSpec extends Specification {
 	Map<Class<? extends Event>, Set<Consumer<?>>> receivers = Mock()
 	HashSet<Consumer<?>> receiverSet = Mock()
 
-	ManagedEventBroadcaster eventBroadcaster = new ManagedEventBroadcaster()
+	EventBroadcaster.Managed eventBroadcaster = new EventBroadcaster.Managed()
 
 	def setup() {
 		setField("receivers", eventBroadcaster, receivers)
