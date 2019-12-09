@@ -12,19 +12,18 @@ import javafx.scene.input.MouseButton
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randKeyCode
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randMouseButton
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
+import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
 import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class InputSpec extends Specification {
 	static class HandlerSpec extends Specification {
 		@Shared
-		MouseButton mouseButton = randMouseButton()
+		MouseButton mouseButton = MouseButton.values()[randInt(MouseButton.values().length)]
 		@Shared
-		KeyCode keyCode = randKeyCode()
+		KeyCode keyCode = KeyCode.values()[randInt(KeyCode.values().length)]
 
 		@Shared
 		long dt = 0
