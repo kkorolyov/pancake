@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.core.component.Input;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.Resources;
-import dev.kkorolyov.pancake.platform.action.KeyAction;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector;
@@ -32,8 +31,8 @@ public class InputSystem extends GameSystem {
 		Input input = entity.get(Input.class);
 		Transform transform = entity.get(Transform.class);
 
-		for (KeyAction keyAction : input.getActions()) {
-			entity.get(ActionQueue.class).enqueue(keyAction.arm(Resources.APPLICATION.getInputs(), dt));
+		for (Input.Handler handler : input.getHandlers()) {
+			entity.get(ActionQueue.class).enqueue(handler.arm(Resources.APPLICATION.getInputs(), dt));
 		}
 		if (input.facesCursor() && transform != null) {
 			transformToCursor.set(Resources.RENDER_MEDIUM.getCamera().getAbsolutePosition(Resources.APPLICATION.getCursor()));

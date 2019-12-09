@@ -1,10 +1,8 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.CollectiveAction;
-import dev.kkorolyov.pancake.platform.action.KeyAction;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
 import dev.kkorolyov.pancake.platform.registry.Registry;
 import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory;
@@ -32,10 +30,6 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 	private static final Pattern MULTI_STAGE_PATTERN = Pattern.compile("\\{.*(,.*){2}}");
 	private static final Pattern MULTI_STAGE_SPLIT_PATTERN = Pattern.compile(",\\s*(?![^\\[]*])");
 	private static final long MULTI_STAGE_HOLD_THRESHOLD = (long) (Double.parseDouble(Config.config().get("holdThreshold")) * 1e9);
-
-	private static final Pattern KEY_PATTERN = Pattern.compile("\\([_a-zA-Z]+(,\\s*[_a-zA-Z]+)*\\)\\s*=\\s*.+");
-	private static final Pattern KEY_SPLIT_PATTERN = Pattern.compile("\\s*=\\s*");
-	private static final Pattern KEY_SPLIT_KEY_PATTERN = Pattern.compile(",\\s*");
 
 	private final Function<? super Registry<? super String, ? extends Action>, ? extends Converter<? super String, ? extends Optional<? extends Action>>> autoConverter;
 
@@ -84,35 +78,13 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 				}
 		);
 	}
-	private Converter<String, Optional<KeyAction>> key(Registry<? super String, ? extends Action> registry) {
-		return Converter.selective(
-				in -> KEY_PATTERN.matcher(in).matches(),
-				in -> {
-					String[] split = KEY_SPLIT_PATTERN.split(in, 2);
-					String keysS = split[0], actionS = split[1];
-
-					Action action = autoConverter.apply(registry).convert(actionS)
-							.orElse(null);
-
-					return new KeyAction(
-							action instanceof MultiStageAction
-									? (MultiStageAction) action
-									: new MultiStageAction(action, null, null, 0),  // Hold threshold irrelevant
-							Arrays.stream(KEY_SPLIT_KEY_PATTERN.split(keysS.substring(1, keysS.length() - 1)))
-									.map(Resources.APPLICATION::toInput)
-									.collect(toList())
-					);
-				}
-		);
-	}
 
 	@Override
 	public Converter<String, Optional<? extends Action>> get(Registry<? super String, ? extends Action> registry) {
 		return Converter.reducing(
 				reference(registry),
 				collective(registry),
-				multiStage(registry),
-				key(registry)
+				multiStage(registry)
 		);
 	}
 }

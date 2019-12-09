@@ -1,6 +1,7 @@
 module dev.kkorolyov.pancake.core {
 	requires simple.funcs;
 	requires simple.logs;
+	requires simple.props;
 	requires simple.structs;
 
 	requires dev.kkorolyov.pancake.platform;

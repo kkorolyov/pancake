@@ -2,20 +2,15 @@ package dev.kkorolyov.pancake.platform.registry.internal
 
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.action.CollectiveAction
-import dev.kkorolyov.pancake.platform.action.KeyAction
 import dev.kkorolyov.pancake.platform.action.MultiStageAction
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.simplefuncs.convert.Converter
-import javafx.scene.input.KeyCode
-import javafx.scene.input.MouseButton
 
 import spock.lang.Shared
 import spock.lang.Specification
 
 import java.util.function.Function
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randKeyCode
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randMouseButton
 import static dev.kkorolyov.simplefuncs.function.Memoizer.memoize
 
 class ActionResourceReaderFactorySpec extends Specification {
@@ -23,11 +18,6 @@ class ActionResourceReaderFactorySpec extends Specification {
 	String[] references = ["ref", "ref4", "newRef"]
 	@Shared
 	String[] multiStages = ["startStep", "holdStep", "endStep"]
-
-	@Shared
-	MouseButton mouseButton = randMouseButton()
-	@Shared
-	KeyCode keyCode = randKeyCode()
 
 	@Shared
 	ActionResourceReaderFactory factory = new ActionResourceReaderFactory(memoize({ factory.get(it) } as Function))
@@ -64,17 +54,6 @@ class ActionResourceReaderFactorySpec extends Specification {
 				stageToAction.values()[1],
 				stageToAction.values()[2],
 				ActionResourceReaderFactory.MULTI_STAGE_HOLD_THRESHOLD
-		)
-	}
-
-	def "reads key"() {
-		Map<String, Action> referenceToAction = references.collectEntries { [(it): Mock(Action)] }
-		referenceToAction.each(registry.&put)
-
-		expect:
-		converter.convert("($mouseButton, $keyCode)=${references}" as String).orElse(null) == new KeyAction(
-				new MultiStageAction(new CollectiveAction(referenceToAction.values()), null, null, 0),
-				[mouseButton, keyCode]
 		)
 	}
 }
