@@ -6,29 +6,24 @@ import dev.kkorolyov.pancake.platform.action.MultiStageAction
 import dev.kkorolyov.pancake.platform.application.Application
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.simpleprops.Properties
-import javafx.scene.input.KeyCode
-import javafx.scene.input.MouseButton
 
 import spock.lang.Shared
 import spock.lang.Specification
 
+import static dev.kkorolyov.pancake.core.component.InputSpec.HandlerSpec.InputCode.CODE
+import static dev.kkorolyov.pancake.core.component.InputSpec.HandlerSpec.InputCode.MISSING
+import static dev.kkorolyov.pancake.core.component.InputSpec.HandlerSpec.InputCode.OTHER
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
-import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
 import static dev.kkorolyov.simplespecs.SpecUtilities.randString
 import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class InputSpec extends Specification {
 	static class HandlerSpec extends Specification {
 		@Shared
-		MouseButton mouseButton = MouseButton.values()[randInt(MouseButton.values().length)]
-		@Shared
-		KeyCode keyCode = KeyCode.values()[randInt(KeyCode.values().length)]
-
-		@Shared
 		long dt = 0
 		@Shared
-		Set<Enum> inputs = [KeyCode.A, MouseButton.PRIMARY]
+		Set<Enum> inputs = [CODE, OTHER]
 
 		MultiStageAction delegate = Mock()
 
@@ -36,8 +31,8 @@ class InputSpec extends Specification {
 
 		def setupSpec() {
 			setField("APPLICATION", Resources, Mock(Application) {
-				toInput(mouseButton.name()) >> mouseButton
-				toInput(keyCode.name()) >> keyCode
+				toInput(CODE.name()) >> CODE
+				toInput(OTHER.name()) >> OTHER
 			})
 		}
 
@@ -49,7 +44,7 @@ class InputSpec extends Specification {
 			1 * delegate.arm(ACTIVATE, dt)
 
 			where:
-			values << [inputs, inputs << KeyCode.B]
+			values << [inputs, inputs << MISSING]
 		}
 		def "exclusive subset of inputs translates to DEACTIVATE"() {
 			when:
@@ -69,14 +64,20 @@ class InputSpec extends Specification {
 			Properties props = new Properties()
 			Registry<String, Action> registry = new Registry<>()
 
-			props.put(name, "($mouseButton, $keyCode)")
+			props.put(name, "($CODE, $OTHER)")
 			registry.put(name, action)
 
 			expect:
 			Input.Handler.fromProperties(props, registry) == [new Input.Handler(
 					new MultiStageAction(action, null, null, 0),
-					[mouseButton, keyCode]
+					[CODE, OTHER]
 			)] as Set
+		}
+
+		enum InputCode {
+			CODE,
+			OTHER,
+			MISSING
 		}
 	}
 }
