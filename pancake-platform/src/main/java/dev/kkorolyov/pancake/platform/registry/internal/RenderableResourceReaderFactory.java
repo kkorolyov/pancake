@@ -23,19 +23,12 @@ import static java.util.stream.Collectors.toList;
 public final class RenderableResourceReaderFactory implements ResourceReaderFactory.RenderableResource {
 	private static final Pattern REFERENCE_PATTERN = Pattern.compile("\\w+");
 
-	private static final Pattern IMAGE_PATTERN = Pattern.compile("(?i)IMG(?-i)\\(([\\w.\\-]+)\\)");
+	private static final Pattern IMAGE_PATTERN = Pattern.compile("(?i)IMG(?-i)\\(([\\w./:\\-]+)\\)");
 
 	private static final Pattern COMPOSITE_PATTERN = Pattern.compile("\\[.+(,\\s*.+)*]");
 	private static final Pattern COMPOSITE_SPLIT_PATTERN = Pattern.compile(",\\s*");
 
-	private final Function<? super Registry<? super String, ? extends Renderable>, ? extends Converter<? super String, ? extends Optional<? extends Renderable>>> autoConverter;
-
-	public RenderableResourceReaderFactory() {
-		this(memoize(registry -> ResourceReaderFactory.get(RenderableResource.class, registry)));
-	}
-	private RenderableResourceReaderFactory(Function<? super Registry<? super String, ? extends Renderable>, ? extends Converter<? super String, ? extends Optional<? extends Renderable>>> autoConverter) {
-		this.autoConverter = autoConverter;
-	}
+	private final Function<? super Registry<? super String, ? extends Renderable>, ? extends Converter<? super String, ? extends Optional<? extends Renderable>>> autoConverter = memoize(registry -> ResourceReaderFactory.get(RenderableResource.class, registry));
 
 	private static Converter<String, Optional<Renderable>> reference(Registry<? super String, ? extends Renderable> registry) {
 		return Converter.selective(

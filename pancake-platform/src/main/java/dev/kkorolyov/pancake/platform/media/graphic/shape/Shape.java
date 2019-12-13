@@ -51,32 +51,32 @@ public abstract class Shape<T extends Shape> implements Renderable {
 		public final short red;
 		public final short green;
 		public final short blue;
-		public final short alpha;
+		public final double alpha;
 
 		/**
 		 * Constructs a variant of an {@code other} color with given opacity.
 		 * @param other base color
 		 * @param alpha new opacity
-		 * @see #Color(short, short, short, short)
+		 * @see #Color(short, short, short, double)
 		 */
-		public Color(Color other, short alpha) {
+		public Color(Color other, double alpha) {
 			this(other.red, other.green, other.blue, alpha);
 		}
 		/**
 		 * Constructs a new color with maximum opacity.
-		 * @see #Color(short, short, short, short)
+		 * @see #Color(short, short, short, double)
 		 */
 		public Color(short red, short green, short blue) {
-			this(red, green, blue, (short) 255);
+			this(red, green, blue, 1.0);
 		}
 		/**
 		 * Constructs a new color.
 		 * @param red red component; constrained {@code [0,255]}
 		 * @param green green component; constrained {@code [0,255]}
 		 * @param blue blue component; constrained {@code [0,255]}
-		 * @param alpha opacity component; constrained {@code [0,255]}
+		 * @param alpha opacity component; constrained {@code [0,1]}
 		 */
-		public Color(short red, short green, short blue, short alpha) {
+		public Color(short red, short green, short blue, double alpha) {
 			this.red = red;
 			this.green = green;
 			this.blue = blue;

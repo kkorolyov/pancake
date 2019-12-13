@@ -31,17 +31,7 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 	private static final Pattern MULTI_STAGE_SPLIT_PATTERN = Pattern.compile(",\\s*(?![^\\[]*])");
 	private static final long MULTI_STAGE_HOLD_THRESHOLD = (long) (Double.parseDouble(Config.config().get("holdThreshold")) * 1e9);
 
-	private final Function<? super Registry<? super String, ? extends Action>, ? extends Converter<? super String, ? extends Optional<? extends Action>>> autoConverter;
-
-	/**
-	 * Constructs a new action resource reader factory.
-	 */
-	public ActionResourceReaderFactory() {
-		this(memoize(registry -> ResourceReaderFactory.get(ActionResource.class, registry)));
-	}
-	private ActionResourceReaderFactory(Function<? super Registry<? super String, ? extends Action>, ? extends Converter<? super String, ? extends Optional<? extends Action>>> autoConverter) {
-		this.autoConverter = autoConverter;
-	}
+	private final Function<? super Registry<? super String, ? extends Action>, ? extends Converter<? super String, ? extends Optional<? extends Action>>> autoConverter = memoize(registry -> ResourceReaderFactory.get(ActionResource.class, registry));
 
 	private static Converter<String, Optional<Action>> reference(Registry<? super String, ? extends Action> registry) {
 		return Converter.selective(
@@ -65,7 +55,7 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 				in -> MULTI_STAGE_PATTERN.matcher(in).matches(),
 				in -> {
 					List<Action> actions = Arrays.stream(MULTI_STAGE_SPLIT_PATTERN.split(in.substring(1, in.length() - 1)))
-							.map(actionS -> actionS.length() <= 0 ? null : autoConverter.apply(registry).convert(actionS))
+							.map(autoConverter.apply(registry)::convert)
 							.map(optional -> optional.orElse(null))
 							.collect(toList());
 

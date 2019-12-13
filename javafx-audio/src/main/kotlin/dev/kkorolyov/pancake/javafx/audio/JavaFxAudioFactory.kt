@@ -4,12 +4,13 @@ import dev.kkorolyov.pancake.platform.media.audio.Audio
 import dev.kkorolyov.pancake.platform.media.audio.AudioFactory
 import dev.kkorolyov.simplefuncs.function.Memoizer.memoize
 import javafx.scene.media.Media
+import java.nio.file.Path
 
 /**
  * [AudioFactory] implemented through JavaFX.
  */
 class JavaFxAudioFactory : AudioFactory {
-	private val mediaCache: (String) -> Media = memoize<String, Media>(::Media)::apply
+	private val mediaCache: (String) -> Media = memoize<String, Media> { Media(Path.of(it).toUri().toString()) }::apply
 
 	override fun get(uri: String): Audio = JavaFxAudio(mediaCache(uri))
 }

@@ -29,7 +29,7 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 	/** Sets current `fill` to [color]. */
 	fun fill(color: Shape.Color?) {
 		color?.run {
-			g.fill = Color.color(red.toDouble(), green.toDouble(), blue.toDouble(), alpha.toDouble())
+			g.fill = Color.rgb(red.toInt(), green.toInt(), blue.toInt(), alpha)
 
 			resetFill = false
 		}
@@ -38,7 +38,7 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 	/** Sets current `stroke` to [color]. */
 	fun stroke(color: Shape.Color?) {
 		color?.run {
-			g.stroke = Color.color(red.toDouble(), green.toDouble(), blue.toDouble(), alpha.toDouble())
+			g.stroke = Color.rgb(red.toInt(), green.toInt(), blue.toInt(), alpha)
 
 			resetStroke = false
 		}

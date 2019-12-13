@@ -14,7 +14,6 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.function.Consumer;
 
 /**
@@ -90,14 +89,6 @@ public final class Resources {
 	 */
 	public static void string(String path, String s) {
 		Files.bytes(out(path), s.getBytes(StandardCharsets.UTF_8));
-	}
-
-	/**
-	 * @param path path to file
-	 * @return {@code path} as a file URI string
-	 */
-	public static String toFileUri(String path) {
-		return Paths.get(path).toUri().toString();
 	}
 
 	private static <T extends Closeable> T logRetrieval(String streamType, String path, T stream) {
