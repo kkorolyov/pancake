@@ -20,6 +20,9 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.serialization.string;
 	exports dev.kkorolyov.pancake.platform.utility;
 
+	// Make services visible to Providers
+	exports dev.kkorolyov.pancake.platform.registry.internal to simple.files;
+
 	// System
 	uses dev.kkorolyov.pancake.platform.GameSystem;
 	// Media factories

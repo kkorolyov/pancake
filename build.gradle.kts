@@ -21,10 +21,9 @@ plugins {
 	groovy
 	kotlin("jvm") version "1.3.31"
 	id("org.openjfx.javafxplugin") version "0.0.7"
-
+	id("org.javamodularity.moduleplugin") version "1.5.0"
 	`maven-publish`
 	id("com.jfrog.bintray") version "1.8.0"
-
 	id("nebula.dependency-lock") version "5.0.6"
 }
 apply(plugin = "dev.kkorolyov.full-doc")
@@ -46,6 +45,7 @@ java {
 }
 
 subprojects {
+	apply(plugin = "org.javamodularity.moduleplugin")
 	apply(plugin = "nebula.dependency-lock")
 
 	group = "dev.kkorolyov"
@@ -63,6 +63,10 @@ subprojects {
 
 		group = "locking"
 		description = "Refreshes and updates dependency locks"
+	}
+
+	tasks.withType<KotlinCompile> {
+		kotlinOptions.jvmTarget = "11"
 	}
 }
 
@@ -261,13 +265,8 @@ project(":skillet") {
 project(":killstreek") {
 	apply(plugin = "kotlin")
 	apply(plugin = "application")
-	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "Top-down ARPG with dynamic RNG system"
-
-	tasks.withType<KotlinCompile> {
-		kotlinOptions.jvmTarget = "11"
-	}
 
 	dependencies {
 		implementation(kotlin("stdlib-jdk8"))
@@ -276,23 +275,13 @@ project(":killstreek") {
 	}
 
 	configure<JavaApplication> {
-		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.Launcher"
-
-		applicationDefaultJvmArgs = listOf("-Xmx2G", "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5006")
+		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.LauncherKt"
 	}
 
-	configure<JavaFXOptions> {
-		version = "11.+"
-		modules = listOf("javafx.media")
-	}
+	tasks.named<JavaExec>("run") {
+		dependsOn("installDist")
 
-	tasks.register<Exec>("exec") {
-		dependsOn("clean", "installDist")
-
+		// Launch along with resources
 		workingDir = tasks.named<Sync>("installDist").get().destinationDir
-		commandLine = listOf("sh", "bin/killstreek")
-
-		description = "Executes the distribution"
-		group = "distribution"
 	}
 }
