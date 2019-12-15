@@ -60,15 +60,15 @@ public class RenderSystem extends GameSystem {
 				.flatMap(Collection::stream)
 				.collect(toList());
 
-		Resources.RENDER_MEDIUM.clear();
-
-		for (Entity entity : toDraw) {
-			draw(
-					entity.get(Transform.class),
-					entity.get(Graphic.class)
-			);
-		}
-		drawDebug();
+		Resources.RENDER_MEDIUM.invoke(() -> {
+			for (Entity entity : toDraw) {
+				draw(
+						entity.get(Transform.class),
+						entity.get(Graphic.class)
+				);
+			}
+			drawDebug();
+		});
 	}
 	private void draw(Transform transform, Graphic graphic) {
 		graphic.render(

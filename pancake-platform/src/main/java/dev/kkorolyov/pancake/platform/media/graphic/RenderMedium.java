@@ -23,7 +23,8 @@ public interface RenderMedium {
 	Text getText();
 
 	/**
-	 * Clears all rendered artifacts on this medium.
+	 * Invokes a render action on this medium's rendering thread.
+	 * @param renderAction render action to invoke
 	 */
-	void clear();
+	void invoke(Runnable renderAction);
 }
