@@ -126,7 +126,9 @@ private val entities: EntityPool = EntityPool(events).apply {
 
 	// Player
 	create().also {
-		val sprite = Sprite(renderables.get("player") as CompositeRenderable<Image>, Viewport(4, 3), (1e9 / 60).toLong())
+		val sprite = Sprite(renderables.get("player") as CompositeRenderable<Image>, Viewport(4, 3), (1e9 / 60).toLong()).apply {
+			isActive = false
+		}
 
 		it.add(
 				playerTransform,

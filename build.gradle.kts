@@ -42,6 +42,7 @@ configure<FullDocExtension> {
 
 java {
 	sourceCompatibility = VERSION_11
+	targetCompatibility = VERSION_11
 }
 
 subprojects {
