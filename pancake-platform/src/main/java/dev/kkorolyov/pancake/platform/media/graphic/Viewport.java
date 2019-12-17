@@ -122,7 +122,7 @@ public final class Viewport {
 
 	private void calculate(double width, double height, double depth) {
 		if (!fullSize.set(width, height, depth).equals(lastFullSize)) {
-			origin.set(partitions)
+			origin.set(current)
 					.scale(
 							size.set(fullSize)
 									.invScale(partitions)

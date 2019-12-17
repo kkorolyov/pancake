@@ -20,7 +20,7 @@ class ViewportSpec extends Specification {
 		viewport.set(13)
 
 		then:
-		viewport.getOrigin(1, 1, 1) == new Vector(1, 1, 1)
+		viewport.getOrigin(1, 1, 1) == new Vector(0.333, 0.444, 0.250)
 	}
 	def "calculates size"() {
 		int width = xParts * 4
