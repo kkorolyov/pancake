@@ -15,7 +15,7 @@ class JavaFxImage(private val image: FxImage, private val g: EnhancedGraphicsCon
 
 		// Rotate
 		g.run {
-			rotate(transform)
+			rotate(transform, pad = true)
 
 			get().drawImage(
 					image,
@@ -27,8 +27,8 @@ class JavaFxImage(private val image: FxImage, private val g: EnhancedGraphicsCon
 					size.y,
 					// Render using transform
 					// Render using transform
-					transform.position.x,
-					transform.position.y,
+					transform.position.x - (size.x / 2),
+					transform.position.y - (size.y / 2),
 					size.x * transform.scale.x,
 					size.y * transform.scale.y
 			)

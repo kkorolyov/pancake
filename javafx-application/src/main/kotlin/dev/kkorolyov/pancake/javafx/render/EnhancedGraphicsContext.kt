@@ -54,24 +54,23 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 	}
 
 	/** Sets current `rotation` to [transform]'s rotation. */
-	fun rotate(transform: RenderTransform) {
-		rotate(transform.rotation.z, transform.position)
+	fun rotate(transform: RenderTransform, pad: Boolean = false) {
+		rotate(transform.rotation.z, transform.position, pad)
 
 		resetRotate = false
 	}
 
-	private fun rotate(angle: Double, pivot: Vector?) {
-		if (rotate.angle != 0.0) {
-			rotate.angle = -Math.toDegrees(angle)
+	private fun rotate(angle: Double, pivot: Vector?, pad: Boolean = false) {
+		rotate.run {
+			this.angle = -Math.toDegrees(if (pad) angle - (0.5 * Math.PI) else angle)
 
-			pivot?.run {
-				rotate.pivotX = x
-				rotate.pivotY = y
-			}
+			pivotX = pivot?.x ?: 0.0
+			pivotY = pivot?.y ?: 0.0
+
 			g.setTransform(
-					rotate.mxx, rotate.myx,
-					rotate.mxy, rotate.myy,
-					rotate.tx, rotate.ty
+					mxx, myx,
+					mxy, myy,
+					tx, ty
 			)
 		}
 	}

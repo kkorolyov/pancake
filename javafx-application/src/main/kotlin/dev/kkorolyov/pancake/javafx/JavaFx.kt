@@ -27,6 +27,9 @@ import java.nio.file.Path
 import javafx.application.Application as FxApplication
 import javafx.scene.image.Image as FxImage
 
+// FIXME Make this dynamic
+private val unitPixels = Vector(64.0, 64.0, 1.0)
+
 // Shared singletons
 private val canvas: Canvas = Canvas()
 private val scene: Scene = Scene(Group(canvas))
@@ -111,7 +114,7 @@ class Runner : FxApplication() {
  * [RenderMedium] implemented through JavaFX.
  */
 class JavaFxRenderMedium : RenderMedium {
-	private val camera: Camera = Camera(Vector(), Vector(64.0, -64.0, 1.0), 0.0, 0.0)
+	private val camera: Camera = Camera(Vector(), Vector(unitPixels).scale(Vector(1.0, -1.0, 1.0)), 0.0, 0.0)
 	private val g: EnhancedGraphicsContext = EnhancedGraphicsContext(canvas.graphicsContext2D)
 	private val imageCache: (String) -> FxImage = memoize<String, FxImage> { FxImage(Path.of(it).toUri().toString()) }::apply
 
@@ -119,7 +122,7 @@ class JavaFxRenderMedium : RenderMedium {
 
 	override fun getImage(uri: String): Image = JavaFxImage(imageCache(uri), g)
 
-	override fun getBox(): Box = JavaFxBox(g)
+	override fun getBox(): Box = JavaFxBox(unitPixels, g)
 	override fun getText(): Text = JavaFxText(g)
 
 	override fun invoke(renderAction: Runnable) {

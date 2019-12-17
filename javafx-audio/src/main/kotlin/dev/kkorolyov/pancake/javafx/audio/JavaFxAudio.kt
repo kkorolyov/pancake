@@ -13,7 +13,10 @@ import javafx.scene.media.MediaPlayer
  * [Audio] implemented through JavaFx.
  */
 class JavaFxAudio(media: Media) : Audio {
-	private val player: MediaPlayer = MediaPlayer(media)
+	private val player: MediaPlayer = MediaPlayer(media).apply {
+		// Default behavior remains playing state
+		onEndOfMedia = Runnable { stop() }
+	}
 
 	override fun on(state: State, handler: Runnable) {
 		player.run {
@@ -21,7 +24,11 @@ class JavaFxAudio(media: Media) : Audio {
 				PLAY -> onPlaying = handler
 				PAUSE -> onPaused = handler
 				STOP -> onStopped = handler
-				END -> onEndOfMedia = handler
+				// Retain default stop functionality
+				END -> onEndOfMedia = Runnable {
+					stop()
+					handler.run()
+				}
 			}
 		}
 	}
