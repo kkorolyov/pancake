@@ -71,7 +71,7 @@ private val healthBarSize: Vector = Vector(1.0, 0.25)
 private val playerTransform = Transform(Vector(), randRotation())
 
 private val entities: EntityPool = EntityPool(events).apply {
-	val groundGraphic = Graphic(Sprite(CompositeRenderable(renderables.get("ground") as Image), Viewport(3, 2)))
+	val groundGraphic = Graphic((renderables.get("ground") as Image).apply { viewport = Viewport(3, 2) })
 	val boxGraphic = Graphic(renderables.get("box"))
 	val sphereGraphic = Graphic(renderables.get("sphere"))
 
@@ -139,16 +139,19 @@ private val entities: EntityPool = EntityPool(events).apply {
 						4.0,
 						.1,
 						WeightedDistribution<Supplier<Iterable<Component>>>().apply {
-							Supplier {
-								listOf(
-										Transform(Vector(1.0, 1.0), randRotation()),
-										Velocity(),
-										Force(OBJECT_MASS),
-										Damping(OBJECT_DAMPING),
-										Bounds(BOX, RADIUS),
-										sphereGraphic
-								)
-							}
+							add(
+									Supplier {
+										listOf(
+												Transform(Vector(1.0, 1.0), randRotation()),
+												Velocity(),
+												Force(OBJECT_MASS),
+												Damping(OBJECT_DAMPING),
+												Bounds(BOX, RADIUS),
+												sphereGraphic
+										)
+									},
+									1
+							)
 						}
 				).apply { isActive = false },
 				Animation(sprite),

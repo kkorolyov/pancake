@@ -78,8 +78,8 @@ public final class Viewport {
 		int partXY = partition % parts2d;
 
 		current.set(
-				partXY % partitions.getX(),
-				partXY / partitions.getX(),
+				(int) (partXY % partitions.getX()),
+				(int) (partXY / partitions.getX()),
 				partition / parts2d
 		);
 		return this;

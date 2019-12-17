@@ -36,7 +36,7 @@ class Sprite(
 		currentFrameTime += dt
 		if (currentFrameTime < Math.abs(frameInterval)) return
 
-		frame += Math.round((currentFrameTime / frameInterval).toDouble()).toInt()  // Reversed if negative
+		setFrame(frame + Math.round((currentFrameTime / frameInterval).toDouble()).toInt())  // Reversed if negative
 		currentFrameTime = 0
 	}
 
