@@ -7,7 +7,7 @@ import dev.kkorolyov.pancake.platform.media.graphic.shape.Box
 /**
  * [Box] implemented through JavaFX.
  */
-class JavaFxBox(private val unitPixels: Vector = Vector(64.0, 64.0, 1.0), private val g: EnhancedGraphicsContext) : Box() {
+class JavaFxBox(private val unitPixels: Vector, private val g: EnhancedGraphicsContext) : Box() {
 	private val finalSize: Vector = Vector()
 
 	override fun render(transform: RenderTransform) {
