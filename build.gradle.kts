@@ -1,7 +1,12 @@
 import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
 import dev.kkorolyov.FullDocExtension
 import org.gradle.api.JavaVersion.VERSION_11
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openjfx.gradle.JavaFXOptions
+
+tasks.wrapper {
+	distributionType = Wrapper.DistributionType.ALL
+}
 
 buildscript {
 	repositories {
@@ -16,10 +21,9 @@ plugins {
 	groovy
 	kotlin("jvm") version "1.3.41"
 	id("org.openjfx.javafxplugin") version "0.0.7"
-
+	id("org.javamodularity.moduleplugin") version "1.5.0"
 	`maven-publish`
 	id("com.jfrog.bintray") version "1.8.0"
-
 	id("nebula.dependency-lock") version "5.0.6"
 }
 apply(plugin = "dev.kkorolyov.full-doc")
@@ -38,9 +42,11 @@ configure<FullDocExtension> {
 
 java {
 	sourceCompatibility = VERSION_11
+	targetCompatibility = VERSION_11
 }
 
 subprojects {
+	apply(plugin = "org.javamodularity.moduleplugin")
 	apply(plugin = "nebula.dependency-lock")
 
 	group = "dev.kkorolyov"
@@ -52,12 +58,27 @@ subprojects {
 		maven(url = "https://dl.bintray.com/kkorolyov/java")  // SimpleTools
 		maven(url = "https://dl.bintray.com/kkorolyov/groovy")  // SimpleSpecs
 	}
+
+	tasks.register("refreshLock") {
+		dependsOn("generateLock", "saveLock")
+
+		group = "locking"
+		description = "Refreshes and updates dependency locks"
+	}
+
+	tasks.withType<KotlinCompile> {
+		kotlinOptions.jvmTarget = "11"
+	}
 }
 
 // Projects
 val platform: Project = project(":pancake-platform")
-val testUtils: Project = project(":pancake-test-utils")
 val core: Project = project(":pancake-core")
+val testUtils: Project = project(":pancake-test-utils")
+
+val javaFxApplication: Project = project(":javafx-application")
+val javaFxAudio: Project = project(":javafx-audio")
+
 val skillet: Project = project(":skillet")
 val killstreek: Project = project(":killstreek")
 
@@ -66,6 +87,8 @@ configure(
 		listOf(
 				platform,
 				core,
+				javaFxApplication,
+				javaFxAudio,
 				skillet,
 				killstreek
 		)
@@ -138,6 +161,8 @@ configure(
 configure(
 		listOf(
 				core,
+				javaFxApplication,
+				javaFxAudio,
 				skillet,
 				killstreek
 		)
@@ -154,8 +179,6 @@ configure(listOf(killstreek)) {
 }
 
 project(":pancake-platform") {
-	apply(plugin = "org.openjfx.javafxplugin")
-
 	description = "Main Pancake engine platform"
 
 	dependencies {
@@ -165,11 +188,9 @@ project(":pancake-platform") {
 		api("dev.kkorolyov:simple-funcs:1.+")
 		api("dev.kkorolyov:simple-structs:2.+")
 	}
-
-	configure<JavaFXOptions> {
-		version = "11.+"
-		modules = listOf("javafx.controls", "javafx.media")
-	}
+}
+project(":pancake-core") {
+	description = "Collection of general, reusable systems and components for the Pancake engine"
 }
 project(":pancake-test-utils") {
 	apply(plugin = "groovy")
@@ -189,14 +210,34 @@ project(":pancake-test-utils") {
 	}
 }
 
-project(":pancake-core") {
+project(":javafx-application") {
+	apply(plugin = "kotlin")
 	apply(plugin = "org.openjfx.javafxplugin")
 
-	description = "Collection of general, reusable systems and components for the Pancake engine"
+	description = "JavaFX Application and RenderMedium implementation"
+
+	dependencies {
+		implementation(kotlin("stdlib-jdk8"))
+	}
 
 	configure<JavaFXOptions> {
 		version = "11.+"
-		modules = listOf("javafx.graphics", "javafx.media")
+		modules = listOf("javafx.graphics")
+	}
+}
+project(":javafx-audio") {
+	apply(plugin = "kotlin")
+	apply(plugin = "org.openjfx.javafxplugin")
+
+	description = "JavaFX AudioFactory implementation"
+
+	dependencies {
+		implementation(kotlin("stdlib-jdk8"))
+	}
+
+	configure<JavaFXOptions> {
+		version = "11.+"
+		modules = listOf("javafx.media")
 	}
 }
 
@@ -225,32 +266,23 @@ project(":skillet") {
 project(":killstreek") {
 	apply(plugin = "kotlin")
 	apply(plugin = "application")
-	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "Top-down ARPG with dynamic RNG system"
 
 	dependencies {
 		implementation(kotlin("stdlib-jdk8"))
+		implementation(javaFxApplication)
+		implementation(javaFxAudio)
 	}
 
 	configure<JavaApplication> {
-		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.Launcher"
-
-		applicationDefaultJvmArgs = listOf("-Xmx2G", "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5006")
+		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.LauncherKt"
 	}
 
-	configure<JavaFXOptions> {
-		version = "11.+"
-		modules = listOf("javafx.media")
-	}
+	tasks.named<JavaExec>("run") {
+		dependsOn("installDist")
 
-	tasks.register<Exec>("exec") {
-		dependsOn("clean", "installDist")
-
+		// Launch along with resources
 		workingDir = tasks.named<Sync>("installDist").get().destinationDir
-		commandLine = listOf("sh", "bin/killstreek")
-
-		description = "Executes the distribution"
-		group = "distribution"
 	}
 }

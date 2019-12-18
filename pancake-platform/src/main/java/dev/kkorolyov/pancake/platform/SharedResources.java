@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.event.management.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 
 import java.util.Objects;

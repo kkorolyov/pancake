@@ -1,42 +1,33 @@
 package dev.kkorolyov.killstreek.media
 
-import dev.kkorolyov.pancake.platform.math.Vector
-import dev.kkorolyov.pancake.platform.media.CompositeImage
-import javafx.scene.canvas.GraphicsContext
-import javafx.scene.image.Image
+import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
+import dev.kkorolyov.pancake.platform.media.graphic.Image
+import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform
+import dev.kkorolyov.pancake.platform.media.graphic.Viewport
 
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 import static java.lang.Math.round
 
 class SpriteSpec extends Specification {
-	@Shared int xFrames = 5
-	@Shared int yFrames = 10
-	@Shared long frameInterval = 1
-	@Shared Vector orientationOffset = new Vector()
-	Collection<Image> layers = (1..4).collect { Mock(Image) }
-	CompositeImage image = Mock() {
-		getSize() >> new Vector(1, 1)
-		iterator() >> layers.iterator()
+	@Shared
+	Viewport viewport = new Viewport(5, 10)
+	@Shared
+	long frameInterval = 1
+	Image image = Mock()
+	CompositeRenderable<Image> sheets = new CompositeRenderable<>(image)
+	RenderTransform transform = new RenderTransform()
+
+	Sprite sprite = new Sprite(sheets, viewport, frameInterval)
+
+	def "renders sheets"() {
+		when:
+		sprite.render(transform)
+
+		then:
+		1 * image.render(transform)
 	}
-
-	GraphicsContext g = GroovyMock()
-	Vector position = randVector()
-
-	Sprite sprite = new Sprite(image, orientationOffset, xFrames, yFrames, frameInterval)
-
-	// Cannot mock final Java class
-//	def "renders all image layers"() {
-//		when:
-//		sprite.render(g, position)
-//
-//		then:
-//		layers.each {
-//			1 * g.drawImage(it, _, _, _, _, _, _, _, _)
-//		}
-//	}
 
 	def "steps 1 frame each frameInterval"() {
 		when:
@@ -46,19 +37,19 @@ class SpriteSpec extends Specification {
 		sprite.getFrame() == round(step / frameInterval)
 
 		where:
-		step << (frameInterval..<(frameInterval * xFrames * yFrames))
+		step << (frameInterval..<(frameInterval * viewport.length()))
 	}
 	def "negative frameInterval steps backwards"() {
-		sprite = new Sprite(image, orientationOffset, xFrames, yFrames, -frameInterval)
+		sprite = new Sprite(sheets, viewport, -frameInterval)
 
 		when:
 		sprite.tick(step)
 
 		then:
-		sprite.getFrame() == round(xFrames * yFrames - step / frameInterval)
+		sprite.length() + sprite.getFrame() == round(viewport.length() - step / frameInterval)
 
 		where:
-		step << (frameInterval..<(frameInterval * xFrames * yFrames))
+		step << (frameInterval..<(frameInterval * viewport.length()))
 	}
 
 	def "does not update if inactive"() {

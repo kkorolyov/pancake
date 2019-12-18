@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 import dev.kkorolyov.simplefiles.Providers;
 
@@ -14,7 +14,7 @@ import java.util.LinkedHashSet;
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public class GameEngine {
-	private final ManagedEventBroadcaster events;
+	private final EventBroadcaster.Managed events;
 	private final EntityPool entities;
 	private final PerformanceCounter performanceCounter = new PerformanceCounter();
 	private final Collection<GameSystem> systems = new LinkedHashSet<>();
@@ -23,13 +23,13 @@ public class GameEngine {
 	/**
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
-	public GameEngine(ManagedEventBroadcaster events, EntityPool entities) {
-		this(events, entities, Providers.fromDescriptor(GameSystem.class).findAll(system -> true));
+	public GameEngine(EventBroadcaster.Managed events, EntityPool entities) {
+		this(events, entities, Providers.fromDescriptor(GameSystem.class).stream()::iterator);
 	}
 	/**
-	 * @see #GameEngine(ManagedEventBroadcaster, EntityPool, Iterable)
+	 * @see #GameEngine(EventBroadcaster.Managed, EntityPool, Iterable)
 	 */
-	public GameEngine(ManagedEventBroadcaster events, EntityPool entities, GameSystem... systems) {
+	public GameEngine(EventBroadcaster.Managed events, EntityPool entities, GameSystem... systems) {
 		this(events, entities, Arrays.asList(systems));
 	}
 	/**
@@ -38,7 +38,7 @@ public class GameEngine {
 	 * @param entities attached entity pool
 	 * @param systems attached systems
 	 */
-	public GameEngine(ManagedEventBroadcaster events, EntityPool entities, Iterable<GameSystem> systems) {
+	public GameEngine(EventBroadcaster.Managed events, EntityPool entities, Iterable<GameSystem> systems) {
 		this.events = events;
 		this.entities = entities;
 		resources = new SharedResources(events, performanceCounter);

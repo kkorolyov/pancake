@@ -1,6 +1,10 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.application.Application;
+import dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
+import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.simplefiles.Files;
+import dev.kkorolyov.simplefiles.Providers;
 import dev.kkorolyov.simplefiles.stream.InStrategy;
 import dev.kkorolyov.simplefiles.stream.OutStrategy;
 import dev.kkorolyov.simplefiles.stream.StreamStrategies;
@@ -10,13 +14,19 @@ import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.function.Consumer;
 
 /**
  * Provides access to resources.
  */
 public final class Resources {
+	/** Service-loaded application executor */
+	public static final Application APPLICATION = Providers.fromDescriptor(Application.class).find().orElse(null);
+	/** Service-loaded audio factory */
+	public static final AudioFactory AUDIO_FACTORY = Providers.fromDescriptor(AudioFactory.class).find().orElse(null);
+	/** Service-loaded render medium */
+	public static final RenderMedium RENDER_MEDIUM = Providers.fromDescriptor(RenderMedium.class).find().orElse(null);
+
 	private static final InStrategy[] IN_STRATEGIES = {
 			StreamStrategies.IN_PATH,
 			StreamStrategies.IN_CLASSPATH
@@ -24,7 +34,7 @@ public final class Resources {
 	private static final OutStrategy[] OUT_STRATEGIES = {
 			StreamStrategies.OUT_PATH
 	};
-	private static final Logger log = Config.getLogger(Resources.class);
+	private static final Logger LOG = Config.getLogger(Resources.class);
 
 	private Resources() {}
 
@@ -81,23 +91,15 @@ public final class Resources {
 		Files.bytes(out(path), s.getBytes(StandardCharsets.UTF_8));
 	}
 
-	/**
-	 * @param path path to file
-	 * @return {@code path} as a file URI string
-	 */
-	public static String toFileUri(String path) {
-		return Paths.get(path).toUri().toString();
-	}
-
 	private static <T extends Closeable> T logRetrieval(String streamType, String path, T stream) {
 		logRetrieval(streamType, path, stream != null);
 
 		return stream;
 	}
 	private static boolean logRetrieval(String streamType, String path, boolean success) {
-		if (log != null) {	// TODO Can happen during the back-forth initialization of Resources and Config
-			if (success) log.debug("Retrieved {} stream at path: {}", streamType, path);
-			else log.warning("Unable to find {} stream at path: {}", streamType, path);
+		if (LOG != null) {	// FIXME Can happen during the back-forth initialization of Resources and Config
+			if (success) LOG.debug("Retrieved {} stream at path: {}", streamType, path);
+			else LOG.warning("Unable to find {} stream at path: {}", streamType, path);
 		}
 		return success;
 	}
