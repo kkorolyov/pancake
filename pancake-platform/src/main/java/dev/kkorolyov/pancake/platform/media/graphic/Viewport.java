@@ -67,7 +67,7 @@ public final class Viewport {
 	}
 
 	/**
-	 * Sets this viewport to {@code partition} index read left->right, top->bottom, nearest->furthest.
+	 * Sets this viewport to {@code partition} index read {@code left->right, top->bottom, nearest->furthest}.
 	 * @param partition index of partition to set to, constrained {@code [0, length()]}
 	 * @return {@code this}
 	 */

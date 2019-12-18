@@ -178,6 +178,26 @@ configure(listOf(killstreek)) {
 	}
 }
 
+// Kotlin
+configure(
+		listOf(
+				javaFxApplication,
+				javaFxAudio,
+				killstreek,
+				skillet
+		)
+) {
+	apply(plugin = "kotlin")
+
+	dependencies {
+		implementation(kotlin("stdlib-jdk8"))
+	}
+
+	tasks.withType<Javadoc> {
+		enabled = false
+	}
+}
+
 project(":pancake-platform") {
 	description = "Main Pancake engine platform"
 
@@ -211,14 +231,9 @@ project(":pancake-test-utils") {
 }
 
 project(":javafx-application") {
-	apply(plugin = "kotlin")
 	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "JavaFX Application and RenderMedium implementation"
-
-	dependencies {
-		implementation(kotlin("stdlib-jdk8"))
-	}
 
 	configure<JavaFXOptions> {
 		version = "11.+"
@@ -226,14 +241,9 @@ project(":javafx-application") {
 	}
 }
 project(":javafx-audio") {
-	apply(plugin = "kotlin")
 	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "JavaFX AudioFactory implementation"
-
-	dependencies {
-		implementation(kotlin("stdlib-jdk8"))
-	}
 
 	configure<JavaFXOptions> {
 		version = "11.+"
@@ -242,14 +252,12 @@ project(":javafx-audio") {
 }
 
 project(":skillet") {
-	apply(plugin = "kotlin")
 	apply(plugin = "application")
 	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "Standalone application for designing and exporting entities"
 
 	dependencies {
-		implementation(kotlin("stdlib-jdk8"))
 		implementation(kotlin("reflect"))
 	}
 
@@ -264,13 +272,11 @@ project(":skillet") {
 }
 
 project(":killstreek") {
-	apply(plugin = "kotlin")
 	apply(plugin = "application")
 
 	description = "Top-down ARPG with dynamic RNG system"
 
 	dependencies {
-		implementation(kotlin("stdlib-jdk8"))
 		implementation(javaFxApplication)
 		implementation(javaFxAudio)
 	}
