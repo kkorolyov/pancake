@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages
+name: Deploy
 
 on:
   push:
@@ -26,3 +26,6 @@ jobs:
           PUBLISH_DIR: ./build/docs
           PUBLISH_BRANCH: gh-pages
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+
+      - name: Bintray
+        run: ./gradlew bintray
