@@ -43,31 +43,6 @@ class ArmorSetSpec extends Specification {
 		armorSet.getArmor().containsAll(armor)
 	}
 
-	def "filters unbroken armor"() {
-		when:
-		unbrokenArmor.each {armorSet.equip(it)}
-
-		then:
-		Iterable<Armor> filtered = armorSet.getArmor(false)
-		filtered.size() == unbrokenArmor.size()
-		filtered.containsAll(unbrokenArmor)
-
-		expect:
-		armorSet.getArmor(true).size() == 0
-	}
-	def "filters broken armor"() {
-		when:
-		brokenArmor.each {armorSet.equip(it)}
-
-		then:
-		Iterable<Armor> filtered = armorSet.getArmor(true)
-		filtered.size() == brokenArmor.size()
-		filtered.containsAll(brokenArmor)
-
-		expect:
-		armorSet.getArmor(false).size() == 0
-	}
-
 	def "equipping new piece of an equipped type removes and returns previous such piece"() {
 		Armor oldArmor = new Armor(randString(), sprite, unbroken, randInt(), type)
 		Armor newArmor = new Armor(randString(), sprite, broken, randInt(), type)

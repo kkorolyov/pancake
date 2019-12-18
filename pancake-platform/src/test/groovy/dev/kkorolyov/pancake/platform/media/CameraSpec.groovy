@@ -10,8 +10,8 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 class CameraSpec extends Specification {
 	@Shared Vector position = new Vector()
 	@Shared Vector unitPixels = new Vector()
-	@Shared float width = 0
-	@Shared float height = 0
+	@Shared double width = 0
+	@Shared double height = 0
 
 	Camera camera = new Camera(position, unitPixels, width, height)
 

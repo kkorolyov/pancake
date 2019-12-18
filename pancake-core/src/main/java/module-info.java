@@ -1,9 +1,7 @@
 module dev.kkorolyov.pancake.core {
-	requires javafx.graphics;
-	requires javafx.media;
-
 	requires simple.funcs;
 	requires simple.logs;
+	requires simple.props;
 	requires simple.structs;
 
 	requires dev.kkorolyov.pancake.platform;
@@ -15,7 +13,8 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.event;
 	exports dev.kkorolyov.pancake.core.system;
 
-	exports dev.kkorolyov.pancake.core.serialization.string.action to simple.files;
+	// Make services visible to Providers
+	exports dev.kkorolyov.pancake.core.registry to simple.files;
 
 	provides dev.kkorolyov.pancake.platform.GameSystem with
 			dev.kkorolyov.pancake.core.system.ActionSystem,
@@ -29,7 +28,5 @@ module dev.kkorolyov.pancake.core {
 			dev.kkorolyov.pancake.core.system.AnimationSystem,
 			dev.kkorolyov.pancake.core.system.RenderSystem,
 			dev.kkorolyov.pancake.core.system.AudioSystem;
-	provides dev.kkorolyov.pancake.platform.serialization.string.action.ActionStringSerializer with
-			dev.kkorolyov.pancake.core.serialization.string.action.ForceActionSerializer,
-			dev.kkorolyov.pancake.core.serialization.string.action.TransformActionSerializer;
+	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource with dev.kkorolyov.pancake.core.registry.ActionResourceReaderFactory;
 }

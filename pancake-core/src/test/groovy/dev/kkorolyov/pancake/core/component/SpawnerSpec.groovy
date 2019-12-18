@@ -9,12 +9,12 @@ import spock.lang.Specification
 import java.util.function.Supplier
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
-import static dev.kkorolyov.simplespecs.SpecUtilities.randFloat
+import static dev.kkorolyov.simplespecs.SpecUtilities.randDouble 
 
 class SpawnerSpec extends Specification {
-	float minRadius = randFloat()
-	float maxRadius = randFloat() + minRadius
-	float interval = randFloat()
+	double minRadius = randDouble()
+	double maxRadius = randDouble() + minRadius
+	double interval = randDouble()
 	Vector origin = randVector()
 
 	Vector position = Spy(new Vector(1, 1, 1))
@@ -57,7 +57,7 @@ class SpawnerSpec extends Specification {
 
 	def "does nothing if interval not yet elapsed"() {
 		when:
-		def result = spawner.spawn(origin, (interval / 2) as float)
+		def result = spawner.spawn(origin, interval / 2)
 
 		then:
 		result == null

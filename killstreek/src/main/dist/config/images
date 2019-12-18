@@ -1,4 +1,0 @@
-player=assets/entities/swealor/leg-r.png, assets/entities/swealor/leg-l.png, assets/entities/swealor/arm-r.png, assets/entities/swealor/arm-l.png, assets/entities/swealor/torso.png, assets/entities/swealor/head.png
-sphere=assets/entities/scrumple.png
-box=assets/entities/sqlob.png
-ground=assets/tiles/cobble.png

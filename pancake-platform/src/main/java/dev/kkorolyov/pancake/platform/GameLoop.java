@@ -4,19 +4,17 @@ package dev.kkorolyov.pancake.platform;
  * Main game loop.
  */
 public class GameLoop {
-	private static final long DEFAULT_TICK_GRANULARITY = (long) (1e9 / 144);
-
 	private final GameEngine engine;
 	private final long dt;
 
 	private volatile boolean active;
 
 	/**
-	 * Constructs a new game loop with default tick granularity.
+	 * Constructs a new game loop with tick granularity specified in platform {@link Config#config()}.
 	 * @param engine game engine receiving updates
 	 */
 	public GameLoop(GameEngine engine) {
-		this(engine, DEFAULT_TICK_GRANULARITY);
+		this(engine, (long) (1e9 / Integer.parseInt(Config.config().get("tps"))));
 	}
 	/**
 	 * Constructs a new game loop.

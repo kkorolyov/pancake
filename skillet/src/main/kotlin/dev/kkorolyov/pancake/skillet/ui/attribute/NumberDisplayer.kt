@@ -18,10 +18,10 @@ object NumberDisplayer : Displayer<BigDecimal>(BigDecimal::class) {
 
 	override fun display(attribute: MutableEntry<String, BigDecimal>): Node =
 			simpleDisplay(attribute.key,
-					Spinner<Double>(-Float.MAX_VALUE.toDouble(), Float.MAX_VALUE.toDouble(), attribute.value.toDouble(), .1).apply {
+					Spinner<Double>(-Double.MAX_VALUE, Double.MAX_VALUE, attribute.value.toDouble(), .1).apply {
 						patterns(SEMI_NUMBER_PATTERN, NUMBER_PATTERN)
 						press(10, 1)
-						valueProperty().addListener {_, _, newValue ->
+						valueProperty().addListener { _, _, newValue ->
 							attribute.setValue(BigDecimal(newValue))
 						}
 					})

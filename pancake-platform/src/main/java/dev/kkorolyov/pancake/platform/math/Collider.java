@@ -27,12 +27,12 @@ public class Collider {
 		xTemp2.set(origin2);
 		xTemp2.sub(size2, .5f);
 
-		float xOverlap = overlap(xTemp1.getX(), xTemp1.getX() + size1.getX(), xTemp2.getX(), xTemp2.getX() + size2.getX());
-		float yOverlap = overlap(xTemp1.getY(), xTemp1.getY() + size1.getY(), xTemp2.getY(), xTemp2.getY() + size2.getY());
-		float zOverlap = overlap(xTemp1.getZ(), xTemp1.getZ() + size1.getZ(), xTemp2.getZ(), xTemp2.getZ() + size2.getZ());
+		double xOverlap = overlap(xTemp1.getX(), xTemp1.getX() + size1.getX(), xTemp2.getX(), xTemp2.getX() + size2.getX());
+		double yOverlap = overlap(xTemp1.getY(), xTemp1.getY() + size1.getY(), xTemp2.getY(), xTemp2.getY() + size2.getY());
+		double zOverlap = overlap(xTemp1.getZ(), xTemp1.getZ() + size1.getZ(), xTemp2.getZ(), xTemp2.getZ() + size2.getZ());
 
 		if (xOverlap != 0 && yOverlap != 0 && zOverlap != 0) {
-			float xDiff = Math.abs(xOverlap), yDiff = Math.abs(yOverlap), zDiff = Math.abs(zOverlap);
+			double xDiff = Math.abs(xOverlap), yDiff = Math.abs(yOverlap), zDiff = Math.abs(zOverlap);
 
 			if (xDiff <= yDiff && xDiff <= zDiff) mtv.set(xOverlap, 0, 0);
 			else if (yDiff <= xDiff && yDiff <= zDiff) mtv.set(0, yOverlap, 0);
@@ -43,8 +43,8 @@ public class Collider {
 			return null;
 		}
 	}
-	private static float overlap(float x1, float x2, float y1, float y2) {	// SAT
-		if (x1 == x2 && x1 == y1 && x1 == y2) return Float.MAX_VALUE;
+	private static double overlap(double x1, double x2, double y1, double y2) {	// SAT
+		if (x1 == x2 && x1 == y1 && x1 == y2) return Double.MAX_VALUE;
 
 		return (x2 >= y1 && y2 >= x1)
 					 ? (x2 < y2) ? y1 - x2 : y2 - x1	// Negative if 1st line overlaps from left, positive if from right
@@ -59,11 +59,11 @@ public class Collider {
 	 * @param radius2 radius of 2nd sphere
 	 * @return minimum translation vector to apply to first sphere to resolve intersection, or {@code null} if no intersection
 	 */
-	public static Vector intersection(Vector origin1, float radius1, Vector origin2, float radius2) {
+	public static Vector intersection(Vector origin1, double radius1, Vector origin2, double radius2) {
 		mtv.set(origin2);
 		mtv.sub(origin1);	// Vector from origin1 to origin2
 
-		float overlap = mtv.getMagnitude() - (radius1 + radius2);
+		double overlap = mtv.getMagnitude() - (radius1 + radius2);
 
 		if (overlap < 0) {
 			mtv.normalize();	// Retain only direction
@@ -82,7 +82,7 @@ public class Collider {
 	 * @param radius2 radius of 2nd object (sphere)
 	 * @return minimum translation vector to apply to first object to resolve intersection, or {@code null} if no intersection
 	 */
-	public static Vector intersection(Vector origin1, Vector size1, Vector origin2, float radius2) {
+	public static Vector intersection(Vector origin1, Vector size1, Vector origin2, double radius2) {
 		// TODO
 		return null;
 	}
@@ -96,22 +96,22 @@ public class Collider {
 	 * @param velocity2 velocity of 2nd object
 	 * @param mass2 mass of 2nd object
 	 */
-	public static void elasticCollide(Vector origin1, Vector velocity1, float mass1, Vector origin2, Vector velocity2, float mass2) {
+	public static void elasticCollide(Vector origin1, Vector velocity1, double mass1, Vector origin2, Vector velocity2, double mass2) {
 		vTemp.set(velocity1);
 
 		applyElastic(origin1, velocity1, mass1, origin2, velocity2, mass2);
 		applyElastic(origin2, velocity2, mass2, origin1, vTemp, mass2);
 	}
 	// v1' = v1 - 2(m2)/(m1 + m2) * ((v1 - v2) * (x1 - x2))/(||x1 - x2||^2) * (x1 - x2)
-	private static void applyElastic(Vector origin1, Vector velocity1, float mass1, Vector origin2, Vector velocity2, float mass2) {
+	private static void applyElastic(Vector origin1, Vector velocity1, double mass1, Vector origin2, Vector velocity2, double mass2) {
 		vDiff.set(velocity1);
 		vDiff.sub(velocity2);
 
 		xDiff.set(origin1);
 		xDiff.sub(origin2);
 
-		float dotNumerator = vDiff.dot(xDiff);
-		float dotDenominator = xDiff.dot(xDiff);
+		double dotNumerator = vDiff.dot(xDiff);
+		double dotDenominator = xDiff.dot(xDiff);
 
 		xDiff.scale(((2 * mass2) / (mass1 + mass2)) * (dotNumerator / dotDenominator));
 

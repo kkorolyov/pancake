@@ -9,8 +9,8 @@ import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOptio
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
 class MultiStageActionSpec extends Specification {
-	@Shared float holdThreshold = 0
-	@Shared float dt = 0
+	@Shared long holdThreshold = 0
+	@Shared long dt = 0
 	@Shared Entity entity = Mock()
 
 	Action start = Mock()
@@ -114,8 +114,8 @@ class MultiStageActionSpec extends Specification {
 	}
 
 	def "{ACTIVATE, ACTIVATE(before holdThreshold)} -> start, none"() {
-		float holdThreshold = 1
-		float dt = holdThreshold - 0.1
+		long holdThreshold = 10
+		long dt = holdThreshold - 1
 		action = new MultiStageAction(start, hold, end, holdThreshold)
 
 		when:

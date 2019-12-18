@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
-import dev.kkorolyov.pancake.platform.event.management.ManagedEventBroadcaster
+import dev.kkorolyov.pancake.platform.event.EventBroadcaster
 import dev.kkorolyov.pancake.platform.utility.Limiter
 
 import spock.lang.Specification
@@ -15,7 +15,7 @@ import static dev.kkorolyov.simplespecs.SpecUtilities.randLong
 class GameEngineSpec extends Specification {
 	long dt = randLong()
 	Signature signature = new Signature(MockComponent)
-	ManagedEventBroadcaster events = Mock()
+	EventBroadcaster.Managed events = Mock()
 
 	EntityPool entities = new EntityPool(events)
 	Entity entity = entities.create()

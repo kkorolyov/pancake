@@ -33,7 +33,7 @@ public class AutoSerializer<I, O, P extends Serializer<I, O>> implements Seriali
 	 */
 	public AutoSerializer(Class<P> providerType, Object... parameters) {
 		this.providerType = providerType;
-		this.providerParameters = parameters;
+		providerParameters = parameters;
 		exceptionGenerator = out -> new UnsupportedOperationException("No " + providerType.getSimpleName() + " accepts: " + out);
 	}
 

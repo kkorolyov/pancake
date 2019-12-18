@@ -18,7 +18,7 @@ public class Camera {
 	 * @param width render medium width
 	 * @param height render medium height
 	 */
-	public Camera(Vector position, Vector unitPixels, float width, float height) {
+	public Camera(Vector position, Vector unitPixels, double width, double height) {
 		setPosition(position);
 		setUnitPixels(unitPixels);
 		setSize(width, height);
@@ -75,7 +75,7 @@ public class Camera {
 	 * @param width render medium width
 	 * @param height render medium height
 	 */
-	public void setSize(float width, float height) {
+	public void setSize(double width, double height) {
 		halfSize.set(width, height);
 		halfSize.scale(.5f);
 	}

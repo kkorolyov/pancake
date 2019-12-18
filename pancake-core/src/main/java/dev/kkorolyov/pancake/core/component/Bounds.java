@@ -21,20 +21,20 @@ public class Bounds implements Component {
 	public static final int SPHERE_BOX = 3;
 
 	private Vector box;
-	private float radius;
+	private double radius;
 
 	/**
 	 * Constructs new bounds defined solely by a box.
-	 * @see #Bounds(Vector, Float)
+	 * @see #Bounds(Vector, Double)
 	 */
 	public Bounds(Vector box) {
 		this(box, null);
 	}
 	/**
 	 * Constructs new bounds defined solely by a sphere.
-	 * @see #Bounds(Vector, Float)
+	 * @see #Bounds(Vector, Double)
 	 */
-	public Bounds(Float radius) {
+	public Bounds(Double radius) {
 		this(null, radius);
 	}
 	/**
@@ -43,7 +43,7 @@ public class Bounds implements Component {
 	 * @param radius sphere radius
 	 * @throws IllegalStateException if both {@code box} and {@code radius} are {@code null}
 	 */
-	public Bounds(Vector box, Float radius) {
+	public Bounds(Vector box, Double radius) {
 		this.box = box;
 		this.radius = (radius != null) ? radius : 0;
 
@@ -89,7 +89,7 @@ public class Bounds implements Component {
 	}
 
 	/** @return sphere radius, or a value {@code <= 0} if not set */
-	public float getRadius() {
+	public double getRadius() {
 		return radius;
 	}
 	/**
@@ -97,7 +97,7 @@ public class Bounds implements Component {
 	 * @return {@code this}
 	 * @throws IllegalStateException if both {@code box} and {@code radius} of this instance are {@code null}
 	 */
-	public Bounds setRadius(Float radius) {
+	public Bounds setRadius(Double radius) {
 		this.radius = (radius != null) ? radius : 0;
 		verifyDefined();
 

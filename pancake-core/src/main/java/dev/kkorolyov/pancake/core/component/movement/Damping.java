@@ -15,7 +15,7 @@ public class Damping implements Component {
 	 * Constructs a new damping component with equal damping across all axes.
 	 * @param damping damping along all axes
 	 */
-	public Damping(float damping) {
+	public Damping(double damping) {
 		this.damping = new BoundedVector(Vector.all(damping), Vector.all(0), Vector.all(1));
 	}
 	
@@ -32,7 +32,7 @@ public class Damping implements Component {
 				velocity.getZ() * damp(velocity.getZ(), force.getZ(), damping.getZ()));
 		return velocity;
 	}
-	private static float damp(float velocity, float force, float damping) {
+	private static double damp(double velocity, double force, double damping) {
 		return (velocity < 0 ? force >= 0 : force <= 0) ? damping : 1;
 	}
 	
