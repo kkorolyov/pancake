@@ -1,0 +1,120 @@
+@startuml
+
+class AveragedValue {
+	-samples: long[]
+	-value: long
+	-counter: int
+	__
+	+AveragedValue(samples: int)
+	--
+	+add(sample: long)
+	..
+	+getValue(): long
+	+getSamples(): int
+	+setSamples(samples: int): AveragedValue
+}
+
+class BoundedValue<T extends Comparable<T>> {
+	-value: T
+	-minimum: T
+	-maximum: T
+	__
+	+BoundedValue(minimum: T, maximum:T, value: T)
+	--
+	+get(): T
+	+set(value: T): BoundedValue<T>
+	..
+	+getMinimum(): T
+	+setMinimum(minimum: T): BoundedValue<T>
+	..
+	+getMaxmimum(): T
+	+setMaximum(maximum: T): BoundedValue<T>
+}
+
+class Vector {
+	-x: float
+	-y: float
+	-z: float
+	__
+	+Vector()
+	+Vector(x, y)
+	+Vector(x, y, z)
+	+Vector(original: Vector)
+	--
+	{static} +all(value: float): Vector
+	..
+	{static} +add([Vector]): Vector
+	{static} +sub([Vector]): Vector
+	..
+	+translate(dx: float, dy: float): Vector
+	+translate(dx: float, dy: float, dz: float): Vector
+	..
+	+scale(value: float): Vector
+	+scale(other: Vector): Vector
+	+invScale(other: Vector): Vector
+	..
+	+add(other: Vector): Vector
+	+add(other: Vector, scale: float): Vector
+	+sub(other: Vector): Vector
+	+sub(other: Vector, scale: float): Vector
+	..
+	+dot(other: Vector): float
+	+project(other: Vector): Vector
+	..
+	+distance(other: Vector): float
+	+angle(other: Vector): float
+	..
+	+normalize(other: Vector): Vector
+	..
+	+getMagnitude(): float
+	+getDirection(): Vector
+	..
+	+getTheta(): float
+	+getPhi(): float
+	..
+	+set(x: float, y: float): Vector
+	+set(x: float,  y: float, z: float): Vector
+	+set(match: Vector): Vector
+}
+Vector <|-- BoundedVector
+
+class BoundedVector {
+	-min: Vector
+	-max: Vector
+	__
+	+BoundedVector(Vector, min: Vector, max: Vector)
+	--
+	+setX(x: float): Vector
+	+setY(y: float): Vector
+	+setZ(z: float): Vector
+}
+
+class Collider {
+	{static} -mtv: Vector
+	..
+	{static} -xTemp1: Vector
+	{static} -xTemp2: Vector
+	{static} -vTemp: Vector
+	{static} -vDiff: Vector
+	{static} -XDiff: Vector
+	__
+	{static} +intersection(origin1: Vector, size1: Vector, origin2: Vector, size2: Vector): Vector
+	{static} -overlap(x1: float, x2: float, y1: float, y2: float): float
+	{static} +intersection(origin1: Vector, radius1: float, origin2: Vector, radius2: float): Vector
+	{static} +intersection(origin1: Vector, size1: Vector, origin2: Vector, radius2: float): Vector
+	..
+	{static} +elasticCollide(origin1: Vector, velocity1: Vector, mass1: float, origin2: Vector, velocity2: Vector, mass2: float)
+	{static} -applyElastic(origin1: Vector, velocity1: Vector, mass1: float, origin2: Vector, velocity2: Vector, mass2: float)
+}
+Collider --> Vector
+
+class WeightedDistribution<T> {
+	-distribution: {Integer, T}
+	-total: int
+	-rand: Random
+	__
+	+add(weight: int, value: T): WeightedDistribution<T>
+	+get(): T
+}
+
+@enduml

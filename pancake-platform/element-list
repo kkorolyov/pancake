@@ -1,0 +1,17 @@
+module:dev.kkorolyov.pancake.platform
+dev.kkorolyov.pancake.platform
+dev.kkorolyov.pancake.platform.action
+dev.kkorolyov.pancake.platform.application
+dev.kkorolyov.pancake.platform.entity
+dev.kkorolyov.pancake.platform.event
+dev.kkorolyov.pancake.platform.math
+dev.kkorolyov.pancake.platform.media
+dev.kkorolyov.pancake.platform.media.audio
+dev.kkorolyov.pancake.platform.media.graphic
+dev.kkorolyov.pancake.platform.media.graphic.shape
+dev.kkorolyov.pancake.platform.registry
+dev.kkorolyov.pancake.platform.registry.internal
+dev.kkorolyov.pancake.platform.serialization
+dev.kkorolyov.pancake.platform.serialization.string
+dev.kkorolyov.pancake.platform.serialization.string.entity
+dev.kkorolyov.pancake.platform.utility

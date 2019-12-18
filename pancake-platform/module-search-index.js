@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"dev.kkorolyov.pancake.platform"}]
