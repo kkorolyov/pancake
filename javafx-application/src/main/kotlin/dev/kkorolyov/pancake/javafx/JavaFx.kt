@@ -114,6 +114,7 @@ class Runner : FxApplication() {
  * [RenderMedium] implemented through JavaFX.
  */
 class JavaFxRenderMedium : RenderMedium {
+	// FIXME Decouple camera
 	private val camera: Camera = Camera(Vector(), Vector(unitPixels).scale(Vector(1.0, -1.0, 1.0)), 0.0, 0.0)
 	private val g: EnhancedGraphicsContext = EnhancedGraphicsContext(canvas.graphicsContext2D)
 	private val imageCache: (String) -> FxImage = memoize<String, FxImage> { FxImage(Path.of(it).toUri().toString()) }::apply
