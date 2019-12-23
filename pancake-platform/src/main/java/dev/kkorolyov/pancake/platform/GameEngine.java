@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.utility.DebugRenderer;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 import dev.kkorolyov.simplefiles.Providers;
 
@@ -19,6 +20,8 @@ public class GameEngine {
 	private final PerformanceCounter performanceCounter = new PerformanceCounter();
 	private final Collection<GameSystem> systems = new LinkedHashSet<>();
 	private final SharedResources resources;
+
+	private final DebugRenderer debugRenderer = new DebugRenderer();
 
 	/**
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
@@ -74,6 +77,8 @@ public class GameEngine {
 			}
 		}
 		performanceCounter.tick();
+
+		debugRenderer.render(performanceCounter);
 	}
 
 	/** @param system system to add */
