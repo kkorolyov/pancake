@@ -27,4 +27,9 @@ public interface RenderMedium {
 	 * @param renderAction render action to invoke
 	 */
 	void invoke(Runnable renderAction);
+	/**
+	 * Like {@link #invoke(Runnable)}, but fully clears the previous state of the render medium first.
+	 * @see #invoke(Runnable)
+	 */
+	void clearInvoke(Runnable renderAction);
 }

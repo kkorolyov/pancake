@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Maintains performance counts.
  */
+// TODO Remove from shared system resources
 public class PerformanceCounter {
 	private static final Logger log = Config.getLogger(PerformanceCounter.class);
 
