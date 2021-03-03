@@ -9,3 +9,5 @@ include("javafx-audio")
 
 include("skillet")
 include("killstreek")
+
+enableFeaturePreview("ONE_LOCKFILE_PER_PROJECT")

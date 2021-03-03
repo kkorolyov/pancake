@@ -1,6 +1,4 @@
-import com.jfrog.bintray.gradle.BintrayExtension.PackageConfig
-import dev.kkorolyov.FullDocExtension
-import org.gradle.api.JavaVersion.VERSION_11
+import org.gradle.api.JavaVersion.VERSION_14
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openjfx.gradle.JavaFXOptions
 
@@ -8,66 +6,66 @@ tasks.wrapper {
 	distributionType = Wrapper.DistributionType.ALL
 }
 
-buildscript {
-	repositories {
-		maven(url = "https://dl.bintray.com/kkorolyov/groovy")  // FullDoc
-	}
-	dependencies {
-		classpath("dev.kkorolyov:full-doc:1.+")
-	}
-}
 plugins {
 	`java-library`
 	groovy
-	kotlin("jvm") version "1.3.41"
-	id("org.openjfx.javafxplugin") version "0.0.7"
-	id("org.javamodularity.moduleplugin") version "1.5.0"
+	kotlin("jvm") version "1.4.31"
+	id("org.jetbrains.dokka") version "1.4.20"
+	id("org.openjfx.javafxplugin") version "0.0.9"
 	`maven-publish`
-	id("com.jfrog.bintray") version "1.8.0"
-	id("nebula.dependency-lock") version "5.0.6"
 }
-apply(plugin = "dev.kkorolyov.full-doc")
 
 description = "Extensible Java game engine with an entity-component-system architecture"
 
-// For kotlin gradle plugin
+// For kotlin gradle plugins
 repositories {
 	jcenter()
 }
 
-configure<FullDocExtension> {
-	src = "docs"
-	out = "${project.buildDir}/docs"
+tasks.withType<DependencyReportTask> {
+	group = "help"
+	description = "List dependencies of all projects"
+	dependsOn(subprojects.map { it.tasks.withType<DependencyReportTask>() })
 }
 
-java {
-	sourceCompatibility = VERSION_11
-	targetCompatibility = VERSION_11
+tasks.register("docs") {
+	group = "documentation"
+	description = "Bundles all subproject documentation together"
+
+	val destination = "${project.buildDir}/docs"
+	val subDocs = subprojects.map {
+		it.tasks.withType<Javadoc>() + it.tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>()
+			.filter { it.name == "dokkaHtml" }
+	}.flatten()
+
+	dependsOn(subDocs)
+	doFirst {
+		copy {
+			from("docs")
+			into(destination)
+		}
+
+		subDocs.forEach {
+			copy {
+				from(it)
+				into("$destination/${it.project.name}")
+			}
+		}
+	}
 }
 
 subprojects {
-	apply(plugin = "org.javamodularity.moduleplugin")
-	apply(plugin = "nebula.dependency-lock")
-
 	group = "dev.kkorolyov"
-	version = "0.1"
+	version = "0.1-SNAPSHOT"
 
 	repositories {
-		mavenLocal()  // FIXME For early dev only
 		jcenter()  // Most things
 		maven(url = "https://dl.bintray.com/kkorolyov/java")  // SimpleTools
 		maven(url = "https://dl.bintray.com/kkorolyov/groovy")  // SimpleSpecs
 	}
 
-	tasks.register("refreshLock") {
-		dependsOn("generateLock", "saveLock")
-
-		group = "locking"
-		description = "Refreshes and updates dependency locks"
-	}
-
-	tasks.withType<KotlinCompile> {
-		kotlinOptions.jvmTarget = "11"
+	dependencyLocking {
+		lockAllConfigurations()
 	}
 }
 
@@ -84,88 +82,79 @@ val killstreek: Project = project(":killstreek")
 
 // Testable
 configure(
-		listOf(
-				platform,
-				core,
-				javaFxApplication,
-				javaFxAudio,
-				skillet,
-				killstreek
-		)
+	listOf(
+		platform,
+		core,
+		javaFxApplication,
+		javaFxAudio,
+		skillet,
+		killstreek
+	)
 ) {
 	apply(plugin = "groovy")
 
 	dependencies {
-		testImplementation("org.spockframework:spock-core:1.3-groovy-2.+")
-		testImplementation("cglib:cglib-nodep:3.+")
-		testImplementation("org.objenesis:objenesis:1.+")
-		testImplementation("dev.kkorolyov:simple-specs:1.+")
+		val spockVersion: String by project
+		val byteBuddyVersion: String by project
+		val specsVersion: String by project
+
+		testImplementation("org.spockframework:spock-core:$spockVersion")
+		testImplementation("net.bytebuddy:byte-buddy:$byteBuddyVersion")
+		testImplementation("dev.kkorolyov:simple-specs:$specsVersion")
 		testImplementation(testUtils)
 	}
 }
 
 // Libraries
 configure(
-		listOf(
-				platform,
-				core
-		)
+	listOf(
+		platform,
+		core
+	)
 ) {
 	apply(plugin = "java-library")
 	apply(plugin = "maven-publish")
-	apply(plugin = "com.jfrog.bintray")
+	// TODO Replace with native "inferModulePath" when simple deps declare explicit module names
+	apply(plugin = "org.javamodularity.moduleplugin")
 
-	// Artifacts
-	tasks.register<Jar>("sourceJar") {
-		archiveClassifier.set("source")
-		from(sourceSets.main.get().allJava)
-	}
-	tasks.register<Jar>("javadocJar") {
-		archiveClassifier.set("javadoc")
-		from(tasks.javadoc.get().destinationDir)
+	java {
+		sourceCompatibility = VERSION_14
+		targetCompatibility = VERSION_14
+
+		withSourcesJar()
+		withJavadocJar()
+
 	}
 
-	// Maven publish
 	publishing {
 		publications {
-			create<MavenPublication>("pancake") {
+			create<MavenPublication>("mvn") {
 				from(components["java"])
-
-				artifact(tasks["sourceJar"])
-				artifact(tasks["javadocJar"])
 			}
 		}
-	}
-	// Bintray upload
-	afterEvaluate {
-		bintray {
-			user = project.findProperty("bintrayUser") as? String
-			key = project.findProperty("bintrayKey") as? String
 
-			setPublications("pancake")
-			publish = true
-			override = true
-
-			pkg(delegateClosureOf<PackageConfig> {
-				repo = "java"
-				name = this@configure.name
-				setLicenses("BSD 3-Clause")
-				vcsUrl = "https://github.com/kkorolyov/Pancake.git"
-				setVersion(this@configure.version)
-			})
+		repositories {
+			maven {
+				name = "GitHubPackages"
+				url = uri("https://maven.pkg.github.com/kkorolyov/pancake")
+				credentials {
+					username = System.getenv("GITHUB_ACTOR")
+					password = System.getenv("GITHUB_TOKEN")
+				}
+			}
 		}
 	}
 }
 
 // Platform-reliant
 configure(
-		listOf(
-				core,
-				javaFxApplication,
-				javaFxAudio,
-				skillet,
-				killstreek
-		)
+	listOf(
+		core,
+		javaFxApplication,
+		javaFxAudio,
+		skillet,
+		killstreek
+	)
 ) {
 	dependencies {
 		implementation(platform)
@@ -180,17 +169,22 @@ configure(listOf(killstreek)) {
 
 // Kotlin
 configure(
-		listOf(
-				javaFxApplication,
-				javaFxAudio,
-				killstreek,
-				skillet
-		)
+	listOf(
+		javaFxApplication,
+		javaFxAudio,
+		killstreek,
+		skillet
+	)
 ) {
 	apply(plugin = "kotlin")
+	apply(plugin = "org.jetbrains.dokka")
+	// TODO Replace with native "inferModulePath" when simple deps declare explicit module names
+	apply(plugin = "org.javamodularity.moduleplugin")
 
-	dependencies {
-		implementation(kotlin("stdlib-jdk8"))
+	tasks.withType<KotlinCompile> {
+		kotlinOptions {
+			jvmTarget = "14"
+		}
 	}
 
 	tasks.withType<Javadoc> {
@@ -202,11 +196,17 @@ project(":pancake-platform") {
 	description = "Main Pancake engine platform"
 
 	dependencies {
+		val propsVersion: String by project
+		val filesVersion: String by project
+		val funcsVersion: String by project
+		val structsVersion: String by project
+
+		// TODO Use slf4j
 		api("dev.kkorolyov:simple-logs:3.+")
-		api("dev.kkorolyov:simple-props:4.+")
-		api("dev.kkorolyov:simple-files:1.+")
-		api("dev.kkorolyov:simple-funcs:1.+")
-		api("dev.kkorolyov:simple-structs:2.+")
+		api("dev.kkorolyov:simple-props:$propsVersion")
+		api("dev.kkorolyov:simple-files:$filesVersion")
+		api("dev.kkorolyov:simple-funcs:$funcsVersion")
+		api("dev.kkorolyov:simple-structs:$structsVersion")
 	}
 }
 project(":pancake-core") {
@@ -219,13 +219,16 @@ project(":pancake-test-utils") {
 	description = "Test utilities"
 
 	dependencies {
-		implementation("org.spockframework:spock-core:1.1-groovy-2.+")
-		implementation("dev.kkorolyov:simple-specs:1.+")
+		val spockVersion: String by project
+		val specsVersion: String by project
+
+		implementation("org.spockframework:spock-core:$spockVersion")
+		implementation("dev.kkorolyov:simple-specs:$specsVersion")
 		implementation(platform)
 	}
 
 	configure<JavaFXOptions> {
-		version = "11.+"
+		version = "15.+"
 		modules = listOf("javafx.controls")
 	}
 }
@@ -236,7 +239,7 @@ project(":javafx-application") {
 	description = "JavaFX Application and RenderMedium implementation"
 
 	configure<JavaFXOptions> {
-		version = "11.+"
+		version = "15.+"
 		modules = listOf("javafx.graphics")
 	}
 }
@@ -246,7 +249,7 @@ project(":javafx-audio") {
 	description = "JavaFX AudioFactory implementation"
 
 	configure<JavaFXOptions> {
-		version = "11.+"
+		version = "15.+"
 		modules = listOf("javafx.media")
 	}
 }
@@ -262,11 +265,11 @@ project(":skillet") {
 	}
 
 	configure<JavaApplication> {
-		mainClassName = "dev.kkorolyov.pancake.skillet.Skillet"
+		mainClass.set("dev.kkorolyov.pancake.skillet.Skillet")
 	}
 
 	configure<JavaFXOptions> {
-		version = "11.+"
+		version = "15.+"
 		modules = listOf("javafx.controls")
 	}
 }
@@ -282,7 +285,7 @@ project(":killstreek") {
 	}
 
 	configure<JavaApplication> {
-		mainClassName = "dev.kkorolyov.killstreek/dev.kkorolyov.killstreek.LauncherKt"
+		mainClass.set("dev.kkorolyov.killstreek.LauncherKt")
 	}
 
 	tasks.named<JavaExec>("run") {

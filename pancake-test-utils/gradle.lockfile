@@ -1,0 +1,29 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+cglib:cglib-nodep:3.3.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:simple-files:1.3.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:simple-funcs:1.6=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:simple-logs:3.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:simple-props:4.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:simple-specs:1.0.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:simple-structs:2.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+net.bytebuddy:byte-buddy:1.10.16=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.apiguardian:apiguardian-api:1.1.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.assertj:assertj-core:3.16.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.codehaus.groovy:groovy:3.0.6=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.hamcrest:hamcrest:2.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.jetbrains:annotations:19.0.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-commons:1.7.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-engine:1.7.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-launcher:1.7.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-testkit:1.7.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit:junit-bom:5.7.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.objenesis:objenesis:3.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.openjfx:javafx-base:15.0.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.openjfx:javafx-controls:15.0.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.openjfx:javafx-graphics:15.0.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.opentest4j:opentest4j:1.2.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.ow2.asm:asm:9.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.spockframework:spock-core:2.0-M4-groovy-3.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+empty=annotationProcessor,testAnnotationProcessor
