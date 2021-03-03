@@ -1,0 +1,30 @@
+name: Gradle Build
+
+on: push
+
+jobs:
+  verify:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        version: [ 14 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.version }}
+
+      - name: Cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle.kts') }}
+
+      - name: Build
+        run: ./gradlew build
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
