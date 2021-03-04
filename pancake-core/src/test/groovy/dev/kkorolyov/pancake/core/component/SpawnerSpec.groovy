@@ -1,15 +1,15 @@
 package dev.kkorolyov.pancake.core.component
 
+import dev.kkorolyov.flopple.data.WeightedDistribution
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector
-import dev.kkorolyov.simplestructs.WeightedDistribution
 
 import spock.lang.Specification
 
 import java.util.function.Supplier
 
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randDouble
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
-import static dev.kkorolyov.simplespecs.SpecUtilities.randDouble 
 
 class SpawnerSpec extends Specification {
 	double minRadius = randDouble()
@@ -18,15 +18,9 @@ class SpawnerSpec extends Specification {
 	Vector origin = randVector()
 
 	Vector position = Spy(new Vector(1, 1, 1))
-	Transform transform = Mock() {
-		getPosition() >> position
-	}
-	Supplier<Iterable<Component>> templateSupplier = Mock() {
-		get() >> [transform]
-	}
-	WeightedDistribution<Supplier<Iterable<Component>>> templates = Mock() {
-		get() >> templateSupplier
-	}
+	Transform transform = new Transform(position)
+	WeightedDistribution<Supplier<Iterable<Component>>> templates = new WeightedDistribution()
+			.add({ [transform] } as Supplier, 1)
 
 	Spawner spawner = new Spawner(minRadius, maxRadius, interval, templates)
 
@@ -35,9 +29,9 @@ class SpawnerSpec extends Specification {
 		spawner.spawn(origin)
 
 		then:
-		1 * position.setX(_)
-		1 * position.setY(_)
-		1 * position.setZ(_)
+		2 * position.setX(_)
+		2 * position.setY(_)
+		2 * position.setZ(_)
 	}
 	def "adds origin to clone's transform"() {
 		when:
@@ -56,28 +50,18 @@ class SpawnerSpec extends Specification {
 	}
 
 	def "does nothing if interval not yet elapsed"() {
-		when:
-		def result = spawner.spawn(origin, interval / 2)
-
-		then:
-		result == null
-		0 * templateSupplier.get()
+		expect:
+		spawner.spawn(origin, interval / 2) == null
 	}
 	def "spawns if interval elapsed"() {
-		when:
-		spawner.spawn(origin, interval)
-
-		then:
-		1 * templateSupplier.get() >> [transform]
+		expect:
+		spawner.spawn(origin, interval) != null
 	}
 
 	def "does nothing if inactive"() {
-		when:
 		spawner.setActive(false)
-		def result = spawner.spawn(origin, interval)
 
-		then:
-		result == null
-		0 * templateSupplier.get()
+		expect:
+		spawner.spawn(origin, interval) == null
 	}
 }

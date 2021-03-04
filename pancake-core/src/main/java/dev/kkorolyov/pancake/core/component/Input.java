@@ -1,21 +1,21 @@
 package dev.kkorolyov.pancake.core.component;
 
-import dev.kkorolyov.pancake.platform.Config;
+import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.registry.Registry;
-import dev.kkorolyov.simplefuncs.convert.Converter;
-import dev.kkorolyov.simpleprops.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
@@ -87,6 +87,8 @@ public class Input implements Component {
 		private static final Pattern INPUTS_PATTERN = Pattern.compile("\\([_a-zA-Z]+(,\\s*[_a-zA-Z]+)*\\)");
 		private static final Pattern INPUTS_SPLIT_PATTERN = Pattern.compile(",\\s*");
 
+		private static final Logger LOG = LoggerFactory.getLogger(Handler.class);
+
 		private final MultiStageAction action;
 		private final Set<Enum<?>> inputs;
 
@@ -106,22 +108,20 @@ public class Input implements Component {
 
 			Set<Handler> result = new HashSet<>();
 
-			for (Map.Entry<String, String> prop : props) {
-				reader.convert(prop.getValue())
-						.ifPresentOrElse(
-								inputs -> {
-									Action action = actionRegistry.get(prop.getKey());
+			props.forEach((key, value) -> reader.convert(value.toString())
+					.ifPresentOrElse(
+							inputs -> {
+								Action action = actionRegistry.get(key.toString());
 
-									result.add(new Handler(
-											action instanceof MultiStageAction
-													? (MultiStageAction) action
-													: new MultiStageAction(action, null, null, 0),  // Hold threshold irrelevant
-											inputs
-									));
-								},
-								() -> Config.getLogger(Handler.class).warning("Failed to parse input handler: {}", prop)
-						);
-			}
+								result.add(new Handler(
+										action instanceof MultiStageAction
+												? (MultiStageAction) action
+												: new MultiStageAction(action, null, null, 0),  // Hold threshold irrelevant
+										inputs
+								));
+							},
+							() -> LOG.error("Failed to parse input handler: {} -> {}", key, value)
+					));
 			return unmodifiableSet(result);
 		}
 

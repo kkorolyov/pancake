@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.core.component;
 
+import dev.kkorolyov.flopple.data.WeightedDistribution;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector;
-import dev.kkorolyov.simplestructs.WeightedDistribution;
 
 import java.util.Random;
 import java.util.function.Supplier;

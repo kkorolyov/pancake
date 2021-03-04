@@ -1,38 +1,26 @@
 package dev.kkorolyov.pancake.platform.registry.internal
 
-import dev.kkorolyov.pancake.platform.Resources
+import dev.kkorolyov.flopple.function.convert.Converter
 import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.registry.Registry
-import dev.kkorolyov.simplefuncs.convert.Converter
 
 import spock.lang.Shared
 import spock.lang.Specification
-
-import java.util.function.Function
-
-import static dev.kkorolyov.simplefuncs.function.Memoizer.memoize
-import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class RenderableResourceReaderFactorySpec extends Specification {
 	@Shared
 	String[] references = ["ref", "ref4", "newRef"]
 
 	@Shared
-	RenderableResourceReaderFactory factory = new RenderableResourceReaderFactory(memoize({ factory.get(it) } as Function))
+	RenderableResourceReaderFactory factory = new RenderableResourceReaderFactory()
 
 	RenderMedium renderMedium = Mock()
 
 	Registry<String, Renderable> registry = new Registry<>()
-	Converter<String, Optional<Renderable>> converter
-
-	def setup() {
-		setField("RENDER_MEDIUM", Resources, renderMedium)
-
-		converter = factory.get(registry)
-	}
+	Converter<String, Optional<Renderable>> converter = factory.get(registry)
 
 	def "reads reference"() {
 		registry.put(name, renderable)

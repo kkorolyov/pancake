@@ -1,17 +1,13 @@
 package dev.kkorolyov.pancake.platform.registry.internal
 
+import dev.kkorolyov.flopple.function.convert.Converter
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.action.CollectiveAction
 import dev.kkorolyov.pancake.platform.action.MultiStageAction
 import dev.kkorolyov.pancake.platform.registry.Registry
-import dev.kkorolyov.simplefuncs.convert.Converter
 
 import spock.lang.Shared
 import spock.lang.Specification
-
-import java.util.function.Function
-
-import static dev.kkorolyov.simplefuncs.function.Memoizer.memoize
 
 class ActionResourceReaderFactorySpec extends Specification {
 	@Shared
@@ -20,7 +16,7 @@ class ActionResourceReaderFactorySpec extends Specification {
 	String[] multiStages = ["startStep", "holdStep", "endStep"]
 
 	@Shared
-	ActionResourceReaderFactory factory = new ActionResourceReaderFactory(memoize({ factory.get(it) } as Function))
+	ActionResourceReaderFactory factory = new ActionResourceReaderFactory()
 
 	Registry<String, Action> registry = new Registry<>();
 	Converter<String, Optional<Action>> converter = factory.get(registry)

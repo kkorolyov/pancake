@@ -1,18 +1,33 @@
-import org.gradle.api.JavaVersion.VERSION_14
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.openjfx.gradle.JavaFXOptions
 
 tasks.wrapper {
 	distributionType = Wrapper.DistributionType.ALL
+}
+
+/**
+ * Runner's OS
+ */
+val os: String = DefaultNativePlatform.getCurrentOperatingSystem().run {
+	if (isWindows) {
+		"win"
+	} else if (isMacOsX) {
+		"mac"
+	} else if (isLinux) {
+		"linux"
+	} else {
+		"unknown"
+	}
 }
 
 plugins {
 	`java-library`
 	groovy
 	kotlin("jvm") version "1.4.31"
+	application
 	id("org.jetbrains.dokka") version "1.4.20"
-	id("org.openjfx.javafxplugin") version "0.0.9"
 	`maven-publish`
+	idea
 }
 
 description = "Extensible Java game engine with an entity-component-system architecture"
@@ -55,17 +70,52 @@ tasks.register("docs") {
 }
 
 subprojects {
-	group = "dev.kkorolyov"
-	version = "0.1-SNAPSHOT"
+	apply(plugin = "java")
+
+	group = "dev.kkorolyov.pancake"
 
 	repositories {
-		jcenter()  // Most things
-		maven(url = "https://dl.bintray.com/kkorolyov/java")  // SimpleTools
-		maven(url = "https://dl.bintray.com/kkorolyov/groovy")  // SimpleSpecs
+		jcenter()
+		mavenCentral()
+		maven {
+			url = uri("https://maven.pkg.github.com/kkorolyov/pieline-lib")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+		maven {
+			url = uri("https://maven.pkg.github.com/kkorolyov/flopple")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
 	}
 
-	dependencyLocking {
-		lockAllConfigurations()
+	dependencies {
+		// stdlib
+		val floppleVersion: String by project
+		implementation("dev.kkorolyov:flopple:$floppleVersion")
+
+		// observability
+		val slf4jVersion: String by project
+
+		implementation("org.slf4j:slf4j-api:$slf4jVersion")
+
+		dependencyLocking {
+			lockAllConfigurations()
+		}
+	}
+
+	java {
+		sourceCompatibility = JavaVersion.VERSION_14
+		targetCompatibility = JavaVersion.VERSION_14
+
+		withSourcesJar()
+		withJavadocJar()
+
+		modularity.inferModulePath.set(true)
 	}
 }
 
@@ -77,7 +127,6 @@ val testUtils: Project = project(":pancake-test-utils")
 val javaFxApplication: Project = project(":javafx-application")
 val javaFxAudio: Project = project(":javafx-audio")
 
-val skillet: Project = project(":skillet")
 val killstreek: Project = project(":killstreek")
 
 // Testable
@@ -87,7 +136,6 @@ configure(
 		core,
 		javaFxApplication,
 		javaFxAudio,
-		skillet,
 		killstreek
 	)
 ) {
@@ -96,12 +144,14 @@ configure(
 	dependencies {
 		val spockVersion: String by project
 		val byteBuddyVersion: String by project
-		val specsVersion: String by project
 
 		testImplementation("org.spockframework:spock-core:$spockVersion")
 		testImplementation("net.bytebuddy:byte-buddy:$byteBuddyVersion")
-		testImplementation("dev.kkorolyov:simple-specs:$specsVersion")
 		testImplementation(testUtils)
+	}
+
+	tasks.test {
+		useJUnitPlatform()
 	}
 }
 
@@ -114,17 +164,6 @@ configure(
 ) {
 	apply(plugin = "java-library")
 	apply(plugin = "maven-publish")
-	// TODO Replace with native "inferModulePath" when simple deps declare explicit module names
-	apply(plugin = "org.javamodularity.moduleplugin")
-
-	java {
-		sourceCompatibility = VERSION_14
-		targetCompatibility = VERSION_14
-
-		withSourcesJar()
-		withJavadocJar()
-
-	}
 
 	publishing {
 		publications {
@@ -152,7 +191,6 @@ configure(
 		core,
 		javaFxApplication,
 		javaFxAudio,
-		skillet,
 		killstreek
 	)
 ) {
@@ -172,14 +210,11 @@ configure(
 	listOf(
 		javaFxApplication,
 		javaFxAudio,
-		killstreek,
-		skillet
+		killstreek
 	)
 ) {
 	apply(plugin = "kotlin")
 	apply(plugin = "org.jetbrains.dokka")
-	// TODO Replace with native "inferModulePath" when simple deps declare explicit module names
-	apply(plugin = "org.javamodularity.moduleplugin")
 
 	tasks.withType<KotlinCompile> {
 		kotlinOptions {
@@ -194,83 +229,58 @@ configure(
 
 project(":pancake-platform") {
 	description = "Main Pancake engine platform"
-
-	dependencies {
-		val propsVersion: String by project
-		val filesVersion: String by project
-		val funcsVersion: String by project
-		val structsVersion: String by project
-
-		// TODO Use slf4j
-		api("dev.kkorolyov:simple-logs:3.+")
-		api("dev.kkorolyov:simple-props:$propsVersion")
-		api("dev.kkorolyov:simple-files:$filesVersion")
-		api("dev.kkorolyov:simple-funcs:$funcsVersion")
-		api("dev.kkorolyov:simple-structs:$structsVersion")
-	}
 }
 project(":pancake-core") {
 	description = "Collection of general, reusable systems and components for the Pancake engine"
 }
 project(":pancake-test-utils") {
 	apply(plugin = "groovy")
-	apply(plugin = "org.openjfx.javafxplugin")
 
 	description = "Test utilities"
 
 	dependencies {
 		val spockVersion: String by project
-		val specsVersion: String by project
+		val javaFxVersion: String by project
 
 		implementation("org.spockframework:spock-core:$spockVersion")
-		implementation("dev.kkorolyov:simple-specs:$specsVersion")
+		implementation("org.openjfx:javafx-controls:$javaFxVersion:$os")
 		implementation(platform)
-	}
-
-	configure<JavaFXOptions> {
-		version = "15.+"
-		modules = listOf("javafx.controls")
 	}
 }
 
 project(":javafx-application") {
-	apply(plugin = "org.openjfx.javafxplugin")
-
 	description = "JavaFX Application and RenderMedium implementation"
 
-	configure<JavaFXOptions> {
-		version = "15.+"
-		modules = listOf("javafx.graphics")
+	dependencies {
+		val javaFxVersion: String by project
+		implementation("org.openjfx:javafx-base:$javaFxVersion:$os")
+		implementation("org.openjfx:javafx-graphics:$javaFxVersion:$os")
+	}
+
+	tasks.compileJava {
+		options.compilerArgs.addAll(
+			listOf(
+				"--patch-module", "dev.kkorolyov.pancake.javafx.application=${sourceSets.main.get().output.asPath}"
+			)
+		)
 	}
 }
 project(":javafx-audio") {
-	apply(plugin = "org.openjfx.javafxplugin")
-
 	description = "JavaFX AudioFactory implementation"
 
-	configure<JavaFXOptions> {
-		version = "15.+"
-		modules = listOf("javafx.media")
-	}
-}
-
-project(":skillet") {
-	apply(plugin = "application")
-	apply(plugin = "org.openjfx.javafxplugin")
-
-	description = "Standalone application for designing and exporting entities"
-
 	dependencies {
-		implementation(kotlin("reflect"))
+		val javaFxVersion: String by project
+		implementation("org.openjfx:javafx-base:$javaFxVersion:$os")
+		implementation("org.openjfx:javafx-graphics:$javaFxVersion:$os")
+		implementation("org.openjfx:javafx-media:$javaFxVersion:$os")
 	}
 
-	configure<JavaApplication> {
-		mainClass.set("dev.kkorolyov.pancake.skillet.Skillet")
-	}
-
-	configure<JavaFXOptions> {
-		version = "15.+"
-		modules = listOf("javafx.controls")
+	tasks.compileJava {
+		options.compilerArgs.addAll(
+			listOf(
+				"--patch-module", "dev.kkorolyov.pancake.javafx.audio=${sourceSets.main.get().output.asPath}"
+			)
+		)
 	}
 }
 
@@ -280,18 +290,33 @@ project(":killstreek") {
 	description = "Top-down ARPG with dynamic RNG system"
 
 	dependencies {
-		implementation(javaFxApplication)
-		implementation(javaFxAudio)
+		val log4jVersion: String by project
+		val jacksonVersion: String by project
+
+		implementation("org.apache.logging.log4j:log4j-slf4j18-impl:$log4jVersion")
+		implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+
+		runtimeOnly(javaFxApplication)
+		runtimeOnly(javaFxAudio)
 	}
 
-	configure<JavaApplication> {
+	tasks.compileJava {
+		options.compilerArgs.addAll(
+			listOf(
+				"--patch-module", "dev.kkorolyov.killstreek=${sourceSets.main.get().output.asPath}"
+			)
+		)
+	}
+
+	application {
+		mainModule.set("dev.kkorolyov.killstreek")
 		mainClass.set("dev.kkorolyov.killstreek.LauncherKt")
 	}
 
 	tasks.named<JavaExec>("run") {
 		dependsOn("installDist")
 
-		// Launch along with resources
+		// Launch alongside loose resources
 		workingDir = tasks.named<Sync>("installDist").get().destinationDir
 	}
 }

@@ -1,8 +1,7 @@
 module dev.kkorolyov.pancake.core {
-	requires simple.funcs;
-	requires simple.logs;
-	requires simple.props;
-	requires simple.structs;
+	requires org.slf4j;
+
+	requires dev.kkorolyov.flopple;
 
 	requires dev.kkorolyov.pancake.platform;
 
@@ -12,9 +11,6 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.component.movement;
 	exports dev.kkorolyov.pancake.core.event;
 	exports dev.kkorolyov.pancake.core.system;
-
-	// Make services visible to Providers
-	exports dev.kkorolyov.pancake.core.registry to simple.files;
 
 	provides dev.kkorolyov.pancake.platform.GameSystem with
 			dev.kkorolyov.pancake.core.system.ActionSystem,

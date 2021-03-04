@@ -1,0 +1,12 @@
+configuration:
+  appenders:
+    console:
+      name: stdout
+      target: SYSTEM_OUT
+      patternLayout:
+        pattern: "%highlight{%date %level %logger [%thread] - %msg%n}"
+  loggers:
+    root:
+      level: debug
+      appenderRef:
+        ref: stdout

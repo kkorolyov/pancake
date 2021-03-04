@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 
-import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
+import static dev.kkorolyov.flopple.collections.Iterables.append;
 
 /**
  * A collection of renderable artifacts rendered as a unit.

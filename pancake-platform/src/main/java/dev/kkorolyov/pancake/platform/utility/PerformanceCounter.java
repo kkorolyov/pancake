@@ -3,7 +3,8 @@ package dev.kkorolyov.pancake.platform.utility;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.math.AveragedValue;
-import dev.kkorolyov.simplelogs.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,11 +13,11 @@ import java.util.Map;
  * Maintains performance counts.
  */
 // TODO Remove from shared system resources
-public class PerformanceCounter {
-	private static final Logger log = Config.getLogger(PerformanceCounter.class);
+public final class PerformanceCounter {
+	private static final Logger log = LoggerFactory.getLogger(PerformanceCounter.class);
 
-	private final long maxTime = Long.parseLong(Config.config().get("maxTime"));
-	private final int samples = Math.max(1, Integer.parseInt(Config.config().get("samples")));
+	private final long maxTime = Long.parseLong(Config.get().getProperty("maxTime"));
+	private final int samples = Math.max(1, Integer.parseInt(Config.get().getProperty("samples")));
 
 	private long last;
 	private final AveragedValue tick = new AveragedValue(samples);
@@ -49,7 +50,7 @@ public class PerformanceCounter {
 
 	/** @return average ticks per second */
 	public long getTps() {
-		return Math.round(1e9 / (tick.getValue()));
+		return Math.round(1e9 / tick.getValue());
 	}
 	/** @return all system usage average values */
 	public Iterable<Usage> getUsages() {
@@ -59,7 +60,7 @@ public class PerformanceCounter {
 	/**
 	 * Tracks the average time usage of a game system.
 	 */
-	public static class Usage {
+	public static final class Usage {
 		private final String systemName;
 		private final AveragedValue value;
 		private final long maxTime;
@@ -74,8 +75,11 @@ public class PerformanceCounter {
 			value.add(sample);
 
 			if (exceedsMax()) {
-				log.warning("{} exceeded max usage by {} microseconds",
-						systemName, value.getValue() - maxTime);
+				log.warn(
+						"{} exceeded max usage by {} microseconds",
+						systemName,
+						value.getValue() - maxTime
+				);
 			}
 		}
 

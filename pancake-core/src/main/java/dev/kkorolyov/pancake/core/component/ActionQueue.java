@@ -7,7 +7,7 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
+import static dev.kkorolyov.flopple.collections.Iterables.append;
 
 /**
  * A collection of queued actions to apply to containing entities.

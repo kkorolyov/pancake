@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
+import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable;
 import dev.kkorolyov.pancake.platform.media.graphic.Image;
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
 import dev.kkorolyov.pancake.platform.registry.Registry;
 import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory;
-import dev.kkorolyov.simplefuncs.convert.Converter;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static dev.kkorolyov.simplefuncs.function.Memoizer.memoize;
+import static dev.kkorolyov.flopple.function.Memoizer.memoize;
 import static java.util.stream.Collectors.toList;
 
 /**

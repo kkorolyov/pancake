@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.core.registry;
 
+import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.core.action.ForceAction;
 import dev.kkorolyov.pancake.core.action.TransformAction;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.registry.Registry;
 import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory;
-import dev.kkorolyov.simplefuncs.convert.Converter;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -26,7 +26,7 @@ public class Limiter {
 	 */
 	public static Limiter fromConfig(Class<? extends GameSystem> c) {
 		return new Limiter(
-				Optional.ofNullable(Config.config(c).get("tps"))
+				Optional.ofNullable(Config.get(c).getProperty("tps"))
 						.map(Integer::parseInt)
 						.map(tps -> (long) (1e9 / tps))
 						.orElse(0L)

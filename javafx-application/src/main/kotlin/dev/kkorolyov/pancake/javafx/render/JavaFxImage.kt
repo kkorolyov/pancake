@@ -18,19 +18,19 @@ class JavaFxImage(private val image: FxImage, private val g: EnhancedGraphicsCon
 			rotate(transform, pad = true)
 
 			get().drawImage(
-					image,
-					// Select source using viewport
-					// Select source using viewport
-					origin.x,
-					origin.y,
-					size.x,
-					size.y,
-					// Render using transform
-					// Render using transform
-					transform.position.x - (size.x / 2),
-					transform.position.y - (size.y / 2),
-					size.x * transform.scale.x,
-					size.y * transform.scale.y
+				image,
+				// Select source using viewport
+				// Select source using viewport
+				origin.x,
+				origin.y,
+				size.x,
+				size.y,
+				// Render using transform
+				// Render using transform
+				transform.position.x - (size.x / 2),
+				transform.position.y - (size.y / 2),
+				size.x * transform.scale.x,
+				size.y * transform.scale.y
 			)
 		}
 	}

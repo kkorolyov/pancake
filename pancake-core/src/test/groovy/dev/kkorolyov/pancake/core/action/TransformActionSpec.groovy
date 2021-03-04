@@ -9,8 +9,8 @@ import dev.kkorolyov.pancake.platform.math.Vector
 import spock.lang.Shared
 import spock.lang.Specification
 
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
-import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
 
 class TransformActionSpec extends Specification {
 	@Shared Vector position = randVector()

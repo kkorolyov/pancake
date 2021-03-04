@@ -1,23 +1,22 @@
 package dev.kkorolyov.killstreek.item
 
 import dev.kkorolyov.killstreek.item.Armor.Type
-import dev.kkorolyov.simplefuncs.stream.Iterables.append
+import java.util.EnumMap
 
 /**
  * A collection of armor pieces equipped to slots.
  * @constructor constructs a new armor set with initial [armor] pieces
  */
 class ArmorSet(armor: Iterable<Armor>) {
-	private val _armor: MutableMap<Type, Armor> = HashMap()
+	private val _armor: MutableMap<Type, Armor> = EnumMap(Type::class.java)
+
 	/** Current armor pieces */
 	val armor: Collection<Armor> get() = _armor.values
 
 	/** total defense value of all unbroken armor */
 	val defense: Int = this._armor.values
-			.filter { !it.isBroken }
-			.sumBy { it.value }
-
-	constructor(armor: Armor, vararg armors: Armor) : this(append(armor, *armors))
+		.filter { !it.isBroken }
+		.sumBy { it.value }
 
 	init {
 		armor.forEach { equip(it) }

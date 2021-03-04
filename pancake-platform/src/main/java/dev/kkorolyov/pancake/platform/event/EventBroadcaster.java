@@ -37,7 +37,7 @@ public interface EventBroadcaster {
 	/**
 	 * An {@link EventBroadcaster} implementation with exposed management methods.
 	 */
-	class Managed implements EventBroadcaster {
+	final class Managed implements EventBroadcaster {
 		private final Map<Class<? extends Event>, Set<Consumer<?>>> receivers = new HashMap<>();
 		private final Queue<Event> eventQueue = new ArrayDeque<>();
 

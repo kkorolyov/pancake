@@ -6,8 +6,8 @@ import dev.kkorolyov.pancake.platform.math.BoundedValue
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.simplespecs.SpecUtilities.randInt
-import static dev.kkorolyov.simplespecs.SpecUtilities.randString
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
 
 class ArmorSetSpec extends Specification {
 	@Shared Sprite sprite = Mock()

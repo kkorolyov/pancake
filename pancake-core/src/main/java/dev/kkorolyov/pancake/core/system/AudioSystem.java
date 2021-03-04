@@ -35,7 +35,7 @@ public class AudioSystem extends GameSystem {
 				.set(position)
 				.sub(Resources.RENDER_MEDIUM.getCamera().getPosition());
 
-		double centralRadius = Double.parseDouble(Config.config(getClass()).get("centralRadius"));
+		double centralRadius = Double.parseDouble(Config.get(getClass()).getProperty("centralRadius"));
 
 		emitter.apply(
 				centralRadius / relativeEmitter.getMagnitude(),

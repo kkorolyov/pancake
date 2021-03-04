@@ -11,12 +11,12 @@ import dev.kkorolyov.pancake.platform.media.graphic.Viewport
  * A dynamic image.
  */
 class Sprite(
-		/** layered sprite sheets */
-		private val sheets: CompositeRenderable<Image>,
-		/** sprite sheet partioning scheme */
-		private val viewport: Viewport,
-		/** {@code ns} between frame changes */
-		private var frameInterval: Long = 0
+	/** layered sprite sheets */
+	private val sheets: CompositeRenderable<Image>,
+	/** sprite sheet partioning scheme */
+	private val viewport: Viewport,
+	/** {@code ns} between frame changes */
+	private var frameInterval: Long = 0
 ) : Renderable, Animated {
 	private var currentFrameTime: Long = 0
 	private var frame: Int = 0

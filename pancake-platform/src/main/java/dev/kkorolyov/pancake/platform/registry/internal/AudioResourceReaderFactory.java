@@ -1,10 +1,10 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
+import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.media.audio.Audio;
 import dev.kkorolyov.pancake.platform.registry.Registry;
 import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory;
-import dev.kkorolyov.simplefuncs.convert.Converter;
 
 import java.util.Optional;
 import java.util.regex.Pattern;

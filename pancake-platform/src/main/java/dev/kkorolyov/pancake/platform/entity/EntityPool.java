@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.platform.entity;
 
+import dev.kkorolyov.flopple.data.FacetedBundle;
 import dev.kkorolyov.pancake.platform.event.CreateEntity;
 import dev.kkorolyov.pancake.platform.event.DestroyEntity;
 import dev.kkorolyov.pancake.platform.event.EntityCreated;
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
-import dev.kkorolyov.simplestructs.FacetedBundle;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Stream;
 
-import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
+import static dev.kkorolyov.flopple.collections.Iterables.append;
 
 /**
  * A set of uniquely-identified "component-bag" entities.

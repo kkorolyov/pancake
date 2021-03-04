@@ -1,9 +1,7 @@
 module dev.kkorolyov.pancake.platform {
-	requires simple.files;
-	requires simple.funcs;
-	requires simple.logs;
-	requires simple.props;
-	requires simple.structs;
+	requires org.slf4j;
+
+	requires dev.kkorolyov.flopple;
 
 	exports dev.kkorolyov.pancake.platform;
 	exports dev.kkorolyov.pancake.platform.action;
@@ -16,18 +14,14 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.media.graphic;
 	exports dev.kkorolyov.pancake.platform.media.graphic.shape;
 	exports dev.kkorolyov.pancake.platform.registry;
-	exports dev.kkorolyov.pancake.platform.serialization;
-	exports dev.kkorolyov.pancake.platform.serialization.string;
 	exports dev.kkorolyov.pancake.platform.utility;
 
-	// Make services visible to Providers
-	exports dev.kkorolyov.pancake.platform.registry.internal to simple.files;
-
-	// System
 	uses dev.kkorolyov.pancake.platform.GameSystem;
-	// Media factories
+	// application and media factories
+	uses dev.kkorolyov.pancake.platform.application.Application;
 	uses dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
-	// Resource reader factories
+	uses dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
+	// resource reader factories
 	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource;
 	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.AudioResource;
 	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.RenderableResource;

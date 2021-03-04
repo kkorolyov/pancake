@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.javafx
 
+import dev.kkorolyov.flopple.function.Memoizer.memoize
 import dev.kkorolyov.pancake.javafx.render.EnhancedGraphicsContext
 import dev.kkorolyov.pancake.javafx.render.JavaFxBox
 import dev.kkorolyov.pancake.javafx.render.JavaFxImage
@@ -14,7 +15,6 @@ import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Box
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text
-import dev.kkorolyov.simplefuncs.function.Memoizer.memoize
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Group
@@ -27,19 +27,11 @@ import java.nio.file.Path
 import javafx.application.Application as FxApplication
 import javafx.scene.image.Image as FxImage
 
-// FIXME Make this dynamic
-private val unitPixels = Vector(64.0, 64.0, 1.0)
-
-// Shared singletons
-private val canvas: Canvas = Canvas()
-private val scene: Scene = Scene(Group(canvas))
-
-private var stage: Stage? = null
-
 private fun Canvas.setSize(width: Double, height: Double) {
 	this.width = width
 	this.height = height
 
+	// FIXME BAD
 	Resources.RENDER_MEDIUM.camera.setSize(width, height)
 }
 
@@ -50,63 +42,79 @@ class JavaFxApplication : Application {
 	private val cursor: Vector = Vector()
 	private val inputs: MutableCollection<Enum<*>> = HashSet()
 
-	init {
-		scene.apply {
-			onMouseMoved = EventHandler { this@JavaFxApplication.cursor.set(it.x, it.y) }
-
-			onMousePressed = EventHandler { inputs += it.button }
-			onMouseReleased = EventHandler { inputs -= it.button }
-
-			onKeyPressed = EventHandler { inputs += it.code }
-			onKeyReleased = EventHandler { inputs -= it.code }
-		}
-
-		// Launch to get a handle to stage
-		Thread { FxApplication.launch(Runner::class.java) }.start()
-	}
-
 	override fun toInput(key: String): Enum<*> =
-			try {
-				KeyCode.valueOf(key)
-			} catch (e: IllegalArgumentException) {
-				MouseButton.valueOf(key)
-			}
+		try {
+			KeyCode.valueOf(key)
+		} catch (e: IllegalArgumentException) {
+			MouseButton.valueOf(key)
+		}
 
 	override fun getCursor(): Vector = cursor
 	override fun getInputs(): Collection<Enum<*>> = inputs
 
 	override fun execute(config: Config, gameLoop: GameLoop) {
-		canvas.setSize(config.width, config.height)
-
-		stage?.apply {
-			title = config.title
-			icons += FxImage(config.iconUri)
-
-			onCloseRequest = EventHandler { gameLoop.stop() }
-
-			Platform.runLater {
-				show()
-
-				widthProperty().addListener { _, oldValue, newValue ->
-					canvas.setSize(canvas.width + newValue.toDouble() - oldValue.toDouble(), canvas.height)
-				}
-				heightProperty().addListener { _, oldValue, newValue ->
-					canvas.setSize(canvas.width, canvas.height + newValue.toDouble() - oldValue.toDouble())
-				}
-			}
-
-			Thread(gameLoop::start).start()
-		} ?: throw IllegalStateException("Stage has not been initialized")
+		// Start FX app and long-lived objects
+		Runner.attach(config, gameLoop, cursor, inputs)
 	}
 }
 
 /**
- * JavaFX application runner.
+ * JavaFX application.
  */
-class Runner : FxApplication() {
+private object Runner : FxApplication() {
+	lateinit var stage: Stage
+	lateinit var scene: Scene
+	val canvas: Canvas = Canvas()
+
+	init {
+		Platform.startup {
+			start(Stage())
+		}
+	}
+
+	fun attach(config: Config, gameLoop: GameLoop, cursor: Vector, inputs: MutableCollection<Enum<*>>) {
+		Platform.runLater {
+			scene.apply {
+				onMouseMoved = EventHandler { cursor.set(it.x, it.y) }
+
+				onMousePressed = EventHandler { inputs += it.button }
+				onMouseReleased = EventHandler { inputs -= it.button }
+
+				onKeyPressed = EventHandler { inputs += it.code }
+				onKeyReleased = EventHandler { inputs -= it.code }
+			}
+
+			canvas.setSize(config.width, config.height)
+
+			stage.apply {
+				title = config.title
+				icons += FxImage(config.iconUri)
+
+				onCloseRequest = EventHandler { gameLoop.stop() }
+
+				show()
+
+				widthProperty().addListener { _, oldValue, newValue ->
+					canvas.let {
+						it.setSize(it.width + newValue.toDouble() - oldValue.toDouble(), it.height)
+					}
+				}
+				heightProperty().addListener { _, oldValue, newValue ->
+					canvas.let {
+						it.setSize(it.width, it.height + newValue.toDouble() - oldValue.toDouble())
+					}
+				}
+
+				Thread(gameLoop::start).start()
+			}
+		}
+	}
+
+	fun getImage(path: String) = FxImage(Path.of(path).toUri().toString())
+
 	override fun start(primaryStage: Stage) {
-		primaryStage.scene = scene
-		stage = primaryStage
+		scene = Scene(Group(canvas))
+		stage = primaryStage.also { it.scene = scene }
 	}
 }
 
@@ -114,10 +122,15 @@ class Runner : FxApplication() {
  * [RenderMedium] implemented through JavaFX.
  */
 class JavaFxRenderMedium : RenderMedium {
+	// FIXME Make this dynamic
+	private val unitPixels = Vector(64.0, 64.0, 1.0)
+
 	// FIXME Decouple camera
 	private val camera: Camera = Camera(Vector(), Vector(unitPixels).scale(Vector(1.0, -1.0, 1.0)), 0.0, 0.0)
-	private val g: EnhancedGraphicsContext = EnhancedGraphicsContext(canvas.graphicsContext2D)
-	private val imageCache: (String) -> FxImage = memoize<String, FxImage> { FxImage(Path.of(it).toUri().toString()) }::apply
+	private val g: EnhancedGraphicsContext by lazy {
+		EnhancedGraphicsContext(Runner.canvas.graphicsContext2D)
+	}
+	private val imageCache: (String) -> FxImage = memoize(Runner::getImage)::apply
 
 	override fun getCamera(): Camera = camera
 
@@ -132,7 +145,7 @@ class JavaFxRenderMedium : RenderMedium {
 
 	override fun clearInvoke(renderAction: Runnable) {
 		Platform.runLater {
-			g.get().clearRect(0.0, 0.0, canvas.width, canvas.height)
+			g.get().clearRect(0.0, 0.0, Runner.canvas.width, Runner.canvas.height)
 
 			renderAction.run()
 		}

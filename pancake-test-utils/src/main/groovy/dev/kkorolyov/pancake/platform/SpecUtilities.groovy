@@ -2,22 +2,28 @@ package dev.kkorolyov.pancake.platform
 
 import dev.kkorolyov.pancake.platform.math.Vector
 
-import static dev.kkorolyov.simplespecs.SpecUtilities.randDouble
+import java.util.concurrent.ThreadLocalRandom
+
 /**
  * Provides utility methods for Specs.
  */
 class SpecUtilities {
-	/** @return vector with randomized component values */
+	/** @return vector with randomized component values  */
 	static Vector randVector() {
 		return new Vector(randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE))
 	}
 
-	/**
-	 * Wraps a double in a {@code BigDecimal}.
-	 * @param value double value to wrap
-	 * @return {@code value} as a {@code BigDecimal}
-	 */
-	static BigDecimal bigDecimal(double value) {
-		return BigDecimal.valueOf(value)
+	static int randInt(int bound = Integer.MAX_VALUE) {
+		return ThreadLocalRandom.current().nextInt(bound)
+	}
+	static long randLong(long bound = Long.MAX_VALUE) {
+		return ThreadLocalRandom.current().nextLong(bound)
+	}
+	static double randDouble(double bound = Double.MAX_VALUE) {
+		return ThreadLocalRandom.current().nextDouble(bound)
+	}
+
+	static String randString() {
+		return UUID.randomUUID().toString().replaceAll("-", "")
 	}
 }

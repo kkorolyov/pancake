@@ -8,12 +8,12 @@ import dev.kkorolyov.pancake.platform.math.BoundedValue
  * @constructor constructs a new armor piece with a piece [type]
  */
 class Armor(
-		name: String,
-		sprite: Sprite,
-		durability: BoundedValue<Int>,
-		value: Int,
-		/** armor type */
-		val type: Type
+	name: String,
+	sprite: Sprite,
+	durability: BoundedValue<Int>,
+	value: Int,
+	/** armor type */
+	val type: Type
 ) : Equippable(name, sprite, durability, value) {
 	/**
 	 * A type of armor piece.

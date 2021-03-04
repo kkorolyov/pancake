@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
+import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.CollectiveAction;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
 import dev.kkorolyov.pancake.platform.registry.Registry;
 import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory;
-import dev.kkorolyov.simplefuncs.convert.Converter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
-import static dev.kkorolyov.simplefuncs.function.Memoizer.memoize;
+import static dev.kkorolyov.flopple.function.Memoizer.memoize;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
@@ -29,7 +29,7 @@ public final class ActionResourceReaderFactory implements ResourceReaderFactory.
 
 	private static final Pattern MULTI_STAGE_PATTERN = Pattern.compile("\\{.*(,.*){2}}");
 	private static final Pattern MULTI_STAGE_SPLIT_PATTERN = Pattern.compile(",\\s*(?![^\\[]*])");
-	private static final long MULTI_STAGE_HOLD_THRESHOLD = (long) (Double.parseDouble(Config.config().get("holdThreshold")) * 1e9);
+	private static final long MULTI_STAGE_HOLD_THRESHOLD = (long) (Double.parseDouble(Config.get().getProperty("holdThreshold")) * 1e9);
 
 	private final Function<? super Registry<? super String, ? extends Action>, ? extends Converter<? super String, ? extends Optional<? extends Action>>> autoConverter = memoize(registry -> ResourceReaderFactory.get(ActionResource.class, registry));
 

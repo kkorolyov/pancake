@@ -3,7 +3,7 @@ package dev.kkorolyov.killstreek.component
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.simplespecs.SpecUtilities.randLong
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randLong
 
 class DamageSpec extends Specification {
 	@Shared

@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.javafx.audio
 
+import dev.kkorolyov.flopple.function.Memoizer.memoize
 import dev.kkorolyov.pancake.platform.media.audio.Audio
 import dev.kkorolyov.pancake.platform.media.audio.AudioFactory
-import dev.kkorolyov.simplefuncs.function.Memoizer.memoize
 import javafx.scene.media.Media
 import java.nio.file.Path
 

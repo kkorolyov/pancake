@@ -3,20 +3,11 @@ package dev.kkorolyov.pancake.platform.entity
 import spock.lang.Shared
 import spock.lang.Specification
 
-import static dev.kkorolyov.simplespecs.SpecUtilities.getField
-
 class SignatureSpec extends Specification {
 	@Shared
 	List<Class<? extends Component>> componentTypes = [new Component() {}, new Component() {}, new Component() {}].collect { it.class }
 
 	Signature signature = new Signature()
-
-	def "empty signature equals zero"() {
-		signature = new Signature()
-
-		expect:
-		getField("signature", signature) == 0
-	}
 
 	def "masks empty signature"() {
 		signature = new Signature(componentTypes)

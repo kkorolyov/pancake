@@ -1,9 +1,9 @@
 package dev.kkorolyov.killstreek.item
 
+import dev.kkorolyov.flopple.data.WeightedDistribution
 import dev.kkorolyov.killstreek.media.Sprite
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.simplestructs.WeightedDistribution
 
 /** An effect which does nothing, used for padding the pool of random effects */
 val NOOP_EFFECT: Action = Action {}
@@ -15,10 +15,10 @@ private var idCounter = 0
  * @constructor constructs a new item with a unique ID
  */
 abstract class Item(
-		/** item name */
-		val name: String,
-		/** item visual */
-		val sprite: Sprite
+	/** item name */
+	val name: String,
+	/** item visual */
+	val sprite: Sprite
 ) : Action {
 	/** unique item ID */
 	val id = idCounter++

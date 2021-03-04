@@ -1,15 +1,12 @@
 package dev.kkorolyov.pancake.platform.registry.internal
 
-import dev.kkorolyov.pancake.platform.Resources
+import dev.kkorolyov.flopple.function.convert.Converter
 import dev.kkorolyov.pancake.platform.media.audio.Audio
 import dev.kkorolyov.pancake.platform.media.audio.AudioFactory
 import dev.kkorolyov.pancake.platform.registry.Registry
-import dev.kkorolyov.simplefuncs.convert.Converter
 
 import spock.lang.Shared
 import spock.lang.Specification
-
-import static dev.kkorolyov.simplespecs.SpecUtilities.setField
 
 class AudioResourceReaderFactorySpec extends Specification {
 	@Shared
@@ -20,13 +17,7 @@ class AudioResourceReaderFactorySpec extends Specification {
 	AudioFactory audioFactory = Mock()
 
 	Registry<String, Audio> registry = new Registry<>()
-	Converter<String, Optional<Audio>> converter
-
-	def setup() {
-		setField("AUDIO_FACTORY", Resources, audioFactory)
-
-		converter = factory.get(registry)
-	}
+	Converter<String, Optional<Audio>> converter = factory.get(registry)
 
 	def "reads path"() {
 		1 * audioFactory.get(uri) >> audio

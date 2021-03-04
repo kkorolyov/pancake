@@ -43,4 +43,11 @@ public final class Registry<K, V> {
 	public void put(K key, V resource) {
 		resources.put(key, resource);
 	}
+
+	@Override
+	public String toString() {
+		return "Registry{" +
+				"resources=" + resources +
+				'}';
+	}
 }

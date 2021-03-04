@@ -5,14 +5,18 @@ import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text;
-import dev.kkorolyov.simplelogs.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.regex.Pattern;
 
 /**
  * Renders debug information.
  */
-public class DebugRenderer {
+public final class DebugRenderer {
+	private static final Pattern ARG_DELIMITER = Pattern.compile(",\\s*");
 	private static final int LINE_HEIGHT = 14;
-	private static final Logger LOG = Config.getLogger(DebugRenderer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DebugRenderer.class);
 
 	private final RenderTransform renderTransform = new RenderTransform();
 
@@ -21,8 +25,8 @@ public class DebugRenderer {
 	 * @param performanceCounter performance counter with information to render
 	 */
 	public void render(PerformanceCounter performanceCounter) {
-		String[] args = Config.config().getArray("renderInfo");
-		if (args == null) return;
+		String[] args = ARG_DELIMITER.split(Config.get().getProperty("renderInfo"));
+		if (args.length <= 0) return;
 
 		Text text = Resources.RENDER_MEDIUM.getText();
 		renderTransform.reset();
@@ -48,7 +52,7 @@ public class DebugRenderer {
 						}
 						break;
 					default:
-						LOG.warning("Unknown renderInfo arg: {}", arg);
+						LOG.warn("Unknown renderInfo arg: {}", arg);
 				}
 			}
 		});

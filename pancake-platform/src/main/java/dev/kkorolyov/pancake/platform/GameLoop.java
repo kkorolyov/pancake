@@ -3,18 +3,18 @@ package dev.kkorolyov.pancake.platform;
 /**
  * Main game loop.
  */
-public class GameLoop {
+public final class GameLoop {
 	private final GameEngine engine;
 	private final long dt;
 
 	private volatile boolean active;
 
 	/**
-	 * Constructs a new game loop with tick granularity specified in platform {@link Config#config()}.
+	 * Constructs a new game loop with tick granularity specified in platform {@link Config#get()}.
 	 * @param engine game engine receiving updates
 	 */
 	public GameLoop(GameEngine engine) {
-		this(engine, (long) (1e9 / Integer.parseInt(Config.config().get("tps"))));
+		this(engine, (long) (1e9 / Integer.parseInt(Config.get().getProperty("tps"))));
 	}
 	/**
 	 * Constructs a new game loop.
@@ -34,7 +34,7 @@ public class GameLoop {
 		if (!active) {
 			active = true;
 			long last = System.nanoTime();
-			long lag = 0;
+			long lag = 0L;
 
 			while (active) {
 				long now = System.nanoTime();
@@ -54,5 +54,14 @@ public class GameLoop {
 	 */
 	public void stop() {
 		active = false;
+	}
+
+	@Override
+	public String toString() {
+		return "GameLoop{" +
+				"engine=" + engine +
+				", dt=" + dt +
+				", active=" + active +
+				'}';
 	}
 }

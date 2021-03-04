@@ -3,104 +3,74 @@ package dev.kkorolyov.pancake.platform;
 import dev.kkorolyov.pancake.platform.application.Application;
 import dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
-import dev.kkorolyov.simplefiles.Files;
-import dev.kkorolyov.simplefiles.Providers;
-import dev.kkorolyov.simplefiles.stream.InStrategy;
-import dev.kkorolyov.simplefiles.stream.OutStrategy;
-import dev.kkorolyov.simplefiles.stream.StreamStrategies;
-import dev.kkorolyov.simplelogs.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.function.Consumer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
+import java.util.ServiceLoader;
 
 /**
- * Provides access to resources.
+ * Provides safe access to resources.
+ * IO exceptions are caught and logged.
  */
 public final class Resources {
-	/** Service-loaded application executor */
-	public static final Application APPLICATION = Providers.fromDescriptor(Application.class).find().orElse(null);
-	/** Service-loaded audio factory */
-	public static final AudioFactory AUDIO_FACTORY = Providers.fromDescriptor(AudioFactory.class).find().orElse(null);
-	/** Service-loaded render medium */
-	public static final RenderMedium RENDER_MEDIUM = Providers.fromDescriptor(RenderMedium.class).find().orElse(null);
+	private static final Logger LOG = LoggerFactory.getLogger(Resources.class);
 
-	private static final InStrategy[] IN_STRATEGIES = {
-			StreamStrategies.IN_PATH,
-			StreamStrategies.IN_CLASSPATH
-	};
-	private static final OutStrategy[] OUT_STRATEGIES = {
-			StreamStrategies.OUT_PATH
-	};
-	private static final Logger LOG = Config.getLogger(Resources.class);
+	/** Service-loaded application executor */
+	public static final Application APPLICATION = ServiceLoader.load(Application.class).findFirst().orElse(null);
+	/** Service-loaded audio factory */
+	public static final AudioFactory AUDIO_FACTORY = ServiceLoader.load(AudioFactory.class).findFirst().orElse(null);
+	/** Service-loaded render medium */
+	public static final RenderMedium RENDER_MEDIUM = ServiceLoader.load(RenderMedium.class).findFirst().orElse(null);
 
 	private Resources() {}
 
 	/**
 	 * Retrieves an input stream to a resource.
+	 * Attempts to load occurrences in order: [path, classpath].
 	 * @param path path to resource
 	 * @return input stream to resource
 	 */
-	public static InputStream in(String path) {
-		return logRetrieval("input", path, Files.in(path, IN_STRATEGIES));
-	}
-	/**
-	 * Consumes an input stream if it exists.
-	 * @param path path to resource
-	 * @param streamConsumer input stream consumer
-	 * @return {@code true} if stream exists and was consumed
-	 */
-	public static boolean in(String path, Consumer<InputStream> streamConsumer) {
-		return logRetrieval("input", path, Files.in(streamConsumer, path, IN_STRATEGIES));
+	public static Optional<InputStream> in(String path) {
+		InputStream result;
+
+		try {
+			result = Files.newInputStream(Paths.get(path));
+			LOG.info("Loaded from path [{}]", path);
+		} catch (IOException e) {
+			LOG.warn("Failed to load from path [{}] - {}", path, e);
+			result = ClassLoader.getSystemResourceAsStream(path);
+
+			if (result != null) {
+				LOG.info("Loaded from classpath [{}]", path);
+			} else {
+				LOG.warn("Failed to load from classpath [{}]", path);
+			}
+		}
+		if (result == null) {
+			LOG.error("Failed to load resource [{}]", path);
+		}
+		return Optional.ofNullable(result);
 	}
 
 	/**
 	 * Retrieves an output stream to a resource.
 	 * @param path path to resource
-	 * @return output stream to resource
+	 * @return output stream to resource; or {@code null} if no such resource
 	 */
-	public static OutputStream out(String path) {
-		return logRetrieval("output", path, Files.out(path, OUT_STRATEGIES));
-	}
-	/**
-	 * Consumes an output stream if it exists.
-	 * @param path path to resource
-	 * @param streamConsumer output stream consumer
-	 * @return {@code true} if stream exists and was consumed
-	 */
-	public static boolean out(String path, Consumer<OutputStream> streamConsumer) {
-		return logRetrieval("output", path, Files.out(streamConsumer, path, OUT_STRATEGIES));
-	}
-
-	/**
-	 * Reads a resource into a string.
-	 * @param path path to resource
-	 * @return resource text as string
-	 */
-	public static String string(String path) {
-		return new String(Files.bytes(in(path)), StandardCharsets.UTF_8);
-	}
-	/**
-	 * Writes a string to a resource.
-	 * @param path path to resource
-	 * @param s string to write
-	 */
-	public static void string(String path, String s) {
-		Files.bytes(out(path), s.getBytes(StandardCharsets.UTF_8));
-	}
-
-	private static <T extends Closeable> T logRetrieval(String streamType, String path, T stream) {
-		logRetrieval(streamType, path, stream != null);
-
-		return stream;
-	}
-	private static boolean logRetrieval(String streamType, String path, boolean success) {
-		if (LOG != null) {	// FIXME Can happen during the back-forth initialization of Resources and Config
-			if (success) LOG.debug("Retrieved {} stream at path: {}", streamType, path);
-			else LOG.warning("Unable to find {} stream at path: {}", streamType, path);
+	public static Optional<OutputStream> out(String path) {
+		Optional<OutputStream> result = Optional.empty();
+		try {
+			result = Optional.of(Files.newOutputStream(Paths.get(path)));
+			LOG.info("Got handle [{}]", path);
+		} catch (IOException e) {
+			LOG.error("Failed to get handle", e);
 		}
-		return success;
+		return result;
 	}
 }

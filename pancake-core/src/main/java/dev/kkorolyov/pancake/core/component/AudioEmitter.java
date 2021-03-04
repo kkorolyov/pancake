@@ -8,10 +8,10 @@ import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static dev.kkorolyov.flopple.collections.Iterables.append;
+import static dev.kkorolyov.flopple.collections.Iterables.concat;
 import static dev.kkorolyov.pancake.platform.media.audio.Audio.State.END;
 import static dev.kkorolyov.pancake.platform.media.audio.Audio.State.PLAY;
-import static dev.kkorolyov.simplefuncs.stream.Iterables.append;
-import static dev.kkorolyov.simplefuncs.stream.Iterables.concat;
 
 /**
  * Emits a collection of audio clips at a given configuration.

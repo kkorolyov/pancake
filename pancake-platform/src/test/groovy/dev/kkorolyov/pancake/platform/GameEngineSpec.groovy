@@ -9,14 +9,13 @@ import dev.kkorolyov.pancake.platform.utility.Limiter
 
 import spock.lang.Specification
 
-import static dev.kkorolyov.simplespecs.SpecUtilities.getField
-import static dev.kkorolyov.simplespecs.SpecUtilities.randLong
+import static dev.kkorolyov.pancake.platform.SpecUtilities.randLong
 
 class GameEngineSpec extends Specification {
 	long dt = randLong()
 	Signature signature = new Signature(MockComponent)
-	EventBroadcaster.Managed events = Mock()
 
+	EventBroadcaster.Managed events = new EventBroadcaster.Managed()
 	EntityPool entities = new EntityPool(events)
 	Entity entity = entities.create()
 			.add(new MockComponent())
@@ -76,7 +75,7 @@ class GameEngineSpec extends Specification {
 		engine.add(readySystem)
 
 		then:
-		1 * readySystem.setResources(new SharedResources(events, getField("performanceCounter", engine)))
+		1 * readySystem.setResources(new SharedResources(events, _))
 	}
 	def "unshares services from removed system"() {
 		when:

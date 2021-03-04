@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.platform.registry;
 
+import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.media.audio.Audio;
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
-import dev.kkorolyov.simplefiles.Providers;
-import dev.kkorolyov.simplefuncs.convert.Converter;
 
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
 /**
@@ -44,7 +44,8 @@ public interface ResourceReaderFactory<T> {
 	 */
 	static <T> Converter<String, Optional<? extends T>> get(Class<? extends ResourceReaderFactory<T>> c, Registry<? super String, ? extends T> registry) {
 		return Converter.reducing(
-				Providers.fromDescriptor(c).stream()
+				ServiceLoader.load(c).stream()
+						.map(ServiceLoader.Provider::get)
 						.map(factory -> factory.get(registry))
 						.collect(Collectors.toSet())
 		);

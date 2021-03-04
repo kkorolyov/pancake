@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.platform.registry;
 
-import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.simplefuncs.convert.Converter;
-import dev.kkorolyov.simpleprops.Properties;
+import dev.kkorolyov.flopple.function.convert.Converter;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.function.Function;
 
 /**
@@ -28,11 +28,12 @@ public interface RegistryLoader<K, V> {
 	) {
 		return registry -> {
 			Converter<? super String, ? extends Optional<? extends V>> reader = resourceReader.apply(registry);
-			for (Map.Entry<String, String> prop : props) {
-				reader.convert(prop.getValue())
+			// FIXME This is not in-order due to hashtable
+			for (Map.Entry<Object, Object> prop : props.entrySet()) {
+				reader.convert(prop.getValue().toString())
 						.ifPresentOrElse(
-								resource -> registry.put(prop.getKey(), resource),
-								() -> Config.getLogger(RegistryLoader.class).warning("Failed to parse resource: {}", prop.getValue())
+								resource -> registry.put(prop.getKey().toString(), resource),
+								() -> LoggerFactory.getLogger(RegistryLoader.class).warn("Failed to parse resource: {}", prop.getValue())
 						);
 			}
 		};

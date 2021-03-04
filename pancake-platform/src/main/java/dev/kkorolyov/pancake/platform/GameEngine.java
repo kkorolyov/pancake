@@ -4,30 +4,30 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
-import dev.kkorolyov.simplefiles.Providers;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.ServiceLoader;
 
 /**
  * Central game management module.
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
-public class GameEngine {
+public final class GameEngine {
 	private final EventBroadcaster.Managed events;
 	private final EntityPool entities;
-	private final PerformanceCounter performanceCounter = new PerformanceCounter();
 	private final Collection<GameSystem> systems = new LinkedHashSet<>();
 	private final SharedResources resources;
 
+	private final PerformanceCounter performanceCounter = new PerformanceCounter();
 	private final DebugRenderer debugRenderer = new DebugRenderer();
 
 	/**
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
 	public GameEngine(EventBroadcaster.Managed events, EntityPool entities) {
-		this(events, entities, Providers.fromDescriptor(GameSystem.class).stream()::iterator);
+		this(events, entities, ServiceLoader.load(GameSystem.class).stream().map(ServiceLoader.Provider::get)::iterator);
 	}
 	/**
 	 * @see #GameEngine(EventBroadcaster.Managed, EntityPool, Iterable)
@@ -92,5 +92,16 @@ public class GameEngine {
 			system.detach();
 			system.setResources(null);
 		}
+	}
+	@Override
+	public String toString() {
+		return "GameEngine{" +
+				"events=" + events +
+				", entities=" + entities +
+				", performanceCounter=" + performanceCounter +
+				", systems=" + systems +
+				", resources=" + resources +
+				", debugRenderer=" + debugRenderer +
+				'}';
 	}
 }
