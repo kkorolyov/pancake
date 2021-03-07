@@ -10,12 +10,12 @@ import dev.kkorolyov.pancake.platform.registry.Registry
 import spock.lang.Shared
 import spock.lang.Specification
 
-class RenderableResourceReaderFactorySpec extends Specification {
+class RenderableStratDeferredConverterFactorySpec extends Specification {
 	@Shared
 	String[] references = ["ref", "ref4", "newRef"]
 
 	@Shared
-	RenderableResourceReaderFactory factory = new RenderableResourceReaderFactory()
+	RenderableStratDeferredConverterFactory factory = new RenderableStratDeferredConverterFactory()
 
 	RenderMedium renderMedium = Mock()
 

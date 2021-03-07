@@ -3,13 +3,18 @@
 # This file is expected to be part of source control.
 cglib:cglib-nodep:3.3.0=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 com.fasterxml.jackson.core:jackson-annotations:2.11.1=dokkaGfmPlugin,dokkaGfmRuntime,dokkaHtmlPlugin,dokkaHtmlRuntime,dokkaJavadocPlugin,dokkaJavadocRuntime,dokkaJekyllPlugin,dokkaJekyllRuntime
+com.fasterxml.jackson.core:jackson-annotations:2.12.2=runtimeClasspath,testRuntimeClasspath
 com.fasterxml.jackson.core:jackson-core:2.11.1=dokkaGfmPlugin,dokkaGfmRuntime,dokkaHtmlPlugin,dokkaHtmlRuntime,dokkaJavadocPlugin,dokkaJavadocRuntime,dokkaJekyllPlugin,dokkaJekyllRuntime
+com.fasterxml.jackson.core:jackson-core:2.12.2=runtimeClasspath,testRuntimeClasspath
 com.fasterxml.jackson.core:jackson-databind:2.11.1=dokkaGfmPlugin,dokkaGfmRuntime,dokkaHtmlPlugin,dokkaHtmlRuntime,dokkaJavadocPlugin,dokkaJavadocRuntime,dokkaJekyllPlugin,dokkaJekyllRuntime
+com.fasterxml.jackson.core:jackson-databind:2.12.2=runtimeClasspath,testRuntimeClasspath
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.11.1=dokkaGfmRuntime,dokkaHtmlRuntime,dokkaJavadocRuntime,dokkaJekyllRuntime
+com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.2=runtimeClasspath,testRuntimeClasspath
 com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.11.1=dokkaGfmRuntime,dokkaHtmlRuntime,dokkaJavadocRuntime,dokkaJekyllRuntime
 com.fasterxml.jackson.module:jackson-module-kotlin:2.11.1=dokkaGfmPlugin,dokkaGfmRuntime,dokkaHtmlPlugin,dokkaHtmlRuntime,dokkaJavadocPlugin,dokkaJavadocRuntime,dokkaJekyllPlugin,dokkaJekyllRuntime
+com.fasterxml.jackson:jackson-bom:2.12.2=runtimeClasspath,testRuntimeClasspath
 com.fasterxml.woodstox:woodstox-core:6.2.1=dokkaGfmRuntime,dokkaHtmlRuntime,dokkaJavadocRuntime,dokkaJekyllRuntime
-dev.kkorolyov:flopple:1.0.0=compileClasspath,implementationDependenciesMetadata,runtimeClasspath,testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
+dev.kkorolyov:flopple:1.0.0-beta=compileClasspath,implementationDependenciesMetadata,runtimeClasspath,testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 jakarta.activation:jakarta.activation-api:1.2.1=dokkaGfmRuntime,dokkaHtmlRuntime,dokkaJavadocRuntime,dokkaJekyllRuntime
 jakarta.xml.bind:jakarta.xml.bind-api:2.3.2=dokkaGfmRuntime,dokkaHtmlRuntime,dokkaJavadocRuntime,dokkaJekyllRuntime
 net.bytebuddy:byte-buddy:1.10.21=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
@@ -63,4 +68,5 @@ org.opentest4j:opentest4j:1.2.0=testCompileClasspath,testImplementationDependenc
 org.ow2.asm:asm:9.0=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 org.slf4j:slf4j-api:1.8.0-beta4=compileClasspath,implementationDependenciesMetadata,runtimeClasspath,testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
 org.spockframework:spock-core:2.0-M4-groovy-3.0=testCompileClasspath,testImplementationDependenciesMetadata,testRuntimeClasspath
+org.yaml:snakeyaml:1.27=runtimeClasspath,testRuntimeClasspath
 empty=annotationProcessor,compileOnlyDependenciesMetadata,dokkaPlugin,dokkaRuntime,kotlinNativeCompilerPluginClasspath,kotlinScriptDef,kotlinScriptDefExtensions,runtimeOnlyDependenciesMetadata,testAnnotationProcessor,testApiDependenciesMetadata,testCompileOnlyDependenciesMetadata,testKotlinScriptDef,testKotlinScriptDefExtensions,testRuntimeOnlyDependenciesMetadata

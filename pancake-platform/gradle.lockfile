@@ -2,7 +2,12 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 cglib:cglib-nodep:3.3.0=testCompileClasspath,testRuntimeClasspath
-dev.kkorolyov:flopple:1.0.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-annotations:2.12.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-core:2.12.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-databind:2.12.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson:jackson-bom:2.12.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:flopple:1.0.0-beta=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 net.bytebuddy:byte-buddy:1.10.21=testCompileClasspath,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.0=testCompileClasspath,testRuntimeClasspath
 org.assertj:assertj-core:3.16.1=testCompileClasspath,testRuntimeClasspath
@@ -22,4 +27,5 @@ org.opentest4j:opentest4j:1.2.0=testCompileClasspath,testRuntimeClasspath
 org.ow2.asm:asm:9.0=testCompileClasspath,testRuntimeClasspath
 org.slf4j:slf4j-api:1.8.0-beta4=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.spockframework:spock-core:2.0-M4-groovy-3.0=testCompileClasspath,testRuntimeClasspath
+org.yaml:snakeyaml:1.27=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 empty=annotationProcessor,testAnnotationProcessor

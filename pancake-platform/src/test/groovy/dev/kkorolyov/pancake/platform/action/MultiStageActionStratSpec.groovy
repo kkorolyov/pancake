@@ -8,7 +8,7 @@ import spock.lang.Specification
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
-class MultiStageActionSpec extends Specification {
+class MultiStageActionStratSpec extends Specification {
 	@Shared long holdThreshold = 0
 	@Shared long dt = 0
 	@Shared Entity entity = Mock()

@@ -4,7 +4,7 @@ import spock.lang.Specification
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
-class BoundedVectorSpec extends Specification {
+class BoundedVectorStratSpec extends Specification {
 	Vector vector = randVector()
 	Vector min = new Vector(vector).sub(Vector.all(1000))
 	Vector max = new Vector(vector).add(Vector.all(500))

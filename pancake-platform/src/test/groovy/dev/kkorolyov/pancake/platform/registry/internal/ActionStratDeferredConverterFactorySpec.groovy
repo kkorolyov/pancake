@@ -9,14 +9,14 @@ import dev.kkorolyov.pancake.platform.registry.Registry
 import spock.lang.Shared
 import spock.lang.Specification
 
-class ActionResourceReaderFactorySpec extends Specification {
+class ActionStratDeferredConverterFactorySpec extends Specification {
 	@Shared
 	String[] references = ["ref", "ref4", "newRef"]
 	@Shared
 	String[] multiStages = ["startStep", "holdStep", "endStep"]
 
 	@Shared
-	ActionResourceReaderFactory factory = new ActionResourceReaderFactory()
+	ActionStratDeferredConverterFactory factory = new ActionStratDeferredConverterFactory()
 
 	Registry<String, Action> registry = new Registry<>();
 	Converter<String, Optional<Action>> converter = factory.get(registry)
@@ -49,7 +49,7 @@ class ActionResourceReaderFactorySpec extends Specification {
 				stageToAction.values()[0],
 				stageToAction.values()[1],
 				stageToAction.values()[2],
-				ActionResourceReaderFactory.MULTI_STAGE_HOLD_THRESHOLD
+				ActionStratDeferredConverterFactory.MULTI_STAGE_HOLD_THRESHOLD
 		)
 	}
 }

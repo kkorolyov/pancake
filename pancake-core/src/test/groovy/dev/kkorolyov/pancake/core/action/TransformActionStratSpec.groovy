@@ -12,7 +12,7 @@ import spock.lang.Specification
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
-class TransformActionSpec extends Specification {
+class TransformActionStratSpec extends Specification {
 	@Shared Vector position = randVector()
 	@Shared Vector rotation = randVector()
 	@Shared Signature signature = new Signature(Transform)

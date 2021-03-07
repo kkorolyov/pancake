@@ -3,8 +3,6 @@ module dev.kkorolyov.pancake.javafx.application {
 
 	requires javafx.graphics;
 
-	requires dev.kkorolyov.flopple;
-
 	requires dev.kkorolyov.pancake.platform;
 
 	provides dev.kkorolyov.pancake.platform.application.Application with dev.kkorolyov.pancake.javafx.JavaFxApplication;

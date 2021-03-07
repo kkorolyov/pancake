@@ -77,13 +77,21 @@ subprojects {
 	repositories {
 		jcenter()
 		mavenCentral()
-		maven {
-			url = uri("https://maven.pkg.github.com/kkorolyov/pieline-lib")
-			credentials {
-				username = System.getenv("GITHUB_ACTOR")
-				password = System.getenv("GITHUB_TOKEN")
-			}
+	}
+
+	dependencies {
+		// observability
+		val slf4jVersion: String by project
+
+		implementation("org.slf4j:slf4j-api:$slf4jVersion")
+
+		dependencyLocking {
+			lockAllConfigurations()
 		}
+	}
+
+	// FIXME API dependencies not added to compile path in downstream lockfiles
+	repositories {
 		maven {
 			url = uri("https://maven.pkg.github.com/kkorolyov/flopple")
 			credentials {
@@ -97,15 +105,6 @@ subprojects {
 		// stdlib
 		val floppleVersion: String by project
 		implementation("dev.kkorolyov:flopple:$floppleVersion")
-
-		// observability
-		val slf4jVersion: String by project
-
-		implementation("org.slf4j:slf4j-api:$slf4jVersion")
-
-		dependencyLocking {
-			lockAllConfigurations()
-		}
 	}
 
 	java {
@@ -164,6 +163,11 @@ configure(
 ) {
 	apply(plugin = "java-library")
 	apply(plugin = "maven-publish")
+
+	dependencies {
+		val jacksonVersion: String by project
+		implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+	}
 
 	publishing {
 		publications {

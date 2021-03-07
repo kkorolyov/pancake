@@ -1,4 +1,0 @@
-player=[IMG(assets/entities/swealor/leg-r.png), IMG(assets/entities/swealor/leg-l.png), IMG(assets/entities/swealor/arm-r.png), IMG(assets/entities/swealor/arm-l.png), IMG(assets/entities/swealor/torso.png), IMG(assets/entities/swealor/head.png)]
-sphere=IMG(assets/entities/scrumple.png)
-box=IMG(assets/entities/sqlob.png)
-ground=IMG(assets/tiles/cobble.png)

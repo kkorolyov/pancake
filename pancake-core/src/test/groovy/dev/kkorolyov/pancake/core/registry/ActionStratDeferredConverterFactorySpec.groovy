@@ -12,14 +12,14 @@ import spock.lang.Specification
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
-class ActionResourceReaderFactorySpec extends Specification {
+class ActionStratDeferredConverterFactorySpec extends Specification {
 	@Shared
 	Vector vector = randVector()
 	@Shared
 	Vector vector1 = randVector()
 
 	@Shared
-	ActionResourceReaderFactory factory = new ActionResourceReaderFactory()
+	ActionStratDeferredConverterFactory factory = new ActionStratDeferredConverterFactory()
 
 	Registry<String, Action> registry = new Registry<>()
 	Converter<String, Optional<Action>> converter = factory.get(registry)

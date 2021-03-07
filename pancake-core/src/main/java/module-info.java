@@ -1,7 +1,8 @@
+import dev.kkorolyov.pancake.core.registry.ActionStratDeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
+
 module dev.kkorolyov.pancake.core {
 	requires org.slf4j;
-
-	requires dev.kkorolyov.flopple;
 
 	requires dev.kkorolyov.pancake.platform;
 
@@ -24,5 +25,5 @@ module dev.kkorolyov.pancake.core {
 			dev.kkorolyov.pancake.core.system.AnimationSystem,
 			dev.kkorolyov.pancake.core.system.RenderSystem,
 			dev.kkorolyov.pancake.core.system.AudioSystem;
-	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource with dev.kkorolyov.pancake.core.registry.ActionResourceReaderFactory;
+	provides DeferredConverterFactory.ActionStrat with ActionStratDeferredConverterFactory;
 }

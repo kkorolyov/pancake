@@ -1,7 +1,18 @@
-module dev.kkorolyov.pancake.platform {
-	requires org.slf4j;
+import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.internal.ActionStratDeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.internal.AudioStratDeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.internal.RenderableStratDeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.internal.VectorStratDeferredConverterFactory;
 
-	requires dev.kkorolyov.flopple;
+module dev.kkorolyov.pancake.platform {
+	// logging
+	requires org.slf4j;
+	requires com.fasterxml.jackson.dataformat.yaml;
+
+	// resource parsing
+	requires org.yaml.snakeyaml;
+	// expose for resource mapping API
+	requires transitive dev.kkorolyov.flopple;
 
 	exports dev.kkorolyov.pancake.platform;
 	exports dev.kkorolyov.pancake.platform.action;
@@ -22,11 +33,13 @@ module dev.kkorolyov.pancake.platform {
 	uses dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
 	uses dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 	// resource reader factories
-	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource;
-	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.AudioResource;
-	uses dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.RenderableResource;
+	uses DeferredConverterFactory.VectorStrat;
+	uses DeferredConverterFactory.ActionStrat;
+	uses DeferredConverterFactory.AudioStrat;
+	uses DeferredConverterFactory.RenderableStrat;
 
-	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource with dev.kkorolyov.pancake.platform.registry.internal.ActionResourceReaderFactory;
-	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.AudioResource with dev.kkorolyov.pancake.platform.registry.internal.AudioResourceReaderFactory;
-	provides dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.RenderableResource with dev.kkorolyov.pancake.platform.registry.internal.RenderableResourceReaderFactory;
+	provides DeferredConverterFactory.VectorStrat with VectorStratDeferredConverterFactory;
+	provides DeferredConverterFactory.ActionStrat with ActionStratDeferredConverterFactory;
+	provides DeferredConverterFactory.AudioStrat with AudioStratDeferredConverterFactory;
+	provides DeferredConverterFactory.RenderableStrat with RenderableStratDeferredConverterFactory;
 }

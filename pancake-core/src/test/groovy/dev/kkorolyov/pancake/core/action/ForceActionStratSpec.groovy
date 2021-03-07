@@ -11,7 +11,7 @@ import spock.lang.Specification
 
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
-class ForceActionSpec extends Specification {
+class ForceActionStratSpec extends Specification {
 	@Shared Vector force = randVector()
 	@Shared Signature signature = new Signature(Force)
 

@@ -1,6 +1,5 @@
 module dev.kkorolyov.killstreek {
 	requires kotlin.stdlib;
-	requires dev.kkorolyov.flopple;
 
 	requires org.slf4j;
 	requires org.apache.logging.log4j;

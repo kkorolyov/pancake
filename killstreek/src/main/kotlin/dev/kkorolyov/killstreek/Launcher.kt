@@ -35,12 +35,12 @@ import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.media.graphic.Viewport
+import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory
+import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory.ActionStrat
+import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory.AudioStrat
+import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory.RenderableStrat
 import dev.kkorolyov.pancake.platform.registry.Registry
-import dev.kkorolyov.pancake.platform.registry.RegistryLoader
-import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory
-import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.ActionResource
-import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.AudioResource
-import dev.kkorolyov.pancake.platform.registry.ResourceReaderFactory.RenderableResource
+import dev.kkorolyov.pancake.platform.registry.ResourceReader
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.Properties
@@ -51,46 +51,31 @@ import kotlin.math.sqrt
 private val log: Logger = LoggerFactory.getLogger("main")
 
 private val renderables: Registry<String, Renderable> by lazy {
-	Registry<String, Renderable>().apply {
-		RegistryLoader.fromProperties<Renderable>(Properties().apply {
-			Resources.`in`("config/renderables").ifPresent(this::load)
-		}) {
-			ResourceReaderFactory.get(
-				RenderableResource::class.java,
-				it
-			)
-		}.load(this)
+	Resources.`in`("config/renderables.yaml").orElse(null).use {
+		Registry<String, Renderable>().apply {
+			load(ResourceReader(DeferredConverterFactory.get(RenderableStrat::class.java)).fromYaml(it))
+		}
 	}
 }
 private val audio: Registry<String, Audio> by lazy {
-	Registry<String, Audio>().apply {
-		RegistryLoader.fromProperties<Audio>(Properties().apply {
-			Resources.`in`("config/audio").ifPresent(this::load)
-		}) {
-			ResourceReaderFactory.get(
-				AudioResource::class.java,
-				it
-			)
-		}.load(this)
+	Resources.`in`("config/audio.yaml").orElse(null).use {
+		Registry<String, Audio>().apply {
+			load(ResourceReader(DeferredConverterFactory.get(AudioStrat::class.java)).fromYaml(it))
+		}
 	}
 }
 private val actions: Registry<String, Action> by lazy {
-	Registry<String, Action>().apply {
-		put("ANIMATE", Action { it.get(Animation::class.java).isActive = true })
-		put("STOP_ANIMATE", Action { it.get(Animation::class.java).isActive = false })
+	Resources.`in`("config/actions.yaml").orElse(null).use {
+		Registry<String, Action>().apply {
+			put("animate", Action { it.get(Animation::class.java).isActive = true })
+			put("stopAnimate", Action { it.get(Animation::class.java).isActive = false })
 
-		put("TOGGLE_ANIMATE", Action { it.get(Animation::class.java).toggle() })
+			put("toggleAnimate", Action { it.get(Animation::class.java).toggle() })
 
-		put("TOGGLE_SPAWNER", Action { it.get(Spawner::class.java).toggle() })
+			put("toggleSpawner", Action { it.get(Spawner::class.java).toggle() })
 
-		RegistryLoader.fromProperties<Action>(Properties().apply {
-			Resources.`in`("config/actions").ifPresent(this::load)
-		}) {
-			ResourceReaderFactory.get(
-				ActionResource::class.java,
-				it
-			)
-		}.load(this)
+			load(ResourceReader(DeferredConverterFactory.get(ActionStrat::class.java)).fromYaml(it))
+		}
 	}
 }
 

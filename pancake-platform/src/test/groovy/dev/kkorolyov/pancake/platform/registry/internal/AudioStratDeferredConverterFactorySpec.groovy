@@ -8,11 +8,11 @@ import dev.kkorolyov.pancake.platform.registry.Registry
 import spock.lang.Shared
 import spock.lang.Specification
 
-class AudioResourceReaderFactorySpec extends Specification {
+class AudioStratDeferredConverterFactorySpec extends Specification {
 	@Shared
 	String[] uris = ["file://local/path", "https://remote/path", "rando"]
 
-	AudioResourceReaderFactory factory = new AudioResourceReaderFactory()
+	AudioStratDeferredConverterFactory factory = new AudioStratDeferredConverterFactory()
 
 	AudioFactory audioFactory = Mock()
 
