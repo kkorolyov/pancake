@@ -50,7 +50,7 @@ public final class PerformanceCounter {
 
 	/** @return average ticks per second */
 	public long getTps() {
-		return Math.round(1e9 / tick.getValue());
+		return Math.round(1e9 / tick.get());
 	}
 	/** @return all system usage average values */
 	public Iterable<Usage> getUsages() {
@@ -78,25 +78,25 @@ public final class PerformanceCounter {
 				log.warn(
 						"{} exceeded max usage by {} microseconds",
 						systemName,
-						value.getValue() - maxTime
+						value.get() - maxTime
 				);
 			}
 		}
 
 		/** @return average time usage value in μs */
 		public long getValue() {
-			return value.getValue();
+			return value.get();
 		}
 
 		/** @return {@code true} if this average value exceeds the expected maximum value */
 		public boolean exceedsMax() {
-			return value.getValue() > maxTime;
+			return value.get() > maxTime;
 		}
 
 		/** @return usage representation in the format: {@code {systemName}: {value}μs} */
 		@Override
 		public String toString() {
-			return systemName + ": " + value + "\u00b5s";
+			return systemName + ": " + value.get() + "\u00b5s";
 		}
 	}
 }

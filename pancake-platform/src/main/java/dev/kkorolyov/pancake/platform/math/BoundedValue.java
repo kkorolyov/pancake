@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.platform.math;
 /**
  * A value between minimum and maximum bounds.
  */
-public class BoundedValue<T extends Comparable<T>> {
+public final class BoundedValue<T extends Comparable<T>> {
 	private T value;
 	private T minimum, maximum;
 
@@ -30,11 +30,11 @@ public class BoundedValue<T extends Comparable<T>> {
 	 * @return {@code this}
 	 */
 	public BoundedValue<T> set(T value) {
-		this.value = nullCompare(value, minimum) < 0 ? minimum	:
+		this.value = nullCompare(value, minimum) < 0 ? minimum :
 				nullCompare(value, maximum) > 0 ? maximum : value;
 		return this;
 	}
-	private int nullCompare(T value, T bound) {	// Counts null bounds as equal
+	private int nullCompare(T value, T bound) {  // Counts null bounds as equal
 		return bound == null ? 0 : value.compareTo(bound);
 	}
 
@@ -62,5 +62,14 @@ public class BoundedValue<T extends Comparable<T>> {
 	public BoundedValue<T> setMaximum(T maximum) {
 		this.maximum = maximum;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "BoundedValue{" +
+				"value=" + value +
+				", minimum=" + minimum +
+				", maximum=" + maximum +
+				'}';
 	}
 }

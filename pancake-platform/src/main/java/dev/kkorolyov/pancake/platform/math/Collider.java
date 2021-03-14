@@ -3,7 +3,8 @@ package dev.kkorolyov.pancake.platform.math;
 /**
  * Provides methods for calculating intersection occurrence and for resolving collisions.
  */
-public class Collider {
+// TODO Make instantiable
+public final class Collider {
 	private static final Vector mtv = new Vector();
 
 	private static final Vector xTemp1 = new Vector();
@@ -11,6 +12,8 @@ public class Collider {
 	private static final Vector vTemp = new Vector();
 	private static final Vector vDiff = new Vector();
 	private static final Vector xDiff = new Vector();
+
+	private Collider() {}
 
 	/**
 	 * Checks for intersection between 2 boxes.
@@ -23,7 +26,7 @@ public class Collider {
 	 */
 	public static Vector intersection(Vector origin1, Vector size1, Vector origin2, Vector size2) {
 		xTemp1.set(origin1);
-		xTemp1.sub(size1, .5f);	// Lower-left vertex
+		xTemp1.sub(size1, .5f);  // Lower-left vertex
 		xTemp2.set(origin2);
 		xTemp2.sub(size2, .5f);
 
@@ -34,21 +37,25 @@ public class Collider {
 		if (xOverlap != 0 && yOverlap != 0 && zOverlap != 0) {
 			double xDiff = Math.abs(xOverlap), yDiff = Math.abs(yOverlap), zDiff = Math.abs(zOverlap);
 
-			if (xDiff <= yDiff && xDiff <= zDiff) mtv.set(xOverlap, 0, 0);
-			else if (yDiff <= xDiff && yDiff <= zDiff) mtv.set(0, yOverlap, 0);
-			else mtv.set(0, 0, zOverlap);
+			if (xDiff <= yDiff && xDiff <= zDiff) {
+				mtv.set(xOverlap, 0, 0);
+			} else if (yDiff <= xDiff && yDiff <= zDiff) {
+				mtv.set(0, yOverlap, 0);
+			} else {
+				mtv.set(0, 0, zOverlap);
+			}
 
 			return mtv;
 		} else {
 			return null;
 		}
 	}
-	private static double overlap(double x1, double x2, double y1, double y2) {	// SAT
+	private static double overlap(double x1, double x2, double y1, double y2) {  // SAT
 		if (x1 == x2 && x1 == y1 && x1 == y2) return Double.MAX_VALUE;
 
 		return (x2 >= y1 && y2 >= x1)
-					 ? (x2 < y2) ? y1 - x2 : y2 - x1	// Negative if 1st line overlaps from left, positive if from right
-					 : 0;
+				? (x2 < y2) ? y1 - x2 : y2 - x1  // Negative if 1st line overlaps from left, positive if from right
+				: 0;
 	}
 	/**
 	 * Checks for intersection between 2 spheres.
@@ -61,12 +68,12 @@ public class Collider {
 	 */
 	public static Vector intersection(Vector origin1, double radius1, Vector origin2, double radius2) {
 		mtv.set(origin2);
-		mtv.sub(origin1);	// Vector from origin1 to origin2
+		mtv.sub(origin1);  // Vector from origin1 to origin2
 
 		double overlap = mtv.getMagnitude() - (radius1 + radius2);
 
 		if (overlap < 0) {
-			mtv.normalize();	// Retain only direction
+			mtv.normalize();  // Retain only direction
 			mtv.scale(overlap); // Move origin1 away from origin2 by overlap amount
 
 			return mtv;

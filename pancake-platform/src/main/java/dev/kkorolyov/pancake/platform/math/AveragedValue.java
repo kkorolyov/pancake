@@ -5,19 +5,26 @@ import java.util.Arrays;
 /**
  * A value represented as the average of its previous several samples.
  */
-public class AveragedValue {
-	private long[] samples;
+public final class AveragedValue {
+	private final long[] samples;
 	private long value;
 	private int counter;
 
 	/**
 	 * Constructs an averaged value with all 0 samples.
-	 * @param samples number of individual samples
+	 * @param samples number of individual samples; must be {@code > 0}
 	 */
 	public AveragedValue(int samples) {
+		if (samples <= 0) {
+			throw new IllegalArgumentException("samples must be > 0");
+		}
 		this.samples = new long[samples];
 	}
 
+	/**
+	 * Adds a sample to this value.
+	 * @param sample sample to add
+	 */
 	public void add(long sample) {
 		samples[counter++] = sample;
 
@@ -31,25 +38,21 @@ public class AveragedValue {
 	}
 
 	/** @return average value of current samples */
-	public long getValue() {
+	public long get() {
 		return value;
 	}
 
 	/** @return maximum number of samples */
-	public int getSamples() {
+	public int size() {
 		return samples.length;
-	}
-	/**
-	 * @param samples maximum number of samples
-	 * @return {@code this}
-	 */
-	public AveragedValue setSamples(int samples) {
-		this.samples = Arrays.copyOf(this.samples, samples);
-		return this;
 	}
 
 	@Override
 	public String toString() {
-		return String.valueOf(value);
+		return "AveragedValue{" +
+				"samples=" + Arrays.toString(samples) +
+				", value=" + value +
+				", counter=" + counter +
+				'}';
 	}
 }

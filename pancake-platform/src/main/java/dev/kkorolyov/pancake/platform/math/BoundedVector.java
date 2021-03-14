@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.platform.math;
 /**
  * A vector with min and max constraints along each axis.
  */
-public class BoundedVector extends Vector {
+public final class BoundedVector extends Vector {
 	private final Vector min, max;
 
 	/**
