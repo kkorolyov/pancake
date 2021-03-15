@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.platform.utility;
 
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.Resources;
+import dev.kkorolyov.pancake.platform.math.Vector;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
  */
 public final class DebugRenderer {
 	private static final Pattern ARG_DELIMITER = Pattern.compile(",\\s*");
-	private static final int LINE_HEIGHT = 14;
+	private static final Vector SHIFTER = new Vector(0, 14);
 	private static final Logger LOG = LoggerFactory.getLogger(DebugRenderer.class);
 
 	private final RenderTransform renderTransform = new RenderTransform();
@@ -35,20 +36,18 @@ public final class DebugRenderer {
 			for (String arg : args) {
 				switch (arg) {
 					case "fps":
-						text
-								.setValue("FPS: " + performanceCounter.getTps())
-								.render(renderTransform);
+						text.setValue("FPS: " + performanceCounter.getTps());
+						text.render(renderTransform);
 
-						renderTransform.getPosition().translate(0, LINE_HEIGHT);
+						renderTransform.getPosition().add(SHIFTER);
 						break;
 					case "usage":
 						for (PerformanceCounter.Usage usage : performanceCounter.getUsages()) {
-							text
-									.setValue(usage.toString())
-									.setStroke(usage.exceedsMax() ? Shape.Color.RED : Shape.Color.BLACK)
-									.render(renderTransform);
+							text.setValue(usage.toString());
+							text.setStroke(usage.exceedsMax() ? Shape.Color.RED : Shape.Color.GREEN);
+							text.render(renderTransform);
 
-							renderTransform.getPosition().translate(0, LINE_HEIGHT);
+							renderTransform.getPosition().add(SHIFTER);
 						}
 						break;
 					default:

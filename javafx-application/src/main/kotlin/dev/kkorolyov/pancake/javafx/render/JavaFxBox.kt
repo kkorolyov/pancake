@@ -11,10 +11,11 @@ class JavaFxBox(private val unitPixels: Vector, private val g: EnhancedGraphicsC
 	private val finalSize: Vector = Vector()
 
 	override fun render(transform: RenderTransform) {
-		finalSize
-				.set(size)
-				.scale(unitPixels)
-				.scale(transform.scale)
+		finalSize.apply {
+			set(size)
+			scale(unitPixels)
+			scale(transform.scale)
+		}
 
 		g.run {
 			shape(this@JavaFxBox)
@@ -22,16 +23,16 @@ class JavaFxBox(private val unitPixels: Vector, private val g: EnhancedGraphicsC
 
 			get().run {
 				fillRect(
-						transform.position.x - (finalSize.x / 2),
-						transform.position.y - (finalSize.y / 2),
-						finalSize.x,
-						finalSize.y
+					transform.position.x - (finalSize.x / 2),
+					transform.position.y - (finalSize.y / 2),
+					finalSize.x,
+					finalSize.y
 				)
 				strokeRect(
-						transform.position.x - (finalSize.x / 2),
-						transform.position.y - (finalSize.y / 2),
-						finalSize.x,
-						finalSize.y
+					transform.position.x - (finalSize.x / 2),
+					transform.position.y - (finalSize.y / 2),
+					finalSize.x,
+					finalSize.y
 				)
 			}
 		}

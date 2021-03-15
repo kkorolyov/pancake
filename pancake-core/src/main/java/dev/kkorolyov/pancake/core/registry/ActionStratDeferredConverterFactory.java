@@ -6,20 +6,14 @@ import dev.kkorolyov.pancake.core.action.TransformAction;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
 
-import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-import java.util.regex.MatchResult;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 import static dev.kkorolyov.flopple.function.Memoizer.memoize;
-import static java.util.stream.Collectors.toList;
 
 /**
  * {@link DeferredConverterFactory.ActionStrat} for core actions.
@@ -50,22 +44,6 @@ public class ActionStratDeferredConverterFactory implements DeferredConverterFac
 		return in == null ? null : vectorReader.get().convert(in)
 				.map(Deferred::resolve)
 				.orElseThrow(() -> new IllegalArgumentException("No resource reader matches: " + in));
-	}
-
-	private static Stream<dev.kkorolyov.pancake.platform.math.Vector> matchVectors(String in) {
-		List<String> vectors = VECTOR_PATTERN.matcher(in).results()
-				.map(MatchResult::group)
-				.collect(toList());
-		return vectors.stream()
-				.map(NUMBER_PATTERN::matcher)
-				.map(Matcher::results)
-				.map(matchResults -> matchResults
-						.map(MatchResult::group)
-						.map(BigDecimal::new)
-						.mapToDouble(BigDecimal::doubleValue)
-						.toArray()
-				)
-				.map(dev.kkorolyov.pancake.platform.math.Vector::new);
 	}
 
 	@Override

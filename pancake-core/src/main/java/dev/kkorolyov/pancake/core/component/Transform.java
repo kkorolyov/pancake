@@ -45,10 +45,11 @@ public class Transform implements Component {
 	 */
 	public Transform(Vector position, Vector orientation, Transform parent, boolean rotatesWithParent) {
 		this.position = position;
-		this.orientation = orientation.normalize();
+		this.orientation = new Vector(orientation);
+		this.orientation.normalize();
 		setParent(parent, rotatesWithParent);
 	}
-	
+
 	/** @return position relative to parent transform */
 	public Vector getPosition() {
 		return position;
@@ -58,7 +59,7 @@ public class Transform implements Component {
 		globalPosition.set(position);
 
 		if (parent != null) {
-			if (rotatesWithParent)  {
+			if (rotatesWithParent) {
 				Vector orientation = parent.getGlobalOrientation();
 				globalPosition.pivot(orientation.getZ(), orientation.getX());
 			}

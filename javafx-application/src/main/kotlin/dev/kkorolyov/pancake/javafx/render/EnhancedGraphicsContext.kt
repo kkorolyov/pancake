@@ -20,7 +20,10 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 	private var resetStroke: Boolean = false
 	private var resetLineWidth: Boolean = false
 
-	fun shape(shape: Shape<*>) {
+	/**
+	 * Sets configuration according to [shape].
+	 */
+	fun shape(shape: Shape) {
 		fill(shape.fill)
 		stroke(shape.stroke)
 		strokeWidth(shape.strokeWidth)
@@ -29,7 +32,7 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 	/** Sets current `fill` to [color]. */
 	fun fill(color: Shape.Color?) {
 		color?.run {
-			g.fill = Color.rgb(red.toInt(), green.toInt(), blue.toInt(), alpha)
+			g.fill = Color.rgb(red, green, blue, alpha / 255.0)
 
 			resetFill = false
 		}
@@ -38,7 +41,7 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 	/** Sets current `stroke` to [color]. */
 	fun stroke(color: Shape.Color?) {
 		color?.run {
-			g.stroke = Color.rgb(red.toInt(), green.toInt(), blue.toInt(), alpha)
+			g.stroke = Color.rgb(red, green, blue, alpha / 255.0)
 
 			resetStroke = false
 		}
@@ -68,9 +71,9 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 			pivotY = pivot?.y ?: 0.0
 
 			g.setTransform(
-					mxx, myx,
-					mxy, myy,
-					tx, ty
+				mxx, myx,
+				mxy, myy,
+				tx, ty
 			)
 		}
 	}

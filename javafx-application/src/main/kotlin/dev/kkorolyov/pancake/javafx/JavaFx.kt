@@ -126,7 +126,7 @@ class JavaFxRenderMedium : RenderMedium {
 	private val unitPixels = Vector(64.0, 64.0, 1.0)
 
 	// FIXME Decouple camera
-	private val camera: Camera = Camera(Vector(), Vector(unitPixels).scale(Vector(1.0, -1.0, 1.0)), 0.0, 0.0)
+	private val camera: Camera = Camera(Vector(), Vector(unitPixels).apply { scale(Vector(1.0, -1.0, 1.0)) }, 0.0, 0.0)
 	private val g: EnhancedGraphicsContext by lazy {
 		EnhancedGraphicsContext(Runner.canvas.graphicsContext2D)
 	}

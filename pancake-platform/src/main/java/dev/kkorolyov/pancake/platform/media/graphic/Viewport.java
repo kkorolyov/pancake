@@ -121,11 +121,14 @@ public final class Viewport {
 	}
 
 	private void calculate(double width, double height, double depth) {
-		origin.set(current)
-				.scale(
-						size.set(fullSize.set(width, height, depth))
-								.invScale(partitions)
-				);
+		fullSize.set(width, height, depth);
+
+		size.set(fullSize);
+		size.invScale(partitions);
+
+		origin.set(current);
+		origin.scale(size);
+
 		lastFullSize.set(fullSize);
 	}
 }

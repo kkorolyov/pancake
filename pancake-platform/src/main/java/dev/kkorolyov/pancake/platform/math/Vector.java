@@ -1,11 +1,9 @@
 package dev.kkorolyov.pancake.platform.math;
 
-import java.util.Objects;
-import java.util.stream.StreamSupport;
-
 /**
- * A vector defined as a head at some point in 3 dimensions and a tail at {@code (0, 0, 0)}.
+ * Describes a head at some point in 3 dimensions and a tail at {@code (0, 0, 0)}.
  */
+// TODO final
 public class Vector {
 	private double x, y, z;
 
@@ -39,25 +37,10 @@ public class Vector {
 		return result;
 	}
 
-	/** @see #Vector(double...) */
-	public Vector(Iterable<Number> components) {
-		this(
-				StreamSupport.stream(components.spliterator(), false)
-						.mapToDouble(Number::doubleValue)
-						.toArray()
-		);
-	}
 	/**
-	 * Constructs a vector described by {@code components}.
+	 * Constructs a vector with a head at {@code (0, 0, 0)}
 	 */
-	public Vector(double... components) {
-		// FIXME Store components as array
-		this(
-				components.length > 0 ? components[0] : 0,
-				components.length > 1 ? components[1] : 0,
-				components.length > 2 ? components[2] : 0
-		);
-	}
+	public Vector() {}
 	/**
 	 * Constructs a vector with a head at {@code (x, y, 0)}.
 	 * @see #Vector(double, double, double)
@@ -76,6 +59,7 @@ public class Vector {
 		this.y = y;
 		this.z = z;
 	}
+
 	/**
 	 * Constructs a copy of a vector.
 	 * @param original vector to copy
@@ -85,130 +69,108 @@ public class Vector {
 	}
 
 	/**
-	 * Translates the head of this vector along 2 axes.
-	 * @return {@code this}
-	 * @see #translate(double, double, double)
-	 */
-	public Vector translate(double dx, double dy) {
-		return translate(dx, dy, 0);
-	}
-	/**
-	 * Translates the head of this vector along 3 axes.
-	 * @param dx change along x-axis
-	 * @param dy change along y-axis
-	 * @param dz change along z-axis
-	 * @return {@code this}
-	 */
-	public Vector translate(double dx, double dy, double dz) {
-		setX(x + dx);
-		setY(y + dy);
-		setZ(z + dz);
-
-		return this;
-	}
-
-	/**
 	 * Scales this vector by a scalar.
 	 * @param value value to scale by
-	 * @return {@code this}
 	 */
-	public Vector scale(double value) {
-		setX(x * value);
-		setY(y * value);
-		setZ(z * value);
-
-		return this;
+	public void scale(double value) {
+		x *= value;
+		y *= value;
+		z *= value;
 	}
 	/**
 	 * Scales this vector by another vector, scaling each component individually by the other vector's respective component.
 	 * @param other vector to scale by
-	 * @return {@code this}
 	 */
-	public Vector scale(Vector other) {
-		setX(x * other.x);
-		setY(y * other.y);
-		setZ(z * other.z);
+	public void scale(Vector other) {
+		x *= other.x;
+		y *= other.y;
+		z *= other.z;
+	}
 
-		return this;
+	/**
+	 * Scales this vector by the inverse of a scalar.
+	 * @param value value to inverse scale by
+	 */
+	public void invScale(double value) {
+		x /= value;
+		y /= value;
+		z /= value;
 	}
 	/**
 	 * Scales this vector by the inverse of another vector, dividing each component individually by the other vector's respective component.
 	 * @param other vector to inverse scale by
-	 * @return {@code this}
 	 */
-	public Vector invScale(Vector other) {
-		setX(x / other.x);
-		setY(y / other.y);
-		setZ(z / other.z);
-
-		return this;
+	public void invScale(Vector other) {
+		x /= other.x;
+		y /= other.y;
+		z /= other.z;
 	}
 
 	/**
 	 * Transforms this vector by adding another vector to it.
 	 * This is equivalent to translating this vector by the other vector's components.
 	 * @param other vector to add
-	 * @return {@code this}
 	 * @see #add(Vector, double)
 	 */
-	public Vector add(Vector other) {
-		return translate(other.x, other.y, other.z);
+	public void add(Vector other) {
+		x += other.x;
+		y += other.y;
+		z += other.z;
 	}
 	/**
 	 * Transforms this vector by adding a scaled vector to it.
 	 * @param other vector to add with scaling
 	 * @param scale proportion of other vector's component values to add
-	 * @return {@code this}
 	 * @see #add(Vector)
 	 */
-	public Vector add(Vector other, double scale) {
-		return translate(other.x * scale, other.y * scale, other.z * scale);
+	public void add(Vector other, double scale) {
+		x += other.x * scale;
+		y += other.y * scale;
+		z += other.z * scale;
 	}
 
 	/**
 	 * Transforms this vector by subtracting another vector from it.
 	 * This is equivalent to translating this vector by the negative of the other vector's components.
 	 * @param other vector to subtract
-	 * @return {@code this}
 	 * @see #sub(Vector, double)
 	 */
-	public Vector sub(Vector other) {
-		return translate(-other.x, -other.y, -other.z);
+	public void sub(Vector other) {
+		x -= other.x;
+		y -= other.y;
+		z -= other.z;
 	}
 	/**
 	 * Transforms this vector by subtracting a scaled vector from it.
 	 * @param other vector to subtract with scaling
 	 * @param scale proportion of other vector's component values to subtract
-	 * @return {@code this}
 	 * @see #sub(Vector)
 	 */
-	public Vector sub(Vector other, double scale) {
-		return add(other, -scale);
+	public void sub(Vector other, double scale) {
+		x -= other.x * scale;
+		y -= other.y * scale;
+		z -= other.z * scale;
 	}
 
 	/**
 	 * Pivots this vector around its origin according to {@code other}.
 	 * @param other pivot vector
-	 * @return {@code this}
 	 * @see #pivot(double, double)
 	 */
-	public Vector pivot(Vector other) {
-		return pivot(other.getZ(), other.getX());
+	public void pivot(Vector other) {
+		pivot(other.z, other.x);
 	}
 	/**
 	 * Pivots this vector around its origin.
 	 * @param theta radians to pivot x-y plane projection by, with respect to the positive x-axis
 	 * @param phi radians to alter angle with the positive z-axis by
-	 * @return {@code this}
 	 */
-	public Vector pivot(double theta, double phi) {
+	public void pivot(double theta, double phi) {
 		double newX = x * Math.cos(theta) - y * Math.sin(theta);
 		double newY = x * Math.sin(theta) + y * Math.cos(theta);
 		double newZ = z;  // TODO
 
 		set(newX, newY, newZ);
-
-		return this;
 	}
 
 	/**
@@ -248,11 +210,12 @@ public class Vector {
 
 	/**
 	 * Scales this vector to a unit vector pointing in the original direction.
-	 * @return this
 	 */
-	public Vector normalize() {
+	public void normalize() {
 		double magnitude = getMagnitude();
-		return magnitude != 0 ? scale(1 / getMagnitude()) : this;
+		if (magnitude != 0) {
+			invScale(magnitude);
+		}
 	}
 
 	/**
@@ -288,33 +251,29 @@ public class Vector {
 
 	/**
 	 * Sets the head of this vector while retaining the current z-axis value.
-	 * @return {@code this}
 	 * @see #set(double, double, double)
 	 */
-	public Vector set(double x, double y) {
-		return set(x, y, z);
+	public void set(double x, double y) {
+		this.x = x;
+		this.y = y;
 	}
 	/**
 	 * Sets the head of this vector.
 	 * @param x new head x-coordinate
 	 * @param y new head y-coordinate
 	 * @param z new head z-coordinate
-	 * @return {@code this}
 	 */
-	public Vector set(double x, double y, double z) {
-		setX(x);
-		setY(y);
-		setZ(z);
-
-		return this;
+	public void set(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 	/**
 	 * Sets this vector equal to another vector.
 	 * @param match vector to match
-	 * @return {@code this}
 	 */
-	public Vector set(Vector match) {
-		return set(match.x, match.y, match.z);
+	public void set(Vector match) {
+		set(match.x, match.y, match.z);
 	}
 
 	/** @return head x-coordinate */
@@ -342,21 +301,6 @@ public class Vector {
 	/** @param z new head z-coordinate */
 	public void setZ(double z) {
 		this.z = z;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || !(obj instanceof Vector)) return false;
-
-		Vector o = (Vector) obj;
-		return Double.compare(x, o.x) == 0
-				&& Double.compare(y, o.y) == 0
-				&& Double.compare(z, o.z) == 0;
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(x, y, z);
 	}
 
 	/** @return coordinates of this vector's head as {@code (x, y, z)} */

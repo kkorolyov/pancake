@@ -17,14 +17,21 @@ public final class VectorStratDeferredConverterFactory implements DeferredConver
 	public Converter<Object, Optional<Deferred<String, Vector>>> get() {
 		return Converter.selective(
 				in -> in instanceof Iterable,
-				in -> Deferred.direct(new Vector(
+				in -> Deferred.direct(toVector(
 						StreamSupport.stream(((Iterable<?>) in).spliterator(), false)
 								.map(String::valueOf)
 								.map(BigDecimal::new)
-								.map(BigDecimal::doubleValue)
-								.map(Number.class::cast)
-								::iterator
+								.mapToDouble(BigDecimal::doubleValue)
+								.toArray()
 				))
+		);
+	}
+
+	private static Vector toVector(double[] components) {
+		return new Vector(
+				components.length > 0 ? components[0] : 0,
+				components.length > 1 ? components[1] : 0,
+				components.length > 2 ? components[2] : 0
 		);
 	}
 }

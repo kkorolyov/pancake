@@ -3,19 +3,15 @@ package dev.kkorolyov.pancake.platform.media.graphic.shape;
 /**
  * A string of text.
  */
-public abstract class Text extends Shape<Text> {
+public abstract class Text extends Shape {
 	private String value;
 
 	/** @return rendered text string */
-	public String getValue() {
+	public final String getValue() {
 		return value;
 	}
-	/**
-	 * @param value rendered text string
-	 * @return {@code this}
-	 */
-	public Text setValue(String value) {
+	/** @param value rendered text string */
+	public final void setValue(String value) {
 		this.value = value;
-		return this;
 	}
 }

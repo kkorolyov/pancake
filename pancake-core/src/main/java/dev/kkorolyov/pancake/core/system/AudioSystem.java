@@ -31,9 +31,8 @@ public class AudioSystem extends GameSystem {
 		AudioEmitter emitter = entity.get(AudioEmitter.class);
 		Vector position = entity.get(Transform.class).getGlobalPosition();
 
-		relativeEmitter
-				.set(position)
-				.sub(Resources.RENDER_MEDIUM.getCamera().getPosition());
+		relativeEmitter.set(position);
+		relativeEmitter.sub(Resources.RENDER_MEDIUM.getCamera().getPosition());
 
 		double centralRadius = Double.parseDouble(Config.get(getClass()).getProperty("centralRadius"));
 
