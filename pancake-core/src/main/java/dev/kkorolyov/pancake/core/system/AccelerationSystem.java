@@ -27,7 +27,7 @@ public class AccelerationSystem extends GameSystem {
 		Velocity velocity = entity.get(Velocity.class);
 		Force force = entity.get(Force.class);
 
-		force.accelerate(velocity.getVelocity(), dt / 1e9f);
+		force.accelerate(velocity.getVelocity(), dt / 1e9);
 		velocity.cap();
 	}
 }

@@ -58,23 +58,4 @@ class DampingSpec extends Specification {
 		velocity << (1..3).collect {it -> new Vector(mini, mini, mini)}
 		force << [new Vector(micro, 0, 0), new Vector(0, micro, 0), new Vector(0, 0, micro)]
 	}
-
-	def "constrains damping to >= 0"() {
-		when:
-		damping.getDamping().set(value, value, value)
-		then:
-		damping.getDamping() == Vector.all(0)
-
-		where:
-		value << (-1000..0)
-	}
-	def "constrains damping to <= 1"() {
-		when:
-		damping.getDamping().set(value, value, value)
-		then:
-		damping.getDamping() == Vector.all(1)
-
-		where:
-		value << (1..1000)
-	}
 }

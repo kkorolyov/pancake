@@ -5,50 +5,38 @@ import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
+import dev.kkorolyov.pancake.platform.registry.Deferred
 import dev.kkorolyov.pancake.platform.registry.Registry
 
-import spock.lang.Shared
 import spock.lang.Specification
 
 class RenderableStratDeferredConverterFactorySpec extends Specification {
-	@Shared
-	String[] references = ["ref", "ref4", "newRef"]
-
-	@Shared
-	RenderableStratDeferredConverterFactory factory = new RenderableStratDeferredConverterFactory()
-
 	RenderMedium renderMedium = Mock()
 
-	Registry<String, Renderable> registry = new Registry<>()
-	Converter<String, Optional<Renderable>> converter = factory.get(registry)
+	Renderable ref = Mock()
+	Registry<String, Renderable> registry = new Registry<>().with {
+		put("ref", ref)
+		it
+	}
+	RenderableStratDeferredConverterFactory factory = new RenderableStratDeferredConverterFactory(renderMedium, { factory.get() })
+	Converter<Object, Optional<Deferred<String, Renderable>>> converter = factory.get()
 
 	def "reads reference"() {
-		registry.put(name, renderable)
-
 		expect:
-		converter.convert(name).orElse(null) == renderable
-
-		where:
-		name << references
-		renderable << references.collect { Mock(Renderable) }
+		converter.convert("ref").orElse(null).resolve(registry.&get) == ref
 	}
 
 	def "reads image"() {
-		1 * renderMedium.getImage(name) >> image
+		Image img = Mock()
+
+		1 * renderMedium.getImage("img") >> img
 
 		expect:
-		converter.convert("IMG($name)" as String).orElse(null) == image
-
-		where:
-		name << references
-		image << references.collect { Mock(Image) }
+		converter.convert([uri: "img"]).orElse(null).resolve() == img
 	}
 
 	def "reads composite"() {
-		Map<String, Image> nameToRenderable = references.collectEntries { [(it): Mock(Renderable)] }
-		nameToRenderable.each(registry.&put)
-
 		expect:
-		converter.convert(references as String).orElse(null) == new CompositeRenderable(nameToRenderable.values())
+		converter.convert(["ref", "ref"] as Object).orElse(null).resolve(registry.&get) == new CompositeRenderable([ref, ref])
 	}
 }

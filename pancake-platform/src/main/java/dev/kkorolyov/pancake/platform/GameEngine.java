@@ -21,7 +21,7 @@ public final class GameEngine {
 	private final SharedResources resources;
 
 	private final PerformanceCounter performanceCounter = new PerformanceCounter();
-	private final DebugRenderer debugRenderer = new DebugRenderer();
+	private final DebugRenderer debugRenderer;
 
 	/**
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
@@ -42,11 +42,21 @@ public final class GameEngine {
 	 * @param systems attached systems
 	 */
 	public GameEngine(EventBroadcaster.Managed events, EntityPool entities, Iterable<GameSystem> systems) {
+		this(
+				events,
+				entities,
+				systems,
+				new DebugRenderer(Resources.RENDER_MEDIUM)
+		);
+	}
+	GameEngine(EventBroadcaster.Managed events, EntityPool entities, Iterable<GameSystem> systems, DebugRenderer debugRenderer) {
 		this.events = events;
 		this.entities = entities;
 		resources = new SharedResources(events, performanceCounter);
 
 		systems.forEach(this::add);
+
+		this.debugRenderer = debugRenderer;
 	}
 
 	/**
@@ -83,7 +93,8 @@ public final class GameEngine {
 
 	/** @param system system to add */
 	public void add(GameSystem system) {
-		systems.add(system.setResources(resources));
+		systems.add(system);
+		system.setResources(resources);
 		system.attach();
 	}
 	/** @param system removed system */

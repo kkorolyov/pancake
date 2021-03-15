@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.platform.math;
 
+import java.util.Objects;
+
 /**
  * Describes a head at some point in 3 dimensions and a tail at {@code (0, 0, 0)}.
  */
@@ -10,31 +12,6 @@ public class Vector {
 	/** @return vector with all components equal to {@code value} */
 	public static Vector all(double value) {
 		return new Vector(value, value, value);
-	}
-
-	/**
-	 * Returns a new vector formed by the addition of all given vectors.
-	 * @param vectors vectors to add
-	 * @return vector formed by addition of all {@code vectors}
-	 */
-	public static Vector add(Vector... vectors) {
-		Vector result = new Vector();
-
-		for (Vector v : vectors) result.add(v);
-
-		return result;
-	}
-	/**
-	 * Returns a new vector formed by the subtraction of all given vectors.
-	 * @param vectors vectors to subtract
-	 * @return vector formed by subtraction of all {@code vectors}
-	 */
-	public static Vector sub(Vector... vectors) {
-		Vector result = new Vector();
-
-		for (Vector v : vectors) result.sub(v);
-
-		return result;
 	}
 
 	/**
@@ -301,6 +278,18 @@ public class Vector {
 	/** @param z new head z-coordinate */
 	public void setZ(double z) {
 		this.z = z;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Vector o = (Vector) obj;
+		return Double.compare(o.x, x) == 0 && Double.compare(o.y, y) == 0 && Double.compare(o.z, z) == 0;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y, z);
 	}
 
 	/** @return coordinates of this vector's head as {@code (x, y, z)} */

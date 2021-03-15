@@ -65,10 +65,8 @@ public abstract class GameSystem {
 
 	/**
 	 * @param resources shared by {@link GameEngine} this system is attached to
-	 * @return {@code this}
 	 */
-	GameSystem setResources(SharedResources resources) {
+	void setResources(SharedResources resources) {
 		this.resources = resources;
-		return this;
 	}
 }

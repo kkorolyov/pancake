@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.platform.registry.internal;
 import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable;
+import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
@@ -24,7 +25,16 @@ import static java.util.stream.Collectors.toList;
 public final class RenderableStratDeferredConverterFactory implements DeferredConverterFactory.RenderableStrat {
 	private static final Collection<String> IMAGE_KEYS = Set.of("uri");
 
-	private final Supplier<Converter<Object, Optional<Deferred<String, Renderable>>>> autoReader = memoize(() -> DeferredConverterFactory.get(RenderableStrat.class));
+	private final RenderMedium renderMedium;
+	private final Supplier<Converter<Object, Optional<Deferred<String, Renderable>>>> autoReader;
+
+	public RenderableStratDeferredConverterFactory() {
+		this(Resources.RENDER_MEDIUM, memoize(() -> DeferredConverterFactory.get(RenderableStrat.class)));
+	}
+	RenderableStratDeferredConverterFactory(RenderMedium renderMedium, Supplier<Converter<Object, Optional<Deferred<String, Renderable>>>> autoReader) {
+		this.renderMedium = renderMedium;
+		this.autoReader = autoReader;
+	}
 
 	private static Converter<Object, Optional<Deferred<String, Renderable>>> reference() {
 		return Converter.selective(
@@ -32,10 +42,10 @@ public final class RenderableStratDeferredConverterFactory implements DeferredCo
 				in -> Deferred.derived(singleton(in.toString()), resolver -> resolver.apply(in.toString()))
 		);
 	}
-	private static Converter<Object, Optional<Deferred<String, Renderable>>> image() {
+	private Converter<Object, Optional<Deferred<String, Renderable>>> image() {
 		return Converter.selective(
 				in -> in instanceof Map && ((Map) in).keySet().stream().allMatch(key -> IMAGE_KEYS.contains(key.toString())),
-				in -> Deferred.direct(Resources.RENDER_MEDIUM.getImage(((Map<?, ?>) in).get("uri").toString()))
+				in -> Deferred.direct(renderMedium.getImage(((Map<?, ?>) in).get("uri").toString()))
 		);
 	}
 	private Converter<Object, Optional<Deferred<String, Renderable>>> composite() {

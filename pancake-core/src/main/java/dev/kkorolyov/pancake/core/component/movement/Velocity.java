@@ -1,13 +1,12 @@
 package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.math.BoundedVector;
 import dev.kkorolyov.pancake.platform.math.Vector;
 
 /**
  * Velocity of a moving entity.
  */
-public class Velocity implements Component {
+public final class Velocity implements Component {
 	private final Vector velocity = new Vector();
 	private final Vector maxSpeed;
 
@@ -22,14 +21,17 @@ public class Velocity implements Component {
 	 * @param maxSpeed maximum speed along all axes
 	 */
 	public Velocity(double maxSpeed) {
-		this(new Vector(maxSpeed, maxSpeed, maxSpeed));
+		this(Vector.all(maxSpeed));
 	}
 	/**
 	 * Constructs a new velocity.
 	 * @param maxSpeed vector defining maximum speed along each axis
 	 */
 	public Velocity(Vector maxSpeed) {
-		this.maxSpeed = new BoundedVector(maxSpeed, Vector.all(0), Vector.all(Double.MAX_VALUE));
+		this.maxSpeed = new Vector(constrain(maxSpeed.getX()), constrain(maxSpeed.getY()), constrain(maxSpeed.getZ()));
+	}
+	private static double constrain(double value) {
+		return Math.max(0, value);
 	}
 
 	/**
@@ -37,9 +39,11 @@ public class Velocity implements Component {
 	 * @return velocity vector after capping applied
 	 */
 	public Vector cap() {
-		round().set(cap(velocity.getX(), maxSpeed.getX()),
+		round().set(
+				cap(velocity.getX(), maxSpeed.getX()),
 				cap(velocity.getY(), maxSpeed.getY()),
-				cap(velocity.getZ(), maxSpeed.getZ()));
+				cap(velocity.getZ(), maxSpeed.getZ())
+		);
 		return velocity;
 	}
 	private static double cap(double velocity, double maxSpeed) {
@@ -47,9 +51,11 @@ public class Velocity implements Component {
 	}
 
 	private Vector round() {
-		velocity.set(round(velocity.getX()),
+		velocity.set(
+				round(velocity.getX()),
 				round(velocity.getY()),
-				round(velocity.getZ()));
+				round(velocity.getZ())
+		);
 		return velocity;
 	}
 	private static double round(double value) {
@@ -70,9 +76,5 @@ public class Velocity implements Component {
 	/** @return velocity vector */
 	public Vector getVelocity() {
 		return velocity;
-	}
-	/** @return maximum speed vector, constrained {@code > 0} along all axes */
-	public Vector getMaxSpeed() {
-		return maxSpeed;
 	}
 }

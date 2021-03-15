@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.platform.utility;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text;
@@ -19,7 +19,16 @@ public final class DebugRenderer {
 	private static final Vector SHIFTER = new Vector(0, 14);
 	private static final Logger LOG = LoggerFactory.getLogger(DebugRenderer.class);
 
+	private final RenderMedium renderMedium;
 	private final RenderTransform renderTransform = new RenderTransform();
+
+	/**
+	 * Constructs a new debug renderer.
+	 * @param renderMedium render medium to use
+	 */
+	public DebugRenderer(RenderMedium renderMedium) {
+		this.renderMedium = renderMedium;
+	}
 
 	/**
 	 * Renders performance information.
@@ -29,10 +38,10 @@ public final class DebugRenderer {
 		String[] args = ARG_DELIMITER.split(Config.get().getProperty("renderInfo"));
 		if (args.length <= 0) return;
 
-		Text text = Resources.RENDER_MEDIUM.getText();
+		Text text = renderMedium.getText();
 		renderTransform.reset();
 
-		Resources.RENDER_MEDIUM.invoke(() -> {
+		renderMedium.invoke(() -> {
 			for (String arg : args) {
 				switch (arg) {
 					case "fps":

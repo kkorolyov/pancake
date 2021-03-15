@@ -5,6 +5,8 @@ import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventBroadcaster
+import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
+import dev.kkorolyov.pancake.platform.utility.DebugRenderer
 import dev.kkorolyov.pancake.platform.utility.Limiter
 
 import spock.lang.Specification
@@ -16,6 +18,7 @@ class GameEngineSpec extends Specification {
 	Signature signature = new Signature(MockComponent)
 
 	EventBroadcaster.Managed events = new EventBroadcaster.Managed()
+	DebugRenderer debugRenderer = new DebugRenderer(Mock(RenderMedium))
 	EntityPool entities = new EntityPool(events)
 	Entity entity = entities.create()
 			.add(new MockComponent())
@@ -23,7 +26,6 @@ class GameEngineSpec extends Specification {
 	GameSystem deadSystem = Mock() {
 		getSignature() >> signature
 		getLimiter() >> Mock(Limiter)
-		setResources(_) >> it
 	}
 	GameSystem readySystem = Mock() {
 		getSignature() >> signature
@@ -31,10 +33,9 @@ class GameEngineSpec extends Specification {
 			isReady(_) >> true
 			consumeElapsed() >> dt
 		}
-		setResources(_) >> it
 	}
 
-	GameEngine engine = new GameEngine(events, entities, readySystem, deadSystem)
+	GameEngine engine = new GameEngine(events, entities, [readySystem, deadSystem], debugRenderer)
 
 	def "invokes 'before' and 'after' on ready systems on update"() {
 		when:
@@ -75,7 +76,7 @@ class GameEngineSpec extends Specification {
 		engine.add(readySystem)
 
 		then:
-		1 * readySystem.setResources(new SharedResources(events, _))
+		1 * readySystem.setResources(!null)
 	}
 	def "unshares services from removed system"() {
 		when:

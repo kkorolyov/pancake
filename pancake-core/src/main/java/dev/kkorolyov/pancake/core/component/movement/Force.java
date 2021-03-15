@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.platform.math.Vector;
 /**
  * Net force acting on an entity.
  */
-public class Force implements Component {
+public final class Force implements Component {
 	private final Vector force = new Vector();
 	private double mass, invMass;
 

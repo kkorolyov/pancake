@@ -27,7 +27,13 @@ public final class ActionStratDeferredConverterFactory implements DeferredConver
 	private static final Collection<String> MULTI_STAGE_KEYS = Set.of("start", "hold", "end");
 	private static final long MULTI_STAGE_HOLD_THRESHOLD = (long) (Double.parseDouble(Config.get().getProperty("holdThreshold")) * 1e9);
 
-	private final Supplier<Converter<Object, Optional<Deferred<String, Action>>>> autoReader = memoize(() -> DeferredConverterFactory.get(ActionStrat.class));
+	private final Supplier<Converter<Object, Optional<Deferred<String, Action>>>> autoReader;
+	public ActionStratDeferredConverterFactory() {
+		this(memoize(() -> DeferredConverterFactory.get(ActionStrat.class)));
+	}
+	ActionStratDeferredConverterFactory(Supplier<Converter<Object, Optional<Deferred<String, Action>>>> autoReader) {
+		this.autoReader = autoReader;
+	}
 
 	private static Converter<Object, Optional<Deferred<String, Action>>> reference() {
 		return Converter.selective(
@@ -40,8 +46,7 @@ public final class ActionStratDeferredConverterFactory implements DeferredConver
 				in -> in instanceof Iterable,
 				in -> {
 					Collection<Deferred<String, Action>> subResources = StreamSupport.stream(((Iterable<?>) in).spliterator(), false)
-							.map(autoReader.get()::convert)
-							.map(opt -> opt.orElseThrow(() -> new IllegalArgumentException("No resource reader matches: " + opt)))
+							.map(in1 -> autoReader.get().convert(in1).orElseThrow(() -> new IllegalArgumentException("No resource reader matches: " + in1)))
 							.collect(toList());
 					return Deferred.derived(
 							getDependencies(subResources),
