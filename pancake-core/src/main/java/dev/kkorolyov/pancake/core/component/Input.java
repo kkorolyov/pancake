@@ -1,28 +1,11 @@
 package dev.kkorolyov.pancake.core.component;
 
-import dev.kkorolyov.flopple.function.convert.Converter;
-import dev.kkorolyov.pancake.platform.Resources;
-import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.action.MultiStageAction;
+import dev.kkorolyov.pancake.core.input.Handler;
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.registry.Registry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Properties;
 import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-
-import static java.util.Collections.unmodifiableSet;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toUnmodifiableSet;
 
 /**
  * An entity controller which responds to keyboard and mouse input.
@@ -78,95 +61,5 @@ public class Input implements Component {
 	/** @param facesCursor if {@code true}, this controller requests that its containing entity faces the mouse cursor */
 	public void setFacesCursor(boolean facesCursor) {
 		this.facesCursor = facesCursor;
-	}
-
-	/**
-	 * Wraps a {@link MultiStageAction} and uses collections of input enums to arm it.
-	 */
-	public static class Handler {
-		private static final Pattern INPUTS_PATTERN = Pattern.compile("\\([_a-zA-Z]+(,\\s*[_a-zA-Z]+)*\\)");
-		private static final Pattern INPUTS_SPLIT_PATTERN = Pattern.compile(",\\s*");
-
-		private static final Logger LOG = LoggerFactory.getLogger(Handler.class);
-
-		private final MultiStageAction action;
-		private final Set<Enum<?>> inputs;
-
-		/**
-		 * Reads handlers from a properties file and action registry.
-		 * @param props properties to read from
-		 * @param actionRegistry registry containing handled actions
-		 * @return handlers read from {@code props}
-		 */
-		public static Collection<Handler> fromProperties(Properties props, Registry<String, Action> actionRegistry) {
-			Converter<String, Optional<Collection<Enum<?>>>> reader = Converter.selective(
-					in -> INPUTS_PATTERN.matcher(in).matches(),
-					in -> Arrays.stream(INPUTS_SPLIT_PATTERN.split(in.substring(1, in.length() - 1)))
-							.map(Resources.APPLICATION::toInput)
-							.collect(toList())
-			);
-
-			Set<Handler> result = new HashSet<>();
-
-			props.forEach((key, value) -> reader.convert(value.toString())
-					.ifPresentOrElse(
-							inputs -> {
-								Action action = actionRegistry.get(key.toString());
-
-								result.add(new Handler(
-										action instanceof MultiStageAction
-												? (MultiStageAction) action
-												: new MultiStageAction(action, null, null, 0),  // Hold threshold irrelevant
-										inputs
-								));
-							},
-							() -> LOG.error("Failed to parse input handler: {} -> {}", key, value)
-					));
-			return unmodifiableSet(result);
-		}
-
-		/** @see #Handler(MultiStageAction, Iterable) */
-		public Handler(MultiStageAction action, Enum<?>... inputs) {
-			this(action, Arrays.asList(inputs));
-		}
-		/**
-		 * Constructs a new key action.
-		 * @param action wrapped multi-stage action
-		 * @param inputs keys and buttons tied to {@code delegate}; when all pressed, counts as an activation, else counts as a deactivation
-		 */
-		public Handler(MultiStageAction action, Iterable<Enum<?>> inputs) {
-			this.action = action;
-			this.inputs = StreamSupport.stream(inputs.spliterator(), false)
-					.collect(toUnmodifiableSet());
-		}
-
-		/**
-		 * Arms the wrapped action after translating the intersection of expected inputs and given inputs into a {@link MultiStageAction.ArmingOption}.
-		 * @param inputs current inputs
-		 * @param dt {@code ns} elapsed since the last invocation of this method
-		 * @return armed wrapped action
-		 */
-		public Action arm(Collection<Enum<?>> inputs, long dt) {
-			return action.arm(
-					inputs.containsAll(this.inputs)
-							? MultiStageAction.ArmingOption.ACTIVATE
-							: MultiStageAction.ArmingOption.DEACTIVATE,
-					dt
-			);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) return true;
-			if (obj == null || getClass() != obj.getClass()) return false;
-
-			Handler o = (Handler) obj;
-			return Objects.equals(action, o.action)
-					&& Objects.equals(inputs, o.inputs);
-		}
-		@Override
-		public int hashCode() {
-			return Objects.hash(action, inputs);
-		}
 	}
 }

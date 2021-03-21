@@ -30,8 +30,7 @@ public final class ResourceReader<T> {
 	 * @return map of configured resource keys to deferreds
 	 */
 	public Map<String, Deferred<String, T>> fromYaml(InputStream in) {
-		Yaml yaml = new Yaml();
-		Map<String, Map<String, Object>> resources = yaml.load(in);
+		Map<String, Map<String, Object>> resources = new Yaml().load(in);
 
 		return resources.entrySet().stream()
 				.collect(toMap(

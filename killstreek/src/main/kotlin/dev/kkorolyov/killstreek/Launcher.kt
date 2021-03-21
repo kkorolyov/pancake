@@ -18,6 +18,7 @@ import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
 import dev.kkorolyov.pancake.core.component.movement.Velocity
 import dev.kkorolyov.pancake.core.event.EntitiesCollided
+import dev.kkorolyov.pancake.core.input.HandlerReader
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameLoop
 import dev.kkorolyov.pancake.platform.Resources
@@ -43,7 +44,6 @@ import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.Properties
 import java.util.concurrent.ThreadLocalRandom
 import java.util.function.Supplier
 import kotlin.math.sqrt
@@ -177,10 +177,9 @@ private val entities: EntityPool by lazy {
 				Graphic(sprite),
 				Input(
 					true,
-					Input.Handler.fromProperties(
-						Properties().apply { Resources.`in`("config/inputs").ifPresent(this::load) },
-						actions
-					)
+					Resources.`in`("config/inputs.yaml").orElse(null).use {
+						HandlerReader(actions).fromYaml(it)
+					}
 				),
 				health,
 				ActionQueue()

@@ -3,6 +3,7 @@ import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
 
 module dev.kkorolyov.pancake.core {
 	requires org.slf4j;
+	requires org.yaml.snakeyaml;
 
 	requires dev.kkorolyov.pancake.platform;
 
@@ -11,6 +12,7 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.component.media;
 	exports dev.kkorolyov.pancake.core.component.movement;
 	exports dev.kkorolyov.pancake.core.event;
+	exports dev.kkorolyov.pancake.core.input;
 	exports dev.kkorolyov.pancake.core.system;
 
 	provides dev.kkorolyov.pancake.platform.GameSystem with

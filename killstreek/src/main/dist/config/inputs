@@ -1,7 +1,0 @@
-moveUp=(W)
-moveDown=(S)
-moveLeft=(A)
-moveRight=(D)
-reset=(ESCAPE)
-toggleAnimate=(SHIFT)
-toggleSpawner=(CONTROL)
