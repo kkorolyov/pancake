@@ -23,7 +23,7 @@ public class EntityPool {
 	private final FacetedBundle<Integer, Class<? extends Component>, ManagedEntity> entities = new FacetedBundle<>();
 	private final EventBroadcaster events;
 
-	private int counter = 0;
+	private int counter;
 	private final Queue<Integer> reclaimedIds = new ArrayDeque<>();
 
 	/**
@@ -93,43 +93,34 @@ public class EntityPool {
 		}
 
 		/** @see #add(Iterable) */
-		public ManagedEntity add(Component component, Component... components) {
-			return add(append(component, components));
+		public void add(Component component, Component... components) {
+			add(append(component, components));
 		}
 		/**
 		 * @param components components to add or replace existing components of the same type
-		 * @return {@code this}
 		 */
-		public ManagedEntity add(Iterable<Component> components) {
+		public void add(Iterable<? extends Component> components) {
 			for (Component component : components) {
 				this.components.put(component.getClass(), component);
 
 				entities.get(id).addFacets(component.getClass());
 			}
-			return this;
 		}
 
 		/**
 		 * @param componentTypes classes of components to remove
-		 * @return {@code this}
 		 */
-		public ManagedEntity remove(Iterable<Class<? extends Component>> componentTypes) {
+		public void remove(Iterable<Class<? extends Component>> componentTypes) {
 			for (Class<? extends Component> type : componentTypes) {
 				components.remove(type);
 
 				entities.get(id).removeFacets(type);
 			}
-			return this;
 		}
 
 		@Override
 		public <T extends Component> T get(Class<T> c) {
 			return (T) components.get(c);
-		}
-
-		@Override
-		public Stream<Component> stream() {
-			return components.values().stream();
 		}
 
 		@Override

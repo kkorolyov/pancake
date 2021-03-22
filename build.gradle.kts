@@ -126,6 +126,8 @@ val testUtils: Project = project(":pancake-test-utils")
 val javaFxApplication: Project = project(":javafx-application")
 val javaFxAudio: Project = project(":javafx-audio")
 
+val ponk: Project = project(":ponk")
+
 val killstreek: Project = project(":killstreek")
 
 // Testable
@@ -195,6 +197,7 @@ configure(
 		core,
 		javaFxApplication,
 		javaFxAudio,
+		ponk,
 		killstreek
 	)
 ) {
@@ -203,7 +206,12 @@ configure(
 	}
 }
 // Core-reliant
-configure(listOf(killstreek)) {
+configure(
+	listOf(
+		ponk,
+		killstreek
+	)
+) {
 	dependencies {
 		implementation(core)
 	}
@@ -214,6 +222,7 @@ configure(
 	listOf(
 		javaFxApplication,
 		javaFxAudio,
+		ponk,
 		killstreek
 	)
 ) {
@@ -286,6 +295,37 @@ project(":javafx-audio") {
 			)
 		)
 	}
+}
+
+project(":ponk") {
+	apply(plugin = "application")
+
+	description = "Simple pong-like"
+
+	dependencies {
+		val log4jVersion: String by project
+		val jacksonVersion: String by project
+
+		implementation("org.apache.logging.log4j:log4j-slf4j18-impl:$log4jVersion")
+		implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+
+		runtimeOnly(javaFxApplication)
+		runtimeOnly(javaFxAudio)
+	}
+
+	tasks.compileJava {
+		options.compilerArgs.addAll(
+			listOf(
+				"--patch-module", "dev.kkorolyov.ponk=${sourceSets.main.get().output.asPath}"
+			)
+		)
+	}
+
+	application {
+		mainModule.set("dev.kkorolyov.ponk")
+		mainClass.set("dev.kkorolyov.ponk.LauncherKt")
+	}
+
 }
 
 project(":killstreek") {
