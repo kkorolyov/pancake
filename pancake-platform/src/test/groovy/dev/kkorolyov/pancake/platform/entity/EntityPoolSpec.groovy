@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.platform.entity
 
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster
+import dev.kkorolyov.pancake.platform.event.EventLoop
 
 import spock.lang.Specification
 
 class EntityPoolSpec extends Specification {
-	EventBroadcaster events = Mock()
+	EventLoop events = Mock()
 	Component component = mockComponent()
 	Signature signature = new Signature(component.class)
 
@@ -22,7 +22,7 @@ class EntityPoolSpec extends Specification {
 	def "created entity has specified components"() {
 		when:
 		Entity entity = entities.create()
-				.add(component)
+		entity.add(component)
 
 		then:
 		Component otherComponent = new Component() {}
@@ -45,11 +45,13 @@ class EntityPoolSpec extends Specification {
 
 	def "invokes on each matching entity"() {
 		Entity e1 = entities.create()
-				.add(component)
+		e1.add(component)
+
 		Entity e2 = entities.create()
-				.add(component)
+		e2.add(component)
+
 		Entity eBad = entities.create()
-				.add(new Component() {})
+		eBad.add(new Component() {})
 
 		Set<Entity> seen = []
 

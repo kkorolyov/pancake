@@ -2,16 +2,20 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
+import dev.kkorolyov.pancake.platform.event.Event;
+import dev.kkorolyov.pancake.platform.event.EventLoop;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
+
+import java.util.function.Consumer;
 
 /**
  * Performs work on entities matching a certain component signature.
  */
-public abstract class GameSystem {
+public abstract class GameSystem implements EventLoop {
 	private final Signature signature;
 	private final Limiter limiter;
 
-	protected SharedResources resources;
+	private EventLoop events;
 
 	/**
 	 * Constructs a new system.
@@ -63,10 +67,20 @@ public abstract class GameSystem {
 		return limiter;
 	}
 
+	@Override
+	public <E extends Event> void register(Class<E> type, Consumer<? super E> receiver) {
+		events.register(type, receiver);
+	}
+	@Override
+	public void enqueue(Event event) {
+		events.enqueue(event);
+	}
+
 	/**
-	 * @param resources shared by {@link GameEngine} this system is attached to
+	 * Sets shared resources on this system.
+	 * @param events event broadcaster shared by the {@link GameEngine} this system is attached to
 	 */
-	void setResources(SharedResources resources) {
-		this.resources = resources;
+	void setResources(EventLoop events) {
+		this.events = events;
 	}
 }

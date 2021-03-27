@@ -4,7 +4,7 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster
+import dev.kkorolyov.pancake.platform.event.EventLoop
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer
 import dev.kkorolyov.pancake.platform.utility.Limiter
@@ -17,11 +17,13 @@ class GameEngineSpec extends Specification {
 	long dt = randLong()
 	Signature signature = new Signature(MockComponent)
 
-	EventBroadcaster.Managed events = new EventBroadcaster.Managed()
+	EventLoop.Broadcasting events = new EventLoop.Broadcasting()
 	DebugRenderer debugRenderer = new DebugRenderer(Mock(RenderMedium))
 	EntityPool entities = new EntityPool(events)
-	Entity entity = entities.create()
-			.add(new MockComponent())
+	Entity entity = entities.create().with {
+		it.add(new MockComponent())
+		it
+	}
 
 	GameSystem deadSystem = Mock() {
 		getSignature() >> signature

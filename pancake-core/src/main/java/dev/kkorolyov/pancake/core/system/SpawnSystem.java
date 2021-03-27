@@ -29,6 +29,6 @@ public class SpawnSystem extends GameSystem {
 		Transform transform = entity.get(Transform.class);
 
 		Iterable<Component> clone = spawner.spawn(transform.getPosition(), dt);
-		if (clone != null) resources.events.enqueue(new CreateEntity(clone));
+		if (clone != null) enqueue(new CreateEntity(clone));
 	}
 }

@@ -16,7 +16,7 @@ class GcSystem : GameSystem(
 ) {
 	override fun update(entity: Entity, dt: Long) {
 		if (entity.get(Health::class.java).isDead) {
-			resources.events.enqueue(DestroyEntity(entity.id))
+			enqueue(DestroyEntity(entity.id))
 		}
 	}
 }

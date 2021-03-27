@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.media.Graphic
 import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.entity.EntityPool
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster
+import dev.kkorolyov.pancake.platform.event.EventLoop
 import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape.Color
@@ -23,7 +23,8 @@ private fun <T, F : DeferredConverterFactory<T>> load(
 		}
 	}
 
-val events: EventBroadcaster.Managed = EventBroadcaster.Managed()
+val events: EventLoop.Broadcasting =
+	EventLoop.Broadcasting()
 
 private val paddle: Renderable = Resources.RENDER_MEDIUM.box.apply {
 	fill = Color.BLACK

@@ -69,7 +69,7 @@ public class CollisionSystem extends GameSystem {
 						Vector velocity = movedEntity.get(Velocity.class).getVelocity();
 						velocity.add(mtv, velocity.getMagnitude());
 					}
-					resources.events.enqueue(new EntitiesCollided(movedEntity.getId(), otherEntity.getId()));
+					enqueue(new EntitiesCollided(movedEntity.getId(), otherEntity.getId()));
 				}
 			}
 			done.add(movedEntity);

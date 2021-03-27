@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.EventLoop;
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 
@@ -15,10 +15,9 @@ import java.util.ServiceLoader;
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public final class GameEngine {
-	private final EventBroadcaster.Managed events;
+	private final EventLoop.Broadcasting events;
 	private final EntityPool entities;
 	private final Collection<GameSystem> systems = new LinkedHashSet<>();
-	private final SharedResources resources;
 
 	private final PerformanceCounter performanceCounter = new PerformanceCounter();
 	private final DebugRenderer debugRenderer;
@@ -26,13 +25,13 @@ public final class GameEngine {
 	/**
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
-	public GameEngine(EventBroadcaster.Managed events, EntityPool entities) {
+	public GameEngine(EventLoop.Broadcasting events, EntityPool entities) {
 		this(events, entities, ServiceLoader.load(GameSystem.class).stream().map(ServiceLoader.Provider::get)::iterator);
 	}
 	/**
-	 * @see #GameEngine(EventBroadcaster.Managed, EntityPool, Iterable)
+	 * @see #GameEngine(EventLoop.Broadcasting, EntityPool, Iterable)
 	 */
-	public GameEngine(EventBroadcaster.Managed events, EntityPool entities, GameSystem... systems) {
+	public GameEngine(EventLoop.Broadcasting events, EntityPool entities, GameSystem... systems) {
 		this(events, entities, Arrays.asList(systems));
 	}
 	/**
@@ -41,7 +40,7 @@ public final class GameEngine {
 	 * @param entities attached entity pool
 	 * @param systems attached systems
 	 */
-	public GameEngine(EventBroadcaster.Managed events, EntityPool entities, Iterable<GameSystem> systems) {
+	public GameEngine(EventLoop.Broadcasting events, EntityPool entities, Iterable<GameSystem> systems) {
 		this(
 				events,
 				entities,
@@ -49,10 +48,9 @@ public final class GameEngine {
 				new DebugRenderer(Resources.RENDER_MEDIUM)
 		);
 	}
-	GameEngine(EventBroadcaster.Managed events, EntityPool entities, Iterable<GameSystem> systems, DebugRenderer debugRenderer) {
+	GameEngine(EventLoop.Broadcasting events, EntityPool entities, Iterable<GameSystem> systems, DebugRenderer debugRenderer) {
 		this.events = events;
 		this.entities = entities;
-		resources = new SharedResources(events, performanceCounter);
 
 		systems.forEach(this::add);
 
@@ -63,7 +61,6 @@ public final class GameEngine {
 	 * Proceeds the simulation by 1 tick.
 	 * <pre>
 	 * All queued events are broadcast
-	 * All entities apply each of their attached actions
 	 * Each system updates all entities it is applicable to
 	 * </pre>
 	 * @param dt {@code ns} elapsed since last update
@@ -91,13 +88,21 @@ public final class GameEngine {
 		debugRenderer.render(performanceCounter);
 	}
 
-	/** @param system system to add */
+	/**
+	 * Attaches a system to this engine.
+	 * @param system system to add
+	 * @see GameSystem#attach()
+	 */
 	public void add(GameSystem system) {
 		systems.add(system);
-		system.setResources(resources);
+		system.setResources(events);
 		system.attach();
 	}
-	/** @param system removed system */
+	/**
+	 * Detaches a system from this engine.
+	 * @param system system to remove
+	 * @see GameSystem#detach()
+	 */
 	public void remove(GameSystem system) {
 		if (systems.remove(system)) {
 			system.detach();
@@ -111,7 +116,6 @@ public final class GameEngine {
 				", entities=" + entities +
 				", performanceCounter=" + performanceCounter +
 				", systems=" + systems +
-				", resources=" + resources +
 				", debugRenderer=" + debugRenderer +
 				'}';
 	}

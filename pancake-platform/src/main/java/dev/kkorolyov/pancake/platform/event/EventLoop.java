@@ -9,55 +9,37 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * Broadcasts events expected by registered systems.
+ * Supports registration of event handlers and enqueuing of event instances.
  */
-public interface EventBroadcaster {
+public interface EventLoop {
 	/**
 	 * Registers to receive broadcasts of an event.
 	 * @param type event type
 	 * @param receiver action invoked on event reception
-	 * @return {@code this}
 	 */
-	<E extends Event> EventBroadcaster register(Class<E> type, Consumer<? super E> receiver);
-	/**
-	 * Removes a receiver from a set of registered receivers
-	 * @param type event type
-	 * @param receiver removed receiver
-	 * @return {@code true} if {@code receiver} was present and removed
-	 */
-	<E extends Event> boolean unregister(Class<E> type, Consumer<? super E> receiver);
+	<E extends Event> void register(Class<E> type, Consumer<? super E> receiver);
 
 	/**
 	 * Queues an event to broadcast to all registered receivers.
 	 * @param event event to queue
-	 * @return number of receivers registered to event
 	 */
-	int enqueue(Event event);
+	void enqueue(Event event);
 
 	/**
-	 * An {@link EventBroadcaster} implementation with exposed management methods.
+	 * An {@link EventLoop} implementation supporting broadcasting events.
 	 */
-	final class Managed implements EventBroadcaster {
+	final class Broadcasting implements EventLoop {
 		private final Map<Class<? extends Event>, Set<Consumer<?>>> receivers = new HashMap<>();
 		private final Queue<Event> eventQueue = new ArrayDeque<>();
 
 		@Override
-		public <E extends Event> EventBroadcaster register(Class<E> type, Consumer<? super E> receiver) {
+		public <E extends Event> void register(Class<E> type, Consumer<? super E> receiver) {
 			receivers.computeIfAbsent(type, k -> new HashSet<>()).add(receiver);
-			return this;
-		}
-		@Override
-		public <E extends Event> boolean unregister(Class<E> type, Consumer<? super E> receiver) {
-			Set<Consumer<?>> set = receivers.get(type);
-			return (set != null) && set.remove(receiver);
 		}
 
 		@Override
-		public int enqueue(Event event) {
+		public void enqueue(Event event) {
 			eventQueue.add(event);
-
-			Set<Consumer<?>> eventReceivers = receivers.get(event.getClass());
-			return (eventReceivers == null) ? 0 : eventReceivers.size();
 		}
 
 		/**

@@ -28,7 +28,7 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.event.EntityCreated
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster.Managed
+import dev.kkorolyov.pancake.platform.event.EventLoop.Broadcasting
 import dev.kkorolyov.pancake.platform.math.Vector
 import dev.kkorolyov.pancake.platform.media.audio.Audio
 import dev.kkorolyov.pancake.platform.media.audio.Audio.State.PLAY
@@ -79,7 +79,8 @@ private val actions: Registry<String, Action> by lazy {
 	}
 }
 
-private val events: Managed = Managed()
+private val events: Broadcasting =
+	Broadcasting()
 
 private val healthBarSize: Vector = Vector(1.0, 0.25)
 

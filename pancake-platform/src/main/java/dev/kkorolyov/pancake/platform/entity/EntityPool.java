@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.event.CreateEntity;
 import dev.kkorolyov.pancake.platform.event.DestroyEntity;
 import dev.kkorolyov.pancake.platform.event.EntityCreated;
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
-import dev.kkorolyov.pancake.platform.event.EventBroadcaster;
+import dev.kkorolyov.pancake.platform.event.EventLoop;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import static dev.kkorolyov.flopple.collections.Iterables.append;
  */
 public class EntityPool {
 	private final FacetedBundle<Integer, Class<? extends Component>, ManagedEntity> entities = new FacetedBundle<>();
-	private final EventBroadcaster events;
+	private final EventLoop events;
 
 	private int counter;
 	private final Queue<Integer> reclaimedIds = new ArrayDeque<>();
@@ -30,7 +30,7 @@ public class EntityPool {
 	 * Constructs an empty entity pool.
 	 * @param events registered event broadcaster
 	 */
-	public EntityPool(EventBroadcaster events) {
+	public EntityPool(EventLoop events) {
 		this.events = events;
 
 		this.events.register(CreateEntity.class, e -> create().add(e.getComponents()));

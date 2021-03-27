@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * Maintains performance counts.
  */
-// TODO Remove from shared system resources
 public final class PerformanceCounter {
 	private static final Logger log = LoggerFactory.getLogger(PerformanceCounter.class);
 
