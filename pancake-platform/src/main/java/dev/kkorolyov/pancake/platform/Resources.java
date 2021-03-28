@@ -36,7 +36,7 @@ public final class Resources {
 	 * @param path path to resource
 	 * @return input stream to resource
 	 */
-	public static Optional<InputStream> in(String path) {
+	public static Optional<InputStream> inStream(String path) {
 		InputStream result;
 
 		try {
@@ -63,7 +63,7 @@ public final class Resources {
 	 * @param path path to resource
 	 * @return output stream to resource; or {@code null} if no such resource
 	 */
-	public static Optional<OutputStream> out(String path) {
+	public static Optional<OutputStream> outStream(String path) {
 		Optional<OutputStream> result = Optional.empty();
 		try {
 			result = Optional.of(Files.newOutputStream(Paths.get(path)));

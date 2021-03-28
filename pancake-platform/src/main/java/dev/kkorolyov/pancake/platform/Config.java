@@ -45,11 +45,11 @@ public final class Config {
 		Properties config = get(name);
 		config.clear();
 
-		Resources.in(getDefaultsFileName(name)).ifPresent((ThrowingConsumer<? super InputStream, ?>) in -> {
+		Resources.inStream(getDefaultsFileName(name)).ifPresent((ThrowingConsumer<? super InputStream, ?>) in -> {
 			config.load(in);
 			LOG.info("Reloaded default config [{}]", name);
 		});
-		Resources.in(getFileName(name)).ifPresent((ThrowingConsumer<? super InputStream, ?>) in -> {
+		Resources.inStream(getFileName(name)).ifPresent((ThrowingConsumer<? super InputStream, ?>) in -> {
 			config.load(in);
 			LOG.info("Reloaded config [{}]", name);
 		});

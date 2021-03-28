@@ -17,7 +17,7 @@ private fun <T, F : DeferredConverterFactory<T>> load(
 	path: String,
 	strat: Class<F>
 ): Registry<String, T> =
-	Resources.`in`(path).orElse(null).use {
+	Resources.inStream(path).orElse(null).use {
 		Registry<String, T>().apply {
 			load(ResourceReader(DeferredConverterFactory.get(strat)).fromYaml(it))
 		}
