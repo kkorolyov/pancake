@@ -2,14 +2,15 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Transform;
-import dev.kkorolyov.pancake.core.component.movement.Force;
+import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.event.EntitiesCollided;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Collider;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.VectorMath;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 import java.util.ArrayDeque;
@@ -42,7 +43,7 @@ public class CollisionSystem extends GameSystem {
 
 	@Override
 	public void update(Entity entity, long dt) {
-		(isMoveable(entity) && entity.get(Velocity.class).getVelocity().getMagnitude() > 0
+		(isMoveable(entity) && VectorMath.magnitude(entity.get(Velocity.class).getValue()) > 0
 				? moved
 				: done
 		).add(entity);
@@ -54,20 +55,20 @@ public class CollisionSystem extends GameSystem {
 			Entity movedEntity = moved.remove();
 
 			for (Entity otherEntity : done) {
-				Vector mtv = intersection(movedEntity, otherEntity);
+				Vector3 mtv = intersection(movedEntity, otherEntity);
 
 				if (mtv != null) {
 					movedEntity.get(Transform.class).getPosition().add(mtv);
 
 					if (isMoveable(otherEntity)) {  // Entities in "moved" are already verified to be MOVEABLE
-						Collider.elasticCollide(movedEntity.get(Transform.class).getPosition(), movedEntity.get(Velocity.class).getVelocity(), movedEntity.get(Force.class).getMass(),
-								otherEntity.get(Transform.class).getPosition(), otherEntity.get(Velocity.class).getVelocity(), otherEntity.get(Force.class).getMass()
+						Collider.elasticCollide(movedEntity.get(Transform.class).getPosition(), movedEntity.get(Velocity.class).getValue(), movedEntity.get(Mass.class).getValue(),
+								otherEntity.get(Transform.class).getPosition(), otherEntity.get(Velocity.class).getValue(), otherEntity.get(Mass.class).getValue()
 						);
 					} else {
-						mtv.normalize();
+						mtv.scale(1 /VectorMath.magnitude(mtv));
 
-						Vector velocity = movedEntity.get(Velocity.class).getVelocity();
-						velocity.add(mtv, velocity.getMagnitude());
+						Vector3 velocity = movedEntity.get(Velocity.class).getValue();
+						velocity.add(mtv, VectorMath.magnitude(velocity));
 					}
 					enqueue(new EntitiesCollided(movedEntity.getId(), otherEntity.getId()));
 				}
@@ -76,7 +77,7 @@ public class CollisionSystem extends GameSystem {
 		}
 		done.clear();
 	}
-	private Vector intersection(Entity e1, Entity e2) {  // TODO Optimize performance
+	private Vector3 intersection(Entity e1, Entity e2) {  // TODO Optimize performance
 		Transform t1 = e1.get(Transform.class);
 		Transform t2 = e2.get(Transform.class);
 
@@ -106,7 +107,7 @@ public class CollisionSystem extends GameSystem {
 	}
 
 	private boolean isMoveable(Entity entity) {
-		return entity.get(Force.class) != null
+		return entity.get(Mass.class) != null
 				&& entity.get(Velocity.class) != null;
 	}
 }

@@ -1,67 +1,71 @@
 package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector1;
+import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * Position and orientation of an entity local to a parent transform.
  */
-public class Transform implements Component {
-	private final Vector position;
-	private final Vector globalPosition = new Vector();
-	private final Vector orientation;
-	private final Vector globalOrientation = new Vector();
+public final class Transform implements Component {
+	private final Vector3 position;
+	private final Vector3 globalPosition = Vectors.create(0, 0, 0);
+	// TODO quaternions
+	private final Vector1 orientation;
+	private final Vector1 globalOrientation = Vectors.create(0);
 
 	private Transform parent;
 	private boolean rotatesWithParent;
 
 	/**
-	 * Constructs a new transform with orientation 0 rads about all axes.
-	 * @see #Transform(Vector, Vector)
+	 * Constructs a new transform with orientation 0 rads.
+	 * @see #Transform(Vector3, Vector1)
 	 */
-	public Transform(Vector position) {
-		this(position, new Vector());
+	public Transform(Vector3 position) {
+		this(position, Vectors.create(0));
 	}
 	/**
 	 * Constructs a transform with no parent.
-	 * @see #Transform(Vector, Vector, Transform, boolean)
+	 * @see #Transform(Vector3, Vector1, Transform, boolean)
 	 */
-	public Transform(Vector position, Vector orientation) {
+	public Transform(Vector3 position, Vector1 orientation) {
 		this(position, orientation, null, false);
 	}
 	/**
 	 * Constructs a new transform with a parent and orientation 0 rads about all axes.
-	 * @see #Transform(Vector, Vector, Transform, boolean)
+	 * @see #Transform(Vector3, Vector1, Transform, boolean)
 	 */
-	public Transform(Vector position, Transform parent, boolean rotatesWithParent) {
-		this(position, new Vector(), parent, rotatesWithParent);
+	public Transform(Vector3 position, Transform parent, boolean rotatesWithParent) {
+		this(position, Vectors.create(0), parent, rotatesWithParent);
 	}
 	/**
 	 * Constructs a new transform.
 	 * @param position initial position
-	 * @param orientation vector where each component is the rotation in radians about the respective axis
+	 * @param orientation radians along x-y plane from the +x axis
 	 * @param parent parent transform
 	 * @param rotatesWithParent {@code true} means this transform is effectively "glued" to its position on {@code parent} and follows rotational position accordingly
 	 */
-	public Transform(Vector position, Vector orientation, Transform parent, boolean rotatesWithParent) {
-		this.position = position;
-		this.orientation = new Vector(orientation);
-		this.orientation.normalize();
+	public Transform(Vector3 position, Vector1 orientation, Transform parent, boolean rotatesWithParent) {
+		this.position = Vectors.create(position);
+		this.orientation = Vectors.create(orientation);
 		setParent(parent, rotatesWithParent);
 	}
 
 	/** @return position relative to parent transform */
-	public Vector getPosition() {
+	public Vector3 getPosition() {
 		return position;
 	}
 	/** @return position relative to the root transform */
-	public Vector getGlobalPosition() {
+	public Vector3 getGlobalPosition() {
 		globalPosition.set(position);
 
 		if (parent != null) {
 			if (rotatesWithParent) {
-				Vector orientation = parent.getGlobalOrientation();
-				globalPosition.pivot(orientation.getZ(), orientation.getX());
+				double theta = parent.getGlobalOrientation().getX();
+
+				globalPosition.setX(globalPosition.getX() * Math.cos(theta) - globalPosition.getY() * Math.sin(theta));
+				globalPosition.setY(globalPosition.getX() * Math.sin(theta) + globalPosition.getY() * Math.cos(theta));
 			}
 			globalPosition.add(parent.getGlobalPosition());
 		} else {
@@ -71,11 +75,11 @@ public class Transform implements Component {
 	}
 
 	/** @return orientation relative to parent */
-	public Vector getOrientation() {
+	public Vector1 getOrientation() {
 		return orientation;
 	}
 	/** @return orientation relative to the nearest ancestor which does not {@code rotatesWithParent} */
-	public Vector getGlobalOrientation() {
+	public Vector1 getGlobalOrientation() {
 		globalOrientation.set(orientation);
 
 		if (parent != null && rotatesWithParent) {

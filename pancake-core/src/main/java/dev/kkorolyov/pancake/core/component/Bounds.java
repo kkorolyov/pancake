@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
 
 /**
  * Bounds defined by at least one of:
@@ -20,19 +20,19 @@ public class Bounds implements Component {
 	/** Intersection type between a sphere and a box */
 	public static final int SPHERE_BOX = 3;
 
-	private Vector box;
+	private Vector3 box;
 	private double radius;
 
 	/**
 	 * Constructs new bounds defined solely by a box.
-	 * @see #Bounds(Vector, Double)
+	 * @see #Bounds(Vector3, Double)
 	 */
-	public Bounds(Vector box) {
+	public Bounds(Vector3 box) {
 		this(box, null);
 	}
 	/**
 	 * Constructs new bounds defined solely by a sphere.
-	 * @see #Bounds(Vector, Double)
+	 * @see #Bounds(Vector3, Double)
 	 */
 	public Bounds(Double radius) {
 		this(null, radius);
@@ -43,7 +43,7 @@ public class Bounds implements Component {
 	 * @param radius sphere radius
 	 * @throws IllegalStateException if both {@code box} and {@code radius} are {@code null}
 	 */
-	public Bounds(Vector box, Double radius) {
+	public Bounds(Vector3 box, Double radius) {
 		this.box = box;
 		this.radius = (radius != null) ? radius : 0;
 
@@ -73,7 +73,7 @@ public class Bounds implements Component {
 	}
 
 	/** @return box dimensions, or {@code null} if not set */
-	public Vector getBox() {
+	public Vector3 getBox() {
 		return box;
 	}
 	/**
@@ -81,7 +81,7 @@ public class Bounds implements Component {
 	 * @return {@code this}
 	 * @throws IllegalStateException if both {@code box} and {@code radius} of this instance are {@code null}
 	 */
-	public Bounds setBox(Vector box) {
+	public Bounds setBox(Vector3 box) {
 		this.box = box;
 		verifyDefined();
 

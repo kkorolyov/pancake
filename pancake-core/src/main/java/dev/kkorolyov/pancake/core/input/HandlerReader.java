@@ -18,16 +18,16 @@ import static java.util.stream.Collectors.toSet;
  */
 public final class HandlerReader {
 	private final Application application;
-	private final Registry<String, Action> actions;
+	private final Registry<? super String, ? extends Action> actions;
 
 	/**
 	 * Constructs a new handler reader.
 	 * @param actions actions to bind read handlers to
 	 */
-	public HandlerReader(Registry<String, Action> actions) {
+	public HandlerReader(Registry<? super String, ? extends Action> actions) {
 		this(Resources.APPLICATION, actions);
 	}
-	HandlerReader(Application application, Registry<String, Action> actions) {
+	HandlerReader(Application application, Registry<? super String, ? extends Action> actions) {
 		this.application = application;
 		this.actions = actions;
 	}
@@ -49,7 +49,7 @@ public final class HandlerReader {
 									? (MultiStageAction) action
 									: new MultiStageAction(action, null, null, 0),  // hold irrelevant
 							e.getValue().stream()
-									.map(Resources.APPLICATION::toInput)
+									.map(application::toInput)
 									.collect(toSet())
 					);
 				})

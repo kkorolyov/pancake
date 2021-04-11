@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,9 +13,9 @@ import java.util.Set;
  * Faces towards the nearest rotational anchor.
  */
 public class Chain implements Component {
-	private Vector positionAnchor;
+	private Vector3 positionAnchor;
 	private double play;
-	private final Set<Vector> rotationAnchors = new HashSet<>();
+	private final Set<Vector3> rotationAnchors = new HashSet<>();
 
 	/**
 	 * Constructs a new chain.
@@ -23,7 +23,7 @@ public class Chain implements Component {
 	 * @param play maximum distance between {@code positionAnchor} and the chained entity
 	 * @param rotationAnchors chained rotational anchors
 	 */
-	public Chain(Vector positionAnchor, double play, Vector... rotationAnchors) {
+	public Chain(Vector3 positionAnchor, double play, Vector3... rotationAnchors) {
 		this(positionAnchor, play, Arrays.asList(rotationAnchors));
 	}
 	/**
@@ -32,17 +32,17 @@ public class Chain implements Component {
 	 * @param play maximum distance between {@code positionAnchor} and the chained entity
 	 * @param rotationAnchors chained rotational anchors
 	 */
-	public Chain(Vector positionAnchor, double play, Iterable<Vector> rotationAnchors) {
+	public Chain(Vector3 positionAnchor, double play, Iterable<Vector3> rotationAnchors) {
 		setPositionAnchor(positionAnchor, play);
 		rotationAnchors.forEach(this::addRotationAnchor);
 	}
 
 	/** @return positional anchor, or {@code null} if not set */
-	public Vector getPositionAnchor() {
+	public Vector3 getPositionAnchor() {
 		return positionAnchor;
 	}
 	/** @param anchor new positional anchor */
-	public void setPositionAnchor(Vector anchor) {
+	public void setPositionAnchor(Vector3 anchor) {
 		setPositionAnchor(anchor, play);
 	}
 
@@ -59,7 +59,7 @@ public class Chain implements Component {
 	 * @param anchor new positional anchor
 	 * @param play maximum distance {@code anchor} may move without this chain following
 	 */
-	public void setPositionAnchor(Vector anchor, double play) {
+	public void setPositionAnchor(Vector3 anchor, double play) {
 		this.positionAnchor = anchor;
 		this.play = play;
 	}
@@ -69,7 +69,7 @@ public class Chain implements Component {
 	 * @param anchor rotational anchor
 	 * @return {@code true} if this chain did not already contain {@code anchor} as a rotational anchor
 	 */
-	public boolean addRotationAnchor(Vector anchor) {
+	public boolean addRotationAnchor(Vector3 anchor) {
 		return rotationAnchors.add(anchor);
 	}
 	/**
@@ -77,12 +77,12 @@ public class Chain implements Component {
 	 * @param anchor removed rotational anchor
 	 * @return {@code true} if {@code anchor} was bound to this chain
 	 */
-	public boolean removeRotationAnchor(Vector anchor) {
+	public boolean removeRotationAnchor(Vector3 anchor) {
 		return rotationAnchors.remove(anchor);
 	}
 
 	/** @return all rotational anchors */
-	public Iterable<Vector> getRotationAnchors() {
+	public Iterable<Vector3> getRotationAnchors() {
 		return rotationAnchors;
 	}
 }

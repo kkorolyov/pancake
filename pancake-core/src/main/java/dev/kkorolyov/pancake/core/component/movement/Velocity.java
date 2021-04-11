@@ -1,80 +1,34 @@
 package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * Velocity of a moving entity.
  */
 public final class Velocity implements Component {
-	private final Vector velocity = new Vector();
-	private final Vector maxSpeed;
+	private final Vector3 value;
 
-	/**
-	 * Constructs a new velocity with effectively infinite max speed.
-	 */
-	public Velocity() {
-		this(Double.MAX_VALUE);
-	}
 	/**
 	 * Constructs a new velocity.
-	 * @param maxSpeed maximum speed along all axes
+	 * @param value initial value in {@code m/s}
 	 */
-	public Velocity(double maxSpeed) {
-		this(Vector.all(maxSpeed));
-	}
-	/**
-	 * Constructs a new velocity.
-	 * @param maxSpeed vector defining maximum speed along each axis
-	 */
-	public Velocity(Vector maxSpeed) {
-		this.maxSpeed = new Vector(constrain(maxSpeed.getX()), constrain(maxSpeed.getY()), constrain(maxSpeed.getZ()));
-	}
-	private static double constrain(double value) {
-		return Math.max(0, value);
-	}
-
-	/**
-	 * Caps the speed along each axis such that it does not exceed max speed.
-	 * @return velocity vector after capping applied
-	 */
-	public Vector cap() {
-		round().set(
-				cap(velocity.getX(), maxSpeed.getX()),
-				cap(velocity.getY(), maxSpeed.getY()),
-				cap(velocity.getZ(), maxSpeed.getZ())
-		);
-		return velocity;
-	}
-	private static double cap(double velocity, double maxSpeed) {
-		return velocity < 0 ? Math.max(velocity, -maxSpeed) : Math.min(velocity, maxSpeed);
-	}
-
-	private Vector round() {
-		velocity.set(
-				round(velocity.getX()),
-				round(velocity.getY()),
-				round(velocity.getZ())
-		);
-		return velocity;
-	}
-	private static double round(double value) {
-		return Double.compare(0, value) == 0 ? 0 : value;
+	public Velocity(Vector3 value) {
+		this.value = Vectors.create(value);
 	}
 
 	/**
 	 * Applies a positional change calculated from velocity and duration to a point.
 	 * @param position position to move
 	 * @param seconds seconds used in movement calculation
-	 * @return {@code position} after movement applied
 	 */
-	public Vector move(Vector position, double seconds) {
-		position.add(velocity, seconds);
-		return position;
+	public void move(Vector3 position, double seconds) {
+		position.add(value, seconds);
 	}
 
-	/** @return velocity vector */
-	public Vector getVelocity() {
-		return velocity;
+	/** @return velocity in {@code m/s} */
+	public Vector3 getValue() {
+		return value;
 	}
 }

@@ -7,14 +7,16 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.VectorMath;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 /**
  * Starts and stops audio clips.
  */
 public class AudioSystem extends GameSystem {
-	private final Vector relativeEmitter = new Vector();
+	private final Vector3 relativeEmitter = Vectors.create(0, 0, 0);
 
 	/**
 	 * Constructs a new sound system.
@@ -29,15 +31,15 @@ public class AudioSystem extends GameSystem {
 	@Override
 	public void update(Entity entity, long dt) {
 		AudioEmitter emitter = entity.get(AudioEmitter.class);
-		Vector position = entity.get(Transform.class).getGlobalPosition();
+		Vector3 position = entity.get(Transform.class).getGlobalPosition();
 
 		relativeEmitter.set(position);
-		relativeEmitter.sub(Resources.RENDER_MEDIUM.getCamera().getPosition());
+		relativeEmitter.add(Resources.RENDER_MEDIUM.getCamera().getPosition(), -1);
 
 		double centralRadius = Double.parseDouble(Config.get(getClass()).getProperty("centralRadius"));
 
 		emitter.apply(
-				centralRadius / relativeEmitter.getMagnitude(),
+				centralRadius / VectorMath.magnitude(relativeEmitter),
 				relativeEmitter.getX() / centralRadius
 		);
 	}

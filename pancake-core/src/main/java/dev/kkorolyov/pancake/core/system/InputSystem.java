@@ -8,14 +8,15 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector2;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 /**
  * Applies actions using current player input.
  */
 public class InputSystem extends GameSystem {
-	private final Vector transformToCursor = new Vector();  // TODO What to do with this?
+	private final Vector2 transformToCursor = Vectors.create(0, 0);  // TODO What to do with this?
 
 	/**
 	 * Constructs a new input system.
@@ -37,9 +38,9 @@ public class InputSystem extends GameSystem {
 		}
 		if (input.facesCursor() && transform != null) {
 			transformToCursor.set(Resources.RENDER_MEDIUM.getCamera().getAbsolutePosition(Resources.APPLICATION.getCursor()));
-			transformToCursor.sub(transform.getPosition());
+			transformToCursor.add(transform.getPosition(), -1);
 
-			transform.getOrientation().set(transformToCursor.getPhi(), 0, transformToCursor.getTheta());
+			transform.getOrientation().setX(Math.atan2(transformToCursor.getY(), transformToCursor.getX()));
 		}
 	}
 }

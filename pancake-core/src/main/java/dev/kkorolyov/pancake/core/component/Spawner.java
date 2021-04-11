@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.flopple.data.WeightedDistribution;
 import dev.kkorolyov.pancake.platform.entity.Component;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -41,7 +41,7 @@ public class Spawner implements Component {
 	 * @param dt seconds since last invocation of this method
 	 * @return random template clone randomly positioned around {@code origin}, or {@code null} if inactive or the last invocation of this method happened within the spawn interval
 	 */
-	public Iterable<Component> spawn(Vector origin, double dt) {
+	public Iterable<Component> spawn(Vector3 origin, double dt) {
 		if (!isActive()) return null;
 
 		sinceLast += dt;
@@ -55,12 +55,12 @@ public class Spawner implements Component {
 	 * @param origin point around which to randomly position clone
 	 * @return random template clone randomly positioned around {@code origin}
 	 */
-	public Iterable<Component> spawn(Vector origin) {
+	public Iterable<Component> spawn(Vector3 origin) {
 		Iterable<Component> clone = templates.get().get();
 
 		for (Component component : clone) {
 			if (component instanceof Transform) {
-				Vector position = ((Transform) component).getPosition();
+				Vector3 position = ((Transform) component).getPosition();
 				randomPosition(position);
 				position.add(origin);
 
@@ -69,7 +69,7 @@ public class Spawner implements Component {
 		}
 		return clone;
 	}
-	private void randomPosition(Vector position) {
+	private void randomPosition(Vector3 position) {
 		double radius = minRadius + (radiusDifference * rand.nextDouble());
 		double theta = 2 * PI * rand.nextDouble();
 		double u = (rand.nextBoolean() ? 1 : -1) * rand.nextDouble();

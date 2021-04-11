@@ -5,7 +5,9 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.VectorMath;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 import java.util.NavigableMap;
@@ -15,8 +17,8 @@ import java.util.TreeMap;
  * Repositions chained entities.
  */
 public class ChainSystem extends GameSystem {
-	private final Vector transformToAnchor = new Vector();
-	private final NavigableMap<Double, Vector> sortedAnchors = new TreeMap<>();
+	private final Vector3 transformToAnchor = Vectors.create(0, 0, 0);
+	private final NavigableMap<Double, Vector3> sortedAnchors = new TreeMap<>();
 
 	/**
 	 * Constructs a new chain system.
@@ -37,36 +39,30 @@ public class ChainSystem extends GameSystem {
 		updateRotationAnchors(chain, transform);
 	}
 	private void updatePositionAnchor(Chain chain, Transform transform) {
-		Vector anchor = chain.getPositionAnchor();
+		Vector3 anchor = chain.getPositionAnchor();
 		if (anchor == null) return;
 
 		transformToAnchor.set(anchor);
-		transformToAnchor.sub(transform.getPosition());
+		transformToAnchor.add(transform.getPosition(), -1);
 
-		double gap = transformToAnchor.getMagnitude() - chain.getPlay();
+		double gap = VectorMath.magnitude(transformToAnchor) - chain.getPlay();
 		if (gap > 0) {
-			transformToAnchor.normalize();
+			transformToAnchor.scale(1 / VectorMath.magnitude(transformToAnchor));
 			transformToAnchor.scale(gap);
 
 			transform.getPosition().add(transformToAnchor);
 		}
 	}
 	private void updateRotationAnchors(Chain chain, Transform transform) {
-		for (Vector anchor : chain.getRotationAnchors()) {
-			sortedAnchors.put(findDistance(transform.getPosition(), anchor), anchor);
+		for (Vector3 anchor : chain.getRotationAnchors()) {
+			sortedAnchors.put(VectorMath.distance(transform.getPosition(), anchor), anchor);
 		}
 		if (sortedAnchors.size() > 0) {
 			transformToAnchor.set(sortedAnchors.firstEntry().getValue());
-			transformToAnchor.sub(transform.getPosition());
+			transformToAnchor.add(transform.getPosition(), -1);
 
-			transform.getOrientation().set(transformToAnchor.getPhi(), 0, transformToAnchor.getTheta());
+			transform.getOrientation().setX(Math.atan2(transformToAnchor.getY(), transformToAnchor.getX()));
 		}
 		sortedAnchors.clear();
-	}
-	private double findDistance(Vector parent, Vector child) {
-		transformToAnchor.set(child);
-		transformToAnchor.sub(parent);
-
-		return transformToAnchor.getMagnitude();
 	}
 }

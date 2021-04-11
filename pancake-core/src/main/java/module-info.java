@@ -1,4 +1,17 @@
 import dev.kkorolyov.pancake.core.registry.ActionStratDeferredConverterFactory;
+import dev.kkorolyov.pancake.core.system.AccelerationSystem;
+import dev.kkorolyov.pancake.core.system.ActionSystem;
+import dev.kkorolyov.pancake.core.system.AnimationSystem;
+import dev.kkorolyov.pancake.core.system.AudioSystem;
+import dev.kkorolyov.pancake.core.system.CappingSystem;
+import dev.kkorolyov.pancake.core.system.ChainSystem;
+import dev.kkorolyov.pancake.core.system.CollisionSystem;
+import dev.kkorolyov.pancake.core.system.DampingSystem;
+import dev.kkorolyov.pancake.core.system.InputSystem;
+import dev.kkorolyov.pancake.core.system.MovementSystem;
+import dev.kkorolyov.pancake.core.system.RenderSystem;
+import dev.kkorolyov.pancake.core.system.SpawnSystem;
+import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
 
 module dev.kkorolyov.pancake.core {
@@ -15,17 +28,18 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.input;
 	exports dev.kkorolyov.pancake.core.system;
 
-	provides dev.kkorolyov.pancake.platform.GameSystem with
-			dev.kkorolyov.pancake.core.system.ActionSystem,
-			dev.kkorolyov.pancake.core.system.InputSystem,
-			dev.kkorolyov.pancake.core.system.DampingSystem,
-			dev.kkorolyov.pancake.core.system.AccelerationSystem,
-			dev.kkorolyov.pancake.core.system.MovementSystem,
-			dev.kkorolyov.pancake.core.system.ChainSystem,
-			dev.kkorolyov.pancake.core.system.CollisionSystem,
-			dev.kkorolyov.pancake.core.system.SpawnSystem,
-			dev.kkorolyov.pancake.core.system.AnimationSystem,
-			dev.kkorolyov.pancake.core.system.RenderSystem,
-			dev.kkorolyov.pancake.core.system.AudioSystem;
+	provides GameSystem with
+			ActionSystem,
+			InputSystem,
+			DampingSystem,
+			AccelerationSystem,
+			CappingSystem,
+			MovementSystem,
+			ChainSystem,
+			CollisionSystem,
+			SpawnSystem,
+			AnimationSystem,
+			RenderSystem,
+			AudioSystem;
 	provides DeferredConverterFactory.ActionStrat with ActionStratDeferredConverterFactory;
 }

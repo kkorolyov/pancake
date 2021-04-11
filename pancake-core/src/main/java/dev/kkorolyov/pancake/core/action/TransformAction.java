@@ -3,7 +3,9 @@ package dev.kkorolyov.pancake.core.action;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector1;
+import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 
 import java.util.Objects;
 
@@ -11,14 +13,14 @@ import java.util.Objects;
  * Sets a transform.
  */
 public class TransformAction implements Action {
-	private final Vector position;
-	private final Vector rotation;
+	private final Vector3 position;
+	private final Vector1 rotation;
 
 	/**
 	 * Constructs a new transform action which only alters position.
-	 * @see #TransformAction(Vector, Vector)
+	 * @see #TransformAction(Vector3, Vector1)
 	 */
-	public TransformAction(Vector position) {
+	public TransformAction(Vector3 position) {
 		this(position, null);
 	}
 	/**
@@ -26,9 +28,9 @@ public class TransformAction implements Action {
 	 * @param position position to set on accepted entities
 	 * @param rotation rotation to set on accepted entities
 	 */
-	public TransformAction(Vector position, Vector rotation) {
-		this.position = position;
-		this.rotation = rotation;
+	public TransformAction(Vector3 position, Vector1 rotation) {
+		this.position = Vectors.create(position);
+		this.rotation = rotation != null ? Vectors.create(rotation) : null;
 	}
 
 	@Override
@@ -37,15 +39,6 @@ public class TransformAction implements Action {
 
 		entityTransform.getPosition().set(position);
 		if (rotation != null) entityTransform.getOrientation().set(rotation);
-	}
-
-	/** @return position vector set on accepted entities */
-	public Vector getPosition() {
-		return position;
-	}
-	/** @return rotation set on accepted entities, or {@code null} */
-	public Vector getRotation() {
-		return rotation;
 	}
 
 	@Override
@@ -60,5 +53,13 @@ public class TransformAction implements Action {
 	@Override
 	public int hashCode() {
 		return Objects.hash(position, rotation);
+	}
+
+	@Override
+	public String toString() {
+		return "TransformAction{" +
+				"position=" + position +
+				", rotation=" + rotation +
+				'}';
 	}
 }
