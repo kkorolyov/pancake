@@ -16,7 +16,9 @@ import dev.kkorolyov.pancake.core.component.media.Animation
 import dev.kkorolyov.pancake.core.component.media.Graphic
 import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
+import dev.kkorolyov.pancake.core.component.movement.Mass
 import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.component.movement.VelocityCap
 import dev.kkorolyov.pancake.core.event.EntitiesCollided
 import dev.kkorolyov.pancake.core.input.HandlerReader
 import dev.kkorolyov.pancake.platform.GameEngine
@@ -29,7 +31,10 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.event.EntityCreated
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed
 import dev.kkorolyov.pancake.platform.event.EventLoop.Broadcasting
-import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.math.Vector1
+import dev.kkorolyov.pancake.platform.math.Vector2
+import dev.kkorolyov.pancake.platform.math.Vector3
+import dev.kkorolyov.pancake.platform.math.Vectors
 import dev.kkorolyov.pancake.platform.media.audio.Audio
 import dev.kkorolyov.pancake.platform.media.audio.Audio.State.PLAY
 import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
@@ -37,9 +42,6 @@ import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.media.graphic.Viewport
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory.ActionStrat
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory.AudioStrat
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory.RenderableStrat
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
 import org.slf4j.Logger
@@ -53,14 +55,14 @@ private val log: Logger = LoggerFactory.getLogger("main")
 private val renderables: Registry<String, Renderable> by lazy {
 	Resources.inStream("config/renderables.yaml").orElse(null).use {
 		Registry<String, Renderable>().apply {
-			load(ResourceReader(DeferredConverterFactory.get(RenderableStrat::class.java)).fromYaml(it))
+			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.RenderableStrat::class.java)).fromYaml(it))
 		}
 	}
 }
 private val audio: Registry<String, Audio> by lazy {
 	Resources.inStream("config/audio.yaml").orElse(null).use {
 		Registry<String, Audio>().apply {
-			load(ResourceReader(DeferredConverterFactory.get(AudioStrat::class.java)).fromYaml(it))
+			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.AudioStrat::class.java)).fromYaml(it))
 		}
 	}
 }
@@ -74,17 +76,16 @@ private val actions: Registry<String, Action> by lazy {
 
 			put("toggleSpawner", Action { it.get(Spawner::class.java).toggle() })
 
-			load(ResourceReader(DeferredConverterFactory.get(ActionStrat::class.java)).fromYaml(it))
+			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.ActionStrat::class.java)).fromYaml(it))
 		}
 	}
 }
 
-private val events: Broadcasting =
-	Broadcasting()
+private val events: Broadcasting = Broadcasting()
 
-private val healthBarSize: Vector = Vector(1.0, 0.25)
+private val healthBarSize: Vector2 = Vectors.create(1.0, 0.25)
 
-private val playerTransform = Transform(Vector(), randRotation())
+private val playerTransform = Transform(Vectors.create(0.0, 0.0, 0.0), randRotation())
 
 private val entities: EntityPool by lazy {
 	EntityPool(events).apply {
@@ -97,7 +98,7 @@ private val entities: EntityPool by lazy {
 			for (j in -15..15 step 2) {
 				create().apply {
 					add(
-						Transform(Vector(i.toDouble(), j.toDouble(), -1.0)),
+						Transform(Vectors.create(i.toDouble(), j.toDouble(), -1.0)),
 						groundGraphic
 					)
 				}
@@ -107,8 +108,8 @@ private val entities: EntityPool by lazy {
 		// Wall
 		create().apply {
 			add(
-				Transform(Vector(-3.0, 0.0), randRotation()),
-				Bounds(Vector(3.0, 3.0)),
+				Transform(Vectors.create(-3.0, 0.0, 0.0), randRotation()),
+				Bounds(Vectors.create(3.0, 3.0, 0.0)),
 				boxGraphic,
 				AudioEmitter().apply {
 					enqueue(audio.get("wall"))
@@ -121,20 +122,28 @@ private val entities: EntityPool by lazy {
 		// Boxes
 		for (i in 1..line) {
 			for (j in 1..line) {
-				createObject(Vector(i.toDouble(), -j.toDouble()), Bounds(BOX), boxGraphic)
+				createObject(
+					Vectors.create(i.toDouble(), -j.toDouble(), 0.0),
+					Bounds(BOX),
+					boxGraphic
+				)
 			}
 		}
 		// Spheres
 		for (i in 1..line) {
 			for (j in 1..line) {
-				createObject(Vector(i.toDouble(), j.toDouble()), Bounds(RADIUS), sphereGraphic)
+				createObject(
+					Vectors.create(i.toDouble(), j.toDouble(), 0.0),
+					Bounds(RADIUS),
+					sphereGraphic
+				)
 			}
 		}
 
 		// Camera
 		create().apply {
 			add(
-				Transform(Resources.RENDER_MEDIUM.camera.position),
+				Transform(Vectors.create(0.0, 0.0, 0.0)).apply { Resources.RENDER_MEDIUM.camera.position = position },
 				Chain(playerTransform.position, 1.0)
 			)
 		}
@@ -150,8 +159,10 @@ private val entities: EntityPool by lazy {
 
 			it.add(
 				playerTransform,
-				Velocity(MAX_SPEED),
-				Force(PLAYER_MASS),
+				Velocity(Vectors.create(0.0, 0.0, 0.0)),
+				VelocityCap(MAX_SPEED),
+				Force(Vectors.create(0.0, 0.0, 0.0)),
+				Mass(PLAYER_MASS),
 				Damping(PLAYER_DAMPING),
 				Bounds(BOX, RADIUS),
 				Spawner(
@@ -162,9 +173,10 @@ private val entities: EntityPool by lazy {
 						add(
 							Supplier {
 								listOf(
-									Transform(Vector(1.0, 1.0), randRotation()),
-									Velocity(),
-									Force(OBJECT_MASS),
+									Transform(Vectors.create(1.0, 1.0, 0.0), randRotation()),
+									Velocity(Vectors.create(0.0, 0.0, 0.0)),
+									Force(Vectors.create(0.0, 0.0, 0.0)),
+									Mass(OBJECT_MASS),
 									Damping(OBJECT_DAMPING),
 									Bounds(BOX, RADIUS),
 									sphereGraphic
@@ -204,14 +216,14 @@ private val entities: EntityPool by lazy {
 		// Player health
 		create().apply {
 			add(
-				Transform(Vector(0.0, .5, 1.0), playerTransform, false),
+				Transform(Vectors.create(0.0, .5, 1.0), playerTransform, false),
 				Graphic(HealthBar(health, healthBarSize, Resources.RENDER_MEDIUM))
 			)
 		}
 	}
 }
 
-private fun EntityPool.createObject(position: Vector, bounds: Bounds, graphic: Graphic) {
+private fun EntityPool.createObject(position: Vector3, bounds: Bounds, graphic: Graphic) {
 	val transform = Transform(position, randRotation())
 	val health = Health(20)
 
@@ -219,8 +231,9 @@ private fun EntityPool.createObject(position: Vector, bounds: Bounds, graphic: G
 	create()
 		.add(
 			transform,
-			Velocity(),
-			Force(OBJECT_MASS),
+			Velocity(Vectors.create(0.0, 0.0, 0.0)),
+			Force(Vectors.create(0.0, 0.0, 0.0)),
+			Mass(OBJECT_MASS),
 			Damping(OBJECT_DAMPING),
 			Chain(null, 0.0, playerTransform.position),
 			bounds,
@@ -230,14 +243,13 @@ private fun EntityPool.createObject(position: Vector, bounds: Bounds, graphic: G
 	// Its health bar
 	create()
 		.add(
-			Transform(Vector(0.0, .3, 1.0), transform, false),
+			Transform(Vectors.create(0.0, .3, 1.0), transform, false),
 			Graphic(HealthBar(health, healthBarSize, Resources.RENDER_MEDIUM)),
 			health
 		)
 }
 
-private fun randRotation(): Vector =
-	ThreadLocalRandom.current().run { Vector(nextDouble(), nextDouble(), nextDouble()) }
+private fun randRotation(): Vector1 = Vectors.create(ThreadLocalRandom.current().nextDouble())
 
 /**
  * Executes the game.
