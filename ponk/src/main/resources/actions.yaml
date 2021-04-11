@@ -1,0 +1,11 @@
+forceUp:
+  force: [ 0, 1 ]
+forceDown:
+  force: [ 0, -1 ]
+
+up:
+  start: forceUp
+  end: forceDown
+down:
+  start: forceDown
+  end: forceUp
