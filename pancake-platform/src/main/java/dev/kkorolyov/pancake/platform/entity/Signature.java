@@ -3,18 +3,20 @@ package dev.kkorolyov.pancake.platform.entity;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
+
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 /**
  * A distinct combination of registered component types.
  */
-public class Signature implements Comparable<Signature> {
-	private static final HashMap<Class<? extends Component>, Long> indexMap = new HashMap<>();
+public final class Signature implements Comparable<Signature> {
+	private static final HashMap<Class<? extends Component>, Long> INDEX_MAP = new HashMap<>();
 	private static long indexCounter;
 
-	private final Collection<Class<? extends Component>> types = new HashSet<>();
-	private long signature;
+	private final Collection<Class<? extends Component>> types;
+	private final long signature;
 
 	/**
 	 * Constructs a new signature from a set of component types.
@@ -29,15 +31,14 @@ public class Signature implements Comparable<Signature> {
 	 * @param types types defining signature
 	 */
 	public Signature(Iterable<Class<? extends Component>> types) {
-		if (types != null) {
-			for (Class<? extends Component> type : types) {
-				add(type);
-			}
-		}
+		this.types = StreamSupport.stream(types.spliterator(), false)
+				.collect(toUnmodifiableSet());
+		signature = this.types.stream()
+				.map(Signature::maskOf)
+				.reduce(0L, (sig, i) -> sig | i);
 	}
-
 	private static long maskOf(Class<? extends Component> type) {
-		return indexMap.computeIfAbsent(type, k -> 1L << indexCounter++);
+		return INDEX_MAP.computeIfAbsent(type, k -> 1L << indexCounter++);
 	}
 
 	/**
@@ -45,25 +46,8 @@ public class Signature implements Comparable<Signature> {
 	 * @param other signature to check against
 	 * @return {@code true} if this signature contains all component types specified by {@code other}
 	 */
-	public final boolean masks(Signature other) {
+	public boolean masks(Signature other) {
 		return (signature & other.signature) == other.signature;
-	}
-
-	/**
-	 * Adds a component type to this signature.
-	 * @param type added component type
-	 */
-	public void add(Class<? extends Component> type) {
-		types.add(type);
-		signature |= maskOf(type);
-	}
-	/**
-	 * Removes a component type from this signature.
-	 * @param type removed component type
-	 */
-	public void remove(Class<? extends Component> type) {
-		types.remove(type);
-		signature &= ~maskOf(type);
 	}
 
 	/** @return number of types composing this signature */
@@ -77,12 +61,16 @@ public class Signature implements Comparable<Signature> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+	public int compareTo(Signature o) {
+		return Long.compare(signature, o.signature);
+	}
 
-		Signature other = (Signature) o;
-		return signature == other.signature;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		Signature o = (Signature) obj;
+		return signature == o.signature;
 	}
 	@Override
 	public int hashCode() {
@@ -90,7 +78,10 @@ public class Signature implements Comparable<Signature> {
 	}
 
 	@Override
-	public int compareTo(Signature o) {
-		return Long.compare(signature, o.signature);
+	public String toString() {
+		return "Signature{" +
+				"types=" + types +
+				", signature=" + signature +
+				'}';
 	}
 }
