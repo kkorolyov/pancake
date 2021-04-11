@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.javafx.render
 
-import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape
 import javafx.scene.canvas.GraphicsContext
@@ -58,12 +58,12 @@ class EnhancedGraphicsContext(private val g: GraphicsContext) {
 
 	/** Sets current `rotation` to [transform]'s rotation. */
 	fun rotate(transform: RenderTransform, pad: Boolean = false) {
-		rotate(transform.rotation.z, transform.position, pad)
+		rotate(transform.rotation.x, transform.position, pad)
 
 		resetRotate = false
 	}
 
-	private fun rotate(angle: Double, pivot: Vector?, pad: Boolean = false) {
+	private fun rotate(angle: Double, pivot: Vector2?, pad: Boolean = false) {
 		rotate.run {
 			this.angle = -Math.toDegrees(if (pad) angle - (0.5 * Math.PI) else angle)
 

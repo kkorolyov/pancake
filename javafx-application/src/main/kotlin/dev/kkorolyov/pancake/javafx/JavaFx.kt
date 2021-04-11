@@ -9,7 +9,8 @@ import dev.kkorolyov.pancake.platform.GameLoop
 import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.application.Application
 import dev.kkorolyov.pancake.platform.application.Application.Config
-import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.math.Vector2
+import dev.kkorolyov.pancake.platform.math.Vectors
 import dev.kkorolyov.pancake.platform.media.Camera
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
@@ -39,7 +40,7 @@ private fun Canvas.setSize(width: Double, height: Double) {
  * [Application] implemented through JavaFX.
  */
 class JavaFxApplication : Application {
-	private val cursor: Vector = Vector()
+	private val cursor: Vector2 = Vectors.create(0.0, 0.0)
 	private val inputs: MutableCollection<Enum<*>> = HashSet()
 
 	override fun toInput(key: String): Enum<*> =
@@ -49,7 +50,7 @@ class JavaFxApplication : Application {
 			MouseButton.valueOf(key)
 		}
 
-	override fun getCursor(): Vector = cursor
+	override fun getCursor(): Vector2 = cursor
 	override fun getInputs(): Collection<Enum<*>> = inputs
 
 	override fun execute(config: Config, gameLoop: GameLoop) {
@@ -72,10 +73,13 @@ private object Runner : FxApplication() {
 		}
 	}
 
-	fun attach(config: Config, gameLoop: GameLoop, cursor: Vector, inputs: MutableCollection<Enum<*>>) {
+	fun attach(config: Config, gameLoop: GameLoop, cursor: Vector2, inputs: MutableCollection<Enum<*>>) {
 		Platform.runLater {
 			scene.apply {
-				onMouseMoved = EventHandler { cursor.set(it.x, it.y) }
+				onMouseMoved = EventHandler {
+					cursor.x = it.x
+					cursor.y = it.y
+				}
 
 				onMousePressed = EventHandler { inputs += it.button }
 				onMouseReleased = EventHandler { inputs -= it.button }
@@ -123,10 +127,10 @@ private object Runner : FxApplication() {
  */
 class JavaFxRenderMedium : RenderMedium {
 	// FIXME Make this dynamic
-	private val unitPixels = Vector(64.0, 64.0, 1.0)
+	private val unitPixels = 64.0
 
 	// FIXME Decouple camera
-	private val camera: Camera = Camera(Vector(), Vector(unitPixels).apply { scale(Vector(1.0, -1.0, 1.0)) }, 0.0, 0.0)
+	private val camera: Camera = Camera(Vectors.create(0.0, 0.0), unitPixels, 0.0, 0.0)
 	private val g: EnhancedGraphicsContext by lazy {
 		EnhancedGraphicsContext(Runner.canvas.graphicsContext2D)
 	}

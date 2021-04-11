@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.javafx.render
 
-import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform
 import javafx.scene.image.Image as FxImage
@@ -10,8 +10,8 @@ import javafx.scene.image.Image as FxImage
  */
 class JavaFxImage(private val image: FxImage, private val g: EnhancedGraphicsContext) : Image() {
 	override fun render(transform: RenderTransform) {
-		val origin: Vector = viewport.getOrigin(image.width, image.height)
-		val size: Vector = viewport.getSize(image.width, image.height)
+		val origin: Vector2 = viewport.getOrigin(image.width, image.height)
+		val size: Vector2 = viewport.getSize(image.width, image.height)
 
 		// Rotate
 		g.run {
