@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.platform.registry;
 
 import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.media.audio.Audio;
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
 
@@ -32,9 +32,9 @@ public interface DeferredConverterFactory<T> {
 	Converter<Object, Optional<Deferred<String, T>>> get();
 
 	/**
-	 * Generates {@link dev.kkorolyov.pancake.platform.math.Vector} deferred converters.
+	 * Generates {@link Vector3} deferred converters.
 	 */
-	interface VectorStrat extends DeferredConverterFactory<Vector> {}
+	interface VectorStrat extends DeferredConverterFactory<Vector3> {}
 
 	/**
 	 * Generates {@link dev.kkorolyov.pancake.platform.action.Action} deferred converters.

@@ -1,6 +1,8 @@
 package dev.kkorolyov.pancake.platform.media.graphic;
 
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector2;
+import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * A constrained view on a renderable artifact.
@@ -8,14 +10,14 @@ import dev.kkorolyov.pancake.platform.math.Vector;
  * Partitioning constrained {@code [1, Integer#MAX_VALUE]} along each axis.
  */
 public final class Viewport {
-	private final Vector partitions;
-	private final Vector current = new Vector();
+	private final Vector3 partitions;
+	private final Vector3 current = Vectors.create(0, 0, 0);
 
-	private final Vector origin = new Vector();
-	private final Vector size = new Vector();
+	private final Vector3 origin = Vectors.create(0, 0, 0);
+	private final Vector3 size = Vectors.create(0, 0, 0);
 
-	private final Vector fullSize = new Vector();
-	private final Vector lastFullSize = new Vector();
+	private final Vector3 fullSize = Vectors.create(0, 0, 0);
+	private final Vector3 lastFullSize = Vectors.create(0, 0, 0);
 
 	/**
 	 * Constructs a new 2D viewport.
@@ -31,29 +33,26 @@ public final class Viewport {
 	 * @param zParts number of partitions along z-axis
 	 */
 	public Viewport(int xParts, int yParts, int zParts) {
-		partitions = new Vector(constrain(xParts), constrain(yParts), constrain(zParts));
+		partitions = Vectors.create(verify(xParts), verify(yParts), verify(zParts));
 	}
-	private static double constrain(double value) {
-		return Math.max(1, Math.min(Integer.MAX_VALUE, value));
+	private static double verify(double value) {
+		if (value < 1 || value > Integer.MAX_VALUE) throw new IllegalArgumentException("partition component must be >= 0 and <= MAX_INT; was " + value);
+		return value;
 	}
 
 	/**
 	 * Sets this viewport to {@code partition} index read {@code left->right, top->bottom, nearest->furthest}.
 	 * @param partition index of partition to set to, constrained {@code [0, length()]}
-	 * @return {@code this}
 	 */
-	public Viewport set(int partition) {
+	public void set(int partition) {
 		partition = Math.max(0, Math.min(length(), partition));
 
 		int parts2d = (int) (partitions.getX() * partitions.getY());
 		int partXY = partition % parts2d;
 
-		current.set(
-				(int) (partXY % partitions.getX()),
-				(int) (partXY / partitions.getX()),
-				partition / parts2d
-		);
-		return this;
+		current.setX((int) (partXY % partitions.getX()));
+		current.setY((int) (partXY / partitions.getX()));
+		current.setZ(partition / parts2d);
 	}
 
 	/** @return number of partitions in this viewport */
@@ -62,7 +61,7 @@ public final class Viewport {
 	}
 
 	/** @return {@link #getOrigin(double, double, double)} for a 2D viewport */
-	public Vector getOrigin(double width, double height) {
+	public Vector2 getOrigin(double width, double height) {
 		return getOrigin(width, height, 1);
 	}
 	/**
@@ -71,13 +70,13 @@ public final class Viewport {
 	 * @param depth depth of artifact to apply this viewport to
 	 * @return viewport origin calculated according to given {@code width}, {@code height}, {@code depth}
 	 */
-	public Vector getOrigin(double width, double height, double depth) {
+	public Vector3 getOrigin(double width, double height, double depth) {
 		calculate(width, height, depth);
 		return origin;
 	}
 
 	/** @return {@link #getSize(double, double, double)} for a 2D viewport */
-	public Vector getSize(double width, double height) {
+	public Vector2 getSize(double width, double height) {
 		return getSize(width, height, 1);
 	}
 	/**
@@ -86,19 +85,25 @@ public final class Viewport {
 	 * @param depth depth of artifact to apply this viewport to
 	 * @return viewport size calculated according to given {@code width}, {@code height}, {@code depth}
 	 */
-	public Vector getSize(double width, double height, double depth) {
+	public Vector3 getSize(double width, double height, double depth) {
 		calculate(width, height, depth);
 		return size;
 	}
 
 	private void calculate(double width, double height, double depth) {
-		fullSize.set(width, height, depth);
+		fullSize.setX(width);
+		fullSize.setY(height);
+		fullSize.setZ(depth);
 
 		size.set(fullSize);
-		size.invScale(partitions);
+		size.setX(size.getX() / partitions.getX());
+		size.setY(size.getY() / partitions.getY());
+		size.setZ(size.getZ() / partitions.getZ());
 
 		origin.set(current);
-		origin.scale(size);
+		origin.setX(origin.getX() * size.getX());
+		origin.setY(origin.getY() * size.getY());
+		origin.setZ(origin.getZ() * size.getZ());
 
 		lastFullSize.set(fullSize);
 	}

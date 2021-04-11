@@ -1,7 +1,8 @@
 package dev.kkorolyov.pancake.platform.utility;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector2;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public final class DebugRenderer {
 	private static final Pattern ARG_DELIMITER = Pattern.compile(",\\s*");
-	private static final Vector SHIFTER = new Vector(0, 14);
+	private static final Vector2 SHIFTER = Vectors.create(0, 14);
 	private static final Logger LOG = LoggerFactory.getLogger(DebugRenderer.class);
 
 	private final RenderMedium renderMedium;
@@ -40,6 +41,7 @@ public final class DebugRenderer {
 
 		Text text = renderMedium.getText();
 		renderTransform.reset();
+		renderTransform.getPosition().add(SHIFTER);
 
 		renderMedium.invoke(() -> {
 			for (String arg : args) {

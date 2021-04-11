@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.application;
 
 import dev.kkorolyov.pancake.platform.GameLoop;
-import dev.kkorolyov.pancake.platform.math.Vector;
+import dev.kkorolyov.pancake.platform.math.Vector2;
 
 import java.util.Collection;
 
@@ -18,7 +18,7 @@ public interface Application {
 	Enum<?> toInput(String key);
 
 	/** @return current cursor position in {@code px} */
-	Vector getCursor();
+	Vector2 getCursor();
 	/** @return current active inputs */
 	Collection<Enum<?>> getInputs();
 

@@ -5,13 +5,13 @@ package dev.kkorolyov.pancake.platform.math;
  */
 // TODO Make instantiable
 public final class Collider {
-	private static final Vector mtv = new Vector();
+	private static final Vector3 mtv = Vectors.create(0, 0, 0);
 
-	private static final Vector xTemp1 = new Vector();
-	private static final Vector xTemp2 = new Vector();
-	private static final Vector vTemp = new Vector();
-	private static final Vector vDiff = new Vector();
-	private static final Vector xDiff = new Vector();
+	private static final Vector3 xTemp1 = Vectors.create(0, 0, 0);
+	private static final Vector3 xTemp2 = Vectors.create(0, 0, 0);
+	private static final Vector3 vTemp = Vectors.create(0, 0, 0);
+	private static final Vector3 vDiff = Vectors.create(0, 0, 0);
+	private static final Vector3 xDiff = Vectors.create(0, 0, 0);
 
 	private Collider() {}
 
@@ -24,11 +24,11 @@ public final class Collider {
 	 * @param size2 dimensions of second box
 	 * @return minimum translation vector to apply to first box to resolve intersection, or {@code null} if no intersection
 	 */
-	public static Vector intersection(Vector origin1, Vector size1, Vector origin2, Vector size2) {
+	public static Vector3 intersection(Vector3 origin1, Vector3 size1, Vector3 origin2, Vector3 size2) {
 		xTemp1.set(origin1);
-		xTemp1.sub(size1, .5f);  // Lower-left vertex
+		xTemp1.add(size1, -.5);  // Lower-left vertex
 		xTemp2.set(origin2);
-		xTemp2.sub(size2, .5f);
+		xTemp2.add(size2, -.5);
 
 		double xOverlap = overlap(xTemp1.getX(), xTemp1.getX() + size1.getX(), xTemp2.getX(), xTemp2.getX() + size2.getX());
 		double yOverlap = overlap(xTemp1.getY(), xTemp1.getY() + size1.getY(), xTemp2.getY(), xTemp2.getY() + size2.getY());
@@ -37,12 +37,16 @@ public final class Collider {
 		if (xOverlap != 0 && yOverlap != 0 && zOverlap != 0) {
 			double xDiff = Math.abs(xOverlap), yDiff = Math.abs(yOverlap), zDiff = Math.abs(zOverlap);
 
+			mtv.setX(0);
+			mtv.setY(0);
+			mtv.setZ(0);
+
 			if (xDiff <= yDiff && xDiff <= zDiff) {
-				mtv.set(xOverlap, 0, 0);
+				mtv.setX(xOverlap);
 			} else if (yDiff <= xDiff && yDiff <= zDiff) {
-				mtv.set(0, yOverlap, 0);
+				mtv.setY(yOverlap);
 			} else {
-				mtv.set(0, 0, zOverlap);
+				mtv.setZ(zOverlap);
 			}
 
 			return mtv;
@@ -66,15 +70,15 @@ public final class Collider {
 	 * @param radius2 radius of 2nd sphere
 	 * @return minimum translation vector to apply to first sphere to resolve intersection, or {@code null} if no intersection
 	 */
-	public static Vector intersection(Vector origin1, double radius1, Vector origin2, double radius2) {
+	public static Vector3 intersection(Vector3 origin1, double radius1, Vector3 origin2, double radius2) {
 		mtv.set(origin2);
-		mtv.sub(origin1);  // Vector from origin1 to origin2
+		mtv.add(origin1, -1);  // Vector from origin1 to origin2
 
-		double overlap = mtv.getMagnitude() - (radius1 + radius2);
+		double mtvMag = VectorMath.magnitude(mtv);
+		double overlap = mtvMag - (radius1 + radius2);
 
 		if (overlap < 0) {
-			mtv.normalize();  // Retain only direction
-			mtv.scale(overlap); // Move origin1 away from origin2 by overlap amount
+			mtv.scale(overlap / mtvMag); // Move origin1 away from origin2 by overlap amount
 
 			return mtv;
 		} else {
@@ -89,7 +93,7 @@ public final class Collider {
 	 * @param radius2 radius of 2nd object (sphere)
 	 * @return minimum translation vector to apply to first object to resolve intersection, or {@code null} if no intersection
 	 */
-	public static Vector intersection(Vector origin1, Vector size1, Vector origin2, double radius2) {
+	public static Vector3 intersection(Vector3 origin1, Vector3 size1, Vector3 origin2, double radius2) {
 		// TODO
 		return null;
 	}
@@ -103,25 +107,22 @@ public final class Collider {
 	 * @param velocity2 velocity of 2nd object
 	 * @param mass2 mass of 2nd object
 	 */
-	public static void elasticCollide(Vector origin1, Vector velocity1, double mass1, Vector origin2, Vector velocity2, double mass2) {
+	public static void elasticCollide(Vector3 origin1, Vector3 velocity1, double mass1, Vector3 origin2, Vector3 velocity2, double mass2) {
 		vTemp.set(velocity1);
 
 		applyElastic(origin1, velocity1, mass1, origin2, velocity2, mass2);
 		applyElastic(origin2, velocity2, mass2, origin1, vTemp, mass2);
 	}
 	// v1' = v1 - 2(m2)/(m1 + m2) * ((v1 - v2) * (x1 - x2))/(||x1 - x2||^2) * (x1 - x2)
-	private static void applyElastic(Vector origin1, Vector velocity1, double mass1, Vector origin2, Vector velocity2, double mass2) {
+	private static void applyElastic(Vector3 origin1, Vector3 velocity1, double mass1, Vector3 origin2, Vector3 velocity2, double mass2) {
 		vDiff.set(velocity1);
-		vDiff.sub(velocity2);
+		vDiff.add(velocity2, -1);
 
 		xDiff.set(origin1);
-		xDiff.sub(origin2);
+		xDiff.add(origin2, -1);
 
-		double dotNumerator = vDiff.dot(xDiff);
-		double dotDenominator = xDiff.dot(xDiff);
+		xDiff.scale(((2 * mass2) / (mass1 + mass2)) * (VectorMath.dot(vDiff, xDiff) / VectorMath.dot(xDiff, xDiff)));
 
-		xDiff.scale(((2 * mass2) / (mass1 + mass2)) * (dotNumerator / dotDenominator));
-
-		velocity1.sub(xDiff);
+		velocity1.add(xDiff, -1);
 	}
 }
