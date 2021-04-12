@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.platform.math;
 
+import java.util.Objects;
+
 /**
  * Provides vector implementations.
  * @see Vector2
@@ -67,6 +69,18 @@ public final class Vectors {
 		public void add(Vector1 other, double scale) {
 			x += other.getX() * scale;
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null || getClass() != obj.getClass()) return false;
+			BasicVector1 o = (BasicVector1) obj;
+			return Double.compare(o.x, x) == 0;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(x);
+		}
 	}
 
 	private static class BasicVector2 extends BasicVector1 implements Vector2 {
@@ -107,6 +121,19 @@ public final class Vectors {
 			add((Vector1) other, scale);
 			y += other.getY() * scale;
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null || getClass() != obj.getClass()) return false;
+			if (!super.equals(obj)) return false;
+			BasicVector2 o = (BasicVector2) obj;
+			return Double.compare(o.y, y) == 0;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(super.hashCode(), y);
+		}
 	}
 
 	private static class BasicVector3 extends BasicVector2 implements Vector3 {
@@ -146,6 +173,19 @@ public final class Vectors {
 		public void add(Vector3 other, double scale) {
 			add((Vector2) other, scale);
 			z += other.getZ() * scale;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null || getClass() != obj.getClass()) return false;
+			if (!super.equals(obj)) return false;
+			BasicVector3 o = (BasicVector3) obj;
+			return Double.compare(o.z, z) == 0;
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(super.hashCode(), z);
 		}
 	}
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 /**
  * A timer which is ready after a set number of {@code ns} have elapsed since its previous ready state.
  */
-public class Limiter {
+public final class Limiter {
 	private long frequency;
 	private long elapsed;
 

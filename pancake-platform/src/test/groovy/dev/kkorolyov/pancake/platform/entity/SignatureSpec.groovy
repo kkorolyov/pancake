@@ -7,26 +7,19 @@ class SignatureSpec extends Specification {
 	@Shared
 	List<Class<? extends Component>> componentTypes = [new Component() {}, new Component() {}, new Component() {}].collect { it.class }
 
-	Signature signature = new Signature()
-
 	def "masks empty signature"() {
-		signature = new Signature(componentTypes)
-
 		expect:
-		signature.masks(new Signature())
+		new Signature(componentTypes).masks(new Signature())
 	}
 
-	def "masks all constructor-initialized component types"() {
-		when:
-		signature = new Signature(componentTypes)
-
-		then:
-		signature.masks(new Signature(componentTypes))
+	def "masks all component types"() {
+		expect
+		new Signature(componentTypes).masks(new Signature(componentTypes))
 	}
 
 	def "symmetrically masks signature with matching component types"() {
 		when:
-		signature = new Signature(componentTypes)
+		Signature signature = new Signature(componentTypes)
 		Signature signature2 = new Signature(componentTypes)
 
 		then:
@@ -34,7 +27,7 @@ class SignatureSpec extends Specification {
 		signature2.masks(signature)
 	}
 	def "masks signature with subset of component types"() {
-		signature = new Signature(componentTypes)
+		Signature signature = new Signature(componentTypes)
 		Signature half0 = new Signature(split(componentTypes, 2, 0))
 		Signature half1 = new Signature(split(componentTypes, 2, 1))
 
@@ -46,86 +39,20 @@ class SignatureSpec extends Specification {
 		!half1.masks(signature)
 	}
 
-	def "masks all added component types"() {
-		List<Class<? extends Component>> addedTypes = []
-
+	def "empty signatures equal"() {
 		expect:
-		!signature.masks(new Signature(type))
-
-		when:
-		signature.add(type)
-		addedTypes.push(type)
-
-		then:
-		addedTypes.each { signature.masks(new Signature(it)) }
-		signature.masks(new Signature(addedTypes))
-
-		where:
-		type << componentTypes
+		new Signature() == new Signature()
 	}
-	def "adding present component type changes nothing"() {
-		when:
-		signature.add(type)
-		then:
-		signature.masks(new Signature(type))
-
-		when:
-		signature.add(type)
-		then:
-		signature.masks(new Signature(type))
-
-		where:
-		type << componentTypes
-	}
-
-	def "does not mask removed component type"() {
-		when:
-		signature.add(type)
-		then:
-		signature.masks(new Signature(type))
-
-		when:
-		signature.remove(type)
-		then:
-		!signature.masks(new Signature(type))
-
-		where:
-		type << componentTypes
-	}
-	def "removing missing component type changes nothing"() {
-		when:
-		signature.remove(type)
-		then:
-		!signature.masks(new Signature(type))
-
-		where:
-		type << componentTypes
-	}
-
 	def "signatures with same component types equal"() {
-		when:
-		Signature signature2 = new Signature()
-		then:
-		signature == signature2
-
-		when:
-		signature.add(type)
-		signature2.add(type)
-		then:
-		signature == signature2
+		expect:
+		new Signature(type) == new Signature(type)
 
 		where:
 		type << componentTypes
 	}
 	def "signatures with different component types unequal"() {
-		Signature signature2 = new Signature()
-
-		when:
-		signature.add(type1)
-		signature2.add(type2)
-
-		then:
-		signature != signature2
+		expect:
+		new Signature(type1) != new Signature(type2)
 
 		where:
 		type1 << split(componentTypes, 2, 0)

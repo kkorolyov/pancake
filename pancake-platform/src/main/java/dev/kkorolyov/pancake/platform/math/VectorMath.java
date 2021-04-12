@@ -6,6 +6,17 @@ package dev.kkorolyov.pancake.platform.math;
 public final class VectorMath {
 	private VectorMath() {}
 
+	/** @return unit vector of {@code vector} (vector with magnitude {@code 1} and same direction as {@code vector}) */
+	public static Vector2 normal(Vector2 vector) {
+		double magnitude = magnitude(vector);
+		return magnitude == 0 ? Vectors.create(0, 0) : Vectors.create(vector.getX() / magnitude, vector.getY() / magnitude);
+	}
+	/** @return unit vector of {@code vector} (vector with magnitude {@code 1} and same direction as {@code vector}) */
+	public static Vector3 normal(Vector3 vector) {
+		double magnitude = magnitude(vector);
+		return magnitude == 0 ? Vectors.create(0, 0, 0) : Vectors.create(vector.getX() / magnitude, vector.getY() / magnitude, vector.getZ() / magnitude);
+	}
+
 	/** @return magnitude of {@code vector} */
 	public static double magnitude(Vector2 vector) {
 		return Math.sqrt(dot(vector, vector));
@@ -13,17 +24,6 @@ public final class VectorMath {
 	/** @return magnitude of {@code vector} */
 	public static double magnitude(Vector3 vector) {
 		return Math.sqrt(dot(vector, vector));
-	}
-
-	/** @return unit vector of {@code vector} (vector with magnitude {@code 1} and same direction as {@code vector}) */
-	public static Vector2 normalize(Vector2 vector) {
-		double magnitude = magnitude(vector);
-		return Vectors.create(vector.getX() / magnitude, vector.getY() / magnitude);
-	}
-	/** @return unit vector of {@code vector} (vector with magnitude {@code 1} and same direction as {@code vector}) */
-	public static Vector3 normalize(Vector3 vector) {
-		double magnitude = magnitude(vector);
-		return Vectors.create(vector.getX() / magnitude, vector.getY() / magnitude, vector.getZ() / magnitude);
 	}
 
 	/** @return dot product of {@code vector} and {@code other} */
@@ -52,12 +52,12 @@ public final class VectorMath {
 	}
 
 	/** @return projection of {@code other} on {@code vector} */
-	public static Vector2 project(Vector2 vector, Vector2 other) {
+	public static Vector2 projection(Vector2 vector, Vector2 other) {
 		double scale = dot(vector, other) / dot(vector, vector);
 		return Vectors.create(vector.getX() * scale, vector.getY() * scale);
 	}
 	/** @return projection of {@code other} on {@code vector} */
-	public static Vector3 project(Vector3 vector, Vector3 other) {
+	public static Vector3 projection(Vector3 vector, Vector3 other) {
 		double scale = dot(vector, other) / dot(vector, vector);
 		return Vectors.create(vector.getX() * scale, vector.getY() * scale, vector.getY() * scale);
 	}

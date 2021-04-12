@@ -27,14 +27,11 @@ class GameEngineSpec extends Specification {
 
 	GameSystem deadSystem = Mock() {
 		getSignature() >> signature
-		getLimiter() >> Mock(Limiter)
+		getLimiter() >> new Limiter(Long.MAX_VALUE)
 	}
 	GameSystem readySystem = Mock() {
 		getSignature() >> signature
-		getLimiter() >> Mock(Limiter) {
-			isReady(_) >> true
-			consumeElapsed() >> dt
-		}
+		getLimiter() >> new Limiter(0)
 	}
 
 	GameEngine engine = new GameEngine(events, entities, [readySystem, deadSystem], debugRenderer)

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.media.graphic
 
-import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.math.Vectors
 
 import spock.lang.Shared
 import spock.lang.Specification
@@ -20,7 +20,7 @@ class ViewportSpec extends Specification {
 		viewport.set(13)
 
 		then:
-		viewport.getOrigin(1, 1, 1) == new Vector(0.3333333333333333, 0.3333333333333333, 0.250)
+		viewport.getOrigin(1, 1, 1) == Vectors.create(0.3333333333333333, 0.3333333333333333, 0.250)
 	}
 	def "calculates size"() {
 		int width = xParts * 4
@@ -28,6 +28,6 @@ class ViewportSpec extends Specification {
 		int depth = zParts * 5
 
 		expect:
-		viewport.getSize(width, height, depth) == new Vector(width / xParts, height / yParts, depth / zParts)
+		viewport.getSize(width, height, depth) == Vectors.create(width / xParts, height / yParts, depth / zParts)
 	}
 }
