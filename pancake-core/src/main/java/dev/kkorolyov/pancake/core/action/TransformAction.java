@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class TransformAction implements Action {
 	private final Vector3 position;
-	private final Vector1 rotation;
+	private final Vector1 orientation;
 
 	/**
 	 * Constructs a new transform action which only alters position.
@@ -26,11 +26,11 @@ public class TransformAction implements Action {
 	/**
 	 * Constructs a new transform action.
 	 * @param position position to set on accepted entities
-	 * @param rotation rotation to set on accepted entities
+	 * @param orientation orientation to set on accepted entities
 	 */
-	public TransformAction(Vector3 position, Vector1 rotation) {
+	public TransformAction(Vector3 position, Vector1 orientation) {
 		this.position = Vectors.create(position);
-		this.rotation = rotation != null ? Vectors.create(rotation) : null;
+		this.orientation = orientation != null ? Vectors.create(orientation) : null;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class TransformAction implements Action {
 		Transform entityTransform = entity.get(Transform.class);
 
 		entityTransform.getPosition().set(position);
-		if (rotation != null) entityTransform.getOrientation().set(rotation);
+		if (orientation != null) entityTransform.getOrientation().set(orientation);
 	}
 
 	@Override
@@ -48,18 +48,18 @@ public class TransformAction implements Action {
 
 		TransformAction o = (TransformAction) obj;
 		return Objects.equals(position, o.position)
-				&& Objects.equals(rotation, o.rotation);
+				&& Objects.equals(orientation, o.orientation);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(position, rotation);
+		return Objects.hash(position, orientation);
 	}
 
 	@Override
 	public String toString() {
 		return "TransformAction{" +
 				"position=" + position +
-				", rotation=" + rotation +
+				", orientation=" + orientation +
 				'}';
 	}
 }

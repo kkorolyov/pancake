@@ -1,39 +1,19 @@
 package dev.kkorolyov.pancake.core.component.movement
 
-import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.math.Vector3
+import dev.kkorolyov.pancake.platform.math.Vectors
 
-import spock.lang.Shared
 import spock.lang.Specification
 
 class ForceSpec extends Specification {
-	@Shared double mass = 1
-
-	Force force = new Force(mass)
-
-	def "returns accelerated vector"() {
-		Vector velocity = new Vector()
-
-		expect:
-		force.accelerate(velocity, dt).is(velocity)
-
-		where:
-		dt << (0..100)
-	}
-
-	def "accelerates all velocity axes"() {
-		force.getForce().set(forceComponent, forceComponent, forceComponent)
-		Vector velocity = new Vector(1 ,1 ,1)
-		Vector expectedVelocity = new Vector(velocity)
-		expectedVelocity.add(force.getForce(), dt / mass)
+	def "accelerates"() {
+		Vector3 velocity = Vectors.create(1, 1, 1)
+		Force force = new Force(Vectors.create(2, 2, 2))
 
 		when:
-		force.accelerate(velocity, dt)
+		force.accelerate(velocity, 2, 4)
 
 		then:
-		velocity == expectedVelocity
-
-		where:
-		forceComponent << (1..100)
-		dt << (200..101)
+		velocity == Vectors.create(5, 5, 5)
 	}
 }

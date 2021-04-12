@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.core.component
 
-import dev.kkorolyov.pancake.platform.math.Vector
+import dev.kkorolyov.pancake.platform.math.Vector3
+import dev.kkorolyov.pancake.platform.math.Vectors
 
 import spock.lang.Shared
 import spock.lang.Specification
@@ -11,8 +12,10 @@ import static dev.kkorolyov.pancake.core.component.Bounds.SPHERE_BOX
 import static dev.kkorolyov.pancake.core.component.Bounds.SPHERE_SPHERE
 
 class BoundsSpec extends Specification {
-	@Shared Vector box = new Vector()
-	@Shared double radius = 1
+	@Shared
+	Vector3 box = Vectors.create(0, 0, 0)
+	@Shared
+	double radius = 1
 
 	Bounds bounds = new Bounds(box, radius)
 

@@ -24,9 +24,8 @@ public final class Force implements Component {
 	 * @param mass mass used in acceleration calculation
 	 * @param seconds seconds used in acceleration calculation
 	 */
-	public Vector3 accelerate(Vector3 velocity, double mass, double seconds) {
+	public void accelerate(Vector3 velocity, double mass, double seconds) {
 		velocity.add(value, seconds / mass);  // a = f/m, v' = v + at
-		return velocity;
 	}
 
 	/** @return force in {@code N} */

@@ -9,7 +9,7 @@ forceRight:
 
 reset:
   position: [ ]
-  rotation: [ ]
+  orientation: [ ]
 
 moveUp:
   start:

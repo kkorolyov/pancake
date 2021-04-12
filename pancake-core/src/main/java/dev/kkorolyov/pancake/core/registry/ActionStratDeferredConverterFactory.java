@@ -23,9 +23,16 @@ import static dev.kkorolyov.flopple.function.Memoizer.memoize;
 public class ActionStratDeferredConverterFactory implements DeferredConverterFactory.ActionStrat {
 	private static final Collection<String> FORCE_KEYS = Set.of("force");
 	private static final Collection<String> VELOCITY_KEYS = Set.of("velocity");
-	private static final Collection<String> TRANSFORM_KEYS = Set.of("position", "rotation");
+	private static final Collection<String> TRANSFORM_KEYS = Set.of("position", "orientation");
 
-	private final Supplier<Converter<Object, Optional<Deferred<String, Vector3>>>> vectorReader = memoize(() -> DeferredConverterFactory.get(VectorStrat.class));
+	private final Supplier<? extends Converter<Object, Optional<Deferred<String, Vector3>>>> vectorReader;
+
+	public ActionStratDeferredConverterFactory() {
+		this(memoize(() -> DeferredConverterFactory.get(VectorStrat.class)));
+	}
+	ActionStratDeferredConverterFactory(Supplier<? extends Converter<Object, Optional<Deferred<String, Vector3>>>> vectorReader) {
+		this.vectorReader = vectorReader;
+	}
 
 	private Converter<Object, Optional<Deferred<String, Action>>> force() {
 		return Converter.selective(
@@ -44,7 +51,7 @@ public class ActionStratDeferredConverterFactory implements DeferredConverterFac
 	private Converter<Object, Optional<Deferred<String, Action>>> transform() {
 		return Converter.selective(
 				in -> in instanceof Map && TRANSFORM_KEYS.containsAll(((Map<?, ?>) in).keySet()),
-				in -> Deferred.direct(new TransformAction(toVector(((Map<?, ?>) in).get("position")), toVector(((Map<?, ?>) in).get("rotation"))))
+				in -> Deferred.direct(new TransformAction(toVector(((Map<?, ?>) in).get("position")), toVector(((Map<?, ?>) in).get("orientation"))))
 		);
 	}
 
