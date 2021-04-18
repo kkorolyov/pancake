@@ -23,23 +23,22 @@ import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
 
-val actions: Registry<String, Action> =
-	Resources.inStream("actions.yaml").orElse(null).use {
-		Registry<String, Action>().apply {
-			load(
-				ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.ActionStrat::class.java)).fromYaml(
-					it
-				)
+val actions: Registry<String, Action> = Resources.inStream("actions.yaml").use {
+	Registry<String, Action>().apply {
+		load(
+			ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.ActionStrat::class.java)).fromYaml(
+				it
 			)
-		}
+		)
 	}
+}
 
 val events: EventLoop.Broadcasting = EventLoop.Broadcasting()
 
-val velocityCap = Vectors.create(20.0, 20.0, 20.0)
-val damping = Vectors.create(0.0, 0.0, 0.0)
-val paddleMass = 0.01
-val ballMass = 0.001
+val velocityCap: Vector3 = Vectors.create(20.0, 20.0, 20.0)
+val damping: Vector3 = Vectors.create(0.0, 0.0, 0.0)
+const val paddleMass = 0.01
+const val ballMass = 0.001
 
 val paddleSize: Vector3 = Vectors.create(1.0, 4.0, 0.0)
 val ballSize: Vector3 = Vectors.create(1.0, 1.0, 0.0)
@@ -68,7 +67,7 @@ val player = entities.create().apply {
 		Mass(paddleMass),
 		ActionQueue()
 	)
-	Resources.inStream("input.yaml").orElse(null).use {
+	Resources.inStream("input.yaml").use {
 		add(Input(false, HandlerReader(actions).fromYaml(it)))
 	}
 }

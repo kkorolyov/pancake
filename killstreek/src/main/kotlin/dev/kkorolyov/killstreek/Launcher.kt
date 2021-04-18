@@ -53,21 +53,21 @@ import kotlin.math.sqrt
 private val log: Logger = LoggerFactory.getLogger("main")
 
 private val renderables: Registry<String, Renderable> by lazy {
-	Resources.inStream("config/renderables.yaml").orElse(null).use {
+	Resources.inStream("config/renderables.yaml").use {
 		Registry<String, Renderable>().apply {
 			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.RenderableStrat::class.java)).fromYaml(it))
 		}
 	}
 }
 private val audio: Registry<String, Audio> by lazy {
-	Resources.inStream("config/audio.yaml").orElse(null).use {
+	Resources.inStream("config/audio.yaml").use {
 		Registry<String, Audio>().apply {
 			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.AudioStrat::class.java)).fromYaml(it))
 		}
 	}
 }
 private val actions: Registry<String, Action> by lazy {
-	Resources.inStream("config/actions.yaml").orElse(null).use {
+	Resources.inStream("config/actions.yaml").use {
 		Registry<String, Action>().apply {
 			put("animate", Action { it.get(Animation::class.java).isActive = true })
 			put("stopAnimate", Action { it.get(Animation::class.java).isActive = false })
@@ -190,7 +190,7 @@ private val entities: EntityPool by lazy {
 				Graphic(sprite),
 				Input(
 					true,
-					Resources.inStream("config/inputs.yaml").orElse(null).use {
+					Resources.inStream("config/inputs.yaml").use {
 						HandlerReader(actions).fromYaml(it)
 					}
 				),

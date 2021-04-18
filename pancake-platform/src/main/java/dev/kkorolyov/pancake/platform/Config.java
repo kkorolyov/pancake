@@ -1,10 +1,11 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.flopple.function.throwing.ThrowingConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -32,6 +33,7 @@ public final class Config {
 
 	/**
 	 * Reloads the platform configuration and all system configurations.
+	 * @throws UncheckedIOException if an IO error occurs
 	 */
 	public static void reload() {
 		Stream.concat(
@@ -45,14 +47,22 @@ public final class Config {
 		Properties config = get(name);
 		config.clear();
 
-		Resources.inStream(getDefaultsFileName(name)).ifPresent((ThrowingConsumer<? super InputStream, ?>) in -> {
-			config.load(in);
-			LOG.info("Reloaded default config [{}]", name);
-		});
-		Resources.inStream(getFileName(name)).ifPresent((ThrowingConsumer<? super InputStream, ?>) in -> {
-			config.load(in);
-			LOG.info("Reloaded config [{}]", name);
-		});
+		try (
+				InputStream savedDefaults = Resources.inStream(getDefaultsFileName(name));
+				InputStream saved = Resources.inStream(getFileName(name));
+		) {
+			if (savedDefaults != null) {
+				config.load(savedDefaults);
+				LOG.info("Reloaded default config [{}]", name);
+			}
+			if (saved != null) {
+				config.load(saved);
+				LOG.info("Reloaded config [{}]", name);
+			}
+		} catch (IOException e) {
+			LOG.error("Failed to load config", e);
+			throw new UncheckedIOException(e);
+		}
 	}
 
 	/** @return platform configuration */

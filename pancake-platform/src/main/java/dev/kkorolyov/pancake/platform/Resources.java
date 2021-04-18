@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Optional;
 import java.util.ServiceLoader;
 
 /**
@@ -34,9 +34,9 @@ public final class Resources {
 	 * Retrieves an input stream to a resource.
 	 * Attempts to load occurrences in order: [path, classpath].
 	 * @param path path to resource
-	 * @return input stream to resource
+	 * @return input stream to resource; or {@code null} if no such resource
 	 */
-	public static Optional<InputStream> inStream(String path) {
+	public static InputStream inStream(String path) {
 		InputStream result;
 
 		try {
@@ -55,22 +55,22 @@ public final class Resources {
 		if (result == null) {
 			LOG.error("Failed to load resource [{}]", path);
 		}
-		return Optional.ofNullable(result);
+		return result;
 	}
 
 	/**
 	 * Retrieves an output stream to a resource.
 	 * @param path path to resource
-	 * @return output stream to resource; or {@code null} if no such resource
+	 * @throws UncheckedIOException if an IO error occurs
 	 */
-	public static Optional<OutputStream> outStream(String path) {
-		Optional<OutputStream> result = Optional.empty();
+	public static OutputStream outStream(String path) {
 		try {
-			result = Optional.of(Files.newOutputStream(Paths.get(path)));
+			OutputStream result = Files.newOutputStream(Paths.get(path));
 			LOG.info("Got handle [{}]", path);
+			return result;
 		} catch (IOException e) {
 			LOG.error("Failed to get handle", e);
+			throw new UncheckedIOException(e);
 		}
-		return result;
 	}
 }
