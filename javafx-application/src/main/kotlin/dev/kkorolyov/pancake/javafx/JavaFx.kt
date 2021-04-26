@@ -144,7 +144,7 @@ class JavaFxRenderMedium : RenderMedium {
 	override fun getText(): Text = JavaFxText(g)
 
 	override fun invoke(renderAction: Runnable) {
-		Platform.runLater(renderAction::run)
+		Platform.runLater(renderAction)
 	}
 
 	override fun clearInvoke(renderAction: Runnable) {

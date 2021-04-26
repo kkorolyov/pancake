@@ -9,3 +9,8 @@ up:
 down:
   start: forceDown
   end: forceUp
+
+reset:
+  - position: [ 0, 0 ]
+    orientation: [ 0, 0 ]
+  - velocity: [ -20, 0 ]

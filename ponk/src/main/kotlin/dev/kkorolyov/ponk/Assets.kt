@@ -37,20 +37,29 @@ val events: EventLoop.Broadcasting = EventLoop.Broadcasting()
 
 val velocityCap: Vector3 = Vectors.create(20.0, 20.0, 20.0)
 val damping: Vector3 = Vectors.create(0.0, 0.0, 0.0)
-const val paddleMass = 0.01
-const val ballMass = 0.001
+const val paddleMass = 1e-2
+const val ballMass = 1e-9
 
 val paddleSize: Vector3 = Vectors.create(1.0, 4.0, 0.0)
 val ballSize: Vector3 = Vectors.create(1.0, 1.0, 0.0)
+val goalSize: Vector3 = Vectors.create(2.0, 10.0, 0.0)
+val netSize: Vector3 = Vectors.create(10.0, 2.0, 0.0)
 
 val paddleSprite: Renderable = Resources.RENDER_MEDIUM.box.apply {
 	fill = Color.BLACK
 	size.set(paddleSize)
 }
-
 val ballSprite: Renderable = Resources.RENDER_MEDIUM.box.apply {
 	fill = Color.GRAY
 	size.set(ballSize)
+}
+val goalSprite: Renderable = Resources.RENDER_MEDIUM.box.apply {
+	fill = Color.BLUE
+	size.set(goalSize)
+}
+val netSprite: Renderable = Resources.RENDER_MEDIUM.box.apply {
+	fill = Color.RED
+	size.set(netSize)
 }
 
 val entities: EntityPool = EntityPool(events)
@@ -90,35 +99,52 @@ val ball = entities.create().apply {
 		Graphic(ballSprite),
 		Bounds(ballSize),
 		Transform(Vectors.create(0.0, 0.0, 0.0)),
-		Velocity(Vectors.create(-10.0, 0.0, 0.0)),
-		VelocityCap(Vectors.create(10.0, 10.0, 10.0)),
+		Velocity(Vectors.create(0.0, 0.0, 0.0)),
+		VelocityCap(Vectors.create(20.0, 20.0, 0.0)),
 		Force(Vectors.create(0.0, 0.0, 0.0)),
-		Mass(ballMass)
+		Mass(ballMass),
+		ActionQueue()
 	)
+	Resources.inStream("ballInput.yaml").use {
+		add(Input(false, HandlerReader(actions).fromYaml(it)))
+	}
 }
 
 val goalPlayer = entities.create().apply {
 	add(
-		Bounds(Vectors.create(10.0, 10.0, 0.0)),
-		Transform(Vectors.create(-15.0, 0.0, 0.0))
+		Bounds(goalSize),
+		Graphic(goalSprite),
+		Transform(Vectors.create(-6.0, 0.0, 0.0))
 	)
 }
 val goalOpponent = entities.create().apply {
 	add(
-		Bounds(Vectors.create(10.0, 10.0, 0.0)),
-		Transform(Vectors.create(15.0, 0.0, 0.0))
+		Bounds(goalSize),
+		Graphic(goalSprite),
+		Transform(Vectors.create(6.0, 0.0, 0.0))
 	)
 }
 
 val top = entities.create().apply {
 	add(
-		Bounds(Vectors.create(10.0, 10.0, 0.0)),
-		Transform(Vectors.create(0.0, 15.0, 0.0))
+		Bounds(netSize),
+		Graphic(netSprite),
+		Transform(Vectors.create(0.0, 6.0, 0.0))
 	)
 }
 val bottom = entities.create().apply {
 	add(
-		Bounds(Vectors.create(10.0, 10.0, 0.0)),
-		Transform(Vectors.create(0.0, -15.0, 0.0))
+		Bounds(netSize),
+		Graphic(netSprite),
+		Transform(Vectors.create(0.0, -6.0, 0.0))
+	)
+}
+
+val helpText = entities.create().apply {
+	add(
+		Transform(Vectors.create(-0.5, -4.0, 1.0)),
+		Graphic(Resources.RENDER_MEDIUM.text.apply {
+			value = "Press SPACE to reset"
+		})
 	)
 }
