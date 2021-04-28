@@ -23,9 +23,10 @@ import dev.kkorolyov.pancake.platform.media.graphic.shape.Text
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
+import dev.kkorolyov.ponk.component.Follow
 import dev.kkorolyov.ponk.component.Score
 
-val actions: Registry<String, Action> = Resources.inStream("actions.yaml").use {
+val actions = Resources.inStream("actions.yaml").use {
 	Registry<String, Action>().apply {
 		load(
 			ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.ActionStrat::class.java)).fromYaml(
@@ -35,8 +36,8 @@ val actions: Registry<String, Action> = Resources.inStream("actions.yaml").use {
 	}
 }
 
-val paddleVelocityCap: VelocityCap = VelocityCap(Vectors.create(20.0, 20.0, 20.0))
-val paddleDamping: Damping = Damping(Vectors.create(0.0, 0.0, 0.0))
+val paddleVelocityCap = VelocityCap(Vectors.create(20.0, 20.0, 20.0))
+val paddleDamping = Damping(Vectors.create(0.0, 0.0, 0.0))
 val paddleMass = Mass(1e-2)
 val ballMass = Mass(1e-9)
 
@@ -45,10 +46,12 @@ val ballSize: Vector3 = Vectors.create(1.0, 1.0, 0.0)
 val goalSize: Vector3 = Vectors.create(2.0, 10.0, 0.0)
 val netSize: Vector3 = Vectors.create(10.0, 2.0, 0.0)
 
-val paddleBounds: Bounds = Bounds(paddleSize)
-val ballBounds: Bounds = Bounds(ballSize)
-val goalBounds: Bounds = Bounds(goalSize)
-val netBounds: Bounds = Bounds(netSize)
+val ballTransform = Transform(Vectors.create(0.0, 0.0, 0.0))
+
+val paddleBounds = Bounds(paddleSize)
+val ballBounds = Bounds(ballSize)
+val goalBounds = Bounds(goalSize)
+val netBounds = Bounds(netSize)
 
 val paddleGraphic: Graphic = Graphic(Resources.RENDER_MEDIUM.box.apply {
 	fill = Color.BLACK
@@ -104,7 +107,8 @@ val entities: EntityPool = EntityPool(events).apply {
 			paddleVelocityCap,
 			paddleDamping,
 			Force(Vectors.create(0.0, 0.0, 0.0)),
-			paddleMass
+			paddleMass,
+			Follow(ballTransform.position, 0.2)
 		)
 	}
 
@@ -112,7 +116,7 @@ val entities: EntityPool = EntityPool(events).apply {
 		add(
 			ballGraphic,
 			ballBounds,
-			Transform(Vectors.create(0.0, 0.0, 0.0)),
+			ballTransform,
 			Velocity(Vectors.create(0.0, 0.0, 0.0)),
 			VelocityCap(Vectors.create(20.0, 20.0, 0.0)),
 			Force(Vectors.create(0.0, 0.0, 0.0)),
