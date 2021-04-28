@@ -1,3 +1,5 @@
+import dev.kkorolyov.pancake.platform.GameSystem;
+
 module dev.kkorolyov.ponk {
 	requires kotlin.stdlib;
 
@@ -8,4 +10,6 @@ module dev.kkorolyov.ponk {
 
 	requires dev.kkorolyov.pancake.platform;
 	requires dev.kkorolyov.pancake.core;
+
+	provides GameSystem with dev.kkorolyov.ponk.system.ScoreSystem;
 }
