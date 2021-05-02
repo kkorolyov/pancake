@@ -57,7 +57,7 @@ class HandlerSpec extends Specification {
 			registry.put("bogo", action)
 
 			expect:
-			new HandlerReader(application, registry).fromYaml(Resources.inStream("inputs.yaml").orElse(null)) == [new Handler(
+			new HandlerReader(application, registry).fromYaml(Resources.inStream("inputs.yaml")) == [new Handler(
 					new MultiStageAction(action, null, null, 0),
 					[CODE, OTHER]
 			)] as Set
