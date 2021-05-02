@@ -1,0 +1,7 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+
+dev.kkorolyov.ponk
+dev.kkorolyov.ponk.component
+dev.kkorolyov.ponk.system
+

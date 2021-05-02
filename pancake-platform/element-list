@@ -11,7 +11,4 @@ dev.kkorolyov.pancake.platform.media.graphic
 dev.kkorolyov.pancake.platform.media.graphic.shape
 dev.kkorolyov.pancake.platform.registry
 dev.kkorolyov.pancake.platform.registry.internal
-dev.kkorolyov.pancake.platform.serialization
-dev.kkorolyov.pancake.platform.serialization.string
-dev.kkorolyov.pancake.platform.serialization.string.entity
 dev.kkorolyov.pancake.platform.utility
