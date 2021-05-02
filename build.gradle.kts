@@ -23,7 +23,7 @@ val os: String = DefaultNativePlatform.getCurrentOperatingSystem().run {
 plugins {
 	`java-library`
 	groovy
-	kotlin("jvm") version "1.4.31"
+	kotlin("jvm") version "1.5.0"
 	application
 	id("org.jetbrains.dokka") version "1.4.20"
 	`maven-publish`
