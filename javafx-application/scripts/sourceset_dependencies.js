@@ -1,1 +1,1 @@
-sourceset_dependencies = '{":javafx-application:dokkaHtml/main": []}'
+sourceset_dependencies='{":javafx-application:dokkaHtml/main":[]}'

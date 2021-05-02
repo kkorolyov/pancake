@@ -1,1 +1,1 @@
-sourceset_dependencies = '{":killstreek:dokkaHtml/main": []}'
+sourceset_dependencies='{":killstreek:dokkaHtml/main":[]}'

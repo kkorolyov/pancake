@@ -1,1 +1,1 @@
-sourceset_dependencies = '{":ponk:dokkaHtml/main": []}'
+sourceset_dependencies='{":ponk:dokkaHtml/main":[]}'
