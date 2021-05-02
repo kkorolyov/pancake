@@ -1,0 +1,65 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - "[0-9].[0-9].[0-9]*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        version: [ 14 ]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.version }}
+
+      - name: cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle.kts') }}
+
+      - name: publish
+        run: ./gradlew publish -Pversion=$(echo ${{ github.ref }} | sed s#refs/tags/##)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docs:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        version: [ 14 ]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: java
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.version }}
+
+      - name: cache
+        uses: actions/cache@v2.1.4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle.kts') }}
+
+      - name: docs
+        run: ./gradlew docs -Pversion=$(echo ${{ github.ref }} | sed s#refs/tags/##)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: pages
+        uses: peaceiris/actions-gh-pages@v3
+        env:
+          publish_dir: ./build/docs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
