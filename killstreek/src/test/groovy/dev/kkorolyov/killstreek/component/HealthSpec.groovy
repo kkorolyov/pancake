@@ -11,7 +11,7 @@ class HealthSpec extends Specification {
 
 	def "max-only constructor sets current health to max"() {
 		expect:
-		new Health(max).getValue().get() == max
+		new Health(max, max).getValue().get() == max
 
 		where:
 		max << (1..100)
@@ -33,7 +33,7 @@ class HealthSpec extends Specification {
 		health.getValue().set(value)
 
 		then:
-		health.isDead
+		health.dead
 
 		where:
 		value << (0..-100)

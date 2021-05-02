@@ -10,7 +10,7 @@ class DamageSpec extends Specification {
 	int value = 10
 	@Shared
 	long duration = 100
-	Health health = Mock()
+	Health health = new Health(value, value)
 
 	Damage damage = new Damage(value, duration)
 
@@ -25,22 +25,19 @@ class DamageSpec extends Specification {
 
 	def "value without duration applies full damage immediately"() {
 		when:
-		damage.setValue(value)
+		damage.setValue(value, 1)
 		damage.apply(health, randLong())
 
 		then:
-		1 * health.change(-value)
+		health.value.get() == 0
 	}
 	def "value with duration applies damage over duration"() {
-		Health health = Spy(Health, constructorArgs: [value * 2])
+		Health health = new Health(value * 2, value * 2)
 
 		when:
 		while (damage.apply(health, duration / ticks as long)) {}
 
 		then:
-		(1..value).each {
-			(_..it) * health.change(value / it as int)
-		}
 		health.getValue().get() == value
 
 		where:
@@ -49,12 +46,10 @@ class DamageSpec extends Specification {
 
 	def "returns true when damage applied"() {
 		when:
-		damage.setValue(value)
-		boolean applied = damage.apply(health, randLong())
+		damage.setValue(value, 1)
 
 		then:
-		1 * health.change(-value)
-		applied
+		damage.apply(health, randLong())
 	}
 	def "returns false when no damage applied"() {
 		when:

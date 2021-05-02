@@ -2,6 +2,9 @@ package dev.kkorolyov.killstreek.item
 
 import dev.kkorolyov.killstreek.media.Sprite
 import dev.kkorolyov.pancake.platform.math.BoundedValue
+import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
+import dev.kkorolyov.pancake.platform.media.graphic.Image
+import dev.kkorolyov.pancake.platform.media.graphic.Viewport
 
 import spock.lang.Shared
 import spock.lang.Specification
@@ -10,13 +13,13 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randInt
 import static dev.kkorolyov.pancake.platform.SpecUtilities.randString
 
 class ArmorSetSpec extends Specification {
-	@Shared Sprite sprite = Mock()
+	@Shared Sprite sprite = new Sprite(new CompositeRenderable<Image>([]), new Viewport(1, 1), 1)
 	@Shared BoundedValue<Integer> unbroken = new BoundedValue<>(0, 1, 1)
 	@Shared BoundedValue<Integer> broken = new BoundedValue<>(0, 0, 0)
-	@Shared Armor[] unbrokenArmor = Armor.Type.values().collect {it -> new Armor(randString(), sprite, unbroken, randInt(), it)}
-	@Shared Armor[] brokenArmor = Armor.Type.values().collect {it -> new Armor(randString(), sprite, broken, randInt(), it)}
+	@Shared Armor[] unbrokenArmor = Armor.Type.values().collect {it -> new Armor(randString(), sprite, unbroken, randInt(1), it)}
+	@Shared Armor[] brokenArmor = Armor.Type.values().collect {it -> new Armor(randString(), sprite, broken, randInt(1), it)}
 
-	ArmorSet armorSet = new ArmorSet()
+	ArmorSet armorSet = new ArmorSet([])
 
 	def "sums defense of all unbroken equipped pieces"() {
 		when:

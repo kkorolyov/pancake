@@ -46,7 +46,7 @@ class SpriteSpec extends Specification {
 		sprite.tick(step)
 
 		then:
-		sprite.length() + sprite.getFrame() == round(viewport.length() - step / frameInterval)
+		sprite.getFrame() == round(viewport.length() - step / frameInterval)
 
 		where:
 		step << (frameInterval..<(frameInterval * viewport.length()))
