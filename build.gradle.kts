@@ -1,31 +1,16 @@
-import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 tasks.wrapper {
 	distributionType = Wrapper.DistributionType.ALL
 }
 
-/**
- * Runner's OS
- */
-val os: String = DefaultNativePlatform.getCurrentOperatingSystem().run {
-	if (isWindows) {
-		"win"
-	} else if (isMacOsX) {
-		"mac"
-	} else if (isLinux) {
-		"linux"
-	} else {
-		"unknown"
-	}
-}
-
 plugins {
 	`java-library`
 	groovy
-	kotlin("jvm") version "1.4.31"
+	kotlin("jvm") version "1.+"
+	id("org.jetbrains.dokka") version "1.+"
+	id("com.dua3.javafxgradle7plugin") version "0.+"
 	application
-	id("org.jetbrains.dokka") version "1.4.20"
 	`maven-publish`
 	idea
 }
@@ -34,7 +19,7 @@ description = "Extensible Java game engine with an entity-component-system archi
 
 // For kotlin gradle plugins
 repositories {
-	jcenter()
+	mavenCentral()
 }
 
 tasks.withType<DependencyReportTask> {
@@ -255,21 +240,19 @@ project(":pancake-test-utils") {
 
 	dependencies {
 		val spockVersion: String by project
-		val javaFxVersion: String by project
 
 		implementation("org.spockframework:spock-core:$spockVersion")
-		implementation("org.openjfx:javafx-controls:$javaFxVersion:$os")
 		implementation(platform)
 	}
 }
 
 project(":javafx-application") {
+	apply(plugin = "org.openjfx.javafxplugin")
+
 	description = "JavaFX Application and RenderMedium implementation"
 
-	dependencies {
-		val javaFxVersion: String by project
-		implementation("org.openjfx:javafx-base:$javaFxVersion:$os")
-		implementation("org.openjfx:javafx-graphics:$javaFxVersion:$os")
+	javafx {
+		modules("javafx.base", "javafx.graphics")
 	}
 
 	tasks.compileJava {
@@ -281,13 +264,12 @@ project(":javafx-application") {
 	}
 }
 project(":javafx-audio") {
+	apply(plugin = "org.openjfx.javafxplugin")
+
 	description = "JavaFX AudioFactory implementation"
 
-	dependencies {
-		val javaFxVersion: String by project
-		implementation("org.openjfx:javafx-base:$javaFxVersion:$os")
-		implementation("org.openjfx:javafx-graphics:$javaFxVersion:$os")
-		implementation("org.openjfx:javafx-media:$javaFxVersion:$os")
+	javafx {
+		modules("javafx.base", "javafx.graphics", "javafx.media")
 	}
 
 	tasks.compileJava {

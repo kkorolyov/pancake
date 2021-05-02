@@ -10,5 +10,3 @@ include("javafx-audio")
 include("ponk")
 
 include("killstreek")
-
-enableFeaturePreview("ONE_LOCKFILE_PER_PROJECT")
