@@ -7,6 +7,4 @@ include("pancake-test-utils")
 include("javafx-application")
 include("javafx-audio")
 
-include("ponk")
-
 include("killstreek")
