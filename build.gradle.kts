@@ -160,7 +160,9 @@ configure(
 configure(
 	listOf(
 		platform,
-		core
+		core,
+		javaFxApplication,
+		javaFxAudio
 	)
 ) {
 	apply(plugin = "java-library")
