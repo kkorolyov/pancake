@@ -25,7 +25,7 @@ plugins {
 	groovy
 	kotlin("jvm") version "1.4.31"
 	application
-	id("org.jetbrains.dokka") version "1.4.20"
+	id("org.jetbrains.dokka") version "1.4.32"
 	`maven-publish`
 	idea
 }
