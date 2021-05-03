@@ -1,10 +1,10 @@
 package dev.kkorolyov.pancake.core.input;
 
-import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
-import dev.kkorolyov.pancake.platform.application.Application;
 import dev.kkorolyov.pancake.platform.registry.Registry;
+import dev.kkorolyov.pancake.platform.service.Application;
+import dev.kkorolyov.pancake.platform.service.Services;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -25,7 +25,7 @@ public final class HandlerReader {
 	 * @param actions actions to bind read handlers to
 	 */
 	public HandlerReader(Registry<? super String, ? extends Action> actions) {
-		this(Resources.APPLICATION, actions);
+		this(Services.application(), actions);
 	}
 	HandlerReader(Application application, Registry<? super String, ? extends Action> actions) {
 		this.application = application;

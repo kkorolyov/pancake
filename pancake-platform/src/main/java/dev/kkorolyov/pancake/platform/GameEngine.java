@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventLoop;
+import dev.kkorolyov.pancake.platform.service.Services;
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 
@@ -45,7 +46,7 @@ public final class GameEngine {
 				events,
 				entities,
 				systems,
-				new DebugRenderer(Resources.RENDER_MEDIUM)
+				new DebugRenderer(Services.renderMedium())
 		);
 	}
 	GameEngine(EventLoop.Broadcasting events, EntityPool entities, Iterable<GameSystem> systems, DebugRenderer debugRenderer) {

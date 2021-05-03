@@ -1,6 +1,7 @@
-package dev.kkorolyov.pancake.platform.media.graphic;
+package dev.kkorolyov.pancake.platform.service;
 
 import dev.kkorolyov.pancake.platform.media.Camera;
+import dev.kkorolyov.pancake.platform.media.graphic.Image;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Box;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text;
 

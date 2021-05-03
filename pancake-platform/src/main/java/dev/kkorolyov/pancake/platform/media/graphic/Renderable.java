@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.platform.media.graphic;
 
+import dev.kkorolyov.pancake.platform.service.RenderMedium;
+
 /**
  * Something drawable on a {@link RenderMedium}.
  */

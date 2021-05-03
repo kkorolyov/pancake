@@ -5,27 +5,16 @@ import dev.kkorolyov.killstreek.component.Damage
 import dev.kkorolyov.killstreek.component.Health
 import dev.kkorolyov.killstreek.media.HealthBar
 import dev.kkorolyov.killstreek.media.Sprite
-import dev.kkorolyov.pancake.core.component.ActionQueue
-import dev.kkorolyov.pancake.core.component.AudioEmitter
-import dev.kkorolyov.pancake.core.component.Bounds
-import dev.kkorolyov.pancake.core.component.Chain
-import dev.kkorolyov.pancake.core.component.Input
-import dev.kkorolyov.pancake.core.component.Spawner
-import dev.kkorolyov.pancake.core.component.Transform
+import dev.kkorolyov.pancake.core.component.*
 import dev.kkorolyov.pancake.core.component.media.Animation
 import dev.kkorolyov.pancake.core.component.media.Graphic
-import dev.kkorolyov.pancake.core.component.movement.Damping
-import dev.kkorolyov.pancake.core.component.movement.Force
-import dev.kkorolyov.pancake.core.component.movement.Mass
-import dev.kkorolyov.pancake.core.component.movement.Velocity
-import dev.kkorolyov.pancake.core.component.movement.VelocityCap
+import dev.kkorolyov.pancake.core.component.movement.*
 import dev.kkorolyov.pancake.core.event.EntitiesCollided
 import dev.kkorolyov.pancake.core.input.HandlerReader
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameLoop
 import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.action.Action
-import dev.kkorolyov.pancake.platform.application.Application.Config
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.event.EntityCreated
@@ -44,6 +33,9 @@ import dev.kkorolyov.pancake.platform.media.graphic.Viewport
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
+import dev.kkorolyov.pancake.platform.service.Application.Config
+import dev.kkorolyov.pancake.platform.service.RenderMedium
+import dev.kkorolyov.pancake.platform.service.Services
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ThreadLocalRandom
@@ -51,6 +43,8 @@ import java.util.function.Supplier
 import kotlin.math.sqrt
 
 private val log: Logger = LoggerFactory.getLogger("main")
+
+private val renderMedium: RenderMedium = Services.renderMedium()
 
 private val renderables: Registry<String, Renderable> by lazy {
 	Resources.inStream("config/renderables.yaml").use {
@@ -143,7 +137,7 @@ private val entities: EntityPool by lazy {
 		// Camera
 		create().apply {
 			add(
-				Transform(Vectors.create(0.0, 0.0, 0.0)).apply { Resources.RENDER_MEDIUM.camera.position = position },
+				Transform(Vectors.create(0.0, 0.0, 0.0)).apply { renderMedium.camera.position = position },
 				Chain(playerTransform.position, 1.0)
 			)
 		}
@@ -217,7 +211,7 @@ private val entities: EntityPool by lazy {
 		create().apply {
 			add(
 				Transform(Vectors.create(0.0, .5, 1.0), playerTransform, false),
-				Graphic(HealthBar(health, healthBarSize, Resources.RENDER_MEDIUM))
+				Graphic(HealthBar(health, healthBarSize, renderMedium))
 			)
 		}
 	}
@@ -244,7 +238,7 @@ private fun EntityPool.createObject(position: Vector3, bounds: Bounds, graphic: 
 	create()
 		.add(
 			Transform(Vectors.create(0.0, .3, 1.0), transform, false),
-			Graphic(HealthBar(health, healthBarSize, Resources.RENDER_MEDIUM)),
+			Graphic(HealthBar(health, healthBarSize, renderMedium)),
 			health
 		)
 }
@@ -256,7 +250,7 @@ private fun randRotation(): Vector1 = Vectors.create(ThreadLocalRandom.current()
  */
 fun main() {
 	log.info("Starting thing")
-	Resources.APPLICATION.execute(
+	Services.application().execute(
 		Config(
 			"Killstreek Functional Test",
 			"pancake-icon.png",

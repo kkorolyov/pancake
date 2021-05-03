@@ -3,10 +3,11 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.media.Graphic;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
+import dev.kkorolyov.pancake.platform.service.RenderMedium;
+import dev.kkorolyov.pancake.platform.service.Services;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 import java.util.Collection;
@@ -21,6 +22,8 @@ import static java.util.stream.Collectors.toList;
  * Renders all game entities.
  */
 public class RenderSystem extends GameSystem {
+	private final RenderMedium renderMedium;
+
 	private final RenderTransform renderTransform = new RenderTransform();
 
 	private final NavigableMap<Double, Set<Entity>> drawBuckets = new TreeMap<>();
@@ -29,10 +32,14 @@ public class RenderSystem extends GameSystem {
 	 * Constructs a new render system.
 	 */
 	public RenderSystem() {
+		this(Services.renderMedium());
+	}
+	RenderSystem(RenderMedium renderMedium) {
 		super(
 				new Signature(Transform.class, Graphic.class),
 				Limiter.fromConfig(RenderSystem.class)
 		);
+		this.renderMedium = renderMedium;
 	}
 
 	@Override
@@ -52,7 +59,7 @@ public class RenderSystem extends GameSystem {
 				.flatMap(Collection::stream)
 				.collect(toList());
 
-		Resources.RENDER_MEDIUM.clearInvoke(() -> {
+		renderMedium.clearInvoke(() -> {
 			for (Entity entity : toDraw) {
 				draw(
 						entity.get(Transform.class),
@@ -65,7 +72,7 @@ public class RenderSystem extends GameSystem {
 		graphic.render(
 				renderTransform
 						.reset()
-						.setPosition(Resources.RENDER_MEDIUM.getCamera().getRelativePosition(transform.getGlobalPosition()))
+						.setPosition(renderMedium.getCamera().getRelativePosition(transform.getGlobalPosition()))
 						.setRotation(transform.getGlobalOrientation())
 		);
 	}

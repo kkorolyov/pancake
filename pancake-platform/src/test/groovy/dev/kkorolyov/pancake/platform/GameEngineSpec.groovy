@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventLoop
-import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
+import dev.kkorolyov.pancake.platform.service.RenderMedium
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer
 import dev.kkorolyov.pancake.platform.utility.Limiter
 

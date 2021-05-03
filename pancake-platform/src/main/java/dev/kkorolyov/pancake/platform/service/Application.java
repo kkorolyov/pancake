@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.application;
+package dev.kkorolyov.pancake.platform.service;
 
 import dev.kkorolyov.pancake.platform.GameLoop;
 import dev.kkorolyov.pancake.platform.math.Vector2;

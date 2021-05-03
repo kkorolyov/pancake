@@ -3,10 +3,10 @@ package dev.kkorolyov.pancake.platform.utility;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vectors;
-import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text;
+import dev.kkorolyov.pancake.platform.service.RenderMedium;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

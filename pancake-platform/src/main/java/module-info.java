@@ -3,6 +3,9 @@ import dev.kkorolyov.pancake.platform.registry.internal.ActionStratDeferredConve
 import dev.kkorolyov.pancake.platform.registry.internal.AudioStratDeferredConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.RenderableStratDeferredConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.VectorStratDeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.service.Application;
+import dev.kkorolyov.pancake.platform.service.AudioFactory;
+import dev.kkorolyov.pancake.platform.service.RenderMedium;
 
 module dev.kkorolyov.pancake.platform {
 	// logging
@@ -16,7 +19,6 @@ module dev.kkorolyov.pancake.platform {
 
 	exports dev.kkorolyov.pancake.platform;
 	exports dev.kkorolyov.pancake.platform.action;
-	exports dev.kkorolyov.pancake.platform.application;
 	exports dev.kkorolyov.pancake.platform.entity;
 	exports dev.kkorolyov.pancake.platform.event;
 	exports dev.kkorolyov.pancake.platform.math;
@@ -26,12 +28,13 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.media.graphic.shape;
 	exports dev.kkorolyov.pancake.platform.registry;
 	exports dev.kkorolyov.pancake.platform.utility;
+	exports dev.kkorolyov.pancake.platform.service;
 
 	uses dev.kkorolyov.pancake.platform.GameSystem;
 	// application and media factories
-	uses dev.kkorolyov.pancake.platform.application.Application;
-	uses dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
-	uses dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
+	uses Application;
+	uses AudioFactory;
+	uses RenderMedium;
 	// resource reader factories
 	uses DeferredConverterFactory.VectorStrat;
 	uses DeferredConverterFactory.ActionStrat;

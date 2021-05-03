@@ -2,11 +2,11 @@ package dev.kkorolyov.killstreek.media
 
 import dev.kkorolyov.killstreek.component.Health
 import dev.kkorolyov.pancake.platform.math.Vector2
-import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Box
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape.Color
+import dev.kkorolyov.pancake.platform.service.RenderMedium
 
 /**
  * A rendered health bar.

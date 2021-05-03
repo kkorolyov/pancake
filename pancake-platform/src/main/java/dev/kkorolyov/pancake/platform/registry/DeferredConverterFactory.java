@@ -54,7 +54,7 @@ public interface DeferredConverterFactory<T> {
 	/**
 	 * @param c deferred converter factory type to reduce
 	 * @param <T> deferred converter factory type
-	 * @return reduced converter from converters supplied by all providers of type {@code c} on the module path
+	 * @return reduced converter from converters supplied by all providers of type {@code c} found by the current thread's context class loader
 	 */
 	static <T> Converter<Object, Optional<Deferred<String, T>>> get(Class<? extends DeferredConverterFactory<T>> c) {
 		return Converter.reducing(

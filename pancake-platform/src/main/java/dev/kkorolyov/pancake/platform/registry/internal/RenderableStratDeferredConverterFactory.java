@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
 import dev.kkorolyov.flopple.function.convert.Converter;
-import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable;
-import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.service.RenderMedium;
+import dev.kkorolyov.pancake.platform.service.Services;
 
 import java.util.Collection;
 import java.util.Map;
@@ -29,7 +29,7 @@ public final class RenderableStratDeferredConverterFactory implements DeferredCo
 	private final Supplier<Converter<Object, Optional<Deferred<String, Renderable>>>> autoReader;
 
 	public RenderableStratDeferredConverterFactory() {
-		this(Resources.RENDER_MEDIUM, memoize(() -> DeferredConverterFactory.get(RenderableStrat.class)));
+		this(Services.renderMedium(), memoize(() -> DeferredConverterFactory.get(RenderableStrat.class)));
 	}
 	RenderableStratDeferredConverterFactory(RenderMedium renderMedium, Supplier<Converter<Object, Optional<Deferred<String, Renderable>>>> autoReader) {
 		this.renderMedium = renderMedium;

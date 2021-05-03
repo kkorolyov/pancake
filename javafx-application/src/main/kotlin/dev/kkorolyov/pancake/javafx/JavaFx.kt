@@ -6,16 +6,16 @@ import dev.kkorolyov.pancake.javafx.render.JavaFxBox
 import dev.kkorolyov.pancake.javafx.render.JavaFxImage
 import dev.kkorolyov.pancake.javafx.render.JavaFxText
 import dev.kkorolyov.pancake.platform.GameLoop
-import dev.kkorolyov.pancake.platform.Resources
-import dev.kkorolyov.pancake.platform.application.Application
-import dev.kkorolyov.pancake.platform.application.Application.Config
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vectors
 import dev.kkorolyov.pancake.platform.media.Camera
 import dev.kkorolyov.pancake.platform.media.graphic.Image
-import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Box
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text
+import dev.kkorolyov.pancake.platform.service.Application
+import dev.kkorolyov.pancake.platform.service.Application.Config
+import dev.kkorolyov.pancake.platform.service.RenderMedium
+import dev.kkorolyov.pancake.platform.service.Services
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Group
@@ -27,14 +27,6 @@ import javafx.stage.Stage
 import java.nio.file.Path
 import javafx.application.Application as FxApplication
 import javafx.scene.image.Image as FxImage
-
-private fun Canvas.setSize(width: Double, height: Double) {
-	this.width = width
-	this.height = height
-
-	// FIXME BAD
-	Resources.RENDER_MEDIUM.camera.setSize(width, height)
-}
 
 /**
  * [Application] implemented through JavaFX.
@@ -74,6 +66,8 @@ private object Runner : FxApplication() {
 	}
 
 	fun attach(config: Config, gameLoop: GameLoop, cursor: Vector2, inputs: MutableCollection<Enum<*>>) {
+		val renderMedium = Services.renderMedium()
+
 		Platform.runLater {
 			scene.apply {
 				onMouseMoved = EventHandler {
@@ -88,7 +82,10 @@ private object Runner : FxApplication() {
 				onKeyReleased = EventHandler { inputs -= it.code }
 			}
 
-			canvas.setSize(config.width, config.height)
+			canvas.width = config.width
+			canvas.height = config.height
+			// FIXME BAD
+			renderMedium.camera.setSize(config.width, config.height)
 
 			stage.apply {
 				title = config.title
@@ -99,14 +96,12 @@ private object Runner : FxApplication() {
 				show()
 
 				widthProperty().addListener { _, oldValue, newValue ->
-					canvas.let {
-						it.setSize(it.width + newValue.toDouble() - oldValue.toDouble(), it.height)
-					}
+					canvas.width += newValue.toDouble() - oldValue.toDouble()
+					renderMedium.camera.setSize(canvas.width, canvas.height)
 				}
 				heightProperty().addListener { _, oldValue, newValue ->
-					canvas.let {
-						it.setSize(it.width, it.height + newValue.toDouble() - oldValue.toDouble())
-					}
+					canvas.height += newValue.toDouble() - oldValue.toDouble()
+					renderMedium.camera.setSize(canvas.width, canvas.height)
 				}
 
 				Thread(gameLoop::start).start()

@@ -1,4 +1,6 @@
-package dev.kkorolyov.pancake.platform.media.audio;
+package dev.kkorolyov.pancake.platform.service;
+
+import dev.kkorolyov.pancake.platform.media.audio.Audio;
 
 /**
  * Generates {@link Audio} instances.

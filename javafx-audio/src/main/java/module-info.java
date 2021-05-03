@@ -1,3 +1,5 @@
+import dev.kkorolyov.pancake.platform.service.AudioFactory;
+
 module dev.kkorolyov.pancake.javafx.audio {
 	requires kotlin.stdlib;
 
@@ -5,5 +7,5 @@ module dev.kkorolyov.pancake.javafx.audio {
 
 	requires dev.kkorolyov.pancake.platform;
 
-	provides dev.kkorolyov.pancake.platform.media.audio.AudioFactory with dev.kkorolyov.pancake.javafx.audio.JavaFxAudioFactory;
+	provides AudioFactory with dev.kkorolyov.pancake.javafx.audio.JavaFxAudioFactory;
 }

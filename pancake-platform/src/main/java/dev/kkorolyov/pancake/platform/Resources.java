@@ -1,8 +1,5 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.application.Application;
-import dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
-import dev.kkorolyov.pancake.platform.media.graphic.RenderMedium;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +9,6 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ServiceLoader;
 
 /**
  * Provides safe access to resources.
@@ -20,13 +16,6 @@ import java.util.ServiceLoader;
  */
 public final class Resources {
 	private static final Logger LOG = LoggerFactory.getLogger(Resources.class);
-
-	/** Service-loaded application executor */
-	public static final Application APPLICATION = ServiceLoader.load(Application.class).findFirst().orElse(null);
-	/** Service-loaded audio factory */
-	public static final AudioFactory AUDIO_FACTORY = ServiceLoader.load(AudioFactory.class).findFirst().orElse(null);
-	/** Service-loaded render medium */
-	public static final RenderMedium RENDER_MEDIUM = ServiceLoader.load(RenderMedium.class).findFirst().orElse(null);
 
 	private Resources() {}
 

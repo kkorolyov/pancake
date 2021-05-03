@@ -1,11 +1,11 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
 import dev.kkorolyov.flopple.function.convert.Converter;
-import dev.kkorolyov.pancake.platform.Resources;
 import dev.kkorolyov.pancake.platform.media.audio.Audio;
-import dev.kkorolyov.pancake.platform.media.audio.AudioFactory;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
 import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.service.AudioFactory;
+import dev.kkorolyov.pancake.platform.service.Services;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ public final class AudioStratDeferredConverterFactory implements DeferredConvert
 	private final AudioFactory audioFactory;
 
 	public AudioStratDeferredConverterFactory() {
-		this(Resources.AUDIO_FACTORY);
+		this(Services.audioFactory());
 	}
 	AudioStratDeferredConverterFactory(AudioFactory audioFactory) {
 		this.audioFactory = audioFactory;
