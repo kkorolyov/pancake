@@ -54,7 +54,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/build.gradle.kts') }}
 
       - name: docs
-        run: ./gradlew docs -Pversion=$(echo ${{ github.ref }} | sed s#refs/tags/##)
+        run: ./gradlew allDocs -Pversion=$(echo ${{ github.ref }} | sed s#refs/tags/##)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
