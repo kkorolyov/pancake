@@ -3,6 +3,8 @@ plugins {
 	java
 }
 
+group = "dev.kkorolyov.pancake"
+
 repositories {
 	mavenCentral()
 	maven {
