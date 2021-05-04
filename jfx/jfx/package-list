@@ -1,0 +1,14 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio////PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/index.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudio///PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio/index.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudio/JavaFxAudio/#javafx.scene.media.Media/PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio/-java-fx-audio.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudio/on/#dev.kkorolyov.pancake.platform.media.audio.Audio.State#java.lang.Runnable/PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio/on.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudio/setBalance/#kotlin.Double/PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio/set-balance.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudio/setVolume/#kotlin.Double/PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio/set-volume.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudio/state/#dev.kkorolyov.pancake.platform.media.audio.Audio.State/PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio/state.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudioFactory///PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio-factory/index.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudioFactory/JavaFxAudioFactory/#/PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio-factory/-java-fx-audio-factory.html
+$dokka.location:dev.kkorolyov.pancake.javafx.audio/JavaFxAudioFactory/get/#kotlin.String/PointingToDeclaration/jfx/dev.kkorolyov.pancake.javafx.audio/-java-fx-audio-factory/get.html
+dev.kkorolyov.pancake.javafx.audio
+
