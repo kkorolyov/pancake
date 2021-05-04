@@ -1,0 +1,23 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+cglib:cglib-nodep:3.3.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+dev.kkorolyov:flopple:1.0.0-beta=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+net.bytebuddy:byte-buddy:1.10.22=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.apiguardian:apiguardian-api:1.1.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.assertj:assertj-core:3.16.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.codehaus.groovy:groovy:3.0.7=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.hamcrest:hamcrest:2.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.jetbrains:annotations:20.1.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-commons:1.7.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-engine:1.7.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-launcher:1.7.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-testkit:1.7.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.junit:junit-bom:5.7.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.objenesis:objenesis:3.2=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.opentest4j:opentest4j:1.2.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.ow2.asm:asm:9.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.slf4j:slf4j-api:1.8.0-beta4=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.spockframework:spock-core:2.0-M5-groovy-3.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.yaml:snakeyaml:1.28=runtimeClasspath,testRuntimeClasspath
+empty=annotationProcessor,testAnnotationProcessor
