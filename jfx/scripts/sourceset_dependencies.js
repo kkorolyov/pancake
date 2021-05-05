@@ -1,1 +1,1 @@
-sourceset_dependencies='{":svc:audio:jfx:dokkaHtml/main":[]}'
+sourceset_dependencies='{":plugin:audio:jfx:dokkaHtml/main":[]}'

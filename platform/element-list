@@ -8,7 +8,7 @@ dev.kkorolyov.pancake.platform.media
 dev.kkorolyov.pancake.platform.media.audio
 dev.kkorolyov.pancake.platform.media.graphic
 dev.kkorolyov.pancake.platform.media.graphic.shape
+dev.kkorolyov.pancake.platform.plugin
 dev.kkorolyov.pancake.platform.registry
 dev.kkorolyov.pancake.platform.registry.internal
-dev.kkorolyov.pancake.platform.service
 dev.kkorolyov.pancake.platform.utility
