@@ -3,10 +3,10 @@ package dev.kkorolyov.pancake.platform.registry.internal;
 import dev.kkorolyov.flopple.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable;
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable;
+import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.plugin.Plugins;
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
-import dev.kkorolyov.pancake.platform.service.RenderMedium;
-import dev.kkorolyov.pancake.platform.service.Services;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +15,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
-import static dev.kkorolyov.flopple.function.Memoizer.memoize;
 import static java.util.Collections.singleton;
 import static java.util.stream.Collectors.toList;
 
@@ -29,7 +28,7 @@ public final class RenderableStratDeferredConverterFactory implements DeferredCo
 	private final Supplier<Converter<Object, Optional<Deferred<String, Renderable>>>> autoReader;
 
 	public RenderableStratDeferredConverterFactory() {
-		this(Services.renderMedium(), memoize(() -> DeferredConverterFactory.get(RenderableStrat.class)));
+		this(Plugins.renderMedium(), () -> Plugins.deferredConverter(RenderableStrat.class));
 	}
 	RenderableStratDeferredConverterFactory(RenderMedium renderMedium, Supplier<Converter<Object, Optional<Deferred<String, Renderable>>>> autoReader) {
 		this.renderMedium = renderMedium;

@@ -9,8 +9,8 @@ import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.VectorMath;
 import dev.kkorolyov.pancake.platform.math.Vectors;
-import dev.kkorolyov.pancake.platform.service.RenderMedium;
-import dev.kkorolyov.pancake.platform.service.Services;
+import dev.kkorolyov.pancake.platform.plugin.Plugins;
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 /**
@@ -25,7 +25,7 @@ public class AudioSystem extends GameSystem {
 	 * Constructs a new sound system.
 	 */
 	public AudioSystem() {
-		this(Services.renderMedium());
+		this(Plugins.renderMedium());
 	}
 	AudioSystem(RenderMedium renderMedium) {
 		super(

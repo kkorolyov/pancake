@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Box
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape.Color
-import dev.kkorolyov.pancake.platform.service.RenderMedium
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium
 
 /**
  * A rendered health bar.

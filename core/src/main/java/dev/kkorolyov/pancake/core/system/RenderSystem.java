@@ -6,8 +6,8 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
-import dev.kkorolyov.pancake.platform.service.RenderMedium;
-import dev.kkorolyov.pancake.platform.service.Services;
+import dev.kkorolyov.pancake.platform.plugin.Plugins;
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 import java.util.Collection;
@@ -32,7 +32,7 @@ public class RenderSystem extends GameSystem {
 	 * Constructs a new render system.
 	 */
 	public RenderSystem() {
-		this(Services.renderMedium());
+		this(Plugins.renderMedium());
 	}
 	RenderSystem(RenderMedium renderMedium) {
 		super(

@@ -4,9 +4,9 @@ import dev.kkorolyov.flopple.function.convert.Converter
 import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium
 import dev.kkorolyov.pancake.platform.registry.Deferred
 import dev.kkorolyov.pancake.platform.registry.Registry
-import dev.kkorolyov.pancake.platform.service.RenderMedium
 
 import spock.lang.Specification
 

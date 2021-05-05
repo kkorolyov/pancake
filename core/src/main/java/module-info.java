@@ -12,7 +12,7 @@ import dev.kkorolyov.pancake.core.system.MovementSystem;
 import dev.kkorolyov.pancake.core.system.RenderSystem;
 import dev.kkorolyov.pancake.core.system.SpawnSystem;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
 
 module dev.kkorolyov.pancake.core {
 	requires org.slf4j;

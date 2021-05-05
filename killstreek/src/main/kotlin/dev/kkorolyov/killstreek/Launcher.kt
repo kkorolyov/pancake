@@ -30,12 +30,12 @@ import dev.kkorolyov.pancake.platform.media.graphic.CompositeRenderable
 import dev.kkorolyov.pancake.platform.media.graphic.Image
 import dev.kkorolyov.pancake.platform.media.graphic.Renderable
 import dev.kkorolyov.pancake.platform.media.graphic.Viewport
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory
+import dev.kkorolyov.pancake.platform.plugin.Application.Config
+import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory
+import dev.kkorolyov.pancake.platform.plugin.Plugins
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
-import dev.kkorolyov.pancake.platform.service.Application.Config
-import dev.kkorolyov.pancake.platform.service.RenderMedium
-import dev.kkorolyov.pancake.platform.service.Services
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ThreadLocalRandom
@@ -44,19 +44,21 @@ import kotlin.math.sqrt
 
 private val log: Logger = LoggerFactory.getLogger("main")
 
-private val renderMedium: RenderMedium = Services.renderMedium()
+private val renderMedium: RenderMedium = Plugins.renderMedium()
 
 private val renderables: Registry<String, Renderable> by lazy {
 	Resources.inStream("config/renderables.yaml").use {
 		Registry<String, Renderable>().apply {
-			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.RenderableStrat::class.java)).fromYaml(it))
+			load(ResourceReader(Plugins.deferredConverter(DeferredConverterFactory.RenderableStrat::class.java)).fromYaml(it))
 		}
 	}
 }
 private val audio: Registry<String, Audio> by lazy {
 	Resources.inStream("config/audio.yaml").use {
 		Registry<String, Audio>().apply {
-			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.AudioStrat::class.java)).fromYaml(it))
+			load(
+				ResourceReader(Plugins.deferredConverter(DeferredConverterFactory.AudioStrat::class.java)).fromYaml(it)
+			)
 		}
 	}
 }
@@ -70,7 +72,7 @@ private val actions: Registry<String, Action> by lazy {
 
 			put("toggleSpawner", Action { it.get(Spawner::class.java).toggle() })
 
-			load(ResourceReader(DeferredConverterFactory.get(DeferredConverterFactory.ActionStrat::class.java)).fromYaml(it))
+			load(ResourceReader(Plugins.deferredConverter(DeferredConverterFactory.ActionStrat::class.java)).fromYaml(it))
 		}
 	}
 }
@@ -250,7 +252,7 @@ private fun randRotation(): Vector1 = Vectors.create(ThreadLocalRandom.current()
  */
 fun main() {
 	log.info("Starting thing")
-	Services.application().execute(
+	Plugins.application().execute(
 		Config(
 			"Killstreek Functional Test",
 			"pancake-icon.png",

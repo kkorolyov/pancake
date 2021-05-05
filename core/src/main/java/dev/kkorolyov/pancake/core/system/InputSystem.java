@@ -9,9 +9,9 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vectors;
-import dev.kkorolyov.pancake.platform.service.Application;
-import dev.kkorolyov.pancake.platform.service.RenderMedium;
-import dev.kkorolyov.pancake.platform.service.Services;
+import dev.kkorolyov.pancake.platform.plugin.Application;
+import dev.kkorolyov.pancake.platform.plugin.Plugins;
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 /**
@@ -27,7 +27,7 @@ public class InputSystem extends GameSystem {
 	 * Constructs a new input system.
 	 */
 	public InputSystem() {
-		this(Services.application(), Services.renderMedium());
+		this(Plugins.application(), Plugins.renderMedium());
 	}
 	InputSystem(Application application, RenderMedium renderMedium) {
 		super(

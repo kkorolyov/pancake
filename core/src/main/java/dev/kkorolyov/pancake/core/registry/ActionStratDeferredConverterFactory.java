@@ -6,16 +6,15 @@ import dev.kkorolyov.pancake.core.action.TransformAction;
 import dev.kkorolyov.pancake.core.action.VelocityAction;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.plugin.Plugins;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-
-import static dev.kkorolyov.flopple.function.Memoizer.memoize;
 
 /**
  * {@link DeferredConverterFactory.ActionStrat} for core actions.
@@ -28,7 +27,7 @@ public class ActionStratDeferredConverterFactory implements DeferredConverterFac
 	private final Supplier<? extends Converter<Object, Optional<Deferred<String, Vector3>>>> vectorReader;
 
 	public ActionStratDeferredConverterFactory() {
-		this(memoize(() -> DeferredConverterFactory.get(VectorStrat.class)));
+		this(() -> Plugins.deferredConverter(VectorStrat.class));
 	}
 	ActionStratDeferredConverterFactory(Supplier<? extends Converter<Object, Optional<Deferred<String, Vector3>>>> vectorReader) {
 		this.vectorReader = vectorReader;

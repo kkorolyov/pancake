@@ -3,8 +3,8 @@ package dev.kkorolyov.pancake.core.input
 import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.action.MultiStageAction
+import dev.kkorolyov.pancake.platform.plugin.Application
 import dev.kkorolyov.pancake.platform.registry.Registry
-import dev.kkorolyov.pancake.platform.service.Application
 
 import spock.lang.Shared
 import spock.lang.Specification

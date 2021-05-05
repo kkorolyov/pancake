@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.platform.registry.internal
 
 import dev.kkorolyov.flopple.function.convert.Converter
 import dev.kkorolyov.pancake.platform.media.audio.Audio
+import dev.kkorolyov.pancake.platform.plugin.AudioFactory
 import dev.kkorolyov.pancake.platform.registry.Deferred
-import dev.kkorolyov.pancake.platform.service.AudioFactory
 
 import spock.lang.Shared
 import spock.lang.Specification

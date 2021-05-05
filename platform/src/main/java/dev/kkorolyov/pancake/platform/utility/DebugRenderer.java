@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Shape;
 import dev.kkorolyov.pancake.platform.media.graphic.shape.Text;
-import dev.kkorolyov.pancake.platform.service.RenderMedium;
+import dev.kkorolyov.pancake.platform.plugin.RenderMedium;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -2,14 +2,13 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventLoop;
-import dev.kkorolyov.pancake.platform.service.Services;
+import dev.kkorolyov.pancake.platform.plugin.Plugins;
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import java.util.ServiceLoader;
 
 /**
  * Central game management module.
@@ -27,7 +26,7 @@ public final class GameEngine {
 	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
 	 */
 	public GameEngine(EventLoop.Broadcasting events, EntityPool entities) {
-		this(events, entities, ServiceLoader.load(GameSystem.class).stream().map(ServiceLoader.Provider::get)::iterator);
+		this(events, entities, Plugins.gameSystems());
 	}
 	/**
 	 * @see #GameEngine(EventLoop.Broadcasting, EntityPool, Iterable)
@@ -46,7 +45,7 @@ public final class GameEngine {
 				events,
 				entities,
 				systems,
-				new DebugRenderer(Services.renderMedium())
+				new DebugRenderer(Plugins.renderMedium())
 		);
 	}
 	GameEngine(EventLoop.Broadcasting events, EntityPool entities, Iterable<GameSystem> systems, DebugRenderer debugRenderer) {

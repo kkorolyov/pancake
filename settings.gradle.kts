@@ -5,8 +5,8 @@ include("core")
 
 include("test-utils")
 
-include("svc:app-render:jfx")
-include("svc:audio:jfx")
+include("plugin:app-render:jfx")
+include("plugin:audio:jfx")
 
 include("killstreek")
 

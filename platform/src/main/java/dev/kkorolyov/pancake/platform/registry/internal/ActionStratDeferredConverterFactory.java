@@ -5,8 +5,9 @@ import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.CollectiveAction;
 import dev.kkorolyov.pancake.platform.action.MultiStageAction;
+import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.plugin.Plugins;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
-import dev.kkorolyov.pancake.platform.registry.DeferredConverterFactory;
 
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +16,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.StreamSupport;
 
-import static dev.kkorolyov.flopple.function.Memoizer.memoize;
 import static java.util.Collections.singleton;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -29,7 +29,7 @@ public final class ActionStratDeferredConverterFactory implements DeferredConver
 
 	private final Supplier<Converter<Object, Optional<Deferred<String, Action>>>> autoReader;
 	public ActionStratDeferredConverterFactory() {
-		this(memoize(() -> DeferredConverterFactory.get(ActionStrat.class)));
+		this(() -> Plugins.deferredConverter(ActionStrat.class));
 	}
 	ActionStratDeferredConverterFactory(Supplier<Converter<Object, Optional<Deferred<String, Action>>>> autoReader) {
 		this.autoReader = autoReader;
