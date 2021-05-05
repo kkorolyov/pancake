@@ -6,7 +6,7 @@ plugins {
 	id("testable")
 }
 
-group = "$group.svc.apprender"
+group = "$group.plugin.app-render"
 description = "JavaFX Application and RenderMedium implementation"
 
 dependencies {

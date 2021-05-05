@@ -6,7 +6,7 @@ plugins {
 	id("testable")
 }
 
-group = "$group.svc.audio"
+group = "$group.plugin.audio"
 description = "JavaFX AudioFactory implementation"
 
 dependencies {
