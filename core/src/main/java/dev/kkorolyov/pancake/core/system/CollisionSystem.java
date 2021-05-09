@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.event.EntitiesCollided;
-import dev.kkorolyov.pancake.platform.GameSystem;
+import dev.kkorolyov.pancake.platform.plugin.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Collider;

@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.core.component.movement;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.Vectors;
+import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
 /**
  * Maximum velocity of a moving entity.
@@ -18,8 +19,7 @@ public final class VelocityCap implements Component {
 		this.value = Vectors.create(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
 	}
 	private static double verify(double value) {
-		if (value < 0) throw new IllegalArgumentException("cap must be >= 0; was " + value);
-		return value;
+		return ArgVerify.greaterThanEqual("cap", 0, value);
 	}
 
 	/**

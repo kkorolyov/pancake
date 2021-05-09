@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.utility;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.GameSystem;
+import dev.kkorolyov.pancake.platform.plugin.GameSystem;
 
 import java.util.Optional;
 
@@ -17,12 +17,12 @@ public final class Limiter {
 	 * @param frequency minimum {@code ns} that must elapse between ready states
 	 */
 	public Limiter(long frequency) {
-		this.frequency = Math.max(0, frequency);
+		this.frequency = ArgVerify.greaterThanEqual("frequency", 0, frequency);
 	}
 
 	/**
 	 * @param c game system to get limiter configuration for
-	 * @return limiter using TPS specified in {@code c}'s configuration; or no limit if no configuration
+	 * @return limiter using TPS (ticks per second) specified in {@code c}'s configuration; or no limit if no configuration
 	 */
 	public static Limiter fromConfig(Class<? extends GameSystem> c) {
 		return new Limiter(
@@ -40,10 +40,6 @@ public final class Limiter {
 	 */
 	public boolean isReady(long dt) {
 		elapsed += dt;
-		return isReady();
-	}
-	/** @return {@code true} if {@code >= frequency ns} have elapsed since the last time this was ready */
-	public boolean isReady() {
 		return elapsed >= frequency;
 	}
 

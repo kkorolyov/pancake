@@ -5,6 +5,7 @@ import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventLoop
+import dev.kkorolyov.pancake.platform.plugin.GameSystem
 import dev.kkorolyov.pancake.platform.plugin.RenderMedium
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer
 import dev.kkorolyov.pancake.platform.utility.Limiter
@@ -75,14 +76,14 @@ class GameEngineSpec extends Specification {
 		engine.add(readySystem)
 
 		then:
-		1 * readySystem.setResources(!null)
+		1 * readySystem.setEvents(!null)
 	}
 	def "unshares services from removed system"() {
 		when:
 		engine.remove(readySystem)
 
 		then:
-		1 * readySystem.setResources(null)
+		1 * readySystem.setEvents(null)
 	}
 
 	def "invokes 'attach' on added system"() {

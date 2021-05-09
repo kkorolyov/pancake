@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.platform.plugin;
 
 import dev.kkorolyov.flopple.function.convert.Converter;
-import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

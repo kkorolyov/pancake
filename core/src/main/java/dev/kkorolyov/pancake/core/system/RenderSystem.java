@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.media.Graphic;
-import dev.kkorolyov.pancake.platform.GameSystem;
+import dev.kkorolyov.pancake.platform.plugin.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.media.graphic.RenderTransform;

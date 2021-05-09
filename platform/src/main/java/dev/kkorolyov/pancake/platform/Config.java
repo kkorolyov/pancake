@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.plugin.GameSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

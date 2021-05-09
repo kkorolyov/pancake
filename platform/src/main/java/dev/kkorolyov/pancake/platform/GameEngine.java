@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventLoop;
+import dev.kkorolyov.pancake.platform.plugin.GameSystem;
 import dev.kkorolyov.pancake.platform.plugin.Plugins;
 import dev.kkorolyov.pancake.platform.utility.DebugRenderer;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
@@ -95,7 +96,7 @@ public final class GameEngine {
 	 */
 	public void add(GameSystem system) {
 		systems.add(system);
-		system.setResources(events);
+		system.setEvents(events);
 		system.attach();
 	}
 	/**
@@ -106,7 +107,7 @@ public final class GameEngine {
 	public void remove(GameSystem system) {
 		if (systems.remove(system)) {
 			system.detach();
-			system.setResources(null);
+			system.setEvents(null);
 		}
 	}
 	@Override

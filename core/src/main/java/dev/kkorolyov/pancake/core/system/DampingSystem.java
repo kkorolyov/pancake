@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.movement.Damping;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
-import dev.kkorolyov.pancake.platform.GameSystem;
+import dev.kkorolyov.pancake.platform.plugin.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.utility.Limiter;

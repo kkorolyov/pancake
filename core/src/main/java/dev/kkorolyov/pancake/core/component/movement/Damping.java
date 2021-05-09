@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.core.component.movement;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.Vectors;
+import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
 /**
  * Damping applied on an entity.
@@ -19,8 +20,7 @@ public final class Damping implements Component {
 		this.value = Vectors.create(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
 	}
 	private static double verify(double value) {
-		if (value < 0 || value > 1) throw new IllegalArgumentException("damping must be >= 0 and <= 1; was " + value);
-		return value;
+		return ArgVerify.betweenInclusive("damping", 0, 1, value);
 	}
 
 	/**

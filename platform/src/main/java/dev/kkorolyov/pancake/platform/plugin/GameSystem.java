@@ -1,5 +1,6 @@
-package dev.kkorolyov.pancake.platform;
+package dev.kkorolyov.pancake.platform.plugin;
 
+import dev.kkorolyov.pancake.platform.GameEngine;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.Event;
@@ -59,11 +60,11 @@ public abstract class GameSystem implements EventLoop {
 	public void detach() {}
 
 	/** @return system required component signature */
-	public Signature getSignature() {
+	public final Signature getSignature() {
 		return signature;
 	}
 	/** @return system update limiter */
-	public Limiter getLimiter() {
+	public final Limiter getLimiter() {
 		return limiter;
 	}
 
@@ -76,11 +77,8 @@ public abstract class GameSystem implements EventLoop {
 		events.enqueue(event);
 	}
 
-	/**
-	 * Sets shared resources on this system.
-	 * @param events event broadcaster shared by the {@link GameEngine} this system is attached to
-	 */
-	void setResources(EventLoop events) {
+	/** @param events event loop providing event queueing and handler registration */
+	public final void setEvents(EventLoop events) {
 		this.events = events;
 	}
 }
