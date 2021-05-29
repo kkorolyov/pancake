@@ -1,5 +1,3 @@
-import dev.kkorolyov.pancake.platform.plugin.GameSystem;
-
 module dev.kkorolyov.killstreek {
 	requires kotlin.stdlib;
 
@@ -9,8 +7,4 @@ module dev.kkorolyov.killstreek {
 
 	requires dev.kkorolyov.pancake.core;
 	requires dev.kkorolyov.pancake.platform;
-
-	provides GameSystem with
-			dev.kkorolyov.killstreek.system.DamageSystem,
-			dev.kkorolyov.killstreek.system.GcSystem;
 }

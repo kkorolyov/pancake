@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.utility;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.plugin.GameSystem;
+import dev.kkorolyov.pancake.platform.GameSystem;
 
 import java.util.Optional;
 

@@ -22,7 +22,7 @@ class EntityPoolSpec extends Specification {
 	def "created entity has specified components"() {
 		when:
 		Entity entity = entities.create()
-		entity.add(component)
+		entity.put(component)
 
 		then:
 		Component otherComponent = new Component() {}
@@ -45,13 +45,13 @@ class EntityPoolSpec extends Specification {
 
 	def "invokes on each matching entity"() {
 		Entity e1 = entities.create()
-		e1.add(component)
+		e1.put(component)
 
 		Entity e2 = entities.create()
-		e2.add(component)
+		e2.put(component)
 
 		Entity eBad = entities.create()
-		eBad.add(new Component() {})
+		eBad.put(new Component() {})
 
 		Set<Entity> seen = []
 

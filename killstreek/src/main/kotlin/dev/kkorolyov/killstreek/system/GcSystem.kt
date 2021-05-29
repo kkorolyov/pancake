@@ -1,7 +1,7 @@
 package dev.kkorolyov.killstreek.system
 
 import dev.kkorolyov.killstreek.component.Health
-import dev.kkorolyov.pancake.platform.plugin.GameSystem
+import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.DestroyEntity

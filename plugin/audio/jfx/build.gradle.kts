@@ -20,10 +20,3 @@ javafx {
 tasks.jar {
 	archiveBaseName.set("${parent?.name}-${project.name}")
 }
-tasks.compileJava {
-	options.compilerArgs.addAll(
-		listOf(
-			"--patch-module", "dev.kkorolyov.pancake.plugin.audio.jfx=${sourceSets.main.get().output.asPath}"
-		)
-	)
-}

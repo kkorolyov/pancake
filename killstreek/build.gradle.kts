@@ -17,7 +17,7 @@ dependencies {
 	implementation(projects.platform)
 	implementation(projects.core)
 
-	runtimeOnly(projects.plugin.appRender.jfx)
+	runtimeOnly(projects.plugin.apprender.jfx)
 	runtimeOnly(projects.plugin.audio.jfx)
 
 	testImplementation(projects.testUtils)

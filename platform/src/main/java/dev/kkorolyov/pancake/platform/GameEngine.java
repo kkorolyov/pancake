@@ -2,12 +2,8 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventLoop;
-import dev.kkorolyov.pancake.platform.plugin.GameSystem;
-import dev.kkorolyov.pancake.platform.plugin.Plugins;
-import dev.kkorolyov.pancake.platform.utility.DebugRenderer;
 import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
@@ -21,20 +17,7 @@ public final class GameEngine {
 	private final Collection<GameSystem> systems = new LinkedHashSet<>();
 
 	private final PerformanceCounter performanceCounter = new PerformanceCounter();
-	private final DebugRenderer debugRenderer;
 
-	/**
-	 * Constructs a new game engine populated with all {@link GameSystem} providers on the classpath.
-	 */
-	public GameEngine(EventLoop.Broadcasting events, EntityPool entities) {
-		this(events, entities, Plugins.gameSystems());
-	}
-	/**
-	 * @see #GameEngine(EventLoop.Broadcasting, EntityPool, Iterable)
-	 */
-	public GameEngine(EventLoop.Broadcasting events, EntityPool entities, GameSystem... systems) {
-		this(events, entities, Arrays.asList(systems));
-	}
 	/**
 	 * Constructs a new game engine.
 	 * @param events attached event broadcaster
@@ -42,20 +25,10 @@ public final class GameEngine {
 	 * @param systems attached systems
 	 */
 	public GameEngine(EventLoop.Broadcasting events, EntityPool entities, Iterable<GameSystem> systems) {
-		this(
-				events,
-				entities,
-				systems,
-				new DebugRenderer(Plugins.renderMedium())
-		);
-	}
-	GameEngine(EventLoop.Broadcasting events, EntityPool entities, Iterable<GameSystem> systems, DebugRenderer debugRenderer) {
 		this.events = events;
 		this.entities = entities;
 
 		systems.forEach(this::add);
-
-		this.debugRenderer = debugRenderer;
 	}
 
 	/**
@@ -85,8 +58,6 @@ public final class GameEngine {
 			}
 		}
 		performanceCounter.tick();
-
-		debugRenderer.render(performanceCounter);
 	}
 
 	/**
@@ -110,6 +81,12 @@ public final class GameEngine {
 			system.setEvents(null);
 		}
 	}
+
+	/** @return performance counter logging system run times */
+	public PerformanceCounter getPerformanceCounter() {
+		return performanceCounter;
+	}
+
 	@Override
 	public String toString() {
 		return "GameEngine{" +
@@ -117,7 +94,6 @@ public final class GameEngine {
 				", entities=" + entities +
 				", performanceCounter=" + performanceCounter +
 				", systems=" + systems +
-				", debugRenderer=" + debugRenderer +
 				'}';
 	}
 }

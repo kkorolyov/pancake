@@ -23,9 +23,19 @@ public final class ArgVerify {
 		return value;
 	}
 
+	/** @throws IllegalArgumentException if {@code value >= bound} */
+	public static double lessThan(String name, double bound, double value) {
+		if (value >= bound) throw new IllegalArgumentException(name + " must be < " + bound + "; was " + value);
+		return value;
+	}
 	/** @throws IllegalArgumentException if {@code value > bound} */
 	public static double lessThanEqual(String name, double bound, double value) {
 		if (value > bound) throw new IllegalArgumentException(name + " must be <= " + bound + "; was " + value);
+		return value;
+	}
+	/** @throws IllegalArgumentException if {@code value =< bound} */
+	public static double greaterThan(String name, double bound, double value) {
+		if (value <= bound) throw new IllegalArgumentException(name + " must be > " + bound + "; was " + value);
 		return value;
 	}
 	/** @throws IllegalArgumentException if {@code value < bound} */

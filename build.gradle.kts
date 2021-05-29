@@ -1,3 +1,14 @@
+import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+
+tasks.wrapper {
+	val wrapperVersion: String by project
+	gradleVersion = wrapperVersion
+	distributionType = ALL
+
+	val wrapperSHA: String by project
+	distributionSha256Sum = wrapperSHA
+}
+
 tasks.register("allDeps") {
 	group = "help"
 	description = "List dependencies of all projects"

@@ -28,8 +28,6 @@ public final class Plugins {
 
 	private static final ThreadLocal<Map<Class<? extends DeferredConverterFactory<?>>, Converter>> DEFERRED_CONVERTERS = ThreadLocal.withInitial(HashMap::new);
 
-	private static final ThreadLocal<Collection<GameSystem>> GAME_SYSTEMS = ThreadLocal.withInitial(() -> loadAll(GameSystem.class));
-
 	private static <T> T loadOne(Class<T> c) {
 		T t = ServiceLoader.load(c).findFirst().orElseThrow(() -> new IllegalStateException("No " + c + " provider found"));
 		LOG.info("loaded {}: {}", c, t);
@@ -73,10 +71,5 @@ public final class Plugins {
 				.map(DeferredConverterFactory::get)
 				.collect(toSet())
 		));
-	}
-
-	/** @return all {@link GameSystem} providers bound to the current thread */
-	public static Collection<GameSystem> gameSystems() {
-		return GAME_SYSTEMS.get();
 	}
 }

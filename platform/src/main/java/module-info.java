@@ -1,7 +1,6 @@
 import dev.kkorolyov.pancake.platform.plugin.Application;
 import dev.kkorolyov.pancake.platform.plugin.AudioFactory;
 import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
-import dev.kkorolyov.pancake.platform.plugin.GameSystem;
 import dev.kkorolyov.pancake.platform.plugin.RenderMedium;
 import dev.kkorolyov.pancake.platform.registry.internal.ActionStratDeferredConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.AudioStratDeferredConverterFactory;
@@ -30,7 +29,6 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.utility;
 	exports dev.kkorolyov.pancake.platform.plugin;
 
-	uses GameSystem;
 	// application and media factories
 	uses Application;
 	uses AudioFactory;

@@ -5,9 +5,6 @@ import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventLoop
-import dev.kkorolyov.pancake.platform.plugin.GameSystem
-import dev.kkorolyov.pancake.platform.plugin.RenderMedium
-import dev.kkorolyov.pancake.platform.utility.DebugRenderer
 import dev.kkorolyov.pancake.platform.utility.Limiter
 
 import spock.lang.Specification
@@ -19,23 +16,24 @@ class GameEngineSpec extends Specification {
 	Signature signature = new Signature(MockComponent)
 
 	EventLoop.Broadcasting events = new EventLoop.Broadcasting()
-	DebugRenderer debugRenderer = new DebugRenderer(Mock(RenderMedium))
 	EntityPool entities = new EntityPool(events)
 	Entity entity = entities.create().with {
-		it.add(new MockComponent())
+		it.put(new MockComponent())
 		it
 	}
 
-	GameSystem deadSystem = Mock() {
-		getSignature() >> signature
-		getLimiter() >> new Limiter(Long.MAX_VALUE)
-	}
-	GameSystem readySystem = Mock() {
-		getSignature() >> signature
-		getLimiter() >> new Limiter(0)
-	}
+	GameSystem deadSystem = Spy(new GameSystem(signature, new Limiter(Long.MAX_VALUE)) {
+		@Override
+		void update(Entity entity, long dt) {
+		}
+	})
+	GameSystem readySystem = Spy(new GameSystem(signature, new Limiter(0)) {
+		@Override
+		void update(Entity entity, long dt) {
+		}
+	})
 
-	GameEngine engine = new GameEngine(events, entities, [readySystem, deadSystem], debugRenderer)
+	GameEngine engine = new GameEngine(events, entities, [readySystem, deadSystem])
 
 	def "invokes 'before' and 'after' on ready systems on update"() {
 		when:
@@ -61,29 +59,18 @@ class GameEngineSpec extends Specification {
 		0 * deadSystem.update(_, _)
 	}
 	def "does not invoke 'update' on system if no relevant entities"() {
+		GameSystem system = Spy(new GameSystem(new Signature(new Component() {}.class), new Limiter(0)) {
+			@Override
+			void update(Entity entity, long dt) {
+			}
+		})
+
 		when:
 		engine.update(dt)
 
 		then:
-		1 * readySystem.getSignature() >> new Signature(new Component() {}.class)
-
-		0 * readySystem.update(_, _)
+		0 * system.update(_, _)
 		0 * deadSystem.update(_, _)
-	}
-
-	def "shares services with added system"() {
-		when:
-		engine.add(readySystem)
-
-		then:
-		1 * readySystem.setEvents(!null)
-	}
-	def "unshares services from removed system"() {
-		when:
-		engine.remove(readySystem)
-
-		then:
-		1 * readySystem.setEvents(null)
 	}
 
 	def "invokes 'attach' on added system"() {

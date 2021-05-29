@@ -3,10 +3,13 @@ rootProject.name = "pancake"
 include("platform")
 include("core")
 
+include("demo:wasdbox")
+
 include("test-utils")
 
-include("plugin:app-render:jfx")
+include("plugin:apprender:jfx")
 include("plugin:audio:jfx")
+include("graphics:jfx")
 
 include("killstreek")
 

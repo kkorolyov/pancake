@@ -11,6 +11,7 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.stream.Stream;
 
@@ -19,7 +20,7 @@ import static dev.kkorolyov.flopple.collections.Iterables.append;
 /**
  * A set of uniquely-identified "component-bag" entities.
  */
-public class EntityPool {
+public final class EntityPool {
 	private final FacetedBundle<Integer, Class<? extends Component>, ManagedEntity> entities = new FacetedBundle<>();
 	private final EventLoop events;
 
@@ -33,7 +34,7 @@ public class EntityPool {
 	public EntityPool(EventLoop events) {
 		this.events = events;
 
-		this.events.register(CreateEntity.class, e -> create().add(e.getComponents()));
+		this.events.register(CreateEntity.class, e -> create().put(e.getComponents()));
 		this.events.register(DestroyEntity.class, e -> destroy(e.getId()));
 	}
 
@@ -81,10 +82,20 @@ public class EntityPool {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "EntityPool{" +
+				"entities=" + entities +
+				", events=" + events +
+				", counter=" + counter +
+				", reclaimedIds=" + reclaimedIds +
+				'}';
+	}
+
 	/**
 	 * An {@link Entity} implementation attached to its owning {@link EntityPool} and with exposed management methods.
 	 */
-	public class ManagedEntity implements Entity {
+	public final class ManagedEntity implements Entity {
 		private final int id;
 		private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
@@ -92,14 +103,12 @@ public class EntityPool {
 			this.id = id;
 		}
 
-		/** @see #add(Iterable) */
-		public void add(Component component, Component... components) {
-			add(append(component, components));
+		/** @see #put(Iterable) */
+		public void put(Component component, Component... components) {
+			put(append(component, components));
 		}
-		/**
-		 * @param components components to add or replace existing components of the same type
-		 */
-		public void add(Iterable<? extends Component> components) {
+		/** @param components components to add or replace existing components of the same type */
+		public void put(Iterable<? extends Component> components) {
 			for (Component component : components) {
 				this.components.put(component.getClass(), component);
 
@@ -107,9 +116,11 @@ public class EntityPool {
 			}
 		}
 
-		/**
-		 * @param componentTypes classes of components to remove
-		 */
+		/** @see #remove(Iterable) */
+		public void remove(Class<? extends Component> type, Class<? extends Component>... types) {
+			remove(append(type, types));
+		}
+		/** @param componentTypes classes of components to remove */
 		public void remove(Iterable<Class<? extends Component>> componentTypes) {
 			for (Class<? extends Component> type : componentTypes) {
 				components.remove(type);
@@ -136,6 +147,26 @@ public class EntityPool {
 		@Override
 		public int compareTo(Entity o) {
 			return Integer.compare(id, o.getId());
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			if (obj == null || getClass() != obj.getClass()) return false;
+			ManagedEntity o = (ManagedEntity) obj;
+			return id == o.id && Objects.equals(components, o.components);
+		}
+		@Override
+		public int hashCode() {
+			return Objects.hash(id, components);
+		}
+
+		@Override
+		public String toString() {
+			return "ManagedEntity{" +
+					"id=" + id +
+					", components=" + components +
+					'}';
 		}
 	}
 }

@@ -6,7 +6,7 @@ plugins {
 	id("testable")
 }
 
-group = "$group.plugin.app-render"
+group = "$group.plugin.apprender"
 description = "JavaFX Application and RenderMedium implementation"
 
 dependencies {
@@ -19,11 +19,4 @@ javafx {
 
 tasks.jar {
 	archiveBaseName.set("${parent?.name}-${project.name}")
-}
-tasks.compileJava {
-	options.compilerArgs.addAll(
-		listOf(
-			"--patch-module", "dev.kkorolyov.pancake.plugin.apprender.jfx=${sourceSets.main.get().output.asPath}"
-		)
-	)
 }

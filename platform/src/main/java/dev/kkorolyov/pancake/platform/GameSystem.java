@@ -1,6 +1,5 @@
-package dev.kkorolyov.pancake.platform.plugin;
+package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.GameEngine;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.Event;
@@ -49,12 +48,12 @@ public abstract class GameSystem implements EventLoop {
 	public void after(long dt) {}
 
 	/**
-	 * Invoked when this system is attached to a {@link GameEngine}.
+	 * Invoked when this system is attached to an engine.
 	 * Intended for one-time initialization logic, such as registering event receivers.
 	 */
 	public void attach() {}
 	/**
-	 * Invoked when this system is detached from a {@link GameEngine}.
+	 * Invoked when this system is detached from an engine.
 	 * Intended for one-time teardown logic, such as clearing event receivers.
 	 */
 	public void detach() {}

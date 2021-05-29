@@ -5,12 +5,35 @@ import dev.kkorolyov.killstreek.component.Damage
 import dev.kkorolyov.killstreek.component.Health
 import dev.kkorolyov.killstreek.media.HealthBar
 import dev.kkorolyov.killstreek.media.Sprite
-import dev.kkorolyov.pancake.core.component.*
+import dev.kkorolyov.killstreek.system.DamageSystem
+import dev.kkorolyov.killstreek.system.GcSystem
+import dev.kkorolyov.pancake.core.component.ActionQueue
+import dev.kkorolyov.pancake.core.component.AudioEmitter
+import dev.kkorolyov.pancake.core.component.Bounds
+import dev.kkorolyov.pancake.core.component.Chain
+import dev.kkorolyov.pancake.core.component.Input
+import dev.kkorolyov.pancake.core.component.Spawner
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.media.Animation
 import dev.kkorolyov.pancake.core.component.media.Graphic
-import dev.kkorolyov.pancake.core.component.movement.*
+import dev.kkorolyov.pancake.core.component.movement.Damping
+import dev.kkorolyov.pancake.core.component.movement.Force
+import dev.kkorolyov.pancake.core.component.movement.Mass
+import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.component.movement.VelocityCap
 import dev.kkorolyov.pancake.core.event.EntitiesCollided
 import dev.kkorolyov.pancake.core.input.HandlerReader
+import dev.kkorolyov.pancake.core.system.AccelerationSystem
+import dev.kkorolyov.pancake.core.system.ActionSystem
+import dev.kkorolyov.pancake.core.system.AnimationSystem
+import dev.kkorolyov.pancake.core.system.AudioSystem
+import dev.kkorolyov.pancake.core.system.CappingSystem
+import dev.kkorolyov.pancake.core.system.ChainSystem
+import dev.kkorolyov.pancake.core.system.CollisionSystem
+import dev.kkorolyov.pancake.core.system.DampingSystem
+import dev.kkorolyov.pancake.core.system.InputSystem
+import dev.kkorolyov.pancake.core.system.MovementSystem
+import dev.kkorolyov.pancake.core.system.SpawnSystem
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameLoop
 import dev.kkorolyov.pancake.platform.Resources
@@ -93,7 +116,7 @@ private val entities: EntityPool by lazy {
 		for (i in -15..15 step 2) {
 			for (j in -15..15 step 2) {
 				create().apply {
-					add(
+					put(
 						Transform(Vectors.create(i.toDouble(), j.toDouble(), -1.0)),
 						groundGraphic
 					)
@@ -103,7 +126,7 @@ private val entities: EntityPool by lazy {
 
 		// Wall
 		create().apply {
-			add(
+			put(
 				Transform(Vectors.create(-3.0, 0.0, 0.0), randRotation()),
 				Bounds(Vectors.create(3.0, 3.0, 0.0)),
 				boxGraphic,
@@ -138,7 +161,7 @@ private val entities: EntityPool by lazy {
 
 		// Camera
 		create().apply {
-			add(
+			put(
 				Transform(Vectors.create(0.0, 0.0, 0.0)).apply { renderMedium.camera.position = position },
 				Chain(playerTransform.position, 1.0)
 			)
@@ -153,7 +176,7 @@ private val entities: EntityPool by lazy {
 					isActive = false
 				}
 
-			it.add(
+			it.put(
 				playerTransform,
 				Velocity(Vectors.create(0.0, 0.0, 0.0)),
 				VelocityCap(MAX_SPEED),
@@ -197,7 +220,7 @@ private val entities: EntityPool by lazy {
 			events.register(EntitiesCollided::class.java) { e ->
 				if (it.id == e.collided[0]) {
 					get(e.collided[1])?.let {
-						it.get(Damage::class.java)?.reset() ?: it.add(Damage(1))
+						it.get(Damage::class.java)?.reset() ?: it.put(Damage(1))
 					}
 				}
 			}
@@ -211,7 +234,7 @@ private val entities: EntityPool by lazy {
 		}
 		// Player health
 		create().apply {
-			add(
+			put(
 				Transform(Vectors.create(0.0, .5, 1.0), playerTransform, false),
 				Graphic(HealthBar(health, healthBarSize, renderMedium))
 			)
@@ -225,7 +248,7 @@ private fun EntityPool.createObject(position: Vector3, bounds: Bounds, graphic: 
 
 	// Object
 	create()
-		.add(
+		.put(
 			transform,
 			Velocity(Vectors.create(0.0, 0.0, 0.0)),
 			Force(Vectors.create(0.0, 0.0, 0.0)),
@@ -238,7 +261,7 @@ private fun EntityPool.createObject(position: Vector3, bounds: Bounds, graphic: 
 		)
 	// Its health bar
 	create()
-		.add(
+		.put(
 			Transform(Vectors.create(0.0, .3, 1.0), transform, false),
 			Graphic(HealthBar(health, healthBarSize, renderMedium)),
 			health
@@ -254,11 +277,31 @@ fun main() {
 	log.info("Starting thing")
 	Plugins.application().execute(
 		Config(
-			"Killstreek Functional Test",
+			"Functional Test",
 			"pancake-icon.png",
 			640.0,
 			640.0
 		),
-		GameLoop(GameEngine(events, entities))
+		GameLoop(
+			GameEngine(
+				events,
+				entities,
+				listOf(
+					ActionSystem(),
+					InputSystem(),
+					DampingSystem(),
+					AccelerationSystem(),
+					CappingSystem(),
+					MovementSystem(),
+					ChainSystem(),
+					CollisionSystem(),
+					SpawnSystem(),
+					AnimationSystem(),
+					AudioSystem(),
+					DamageSystem(),
+					GcSystem()
+				)
+			)
+		)
 	)
 }
