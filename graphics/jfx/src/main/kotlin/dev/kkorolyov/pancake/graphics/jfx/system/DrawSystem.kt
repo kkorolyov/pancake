@@ -74,7 +74,7 @@ class DrawSystem(private val pane: Pane) : GameSystem(
 					affine.appendTranslation(position.x, position.y)
 					affine.appendScale(camera.scale.x, camera.scale.y)
 					g.transform(affine)
-					graphic.draw(g, affine)
+					graphic(g, affine)
 
 					affine.setToIdentity()
 					g.restore()

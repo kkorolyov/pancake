@@ -10,5 +10,5 @@ interface Drawable {
 	/**
 	 * Draws the [affine] transformation of `this` using [context].
 	 */
-	fun draw(context: GraphicsContext, affine: Affine)
+	operator fun invoke(context: GraphicsContext, affine: Affine)
 }

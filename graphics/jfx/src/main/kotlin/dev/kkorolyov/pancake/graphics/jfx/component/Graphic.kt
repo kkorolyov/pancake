@@ -1,15 +1,9 @@
 package dev.kkorolyov.pancake.graphics.jfx.component
 
-import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.graphics.jfx.renderable.Drawable
-import javafx.scene.canvas.GraphicsContext
-import javafx.scene.transform.Affine
+import dev.kkorolyov.pancake.platform.entity.Component
 
 /**
- * A swappable [Drawable] component.
+ * A [Drawable] component.
  */
-class Graphic(private var delegate: Drawable) : Component, Drawable {
-	override fun draw(context: GraphicsContext, affine: Affine) {
-		delegate.draw(context, affine)
-	}
-}
+class Graphic(private val delegate: Drawable) : Component, Drawable by delegate

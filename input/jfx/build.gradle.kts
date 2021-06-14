@@ -7,7 +7,7 @@ plugins {
 	id("nested")
 }
 
-description = "JavaFX drawable stamps and draw system implementations"
+description = "JavaFX-driven input and control implementation"
 
 dependencies {
 	api(projects.platform)

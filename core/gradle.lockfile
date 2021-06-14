@@ -3,7 +3,7 @@
 # This file is expected to be part of source control.
 cglib:cglib-nodep:3.3.0=testCompileClasspath,testRuntimeClasspath
 dev.kkorolyov:flopple:1.0.0-beta=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-net.bytebuddy:byte-buddy:1.11.0=testCompileClasspath,testRuntimeClasspath
+net.bytebuddy:byte-buddy:1.11.1=testCompileClasspath,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.0=testCompileClasspath,testRuntimeClasspath
 org.assertj:assertj-core:3.16.1=testCompileClasspath,testRuntimeClasspath
 org.codehaus.groovy:groovy:3.0.8=testCompileClasspath,testRuntimeClasspath
