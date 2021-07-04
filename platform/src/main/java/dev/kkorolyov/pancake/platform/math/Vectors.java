@@ -23,6 +23,19 @@ public final class Vectors {
 		return create(other.getX(), other.getY(), other.getZ());
 	}
 
+	/** 1-dimensional vector initialized to {@code (0)} */
+	public static Vector1 create1() {
+		return create(0);
+	}
+	/** 2-dimensional vector initialized to {@code (0, 0)} */
+	public static Vector2 create2() {
+		return create(0, 0);
+	}
+	/** 3-dimensional vector initialized to {@code (0, 0, 0)} */
+	public static Vector3 create3() {
+		return create(0, 0, 0);
+	}
+
 	/** @return 1-dimensional vector initialized to {@code (x)} */
 	public static Vector1 create(double x) {
 		return new BasicVector1(x);
