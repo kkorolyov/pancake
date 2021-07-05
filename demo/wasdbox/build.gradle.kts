@@ -12,6 +12,7 @@ dependencies {
 	implementation(projects.platform)
 	implementation(projects.core)
 	implementation(projects.graphics.jfx)
+	implementation(projects.audio.jfx)
 	implementation(projects.input.jfx)
 
 	val log4jVersion: String by project
@@ -20,11 +21,17 @@ dependencies {
 	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
 }
 
+javafx {
+	modules("javafx.graphics", "javafx.controls", "javafx.media")
+}
+
 application {
 	mainModule.set("dev.kkorolyov.pancake.demo.wasdbox")
 	mainClass.set("dev.kkorolyov.pancake.demo.wasdbox.LauncherKt")
 }
+tasks.named<JavaExec>("run") {
+	dependsOn("installDist")
 
-javafx {
-	modules("javafx.graphics", "javafx.controls")
+	// Launch alongside loose resources
+	workingDir = tasks.named<Sync>("installDist").get().destinationDir
 }

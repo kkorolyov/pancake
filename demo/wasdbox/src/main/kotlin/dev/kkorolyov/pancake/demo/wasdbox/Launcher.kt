@@ -1,5 +1,9 @@
 package dev.kkorolyov.pancake.demo.wasdbox
 
+import dev.kkorolyov.pancake.audio.jfx.AddListener
+import dev.kkorolyov.pancake.audio.jfx.Listener
+import dev.kkorolyov.pancake.audio.jfx.component.AudioEmitter
+import dev.kkorolyov.pancake.audio.jfx.system.AudioSystem
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.movement.Damping
@@ -19,6 +23,7 @@ import dev.kkorolyov.pancake.input.jfx.Compensated
 import dev.kkorolyov.pancake.input.jfx.Reaction
 import dev.kkorolyov.pancake.input.jfx.component.Input
 import dev.kkorolyov.pancake.input.jfx.system.InputSystem
+import dev.kkorolyov.pancake.platform.Config
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameLoop
 import dev.kkorolyov.pancake.platform.Resources
@@ -36,7 +41,9 @@ import javafx.geometry.Orientation
 import javafx.scene.Scene
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.FlowPane
+import javafx.scene.media.Media
 import javafx.scene.paint.Color
+import java.nio.file.Path
 
 val pane = FlowPane(Orientation.HORIZONTAL).apply {
 	onMouseClicked = EventHandler { requestFocus() }
@@ -63,6 +70,7 @@ val gameEngine = GameEngine(
 		AccelerationSystem(),
 		MovementSystem(),
 		DampingSystem(),
+		AudioSystem(),
 		DrawSystem(pane)
 	)
 )
@@ -77,6 +85,7 @@ val player = entities.create().apply {
 		Velocity(Vectors.create(0.0, 0.0, 0.0)),
 		Damping(Vectors.create(0.0, 0.0, 0.0)),
 		Transform(Vectors.create(0.0, 0.0, 0.0)),
+		AudioEmitter(),
 		Graphic(Rectangle(Vectors.create(1.0, 1.0), Color.AQUA)),
 		Input(
 			Reaction.matchType(
@@ -97,4 +106,14 @@ fun main() {
 		Demo(Scene(pane), gameLoop::stop)
 	}
 	Thread(gameLoop::start).start()
+
+	player[AudioEmitter::class.java].add(Media(Path.of("assets/audio/bg.wav").toUri().toString()))
+	events.enqueue(
+		AddListener(
+			Listener(
+				position = player[Transform::class.java].position,
+				volume = Config.get().getProperty("volume").toDouble()
+			)
+		)
+	)
 }

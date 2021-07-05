@@ -10,7 +10,7 @@ plugins {
 description = "JavaFX audio component and system implementations"
 
 dependencies {
-	implementation(projects.platform)
+	api(projects.platform)
 	implementation(projects.core)
 }
 
