@@ -58,7 +58,7 @@ class AudioSystem : GameSystem(
 				val balance = emitPoint.x / audioRadius
 
 				emitter(
-					min(1.0, volume),
+					it.volume * min(1.0, volume),
 					if (balance < 0) max(-1.0, balance) else min(1.0, balance)
 				)
 			}

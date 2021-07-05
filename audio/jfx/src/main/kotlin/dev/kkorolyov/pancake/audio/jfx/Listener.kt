@@ -12,5 +12,9 @@ class Listener(
 	/** Volume scale of all received audio - constrained `[0.0, 1.0]` */
 	volume: Double = 1.0
 ) {
-	val volume = ArgVerify.betweenInclusive("volume", 0.0, 1.0, volume)
+	/** Volume scale of all received audio */
+	var volume = ArgVerify.betweenInclusive("volume", 0.0, 1.0, volume)
+		set(value) {
+			field = ArgVerify.betweenInclusive("volume", 0.0, 1.0, value)
+		}
 }
