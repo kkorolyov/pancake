@@ -28,6 +28,7 @@ tasks.compileKotlin {
 	}
 }
 javafx {
+	version = tasks.compileJava.get().targetCompatibility
 	modules("javafx.graphics")
 }
 

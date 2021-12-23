@@ -1,6 +1,7 @@
 plugins {
 	kotlin("jvm") version "1.+"
 	id("org.openjfx.javafxplugin") version "0.+"
+	id("org.javamodularity.moduleplugin") version "1.+"
 	application
 }
 
@@ -23,6 +24,7 @@ tasks.compileKotlin {
 	}
 }
 javafx {
+	version = tasks.compileJava.get().targetCompatibility
 	modules("javafx.graphics", "javafx.controls", "javafx.media")
 }
 
