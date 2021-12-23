@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.jfx.component
 
-import dev.kkorolyov.pancake.graphics.jfx.renderable.Drawable
+import dev.kkorolyov.pancake.graphics.jfx.drawable.Drawable
 import dev.kkorolyov.pancake.platform.entity.Component
 
 /**

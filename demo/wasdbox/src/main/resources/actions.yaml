@@ -1,11 +1,11 @@
 forceUp:
-  force: [ 0, 500 ]
+  force: [ 0, 3 ]
 forceDown:
-  force: [ 0, -500 ]
+  force: [ 0, -3 ]
 forceLeft:
-  force: [ -500 ]
+  force: [ -3 ]
 forceRight:
-  force: [ 500 ]
+  force: [ 3 ]
 
 reset:
   position: [ ]

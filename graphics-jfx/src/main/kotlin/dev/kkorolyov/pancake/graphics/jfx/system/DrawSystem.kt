@@ -73,8 +73,9 @@ class DrawSystem(private val pane: Pane) : GameSystem(
 					affine.appendTranslation(canvas.width / 2, canvas.height / 2)
 					affine.appendTranslation(position.x, position.y)
 					affine.appendScale(camera.scale.x, camera.scale.y)
+					// TODO scale by transform
 					g.transform(affine)
-					graphic(g, affine)
+					graphic(g)
 
 					affine.setToIdentity()
 					g.restore()

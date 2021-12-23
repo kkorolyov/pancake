@@ -10,14 +10,16 @@ import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
 import dev.kkorolyov.pancake.core.component.movement.Mass
 import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.component.movement.VelocityCap
 import dev.kkorolyov.pancake.core.system.AccelerationSystem
 import dev.kkorolyov.pancake.core.system.ActionSystem
+import dev.kkorolyov.pancake.core.system.CappingSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
 import dev.kkorolyov.pancake.graphics.jfx.AddCamera
 import dev.kkorolyov.pancake.graphics.jfx.Camera
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
-import dev.kkorolyov.pancake.graphics.jfx.renderable.Rectangle
+import dev.kkorolyov.pancake.graphics.jfx.drawable.Rectangle
 import dev.kkorolyov.pancake.graphics.jfx.system.DrawSystem
 import dev.kkorolyov.pancake.input.jfx.Compensated
 import dev.kkorolyov.pancake.input.jfx.Reaction
@@ -35,19 +37,20 @@ import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory
 import dev.kkorolyov.pancake.platform.plugin.Plugins
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
+import javafx.application.Application
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.geometry.Orientation
 import javafx.scene.Scene
+import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.FlowPane
 import javafx.scene.media.Media
 import javafx.scene.paint.Color
+import javafx.stage.Stage
 import java.nio.file.Path
 
-val pane = FlowPane(Orientation.HORIZONTAL).apply {
-	onMouseClicked = EventHandler { requestFocus() }
-}
+val pane = FlowPane(Orientation.HORIZONTAL)
 
 val actions by lazy {
 	Resources.inStream("actions.yaml").use {
@@ -68,6 +71,7 @@ val gameEngine = GameEngine(
 		ActionSystem(),
 		InputSystem(listOf(pane)),
 		AccelerationSystem(),
+		CappingSystem(),
 		MovementSystem(),
 		DampingSystem(),
 		AudioSystem(),
@@ -83,6 +87,7 @@ val player = entities.create().apply {
 		Mass(0.01),
 		Force(Vectors.create(0.0, 0.0, 0.0)),
 		Velocity(Vectors.create(0.0, 0.0, 0.0)),
+		VelocityCap(Vectors.create(20.0, 20.0, 20.0)),
 		Damping(Vectors.create(0.0, 0.0, 0.0)),
 		Transform(Vectors.create(0.0, 0.0, 0.0)),
 		AudioEmitter(),
@@ -103,7 +108,8 @@ val player = entities.create().apply {
 
 fun main() {
 	Platform.startup {
-		Demo(Scene(pane), gameLoop::stop)
+		App(Scene(pane), gameLoop::stop)
+		pane.requestFocus()
 	}
 	Thread(gameLoop::start).start()
 
@@ -116,4 +122,27 @@ fun main() {
 			)
 		)
 	)
+}
+
+/**
+ * JavaFX application running demo and displaying [scene].
+ */
+class App(private val scene: Scene, private val onClose: () -> Unit) : Application() {
+	init {
+		start(Stage())
+	}
+
+	override fun start(primaryStage: Stage) {
+		primaryStage.title = Config.get().getProperty("title")
+		primaryStage.icons += Image(Config.get().getProperty("icon"))
+
+		primaryStage.scene = scene
+
+		primaryStage.width = Config.get().getProperty("width").toDouble()
+		primaryStage.height = Config.get().getProperty("height").toDouble()
+
+		primaryStage.onCloseRequest = EventHandler { onClose() }
+
+		primaryStage.show()
+	}
 }

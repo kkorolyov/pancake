@@ -20,14 +20,14 @@ class Camera(
 	private val computation: Vector2 = Vectors.create(0.0, 0.0)
 
 	/**
-	 * Returns the result pf mapping the given absolute [position] vector to pixel coordinates relative to this camera.
+	 * Returns the result of mapping the given absolute [position] vector to pixel coordinates relative to this camera.
 	 */
 	fun map(position: Vector2): Vector2 = computation.apply {
 		set(position)
 		add(origin, -1.0)
 
-		x /= scale.x
+		x *= scale.x
 		// Negate as pixel rows increment downward
-		y /= -scale.y
+		y *= -scale.y
 	}
 }
