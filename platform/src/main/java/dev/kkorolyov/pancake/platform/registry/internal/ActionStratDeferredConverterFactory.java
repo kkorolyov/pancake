@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
-import dev.kkorolyov.flopple.function.convert.Converter;
+import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.Config;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.action.CollectiveAction;

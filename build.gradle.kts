@@ -1,12 +1,9 @@
-import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
+plugins {
+	id("org.jetbrains.dokka") version "1.+"
+}
 
 tasks.wrapper {
-	val wrapperVersion: String by project
-	gradleVersion = wrapperVersion
-	distributionType = ALL
-
-	val wrapperSHA: String by project
-	distributionSha256Sum = wrapperSHA
+	distributionType = Wrapper.DistributionType.ALL
 }
 
 tasks.register("allDeps") {
@@ -38,5 +35,22 @@ tasks.register("allDocs") {
 				into("$destination/${it.project.name}")
 			}
 		}
+	}
+}
+
+subprojects {
+	repositories {
+		mavenCentral()
+		maven {
+			url = uri("https://maven.pkg.github.com/kkorolyov/flub")
+			credentials {
+				username = System.getenv("GITHUB_ACTOR")
+				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
+
+	dependencyLocking {
+		lockAllConfigurations()
 	}
 }

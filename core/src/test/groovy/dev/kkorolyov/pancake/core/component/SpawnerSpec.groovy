@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.component
 
-import dev.kkorolyov.flopple.data.WeightedDistribution
+import dev.kkorolyov.flub.data.WeightedDistribution
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
 

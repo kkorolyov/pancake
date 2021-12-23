@@ -1,25 +1,33 @@
 plugins {
-	`java-library`
+	kotlin("jvm") version "1.+"
+	id("org.openjfx.javafxplugin") version "0.+"
+	id("org.jetbrains.dokka")
 	groovy
 	`maven-publish`
 }
 
-description = "Collection of general, reusable systems and components for the Pancake engine"
+description = "JavaFX audio component and system implementations"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
 	implementation(libs.slf4j)
-	implementation(libs.snakeyaml)
 
-	implementation(projects.platform)
+	api(projects.platform)
+	implementation(projects.core)
 
 	testImplementation(libs.bundles.test)
-	testImplementation(projects.testUtils)
 }
 
 java {
 	withSourcesJar()
-	withJavadocJar()
+}
+tasks.compileKotlin {
+	kotlinOptions {
+		jvmTarget = tasks.compileJava.get().targetCompatibility
+	}
+}
+javafx {
+	modules("javafx.media")
 }
 
 tasks.test {

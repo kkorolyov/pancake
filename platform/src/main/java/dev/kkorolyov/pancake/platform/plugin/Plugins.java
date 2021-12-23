@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.plugin;
 
-import dev.kkorolyov.flopple.function.convert.Converter;
+import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,44 +22,7 @@ import static java.util.stream.Collectors.toSet;
 public final class Plugins {
 	private static final Logger LOG = LoggerFactory.getLogger(Plugins.class);
 
-	private static final ThreadLocal<Application> APPLICATION = ThreadLocal.withInitial(() -> loadOne(Application.class));
-	private static final ThreadLocal<RenderMedium> RENDER_MEDIUM = ThreadLocal.withInitial(() -> loadOne(RenderMedium.class));
-	private static final ThreadLocal<AudioFactory> AUDIO_FACTORY = ThreadLocal.withInitial(() -> loadOne(AudioFactory.class));
-
 	private static final ThreadLocal<Map<Class<? extends DeferredConverterFactory<?>>, Converter>> DEFERRED_CONVERTERS = ThreadLocal.withInitial(HashMap::new);
-
-	private static <T> T loadOne(Class<T> c) {
-		T t = ServiceLoader.load(c).findFirst().orElseThrow(() -> new IllegalStateException("No " + c + " provider found"));
-		LOG.info("loaded {}: {}", c, t);
-		return t;
-	}
-	private static <T> Collection<T> loadAll(Class<? extends T> c) {
-		Collection<T> ts = ServiceLoader.load(c).stream().map(ServiceLoader.Provider::get).collect(toList());
-		LOG.info("loaded {}: {}", c, ts);
-		return ts;
-	}
-
-	/**
-	 * @return {@code Application} provider bound to the current thread.
-	 * @throws IllegalStateException if no {@code Application} provider exists
-	 */
-	public static Application application() {
-		return APPLICATION.get();
-	}
-	/**
-	 * @return {@code RenderMedium} provider bound to the current thread.
-	 * @throws IllegalStateException if no {@code RenderMedium} provider exists
-	 */
-	public static RenderMedium renderMedium() {
-		return RENDER_MEDIUM.get();
-	}
-	/**
-	 * @return {@code AudioFactory} provider bound to the current thread.
-	 * @throws IllegalStateException if no {@code AudioFactory} provider exists
-	 */
-	public static AudioFactory audioFactory() {
-		return AUDIO_FACTORY.get();
-	}
 
 	/**
 	 * @param c deferred converter factory type to reduce
@@ -71,5 +34,16 @@ public final class Plugins {
 				.map(DeferredConverterFactory::get)
 				.collect(toSet())
 		));
+	}
+
+	private static <T> T loadOne(Class<T> c) {
+		T t = ServiceLoader.load(c).findFirst().orElseThrow(() -> new IllegalStateException("No " + c + " provider found"));
+		LOG.info("loaded {}: {}", c, t);
+		return t;
+	}
+	private static <T> Collection<T> loadAll(Class<? extends T> c) {
+		Collection<T> ts = ServiceLoader.load(c).stream().map(ServiceLoader.Provider::get).collect(toList());
+		LOG.info("loaded {}: {}", c, ts);
+		return ts;
 	}
 }

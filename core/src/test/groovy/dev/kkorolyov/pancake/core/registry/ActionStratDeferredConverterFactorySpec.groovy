@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.registry
 
-import dev.kkorolyov.flopple.function.convert.Converter
+import dev.kkorolyov.flub.function.convert.Converter
 import dev.kkorolyov.pancake.core.action.ForceAction
 import dev.kkorolyov.pancake.core.action.TransformAction
 import dev.kkorolyov.pancake.platform.action.Action

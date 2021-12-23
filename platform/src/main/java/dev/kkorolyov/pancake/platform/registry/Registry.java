@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform.registry;
 
-import dev.kkorolyov.flopple.data.Graph;
-import dev.kkorolyov.flopple.data.procedure.TopologicalSort;
+import dev.kkorolyov.flub.data.Graph;
+import dev.kkorolyov.flub.data.procedure.TopologicalSort;
 
 import java.util.Collection;
 import java.util.HashMap;

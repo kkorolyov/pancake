@@ -1,23 +1,23 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-cglib:cglib-nodep:3.3.0=testCompileClasspath,testRuntimeClasspath
-dev.kkorolyov:flopple:1.0.0-beta=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-net.bytebuddy:byte-buddy:1.11.6=testCompileClasspath,testRuntimeClasspath
-org.apiguardian:apiguardian-api:1.1.0=testCompileClasspath,testRuntimeClasspath
-org.assertj:assertj-core:3.16.1=testCompileClasspath,testRuntimeClasspath
-org.codehaus.groovy:groovy:3.0.8=testCompileClasspath,testRuntimeClasspath
+cglib:cglib-nodep:3.3.0=testRuntimeClasspath
+dev.kkorolyov:flub:1.0.0-beta=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+net.bytebuddy:byte-buddy:1.12.6=testCompileClasspath,testRuntimeClasspath
+org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath
+org.assertj:assertj-core:3.20.2=testRuntimeClasspath
+org.codehaus.groovy:groovy:3.0.9=testCompileClasspath,testRuntimeClasspath
 org.hamcrest:hamcrest:2.2=testCompileClasspath,testRuntimeClasspath
-org.jetbrains:annotations:20.1.0=testCompileClasspath,testRuntimeClasspath
-org.junit.platform:junit-platform-commons:1.7.2=testCompileClasspath,testRuntimeClasspath
-org.junit.platform:junit-platform-engine:1.7.2=testCompileClasspath,testRuntimeClasspath
-org.junit.platform:junit-platform-launcher:1.7.2=testCompileClasspath,testRuntimeClasspath
-org.junit.platform:junit-platform-testkit:1.7.2=testCompileClasspath,testRuntimeClasspath
-org.junit:junit-bom:5.7.2=testCompileClasspath,testRuntimeClasspath
-org.objenesis:objenesis:3.2=testCompileClasspath,testRuntimeClasspath
+org.jetbrains:annotations:20.1.0=testRuntimeClasspath
+org.junit.platform:junit-platform-commons:1.8.1=testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-engine:1.8.1=testCompileClasspath,testRuntimeClasspath
+org.junit.platform:junit-platform-launcher:1.8.1=testRuntimeClasspath
+org.junit.platform:junit-platform-testkit:1.8.1=testRuntimeClasspath
+org.junit:junit-bom:5.8.1=testCompileClasspath,testRuntimeClasspath
+org.objenesis:objenesis:3.2=testRuntimeClasspath
 org.opentest4j:opentest4j:1.2.0=testCompileClasspath,testRuntimeClasspath
-org.ow2.asm:asm:9.1=testCompileClasspath,testRuntimeClasspath
+org.ow2.asm:asm:9.2=testRuntimeClasspath
 org.slf4j:slf4j-api:1.8.0-beta4=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-org.spockframework:spock-core:2.0-groovy-3.0=testCompileClasspath,testRuntimeClasspath
-org.yaml:snakeyaml:1.29=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.spockframework:spock-core:2.1-M2-groovy-3.0=testCompileClasspath,testRuntimeClasspath
+org.yaml:snakeyaml:1.30=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 empty=annotationProcessor,testAnnotationProcessor

@@ -1,5 +1,4 @@
 plugins {
-	id("common")
 	groovy
 }
 
@@ -9,8 +8,6 @@ repositories {
 	mavenCentral()
 }
 dependencies {
-	val spockVersion: String by project
-	implementation("org.spockframework:spock-core:$spockVersion")
-
+	implementation(libs.spock)
 	implementation(projects.platform)
 }

@@ -9,10 +9,8 @@ module dev.kkorolyov.pancake.core {
 
 	exports dev.kkorolyov.pancake.core.action;
 	exports dev.kkorolyov.pancake.core.component;
-	exports dev.kkorolyov.pancake.core.component.media;
 	exports dev.kkorolyov.pancake.core.component.movement;
 	exports dev.kkorolyov.pancake.core.event;
-	exports dev.kkorolyov.pancake.core.input;
 	exports dev.kkorolyov.pancake.core.system;
 
 	provides DeferredConverterFactory.ActionStrat with ActionStratDeferredConverterFactory;

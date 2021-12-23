@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.registry.internal;
 
-import dev.kkorolyov.flopple.function.convert.Converter;
+import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;

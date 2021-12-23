@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.media.graphic
 
 import dev.kkorolyov.pancake.platform.math.Vectors
+import dev.kkorolyov.pancake.platform.math.Viewport
 
 import spock.lang.Shared
 import spock.lang.Specification

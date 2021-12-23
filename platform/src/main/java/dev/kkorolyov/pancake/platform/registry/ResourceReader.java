@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform.registry;
 
-import dev.kkorolyov.flopple.function.convert.Converter;
+import dev.kkorolyov.flub.function.convert.Converter;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;

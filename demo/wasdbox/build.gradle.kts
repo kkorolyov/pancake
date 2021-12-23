@@ -1,26 +1,27 @@
 plugins {
-	id("common")
-	id("kt")
-	id("jfx")
-	id("nested")
+	kotlin("jvm") version "1.+"
+	id("org.openjfx.javafxplugin") version "0.+"
 	application
 }
 
 description = "Demo rendering controllable 2D rectangles"
 
 dependencies {
+	implementation(libs.bundles.stdlib)
+	implementation(libs.bundles.log)
+
 	implementation(projects.platform)
 	implementation(projects.core)
-	implementation(projects.graphics.jfx)
-	implementation(projects.audio.jfx)
-	implementation(projects.input.jfx)
-
-	val log4jVersion: String by project
-	implementation("org.apache.logging.log4j:log4j-slf4j18-impl:$log4jVersion")
-	val jacksonVersion: String by project
-	implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+	implementation(projects.graphicsJfx)
+	implementation(projects.audioJfx)
+	implementation(projects.inputJfx)
 }
 
+tasks.compileKotlin {
+	kotlinOptions {
+		jvmTarget = tasks.compileJava.get().targetCompatibility
+	}
+}
 javafx {
 	modules("javafx.graphics", "javafx.controls", "javafx.media")
 }
