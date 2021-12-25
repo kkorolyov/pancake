@@ -40,17 +40,16 @@ import dev.kkorolyov.pancake.platform.registry.ResourceReader
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.event.EventHandler
-import javafx.geometry.Orientation
 import javafx.scene.Scene
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
-import javafx.scene.layout.FlowPane
+import javafx.scene.layout.TilePane
 import javafx.scene.media.Media
 import javafx.scene.paint.Color
 import javafx.stage.Stage
 import java.nio.file.Path
 
-val pane = FlowPane(Orientation.HORIZONTAL)
+val pane = TilePane()
 
 val actions by lazy {
 	Resources.inStream("actions.yaml").use {
