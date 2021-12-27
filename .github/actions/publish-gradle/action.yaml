@@ -30,10 +30,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
     - name: java
       uses: actions/setup-java@v2
       with:
