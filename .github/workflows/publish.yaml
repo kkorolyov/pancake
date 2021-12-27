@@ -23,4 +23,5 @@ jobs:
         with:
           java-version: ${{ matrix.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          docs-task: allDocs
           docs-dir: ./build/docs
