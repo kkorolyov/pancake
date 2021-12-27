@@ -1,9 +1,0 @@
-module:dev.kkorolyov.pancake.core
-dev.kkorolyov.pancake.core.action
-dev.kkorolyov.pancake.core.component
-dev.kkorolyov.pancake.core.component.media
-dev.kkorolyov.pancake.core.component.movement
-dev.kkorolyov.pancake.core.event
-dev.kkorolyov.pancake.core.input
-dev.kkorolyov.pancake.core.registry
-dev.kkorolyov.pancake.core.system
