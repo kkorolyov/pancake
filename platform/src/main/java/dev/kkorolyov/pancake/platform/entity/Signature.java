@@ -12,8 +12,7 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
  * A distinct combination of registered component types.
  */
 public final class Signature implements Comparable<Signature> {
-	private static final HashMap<Class<? extends Component>, Long> INDEX_MAP = new HashMap<>();
-	private static long indexCounter;
+	private static final HashMap<Class<? extends Component>, Byte> INDEX_MAP = new HashMap<>();
 
 	private final Collection<Class<? extends Component>> types;
 	private final long signature;
@@ -38,7 +37,7 @@ public final class Signature implements Comparable<Signature> {
 				.reduce(0L, (sig, i) -> sig | i);
 	}
 	private static long maskOf(Class<? extends Component> type) {
-		return INDEX_MAP.computeIfAbsent(type, k -> 1L << indexCounter++);
+		return 1L << INDEX_MAP.computeIfAbsent(type, k -> (byte) INDEX_MAP.size());
 	}
 
 	/**

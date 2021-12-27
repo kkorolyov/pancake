@@ -1,19 +1,16 @@
 package dev.kkorolyov.pancake.platform.entity;
 
-import dev.kkorolyov.flub.data.FacetedBundle;
+import dev.kkorolyov.flub.data.SparseMultiset;
 import dev.kkorolyov.pancake.platform.event.CreateEntity;
 import dev.kkorolyov.pancake.platform.event.DestroyEntity;
 import dev.kkorolyov.pancake.platform.event.EntityCreated;
 import dev.kkorolyov.pancake.platform.event.EntityDestroyed;
 import dev.kkorolyov.pancake.platform.event.EventLoop;
 
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Queue;
-import java.util.stream.Stream;
 
 import static dev.kkorolyov.flub.collections.Iterables.append;
 
@@ -21,11 +18,8 @@ import static dev.kkorolyov.flub.collections.Iterables.append;
  * A set of uniquely-identified "component-bag" entities.
  */
 public final class EntityPool {
-	private final FacetedBundle<Integer, Class<? extends Component>, ManagedEntity> entities = new FacetedBundle<>();
+	private final SparseMultiset<ManagedEntity, Class<? extends Component>> entities = new SparseMultiset<>();
 	private final EventLoop events;
-
-	private int counter;
-	private final Queue<Integer> reclaimedIds = new ArrayDeque<>();
 
 	/**
 	 * Constructs an empty entity pool.
@@ -43,16 +37,14 @@ public final class EntityPool {
 	 * @return entity with ID {@code id}, or {@code null} if no such entity
 	 */
 	public ManagedEntity get(int id) {
-		FacetedBundle.Entry<Class<? extends Component>, ManagedEntity> entry = entities.get(id);
-		return entry != null ? entry.getElement() : null;
+		return entities.get(id);
 	}
-
 	/**
 	 * @param signature signature to match
-	 * @return stream over all entities in this pool masking {@code signature}
+	 * @return all entities in this pool masking {@code signature}
 	 */
-	public Stream<ManagedEntity> stream(Signature signature) {
-		return entities.stream(signature.getTypes());
+	public Iterable<ManagedEntity> get(Signature signature) {
+		return entities.get(signature.getTypes());
 	}
 
 	/**
@@ -60,14 +52,8 @@ public final class EntityPool {
 	 * @return created entity
 	 */
 	public ManagedEntity create() {
-		int id = reclaimedIds.isEmpty()
-				? counter++
-				: reclaimedIds.remove();
-
-		ManagedEntity entity = new ManagedEntity(id);
-
-		entities.put(entity.getId(), entity);
-		events.enqueue(new EntityCreated(id));
+		ManagedEntity entity = new ManagedEntity();
+		events.enqueue(new EntityCreated(entity.id));
 
 		return entity;
 	}
@@ -76,10 +62,7 @@ public final class EntityPool {
 	 * @param id ID of entity to remove
 	 */
 	public void destroy(int id) {
-		if (entities.remove(id)) {
-			events.enqueue(new EntityDestroyed(id));
-			reclaimedIds.add(id);
-		}
+		if (entities.remove(id)) events.enqueue(new EntityDestroyed(id));
 	}
 
 	@Override
@@ -87,8 +70,6 @@ public final class EntityPool {
 		return "EntityPool{" +
 				"entities=" + entities +
 				", events=" + events +
-				", counter=" + counter +
-				", reclaimedIds=" + reclaimedIds +
 				'}';
 	}
 
@@ -99,8 +80,8 @@ public final class EntityPool {
 		private final int id;
 		private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
-		private ManagedEntity(int id) {
-			this.id = id;
+		private ManagedEntity() {
+			id = entities.add(this);
 		}
 
 		/** @see #put(Iterable) */
@@ -111,9 +92,8 @@ public final class EntityPool {
 		public void put(Iterable<? extends Component> components) {
 			for (Component component : components) {
 				this.components.put(component.getClass(), component);
-
-				entities.get(id).addFacets(component.getClass());
 			}
+			entities.put(id, this.components.keySet());
 		}
 
 		/** @see #remove(Iterable) */
@@ -122,11 +102,11 @@ public final class EntityPool {
 		}
 		/** @param componentTypes classes of components to remove */
 		public void remove(Iterable<Class<? extends Component>> componentTypes) {
+			entities.remove(id, components.keySet());
 			for (Class<? extends Component> type : componentTypes) {
 				components.remove(type);
-
-				entities.get(id).removeFacets(type);
 			}
+			entities.put(id, components.keySet());
 		}
 
 		@Override

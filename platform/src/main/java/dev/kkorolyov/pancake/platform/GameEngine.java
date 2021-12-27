@@ -50,7 +50,9 @@ public final class GameEngine {
 
 				system.before(systemDt);
 
-				entities.stream(system.getSignature()).forEach(entity -> system.update(entity, systemDt));
+				for (EntityPool.ManagedEntity entity : entities.get(system.getSignature())) {
+					system.update(entity, systemDt);
+				}
 
 				system.after(systemDt);
 

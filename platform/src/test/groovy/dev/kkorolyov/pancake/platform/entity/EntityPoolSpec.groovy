@@ -53,13 +53,8 @@ class EntityPoolSpec extends Specification {
 		Entity eBad = entities.create()
 		eBad.put(new Component() {})
 
-		Set<Entity> seen = []
-
-		when:
-		entities.stream(signature).forEach({ seen.add(it) })
-
-		then:
-		seen == [e1, e2].toSet()
+		expect:
+		entities.get(signature) as Set == [e1, e2].toSet()
 	}
 
 	private static Component mockComponent() {
