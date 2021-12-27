@@ -1,11 +1,21 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
+	java
+	id("org.ajoberstar.reckon") version "0.+"
 	id("org.jetbrains.dokka") version "1.+"
 }
 
 tasks.wrapper {
 	distributionType = Wrapper.DistributionType.ALL
+}
+
+reckon {
+	scopeFromProp()
+	snapshotFromProp()
+}
+tasks.reckonTagCreate {
+	dependsOn(tasks.check)
 }
 
 tasks.register("allDeps") {
