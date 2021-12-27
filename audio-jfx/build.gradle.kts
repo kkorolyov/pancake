@@ -1,6 +1,6 @@
 plugins {
-	kotlin("jvm") version "1.+"
-	id("org.openjfx.javafxplugin") version "0.+"
+	kotlin("jvm")
+	id("org.openjfx.javafxplugin")
 	id("org.jetbrains.dokka")
 	groovy
 	`maven-publish`

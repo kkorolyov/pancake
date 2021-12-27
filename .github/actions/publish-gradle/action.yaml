@@ -37,7 +37,7 @@ runs:
         cache: gradle
         distribution: zulu
 
-    - name: package
+    - name: build
       shell: bash
       run: |
         scope=minor
@@ -49,13 +49,10 @@ runs:
             scope=patch
             ;;
         esac
-        ./gradlew publish reckonTagPush --no-daemon -Preckon.stage=final -Preckon.scope=$scope
+        ./gradlew ${{ inputs.docs-task }} publish reckonTagPush --no-daemon -Preckon.stage=final -Preckon.scope=$scope
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
 
-    - name: docs
-      shell: bash
-      run: ./gradlew ${{ inputs.docs-task }} --no-daemon
     - name: pages
       uses: peaceiris/actions-gh-pages@v3
       with:
