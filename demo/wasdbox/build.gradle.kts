@@ -1,6 +1,7 @@
 plugins {
 	kotlin("jvm") version "1.+"
 	id("org.openjfx.javafxplugin") version "0.+"
+	id("org.jetbrains.dokka")
 	id("org.javamodularity.moduleplugin") version "1.+"
 	application
 }

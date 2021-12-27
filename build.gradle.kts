@@ -1,3 +1,5 @@
+import org.jetbrains.dokka.gradle.DokkaTask
+
 plugins {
 	id("org.jetbrains.dokka") version "1.+"
 }
@@ -19,8 +21,7 @@ tasks.register("allDocs") {
 
 	val destination = "${project.buildDir}/docs"
 	val subDocs = subprojects.map {
-		it.tasks.withType<Javadoc>() + it.tasks.withType<org.jetbrains.dokka.gradle.DokkaTask>()
-			.filter { it.name == "dokkaHtml" }
+		it.tasks.withType<DokkaTask>().filter { it.name == "dokkaHtml" }.ifEmpty { it.tasks.withType<Javadoc>() }
 	}.flatten()
 
 	dependsOn(subDocs)
