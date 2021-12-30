@@ -34,8 +34,6 @@ application {
 	mainClass.set("dev.kkorolyov.pancake.demo.wasdbox.LauncherKt")
 }
 tasks.named<JavaExec>("run") {
-	dependsOn("installDist")
-
 	// Launch alongside loose resources
-	workingDir = tasks.named<Sync>("installDist").get().destinationDir
+	workingDir = File("src/dist")
 }
