@@ -16,10 +16,10 @@ import dev.kkorolyov.pancake.core.system.ActionSystem
 import dev.kkorolyov.pancake.core.system.CappingSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
-import dev.kkorolyov.pancake.graphics.jfx.AddCamera
-import dev.kkorolyov.pancake.graphics.jfx.Camera
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
+import dev.kkorolyov.pancake.graphics.jfx.component.Lens
 import dev.kkorolyov.pancake.graphics.jfx.drawable.Rectangle
+import dev.kkorolyov.pancake.graphics.jfx.system.CameraSystem
 import dev.kkorolyov.pancake.graphics.jfx.system.DrawSystem
 import dev.kkorolyov.pancake.input.jfx.Compensated
 import dev.kkorolyov.pancake.input.jfx.Reaction
@@ -41,6 +41,7 @@ import javafx.application.Application
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Scene
+import javafx.scene.canvas.Canvas
 import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.TilePane
@@ -59,9 +60,7 @@ val actions by lazy {
 	}
 }
 
-val events = EventLoop.Broadcasting().apply {
-	enqueue(AddCamera(Camera(Vectors.create(0.0, 0.0), Vectors.create(32.0, 32.0))))
-}
+val events = EventLoop.Broadcasting()
 val entities = EntityPool(events)
 val gameEngine = GameEngine(
 	events,
@@ -74,12 +73,27 @@ val gameEngine = GameEngine(
 		MovementSystem(),
 		DampingSystem(),
 		AudioSystem(),
-		DrawSystem(pane)
+		CameraSystem(),
+		DrawSystem()
 	)
 )
 val gameLoop = GameLoop(
 	gameEngine
 )
+
+val camera = entities.create().apply {
+	put(
+		Transform(Vectors.create(0.0, 0.0, 0.0)),
+		Lens(
+			Canvas().also {
+				pane.children += it
+				it.widthProperty().bind(pane.widthProperty())
+				it.heightProperty().bind(pane.heightProperty())
+			},
+			Vectors.create(32.0, 32.0)
+		)
+	)
+}
 
 val player = entities.create().apply {
 	put(

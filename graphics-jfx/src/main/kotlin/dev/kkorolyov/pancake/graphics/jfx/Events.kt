@@ -3,11 +3,21 @@ package dev.kkorolyov.pancake.graphics.jfx
 import dev.kkorolyov.pancake.platform.event.Event
 
 /**
- * Adds a camera to the scene.
+ * Notes that a [camera] entity has been created.
  */
-class AddCamera(val camera: Camera) : Event
+class CameraCreated(
+	/**
+	 * Created camera.
+	 */
+	val camera: Camera
+) : Event
 
 /**
- * Removes a camera from the scene.
+ * Notes that the camera entity with [id] has been destroyed.
  */
-class RemoveCamera(val camera: Camera) : Event
+class CameraDestroyed(
+	/**
+	 * ID of destroyed camera.
+	 */
+	val id: Int
+) : Event
