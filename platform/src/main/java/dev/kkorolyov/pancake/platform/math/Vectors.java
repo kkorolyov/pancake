@@ -49,6 +49,10 @@ public final class Vectors {
 		return new BasicVector3(x, y, z);
 	}
 
+	private static double sanitize(double val) {
+		return val == 0.0 ? 0 : val;
+	}
+
 	private static class BasicVector1 implements Vector1 {
 		private double x;
 
@@ -58,7 +62,7 @@ public final class Vectors {
 
 		@Override
 		public double getX() {
-			return x;
+			return sanitize(x);
 		}
 		@Override
 		public void setX(double value) {
@@ -88,11 +92,11 @@ public final class Vectors {
 			if (this == obj) return true;
 			if (obj == null || getClass() != obj.getClass()) return false;
 			BasicVector1 o = (BasicVector1) obj;
-			return Double.compare(o.x, x) == 0;
+			return Double.compare(o.getX(), getX()) == 0;
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(x);
+			return Objects.hash(getX());
 		}
 	}
 
@@ -106,7 +110,7 @@ public final class Vectors {
 
 		@Override
 		public double getY() {
-			return y;
+			return sanitize(y);
 		}
 		@Override
 		public void setY(double value) {
@@ -141,11 +145,11 @@ public final class Vectors {
 			if (obj == null || getClass() != obj.getClass()) return false;
 			if (!super.equals(obj)) return false;
 			BasicVector2 o = (BasicVector2) obj;
-			return Double.compare(o.y, y) == 0;
+			return Double.compare(o.getY(), getY()) == 0;
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(super.hashCode(), y);
+			return Objects.hash(super.hashCode(), getY());
 		}
 	}
 
@@ -159,7 +163,7 @@ public final class Vectors {
 
 		@Override
 		public double getZ() {
-			return z;
+			return sanitize(z);
 		}
 		@Override
 		public void setZ(double value) {
@@ -194,11 +198,11 @@ public final class Vectors {
 			if (obj == null || getClass() != obj.getClass()) return false;
 			if (!super.equals(obj)) return false;
 			BasicVector3 o = (BasicVector3) obj;
-			return Double.compare(o.z, z) == 0;
+			return Double.compare(o.getZ(), getZ()) == 0;
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(super.hashCode(), z);
+			return Objects.hash(super.hashCode(), getZ());
 		}
 	}
 }

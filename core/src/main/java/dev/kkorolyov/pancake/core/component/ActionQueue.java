@@ -23,7 +23,7 @@ public class ActionQueue implements Component {
 	 * @param actions actions to add to this queue
 	 * @return {@code this}
 	 */
-	public ActionQueue enqueue(Iterable<Action> actions) {
+	public ActionQueue enqueue(Iterable<? extends Action> actions) {
 		actions.forEach(this.actions::add);
 		return this;
 	}

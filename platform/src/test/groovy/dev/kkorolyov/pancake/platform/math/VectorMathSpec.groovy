@@ -5,7 +5,7 @@ import spock.lang.Specification
 class VectorMathSpec extends Specification {
 	def "computes 2D normal"() {
 		expect:
-		VectorMath.normal(vector) == normal
+		VectorMath.unit(vector) == normal
 
 		where:
 		vector << [Vectors.create(0, 0), Vectors.create(0, 4), Vectors.create(5, 0), Vectors.create(7, 7)]
@@ -13,7 +13,7 @@ class VectorMathSpec extends Specification {
 	}
 	def "computes 3D normal"() {
 		expect:
-		VectorMath.normal(vector) == normal
+		VectorMath.unit(vector) == normal
 
 		where:
 		vector << [Vectors.create(0, 0, 0), Vectors.create(0, 0, 4), Vectors.create(0, 5, 0), Vectors.create(6, 0, 0), Vectors.create(7, 7, 7)]

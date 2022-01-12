@@ -2,17 +2,19 @@ package dev.kkorolyov.pancake.platform.math;
 
 /**
  * Performs computations involving vectors.
+ * @deprecated prefer methods in dedicated Vector interfaces.
  */
+@Deprecated
 public final class VectorMath {
 	private VectorMath() {}
 
 	/** @return unit vector of {@code vector} (vector with magnitude {@code 1} and same direction as {@code vector}) */
-	public static Vector2 normal(Vector2 vector) {
+	public static Vector2 unit(Vector2 vector) {
 		double magnitude = magnitude(vector);
 		return magnitude == 0 ? Vectors.create(0, 0) : Vectors.create(vector.getX() / magnitude, vector.getY() / magnitude);
 	}
 	/** @return unit vector of {@code vector} (vector with magnitude {@code 1} and same direction as {@code vector}) */
-	public static Vector3 normal(Vector3 vector) {
+	public static Vector3 unit(Vector3 vector) {
 		double magnitude = magnitude(vector);
 		return magnitude == 0 ? Vectors.create(0, 0, 0) : Vectors.create(vector.getX() / magnitude, vector.getY() / magnitude, vector.getZ() / magnitude);
 	}
@@ -59,6 +61,6 @@ public final class VectorMath {
 	/** @return projection of {@code other} on {@code vector} */
 	public static Vector3 projection(Vector3 vector, Vector3 other) {
 		double scale = dot(vector, other) / dot(vector, vector);
-		return Vectors.create(vector.getX() * scale, vector.getY() * scale, vector.getY() * scale);
+		return Vectors.create(vector.getX() * scale, vector.getY() * scale, vector.getZ() * scale);
 	}
 }
