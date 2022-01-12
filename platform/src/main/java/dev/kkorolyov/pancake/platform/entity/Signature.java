@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 
-import static java.util.stream.Collectors.toUnmodifiableSet;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * A distinct combination of registered component types.
@@ -31,7 +31,7 @@ public final class Signature implements Comparable<Signature> {
 	 */
 	public Signature(Iterable<Class<? extends Component>> types) {
 		this.types = StreamSupport.stream(types.spliterator(), false)
-				.collect(toUnmodifiableSet());
+				.collect(toSet());
 		signature = this.types.stream()
 				.map(Signature::maskOf)
 				.reduce(0L, (sig, i) -> sig | i);
