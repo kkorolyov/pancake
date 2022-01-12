@@ -1,10 +1,9 @@
-package dev.kkorolyov.pancake.demo.wasdbox
+package dev.kkorolyov.pancake.demo.wiggles
 
-import dev.kkorolyov.pancake.audio.jfx.AddListener
-import dev.kkorolyov.pancake.audio.jfx.Listener
-import dev.kkorolyov.pancake.audio.jfx.component.AudioEmitter
 import dev.kkorolyov.pancake.audio.jfx.system.AudioSystem
 import dev.kkorolyov.pancake.core.component.ActionQueue
+import dev.kkorolyov.pancake.core.component.Bounds
+import dev.kkorolyov.pancake.core.component.Chain
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
@@ -14,51 +13,42 @@ import dev.kkorolyov.pancake.core.component.movement.VelocityCap
 import dev.kkorolyov.pancake.core.system.AccelerationSystem
 import dev.kkorolyov.pancake.core.system.ActionSystem
 import dev.kkorolyov.pancake.core.system.CappingSystem
+import dev.kkorolyov.pancake.core.system.ChainSystem
+import dev.kkorolyov.pancake.core.system.CollisionSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
+import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
 import dev.kkorolyov.pancake.graphics.jfx.component.Lens
+import dev.kkorolyov.pancake.graphics.jfx.drawable.Oval
 import dev.kkorolyov.pancake.graphics.jfx.drawable.Rectangle
 import dev.kkorolyov.pancake.graphics.jfx.system.CameraSystem
 import dev.kkorolyov.pancake.graphics.jfx.system.DrawSystem
-import dev.kkorolyov.pancake.input.jfx.Compensated
 import dev.kkorolyov.pancake.input.jfx.Reaction
 import dev.kkorolyov.pancake.input.jfx.component.Input
 import dev.kkorolyov.pancake.input.jfx.system.InputSystem
 import dev.kkorolyov.pancake.platform.Config
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameLoop
-import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.event.EventLoop
+import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.math.Vectors
-import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory
-import dev.kkorolyov.pancake.platform.plugin.Plugins
-import dev.kkorolyov.pancake.platform.registry.Registry
-import dev.kkorolyov.pancake.platform.registry.ResourceReader
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.event.EventHandler
+import javafx.scene.Cursor
 import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
 import javafx.scene.image.Image
-import javafx.scene.input.KeyCode
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.TilePane
-import javafx.scene.media.Media
 import javafx.scene.paint.Color
 import javafx.stage.Stage
-import java.nio.file.Path
+import org.apache.logging.log4j.util.Unbox.box
 
 val pane = TilePane()
-
-val actions by lazy {
-	Resources.inStream("actions.yaml").use {
-		Registry<String, Action>().apply {
-			load(ResourceReader(Plugins.deferredConverter(DeferredConverterFactory.ActionStrat::class.java)).fromYaml(it))
-		}
-	}
-}
 
 val events = EventLoop.Broadcasting()
 val entities = EntityPool(events)
@@ -71,15 +61,16 @@ val gameEngine = GameEngine(
 		AccelerationSystem(),
 		CappingSystem(),
 		MovementSystem(),
+		ChainSystem(),
 		DampingSystem(),
+		IntersectionSystem(),
+//		CollisionSystem(), TODO Fix spaz
 		AudioSystem(),
 		CameraSystem(),
 		DrawSystem()
 	)
 )
-val gameLoop = GameLoop(
-	gameEngine
-)
+val gameLoop = GameLoop(gameEngine)
 
 val camera = entities.create().apply {
 	put(
@@ -95,51 +86,86 @@ val camera = entities.create().apply {
 	)
 }
 
-val player = entities.create().apply {
+val cursor = entities.create().apply {
 	put(
-		Mass(0.01),
-		Force(Vectors.create(0.0, 0.0, 0.0)),
-		Velocity(Vectors.create(0.0, 0.0, 0.0)),
-		VelocityCap(Vectors.create(20.0, 20.0, 20.0)),
-		Damping(Vectors.create(0.0, 0.0, 0.0)),
 		Transform(Vectors.create(0.0, 0.0, 0.0)),
-		AudioEmitter(),
-		Graphic(Rectangle(Vectors.create(1.0, 1.0), Color.AQUA)),
+//		Velocity(Vectors.create(0.0, 0.0, 0.0)),
+//		Mass(1.0),
+		Bounds.round(0.5),
+		Graphic(Oval(Vectors.create(1.0, 1.0), Color.DARKMAGENTA)),
 		Input(
 			Reaction.matchType(
-				Reaction.whenCode(
-					KeyCode.W to Reaction.keyToggle(Compensated(actions["forceUp"], actions["forceDown"])),
-					KeyCode.S to Reaction.keyToggle(Compensated(actions["forceDown"], actions["forceUp"])),
-					KeyCode.A to Reaction.keyToggle(Compensated(actions["forceLeft"], actions["forceRight"])),
-					KeyCode.D to Reaction.keyToggle(Compensated(actions["forceRight"], actions["forceLeft"]))
-				)
+				Reaction { event: MouseEvent ->
+					when (event.eventType) {
+						MouseEvent.MOUSE_MOVED -> Action {
+							it[Transform::class.java].position.let { pos ->
+								val scale = camera[Lens::class.java].scale
+								pos.x = (event.x - pane.width / 2) / scale.x
+								pos.y = -(event.y - pane.height / 2) / scale.y
+							}
+						}
+						else -> null
+					}
+				}
 			)
 		),
 		ActionQueue()
 	)
 }
 
-fun main() {
-	Platform.startup {
-		App(Scene(pane), gameLoop::stop)
-		pane.requestFocus()
-	}
-	Thread(gameLoop::start).start()
-
-	player[AudioEmitter::class.java].add(Media(Path.of("assets/audio/bg.wav").toUri().toString()))
-	events.enqueue(
-		AddListener(
-			Listener(
-				position = player[Transform::class.java].position,
-				volume = Config.get().getProperty("volume").toDouble()
-			)
-		)
+val obstPoly = entities.create().apply {
+	put(
+		Transform(Vectors.create(-5.0, 0.0, 0.0)),
+		Bounds.box(Vectors.create(4.0, 4.0, 0.0)),
+		Graphic(Rectangle(Vectors.create(4.0, 4.0), Color.DARKOLIVEGREEN))
 	)
 }
 
-/**
- * JavaFX application running demo and displaying [scene].
- */
+val obstRound = entities.create().apply {
+	put(
+		Transform(Vectors.create(5.0, 0.0, 0.0)),
+		Bounds.round(2.0),
+		Graphic(Oval(Vectors.create(4.0, 4.0), Color.FORESTGREEN))
+	)
+}
+
+val strands = (0..0).map {
+	makeStrand(cursor[Transform::class.java].position, 20)
+}
+
+fun makeStrand(root: Vector3, length: Int) {
+	entities.create().apply {
+		put(
+			Transform(Vectors.create(0.0, root.y - 1, 0.0)),
+			Velocity(Vectors.create(0.0, 0.0, 0.0)),
+			VelocityCap(Vectors.create(10.0, 10.0, 0.0)),
+			Damping(Vectors.create(0.9, 0.9, 0.9)),
+			Mass(1.0),
+			Force(Vectors.create(0.0, -9.81, 0.0)),
+			Chain(root, 1.1),
+			Bounds.round(0.5),
+			Graphic(Oval(Vectors.create(1.0, 1.0), Color.DEEPPINK))
+		)
+
+		if (length > 0) {
+			makeStrand(this[Transform::class.java].position, length - 1)
+		}
+	}
+}
+
+fun main() {
+	try {
+		Platform.startup {
+			App(Scene(pane), gameLoop::stop)
+			pane.requestFocus()
+			pane.cursor = Cursor.NONE
+		}
+		Thread(gameLoop::start).start()
+	} catch (e: Exception) {
+		println(e)
+	}
+}
+
 class App(private val scene: Scene, private val onClose: () -> Unit) : Application() {
 	init {
 		start(Stage())

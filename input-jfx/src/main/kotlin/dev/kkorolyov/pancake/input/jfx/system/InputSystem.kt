@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.input.jfx.system
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
+import dev.kkorolyov.pancake.input.jfx.Reaction
 import dev.kkorolyov.pancake.input.jfx.component.Input
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
@@ -28,6 +29,8 @@ class InputSystem(inputNodes: Iterable<Node>) : GameSystem(
 
 			it.onMousePressed = handler
 			it.onMouseReleased = handler
+
+			it.onMouseMoved = handler
 		}
 	}
 
