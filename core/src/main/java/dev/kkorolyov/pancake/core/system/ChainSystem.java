@@ -4,11 +4,11 @@ import dev.kkorolyov.pancake.core.component.Chain;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
+import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -24,7 +24,7 @@ public class ChainSystem extends GameSystem {
 	 */
 	public ChainSystem() {
 		super(
-				new Signature(Transform.class, Chain.class),
+				List.of(Transform.class, Chain.class),
 				Limiter.fromConfig(ChainSystem.class)
 		);
 	}

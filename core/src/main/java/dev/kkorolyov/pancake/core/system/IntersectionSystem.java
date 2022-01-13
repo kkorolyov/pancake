@@ -6,7 +6,6 @@ import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.event.EntitiesIntersected;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.Vectors;
@@ -15,6 +14,7 @@ import dev.kkorolyov.pancake.platform.utility.Limiter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -36,7 +36,7 @@ public final class IntersectionSystem extends GameSystem {
 	 */
 	public IntersectionSystem() {
 		super(
-				new Signature(Transform.class, Bounds.class),
+				List.of(Transform.class, Bounds.class),
 				Limiter.fromConfig(IntersectionSystem.class)
 		);
 	}

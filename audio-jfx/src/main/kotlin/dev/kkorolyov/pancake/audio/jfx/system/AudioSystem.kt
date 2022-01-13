@@ -9,7 +9,6 @@ import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.platform.Config
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.math.Vectors
 import dev.kkorolyov.pancake.platform.utility.Limiter
@@ -23,7 +22,7 @@ import kotlin.math.min
  * [SetAudioState] events set all audio playback state.
  */
 class AudioSystem : GameSystem(
-	Signature(AudioEmitter::class.java, Transform::class.java),
+	listOf(AudioEmitter::class.java, Transform::class.java),
 	Limiter.fromConfig(AudioSystem::class.java)
 ) {
 	private val listeners = mutableListOf<Listener>()

@@ -5,8 +5,9 @@ import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
+
+import java.util.List;
 
 /**
  * Accelerates entities by force.
@@ -17,7 +18,7 @@ public class AccelerationSystem extends GameSystem {
 	 */
 	public AccelerationSystem() {
 		super(
-				new Signature(Velocity.class, Force.class, Mass.class),
+				List.of(Velocity.class, Force.class, Mass.class),
 				Limiter.fromConfig(AccelerationSystem.class)
 		);
 	}

@@ -43,8 +43,8 @@ public final class EntityPool {
 	 * @param signature signature to match
 	 * @return all entities in this pool masking {@code signature}
 	 */
-	public Iterable<ManagedEntity> get(Signature signature) {
-		return entities.get(signature.getTypes());
+	public Iterable<ManagedEntity> get(Iterable<Class<? extends Component>> signature) {
+		return entities.get(signature);
 	}
 
 	/**

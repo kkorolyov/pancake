@@ -3,11 +3,11 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.ActionQueue;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Dequeues and applies actions on entities.
@@ -20,7 +20,7 @@ public class ActionSystem extends GameSystem {
 	 */
 	public ActionSystem() {
 		super(
-				new Signature(ActionQueue.class),
+				List.of(ActionQueue.class),
 				Limiter.fromConfig(ActionSystem.class)
 		);
 	}

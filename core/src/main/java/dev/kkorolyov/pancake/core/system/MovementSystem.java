@@ -4,8 +4,9 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
+
+import java.util.List;
 
 /**
  * Applies velocity to entity positions.
@@ -16,7 +17,7 @@ public class MovementSystem extends GameSystem {
 	 */
 	public MovementSystem() {
 		super(
-				new Signature(Transform.class, Velocity.class),
+				List.of(Transform.class, Velocity.class),
 				Limiter.fromConfig(MovementSystem.class)
 		);
 	}

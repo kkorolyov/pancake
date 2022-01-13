@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.platform
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
-import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.event.EventLoop
 import dev.kkorolyov.pancake.platform.utility.Limiter
 
@@ -13,7 +12,7 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randLong
 
 class GameEngineSpec extends Specification {
 	long dt = randLong()
-	Signature signature = new Signature(MockComponent)
+	Collection<Class<? extends Component>> signature = List.of(MockComponent)
 
 	EventLoop.Broadcasting events = new EventLoop.Broadcasting()
 	EntityPool entities = new EntityPool(events)
@@ -59,7 +58,7 @@ class GameEngineSpec extends Specification {
 		0 * deadSystem.update(_, _)
 	}
 	def "does not invoke 'update' on system if no relevant entities"() {
-		GameSystem system = Spy(new GameSystem(new Signature(new Component() {}.class), new Limiter(0)) {
+		GameSystem system = Spy(new GameSystem(List.of(new Component() {}.class), new Limiter(0)) {
 			@Override
 			void update(Entity entity, long dt) {
 			}
