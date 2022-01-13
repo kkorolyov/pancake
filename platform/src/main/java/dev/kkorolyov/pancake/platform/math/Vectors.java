@@ -52,6 +52,9 @@ public final class Vectors {
 	private static double sanitize(double val) {
 		return val == 0.0 ? 0 : val;
 	}
+	private static boolean equals(double val, double other) {
+		return Math.abs(val - other) < 1e-9;
+	}
 
 	private static class BasicVector1 implements Vector1 {
 		private double x;
@@ -92,7 +95,7 @@ public final class Vectors {
 			if (this == obj) return true;
 			if (obj == null || getClass() != obj.getClass()) return false;
 			BasicVector1 o = (BasicVector1) obj;
-			return Double.compare(o.getX(), getX()) == 0;
+			return Vectors.equals(o.getX(), getX());
 		}
 		@Override
 		public int hashCode() {
@@ -145,7 +148,7 @@ public final class Vectors {
 			if (obj == null || getClass() != obj.getClass()) return false;
 			if (!super.equals(obj)) return false;
 			BasicVector2 o = (BasicVector2) obj;
-			return Double.compare(o.getY(), getY()) == 0;
+			return Vectors.equals(o.getY(), getY());
 		}
 		@Override
 		public int hashCode() {
@@ -198,7 +201,7 @@ public final class Vectors {
 			if (obj == null || getClass() != obj.getClass()) return false;
 			if (!super.equals(obj)) return false;
 			BasicVector3 o = (BasicVector3) obj;
-			return Double.compare(o.getZ(), getZ()) == 0;
+			return Vectors.equals(o.getZ(), getZ());
 		}
 		@Override
 		public int hashCode() {

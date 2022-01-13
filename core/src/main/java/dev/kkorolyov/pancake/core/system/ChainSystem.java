@@ -6,7 +6,6 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.VectorMath;
 import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
@@ -45,9 +44,9 @@ public class ChainSystem extends GameSystem {
 		transformToAnchor.set(anchor);
 		transformToAnchor.add(transform.getPosition(), -1);
 
-		double gap = VectorMath.magnitude(transformToAnchor) - chain.getPlay();
+		double gap = Vector3.magnitude(transformToAnchor) - chain.getPlay();
 		if (gap > 0) {
-			transformToAnchor.scale(1 / VectorMath.magnitude(transformToAnchor));
+			transformToAnchor.scale(1 / Vector3.magnitude(transformToAnchor));
 			transformToAnchor.scale(gap);
 
 			transform.getPosition().add(transformToAnchor);
@@ -55,7 +54,7 @@ public class ChainSystem extends GameSystem {
 	}
 	private void updateRotationAnchors(Chain chain, Transform transform) {
 		for (Vector3 anchor : chain.getRotationAnchors()) {
-			sortedAnchors.put(VectorMath.distance(transform.getPosition(), anchor), anchor);
+			sortedAnchors.put(Vector3.distance(transform.getPosition(), anchor), anchor);
 		}
 		if (sortedAnchors.size() > 0) {
 			transformToAnchor.set(sortedAnchors.firstEntry().getValue());

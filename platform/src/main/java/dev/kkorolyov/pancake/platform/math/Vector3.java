@@ -58,7 +58,9 @@ public interface Vector3 extends Vector2 {
 	 * Projects this vector along {@code other}.
 	 */
 	default void project(Vector3 other) {
-		scale(dot(this, other) / dot(other, other));
+		double scale = dot(this, other) / dot(other, other);
+		set(other);
+		scale(scale);
 	}
 	/**
 	 * Reflects this vector along {@code other}.
