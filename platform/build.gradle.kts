@@ -8,8 +8,9 @@ description = "Main Pancake engine platform"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
-	implementation(libs.slf4j)
 	implementation(libs.snakeyaml)
+	implementation(libs.slf4j)
+	implementation(libs.jackson)
 
 	testImplementation(libs.bundles.test)
 	testImplementation(projects.testUtils)

@@ -5,6 +5,9 @@ import dev.kkorolyov.pancake.platform.registry.internal.VectorStratDeferredConve
 module dev.kkorolyov.pancake.platform {
 	// logging
 	requires org.slf4j;
+	// FIXME here so kotlin projects using this can use different format log configs
+	// FIXME kotlin compiler cannot find this on module path
+	requires com.fasterxml.jackson.dataformat.yaml;
 
 	// resource parsing
 	requires org.yaml.snakeyaml;

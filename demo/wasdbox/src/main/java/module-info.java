@@ -9,7 +9,6 @@ module dev.kkorolyov.pancake.demo.wasdbox {
 
 	requires org.slf4j;
 	requires org.apache.logging.log4j;
-	requires org.yaml.snakeyaml;
 
 	requires dev.kkorolyov.pancake.platform;
 	requires dev.kkorolyov.pancake.core;

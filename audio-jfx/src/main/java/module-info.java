@@ -1,5 +1,6 @@
 module dev.kkorolyov.pancake.audio.jfx {
 	requires kotlin.stdlib;
+	requires org.slf4j;
 
 	requires javafx.media;
 
