@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.event.EntitiesIntersected;
 import dev.kkorolyov.pancake.platform.GameSystem;
-import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
@@ -16,7 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
+import static java.util.Collections.singleton;
 
 /**
  * Responds to entity intersection events with additional elastic collisions where applicable.
@@ -36,7 +36,7 @@ public class CollisionSystem extends GameSystem {
 	public CollisionSystem() {
 		super(
 				// only responds to events
-				List.of((Class<? extends Component>) null),
+				singleton(null),
 				Limiter.fromConfig(CollisionSystem.class)
 		);
 	}
