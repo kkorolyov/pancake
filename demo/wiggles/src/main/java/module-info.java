@@ -3,9 +3,9 @@ module dev.kkorolyov.pancake.demo.wiggles {
 
 	requires dev.kkorolyov.flub;
 
-	requires javafx.graphics;
-	requires javafx.media;
-	requires javafx.controls;
+	requires javafx.base;
+
+	requires tornadofx;
 
 	requires org.slf4j;
 	requires org.apache.logging.log4j;
@@ -15,4 +15,6 @@ module dev.kkorolyov.pancake.demo.wiggles {
 	requires dev.kkorolyov.pancake.graphics.jfx;
 	requires dev.kkorolyov.pancake.audio.jfx;
 	requires dev.kkorolyov.pancake.input.jfx;
+
+	exports dev.kkorolyov.pancake.demo.wiggles to tornadofx;
 }

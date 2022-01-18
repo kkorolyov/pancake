@@ -2,7 +2,8 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.event.EventLoop;
-import dev.kkorolyov.pancake.platform.utility.PerformanceCounter;
+import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
+import dev.kkorolyov.pancake.platform.utility.Sampler;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -16,7 +17,7 @@ public final class GameEngine {
 	private final EntityPool entities;
 	private final Collection<GameSystem> systems = new LinkedHashSet<>();
 
-	private final PerformanceCounter performanceCounter = new PerformanceCounter();
+	private final PerfMonitor perfMonitor = new PerfMonitor();
 
 	/**
 	 * Constructs a new game engine.
@@ -46,7 +47,7 @@ public final class GameEngine {
 			if (system.getLimiter().isReady(dt)) {
 				long systemDt = system.getLimiter().consumeElapsed();
 
-				performanceCounter.start();
+				Sampler sampler = perfMonitor.getSystem(system);
 
 				system.before(systemDt);
 
@@ -56,10 +57,10 @@ public final class GameEngine {
 
 				system.after(systemDt);
 
-				performanceCounter.end(system);
+				sampler.sample();
 			}
 		}
-		performanceCounter.tick();
+		perfMonitor.getEngine().sample();
 	}
 
 	/**
@@ -84,9 +85,11 @@ public final class GameEngine {
 		}
 	}
 
-	/** @return performance counter logging system run times */
-	public PerformanceCounter getPerformanceCounter() {
-		return performanceCounter;
+	/**
+	 * Returns this engine's performance monitor.
+	 */
+	public PerfMonitor getPerfMonitor() {
+		return perfMonitor;
 	}
 
 	@Override
@@ -94,8 +97,8 @@ public final class GameEngine {
 		return "GameEngine{" +
 				"events=" + events +
 				", entities=" + entities +
-				", performanceCounter=" + performanceCounter +
 				", systems=" + systems +
+				", perfMonitor=" + perfMonitor +
 				'}';
 	}
 }

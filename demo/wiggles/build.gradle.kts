@@ -10,6 +10,7 @@ description = "Demo of mouse-controlled physics"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
+	implementation(libs.tornadofx)
 	implementation(libs.bundles.log)
 
 	implementation(projects.platform)
@@ -26,7 +27,7 @@ tasks.compileKotlin {
 }
 javafx {
 	version = tasks.compileJava.get().targetCompatibility
-	modules("javafx.graphics", "javafx.controls", "javafx.media")
+	modules("javafx.graphics", "javafx.controls", "javafx.media", "javafx.fxml", "javafx.web", "javafx.swing")
 }
 
 application {

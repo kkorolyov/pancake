@@ -101,6 +101,11 @@ public final class Vectors {
 		public int hashCode() {
 			return Objects.hash(getX());
 		}
+
+		@Override
+		public String toString() {
+			return "(" + getX() + ")";
+		}
 	}
 
 	private static class BasicVector2 extends BasicVector1 implements Vector2 {
@@ -154,6 +159,11 @@ public final class Vectors {
 		public int hashCode() {
 			return Objects.hash(super.hashCode(), getY());
 		}
+
+		@Override
+		public String toString() {
+			return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY())) + ")";
+		}
 	}
 
 	private static class BasicVector3 extends BasicVector2 implements Vector3 {
@@ -206,6 +216,11 @@ public final class Vectors {
 		@Override
 		public int hashCode() {
 			return Objects.hash(super.hashCode(), getZ());
+		}
+
+		@Override
+		public String toString() {
+			return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY()), String.valueOf(getZ())) + ")";
 		}
 	}
 }

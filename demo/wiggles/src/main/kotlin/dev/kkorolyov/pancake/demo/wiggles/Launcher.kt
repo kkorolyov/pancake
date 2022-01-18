@@ -35,20 +35,24 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.event.EventLoop
 import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.math.Vectors
-import javafx.application.Application
 import javafx.application.Platform
 import javafx.event.EventHandler
 import javafx.scene.Cursor
-import javafx.scene.Scene
+import javafx.scene.Parent
 import javafx.scene.canvas.Canvas
 import javafx.scene.image.Image
+import javafx.scene.input.KeyCode
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.TilePane
 import javafx.scene.paint.Color
 import javafx.stage.Stage
-import org.apache.logging.log4j.util.Unbox.box
+import javafx.stage.StageStyle
+import tornadofx.App
+import tornadofx.View
 
-val pane = TilePane()
+val pane = TilePane().apply {
+	cursor = Cursor.NONE
+}
 
 val events = EventLoop.Broadcasting()
 val entities = EntityPool(events)
@@ -64,7 +68,7 @@ val gameEngine = GameEngine(
 		ChainSystem(),
 		DampingSystem(),
 		IntersectionSystem(),
-//		CollisionSystem(), TODO Fix spaz
+		CollisionSystem(),
 		AudioSystem(),
 		CameraSystem(),
 		DrawSystem()
@@ -154,34 +158,46 @@ fun makeStrand(root: Vector3, length: Int) {
 }
 
 fun main() {
-	try {
-		Platform.startup {
-			App(Scene(pane), gameLoop::stop)
-			pane.requestFocus()
-			pane.cursor = Cursor.NONE
+	Platform.startup {
+		Demo(gameLoop::stop)
+	}
+	Thread(gameLoop::start).start()
+}
+
+class DemoView : View(Config.get().getProperty("title")) {
+	val infoView: InfoView by inject()
+
+	override val root = pane
+
+	override fun onDock() {
+		currentStage?.let { curStage ->
+			curStage.scene?.onKeyPressed = EventHandler { e ->
+				when (e.code) {
+					KeyCode.F1 -> infoView.openWindow(StageStyle.UTILITY)?.let { otherStage ->
+						otherStage.x = curStage.x + curStage.width
+						otherStage.y = curStage.y
+
+						otherStage.width = 800.0
+					}
+				}
+			}
 		}
-		Thread(gameLoop::start).start()
-	} catch (e: Exception) {
-		println(e)
 	}
 }
 
-class App(private val scene: Scene, private val onClose: () -> Unit) : Application() {
+class Demo(private val onClose: () -> Unit) : App(DemoView::class) {
 	init {
 		start(Stage())
 	}
 
-	override fun start(primaryStage: Stage) {
-		primaryStage.title = Config.get().getProperty("title")
-		primaryStage.icons += Image(Config.get().getProperty("icon"))
+	override fun start(stage: Stage) {
+		stage.icons += Image(Config.get().getProperty("icon"))
 
-		primaryStage.scene = scene
+		stage.width = Config.get().getProperty("width").toDouble()
+		stage.height = Config.get().getProperty("height").toDouble()
 
-		primaryStage.width = Config.get().getProperty("width").toDouble()
-		primaryStage.height = Config.get().getProperty("height").toDouble()
+		stage.onCloseRequest = EventHandler { onClose() }
 
-		primaryStage.onCloseRequest = EventHandler { onClose() }
-
-		primaryStage.show()
+		super.start(stage)
 	}
 }

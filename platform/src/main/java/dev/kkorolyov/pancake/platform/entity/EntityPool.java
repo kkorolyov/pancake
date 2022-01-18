@@ -17,7 +17,7 @@ import static dev.kkorolyov.flub.collections.Iterables.append;
 /**
  * A set of uniquely-identified "component-bag" entities.
  */
-public final class EntityPool {
+public final class EntityPool implements Iterable<EntityPool.ManagedEntity> {
 	private final SparseMultiset<ManagedEntity, Class<? extends Component>> entities = new SparseMultiset<>();
 	private final EventLoop events;
 
@@ -63,6 +63,11 @@ public final class EntityPool {
 	 */
 	public void destroy(int id) {
 		if (entities.remove(id)) events.enqueue(new EntityDestroyed(id));
+	}
+
+	@Override
+	public Iterator<ManagedEntity> iterator() {
+		return entities.iterator();
 	}
 
 	@Override

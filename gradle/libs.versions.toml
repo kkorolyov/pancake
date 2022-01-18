@@ -6,6 +6,7 @@ log4j = "2.+"
 jackson = "2.+"
 
 snakeyaml = "1.+"
+tornadofx = "2.+"
 
 spock = "2.+"
 byteBuddy = "1.+"
@@ -15,10 +16,10 @@ flub = { module = "dev.kkorolyov:flub", version.ref = "flub" }
 
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 log4j = { module = "org.apache.logging.log4j:log4j-slf4j18-impl", version.ref = "log4j" }
-
 jackson = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
 
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+tornadofx = { module = "no.tornado:tornadofx", version.ref = "tornadofx" }
 
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
