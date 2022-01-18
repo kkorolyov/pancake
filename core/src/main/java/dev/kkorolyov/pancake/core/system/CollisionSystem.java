@@ -87,13 +87,14 @@ public class CollisionSystem extends GameSystem {
 		sDiff.set(aPos);
 		sDiff.add(bPos, -1);
 
-		sDiff.scale(
-				((2 * bMass) / (aMass + bMass))
-						* Vector3.dot(vDiff, sDiff)
-						/ Vector3.dot(sDiff, sDiff)
-		);
-
-		aVelocity.add(sDiff, -1);
+		if (sDiff.getX() != 0 || sDiff.getY() != 0 || sDiff.getZ() != 0) {
+			aVelocity.add(
+					sDiff,
+					-((2 * bMass) / (aMass + bMass))
+							* Vector3.dot(vDiff, sDiff)
+							/ Vector3.dot(sDiff, sDiff)
+			);
+		}
 	}
 	private static void reflect(Vector2 velocity, Vector2 normal) {
 		velocity.reflect(normal);
