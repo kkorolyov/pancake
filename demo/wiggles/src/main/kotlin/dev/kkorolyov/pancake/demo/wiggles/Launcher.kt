@@ -36,6 +36,7 @@ import dev.kkorolyov.pancake.platform.event.EventLoop
 import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.math.Vectors
 import javafx.application.Platform
+import javafx.beans.value.ChangeListener
 import javafx.event.EventHandler
 import javafx.scene.Cursor
 import javafx.scene.Parent
@@ -49,6 +50,8 @@ import javafx.stage.Stage
 import javafx.stage.StageStyle
 import tornadofx.App
 import tornadofx.View
+import tornadofx.onChange
+import tornadofx.plusAssign
 
 val pane = TilePane().apply {
 	cursor = Cursor.NONE
@@ -179,6 +182,7 @@ class DemoView : View(Config.get().getProperty("title")) {
 
 						otherStage.width = 800.0
 					}
+					else -> {}
 				}
 			}
 		}
