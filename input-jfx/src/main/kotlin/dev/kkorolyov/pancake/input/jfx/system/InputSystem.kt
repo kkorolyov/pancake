@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.input.jfx.component.Input
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.utility.Limiter
 import javafx.event.EventHandler
 import javafx.scene.Node
@@ -14,7 +13,7 @@ import javafx.scene.input.InputEvent
  * Queues actions based on input.
  */
 class InputSystem(inputNodes: Iterable<Node>) : GameSystem(
-	Signature(Input::class.java, ActionQueue::class.java),
+	listOf(Input::class.java, ActionQueue::class.java),
 	Limiter.fromConfig(InputSystem::class.java)
 ) {
 	private val events = IsolateCollection<InputEvent>()
@@ -28,6 +27,8 @@ class InputSystem(inputNodes: Iterable<Node>) : GameSystem(
 
 			it.onMousePressed = handler
 			it.onMouseReleased = handler
+
+			it.onMouseMoved = handler
 		}
 	}
 

@@ -6,6 +6,7 @@ log4j = "2.+"
 jackson = "2.+"
 
 snakeyaml = "1.+"
+tornadofx = "2.+"
 
 spock = "2.+"
 byteBuddy = "1.+"
@@ -18,11 +19,12 @@ log4j = { module = "org.apache.logging.log4j:log4j-slf4j18-impl", version.ref = 
 jackson = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
 
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+tornadofx = { module = "no.tornado:tornadofx", version.ref = "tornadofx" }
 
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
 
 [bundles]
 stdlib = ["flub"]
-log = ["slf4j", "log4j", "jackson"]
+log = ["slf4j", "log4j"]
 test = ["spock", "byteBuddy"]

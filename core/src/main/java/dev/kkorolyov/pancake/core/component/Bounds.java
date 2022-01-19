@@ -1,120 +1,122 @@
 package dev.kkorolyov.pancake.core.component;
 
+import dev.kkorolyov.flub.data.Graph;
 import dev.kkorolyov.pancake.platform.entity.Component;
+import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.Vectors;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
- * Bounds defined by at least one of:
- * <pre>
- *   - Box
- *   - Sphere
- * </pre>
+ * A closed boundary.
+ * Boundaries can be one of:
+ * {@code Round} - a single value representing the radius of a sphere
+ * {@code Poly} - an undirected graph of vectors from a common origin of {@code (0, 0, 0)} representing vertices of a polyhedron
  */
-public class Bounds implements Component {
-	/** Intersection type between 2 boxes */
-	public static final int BOX_BOX = 0;
-	/** Intersection type between 2 spheres */
-	public static final int SPHERE_SPHERE = 1;
-	/** Intersection type between a box and sphere */
-	public static final int BOX_SPHERE = 2;
-	/** Intersection type between a sphere and a box */
-	public static final int SPHERE_BOX = 3;
+public final class Bounds implements Component {
+	private final Vector3[] vertices;
+	// TODO edges maybe
+	private final Vector2[] normals;
+	private final double magnitude;
 
-	private Vector3 box;
-	private double radius;
+	public static Bounds box(Vector3 dimensions) {
+		double halfX = dimensions.getX() / 2, halfY = dimensions.getY() / 2, halfZ = dimensions.getZ() / 2;
+
+		return new Bounds(
+				new Graph<Vector3, Void>()
+						.putUndirected(
+								Vectors.create(halfX, halfY, halfZ),
+								Vectors.create(-halfX, halfY, halfZ),
+								Vectors.create(halfX, -halfY, halfZ),
+								Vectors.create(halfX, halfY, -halfZ)
+						)
+						.putUndirected(
+								Vectors.create(-halfX, -halfY, -halfZ),
+								Vectors.create(halfX, -halfY, -halfZ),
+								Vectors.create(-halfX, halfY, -halfZ),
+								Vectors.create(-halfX, -halfY, halfZ)
+						)
+						.putUndirected(
+								Vectors.create(halfX, halfY, -halfZ),
+								Vectors.create(-halfX, halfY, -halfZ),
+								Vectors.create(halfX, -halfY, -halfZ)
+						)
+						.putUndirected(
+								Vectors.create(halfX, -halfY, halfZ),
+								Vectors.create(halfX, -halfY, -halfZ),
+								Vectors.create(-halfX, -halfY, halfZ)
+						)
+						.putUndirected(
+								Vectors.create(-halfX, halfY, halfZ),
+								Vectors.create(-halfX, halfY, -halfZ),
+								Vectors.create(-halfX, -halfY, halfZ)
+						)
+		);
+	}
+	public static Bounds round(double radius) {
+		return new Bounds(new Graph<Vector3, Void>().put(Vectors.create(radius, 0, 0)));
+	}
 
 	/**
-	 * Constructs new bounds defined solely by a box.
-	 * @see #Bounds(Vector3, Double)
+	 * Constructs new bounds defined by the given undirected vertex graph.
 	 */
-	public Bounds(Vector3 box) {
-		this(box, null);
+	public Bounds(Graph<Vector3, Void> vertices) {
+		this.vertices = StreamSupport.stream(vertices.spliterator(), false)
+				.map(Graph.Node::getValue)
+				.distinct()
+				.map(Vectors::create)
+				.toArray(Vector3[]::new);
+		normals = StreamSupport.stream(vertices.spliterator(), false)
+				.flatMap(u -> u.getOutbounds().stream()
+						.flatMap(v -> {
+							Vector2 normal = Vectors.create((Vector2) v.getValue());
+							normal.add(u.getValue(), -1);
+							normal.orthogonal();
+							normal.normalize();
+							// add both normal and computed reverse
+							return Stream.of(normal, Vectors.create(normal.getX() * -1, normal.getY() * -1));
+						})
+				)
+				.distinct()
+				.filter(n -> n.getX() != 0 || n.getY() != 0)
+				.toArray(Vector2[]::new);
+		magnitude = Arrays.stream(this.vertices)
+				.mapToDouble(Vector3::magnitude)
+				.max()
+				.orElse(0);
 	}
+
 	/**
-	 * Constructs new bounds defined solely by a sphere.
-	 * @see #Bounds(Vector3, Double)
+	 * Returns all the vertices in this boundary.
+	 * WARNING: Any modifications to the returned array or its elements may contend with {@link #getNormals()} and {@link #getMagnitude()}.
 	 */
-	public Bounds(Double radius) {
-		this(null, radius);
-	}
-	/**
-	 * Constructs new bounds.
-	 * @param box box dimensions
-	 * @param radius sphere radius
-	 * @throws IllegalStateException if both {@code box} and {@code radius} are {@code null}
-	 */
-	public Bounds(Vector3 box, Double radius) {
-		this.box = box;
-		this.radius = (radius != null) ? radius : 0;
-
-		verifyDefined();
+	public Vector3[] getVertices() {
+		return vertices;
 	}
 
 	/**
-	 * Returns the type of intersection occurring between this bounds and {@code other}.
-	 * e.g. Box-Box, Sphere-Sphere, Box-Sphere.
-	 * @param other intersected bounds
-	 * @return preferred intersection type between {@code this} and {@code other}
+	 * Returns all the normal vectors to edges in this boundary.
+	 * WARNING: Any modifications to the returned array or its elements may contend with {@link #getVertices()}.
 	 */
-	public int getIntersectionType(Bounds other) {
-		return hasRadius()
-				? other.hasRadius() ? SPHERE_SPHERE
-					: hasBox() ? BOX_BOX : SPHERE_BOX
-				: other.hasBox() ? BOX_BOX : BOX_SPHERE;
+	// TODO use ObservableVector to queue recomputation on vertex changes
+	public Vector2[] getNormals() {
+		return normals;
 	}
 
-	/** @return {@code true} if this bounds is defined by a box */
-	public boolean hasBox() {
-		return box != null;
-	}
-	/** @return {@code true} if this bounds is defined by a sphere */
-	public boolean hasRadius() {
-		return radius > 0;
-	}
-
-	/** @return box dimensions, or {@code null} if not set */
-	public Vector3 getBox() {
-		return box;
-	}
 	/**
-	 * @param box new box dimensions, {@code null} clears current value
-	 * @return {@code this}
-	 * @throws IllegalStateException if both {@code box} and {@code radius} of this instance are {@code null}
+	 * Returns the magnitude of the vertex vector furthest from the origin.
 	 */
-	public Bounds setBox(Vector3 box) {
-		this.box = box;
-		verifyDefined();
-
-		return this;
+	public double getMagnitude() {
+		return magnitude;
 	}
 
-	/** @return sphere radius, or a value {@code <= 0} if not set */
-	public double getRadius() {
-		return radius;
-	}
 	/**
-	 * @param radius new sphere radius, {@code null} clears current value
-	 * @return {@code this}
-	 * @throws IllegalStateException if both {@code box} and {@code radius} of this instance are {@code null}
+	 * Returns {@code true} if this boundary has a single vertex - thus representing a sphere.
 	 */
-	public Bounds setRadius(Double radius) {
-		this.radius = (radius != null) ? radius : 0;
-		verifyDefined();
-
-		return this;
-	}
-
-	private void verifyDefined() {
-		if (box == null && radius <= 0) {
-			throw new IllegalStateException(this + " is defined by neither a box nor a sphere");
-		}
-	}
-
-	@Override
-	public String toString() {
-		return "Bounds{" +
-				"box=" + box +
-				", radius=" + radius +
-				'}';
+	public boolean isRound() {
+		return vertices.length == 1;
 	}
 }

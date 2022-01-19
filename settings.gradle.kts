@@ -8,6 +8,7 @@ include("graphics-jfx")
 include("input-jfx")
 
 include("demo:wasdbox")
+include("demo:wiggles")
 
 include("test-utils")
 

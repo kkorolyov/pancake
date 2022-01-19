@@ -1,18 +1,20 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.Event;
 import dev.kkorolyov.pancake.platform.event.EventLoop;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
 
+import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.stream.StreamSupport;
 
 /**
  * Performs work on entities matching a certain component signature.
  */
 public abstract class GameSystem implements EventLoop {
-	private final Signature signature;
+	private final Collection<Class<? extends Component>> signature;
 	private final Limiter limiter;
 
 	private EventLoop events;
@@ -22,8 +24,8 @@ public abstract class GameSystem implements EventLoop {
 	 * @param signature defines all components an entity must have to be affected by this system
 	 * @param limiter determines frequency of updates of this system
 	 */
-	protected GameSystem(Signature signature, Limiter limiter) {
-		this.signature = signature;
+	protected GameSystem(Iterable<Class<? extends Component>> signature, Limiter limiter) {
+		this.signature = StreamSupport.stream(signature.spliterator(), false).toList();
 		this.limiter = limiter;
 	}
 
@@ -59,7 +61,7 @@ public abstract class GameSystem implements EventLoop {
 	public void detach() {}
 
 	/** @return system required component signature */
-	public final Signature getSignature() {
+	public final Iterable<Class<? extends Component>> getSignature() {
 		return signature;
 	}
 	/** @return system update limiter */

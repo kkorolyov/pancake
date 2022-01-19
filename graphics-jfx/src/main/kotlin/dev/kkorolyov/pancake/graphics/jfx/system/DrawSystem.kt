@@ -7,7 +7,6 @@ import dev.kkorolyov.pancake.graphics.jfx.CameraDestroyed
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.entity.Signature
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.utility.Limiter
 import javafx.animation.AnimationTimer
@@ -19,7 +18,7 @@ import javafx.scene.transform.Affine
  * Draws entities according to all known [Camera]s.
  */
 class DrawSystem : GameSystem(
-	Signature(Transform::class.java, Graphic::class.java),
+	listOf(Transform::class.java, Graphic::class.java),
 	Limiter.fromConfig(DrawSystem::class.java)
 ) {
 	private val renderers: MutableMap<Int, Renderer> = mutableMapOf()

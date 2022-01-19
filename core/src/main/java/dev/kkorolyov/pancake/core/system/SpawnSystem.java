@@ -5,9 +5,10 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.event.CreateEntity;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
+
+import java.util.List;
 
 /**
  * Spawns entity clones from spawner entities.
@@ -18,7 +19,7 @@ public class SpawnSystem extends GameSystem {
 	 */
 	public SpawnSystem() {
 		super(
-				new Signature(Spawner.class, Transform.class),
+				List.of(Spawner.class, Transform.class),
 				Limiter.fromConfig(SpawnSystem.class)
 		);
 	}

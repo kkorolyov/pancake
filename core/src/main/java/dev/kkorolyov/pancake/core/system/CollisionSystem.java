@@ -1,113 +1,102 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
-import dev.kkorolyov.pancake.core.event.EntitiesCollided;
+import dev.kkorolyov.pancake.core.event.EntitiesIntersected;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
-import dev.kkorolyov.pancake.platform.math.Collider;
+import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.VectorMath;
+import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayDeque;
-import java.util.LinkedHashSet;
-import java.util.Queue;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import static dev.kkorolyov.pancake.core.component.Bounds.BOX_BOX;
-import static dev.kkorolyov.pancake.core.component.Bounds.BOX_SPHERE;
-import static dev.kkorolyov.pancake.core.component.Bounds.SPHERE_BOX;
-import static dev.kkorolyov.pancake.core.component.Bounds.SPHERE_SPHERE;
+import static java.util.Collections.singleton;
 
 /**
- * Detects and handles entity collisions.
+ * Responds to entity intersection events with additional elastic collisions where applicable.
  */
 public class CollisionSystem extends GameSystem {
-	// TODO Better collision detection alg (Current n^2)
-	private final Set<Entity> done = new LinkedHashSet<>();
-	private final Queue<Entity> moved = new ArrayDeque<>();
+	private static final Logger LOG = LoggerFactory.getLogger(CollisionSystem.class);
+
+	private final Collection<EntitiesIntersected> events = new ArrayList<>();
+	private final Vector2 mtv = Vectors.create(0, 0);
+	private final Vector3 vTemp = Vectors.create(0, 0, 0);
+	private final Vector3 vDiff = Vectors.create(0, 0, 0);
+	private final Vector3 sDiff = Vectors.create(0, 0, 0);
 
 	/**
 	 * Constructs a new collision system.
 	 */
 	public CollisionSystem() {
 		super(
-				new Signature(Transform.class, Bounds.class),
+				// only responds to events
+				singleton(null),
 				Limiter.fromConfig(CollisionSystem.class)
 		);
 	}
 
 	@Override
+	public void attach() {
+		register(EntitiesIntersected.class, events::add);
+	}
+
+	@Override
 	public void update(Entity entity, long dt) {
-		(isMoveable(entity) && VectorMath.magnitude(entity.get(Velocity.class).getValue()) > 0
-				? moved
-				: done
-		).add(entity);
+		LOG.warn("CollisionSystem needless update call with {}", entity);
 	}
 
 	@Override
 	public void after(long dt) {
-		while (!moved.isEmpty()) {
-			Entity movedEntity = moved.remove();
+		for (EntitiesIntersected event : events) {
+			Transform aTransform = event.getA().get(Transform.class);
+			Transform bTransform = event.getB().get(Transform.class);
+			Velocity aVelocity = event.getA().get(Velocity.class);
+			Velocity bVelocity = event.getB().get(Velocity.class);
+			Mass aMass = event.getA().get(Mass.class);
+			Mass bMass = event.getB().get(Mass.class);
 
-			for (Entity otherEntity : done) {
-				Vector3 mtv = intersection(movedEntity, otherEntity);
-
-				if (mtv != null) {
-					movedEntity.get(Transform.class).getPosition().add(mtv);
-
-					if (isMoveable(otherEntity)) {  // Entities in "moved" are already verified to be MOVEABLE
-						Collider.elasticCollide(movedEntity.get(Transform.class).getPosition(), movedEntity.get(Velocity.class).getValue(), movedEntity.get(Mass.class).getValue(),
-								otherEntity.get(Transform.class).getPosition(), otherEntity.get(Velocity.class).getValue(), otherEntity.get(Mass.class).getValue()
-						);
-					} else {
-						mtv.scale(1 /VectorMath.magnitude(mtv));
-
-						Vector3 velocity = movedEntity.get(Velocity.class).getValue();
-						velocity.add(mtv, VectorMath.magnitude(velocity));
-					}
-					enqueue(new EntitiesCollided(movedEntity.getId(), otherEntity.getId()));
-				}
+			mtv.set(event.getMtv());
+			if (aVelocity != null) {
+				if (aMass != null && bVelocity != null && bMass != null) collide(aTransform.getPosition(), bTransform.getPosition(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
+				else reflect(aVelocity.getValue(), mtv);
+			} else if (bVelocity != null) {
+				// reverse so relative to B
+				mtv.scale(-1);
+				reflect(bVelocity.getValue(), mtv);
 			}
-			done.add(movedEntity);
 		}
-		done.clear();
+		events.clear();
 	}
-	private Vector3 intersection(Entity e1, Entity e2) {  // TODO Optimize performance
-		Transform t1 = e1.get(Transform.class);
-		Transform t2 = e2.get(Transform.class);
+	private void collide(Vector3 aPos, Vector3 bPos, Vector3 aVelocity, Vector3 bVelocity, double aMass, double bMass) {
+		// save as will be mutated before 2nd use
+		vTemp.set(aVelocity);
 
-		Bounds b1 = e1.get(Bounds.class);
-		Bounds b2 = e2.get(Bounds.class);
+		applyCollide(aPos, bPos, aVelocity, bVelocity, aMass, bMass);
+		applyCollide(bPos, aPos, bVelocity, vTemp, bMass, aMass);
+	}
+	private void applyCollide(Vector3 aPos, Vector3 bPos, Vector3 aVelocity, Vector3 bVelocity, double aMass, double bMass) {
+		vDiff.set(aVelocity);
+		vDiff.add(bVelocity, -1);
 
-		switch (b1.getIntersectionType(b2)) {
-			case BOX_BOX:
-				return Collider.intersection(t1.getPosition(), b1.getBox(),
-						t2.getPosition(), b2.getBox()
-				);
-			case SPHERE_SPHERE:
-				return Collider.intersection(t1.getPosition(), b1.getRadius(),
-						t2.getPosition(), b2.getRadius()
-				);
-			case BOX_SPHERE:
-				return Collider.intersection(t1.getPosition(), b1.getBox(),
-						t2.getPosition(), b2.getRadius()
-				);
-			case SPHERE_BOX:
-				return Collider.intersection(t2.getPosition(), b2.getBox(),
-						t1.getPosition(), b1.getRadius()
-				);
-			default:
-				return null;
+		sDiff.set(aPos);
+		sDiff.add(bPos, -1);
+
+		if (sDiff.getX() != 0 || sDiff.getY() != 0 || sDiff.getZ() != 0) {
+			aVelocity.add(
+					sDiff,
+					-((2 * bMass) / (aMass + bMass))
+							* Vector3.dot(vDiff, sDiff)
+							/ Vector3.dot(sDiff, sDiff)
+			);
 		}
 	}
-
-	private boolean isMoveable(Entity entity) {
-		return entity.get(Mass.class) != null
-				&& entity.get(Velocity.class) != null;
+	private static void reflect(Vector2 velocity, Vector2 normal) {
+		velocity.reflect(normal);
 	}
 }

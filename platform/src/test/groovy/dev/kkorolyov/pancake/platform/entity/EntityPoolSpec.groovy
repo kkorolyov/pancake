@@ -7,7 +7,7 @@ import spock.lang.Specification
 class EntityPoolSpec extends Specification {
 	EventLoop events = Mock()
 	Component component = mockComponent()
-	Signature signature = new Signature(component.class)
+	Collection<Class<? extends Component>> signature = List.of(component.class)
 
 	EntityPool entities = new EntityPool(events)
 

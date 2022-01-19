@@ -49,6 +49,13 @@ public final class Vectors {
 		return new BasicVector3(x, y, z);
 	}
 
+	private static double sanitize(double val) {
+		return val == 0.0 ? 0 : val;
+	}
+	private static boolean equals(double val, double other) {
+		return Math.abs(val - other) < 1e-9;
+	}
+
 	private static class BasicVector1 implements Vector1 {
 		private double x;
 
@@ -58,7 +65,7 @@ public final class Vectors {
 
 		@Override
 		public double getX() {
-			return x;
+			return sanitize(x);
 		}
 		@Override
 		public void setX(double value) {
@@ -88,11 +95,16 @@ public final class Vectors {
 			if (this == obj) return true;
 			if (obj == null || getClass() != obj.getClass()) return false;
 			BasicVector1 o = (BasicVector1) obj;
-			return Double.compare(o.x, x) == 0;
+			return Vectors.equals(o.getX(), getX());
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(x);
+			return Objects.hash(getX());
+		}
+
+		@Override
+		public String toString() {
+			return "(" + getX() + ")";
 		}
 	}
 
@@ -106,7 +118,7 @@ public final class Vectors {
 
 		@Override
 		public double getY() {
-			return y;
+			return sanitize(y);
 		}
 		@Override
 		public void setY(double value) {
@@ -141,11 +153,16 @@ public final class Vectors {
 			if (obj == null || getClass() != obj.getClass()) return false;
 			if (!super.equals(obj)) return false;
 			BasicVector2 o = (BasicVector2) obj;
-			return Double.compare(o.y, y) == 0;
+			return Vectors.equals(o.getY(), getY());
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(super.hashCode(), y);
+			return Objects.hash(super.hashCode(), getY());
+		}
+
+		@Override
+		public String toString() {
+			return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY())) + ")";
 		}
 	}
 
@@ -159,7 +176,7 @@ public final class Vectors {
 
 		@Override
 		public double getZ() {
-			return z;
+			return sanitize(z);
 		}
 		@Override
 		public void setZ(double value) {
@@ -194,11 +211,16 @@ public final class Vectors {
 			if (obj == null || getClass() != obj.getClass()) return false;
 			if (!super.equals(obj)) return false;
 			BasicVector3 o = (BasicVector3) obj;
-			return Double.compare(o.z, z) == 0;
+			return Vectors.equals(o.getZ(), getZ());
 		}
 		@Override
 		public int hashCode() {
-			return Objects.hash(super.hashCode(), z);
+			return Objects.hash(super.hashCode(), getZ());
+		}
+
+		@Override
+		public String toString() {
+			return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY()), String.valueOf(getZ())) + ")";
 		}
 	}
 }

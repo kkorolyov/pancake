@@ -4,9 +4,10 @@ import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.component.movement.VelocityCap;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.entity.Signature;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.utility.Limiter;
+
+import java.util.List;
 
 /**
  * Caps velocities of entities.
@@ -17,7 +18,7 @@ public final class CappingSystem extends GameSystem {
 	 */
 	public CappingSystem() {
 		super(
-				new Signature(Velocity.class, VelocityCap.class),
+				List.of(Velocity.class, VelocityCap.class),
 				Limiter.fromConfig(CappingSystem.class)
 		);
 	}

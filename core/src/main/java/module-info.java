@@ -3,7 +3,6 @@ import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
 
 module dev.kkorolyov.pancake.core {
 	requires org.slf4j;
-	requires org.yaml.snakeyaml;
 
 	requires dev.kkorolyov.pancake.platform;
 

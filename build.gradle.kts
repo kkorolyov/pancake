@@ -1,10 +1,11 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-	kotlin("jvm") version "1.+"
+	java
+	id("org.ajoberstar.reckon") version "0.+"
+	kotlin("jvm") version "1.+" apply false
 	id("org.jetbrains.dokka") version "1.6.10" apply false
 	id("org.openjfx.javafxplugin") version "0.+" apply false
-	id("org.ajoberstar.reckon") version "0.+"
 	id("org.javamodularity.moduleplugin") version "1.+" apply false
 }
 
@@ -62,6 +63,12 @@ subprojects {
 			credentials {
 				username = System.getenv("GITHUB_ACTOR")
 				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+		maven {
+			url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+			mavenContent {
+				includeGroup("no.tornado")
 			}
 		}
 	}
