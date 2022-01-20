@@ -72,6 +72,6 @@ public interface Vector2 extends Vector1 {
 	 * Reflects this vector along {@code other}.
 	 */
 	default void reflect(Vector2 other) {
-		add(other, 2 * dot(this, other));
+		add(other, -2 * dot(this, other));
 	}
 }

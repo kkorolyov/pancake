@@ -1,4 +1,4 @@
-module dev.kkorolyov.pancake.demo.wiggles {
+module dev.kkorolyov.pancake.demo.bounce {
 	requires kotlin.stdlib;
 
 	requires dev.kkorolyov.flub;
@@ -15,5 +15,5 @@ module dev.kkorolyov.pancake.demo.wiggles {
 	requires dev.kkorolyov.pancake.audio.jfx;
 	requires dev.kkorolyov.pancake.input.jfx;
 
-	exports dev.kkorolyov.pancake.demo.wiggles to tornadofx;
+	exports dev.kkorolyov.pancake.demo.bounce to tornadofx;
 }

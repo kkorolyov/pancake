@@ -8,6 +8,11 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 @FunctionalInterface
 public interface Action {
 	/**
+	 * Action performing no alterations.
+	 */
+	Action NOOP = t -> {};
+
+	/**
 	 * Alters an entity in some way.
 	 * @param entity entity to alter
 	 */

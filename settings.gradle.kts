@@ -9,6 +9,7 @@ include("input-jfx")
 
 include("demo:wasdbox")
 include("demo:wiggles")
+include("demo-bounce")
 
 include("test-utils")
 

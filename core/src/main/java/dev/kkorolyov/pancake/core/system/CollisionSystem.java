@@ -64,11 +64,17 @@ public class CollisionSystem extends GameSystem {
 			mtv.set(event.getMtv());
 			if (aVelocity != null) {
 				if (aMass != null && bVelocity != null && bMass != null) collide(aTransform.getPosition(), bTransform.getPosition(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
-				else reflect(aVelocity.getValue(), mtv);
+				else if (!sameyDirection(aVelocity.getValue(), mtv)) {
+					mtv.normalize();
+					reflect(aVelocity.getValue(), mtv);
+				}
 			} else if (bVelocity != null) {
-				// reverse so relative to B
-				mtv.scale(-1);
-				reflect(bVelocity.getValue(), mtv);
+				if (sameyDirection(bVelocity.getValue(), mtv)) {
+					// reverse so relative to B
+					mtv.scale(-1);
+					mtv.normalize();
+					reflect(bVelocity.getValue(), mtv);
+				}
 			}
 		}
 		events.clear();
@@ -98,5 +104,10 @@ public class CollisionSystem extends GameSystem {
 	}
 	private static void reflect(Vector2 velocity, Vector2 normal) {
 		velocity.reflect(normal);
+	}
+
+	private static boolean sameyDirection(Vector2 a, Vector2 b) {
+		return (a.getX() == 0 || b.getX() == 0 || a.getX() > 0 == b.getX() > 0)
+				&& (a.getY() == 0 || b.getY() == 0 || a.getY() > 0 == b.getY() > 0);
 	}
 }
