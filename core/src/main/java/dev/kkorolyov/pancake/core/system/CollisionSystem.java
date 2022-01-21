@@ -68,13 +68,11 @@ public class CollisionSystem extends GameSystem {
 					mtv.normalize();
 					reflect(aVelocity.getValue(), mtv);
 				}
-			} else if (bVelocity != null) {
-				if (sameyDirection(bVelocity.getValue(), mtv)) {
-					// reverse so relative to B
-					mtv.scale(-1);
-					mtv.normalize();
-					reflect(bVelocity.getValue(), mtv);
-				}
+			} else if (bVelocity != null && sameyDirection(bVelocity.getValue(), mtv)) {
+				// reverse so relative to B
+				mtv.scale(-1);
+				mtv.normalize();
+				reflect(bVelocity.getValue(), mtv);
 			}
 		}
 		events.clear();
