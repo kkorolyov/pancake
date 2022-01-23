@@ -44,20 +44,13 @@ public interface EventLoop {
 
 		/**
 		 * Dequeues and broadcasts all queued events.
-		 * @return number of broadcast events
 		 */
-		public int broadcast() {
-			int size = eventQueue.size();
-
-			while (!eventQueue.isEmpty()) {
-				Event event = eventQueue.remove();
-
-				Set<Consumer<?>> eventReceivers = receivers.getOrDefault(event.getClass(), Set.of());
-				for (Consumer eventReceiver : eventReceivers) {
+		public void broadcast() {
+			for (Event event = eventQueue.poll(); event != null; event = eventQueue.poll()) {
+				for (Consumer eventReceiver : receivers.getOrDefault(event.getClass(), Set.of())) {
 					eventReceiver.accept(event);
 				}
 			}
-			return size;
 		}
 
 		@Override

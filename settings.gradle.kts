@@ -11,6 +11,9 @@ include("demo:wasdbox")
 include("demo:wiggles")
 include("demo-bounce")
 
+include("debug")
+include("debug-core")
+
 include("test-utils")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

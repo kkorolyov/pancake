@@ -8,6 +8,8 @@ import dev.kkorolyov.pancake.platform.utility.Sampler;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
+import static java.util.Collections.unmodifiableCollection;
+
 /**
  * Central game management module.
  * Serves as the link between entities with components containing data and systems specifying business logic.
@@ -83,6 +85,25 @@ public final class GameEngine {
 			system.detach();
 			system.setEvents(null);
 		}
+	}
+
+	/**
+	 * Returns this engine's event loop.
+	 */
+	public EventLoop.Broadcasting getEventLoop() {
+		return events;
+	}
+	/**
+	 * Returns this engine's entity pool.
+	 */
+	public EntityPool getEntityPool() {
+		return entities;
+	}
+	/**
+	 * Returns this engine's systems.
+	 */
+	public Collection<GameSystem> getSystems() {
+		return unmodifiableCollection(systems);
 	}
 
 	/**

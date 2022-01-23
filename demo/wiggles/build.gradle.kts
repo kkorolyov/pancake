@@ -18,6 +18,9 @@ dependencies {
 	implementation(projects.graphicsJfx)
 	implementation(projects.audioJfx)
 	implementation(projects.inputJfx)
+
+	implementation(projects.debug)
+	implementation(projects.debugCore)
 }
 
 tasks.compileKotlin {
@@ -27,7 +30,7 @@ tasks.compileKotlin {
 }
 javafx {
 	version = tasks.compileJava.get().targetCompatibility
-	modules("javafx.graphics", "javafx.controls", "javafx.media", "javafx.fxml", "javafx.web", "javafx.swing")
+	modules("javafx.fxml", "javafx.web", "javafx.swing")
 }
 
 application {
