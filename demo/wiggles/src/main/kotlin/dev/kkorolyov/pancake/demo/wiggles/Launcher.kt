@@ -18,8 +18,8 @@ import dev.kkorolyov.pancake.core.system.CollisionSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
 import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
-import dev.kkorolyov.pancake.debug.openDebug
-import dev.kkorolyov.pancake.debug.registerDebug
+import dev.kkorolyov.pancake.editor.openEditor
+import dev.kkorolyov.pancake.editor.registerEditor
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
 import dev.kkorolyov.pancake.graphics.jfx.component.Lens
 import dev.kkorolyov.pancake.graphics.jfx.drawable.Oval
@@ -158,7 +158,7 @@ fun makeStrand(root: Vector3, length: Int) {
 }
 
 fun main() {
-	registerDebug(gameLoop)
+	registerEditor(gameLoop)
 
 	Platform.startup {
 		Demo(gameLoop::stop)
@@ -173,7 +173,7 @@ class DemoView : View(Config.get().getProperty("title")) {
 		currentStage?.let { curStage ->
 			curStage.scene?.onKeyPressed = EventHandler { e ->
 				when (e.code) {
-					KeyCode.F1 -> openDebug(curStage)
+					KeyCode.F1 -> openEditor(curStage)
 					else -> {}
 				}
 			}

@@ -15,8 +15,8 @@ module dev.kkorolyov.pancake.demo.wiggles {
 	requires dev.kkorolyov.pancake.audio.jfx;
 	requires dev.kkorolyov.pancake.input.jfx;
 
-	requires dev.kkorolyov.pancake.debug;
-	requires dev.kkorolyov.pancake.debug.core;
+	requires dev.kkorolyov.pancake.editor;
+	requires dev.kkorolyov.pancake.editor.core;
 
 	exports dev.kkorolyov.pancake.demo.wiggles to tornadofx;
 }

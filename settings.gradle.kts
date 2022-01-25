@@ -11,8 +11,8 @@ include("demo:wasdbox")
 include("demo:wiggles")
 include("demo-bounce")
 
-include("debug")
-include("debug-core")
+include("editor")
+include("editor-core")
 
 include("test-utils")
 

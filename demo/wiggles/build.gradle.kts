@@ -19,8 +19,8 @@ dependencies {
 	implementation(projects.audioJfx)
 	implementation(projects.inputJfx)
 
-	implementation(projects.debug)
-	implementation(projects.debugCore)
+	implementation(projects.editor)
+	implementation(projects.editorCore)
 }
 
 tasks.compileKotlin {
