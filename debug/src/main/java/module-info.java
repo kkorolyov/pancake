@@ -15,5 +15,7 @@ module dev.kkorolyov.pancake.debug {
 	exports dev.kkorolyov.pancake.debug.controller to tornadofx;
 	exports dev.kkorolyov.pancake.debug.view to tornadofx;
 
+	opens icons;
+
 	uses ComponentDataFactory;
 }

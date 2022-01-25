@@ -4,7 +4,10 @@ import dev.kkorolyov.pancake.debug.data.EntityData
 import dev.kkorolyov.pancake.debug.data.GameSystemData
 import tornadofx.Controller
 
-class DataDetails : Controller() {
+/**
+ * Maintains selection state of various dynamic models.
+ */
+class DataSelection : Controller() {
 	val gameSystemData: GameSystemData = GameSystemData()
 	val entityData: EntityData = EntityData()
 }

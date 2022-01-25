@@ -124,7 +124,7 @@ fun main() {
 		App(Scene(pane), gameLoop::stop)
 		pane.requestFocus()
 	}
-	Thread(gameLoop::start).start()
+	gameLoop.start()
 
 	player[AudioEmitter::class.java].add(Media(Path.of("assets/audio/bg.wav").toUri().toString()))
 	events.enqueue(

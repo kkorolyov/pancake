@@ -7,14 +7,14 @@ import tornadofx.gridpane
 import tornadofx.gridpaneConstraints
 
 class DebugScene : View("Debug") {
-	private val engineDetails: EngineDetails by inject()
+	private val loopDetails: LoopDetails by inject()
 	private val systemsTable: SystemsTable by inject()
 	private val entitiesTable: EntitiesTable by inject()
 	private val systemDetails: SystemDetails by inject()
 	private val entityDetails: EntityDetails by inject()
 
 	override val root = gridpane {
-		add(engineDetails.root.gridpaneConstraints {
+		add(loopDetails.root.gridpaneConstraints {
 			columnRowIndex(0, 0)
 			columnSpan = 2
 		})

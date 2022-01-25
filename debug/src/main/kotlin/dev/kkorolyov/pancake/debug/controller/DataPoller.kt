@@ -3,16 +3,19 @@ package dev.kkorolyov.pancake.debug.controller
 import dev.kkorolyov.pancake.debug.data.EntityData
 import dev.kkorolyov.pancake.debug.data.GameSystemData
 import dev.kkorolyov.pancake.platform.Config
-import dev.kkorolyov.pancake.platform.GameEngine
+import dev.kkorolyov.pancake.platform.GameLoop
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.event.Event
 import dev.kkorolyov.pancake.platform.utility.Sampler
+import javafx.beans.value.ObservableBooleanValue
 import javafx.beans.value.ObservableIntegerValue
+import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import tornadofx.Controller
 import tornadofx.bind
+import tornadofx.booleanProperty
 import tornadofx.intProperty
 import tornadofx.objectProperty
 import tornadofx.observableListOf
@@ -25,7 +28,11 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
-class EnginePoller : Controller() {
+/**
+ * Regularly polls and maintains information from a registered [GameLoop].
+ * Exposes polled information as observable values.
+ */
+class DataPoller : Controller() {
 	val events: ObservableList<Event> = observableListOf()
 	val entities: ObservableList<EntityData> by lazy {
 		observableListOf<EntityData>().apply {
@@ -41,11 +48,16 @@ class EnginePoller : Controller() {
 	}
 	val tps: ObservableIntegerValue
 		get() = tpsProperty
+	val active: ObservableBooleanValue
+		get() = activeProperty
+	val loop: ObservableValue<GameLoop>
+		get() = loopProperty
 
 	private val entitySet = observableSetOf<Entity>()
 	private val systemsMap = observableMapOf<GameSystem, Sampler>()
 	private val tpsProperty = intProperty()
-	private val engineProperty = objectProperty<GameEngine>().apply {
+	private val activeProperty = booleanProperty()
+	private val loopProperty = objectProperty<GameLoop>().apply {
 		onChange {
 			clear()
 			it?.let {
@@ -64,20 +76,24 @@ class EnginePoller : Controller() {
 	}
 	private var pollTask: ScheduledFuture<*>? = null
 
-	fun register(engine: GameEngine) {
-		engineProperty.set(engine)
+	/**
+	 * Registers [loop] with this poller.
+	 */
+	fun register(loop: GameLoop) {
+		loopProperty.set(loop)
 	}
 
-	private fun refresh(engine: GameEngine) {
+	private fun refresh(loop: GameLoop) {
 		runLater {
-			val currentEntities = engine.entityPool.toSet()
+			val currentEntities = loop.engine.entityPool.toSet()
 			entitySet.retainAll(currentEntities)
 			entitySet.addAll(currentEntities)
 
-			systemsMap.keys.retainAll(engine.perfMonitor.systems.keys)
-			systemsMap.putAll(engine.perfMonitor.systems)
+			systemsMap.keys.retainAll(loop.engine.perfMonitor.systems.keys)
+			systemsMap.putAll(loop.engine.perfMonitor.systems)
 
-			tpsProperty.set((1e9 / engine.perfMonitor.engine.value).roundToInt())
+			tpsProperty.set((1e9 / loop.engine.perfMonitor.engine.value).roundToInt())
+			activeProperty.set(loop.isActive)
 
 			systems.forEach(GameSystemData::refresh)
 			entities.forEach(EntityData::refresh)

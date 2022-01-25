@@ -130,7 +130,7 @@ fun main() {
 	Platform.startup {
 		Demo(gameLoop::stop)
 	}
-	Thread(gameLoop::start).start()
+	gameLoop.start()
 }
 
 class DemoView : View(Config.get().getProperty("title")) {

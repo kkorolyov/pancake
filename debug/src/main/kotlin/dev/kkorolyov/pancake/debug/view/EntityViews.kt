@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.debug.view
 
-import dev.kkorolyov.pancake.debug.controller.DataDetails
-import dev.kkorolyov.pancake.debug.controller.EnginePoller
+import dev.kkorolyov.pancake.debug.controller.DataSelection
+import dev.kkorolyov.pancake.debug.controller.DataPoller
 import dev.kkorolyov.pancake.debug.data.EntityData
 import dev.kkorolyov.pancake.debug.getComponentDetails
 import javafx.collections.FXCollections
@@ -21,28 +21,28 @@ import tornadofx.tabpane
 import java.util.Comparator.comparing
 
 class EntitiesTable : View() {
-	private val poller: EnginePoller by inject()
-	private val dataDetails: DataDetails by inject()
+	private val poller: DataPoller by inject()
+	private val dataSelection: DataSelection by inject()
 
 	override val root = tableview(poller.entities) {
 		column<EntityData, Int>("ID") { it.value.id }
 		column<EntityData, Number>("Components") { integerBinding(it.value.components) { size } }
 
-		onSelectionChange(dataDetails.entityData::bind)
+		onSelectionChange(dataSelection.entityData::bind)
 	}
 }
 
 class EntityDetails : View() {
-	private val dataDetails: DataDetails by inject()
+	private val dataSelection: DataSelection by inject()
 
 	override val root = form {
 		fieldset {
 			field("ID") {
-				label(dataDetails.entityData.id)
+				label(dataSelection.entityData.id)
 			}
 
 			tabpane {
-				dataDetails.entityData.components.onChange { change ->
+				dataSelection.entityData.components.onChange { change ->
 					tabs.clear()
 					change.list.forEach {
 						tab(it.name.value) {
