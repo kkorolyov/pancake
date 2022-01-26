@@ -25,7 +25,8 @@ class CameraSystem : GameSystem(
 	}
 
 	override fun update(entity: Entity, dt: Long) {
-		if (entity.id !in known) enqueue(CameraCreated(Camera(entity)))
+		if (known.add(entity.id)) enqueue(CameraCreated(Camera(entity)))
+		seen.remove(entity.id)
 	}
 
 	override fun after(dt: Long) {
