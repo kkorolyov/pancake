@@ -11,8 +11,10 @@ import tornadofx.gridpaneConstraints
 import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.label
+import tornadofx.listview
 import tornadofx.onChange
 import tornadofx.paddingLeft
+import tornadofx.vbox
 
 class LoopDetails : View() {
 	private val poller: DataPoller by inject()
@@ -41,6 +43,18 @@ class LoopDetails : View() {
 			alignment = Pos.CENTER
 			gridpaneConstraints {
 				columnRowIndex(1, 0)
+			}
+		}
+
+		vbox {
+			label("Events")
+			listview(poller.events) {
+				maxHeight = 240.0
+			}
+
+			gridpaneConstraints {
+				columnRowIndex(0, 1)
+				columnSpan = 3
 			}
 		}
 

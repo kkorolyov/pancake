@@ -32,6 +32,5 @@ class EditorScene : View("Editor") {
 		})
 
 		colRatios(1, 1)
-//		rowRatios(null, 3, 7)
 	}
 }

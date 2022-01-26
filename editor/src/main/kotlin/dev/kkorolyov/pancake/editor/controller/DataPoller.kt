@@ -86,6 +86,8 @@ class DataPoller : Controller() {
 
 	private fun refresh(loop: GameLoop) {
 		runLater {
+			events.setAll(loop.engine.eventLoop.toList())
+
 			val currentEntities = loop.engine.entityPool.toSet()
 			entitySet.retainAll(currentEntities)
 			entitySet.addAll(currentEntities)

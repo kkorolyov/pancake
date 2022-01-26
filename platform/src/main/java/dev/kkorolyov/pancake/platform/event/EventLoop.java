@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.platform.event;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -28,7 +29,7 @@ public interface EventLoop {
 	/**
 	 * An {@link EventLoop} implementation supporting broadcasting events.
 	 */
-	final class Broadcasting implements EventLoop {
+	final class Broadcasting implements EventLoop, Iterable<Event> {
 		private final Map<Class<? extends Event>, Set<Consumer<?>>> receivers = new HashMap<>();
 		private final Queue<Event> eventQueue = new ArrayDeque<>();
 
@@ -51,6 +52,11 @@ public interface EventLoop {
 					eventReceiver.accept(event);
 				}
 			}
+		}
+
+		@Override
+		public Iterator<Event> iterator() {
+			return eventQueue.iterator();
 		}
 
 		@Override
