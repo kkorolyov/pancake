@@ -6,13 +6,22 @@ import dev.kkorolyov.pancake.platform.GameLoop
 import javafx.stage.Stage
 import tornadofx.find
 
+/**
+ * Registers the global editor state with [loop].
+ */
 fun registerEditor(loop: GameLoop) {
 	find<DataPoller>().register(loop)
 }
 
-fun openEditor(stage: Stage) {
+/**
+ * Opens editor GUI in a new window.
+ * Editor window is opened next to [stage], if non-`null`.
+ */
+fun openEditor(stage: Stage? = null) {
 	find<EditorScene>().openWindow()?.let { otherStage ->
-		otherStage.x = stage.x + stage.width
-		otherStage.y = stage.y
+		stage?.let {
+			otherStage.x = it.x + it.width
+			otherStage.y = it.y
+		}
 	}
 }

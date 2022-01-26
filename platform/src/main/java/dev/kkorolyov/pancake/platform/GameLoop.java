@@ -10,7 +10,7 @@ public final class GameLoop {
 	private volatile boolean active;
 
 	/**
-	 * Constructs a new game loop with tick granularity specified in platform {@link Config#get()} as {@code tps}.
+	 * Constructs a new game loop with tick granularity specified in platform {@link Config#get()} as {@code tps} - target number of ticks per second.
 	 * @param engine game engine receiving updates
 	 */
 	public GameLoop(GameEngine engine) {

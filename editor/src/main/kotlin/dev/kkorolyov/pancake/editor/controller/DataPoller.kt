@@ -31,6 +31,7 @@ import kotlin.math.roundToInt
 /**
  * Regularly polls and maintains information from a registered [GameLoop].
  * Exposes polled information as observable values.
+ * Polls at rate set in platform [Config.get] as `editor.pollRate` - target number of polls per second, else defaults to `30` polls per second.
  */
 class DataPoller : Controller() {
 	val events: ObservableList<Event> = observableListOf()
@@ -64,7 +65,7 @@ class DataPoller : Controller() {
 				pollTask = pollExecutorFactory.scheduleAtFixedRate(
 					{ refresh(it) },
 					0,
-					(1e9 / (Config.get().getProperty("debug.pollRate")?.toLong() ?: 30)).toLong(),
+					(1e9 / (Config.get().getProperty("editor.pollRate")?.toLong() ?: 30)).toLong(),
 					TimeUnit.NANOSECONDS
 				)
 			}

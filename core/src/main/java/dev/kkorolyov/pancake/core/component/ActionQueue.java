@@ -5,6 +5,7 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 
 import java.util.ArrayDeque;
+import java.util.Iterator;
 import java.util.Queue;
 
 import static dev.kkorolyov.flub.collections.Iterables.append;
@@ -12,7 +13,7 @@ import static dev.kkorolyov.flub.collections.Iterables.append;
 /**
  * A collection of queued actions to apply to containing entities.
  */
-public class ActionQueue implements Component {
+public final class ActionQueue implements Component, Iterable<Action> {
 	private final Queue<Action> actions = new ArrayDeque<>();
 
 	/** @see #enqueue(Iterable) */
@@ -43,5 +44,10 @@ public class ActionQueue implements Component {
 	 */
 	public void clear() {
 		actions.clear();
+	}
+
+	@Override
+	public Iterator<Action> iterator() {
+		return actions.iterator();
 	}
 }

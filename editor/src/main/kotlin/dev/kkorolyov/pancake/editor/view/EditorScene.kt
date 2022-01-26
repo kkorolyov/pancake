@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.editor.view
 
-import javafx.scene.layout.ColumnConstraints
-import javafx.scene.layout.RowConstraints
+import dev.kkorolyov.pancake.editor.colRatios
+import dev.kkorolyov.pancake.editor.rowRatios
 import tornadofx.View
 import tornadofx.gridpane
 import tornadofx.gridpaneConstraints
 
-class EditorScene : View("Debug") {
+class EditorScene : View("Editor") {
 	private val loopDetails: LoopDetails by inject()
 	private val systemsTable: SystemsTable by inject()
 	private val entitiesTable: EntitiesTable by inject()
@@ -31,22 +31,7 @@ class EditorScene : View("Debug") {
 			columnRowIndex(1, 2)
 		})
 
-		columnConstraints += listOf(
-			columnPercent(50.0),
-			columnPercent(50.0)
-		)
-//		rowConstraints += listOf(
-//			RowConstraints(),
-//			rowPercent(30.0),
-//			rowPercent(70.0)
-//		)
+		colRatios(1, 1)
+//		rowRatios(null, 3, 7)
 	}
-}
-
-private fun columnPercent(value: Double) = ColumnConstraints().apply {
-	percentWidth = value
-}
-
-private fun rowPercent(value: Double) = RowConstraints().apply {
-	percentHeight = value
 }
