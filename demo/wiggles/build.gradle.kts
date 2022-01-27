@@ -9,15 +9,7 @@ plugins {
 description = "Demo of mouse-controlled physics"
 
 dependencies {
-	implementation(libs.bundles.stdlib)
-	implementation(libs.tornadofx)
-	implementation(libs.bundles.log)
-
-	implementation(projects.platform)
-	implementation(projects.core)
-	implementation(projects.graphicsJfx)
-	implementation(projects.audioJfx)
-	implementation(projects.inputJfx)
+	implementation(projects.demo)
 }
 
 tasks.compileKotlin {
@@ -27,7 +19,7 @@ tasks.compileKotlin {
 }
 javafx {
 	version = tasks.compileJava.get().targetCompatibility
-	modules("javafx.graphics", "javafx.controls", "javafx.media", "javafx.fxml", "javafx.web", "javafx.swing")
+	modules("javafx.fxml", "javafx.web", "javafx.swing")
 }
 
 application {

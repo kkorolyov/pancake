@@ -37,4 +37,11 @@ public final class Damping implements Component {
 	private static double damp(double velocity, double force, double damping) {
 		return (velocity < 0 ? force >= 0 : force <= 0) ? damping : 1;
 	}
+
+	/**
+	 * Returns the damping vector.
+	 */
+	public Vector3 getValue() {
+		return value;
+	}
 }

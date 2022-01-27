@@ -7,9 +7,13 @@ include("audio-jfx")
 include("graphics-jfx")
 include("input-jfx")
 
+include("demo")
 include("demo:wasdbox")
 include("demo:wiggles")
 include("demo-bounce")
+
+include("editor")
+include("editor-core")
 
 include("test-utils")
 

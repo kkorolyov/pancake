@@ -10,7 +10,7 @@ public final class GameLoop {
 	private volatile boolean active;
 
 	/**
-	 * Constructs a new game loop with tick granularity specified in platform {@link Config#get()}.
+	 * Constructs a new game loop with tick granularity specified in platform {@link Config#get()} as {@code tps} - target number of ticks per second.
 	 * @param engine game engine receiving updates
 	 */
 	public GameLoop(GameEngine engine) {
@@ -27,26 +27,29 @@ public final class GameLoop {
 	}
 
 	/**
-	 * Starts this loop if it is not currently active.
+	 * Starts this loop on a new thread if it is not currently active.
 	 * An active game loop continuously updates its associated {@link GameEngine} by {@code dt} increments every {@code >= dt} passage of time.
 	 */
 	public void start() {
 		if (!active) {
 			active = true;
-			long last = System.nanoTime();
-			long lag = 0L;
 
-			while (active) {
-				long now = System.nanoTime();
-				long elapsed = now - last;
-				last = now;
-				lag += elapsed;
+			new Thread(() -> {
+				long last = System.nanoTime();
+				long lag = 0L;
 
-				while (lag >= dt) {
-					engine.update(dt);
-					lag -= dt;
+				while (active) {
+					long now = System.nanoTime();
+					long elapsed = now - last;
+					last = now;
+					lag += elapsed;
+
+					while (lag >= dt) {
+						engine.update(dt);
+						lag -= dt;
+					}
 				}
-			}
+			}).start();
 		}
 	}
 	/**
@@ -54,6 +57,20 @@ public final class GameLoop {
 	 */
 	public void stop() {
 		active = false;
+	}
+
+	/**
+	 * Returns the game engine run by this loop.
+	 */
+	public GameEngine getEngine() {
+		return engine;
+	}
+
+	/**
+	 * Returns whether this loop is currently running.
+	 */
+	public boolean isActive() {
+		return active;
 	}
 
 	@Override

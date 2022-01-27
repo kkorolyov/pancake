@@ -4,12 +4,14 @@ import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.event.EntitiesIntersected
 import dev.kkorolyov.pancake.core.system.AccelerationSystem
 import dev.kkorolyov.pancake.core.system.ActionSystem
 import dev.kkorolyov.pancake.core.system.CappingSystem
 import dev.kkorolyov.pancake.core.system.CollisionSystem
 import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
+import dev.kkorolyov.pancake.demo.start
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
 import dev.kkorolyov.pancake.graphics.jfx.component.Lens
 import dev.kkorolyov.pancake.graphics.jfx.drawable.Oval
@@ -28,16 +30,12 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.event.EventLoop
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vectors
-import javafx.application.Platform
-import javafx.event.EventHandler
 import javafx.scene.canvas.Canvas
-import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.TilePane
+import javafx.scene.media.AudioClip
 import javafx.scene.paint.Color
-import javafx.stage.Stage
-import tornadofx.App
-import tornadofx.View
+import tornadofx.runLater
 
 val pane = TilePane()
 
@@ -127,30 +125,11 @@ fun makeWalls(radii: Vector2): List<EntityPool.ManagedEntity> {
 }
 
 fun main() {
-	Platform.startup {
-		Demo(gameLoop::stop)
-	}
-	Thread(gameLoop::start).start()
-}
+	start(gameLoop, pane)
+	runLater { pane.requestFocus() }
 
-class DemoView : View(Config.get().getProperty("title")) {
-	override val root = pane
-}
-
-class Demo(private val onClose: () -> Unit) : App(DemoView::class) {
-	init {
-		start(Stage())
-		pane.requestFocus()
-	}
-
-	override fun start(stage: Stage) {
-		stage.icons += Image(Config.get().getProperty("icon"))
-
-		stage.width = Config.get().getProperty("width").toDouble()
-		stage.height = Config.get().getProperty("height").toDouble()
-
-		stage.onCloseRequest = EventHandler { onClose() }
-
-		super.start(stage)
+	val spawnClip = AudioClip(ClassLoader.getSystemResource("spawn.wav").toURI().toString())
+	events.register(EntitiesIntersected::class.java) {
+		spawnClip.play()
 	}
 }

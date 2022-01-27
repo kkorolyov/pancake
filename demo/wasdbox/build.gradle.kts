@@ -9,14 +9,7 @@ plugins {
 description = "Demo rendering controllable 2D rectangles"
 
 dependencies {
-	implementation(libs.bundles.stdlib)
-	implementation(libs.bundles.log)
-
-	implementation(projects.platform)
-	implementation(projects.core)
-	implementation(projects.graphicsJfx)
-	implementation(projects.audioJfx)
-	implementation(projects.inputJfx)
+	implementation(projects.demo)
 }
 
 tasks.compileKotlin {
@@ -26,7 +19,7 @@ tasks.compileKotlin {
 }
 javafx {
 	version = tasks.compileJava.get().targetCompatibility
-	modules("javafx.graphics", "javafx.controls", "javafx.media")
+	modules("javafx.fxml", "javafx.web", "javafx.swing", "javafx.media")
 }
 
 application {

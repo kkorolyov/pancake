@@ -36,4 +36,11 @@ public final class VelocityCap implements Component {
 	private static double round(double value) {
 		return Double.compare(0, value) == 0 ? 0 : value;
 	}
+
+	/**
+	 * Returns maximum velocity in {@code m/s}.
+	 */
+	public Vector3 getValue() {
+		return value;
+	}
 }
