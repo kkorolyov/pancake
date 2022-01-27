@@ -16,6 +16,7 @@ import dev.kkorolyov.pancake.core.system.ActionSystem
 import dev.kkorolyov.pancake.core.system.CappingSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
+import dev.kkorolyov.pancake.demo.start
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
 import dev.kkorolyov.pancake.graphics.jfx.component.Lens
 import dev.kkorolyov.pancake.graphics.jfx.drawable.Rectangle
@@ -37,17 +38,12 @@ import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory
 import dev.kkorolyov.pancake.platform.plugin.Plugins
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceReader
-import javafx.application.Application
-import javafx.application.Platform
-import javafx.event.EventHandler
-import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
-import javafx.scene.image.Image
 import javafx.scene.input.KeyCode
 import javafx.scene.layout.TilePane
 import javafx.scene.media.Media
 import javafx.scene.paint.Color
-import javafx.stage.Stage
+import tornadofx.runLater
 import java.nio.file.Path
 
 val pane = TilePane()
@@ -120,11 +116,8 @@ val player = entities.create().apply {
 }
 
 fun main() {
-	Platform.startup {
-		App(Scene(pane), gameLoop::stop)
-		pane.requestFocus()
-	}
-	gameLoop.start()
+	start(gameLoop, pane)
+	runLater { pane.requestFocus() }
 
 	player[AudioEmitter::class.java].add(Media(Path.of("assets/audio/bg.wav").toUri().toString()))
 	events.enqueue(
@@ -135,27 +128,4 @@ fun main() {
 			)
 		)
 	)
-}
-
-/**
- * JavaFX application running demo and displaying [scene].
- */
-class App(private val scene: Scene, private val onClose: () -> Unit) : Application() {
-	init {
-		start(Stage())
-	}
-
-	override fun start(primaryStage: Stage) {
-		primaryStage.title = Config.get().getProperty("title")
-		primaryStage.icons += Image(Config.get().getProperty("icon"))
-
-		primaryStage.scene = scene
-
-		primaryStage.width = Config.get().getProperty("width").toDouble()
-		primaryStage.height = Config.get().getProperty("height").toDouble()
-
-		primaryStage.onCloseRequest = EventHandler { onClose() }
-
-		primaryStage.show()
-	}
 }

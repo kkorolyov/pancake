@@ -3,13 +3,23 @@ plugins {
 	id("org.openjfx.javafxplugin")
 	id("org.jetbrains.dokka")
 	id("org.javamodularity.moduleplugin")
-	application
 }
 
-description = "Demo of mouse-controlled physics"
+description = "Common demo skeleton"
 
 dependencies {
-	implementation(projects.demo)
+	api(libs.bundles.stdlib)
+	api(libs.tornadofx)
+	api(libs.bundles.log)
+
+	api(projects.platform)
+	api(projects.core)
+	api(projects.graphicsJfx)
+	api(projects.audioJfx)
+	api(projects.inputJfx)
+
+	implementation(projects.editor)
+	implementation(projects.editorCore)
 }
 
 tasks.compileKotlin {
@@ -20,9 +30,4 @@ tasks.compileKotlin {
 javafx {
 	version = tasks.compileJava.get().targetCompatibility
 	modules("javafx.fxml", "javafx.web", "javafx.swing")
-}
-
-application {
-	mainModule.set("dev.kkorolyov.pancake.demo.wiggles")
-	mainClass.set("dev.kkorolyov.pancake.demo.wiggles.LauncherKt")
 }
