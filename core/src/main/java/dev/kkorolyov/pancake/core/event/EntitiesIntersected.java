@@ -13,7 +13,7 @@ public final class EntitiesIntersected implements Event {
 	private final Vector2 mtv;
 
 	/**
-	 * Constructs a new intersection event between entities {@code a} and {@code b} with the {@code a}-relative {@code mtv} used to remove overlap.
+	 * Constructs a new intersection event between entities {@code a} and {@code b} with the {@code a}-relative normalized {@code mtv} used to remove overlap.
 	 */
 	public EntitiesIntersected(Entity a, Entity b, Vector2 mtv) {
 		this.a = a;
