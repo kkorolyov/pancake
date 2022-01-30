@@ -1,0 +1,87 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.editor.controller////PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/DataPoller/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/-data-poller.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/active/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/active.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/entities/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/entities.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/events/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/events.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/loop/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/loop.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/register/#dev.kkorolyov.pancake.platform.GameLoop/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/register.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/systems/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/systems.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/tps/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/tps.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataSelection///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-selection/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataSelection/DataSelection/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-selection/-data-selection.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataSelection/entityData/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-selection/entity-data.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataSelection/gameSystemData/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-selection/game-system-data.html
+$dokka.location:dev.kkorolyov.pancake.editor.data////PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/BasicComponentData///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-basic-component-data/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/BasicComponentData/BasicComponentData/#dev.kkorolyov.pancake.platform.entity.Component/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-basic-component-data/-basic-component-data.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/DynamicModel///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-dynamic-model/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/DynamicModel/bind/#TypeParam(bounds=[dev.kkorolyov.pancake.editor.data.DynamicModel[^]])?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-dynamic-model/bind.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/DynamicModel/refresh/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-dynamic-model/refresh.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/EntityData///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-entity-data/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/EntityData/EntityData/#dev.kkorolyov.pancake.platform.entity.Entity?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-entity-data/-entity-data.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/EntityData/bind/#dev.kkorolyov.pancake.editor.data.EntityData?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-entity-data/bind.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/EntityData/components/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-entity-data/components.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/EntityData/id/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-entity-data/id.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/EntityData/refresh/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-entity-data/refresh.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData/GameSystemData/#dev.kkorolyov.pancake.platform.GameSystem?#dev.kkorolyov.pancake.platform.utility.Sampler?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/-game-system-data.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData/bind/#dev.kkorolyov.pancake.editor.data.GameSystemData?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/bind.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData/name/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/name.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData/refresh/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/refresh.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData/signature/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/signature.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData/tick/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/tick.html
+$dokka.location:dev.kkorolyov.pancake.editor.data/GameSystemData/tps/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.data/-game-system-data/tps.html
+$dokka.location:dev.kkorolyov.pancake.editor.view////PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/BasicComponentDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-basic-component-details/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/BasicComponentDetails/BasicComponentDetails/#dev.kkorolyov.pancake.editor.ComponentData[*,*]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-basic-component-details/-basic-component-details.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/BasicComponentDetails/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-basic-component-details/root.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EditorScene///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-editor-scene/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EditorScene/EditorScene/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-editor-scene/-editor-scene.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EditorScene/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-editor-scene/root.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EntitiesTable///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-entities-table/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EntitiesTable/EntitiesTable/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-entities-table/-entities-table.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EntitiesTable/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-entities-table/root.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EntityDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-entity-details/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EntityDetails/EntityDetails/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-entity-details/-entity-details.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/EntityDetails/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-entity-details/root.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/ExpandedEntityDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-expanded-entity-details/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/ExpandedEntityDetails/ExpandedEntityDetails/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-expanded-entity-details/-expanded-entity-details.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/ExpandedEntityDetails/onDock/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-expanded-entity-details/on-dock.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/ExpandedEntityDetails/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-expanded-entity-details/root.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/LoopDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-loop-details/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/LoopDetails/LoopDetails/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-loop-details/-loop-details.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/LoopDetails/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-loop-details/root.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/SystemDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-system-details/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/SystemDetails/SystemDetails/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-system-details/-system-details.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/SystemDetails/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-system-details/root.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/SystemsTable///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-systems-table/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/SystemsTable/SystemsTable/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-systems-table/-systems-table.html
+$dokka.location:dev.kkorolyov.pancake.editor.view/SystemsTable/root/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.view/-systems-table/root.html
+$dokka.location:dev.kkorolyov.pancake.editor////PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/index.html
+$dokka.location:dev.kkorolyov.pancake.editor//colRatios/javafx.scene.layout.GridPane#kotlin.Array[kotlin.Number?]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/col-ratios.html
+$dokka.location:dev.kkorolyov.pancake.editor//getComponentData/#dev.kkorolyov.pancake.platform.entity.Component/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/get-component-data.html
+$dokka.location:dev.kkorolyov.pancake.editor//getComponentDetails/#dev.kkorolyov.pancake.editor.ComponentData[*,*]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/get-component-details.html
+$dokka.location:dev.kkorolyov.pancake.editor//openEditor/#javafx.stage.Stage?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/open-editor.html
+$dokka.location:dev.kkorolyov.pancake.editor//prettyPrint/dev.kkorolyov.pancake.platform.math.Vector2#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/pretty-print.html
+$dokka.location:dev.kkorolyov.pancake.editor//prettyPrint/dev.kkorolyov.pancake.platform.math.Vector3#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/pretty-print.html
+$dokka.location:dev.kkorolyov.pancake.editor//registerEditor/#dev.kkorolyov.pancake.platform.GameLoop/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/register-editor.html
+$dokka.location:dev.kkorolyov.pancake.editor//rowRatios/javafx.scene.layout.GridPane#kotlin.Array[kotlin.Number?]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/row-ratios.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentData///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/index.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentData/ComponentData/#TypeParam(bounds=[dev.kkorolyov.pancake.platform.entity.Component])?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/-component-data.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentData/bind/#TypeParam(bounds=[dev.kkorolyov.pancake.editor.ComponentData[TypeParam(bounds=[dev.kkorolyov.pancake.platform.entity.Component]),^]])?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/bind.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentData/name/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/name.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentData/refresh/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/refresh.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentData/stringValue/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/string-value.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentDataFactory///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data-factory/index.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentDataFactory/getData/#dev.kkorolyov.pancake.platform.entity.Component/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data-factory/get-data.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentDataFactory/getDetails/#dev.kkorolyov.pancake.editor.ComponentData[*,*]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data-factory/get-details.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-details/index.html
+$dokka.location:dev.kkorolyov.pancake.editor/ComponentDetails/ComponentDetails/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-details/-component-details.html
+dev.kkorolyov.pancake.editor
+dev.kkorolyov.pancake.editor.controller
+dev.kkorolyov.pancake.editor.data
+dev.kkorolyov.pancake.editor.view
+

@@ -1,0 +1,53 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component////PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Graphic///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-graphic/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Graphic/Graphic/#dev.kkorolyov.pancake.graphics.jfx.drawable.Drawable/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-graphic/-graphic.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Lens///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-lens/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Lens/Lens/#javafx.scene.canvas.Canvas#dev.kkorolyov.pancake.platform.math.Vector2#java.util.BitSet#kotlin.Boolean/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-lens/-lens.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Lens/active/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-lens/active.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Lens/canvas/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-lens/canvas.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Lens/mask/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-lens/mask.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.component/Lens/scale/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.component/-lens/scale.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable////PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Drawable///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-drawable/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Drawable/invoke/#javafx.scene.canvas.GraphicsContext/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-drawable/invoke.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Oval///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-oval/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Oval/Oval/#dev.kkorolyov.pancake.platform.math.Vector2#javafx.scene.paint.Color/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-oval/-oval.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Oval/invoke/#javafx.scene.canvas.GraphicsContext/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-oval/invoke.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Rectangle///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-rectangle/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Rectangle/Rectangle/#dev.kkorolyov.pancake.platform.math.Vector2#javafx.scene.paint.Color/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-rectangle/-rectangle.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Rectangle/invoke/#javafx.scene.canvas.GraphicsContext/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-rectangle/invoke.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Text///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-text/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Text/Text/#kotlin.String#kotlin.Double#javafx.scene.paint.Color/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-text/-text.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.drawable/Text/invoke/#javafx.scene.canvas.GraphicsContext/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.drawable/-text/invoke.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system////PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/CameraSystem///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-camera-system/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/CameraSystem/CameraSystem/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-camera-system/-camera-system.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/CameraSystem/after/#kotlin.Long/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-camera-system/after.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/CameraSystem/before/#kotlin.Long/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-camera-system/before.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/CameraSystem/update/#dev.kkorolyov.pancake.platform.entity.Entity#kotlin.Long/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-camera-system/update.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/DrawSystem///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-draw-system/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/DrawSystem/DrawSystem/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-draw-system/-draw-system.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/DrawSystem/after/#kotlin.Long/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-draw-system/after.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/DrawSystem/attach/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-draw-system/attach.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/DrawSystem/before/#kotlin.Long/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-draw-system/before.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx.system/DrawSystem/update/#dev.kkorolyov.pancake.platform.entity.Entity#kotlin.Long/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx.system/-draw-system/update.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx////PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/Camera///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/Camera/Camera/#dev.kkorolyov.pancake.platform.entity.Entity/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera/-camera.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/Camera/id/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera/id.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/Camera/lens/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera/lens.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/Camera/map/#dev.kkorolyov.pancake.platform.math.Vector2/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera/map.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/Camera/transform/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera/transform.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/CameraCreated///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera-created/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/CameraCreated/CameraCreated/#dev.kkorolyov.pancake.graphics.jfx.Camera/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera-created/-camera-created.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/CameraCreated/camera/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera-created/camera.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/CameraDestroyed///PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera-destroyed/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/CameraDestroyed/CameraDestroyed/#kotlin.Int/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera-destroyed/-camera-destroyed.html
+$dokka.location:dev.kkorolyov.pancake.graphics.jfx/CameraDestroyed/id/#/PointingToDeclaration/graphics-jfx/dev.kkorolyov.pancake.graphics.jfx/-camera-destroyed/id.html
+dev.kkorolyov.pancake.graphics.jfx
+dev.kkorolyov.pancake.graphics.jfx.component
+dev.kkorolyov.pancake.graphics.jfx.drawable
+dev.kkorolyov.pancake.graphics.jfx.system
+
