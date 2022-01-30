@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * Detects entity intersections and enqueues intersection events with proposed minimum translation vectors.
+ * Detects entity intersections and enqueues intersection events with normalized minimum translation vectors.
  */
 public final class IntersectionSystem extends GameSystem {
 	private final Queue<Entity> toCheck = new ArrayDeque<>();
@@ -65,9 +65,9 @@ public final class IntersectionSystem extends GameSystem {
 			else processPoly(aTransform, bTransform, aBounds, bBounds);
 
 			if (mtv.getX() != 0 || mtv.getY() != 0) {
-				mtv.scale(minOverlap);
-
 				enqueue(new EntitiesIntersected(a, b, mtv));
+
+				mtv.scale(minOverlap);
 
 				// move "best-fit" entity to remove overlap
 				if (a.get(Velocity.class) == null && b.get(Velocity.class) != null) {
