@@ -8,6 +8,7 @@ $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/entities/#/Po
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/events/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/events.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/loop/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/loop.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/register/#dev.kkorolyov.pancake.platform.GameLoop/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/register.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/scale/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/scale.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/systems/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/systems.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/tps/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/tps.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataSelection///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-selection/index.html
