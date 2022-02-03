@@ -13,8 +13,12 @@ import tornadofx.imageview
 import tornadofx.label
 import tornadofx.listview
 import tornadofx.onChange
+import tornadofx.onLeftClick
 import tornadofx.paddingLeft
+import tornadofx.stringBinding
+import tornadofx.tooltip
 import tornadofx.vbox
+import java.text.DecimalFormat
 
 class LoopDetails : View() {
 	private val poller: DataPoller by inject()
@@ -28,6 +32,8 @@ class LoopDetails : View() {
 			gridpaneConstraints {
 				columnRowIndex(0, 0)
 			}
+
+			tooltip("Average ticks per second")
 		}
 		hbox {
 			button(graphic = pickGraphic(poller.active.value)) {
@@ -36,10 +42,32 @@ class LoopDetails : View() {
 				}
 				action {
 					poller.loop.value?.let {
-						if (poller.active.value) it.stop() else it.start()
+						if (it.isActive) it.stop() else it.start()
 					}
 				}
+
+				tooltip("Active state")
 			}
+
+			val format = DecimalFormat("0.0")
+			label(poller.scale.stringBinding { it?.let(format::format) }) {
+				setOnScroll { e ->
+					poller.loop.value?.let {
+						it.scale += if (e.deltaY >= 0) 0.1 else -0.1
+					}
+				}
+				onLeftClick {
+					poller.loop.value?.let {
+						it.scale = 1.0
+					}
+				}
+
+				tooltip("Scale. Scroll to change. Click to reset.")
+
+				alignment = Pos.CENTER
+				prefWidth = 32.0
+			}
+
 			alignment = Pos.CENTER
 			gridpaneConstraints {
 				columnRowIndex(1, 0)
