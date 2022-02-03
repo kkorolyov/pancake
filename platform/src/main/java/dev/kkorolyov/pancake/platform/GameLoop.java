@@ -5,30 +5,29 @@ package dev.kkorolyov.pancake.platform;
  */
 public final class GameLoop {
 	private final GameEngine engine;
-	private final long dt;
+	private final long rate;
 
+	private volatile long effectiveRate;
 	private volatile boolean active;
 
 	/**
-	 * Constructs a new game loop with tick granularity specified in platform {@link Config#get()} as {@code tps} - target number of ticks per second.
-	 * @param engine game engine receiving updates
+	 * Constructs a new game loop for {@code engine} with update rate specified in platform {@link Config#get()} as {@code tps} - target number of ticks per second.
 	 */
 	public GameLoop(GameEngine engine) {
 		this(engine, (long) (1e9 / Integer.parseInt(Config.get().getProperty("tps"))));
 	}
 	/**
-	 * Constructs a new game loop.
-	 * @param engine game engine receiving updates
-	 * @param dt tick granularity in {@code ns}
+	 * Constructs a new game loop updating {@code engine} every {@code rate} nanoseconds.
 	 */
-	public GameLoop(GameEngine engine, long dt) {
+	public GameLoop(GameEngine engine, long rate) {
 		this.engine = engine;
-		this.dt = dt;
+		this.rate = rate;
+		effectiveRate = rate;
 	}
 
 	/**
 	 * Starts this loop on a new thread if it is not currently active.
-	 * An active game loop continuously updates its associated {@link GameEngine} by {@code dt} increments every {@code >= dt} passage of time.
+	 * An active game loop continuously updates its associated {@link GameEngine} by {@code rate * scale} increments every {@code >= rate} passage of time.
 	 */
 	public void start() {
 		if (!active) {
@@ -44,9 +43,9 @@ public final class GameLoop {
 					last = now;
 					lag += elapsed;
 
-					while (lag >= dt) {
-						engine.update(dt);
-						lag -= dt;
+					while (lag >= rate) {
+						engine.update(effectiveRate);
+						lag -= rate;
 					}
 				}
 			}).start();
@@ -67,6 +66,27 @@ public final class GameLoop {
 	}
 
 	/**
+	 * Returns the minimum time in {@code ns} that must elapse between this loop's updates.
+	 */
+	public long getRate() {
+		return rate;
+	}
+
+	/**
+	 * Returns the scale factor of loop time to game engine update time.
+	 */
+	public double getScale() {
+		return (double) effectiveRate / rate;
+	}
+	/**
+	 * Sets the loop time to engine update time factor to {@code scale}.
+	 * e.g. {@code 1} (default) updates the game engine with the same rate value that this loop updates, whereas {@code 2} updates the game engine with double the rate value.
+	 */
+	public void setScale(double scale) {
+		effectiveRate = (long) (rate * scale);
+	}
+
+	/**
 	 * Returns whether this loop is currently running.
 	 */
 	public boolean isActive() {
@@ -77,7 +97,8 @@ public final class GameLoop {
 	public String toString() {
 		return "GameLoop{" +
 				"engine=" + engine +
-				", dt=" + dt +
+				", rate=" + rate +
+				", effectiveRate=" + effectiveRate +
 				", active=" + active +
 				'}';
 	}

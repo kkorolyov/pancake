@@ -9,6 +9,7 @@ import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.event.Event
 import dev.kkorolyov.pancake.platform.utility.Sampler
 import javafx.beans.value.ObservableBooleanValue
+import javafx.beans.value.ObservableDoubleValue
 import javafx.beans.value.ObservableIntegerValue
 import javafx.beans.value.ObservableValue
 import javafx.collections.FXCollections
@@ -16,6 +17,7 @@ import javafx.collections.ObservableList
 import tornadofx.Controller
 import tornadofx.bind
 import tornadofx.booleanProperty
+import tornadofx.doubleProperty
 import tornadofx.intProperty
 import tornadofx.objectProperty
 import tornadofx.observableListOf
@@ -51,6 +53,8 @@ class DataPoller : Controller() {
 		get() = tpsProperty
 	val active: ObservableBooleanValue
 		get() = activeProperty
+	val scale: ObservableDoubleValue
+		get() = scaleProperty
 	val loop: ObservableValue<GameLoop>
 		get() = loopProperty
 
@@ -58,6 +62,7 @@ class DataPoller : Controller() {
 	private val systemsMap = observableMapOf<GameSystem, Sampler>()
 	private val tpsProperty = intProperty()
 	private val activeProperty = booleanProperty()
+	private val scaleProperty = doubleProperty()
 	private val loopProperty = objectProperty<GameLoop>().apply {
 		onChange {
 			clear()
@@ -97,6 +102,7 @@ class DataPoller : Controller() {
 
 			tpsProperty.set((1e9 / loop.engine.perfMonitor.engine.value).roundToInt())
 			activeProperty.set(loop.isActive)
+			scaleProperty.set(loop.scale)
 
 			systems.forEach(GameSystemData::refresh)
 			entities.forEach(EntityData::refresh)
