@@ -1,24 +1,30 @@
 plugins {
-	`java-library`
+	kotlin("jvm")
+	id("org.jetbrains.dokka")
 	groovy
 	`maven-publish`
 }
 
-description = "Main Pancake engine platform"
+description = "Common rendering system utilities"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
-	api(libs.flub)
-	implementation(libs.snakeyaml)
-	implementation(libs.jackson)
+
+	api(projects.platform)
+	implementation(projects.core)
 
 	testImplementation(libs.bundles.test)
-	testImplementation(projects.testUtils)
 }
 
 java {
 	withSourcesJar()
-	withJavadocJar()
+}
+
+tasks.compileKotlin {
+	kotlinOptions {
+		jvmTarget = tasks.compileJava.get().targetCompatibility
+	}
+	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
 }
 
 tasks.test {

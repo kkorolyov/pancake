@@ -11,7 +11,6 @@ description = "Graphical debugging tools that can hook into a Pancake applicatio
 dependencies {
 	implementation(libs.bundles.stdlib)
 	implementation(libs.tornadofx)
-	implementation(libs.slf4j)
 
 	implementation(projects.platform)
 	implementation(projects.core)

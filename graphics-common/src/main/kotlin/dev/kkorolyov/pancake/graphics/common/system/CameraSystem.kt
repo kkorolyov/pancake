@@ -1,10 +1,10 @@
-package dev.kkorolyov.pancake.graphics.jfx.system
+package dev.kkorolyov.pancake.graphics.common.system
 
 import dev.kkorolyov.pancake.core.component.Transform
-import dev.kkorolyov.pancake.graphics.jfx.Camera
-import dev.kkorolyov.pancake.graphics.jfx.CameraCreated
-import dev.kkorolyov.pancake.graphics.jfx.CameraDestroyed
-import dev.kkorolyov.pancake.graphics.jfx.component.Lens
+import dev.kkorolyov.pancake.graphics.common.Camera
+import dev.kkorolyov.pancake.graphics.common.CameraCreated
+import dev.kkorolyov.pancake.graphics.common.CameraDestroyed
+import dev.kkorolyov.pancake.graphics.common.component.Lens
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.utility.Limiter

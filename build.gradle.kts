@@ -2,7 +2,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
 	java
-	id("org.ajoberstar.reckon") version "0.+"
+	id("org.ajoberstar.reckon") version "0.13.1"
 	kotlin("jvm") version "1.+" apply false
 	id("org.jetbrains.dokka") version "1.6.10" apply false
 	id("org.openjfx.javafxplugin") version "0.+" apply false

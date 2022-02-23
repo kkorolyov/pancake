@@ -10,7 +10,6 @@ description = "JavaFX audio component and system implementations"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
-	implementation(libs.slf4j)
 
 	api(projects.platform)
 	implementation(projects.core)
