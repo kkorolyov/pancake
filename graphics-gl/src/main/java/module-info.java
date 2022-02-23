@@ -3,9 +3,9 @@ module dev.kkorolyov.pancake.graphics.gl {
 	requires org.slf4j;
 	requires org.lwjgl.opengl;
 
-	requires dev.kkorolyov.pancake.platform;
-	requires dev.kkorolyov.pancake.core;
+	requires transitive dev.kkorolyov.pancake.platform;
 	requires transitive dev.kkorolyov.pancake.graphics.common;
+	requires dev.kkorolyov.pancake.core;
 
 	exports dev.kkorolyov.pancake.graphics.gl.mesh;
 	exports dev.kkorolyov.pancake.graphics.gl.shader;

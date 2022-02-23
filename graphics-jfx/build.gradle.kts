@@ -12,6 +12,7 @@ dependencies {
 	implementation(libs.bundles.stdlib)
 
 	api(projects.platform)
+	api(projects.graphicsCommon)
 	implementation(projects.core)
 
 	testImplementation(libs.bundles.test)

@@ -14,9 +14,9 @@ dependencies {
 	implementation(libs.lwjgl)
 	implementation(libs.lwjgl.opengl)
 
-	implementation(projects.platform)
-	implementation(projects.core)
+	api(projects.platform)
 	api(projects.graphicsCommon)
+	implementation(projects.core)
 
 	testImplementation(libs.bundles.test)
 }
