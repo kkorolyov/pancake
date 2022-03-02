@@ -1,18 +1,8 @@
 package dev.kkorolyov.pancake.graphics.gl.mesh
 
 import dev.kkorolyov.pancake.platform.math.Vector3
-import dev.kkorolyov.pancake.platform.math.Vectors
 import org.lwjgl.opengl.GL46.*
 import org.lwjgl.system.MemoryStack
-
-private val defaultColor: Vector3 = Vectors.create(0.0, 0.0, 0.0)
-
-/**
- * Sets this builder's vertex buffer to a [ColorPoint] configured by [init].
- */
-fun Mesh.Builder.colorPoints(init: ColorPoint.() -> Unit) {
-	vertexBuffer = ColorPoint().apply(init)
-}
 
 /**
  * Buffers vertices with the attributes:
@@ -28,7 +18,7 @@ class ColorPoint : VertexBuffer {
 	/**
 	 * Appends a vertex with [position] and [color].
 	 */
-	fun add(position: Vector3, color: Vector3 = defaultColor) {
+	fun add(position: Vector3, color: Vector3) {
 		positions += position
 		colors += color
 	}
@@ -36,7 +26,7 @@ class ColorPoint : VertexBuffer {
 	override val size: Int
 		get() = positions.size
 
-	override fun bind(vbo: Int) {
+	override fun invoke(vbo: Int) {
 		glBindBuffer(GL_ARRAY_BUFFER, vbo)
 
 		if (positions.isNotEmpty()) {
@@ -58,7 +48,7 @@ class ColorPoint : VertexBuffer {
 					}
 				}
 
-				vertexP.position(0)
+				vertexP.flip()
 				glBufferData(GL_ARRAY_BUFFER, vertexP, GL_STATIC_DRAW)
 			}
 		}

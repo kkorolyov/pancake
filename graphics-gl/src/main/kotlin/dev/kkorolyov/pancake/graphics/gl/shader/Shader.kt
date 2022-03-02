@@ -6,18 +6,64 @@ import java.io.InputStream
 
 /**
  * Represents an `OpenGL` shader that can be used in a [Program].
+ * The backing `OpenGL` shader is thread-local, so accessing this shader from different threads will affect different `OpenGL` objects.
  */
 class Shader(
 	/**
-	 * ID of the referenced shader.
+	 * Shader type.
+	 */
+	type: Type,
+	/**
+	 * Shader source strings.
+	 */
+	vararg sources: String
+) : AutoCloseable {
+	constructor(
+		/**
+		 * Shader type.
+		 */
+		type: Type,
+		/**
+		 * Shader sources.
+		 */
+		vararg sources: InputStream
+	) : this(
+		type,
+		*sources
+			.map(InputStream::readAllBytes)
+			.map(::String)
+			.toTypedArray()
+	)
+
+	private val tlId = ThreadLocal.withInitial {
+		val id = glCreateShader(type.value)
+		if (id == 0) throw IllegalStateException("Cannot create shader")
+
+		glShaderSource(id, *sources)
+		glCompileShader(id)
+
+		MemoryStack.stackPush().use {
+			val statusP = it.callocInt(1)
+			glGetShaderiv(id, GL_COMPILE_STATUS, statusP)
+
+			if (statusP[0] == GL_FALSE) throw IllegalArgumentException("Cannot compile $type shader: ${glGetShaderInfoLog(id)}")
+		}
+		id
+	}
+
+	/**
+	 * ID of this shader in the current thread context.
 	 */
 	val id: Int
-) : AutoCloseable {
+		get() = tlId.get()
+
 	/**
-	 * Deletes this shader.
+	 * Deletes this shader in the current thread context.
+	 * Subsequent access to this shader in the current thread context will recompile it.
 	 */
 	override fun close() {
 		glDeleteShader(id)
+		tlId.remove()
 	}
 
 	override fun equals(other: Any?): Boolean {
@@ -45,36 +91,5 @@ class Shader(
 	) {
 		VERTEX(GL_VERTEX_SHADER),
 		FRAGMENT(GL_FRAGMENT_SHADER)
-	}
-
-	companion object {
-		/**
-		 * Returns a [type] [Shader] compiled from concatenated strings read from [sources].
-		 */
-		fun compile(type: Type, vararg sources: InputStream): Shader = compile(
-			type,
-			*sources
-				.map { it.readAllBytes() }
-				.map { String(it) }
-				.toTypedArray()
-		)
-
-		/**
-		 * Returns a [type] [Shader] compiled from concatenated [sources].
-		 */
-		fun compile(type: Type, vararg sources: String): Shader {
-			val id = glCreateShader(type.value)
-			glShaderSource(id, *sources)
-			glCompileShader(id)
-
-			MemoryStack.stackPush().use {
-				val statusP = it.callocInt(1)
-				glGetShaderiv(id, GL_COMPILE_STATUS, statusP)
-
-				if (statusP[0] == GL_FALSE) throw IllegalArgumentException("Cannot compile $type shader: ${glGetShaderInfoLog(id)}")
-			}
-
-			return Shader(id)
-		}
 	}
 }

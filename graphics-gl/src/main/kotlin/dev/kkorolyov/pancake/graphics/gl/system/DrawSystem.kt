@@ -2,43 +2,49 @@ package dev.kkorolyov.pancake.graphics.gl.system
 
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.graphics.common.Camera
-import dev.kkorolyov.pancake.graphics.common.CameraCreated
-import dev.kkorolyov.pancake.graphics.common.CameraDestroyed
+import dev.kkorolyov.pancake.graphics.common.CameraQueue
 import dev.kkorolyov.pancake.graphics.gl.component.Model
 import dev.kkorolyov.pancake.graphics.gl.mesh.Mesh
 import dev.kkorolyov.pancake.graphics.gl.shader.Program
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Matrix4
-import dev.kkorolyov.pancake.platform.utility.Limiter
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL46.*
+import org.slf4j.LoggerFactory
 
 /**
  * Draws entity [Model]s from the perspectives of all active [Camera]s.
  * Each program is provided a `uniform mat4 transform` transforming vertices to clip space.
  */
 class DrawSystem(
+	private val queue: CameraQueue,
+	/**
+	 * `OpenGL` context loading callback.
+	 */
+	private val context: () -> Unit,
 	/**
 	 * Buffer swap callback.
 	 */
 	private val swap: () -> Unit
-) : GameSystem(
-	listOf(Transform::class.java, Model::class.java),
-	Limiter.fromConfig(DrawSystem::class.java)
-) {
-	private val cameras: MutableList<Camera> = mutableListOf()
+) : GameSystem(Transform::class.java, Model::class.java) {
 	private val pending: MutableMap<Program, MutableList<Entity>> = mutableMapOf()
 	private val transform: Matrix4 = Matrix4.identity()
 
-	override fun attach() {
-		register(CameraCreated::class.java) { cameras += it.camera }
-		register(CameraDestroyed::class.java) { event -> cameras.removeIf { it.id == event.id } }
-
-		GL.createCapabilities()
+	private val loader = ThreadLocal.withInitial {
+		context()
+		try {
+			GL.getCapabilities()
+		} catch (e: IllegalStateException) {
+			log.warn("OpenGL capabilities not yet loaded on thread '${Thread.currentThread().name}'; loading now")
+			GL.createCapabilities()
+		}
 	}
 
-	override fun before(dt: Long) {
+	private val log = LoggerFactory.getLogger(javaClass)
+
+	override fun before() {
+		loader.get()
 		glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 	}
 
@@ -46,8 +52,8 @@ class DrawSystem(
 		pending.computeIfAbsent(entity[Model::class.java].program) { mutableListOf() }.add((entity))
 	}
 
-	override fun after(dt: Long) {
-		cameras.forEach { camera ->
+	override fun after() {
+		queue.cameras.forEach { camera ->
 			camera.lens.apply {
 				glViewport(offset.x.toInt(), offset.y.toInt(), size.x.toInt(), size.y.toInt())
 			}
@@ -55,12 +61,12 @@ class DrawSystem(
 			pending.forEach { (program, entities) ->
 				program.use()
 				entities.forEach {
-					val mesh = it[Model::class.java].mesh
+					val meshes = it[Model::class.java].meshes
 					val position = it[Transform::class.java].globalPosition
 
-					camera.lens.apply {
-						transform.xx = scale.x / size.x
-						transform.yy = scale.y / size.y
+					camera.lens.let {
+						transform.xx = it.scale.x / it.size.x * 2
+						transform.yy = it.scale.y / it.size.y * 2
 					}
 					transform.xw = (position.x - camera.transform.globalPosition.x) * transform.xx
 					transform.yw = (position.y - camera.transform.globalPosition.y) * transform.yy
@@ -68,7 +74,7 @@ class DrawSystem(
 
 					program.set("transform", transform)
 
-					mesh.forEach(Mesh::draw)
+					meshes.forEach(Mesh::draw)
 				}
 				entities.clear()
 			}

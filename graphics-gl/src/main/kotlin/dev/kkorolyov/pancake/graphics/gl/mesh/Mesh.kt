@@ -3,66 +3,36 @@ package dev.kkorolyov.pancake.graphics.gl.mesh
 import org.lwjgl.opengl.GL46.*
 
 /**
- * A configuration of vertex data.
+ * A configuration of drawable vertex data.
+ * Can draw either by vertices or indices.
+ * The backing `OpenGL` objects are thread-local, so accessing this mesh from different threads will affect different `OpenGL` objects.
  */
-class Mesh(
-	private val id: Int,
-	private val vCount: Int,
-	private val iCount: Int,
-	private val mode: Int,
-	private val vOffset: Int = 0,
-	iOffset: Int = 0
-) {
-	private val iOffset: Long = iOffset * Int.SIZE_BYTES.toLong()
-
+interface Mesh : AutoCloseable {
 	/**
-	 * Returns a view of this mesh drawing [vCount] vertices starting at [vOffset].
+	 * ID of the referenced `OpenGL` VAO in the current thread context.
 	 */
-	fun subVertex(vCount: Int, vOffset: Int): Mesh = Mesh(id, vCount, 0, mode, vOffset, 0)
-
-	/**
-	 * Returns a view of this mesh drawing [iCount] indices starting at [iOffset].
-	 */
-	fun subIndex(iCount: Int, iOffset: Int) = Mesh(id, 0, iCount, mode, 0, iOffset)
+	val id: Int
 
 	/**
 	 * Draws this mesh using the current `OpenGL` context.
 	 */
-	fun draw() {
-		glBindVertexArray(id)
-		if (iCount > 0) glDrawElements(mode, iCount, GL_UNSIGNED_INT, iOffset) else glDrawArrays(mode, vOffset, vCount)
-	}
+	fun draw()
 
-	companion object {
-		/**
-		 * Returns the mesh built from [init].
-		 */
-		fun build(init: Builder.() -> Unit): Mesh = Builder().apply(init).build()
-	}
+	/**
+	 * Returns a submesh using the current mode.
+	 */
+	fun subMesh(count: Int, offset: Int): Mesh
 
-	class Builder {
-		var vertexBuffer: VertexBuffer? = null
-		var indices: IntArray? = null
-		var mode: DrawMode = DrawMode.TRIANGLES
+	/**
+	 * Returns a view on this mesh drawing with [mode] [count] elements or vertices (depending on this mesh's type) starting at [offset].
+	 */
+	fun subMesh(count: Int, offset: Int, mode: DrawMode): Mesh
 
-		fun build(): Mesh {
-			val vao = glGenVertexArrays()
-			glBindVertexArray(vao)
-
-			vertexBuffer?.bind()
-
-			indices?.let {
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glGenBuffers())
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, it, GL_STATIC_DRAW)
-			}
-
-			glBindVertexArray(0)
-			glBindBuffer(GL_ARRAY_BUFFER, 0)
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
-
-			return Mesh(vao, vertexBuffer?.size ?: 0, indices?.size ?: 0, mode.value)
-		}
-	}
+	/**
+	 * Deletes the backing `OpenGL` objects in the current thread context.
+	 * Subsequent access to this mesh in the current thread context will regenerate them.
+	 */
+	override fun close()
 
 	/**
 	 * Represents an `OpenGL` drawing mode.
@@ -77,4 +47,101 @@ class Mesh(
 		TRIANGLE_STRIP(GL_TRIANGLE_STRIP),
 		TRIANGLE_FAN(GL_TRIANGLE_FAN)
 	}
+
+	companion object {
+		/**
+		 * Returns a new mesh that draws all vertices in [vertexBuffer] using [mode].
+		 */
+		fun vertex(vertexBuffer: VertexBuffer, mode: DrawMode): Mesh = BaseMesh(vertexBuffer, mode = mode)
+
+		/**
+		 * Returns a new mesh that draws [indices] of [vertexBuffer] using [mode].
+		 */
+		fun index(vertexBuffer: VertexBuffer, indices: IntArray, mode: DrawMode): Mesh = BaseMesh(vertexBuffer, indices, mode)
+	}
+}
+
+private class BaseMesh(
+	val vertexBuffer: VertexBuffer,
+	val indices: IntArray? = null,
+	val mode: Mesh.DrawMode = Mesh.DrawMode.TRIANGLES,
+) : Mesh {
+	private val tlId = ThreadLocal.withInitial {
+		val vao = glGenVertexArrays()
+		glBindVertexArray(vao)
+
+		// bind buffers
+		tlVbo.get()
+		tlEbo.get()
+
+		indices?.let {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glGenBuffers())
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, it, GL_STATIC_DRAW)
+		}
+
+		glBindVertexArray(0)
+		glBindBuffer(GL_ARRAY_BUFFER, 0)
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
+
+		vao
+	}
+	private val tlVbo = ThreadLocal.withInitial {
+		val vbo = glGenBuffers()
+		vertexBuffer(vbo)
+		vbo
+	}
+	private val tlEbo = ThreadLocal.withInitial {
+		indices?.let {
+			val ebo = glGenBuffers()
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, it, GL_STATIC_DRAW)
+			ebo
+		}
+	}
+
+	private val count = indices?.size ?: vertexBuffer.size
+
+	override val id: Int
+		get() = tlId.get()
+
+	override fun subMesh(count: Int, offset: Int): Mesh = subMesh(count, offset, mode)
+	override fun subMesh(count: Int, offset: Int, mode: Mesh.DrawMode) = SubMesh(this, count, offset, mode)
+
+	override fun draw() {
+		draw(count, 0, mode)
+	}
+
+	fun draw(count: Int, offset: Int, mode: Mesh.DrawMode) {
+		glBindVertexArray(id)
+		if (indices != null) glDrawElements(mode.value, count, GL_UNSIGNED_INT, offset * Int.SIZE_BYTES.toLong()) else glDrawArrays(mode.value, offset, count)
+	}
+
+	override fun close() {
+		glDeleteVertexArrays(id)
+		glDeleteBuffers(tlVbo.get())
+		tlEbo.get()?.let(::glDeleteBuffers)
+
+		tlId.remove()
+		tlVbo.remove()
+		tlEbo.remove()
+	}
+}
+
+private class SubMesh(
+	private val parent: BaseMesh,
+	private val count: Int,
+	private val offset: Int,
+	private val mode: Mesh.DrawMode
+) : Mesh {
+	override val id: Int
+		get() = parent.id
+
+	override fun draw() {
+		parent.draw(count, offset, mode)
+	}
+
+	override fun subMesh(count: Int, offset: Int) = subMesh(count, offset, mode)
+	override fun subMesh(count: Int, offset: Int, mode: Mesh.DrawMode) = SubMesh(parent, count, offset, mode)
+
+	override fun close() = parent.close()
 }
