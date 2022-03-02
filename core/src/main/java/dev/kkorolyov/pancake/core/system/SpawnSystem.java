@@ -5,10 +5,6 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
-import dev.kkorolyov.pancake.platform.event.CreateEntity;
-import dev.kkorolyov.pancake.platform.utility.Limiter;
-
-import java.util.List;
 
 /**
  * Spawns entity clones from spawner entities.
@@ -18,10 +14,7 @@ public class SpawnSystem extends GameSystem {
 	 * Constructs a new spawn system.
 	 */
 	public SpawnSystem() {
-		super(
-				List.of(Spawner.class, Transform.class),
-				Limiter.fromConfig(SpawnSystem.class)
-		);
+		super(Spawner.class, Transform.class);
 	}
 
 	@Override
@@ -30,6 +23,6 @@ public class SpawnSystem extends GameSystem {
 		Transform transform = entity.get(Transform.class);
 
 		Iterable<Component> clone = spawner.spawn(transform.getPosition(), dt);
-		if (clone != null) enqueue(new CreateEntity(clone));
+		if (clone != null) clone.forEach(create()::put);
 	}
 }

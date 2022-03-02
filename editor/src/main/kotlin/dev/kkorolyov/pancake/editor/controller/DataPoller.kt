@@ -3,12 +3,10 @@ package dev.kkorolyov.pancake.editor.controller
 import dev.kkorolyov.pancake.editor.data.EntityData
 import dev.kkorolyov.pancake.editor.data.GameSystemData
 import dev.kkorolyov.pancake.platform.Config
-import dev.kkorolyov.pancake.platform.GameLoop
+import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.event.Event
 import dev.kkorolyov.pancake.platform.utility.Sampler
-import javafx.beans.value.ObservableBooleanValue
 import javafx.beans.value.ObservableDoubleValue
 import javafx.beans.value.ObservableIntegerValue
 import javafx.beans.value.ObservableValue
@@ -16,7 +14,6 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import tornadofx.Controller
 import tornadofx.bind
-import tornadofx.booleanProperty
 import tornadofx.doubleProperty
 import tornadofx.intProperty
 import tornadofx.objectProperty
@@ -36,7 +33,6 @@ import kotlin.math.roundToInt
  * Polls at rate set in platform [Config.get] as `editor.pollRate` - target number of polls per second, else defaults to `30` polls per second.
  */
 class DataPoller : Controller() {
-	val events: ObservableList<Event> = observableListOf()
 	val entities: ObservableList<EntityData> by lazy {
 		observableListOf<EntityData>().apply {
 			bind(entitySet, ::EntityData)
@@ -51,19 +47,16 @@ class DataPoller : Controller() {
 	}
 	val tps: ObservableIntegerValue
 		get() = tpsProperty
-	val active: ObservableBooleanValue
-		get() = activeProperty
-	val scale: ObservableDoubleValue
-		get() = scaleProperty
-	val loop: ObservableValue<GameLoop>
-		get() = loopProperty
+	val speed: ObservableDoubleValue
+		get() = speedProperty
+	val engine: ObservableValue<GameEngine>
+		get() = engineProperty
 
 	private val entitySet = observableSetOf<Entity>()
 	private val systemsMap = observableMapOf<GameSystem, Sampler>()
 	private val tpsProperty = intProperty()
-	private val activeProperty = booleanProperty()
-	private val scaleProperty = doubleProperty()
-	private val loopProperty = objectProperty<GameLoop>().apply {
+	private val speedProperty = doubleProperty()
+	private val engineProperty = objectProperty<GameEngine>().apply {
 		onChange {
 			clear()
 			it?.let {
@@ -83,26 +76,23 @@ class DataPoller : Controller() {
 	private var pollTask: ScheduledFuture<*>? = null
 
 	/**
-	 * Registers [loop] with this poller.
+	 * Registers [engine] with this poller.
 	 */
-	fun register(loop: GameLoop) {
-		loopProperty.set(loop)
+	fun register(engine: GameEngine) {
+		engineProperty.set(engine)
 	}
 
-	private fun refresh(loop: GameLoop) {
+	private fun refresh(engine: GameEngine) {
 		runLater {
-			events.setAll(loop.engine.eventLoop.toList())
-
-			val currentEntities = loop.engine.entityPool.toSet()
+			val currentEntities = engine.entities.toSet()
 			entitySet.retainAll(currentEntities)
 			entitySet.addAll(currentEntities)
 
-			systemsMap.keys.retainAll(loop.engine.perfMonitor.systems.keys)
-			systemsMap.putAll(loop.engine.perfMonitor.systems)
+			systemsMap.keys.retainAll(engine.perfMonitor.systems.keys)
+			systemsMap.putAll(engine.perfMonitor.systems)
 
-			tpsProperty.set((1e9 / loop.engine.perfMonitor.engine.value).roundToInt())
-			activeProperty.set(loop.isActive)
-			scaleProperty.set(loop.scale)
+			tpsProperty.set((1e9 / engine.perfMonitor.engine.value).roundToInt())
+			speedProperty.set(engine.speed)
 
 			systems.forEach(GameSystemData::refresh)
 			entities.forEach(EntityData::refresh)

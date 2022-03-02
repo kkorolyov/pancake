@@ -2,15 +2,15 @@ package dev.kkorolyov.pancake.editor
 
 import dev.kkorolyov.pancake.editor.controller.DataPoller
 import dev.kkorolyov.pancake.editor.view.EditorScene
-import dev.kkorolyov.pancake.platform.GameLoop
+import dev.kkorolyov.pancake.platform.GameEngine
 import javafx.stage.Stage
 import tornadofx.find
 
 /**
- * Registers the global editor state with [loop].
+ * Registers the global editor state with [engine].
  */
-fun registerEditor(loop: GameLoop) {
-	find<DataPoller>().register(loop)
+fun registerEditor(engine: GameEngine) {
+	find<DataPoller>().register(engine)
 }
 
 /**

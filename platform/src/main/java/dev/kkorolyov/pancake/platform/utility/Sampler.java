@@ -26,12 +26,19 @@ public final class Sampler {
 	}
 
 	/**
-	 * Samples time elapsed since the last invocation of this method.
+	 * Samples time elapsed since the last invocation of {@link #reset()}.
+	 * Also resets this sampler's counter.
 	 */
 	public void sample() {
-		long now = System.nanoTime();
-		tick.add(now - last);
-		last = now;
+		tick.add(System.nanoTime() - last);
+		reset();
+	}
+
+	/**
+	 * Resets this sampler's counter.
+	 */
+	public void reset() {
+		last = System.nanoTime();
 	}
 
 	/**

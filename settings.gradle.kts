@@ -24,6 +24,4 @@ include("editor-core")
 
 include("test-utils")
 
-include("gl-test")
-
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

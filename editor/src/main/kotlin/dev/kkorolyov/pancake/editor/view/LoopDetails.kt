@@ -11,13 +11,11 @@ import tornadofx.gridpaneConstraints
 import tornadofx.hbox
 import tornadofx.imageview
 import tornadofx.label
-import tornadofx.listview
 import tornadofx.onChange
 import tornadofx.onLeftClick
 import tornadofx.paddingLeft
 import tornadofx.stringBinding
 import tornadofx.tooltip
-import tornadofx.vbox
 import java.text.DecimalFormat
 
 class LoopDetails : View() {
@@ -36,13 +34,13 @@ class LoopDetails : View() {
 			tooltip("Average ticks per second")
 		}
 		hbox {
-			button(graphic = pickGraphic(poller.active.value)) {
-				poller.active.onChange {
+			button(graphic = pickGraphic(poller.speed.get())) {
+				poller.speed.onChange {
 					graphic = pickGraphic(it)
 				}
 				action {
-					poller.loop.value?.let {
-						if (it.isActive) it.stop() else it.start()
+					poller.engine.value?.let {
+						it.speed = if (it.speed == 0.0) 1.0 else 0.0
 					}
 				}
 
@@ -50,15 +48,15 @@ class LoopDetails : View() {
 			}
 
 			val format = DecimalFormat("0.0")
-			label(poller.scale.stringBinding { it?.let(format::format) }) {
+			label(poller.speed.stringBinding { it?.let(format::format) }) {
 				setOnScroll { e ->
-					poller.loop.value?.let {
-						it.scale += if (e.deltaY >= 0) 0.1 else -0.1
+					poller.engine.value?.let {
+						it.speed += if (e.deltaY >= 0) 0.1 else -0.1
 					}
 				}
 				onLeftClick {
-					poller.loop.value?.let {
-						it.scale = 1.0
+					poller.engine.value?.let {
+						it.speed = 1.0
 					}
 				}
 
@@ -74,20 +72,8 @@ class LoopDetails : View() {
 			}
 		}
 
-		vbox {
-			label("Events")
-			listview(poller.events) {
-				maxHeight = 240.0
-			}
-
-			gridpaneConstraints {
-				columnRowIndex(0, 1)
-				columnSpan = 3
-			}
-		}
-
 		colRatios(1, 8, 1)
 	}
 
-	private fun pickGraphic(active: Boolean) = if (active) pauseIcon else playIcon
+	private fun pickGraphic(speed: Double) = if (speed == 0.0) playIcon else pauseIcon
 }
