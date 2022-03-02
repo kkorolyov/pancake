@@ -37,14 +37,16 @@ class ColorPoint : VertexBuffer {
 				val cIt = colors.iterator()
 				while (pIt.hasNext() && cIt.hasNext()) {
 					pIt.next().apply {
-						vertexP.put(x.toFloat())
-						vertexP.put(y.toFloat())
-						vertexP.put(z.toFloat())
+						vertexP
+							.put(x.toFloat())
+							.put(y.toFloat())
+							.put(z.toFloat())
 					}
 					cIt.next().apply {
-						vertexP.put(x.toFloat())
-						vertexP.put(y.toFloat())
-						vertexP.put(z.toFloat())
+						vertexP
+							.put(x.toFloat())
+							.put(y.toFloat())
+							.put(z.toFloat())
 					}
 				}
 

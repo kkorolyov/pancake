@@ -79,25 +79,26 @@ class Program(
 			val uP = it.callocFloat(16)
 
 			value.apply {
-				uP.put(xx.toFloat())
-				uP.put(yx.toFloat())
-				uP.put(zx.toFloat())
-				uP.put(wx.toFloat())
+				uP
+					.put(xx.toFloat())
+					.put(yx.toFloat())
+					.put(zx.toFloat())
+					.put(wx.toFloat())
 
-				uP.put(xy.toFloat())
-				uP.put(yy.toFloat())
-				uP.put(zy.toFloat())
-				uP.put(wy.toFloat())
+					.put(xy.toFloat())
+					.put(yy.toFloat())
+					.put(zy.toFloat())
+					.put(wy.toFloat())
 
-				uP.put(xz.toFloat())
-				uP.put(yz.toFloat())
-				uP.put(zz.toFloat())
-				uP.put(wz.toFloat())
+					.put(xz.toFloat())
+					.put(yz.toFloat())
+					.put(zz.toFloat())
+					.put(wz.toFloat())
 
-				uP.put(xw.toFloat())
-				uP.put(yw.toFloat())
-				uP.put(zw.toFloat())
-				uP.put(ww.toFloat())
+					.put(xw.toFloat())
+					.put(yw.toFloat())
+					.put(zw.toFloat())
+					.put(ww.toFloat())
 			}
 
 			uP.flip()
