@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.input.jfx.system
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
-import dev.kkorolyov.pancake.input.jfx.component.Input
+import dev.kkorolyov.pancake.input.common.component.Input
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import javafx.event.EventHandler
@@ -35,8 +35,8 @@ class InputSystem(vararg inputNodes: Node) : GameSystem(Input::class.java, Actio
 	override fun update(entity: Entity, dt: Long) {
 		val input = entity.get(Input::class.java)
 		val actionQueue = entity.get(ActionQueue::class.java)
-		events.forEach { event ->
-			input(event)?.let { action -> actionQueue.enqueue(action) }
+		events.forEach {
+			input(it)?.let(actionQueue::enqueue)
 		}
 	}
 

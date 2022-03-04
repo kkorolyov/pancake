@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.input.jfx
+package dev.kkorolyov.pancake.input.common
 
 /**
  * Stateful supplier of compensatable [T] instances.

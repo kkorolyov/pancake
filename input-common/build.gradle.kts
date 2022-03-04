@@ -1,19 +1,16 @@
 plugins {
 	kotlin("jvm")
-	id("org.openjfx.javafxplugin")
 	id("org.jetbrains.dokka")
 	groovy
 	`maven-publish`
 }
 
-description = "JavaFX-driven input and control implementation"
+description = "Common input system utilities"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
 
 	api(projects.platform)
-	implementation(projects.core)
-	api(projects.inputCommon)
 
 	testImplementation(libs.bundles.test)
 }
@@ -21,14 +18,12 @@ dependencies {
 java {
 	withSourcesJar()
 }
+
 tasks.compileKotlin {
 	kotlinOptions {
 		jvmTarget = tasks.compileJava.get().targetCompatibility
 	}
-}
-javafx {
-	version = tasks.compileJava.get().targetCompatibility
-	modules("javafx.graphics")
+	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
 }
 
 tasks.test {

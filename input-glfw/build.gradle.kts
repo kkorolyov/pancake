@@ -6,17 +6,17 @@ plugins {
 	`maven-publish`
 }
 
-description = "OpenGL rendering system and renderable implementations"
+description = "GLFW input system and control implementations"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
 
 	implementation(platform(libs.lwjgl.bom))
 	implementation(libs.lwjgl)
-	implementation(libs.lwjgl.opengl)
+	implementation(libs.lwjgl.glfw)
 
 	api(projects.platform)
-	api(projects.graphicsCommon)
+	api(projects.inputCommon)
 	implementation(projects.core)
 
 	testImplementation(libs.bundles.test)
@@ -76,7 +76,7 @@ subprojects {
 
 	dependencies {
 		api(parent)
-		listOf(parent.libs.lwjgl.asProvider().get(), parent.libs.lwjgl.opengl.get()).forEach {
+		listOf(parent.libs.lwjgl.asProvider().get(), parent.libs.lwjgl.glfw.get()).forEach {
 			implementation(variantOf(provider { it }) {
 				classifier("natives-$name")
 			})
