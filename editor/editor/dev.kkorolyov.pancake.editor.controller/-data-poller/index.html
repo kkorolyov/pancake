@@ -12,7 +12,7 @@ if(savedDarkMode === true){
     <div class="navigation-wrapper" id="navigation-wrapper">
       <div id="leftToggler"><span class="icon-toggler"></span></div>
       <div class="library-name"><a href="../../../index.html">editor</a></div>
-      <div>0.6.0</div>
+      <div>0.7.0</div>
       <div class="pull-right d-flex"><button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
       </div>
@@ -26,7 +26,7 @@ if(savedDarkMode === true){
           <div class="breadcrumbs"><a href="../../../index.html">editor</a>/<a href="../index.html">dev.kkorolyov.pancake.editor.controller</a>/<a href="index.html">DataPoller</a></div>
           <div class="cover ">
             <h1 class="cover"><span>Data</span><wbr></wbr><span><span>Poller</span></span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">DataPoller</a> : <span data-unresolved-link="tornadofx/Controller///PointingToDeclaration/">Controller</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Regularly polls and maintains information from a registered <span data-unresolved-link="dev.kkorolyov.pancake.platform/GameLoop///PointingToDeclaration/">GameLoop</span>. Exposes polled information as observable values. Polls at rate set in platform <span data-unresolved-link="dev.kkorolyov.pancake.platform/Config/get/#/PointingToDeclaration/">Config.get</span> as <code class="lang-kotlin">editor.pollRate</code> - target number of polls per second, else defaults to <code class="lang-kotlin">30</code> polls per second.</p></div></div>
+            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">DataPoller</a> : <span data-unresolved-link="tornadofx/Controller///PointingToDeclaration/">Controller</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Regularly polls and maintains information from a registered GameLoop. Exposes polled information as observable values. Polls at rate set in platform <span data-unresolved-link="dev.kkorolyov.pancake.platform/Config/get/#/PointingToDeclaration/">Config.get</span> as <code class="lang-kotlin">editor.pollRate</code> - target number of polls per second, else defaults to <code class="lang-kotlin">30</code> polls per second.</p></div></div>
           </div>
           <div class="tabbedcontent">
             <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
@@ -229,17 +229,17 @@ if(savedDarkMode === true){
                     </div>
                   </div>
                 </div>
-<a data-name="-2040045570%2FFunctions%2F741329428" anchor-label="register" id="-2040045570%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+<a data-name="-19826080%2FFunctions%2F741329428" anchor-label="register" id="-19826080%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
                 <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
                   <div class="main-subrow keyValue ">
                     <div class=""><span class="inline-flex">
                         <div><a href="register.html"><span><span>register</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2040045570%2FFunctions%2F741329428"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-19826080%2FFunctions%2F741329428"></span>
                           <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                         </span></span></div>
                     <div>
                       <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="register.html"><span class="token function">register</span></a><span class="token punctuation">(</span>loop<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameLoop///PointingToDeclaration/">GameLoop</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Registers <a href="register.html">loop</a> with this poller.</p></div></div></div>
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="register.html"><span class="token function">register</span></a><span class="token punctuation">(</span>engine<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Registers <a href="register.html">engine</a> with this poller.</p></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -336,22 +336,7 @@ if(savedDarkMode === true){
                 </div>
               </div>
               <h2 class="">Properties</h2>
-              <div class="table" data-togglable="Properties"><a data-name="-1855088528%2FProperties%2F741329428" anchor-label="active" id="-1855088528%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
-                <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="active.html">active</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1855088528%2FProperties%2F741329428"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="-1855088528%2FProperties%2F741329428" anchor-label="active" id="-1855088528%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="active.html">active</a><span class="token operator">: </span><span data-unresolved-link="javafx.beans.value/ObservableBooleanValue///PointingToDeclaration/">ObservableBooleanValue</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1185956650%2FProperties%2F741329428" anchor-label="app" id="-1185956650%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+              <div class="table" data-togglable="Properties"><a data-name="-1185956650%2FProperties%2F741329428" anchor-label="app" id="-1185956650%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
                 <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
                   <div class="main-subrow keyValue ">
                     <div class=""><span class="inline-flex">
@@ -426,6 +411,21 @@ if(savedDarkMode === true){
                     </div>
                   </div>
                 </div>
+<a data-name="149223604%2FProperties%2F741329428" anchor-label="engine" id="149223604%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex">
+                        <div><a href="engine.html">engine</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="149223604%2FProperties%2F741329428"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="149223604%2FProperties%2F741329428" anchor-label="engine" id="149223604%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="engine.html">engine</a><span class="token operator">: </span><span data-unresolved-link="javafx.beans.value/ObservableValue///PointingToDeclaration/">ObservableValue</span><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 <a data-name="-1217057323%2FProperties%2F741329428" anchor-label="entities" id="-1217057323%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
                 <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
                   <div class="main-subrow keyValue ">
@@ -437,21 +437,6 @@ if(savedDarkMode === true){
                     <div>
                       <div class="title">
                         <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="-1217057323%2FProperties%2F741329428" anchor-label="entities" id="-1217057323%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="entities.html">entities</a><span class="token operator">: </span><span data-unresolved-link="javafx.collections/ObservableList///PointingToDeclaration/">ObservableList</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../dev.kkorolyov.pancake.editor.data/-entity-data/index.html">EntityData</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-511139395%2FProperties%2F741329428" anchor-label="events" id="-511139395%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
-                <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="events.html">events</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-511139395%2FProperties%2F741329428"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="-511139395%2FProperties%2F741329428" anchor-label="events" id="-511139395%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="events.html">events</a><span class="token operator">: </span><span data-unresolved-link="javafx.collections/ObservableList///PointingToDeclaration/">ObservableList</span><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.platform.event/Event///PointingToDeclaration/">Event</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -482,21 +467,6 @@ if(savedDarkMode === true){
                     <div>
                       <div class="title">
                         <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="-933883629%2FProperties%2F741329428" anchor-label="log" id="-933883629%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="../../dev.kkorolyov.pancake.editor.view/-system-details/index.html#-933883629%2FProperties%2F741329428">log</a><span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html">Logger</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="661612754%2FProperties%2F741329428" anchor-label="loop" id="661612754%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
-                <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="loop.html">loop</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="661612754%2FProperties%2F741329428"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="661612754%2FProperties%2F741329428" anchor-label="loop" id="661612754%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="loop.html">loop</a><span class="token operator">: </span><span data-unresolved-link="javafx.beans.value/ObservableValue///PointingToDeclaration/">ObservableValue</span><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameLoop///PointingToDeclaration/">GameLoop</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>
@@ -591,21 +561,6 @@ if(savedDarkMode === true){
                     </div>
                   </div>
                 </div>
-<a data-name="238919066%2FProperties%2F741329428" anchor-label="scale" id="238919066%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
-                <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex">
-                        <div><a href="scale.html">scale</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="238919066%2FProperties%2F741329428"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="238919066%2FProperties%2F741329428" anchor-label="scale" id="238919066%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="scale.html">scale</a><span class="token operator">: </span><span data-unresolved-link="javafx.beans.value/ObservableDoubleValue///PointingToDeclaration/">ObservableDoubleValue</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 <a data-name="-1943574141%2FProperties%2F741329428" anchor-label="scope" id="-1943574141%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
                 <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
                   <div class="main-subrow keyValue ">
@@ -617,6 +572,21 @@ if(savedDarkMode === true){
                     <div>
                       <div class="title">
                         <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="-1943574141%2FProperties%2F741329428" anchor-label="scope" id="-1943574141%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../dev.kkorolyov.pancake.editor.view/-system-details/index.html#-1943574141%2FProperties%2F741329428">scope</a><span class="token operator">: </span><span data-unresolved-link="tornadofx/Scope///PointingToDeclaration/">Scope</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+<a data-name="1467977021%2FProperties%2F741329428" anchor-label="speed" id="1467977021%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+                <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+                  <div class="main-subrow keyValue ">
+                    <div class=""><span class="inline-flex">
+                        <div><a href="speed.html">speed</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1467977021%2FProperties%2F741329428"></span>
+                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                        </span></span></div>
+                    <div>
+                      <div class="title">
+                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><a data-name="1467977021%2FProperties%2F741329428" anchor-label="speed" id="1467977021%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="speed.html">speed</a><span class="token operator">: </span><span data-unresolved-link="javafx.beans.value/ObservableDoubleValue///PointingToDeclaration/">ObservableDoubleValue</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
                       </div>
                     </div>
                   </div>

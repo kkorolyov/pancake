@@ -1,0 +1,63 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.component////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.component/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.component/Model///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.component/-model/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.component/Model/Model/#dev.kkorolyov.pancake.graphics.gl.shader.Program#kotlin.Array[dev.kkorolyov.pancake.graphics.gl.mesh.Mesh]/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.component/-model/-model.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.component/Model/meshes/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.component/-model/meshes.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.component/Model/program/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.component/-model/program.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh//oval/#dev.kkorolyov.pancake.platform.math.Vector2#dev.kkorolyov.pancake.platform.math.Vector3#dev.kkorolyov.pancake.platform.math.Vector3#kotlin.Int/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/oval.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh//rectangle/#dev.kkorolyov.pancake.platform.math.Vector2#dev.kkorolyov.pancake.platform.math.Vector3/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/rectangle.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/ColorPoint///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-color-point/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/ColorPoint/ColorPoint/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-color-point/-color-point.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/ColorPoint/add/#dev.kkorolyov.pancake.platform.math.Vector3#dev.kkorolyov.pancake.platform.math.Vector3/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-color-point/add.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/ColorPoint/invoke/#kotlin.Int/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-color-point/invoke.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/ColorPoint/size/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-color-point/size.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.Companion///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-companion/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.Companion/index/#dev.kkorolyov.pancake.graphics.gl.mesh.VertexBuffer#kotlin.IntArray#dev.kkorolyov.pancake.graphics.gl.mesh.Mesh.DrawMode/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-companion/--index--.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.Companion/vertex/#dev.kkorolyov.pancake.graphics.gl.mesh.VertexBuffer#dev.kkorolyov.pancake.graphics.gl.mesh.Mesh.DrawMode/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-companion/vertex.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.DrawMode.TRIANGLES///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-draw-mode/-t-r-i-a-n-g-l-e-s/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.DrawMode.TRIANGLE_FAN///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-draw-mode/-t-r-i-a-n-g-l-e_-f-a-n/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.DrawMode.TRIANGLE_STRIP///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-draw-mode/-t-r-i-a-n-g-l-e_-s-t-r-i-p/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.DrawMode///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-draw-mode/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh.DrawMode/value/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/-draw-mode/value.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh/close/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/close.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh/draw/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/draw.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh/id/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/id.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh/subMesh/#kotlin.Int#kotlin.Int#dev.kkorolyov.pancake.graphics.gl.mesh.Mesh.DrawMode/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/sub-mesh.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/Mesh/subMesh/#kotlin.Int#kotlin.Int/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-mesh/sub-mesh.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/VertexBuffer///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-vertex-buffer/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/VertexBuffer/invoke/#kotlin.Int/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-vertex-buffer/invoke.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.mesh/VertexBuffer/size/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.mesh/-vertex-buffer/size.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/Program/#kotlin.Array[dev.kkorolyov.pancake.graphics.gl.shader.Shader]/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/-program.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/close/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/close.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/equals/#kotlin.Any?/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/equals.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/hashCode/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/hash-code.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/id/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/id.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/set/#kotlin.String#dev.kkorolyov.pancake.platform.math.Matrix4/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/set.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/set/#kotlin.String#dev.kkorolyov.pancake.platform.math.Vector2/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/set.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/set/#kotlin.String#dev.kkorolyov.pancake.platform.math.Vector3/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/set.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/set/#kotlin.String#kotlin.Float/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/set.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Program/use/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-program/use.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader.Type.FRAGMENT///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/-type/-f-r-a-g-m-e-n-t/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader.Type.VERTEX///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/-type/-v-e-r-t-e-x/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader.Type///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/-type/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader.Type/value/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/-type/value.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/Shader/#dev.kkorolyov.pancake.graphics.gl.shader.Shader.Type#kotlin.Array[java.io.InputStream]/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/-shader.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/Shader/#dev.kkorolyov.pancake.graphics.gl.shader.Shader.Type#kotlin.Array[kotlin.String]/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/-shader.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/close/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/close.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/equals/#kotlin.Any?/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/equals.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/hashCode/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/hash-code.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/id/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/id.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.system////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.system/DrawSystem///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/-draw-system/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.system/DrawSystem/DrawSystem/#dev.kkorolyov.pancake.graphics.common.CameraQueue#kotlin.Function0[kotlin.Unit]#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/-draw-system/-draw-system.html
+dev.kkorolyov.pancake.graphics.gl.component
+dev.kkorolyov.pancake.graphics.gl.mesh
+dev.kkorolyov.pancake.graphics.gl.shader
+dev.kkorolyov.pancake.graphics.gl.system
+

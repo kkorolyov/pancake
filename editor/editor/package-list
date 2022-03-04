@@ -3,12 +3,10 @@ $dokka.linkExtension:html
 $dokka.location:dev.kkorolyov.pancake.editor.controller////PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/index.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/index.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/DataPoller/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/-data-poller.html
-$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/active/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/active.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/engine/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/engine.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/entities/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/entities.html
-$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/events/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/events.html
-$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/loop/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/loop.html
-$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/register/#dev.kkorolyov.pancake.platform.GameLoop/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/register.html
-$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/scale/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/scale.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/register/#dev.kkorolyov.pancake.platform.GameEngine/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/register.html
+$dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/speed/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/speed.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/systems/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/systems.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataPoller/tps/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-poller/tps.html
 $dokka.location:dev.kkorolyov.pancake.editor.controller/DataSelection///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.controller/-data-selection/index.html
@@ -68,7 +66,7 @@ $dokka.location:dev.kkorolyov.pancake.editor//getComponentDetails/#dev.kkorolyov
 $dokka.location:dev.kkorolyov.pancake.editor//openEditor/#javafx.stage.Stage?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/open-editor.html
 $dokka.location:dev.kkorolyov.pancake.editor//prettyPrint/dev.kkorolyov.pancake.platform.math.Vector2#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/pretty-print.html
 $dokka.location:dev.kkorolyov.pancake.editor//prettyPrint/dev.kkorolyov.pancake.platform.math.Vector3#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/pretty-print.html
-$dokka.location:dev.kkorolyov.pancake.editor//registerEditor/#dev.kkorolyov.pancake.platform.GameLoop/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/register-editor.html
+$dokka.location:dev.kkorolyov.pancake.editor//registerEditor/#dev.kkorolyov.pancake.platform.GameEngine/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/register-editor.html
 $dokka.location:dev.kkorolyov.pancake.editor//rowRatios/javafx.scene.layout.GridPane#kotlin.Array[kotlin.Number?]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/row-ratios.html
 $dokka.location:dev.kkorolyov.pancake.editor/ComponentData///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/index.html
 $dokka.location:dev.kkorolyov.pancake.editor/ComponentData/ComponentData/#TypeParam(bounds=[dev.kkorolyov.pancake.platform.entity.Component])?/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-component-data/-component-data.html

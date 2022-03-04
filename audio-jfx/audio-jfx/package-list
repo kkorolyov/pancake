@@ -6,25 +6,20 @@ $dokka.location:dev.kkorolyov.pancake.audio.jfx.component/AudioEmitter/AudioEmit
 $dokka.location:dev.kkorolyov.pancake.audio.jfx.component/AudioEmitter/active/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.component/-audio-emitter/active.html
 $dokka.location:dev.kkorolyov.pancake.audio.jfx.component/AudioEmitter/add/#javafx.scene.media.Media/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.component/-audio-emitter/add.html
 $dokka.location:dev.kkorolyov.pancake.audio.jfx.component/AudioEmitter/invoke/#kotlin.Double#kotlin.Double/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.component/-audio-emitter/invoke.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx.component/AudioReceiver///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.component/-audio-receiver/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx.component/AudioReceiver/AudioReceiver/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.component/-audio-receiver/-audio-receiver.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx.component/AudioReceiver/volume/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.component/-audio-receiver/volume.html
 $dokka.location:dev.kkorolyov.pancake.audio.jfx.system////PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx.system/AudioReceiverSystem///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/-audio-receiver-system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx.system/AudioReceiverSystem/AudioReceiverSystem/#dev.kkorolyov.pancake.audio.jfx.ReceiverQueue/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/-audio-receiver-system/-audio-receiver-system.html
 $dokka.location:dev.kkorolyov.pancake.audio.jfx.system/AudioSystem///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/-audio-system/index.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx.system/AudioSystem/AudioSystem/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/-audio-system/-audio-system.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx.system/AudioSystem/attach/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/-audio-system/attach.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx.system/AudioSystem/update/#dev.kkorolyov.pancake.platform.entity.Entity#kotlin.Long/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/-audio-system/update.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx.system/AudioSystem/AudioSystem/#dev.kkorolyov.pancake.audio.jfx.ReceiverQueue/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx.system/-audio-system/-audio-system.html
 $dokka.location:dev.kkorolyov.pancake.audio.jfx////PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/index.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/AddListener///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-add-listener/index.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/AddListener/AddListener/#dev.kkorolyov.pancake.audio.jfx.Listener/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-add-listener/-add-listener.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/AddListener/listener/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-add-listener/listener.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/Listener///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-listener/index.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/Listener/Listener/#dev.kkorolyov.pancake.platform.math.Vector3#kotlin.Double/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-listener/-listener.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/Listener/position/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-listener/position.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/Listener/volume/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-listener/volume.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/RemoveListener///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-remove-listener/index.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/RemoveListener/RemoveListener/#dev.kkorolyov.pancake.audio.jfx.Listener/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-remove-listener/-remove-listener.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/RemoveListener/listener/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-remove-listener/listener.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/SetAudioState///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-set-audio-state/index.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/SetAudioState/SetAudioState/#kotlin.Boolean/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-set-audio-state/-set-audio-state.html
-$dokka.location:dev.kkorolyov.pancake.audio.jfx/SetAudioState/active/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-set-audio-state/active.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx/ReceiverQueue///PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-receiver-queue/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx/ReceiverQueue/ReceiverQueue/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-receiver-queue/-receiver-queue.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx/ReceiverQueue/position/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-receiver-queue/position.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx/ReceiverQueue/value/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-receiver-queue/value.html
+$dokka.location:dev.kkorolyov.pancake.audio.jfx/ReceiverQueue/volume/#/PointingToDeclaration/audio-jfx/dev.kkorolyov.pancake.audio.jfx/-receiver-queue/volume.html
 dev.kkorolyov.pancake.audio.jfx
 dev.kkorolyov.pancake.audio.jfx.component
 dev.kkorolyov.pancake.audio.jfx.system

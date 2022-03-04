@@ -1,30 +1,12 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
-$dokka.location:dev.kkorolyov.pancake.input.jfx.component////PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.component/index.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx.component/Input///PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.component/-input/index.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx.component/Input/Input/#dev.kkorolyov.pancake.input.jfx.Reaction[javafx.scene.input.InputEvent]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.component/-input/-input.html
 $dokka.location:dev.kkorolyov.pancake.input.jfx.system////PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.system/index.html
 $dokka.location:dev.kkorolyov.pancake.input.jfx.system/InputSystem///PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.system/-input-system/index.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx.system/InputSystem/InputSystem/#kotlin.collections.Iterable[javafx.scene.Node]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.system/-input-system/-input-system.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx.system/InputSystem/after/#kotlin.Long/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.system/-input-system/after.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx.system/InputSystem/before/#kotlin.Long/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.system/-input-system/before.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx.system/InputSystem/update/#dev.kkorolyov.pancake.platform.entity.Entity#kotlin.Long/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.system/-input-system/update.html
+$dokka.location:dev.kkorolyov.pancake.input.jfx.system/InputSystem/InputSystem/#kotlin.Array[javafx.scene.Node]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx.system/-input-system/-input-system.html
 $dokka.location:dev.kkorolyov.pancake.input.jfx////PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/index.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Compensated///PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-compensated/index.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Compensated/Compensated/#TypeParam(bounds=[kotlin.Any?])#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-compensated/-compensated.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Compensated/compensate/#/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-compensated/compensate.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Compensated/get/#/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-compensated/get.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion///PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/index.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion/filter/#kotlin.Function1[TypeParam(bounds=[javafx.scene.input.InputEvent]),kotlin.Boolean]#dev.kkorolyov.pancake.input.jfx.Reaction[TypeParam(bounds=[javafx.scene.input.InputEvent])]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/filter.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion/first/#kotlin.Array[dev.kkorolyov.pancake.input.jfx.Reaction[TypeParam(bounds=[javafx.scene.input.InputEvent])]]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/first.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion/invoke/#kotlin.Function1[TypeParam(bounds=[javafx.scene.input.InputEvent]),dev.kkorolyov.pancake.platform.action.Action?]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/invoke.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion/keyToggle/#dev.kkorolyov.pancake.input.jfx.Compensated[dev.kkorolyov.pancake.platform.action.Action]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/key-toggle.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion/matchType/#dev.kkorolyov.pancake.input.jfx.Reaction[TypeParam(bounds=[javafx.scene.input.InputEvent])]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/match-type.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion/mouseToggle/#dev.kkorolyov.pancake.input.jfx.Compensated[dev.kkorolyov.pancake.platform.action.Action]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/mouse-toggle.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction.Companion/whenCode/#kotlin.Array[kotlin.Pair[javafx.scene.input.KeyCode,dev.kkorolyov.pancake.input.jfx.Reaction[javafx.scene.input.KeyEvent]]]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/-companion/when-code.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction///PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/index.html
-$dokka.location:dev.kkorolyov.pancake.input.jfx/Reaction/invoke/#TypeParam(bounds=[javafx.scene.input.InputEvent])/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/-reaction/invoke.html
+$dokka.location:dev.kkorolyov.pancake.input.jfx//keyToggle/#dev.kkorolyov.pancake.input.common.Compensated[dev.kkorolyov.pancake.platform.action.Action]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/key-toggle.html
+$dokka.location:dev.kkorolyov.pancake.input.jfx//mouseToggle/#dev.kkorolyov.pancake.input.common.Compensated[dev.kkorolyov.pancake.platform.action.Action]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/mouse-toggle.html
+$dokka.location:dev.kkorolyov.pancake.input.jfx//whenCode/#kotlin.Array[kotlin.Pair[javafx.scene.input.KeyCode,dev.kkorolyov.pancake.input.common.Reaction[javafx.scene.input.KeyEvent]]]/PointingToDeclaration/input-jfx/dev.kkorolyov.pancake.input.jfx/when-code.html
 dev.kkorolyov.pancake.input.jfx
-dev.kkorolyov.pancake.input.jfx.component
 dev.kkorolyov.pancake.input.jfx.system
 
