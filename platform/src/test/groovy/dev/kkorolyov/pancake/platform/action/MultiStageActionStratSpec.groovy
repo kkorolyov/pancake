@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.action
 
 import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.entity.EntityPool
 
 import spock.lang.Shared
 import spock.lang.Specification
@@ -11,7 +12,7 @@ import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOptio
 class MultiStageActionStratSpec extends Specification {
 	@Shared long holdThreshold = 0
 	@Shared long dt = 0
-	@Shared Entity entity = Mock()
+	@Shared Entity entity = new EntityPool().create()
 
 	Action start = Mock()
 	Action hold = Mock()

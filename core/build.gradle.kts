@@ -8,7 +8,6 @@ description = "Collection of general, reusable systems and components for the Pa
 
 dependencies {
 	implementation(libs.bundles.stdlib)
-	implementation(libs.slf4j)
 
 	implementation(projects.platform)
 

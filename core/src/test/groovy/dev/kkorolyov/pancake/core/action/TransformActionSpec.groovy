@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.core.action
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.math.Vector1
 import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.math.Vectors
@@ -16,8 +17,9 @@ class TransformActionSpec extends Specification {
 	Vector1 setOrientation = Vectors.create((Vector1) randVector())
 
 	Transform component = new Transform(Vectors.create(0, 0, 0), Vectors.create(0))
-	Entity entity = Mock() {
-		get(Transform) >> component
+	Entity entity = new EntityPool().create().with {
+		it.put(component)
+		it
 	}
 
 	Action action = new TransformAction(setPosition, setOrientation)

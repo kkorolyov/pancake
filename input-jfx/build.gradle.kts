@@ -10,10 +10,10 @@ description = "JavaFX-driven input and control implementation"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
-	implementation(libs.slf4j)
 
 	api(projects.platform)
 	implementation(projects.core)
+	api(projects.inputCommon)
 
 	testImplementation(libs.bundles.test)
 }

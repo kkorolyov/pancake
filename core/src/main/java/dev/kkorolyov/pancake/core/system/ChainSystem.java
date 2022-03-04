@@ -6,9 +6,7 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.Vectors;
-import dev.kkorolyov.pancake.platform.utility.Limiter;
 
-import java.util.List;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -23,10 +21,7 @@ public class ChainSystem extends GameSystem {
 	 * Constructs a new chain system.
 	 */
 	public ChainSystem() {
-		super(
-				List.of(Transform.class, Chain.class),
-				Limiter.fromConfig(ChainSystem.class)
-		);
+		super(Transform.class, Chain.class);
 	}
 
 	@Override

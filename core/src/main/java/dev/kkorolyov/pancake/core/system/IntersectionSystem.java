@@ -2,19 +2,17 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Transform;
+import dev.kkorolyov.pancake.core.component.event.Intersecting;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
-import dev.kkorolyov.pancake.core.event.EntitiesIntersected;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.math.Vectors;
-import dev.kkorolyov.pancake.platform.utility.Limiter;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -33,10 +31,7 @@ public final class IntersectionSystem extends GameSystem {
 	 * Constructs a new intersection system.
 	 */
 	public IntersectionSystem() {
-		super(
-				List.of(Transform.class, Bounds.class),
-				Limiter.fromConfig(IntersectionSystem.class)
-		);
+		super(Transform.class, Bounds.class);
 	}
 
 	@Override
@@ -44,7 +39,7 @@ public final class IntersectionSystem extends GameSystem {
 		toCheck.add(entity);
 	}
 	@Override
-	public void after(long dt) {
+	public void after() {
 		for (Entity a = toCheck.poll(); a != null; a = toCheck.poll()) {
 			for (Entity b : toCheck) {
 				process(a, b);
@@ -65,7 +60,7 @@ public final class IntersectionSystem extends GameSystem {
 			else processPoly(aTransform, bTransform, aBounds, bBounds);
 
 			if (mtv.getX() != 0 || mtv.getY() != 0) {
-				enqueue(new EntitiesIntersected(a, b, mtv));
+				a.put(new Intersecting(b, mtv));
 
 				mtv.scale(minOverlap);
 

@@ -1,10 +1,9 @@
 package dev.kkorolyov.pancake.input.jfx.system
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
-import dev.kkorolyov.pancake.input.jfx.component.Input
+import dev.kkorolyov.pancake.input.common.component.Input
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.utility.Limiter
 import javafx.event.EventHandler
 import javafx.scene.Node
 import javafx.scene.input.InputEvent
@@ -12,10 +11,7 @@ import javafx.scene.input.InputEvent
 /**
  * Queues actions based on input.
  */
-class InputSystem(inputNodes: Iterable<Node>) : GameSystem(
-	listOf(Input::class.java, ActionQueue::class.java),
-	Limiter.fromConfig(InputSystem::class.java)
-) {
+class InputSystem(vararg inputNodes: Node) : GameSystem(Input::class.java, ActionQueue::class.java) {
 	private val events = IsolateCollection<InputEvent>()
 
 	init {
@@ -32,19 +28,19 @@ class InputSystem(inputNodes: Iterable<Node>) : GameSystem(
 		}
 	}
 
-	override fun before(dt: Long) {
+	override fun before() {
 		events.swap()
 	}
 
 	override fun update(entity: Entity, dt: Long) {
 		val input = entity.get(Input::class.java)
 		val actionQueue = entity.get(ActionQueue::class.java)
-		events.forEach { event ->
-			input(event)?.let { action -> actionQueue.enqueue(action) }
+		events.forEach {
+			input(it)?.let(actionQueue::enqueue)
 		}
 	}
 
-	override fun after(dt: Long) {
+	override fun after() {
 		events.clear()
 	}
 

@@ -10,13 +10,12 @@ description = "JavaFX drawable stamps and draw system implementations"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
-	implementation(libs.slf4j)
 
 	api(projects.platform)
+	api(projects.graphicsCommon)
 	implementation(projects.core)
 
 	testImplementation(libs.bundles.test)
-
 }
 
 java {

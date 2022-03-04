@@ -1,15 +1,12 @@
 package dev.kkorolyov.pancake.platform.entity
 
-import dev.kkorolyov.pancake.platform.event.EventLoop
-
 import spock.lang.Specification
 
 class EntityPoolSpec extends Specification {
-	EventLoop events = Mock()
 	Component component = mockComponent()
 	Collection<Class<? extends Component>> signature = List.of(component.class)
 
-	EntityPool entities = new EntityPool(events)
+	EntityPool entities = new EntityPool()
 
 	def "create provisions unique ID"() {
 		expect:

@@ -1,59 +1,60 @@
 package dev.kkorolyov.pancake.graphics.jfx.system
 
 import dev.kkorolyov.pancake.core.component.Transform
-import dev.kkorolyov.pancake.graphics.jfx.Camera
-import dev.kkorolyov.pancake.graphics.jfx.CameraCreated
-import dev.kkorolyov.pancake.graphics.jfx.CameraDestroyed
+import dev.kkorolyov.pancake.graphics.common.Camera
+import dev.kkorolyov.pancake.graphics.common.CameraQueue
 import dev.kkorolyov.pancake.graphics.jfx.component.Graphic
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Vector2
-import dev.kkorolyov.pancake.platform.utility.Limiter
+import dev.kkorolyov.pancake.platform.math.Vectors
 import javafx.animation.AnimationTimer
 import javafx.application.Platform
 import javafx.scene.canvas.Canvas
+import javafx.scene.layout.GridPane
 import javafx.scene.transform.Affine
 
 /**
  * Draws entities according to all known [Camera]s.
  */
-class DrawSystem : GameSystem(
-	listOf(Transform::class.java, Graphic::class.java),
-	Limiter.fromConfig(DrawSystem::class.java)
-) {
+class DrawSystem(private val queue: CameraQueue, private val pane: GridPane) : GameSystem(Transform::class.java, Graphic::class.java) {
 	private val renderers: MutableMap<Int, Renderer> = mutableMapOf()
 	private val pending: MutableList<Entity> = mutableListOf()
 
-	override fun attach() {
-		register(CameraCreated::class.java) {
-			val renderer = Renderer(it.camera)
-			renderers[it.camera.id] = renderer
-			Platform.runLater { renderer.start() }
+	override fun before() {
+		renderers.entries.removeIf { (id, renderer) ->
+			val result = id !in queue.ids
+			if (result) renderer.stop()
+			result
 		}
-		register(CameraDestroyed::class.java) {
-			renderers.remove(it.id)?.let {
-				Platform.runLater { it.stop() }
+		queue.cameras.forEach { camera ->
+			renderers.computeIfAbsent(camera.id) {
+				val renderer = Renderer(camera, Canvas().apply {
+					pane.add(this, 0, 0)
+					widthProperty().bind(pane.widthProperty())
+					heightProperty().bind(pane.heightProperty())
+				})
+				Platform.runLater { renderer.start() }
+				renderer
 			}
 		}
-	}
-
-	override fun before(dt: Long) {
-		pending.clear()
 	}
 
 	override fun update(entity: Entity, dt: Long) {
 		pending.add(entity)
 	}
 
-	override fun after(dt: Long) {
+	override fun after() {
 		pending.sortBy { it.get(Transform::class.java).globalPosition.z }
 		renderers.values.forEach { it.draw(pending) }
 		renderers.values.forEach(Renderer::commit)
+		pending.clear()
 	}
 }
 
-private class Renderer(private val camera: Camera) : AnimationTimer() {
+private class Renderer(private val camera: Camera, private val canvas: Canvas) : AnimationTimer() {
 	private val affine: Affine = Affine()
+	private val position: Vector2 = Vectors.create2()
 	// TODO reenable if possible to avoid snapshotting on FX thread
 //	private val buffer: Canvas = Canvas().also {
 //		// sync buffer with rendered canvas
@@ -74,14 +75,13 @@ private class Renderer(private val camera: Camera) : AnimationTimer() {
 //	private var ref: AtomicReference<WritableImage> = AtomicReference()
 
 	fun draw(entities: List<Entity>) {
-		val canvas: Canvas = camera.lens.canvas
 		val scale: Vector2 = camera.lens.scale
 
 		canvas.graphicsContext2D.clearRect(0.0, 0.0, canvas.width, canvas.height)
 
 		entities.forEach { entity ->
 			val graphic = entity.get(Graphic::class.java)
-			val position = camera.map(entity.get(Transform::class.java).globalPosition)
+			val position = map(entity.get(Transform::class.java).globalPosition)
 			// TODO rotate
 
 			canvas.graphicsContext2D.let { g ->
@@ -106,6 +106,16 @@ private class Renderer(private val camera: Camera) : AnimationTimer() {
 //			image = buffer.snapshot(snapshotParameters, ref.getAndSet(null))
 //			ref.set(image)
 //		}
+	}
+
+	private fun map(position: Vector2): Vector2 = this.position.apply {
+		set(position)
+		add(camera.transform.globalPosition, -1.0)
+
+		val scale = camera.lens.scale
+		x *= scale.x
+		// Negate as pixel rows increment downward
+		y *= -scale.y
 	}
 
 	override fun handle(now: Long) {

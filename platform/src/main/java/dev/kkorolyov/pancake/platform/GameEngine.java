@@ -1,109 +1,94 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.event.EventLoop;
 import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
-import dev.kkorolyov.pancake.platform.utility.Sampler;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
-
-import static java.util.Collections.unmodifiableCollection;
+import java.util.List;
 
 /**
  * Central game management module.
  * Serves as the link between entities with components containing data and systems specifying business logic.
  */
 public final class GameEngine {
-	private final EventLoop.Broadcasting events;
-	private final EntityPool entities;
-	private final Collection<GameSystem> systems = new LinkedHashSet<>();
+	private final EntityPool entities = new EntityPool();
+	private final Pipeline[] pipelines;
 
 	private final PerfMonitor perfMonitor = new PerfMonitor();
 
-	/**
-	 * Constructs a new game engine.
-	 * @param events attached event broadcaster
-	 * @param entities attached entity pool
-	 * @param systems attached systems
-	 */
-	public GameEngine(EventLoop.Broadcasting events, EntityPool entities, Iterable<GameSystem> systems) {
-		this.events = events;
-		this.entities = entities;
+	private volatile boolean active;
+	private volatile double speed = 1;
 
-		systems.forEach(this::add);
+	/**
+	 * Constructs a new game engine updating {@code pipelines}.
+	 */
+	public GameEngine(Pipeline... pipelines) {
+		this.pipelines = pipelines.clone();
+		for (Pipeline pipeline : this.pipelines) pipeline.attach(entities, perfMonitor);
 	}
 
 	/**
-	 * Proceeds the simulation by 1 tick.
-	 * <pre>
-	 * All queued events are broadcast
-	 * Each system updates all entities it is applicable to
-	 * </pre>
-	 * @param dt {@code ns} elapsed since last update
+	 * Starts this engine on the current thread if it is not currently active.
+	 * An active game loop continuously updates its pipelines by {@code speed}-modified elapsed time per update cycle.
 	 */
-	public void update(long dt) {
-		events.broadcast();
+	public void start() {
+		if (!active) {
+			active = true;
+			perfMonitor.getEngine().reset();
+			long last = System.nanoTime();
 
-		for (GameSystem system : systems) {
-			if (system.getLimiter().isReady(dt)) {
-				long systemDt = system.getLimiter().consumeElapsed();
+			while (active) {
+				long now = System.nanoTime();
+				long elapsed = now - last;
+				long dt = (long) (elapsed * speed);
+				last = now;
 
-				Sampler sampler = perfMonitor.getSystem(system);
-
-				system.before(systemDt);
-
-				for (EntityPool.ManagedEntity entity : entities.get(system.getSignature())) {
-					system.update(entity, systemDt);
-				}
-
-				system.after(systemDt);
-
-				sampler.sample();
+				for (Pipeline pipeline : pipelines) pipeline.update(dt);
+				perfMonitor.getEngine().sample();
 			}
 		}
-		perfMonitor.getEngine().sample();
+	}
+	/**
+	 * Halts execution of this engine if it is currently active.
+	 */
+	public void stop() {
+		active = false;
 	}
 
 	/**
-	 * Attaches a system to this engine.
-	 * @param system system to add
-	 * @see GameSystem#attach()
+	 * Returns the active state of this engine.
 	 */
-	public void add(GameSystem system) {
-		systems.add(system);
-		system.setEvents(events);
-		system.attach();
-	}
-	/**
-	 * Detaches a system from this engine.
-	 * @param system system to remove
-	 * @see GameSystem#detach()
-	 */
-	public void remove(GameSystem system) {
-		if (systems.remove(system)) {
-			system.detach();
-			system.setEvents(null);
-		}
+	public boolean isActive() {
+		return active;
 	}
 
 	/**
-	 * Returns this engine's event loop.
+	 * Returns the modifier applied to all pipelines' update timestep.
 	 */
-	public EventLoop.Broadcasting getEventLoop() {
-		return events;
+	public double getSpeed() {
+		return speed;
 	}
+	/**
+	 * Sets {@code speed} as the modifier applied to all pipelines' update timestep.
+	 * A negative value effectively reverses time-aware pipelines.
+	 * A {@code 0} value effectively stops time-aware pipelines.
+	 */
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
 	/**
 	 * Returns this engine's entity pool.
 	 */
-	public EntityPool getEntityPool() {
+	public EntityPool getEntities() {
 		return entities;
 	}
+
 	/**
-	 * Returns this engine's systems.
+	 * Returns this engine's update pipelines.
 	 */
-	public Collection<GameSystem> getSystems() {
-		return unmodifiableCollection(systems);
+	public Collection<Pipeline> getPipelines() {
+		return List.of(pipelines);
 	}
 
 	/**
@@ -116,9 +101,8 @@ public final class GameEngine {
 	@Override
 	public String toString() {
 		return "GameEngine{" +
-				"events=" + events +
 				", entities=" + entities +
-				", systems=" + systems +
+				", pipelines=" + pipelines +
 				", perfMonitor=" + perfMonitor +
 				'}';
 	}

@@ -10,7 +10,6 @@ dependencies {
 	implementation(libs.bundles.stdlib)
 	api(libs.flub)
 	implementation(libs.snakeyaml)
-	implementation(libs.slf4j)
 	implementation(libs.jackson)
 
 	testImplementation(libs.bundles.test)
