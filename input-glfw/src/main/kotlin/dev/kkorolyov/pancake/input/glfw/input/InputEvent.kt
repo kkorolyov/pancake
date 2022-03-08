@@ -3,9 +3,9 @@ package dev.kkorolyov.pancake.input.glfw.input
 /**
  * Indicates a user input.
  */
-abstract class InputEvent {
+interface InputEvent {
 	/**
 	 * ID of window emitting event.
 	 */
-	abstract val window: Long
+	val window: Long
 }

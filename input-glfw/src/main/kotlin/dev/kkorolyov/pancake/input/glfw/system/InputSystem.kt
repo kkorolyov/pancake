@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.input.glfw.system
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.input.common.component.Input
+import dev.kkorolyov.pancake.input.glfw.input.ActionEvent.Action.Companion.forValue
 import dev.kkorolyov.pancake.input.glfw.input.CursorPosEvent
-import dev.kkorolyov.pancake.input.glfw.input.InputAction
 import dev.kkorolyov.pancake.input.glfw.input.InputEvent
 import dev.kkorolyov.pancake.input.glfw.input.KeyEvent
 import dev.kkorolyov.pancake.input.glfw.input.MouseButtonEvent
@@ -20,11 +20,11 @@ class InputSystem(vararg windows: Long) : GameSystem(Input::class.java, ActionQu
 	init {
 		windows.forEach {
 			glfwSetKeyCallback(it) { window, key, scanCode, action, mods ->
-				events.add(KeyEvent(window, key, scanCode, InputAction.forValue(action), mods))
+				events.add(KeyEvent(window, key, scanCode, forValue(action), mods))
 			}.use { }
 
 			glfwSetMouseButtonCallback(it) { window, button, action, mods ->
-				events.add(MouseButtonEvent(window, button, InputAction.forValue(action), mods))
+				events.add(MouseButtonEvent(window, button, forValue(action), mods))
 			}.use { }
 
 			glfwSetCursorPosCallback(it) { window, x, y ->

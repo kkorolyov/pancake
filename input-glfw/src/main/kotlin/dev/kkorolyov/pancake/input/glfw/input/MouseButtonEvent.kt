@@ -8,7 +8,7 @@ data class MouseButtonEvent(
 	/** `GLFW` button code. */
 	val button: Int,
 	/** Button action. */
-	val action: InputAction,
+	override val action: ActionEvent.Action,
 	/** `GLFW` key modifier bits. */
 	val mods: Int
-) : InputEvent()
+) : ActionEvent
