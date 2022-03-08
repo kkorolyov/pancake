@@ -2,11 +2,11 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 cglib:cglib-nodep:3.3.0=testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-annotations:2.13.1=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-core:2.13.1=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-databind:2.13.1=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.1=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson:jackson-bom:2.13.1=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-annotations:2.13.2=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-core:2.13.2=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-databind:2.13.2=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.2=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson:jackson-bom:2.13.2=runtimeClasspath,testRuntimeClasspath
 dev.kkorolyov:flub:0.2.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 net.bytebuddy:byte-buddy:1.12.8=testCompileClasspath,testRuntimeClasspath
 org.apache.groovy:groovy-bom:4.0.0=testCompileClasspath,testRuntimeClasspath

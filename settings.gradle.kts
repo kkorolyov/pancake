@@ -4,6 +4,7 @@ include("platform")
 include("core")
 
 include("audio-jfx")
+withNested("audio-al", "linux", "windows", "macos")
 
 include("graphics-common")
 include("graphics-jfx")
