@@ -31,7 +31,7 @@ class ColorPoint : VertexBuffer {
 
 		if (positions.isNotEmpty()) {
 			MemoryStack.stackPush().use {
-				val vertexP = it.callocFloat(size * (3 + 3))
+				val vertexP = it.mallocFloat(size * (3 + 3))
 
 				val pIt = positions.iterator()
 				val cIt = colors.iterator()
