@@ -144,8 +144,8 @@ public final class IntersectionSystem extends GameSystem {
 		return true;
 	}
 	private static boolean isSameAxis(Vector2 a, Vector2 b) {
-		return (Double.compare(a.getX(), a.getX()) == 0 && Double.compare(a.getY(), b.getY()) == 0)
-				|| (Double.compare(-a.getX(), a.getX()) == 0 && Double.compare(-a.getY(), b.getY()) == 0);
+		return (Double.compare(a.getX(), b.getX()) == 0 && Double.compare(a.getY(), b.getY()) == 0)
+				|| (Double.compare(-a.getX(), b.getX()) == 0 && Double.compare(-a.getY(), b.getY()) == 0);
 	}
 	private static void project(Transform transform, Bounds bounds, Vector2 axis, Projection projection) {
 		if (bounds.isRound()) {
