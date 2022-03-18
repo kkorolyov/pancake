@@ -5,48 +5,32 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.math.Vectors
 import org.lwjgl.openal.AL11.*
 import org.lwjgl.system.MemoryStack
+import java.io.InputStream
+import java.util.concurrent.Executors
+
+private const val STREAM_SLEEP = 100L
 
 /**
  * Represents an `OpenAL` source that can play audio.
- * The backing `OpenAL` object is thread-local, so accessing this source from different threads will affect different `OpenAL` objects.
  */
-class AudioSource private constructor(
-	/**
-	 * Initializer function invoked with source `id`.
-	 */
-	init: (Int) -> Unit,
-	/**
-	 * Cleanup function invoked with source `id`.
-	 */
-	private val close: (Int) -> Unit = {}
-) : AutoCloseable {
-	constructor(
-		/** Buffer to play. */
-		buffer: AudioBuffer
-	) : this({ alSourcei(it, AL_BUFFER, buffer.id) })
-
-	private val tlId = ThreadLocal.withInitial {
-		val id = alCall(::alGenSources)
-
-		alCall { init(id) }
-
-		id
+class AudioSource : AutoCloseable {
+	private val streamRunner = Executors.newSingleThreadExecutor {
+		Thread(it).apply { isDaemon = true }
 	}
 
 	/**
-	 * ID of this source in the current thread context.
+	 * Source ID.
 	 */
-	val id: Int
-		get() = tlId.get()
+	val id: Int by lazy { alCall(::alGenSources) }
 
 	/**
-	 * State of this source in the current thread context.
+	 * Source state.
 	 */
 	val state: State
 		get() = State.forValue(alCall { alGetSourcei(id, AL_SOURCE_STATE) })
 
 	/**
-	 * Position of this source in the current thread context.
+	 * Source position.
 	 */
 	var position: Vector3
 		get() = alCall {
@@ -59,7 +43,7 @@ class AudioSource private constructor(
 		set(value) = alCall { alSource3f(id, AL_POSITION, value.x.toFloat(), value.y.toFloat(), value.z.toFloat()) }
 
 	/**
-	 * Velocity of this source in the current thread context.
+	 * Source velocity.
 	 */
 	var velocity: Vector3
 		get() = alCall {
@@ -86,7 +70,25 @@ class AudioSource private constructor(
 		set(value) = alCall { alSourcef(id, AL_REFERENCE_DISTANCE, value) }
 
 	/**
-	 * Starts playback of this source in the current thread context.
+	 * Sets this source to play data from [buffer].
+	 * If [buffer] is `null`, removes the current bound buffer.
+	 */
+	fun set(buffer: AudioBuffer?) {
+		alCall { alSourcei(id, AL_BUFFER, buffer?.id ?: 0) }
+	}
+
+	/**
+	 * Sets this source to stream data from [streamer].
+	 */
+	fun set(streamer: AudioStreamer) {
+		streamRunner.execute {
+			while (!streamer(this)) Thread.sleep(STREAM_SLEEP)
+			// TODO close when stopped playing
+		}
+	}
+
+	/**
+	 * Starts playback of this source.
 	 * If currently [State.PAUSED], resumes from the current point, else from the start.
 	 */
 	fun play() {
@@ -94,34 +96,32 @@ class AudioSource private constructor(
 	}
 
 	/**
-	 * Pauses any playback of this source in the current thread context.
+	 * Pauses any playback of this source.
 	 */
 	fun pause() {
 		alCall { alSourcePause(id) }
 	}
 
 	/**
-	 * Halts any playback of this source in the current thread context.
+	 * Halts any playback of this source.
 	 */
 	fun stop() {
 		alCall { alSourceStop(id) }
 	}
 
 	/**
-	 * Halts any playback and rewinds this source to the start in the current thread context.
+	 * Halts any playback and rewinds this source to the start.
 	 */
 	fun reset() {
 		alCall { alSourceRewind(id) }
 	}
 
 	/**
-	 * Deletes this source in the current thread context.
-	 * Subsequent access to this source in the current thread context will reinitialize it.
+	 * Deletes this source.
+	 * Further operations on a closed source are undefined.
 	 */
 	override fun close() {
-		alCall { close(id) }
 		alCall { alDeleteSources(id) }
-		tlId.remove()
 	}
 
 	/**

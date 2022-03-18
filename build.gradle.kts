@@ -14,8 +14,9 @@ tasks.wrapper {
 }
 
 reckon {
-	scopeFromProp()
-	snapshotFromProp()
+	snapshots()
+	setScopeCalc(calcScopeFromProp())
+	setStageCalc(calcStageFromProp())
 }
 tasks.reckonTagCreate {
 	dependsOn(tasks.check)

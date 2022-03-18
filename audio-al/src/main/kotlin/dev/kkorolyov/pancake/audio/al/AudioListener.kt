@@ -8,11 +8,11 @@ import org.lwjgl.openal.AL11.*
 import org.lwjgl.system.MemoryStack
 
 /**
- * Represents the `OpenAL` listener that receives source playback in a thread context.
+ * Represents the `OpenAL` listener that receives source playback in the current context.
  */
 object AudioListener {
 	/**
-	 * Position of this listener in the current thread context.
+	 * Listener position.
 	 */
 	var position: Vector3
 		get() = alCall {
@@ -25,7 +25,7 @@ object AudioListener {
 		set(value) = alCall { alListener3f(AL_POSITION, value.x.toFloat(), value.y.toFloat(), value.z.toFloat()) }
 
 	/**
-	 * Velocity of this listener in the current thread context.
+	 * Listener velocity.
 	 */
 	var velocity: Vector3
 		get() = alCall {

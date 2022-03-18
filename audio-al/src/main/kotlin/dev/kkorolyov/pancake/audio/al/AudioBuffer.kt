@@ -8,23 +8,16 @@ import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.ShortBuffer
 import java.text.Format
-import javax.sound.sampled.AudioInputStream
 import javax.sound.sampled.AudioSystem
 
 /**
  * Represents an `OpenAL` buffer that can load audio data.
- * The backing `OpenAL` object is thread-local, so accessing this buffer from different threads will affect different `OpenAL` objects.
  */
 class AudioBuffer : AutoCloseable {
-	private val tlId = ThreadLocal.withInitial {
-		alCall(::alGenBuffers)
-	}
-
 	/**
-	 * ID of this buffer in the current thread context.
+	 * Buffer ID.
 	 */
-	val id: Int
-		get() = tlId.get()
+	val id: Int by lazy { alCall(::alGenBuffers) }
 
 	/**
 	 * Fills this buffer with the data in [stream].
@@ -52,12 +45,11 @@ class AudioBuffer : AutoCloseable {
 	}
 
 	/**
-	 * Deletes this buffer in the current thread context.
-	 * Subsequent access to this buffer in the current thread context will reinitialize it.
+	 * Deletes this buffer.
+	 * Further operations on a closed buffer are undefined.
 	 */
 	override fun close() {
 		alCall { alDeleteBuffers(id) }
-		tlId.remove()
 	}
 
 	/**

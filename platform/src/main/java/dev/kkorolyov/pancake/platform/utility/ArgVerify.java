@@ -7,45 +7,31 @@ package dev.kkorolyov.pancake.platform.utility;
 public final class ArgVerify {
 	private ArgVerify() {}
 
+	/** @throws IllegalArgumentException if {@code value >= bound} */
+	public static <T extends Comparable<T>> T lessThan(String name, T bound, T value) {
+		if (value.compareTo(bound) < 0) return value;
+		throw new IllegalArgumentException(name + " must be < " + bound + "; was " + value);
+	}
 	/** @throws IllegalArgumentException if {@code value > bound} */
-	public static long lessThanEqual(String name, long bound, long value) {
-		if (value > bound) throw new IllegalArgumentException(name + " must be <= " + bound + "; was " + value);
-		return value;
-	}
-	/** @throws IllegalArgumentException if {@code value < bound} */
-	public static long greaterThanEqual(String name, long bound, long value) {
-		if (value < bound) throw new IllegalArgumentException(name + " must be >= " + bound + "; was " + value);
-		return value;
-	}
-	/** @throws IllegalArgumentException if {@code value < lower || value > upper} */
-	public static long betweenInclusive(String name, long lower, long upper, long value) {
-		if (value < lower || value > upper) throw new IllegalArgumentException(name + " must be >= " + lower + " and <= " + upper + "; was " + value);
-		return value;
+	public static <T extends Comparable<T>> T lessThanEqual(String name, T bound, T value) {
+		if (value.compareTo(bound) <= 0) return value;
+		throw new IllegalArgumentException(name + " must be <= " + bound + "; was " + value);
 	}
 
-	/** @throws IllegalArgumentException if {@code value >= bound} */
-	public static double lessThan(String name, double bound, double value) {
-		if (value >= bound) throw new IllegalArgumentException(name + " must be < " + bound + "; was " + value);
-		return value;
-	}
-	/** @throws IllegalArgumentException if {@code value > bound} */
-	public static double lessThanEqual(String name, double bound, double value) {
-		if (value > bound) throw new IllegalArgumentException(name + " must be <= " + bound + "; was " + value);
-		return value;
-	}
 	/** @throws IllegalArgumentException if {@code value =< bound} */
-	public static double greaterThan(String name, double bound, double value) {
-		if (value <= bound) throw new IllegalArgumentException(name + " must be > " + bound + "; was " + value);
-		return value;
+	public static <T extends Comparable<T>> T greaterThan(String name, T bound, T value) {
+		if (value.compareTo(bound) > 0) return value;
+		throw new IllegalArgumentException(name + " must be > " + bound + "; was " + value);
 	}
 	/** @throws IllegalArgumentException if {@code value < bound} */
-	public static double greaterThanEqual(String name, double bound, double value) {
-		if (value < bound) throw new IllegalArgumentException(name + " must be >= " + bound + "; was " + value);
-		return value;
+	public static <T extends Comparable<T>> T greaterThanEqual(String name, T bound, T value) {
+		if (value.compareTo(bound) >= 0) return value;
+		throw new IllegalArgumentException(name + " must be >= " + bound + "; was " + value);
 	}
+
 	/** @throws IllegalArgumentException if {@code value < lower || value > upper} */
-	public static double betweenInclusive(String name, double lower, double upper, double value) {
-		if (value < lower || value > upper) throw new IllegalArgumentException(name + " must be >= " + lower + " and <= " + upper + "; was " + value);
-		return value;
+	public static <T extends Comparable<T>> T betweenInclusive(String name, T lower, T upper, T value) {
+		if (value.compareTo(lower) >= 0 && value.compareTo(upper) <= 0) return value;
+		throw new IllegalArgumentException(name + " must be >= " + lower + " and <= " + upper + "; was " + value);
 	}
 }

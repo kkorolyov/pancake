@@ -20,7 +20,7 @@ public final class Damping implements Component {
 		this.value = Vectors.create(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
 	}
 	private static double verify(double value) {
-		return ArgVerify.betweenInclusive("damping", 0, 1, value);
+		return ArgVerify.betweenInclusive("damping", 0.0, 1.0, value);
 	}
 
 	/**

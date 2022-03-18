@@ -12,7 +12,6 @@ dependencies {
 	implementation(libs.bundles.stdlib)
 
 	implementation(platform(libs.lwjgl.bom))
-	implementation(libs.lwjgl)
 	implementation(libs.lwjgl.glfw)
 
 	api(projects.platform)
@@ -77,7 +76,7 @@ subprojects {
 	dependencies {
 		api(parent)
 		listOf(parent.libs.lwjgl.asProvider().get(), parent.libs.lwjgl.glfw.get()).forEach {
-			implementation(variantOf(provider { it }) {
+			api(variantOf(provider { it }) {
 				classifier("natives-$name")
 			})
 		}

@@ -19,7 +19,7 @@ public final class VelocityCap implements Component {
 		this.value = Vectors.create(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
 	}
 	private static double verify(double value) {
-		return ArgVerify.greaterThanEqual("cap", 0, value);
+		return ArgVerify.greaterThanEqual("cap", 0.0, value);
 	}
 
 	/**

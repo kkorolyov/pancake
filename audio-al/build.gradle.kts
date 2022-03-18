@@ -12,7 +12,6 @@ dependencies {
 	implementation(libs.bundles.stdlib)
 
 	implementation(platform(libs.lwjgl.bom))
-	implementation(libs.lwjgl)
 	implementation(libs.lwjgl.openal)
 	implementation(libs.lwjgl.stb)
 
