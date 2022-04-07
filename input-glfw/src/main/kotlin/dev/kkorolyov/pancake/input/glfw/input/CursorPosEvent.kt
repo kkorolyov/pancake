@@ -9,4 +9,4 @@ data class CursorPosEvent(
 	val x: Double,
 	/** `y` screen coordinate relative to top edge */
 	val y: Double
-) : InputEvent()
+) : InputEvent

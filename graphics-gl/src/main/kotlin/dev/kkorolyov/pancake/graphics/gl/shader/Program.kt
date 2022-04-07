@@ -25,7 +25,7 @@ class Program(
 			glLinkProgram(id)
 
 			MemoryStack.stackPush().use {
-				val statusP = it.callocInt(1)
+				val statusP = it.mallocInt(1)
 				glGetProgramiv(id, GL_LINK_STATUS, statusP)
 
 				if (statusP[0] == GL_FALSE) throw IllegalArgumentException("Cannot link shader program: ${glGetProgramInfoLog(id)}")
@@ -76,7 +76,7 @@ class Program(
 	 */
 	fun set(name: String, value: Matrix4) {
 		MemoryStack.stackPush().use {
-			val uP = it.callocFloat(16)
+			val uP = it.mallocFloat(16)
 
 			value.apply {
 				uP

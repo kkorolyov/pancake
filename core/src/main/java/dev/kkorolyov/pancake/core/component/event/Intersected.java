@@ -8,14 +8,14 @@ import dev.kkorolyov.pancake.platform.math.Vectors;
 /**
  * Notes that an intersection with another entity occurred.
  */
-public final class Intersecting implements Component {
+public final class Intersected implements Component {
 	private final Entity other;
 	private final Vector2 mtv;
 
 	/**
-	 * Constructs a new intersected event with {@code other} and owning-entity-relative normalized {@code mtv} used to remove overlap.
+	 * Constructs a new intersected event with {@code other} including owning-entity-relative normalized {@code mtv} used to remove overlap.
 	 */
-	public Intersecting(Entity other, Vector2 mtv) {
+	public Intersected(Entity other, Vector2 mtv) {
 		this.other = other;
 		this.mtv = Vectors.create(mtv);
 	}

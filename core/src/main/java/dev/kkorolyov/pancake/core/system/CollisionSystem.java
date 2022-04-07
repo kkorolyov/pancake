@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Transform;
-import dev.kkorolyov.pancake.core.component.event.Intersecting;
+import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
@@ -23,21 +23,21 @@ public final class CollisionSystem extends GameSystem {
 	 * Constructs a new collision system.
 	 */
 	public CollisionSystem() {
-		super(Intersecting.class);
+		super(Intersected.class);
 	}
 
 	@Override
 	public void update(Entity entity, long dt) {
-		Intersecting intersecting = entity.get(Intersecting.class);
+		Intersected intersected = entity.get(Intersected.class);
 
 		Transform aTransform = entity.get(Transform.class);
-		Transform bTransform = intersecting.getOther().get(Transform.class);
+		Transform bTransform = intersected.getOther().get(Transform.class);
 		Velocity aVelocity = entity.get(Velocity.class);
-		Velocity bVelocity = intersecting.getOther().get(Velocity.class);
+		Velocity bVelocity = intersected.getOther().get(Velocity.class);
 		Mass aMass = entity.get(Mass.class);
-		Mass bMass = intersecting.getOther().get(Mass.class);
+		Mass bMass = intersected.getOther().get(Mass.class);
 
-		mtv.set(intersecting.getMtv());
+		mtv.set(intersected.getMtv());
 		if (aVelocity != null) {
 			if (aMass != null && bVelocity != null && bMass != null) collide(aTransform.getPosition(), bTransform.getPosition(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
 			else {

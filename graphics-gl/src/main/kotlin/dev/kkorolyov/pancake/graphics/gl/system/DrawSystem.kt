@@ -13,6 +13,8 @@ import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL46.*
 import org.slf4j.LoggerFactory
 
+private val log = LoggerFactory.getLogger(DrawSystem::class.java)
+
 /**
  * Draws entity [Model]s from the perspectives of all active [Camera]s.
  * Each program is provided a `uniform mat4 transform` transforming vertices to clip space.
@@ -40,8 +42,6 @@ class DrawSystem(
 			GL.createCapabilities()
 		}
 	}
-
-	private val log = LoggerFactory.getLogger(javaClass)
 
 	override fun before() {
 		loader.get()

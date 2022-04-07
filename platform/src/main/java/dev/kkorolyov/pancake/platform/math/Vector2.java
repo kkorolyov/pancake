@@ -57,7 +57,7 @@ public interface Vector2 extends Vector1 {
 	 */
 	default void orthogonal() {
 		double temp = getX();
-		setX(getY());
+		setX(-getY());
 		setY(temp);
 	}
 	/**

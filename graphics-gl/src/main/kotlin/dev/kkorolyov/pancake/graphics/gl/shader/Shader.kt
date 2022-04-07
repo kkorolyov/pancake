@@ -43,7 +43,7 @@ class Shader(
 		glCompileShader(id)
 
 		MemoryStack.stackPush().use {
-			val statusP = it.callocInt(1)
+			val statusP = it.mallocInt(1)
 			glGetShaderiv(id, GL_COMPILE_STATUS, statusP)
 
 			if (statusP[0] == GL_FALSE) throw IllegalArgumentException("Cannot compile $type shader: ${glGetShaderInfoLog(id)}")

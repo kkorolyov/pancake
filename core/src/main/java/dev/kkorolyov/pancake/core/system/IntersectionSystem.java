@@ -2,8 +2,7 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Transform;
-import dev.kkorolyov.pancake.core.component.event.Intersecting;
-import dev.kkorolyov.pancake.core.component.movement.Velocity;
+import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
@@ -55,20 +54,26 @@ public final class IntersectionSystem extends GameSystem {
 		Bounds bBounds = b.get(Bounds.class);
 
 		// polygons can be far enough apart to not need a more precise check
-		if (isClose(aTransform, bTransform, aBounds, bBounds)) {
+		// only consider when either can be corrected
+		if ((aBounds.isCorrectable() || bBounds.isCorrectable()) && isClose(aTransform, bTransform, aBounds, bBounds)) {
 			if (aBounds.isRound() && bBounds.isRound()) processRound(aTransform, bTransform, aBounds, bBounds);
 			else processPoly(aTransform, bTransform, aBounds, bBounds);
 
 			if (mtv.getX() != 0 || mtv.getY() != 0) {
-				a.put(new Intersecting(b, mtv));
+				a.put(new Intersected(b, mtv));
 
 				mtv.scale(minOverlap);
 
-				// move "best-fit" entity to remove overlap
-				if (a.get(Velocity.class) == null && b.get(Velocity.class) != null) {
-					bTransform.getPosition().add(mtv, -1);
+				// move appropriate entity(s) to remove overlap
+				if (aBounds.isCorrectable()) {
+					if (bBounds.isCorrectable()) {
+						aTransform.getPosition().add(mtv, 0.5);
+						bTransform.getPosition().add(mtv, -0.5);
+					} else {
+						aTransform.getPosition().add(mtv);
+					}
 				} else {
-					aTransform.getPosition().add(mtv);
+					bTransform.getPosition().add(mtv, -1);
 				}
 			}
 			minOverlap = 0;
@@ -144,8 +149,8 @@ public final class IntersectionSystem extends GameSystem {
 		return true;
 	}
 	private static boolean isSameAxis(Vector2 a, Vector2 b) {
-		return (Double.compare(a.getX(), a.getX()) == 0 && Double.compare(a.getY(), b.getY()) == 0)
-				|| (Double.compare(-a.getX(), a.getX()) == 0 && Double.compare(-a.getY(), b.getY()) == 0);
+		return (Double.compare(a.getX(), b.getX()) == 0 && Double.compare(a.getY(), b.getY()) == 0)
+				|| (Double.compare(-a.getX(), b.getX()) == 0 && Double.compare(-a.getY(), b.getY()) == 0);
 	}
 	private static void project(Transform transform, Bounds bounds, Vector2 axis, Projection projection) {
 		if (bounds.isRound()) {
@@ -177,8 +182,8 @@ public final class IntersectionSystem extends GameSystem {
 			// all identical points
 			if (min == max && min == other.min && min == other.max) return Double.MAX_VALUE;
 
-			return (max > other.min && other.max > min)
-					? (max < other.max) ? other.min - max : other.max - min
+			return max > other.min && other.max > min
+					? max < other.max ? other.min - max : other.max - min
 					: 0;
 		}
 

@@ -25,6 +25,7 @@ lwjgl-bom = { module = "org.lwjgl:lwjgl-bom", version.ref = "lwjgl" }
 lwjgl = { module = "org.lwjgl:lwjgl" }
 lwjgl-glfw = { module = "org.lwjgl:lwjgl-glfw" }
 lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl" }
+lwjgl-openal = { module = "org.lwjgl:lwjgl-openal" }
 lwjgl-stb = { module = "org.lwjgl:lwjgl-stb" }
 
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
