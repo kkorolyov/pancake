@@ -24,6 +24,7 @@ import tornadofx.onChange
 import tornadofx.runLater
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.ThreadFactory
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
@@ -70,9 +71,15 @@ class DataPoller : Controller() {
 		}
 	}
 
-	private val pollExecutorFactory = Executors.newScheduledThreadPool(1) {
-		Thread(it).apply { isDaemon = true }
-	}
+	private val pollExecutorFactory = Executors.newScheduledThreadPool(1, object : ThreadFactory {
+		private val defaultFactory = Executors.defaultThreadFactory()
+
+		override fun newThread(r: Runnable): Thread {
+			val thread = defaultFactory.newThread(r)
+			thread.isDaemon = true
+			return thread
+		}
+	})
 	private var pollTask: ScheduledFuture<*>? = null
 
 	/**

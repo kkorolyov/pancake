@@ -7,17 +7,19 @@ import org.lwjgl.system.MemoryStack
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.ShortBuffer
-import java.text.Format
 import javax.sound.sampled.AudioSystem
 
 /**
  * Represents an `OpenAL` buffer that can load audio data.
+ * Can be attached to multiple sources.
  */
-class AudioBuffer : AutoCloseable {
+class AudioBuffer : AudioData, AutoCloseable {
 	/**
 	 * Buffer ID.
 	 */
 	val id: Int by lazy { alCall(::alGenBuffers) }
+
+	private val sources = mutableSetOf<AudioSource>()
 
 	/**
 	 * Fills this buffer with the data in [stream].
@@ -44,11 +46,21 @@ class AudioBuffer : AutoCloseable {
 		alCall { alBufferData(id, format.value, data, frequency) }
 	}
 
+	override fun attach(source: AudioSource) {
+		if (sources.add(source)) {
+			alCall { alSourcei(source.id, AL_BUFFER, id) }
+		}
+	}
+
 	/**
-	 * Deletes this buffer.
+	 * Detaches from all known sources and deletes this buffer.
 	 * Further operations on a closed buffer are undefined.
 	 */
 	override fun close() {
+		sources.forEach {
+			it.stop()
+			alCall { alSourcei(it.id, AL_BUFFER, 0) }
+		}
 		alCall { alDeleteBuffers(id) }
 	}
 

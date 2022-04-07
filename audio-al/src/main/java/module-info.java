@@ -1,5 +1,6 @@
 module dev.kkorolyov.pancake.audio.al {
 	requires java.desktop;
+	requires kotlin.stdlib;
 	requires kotlin.stdlib.jdk7;
 	requires org.slf4j;
 	requires org.lwjgl.openal;

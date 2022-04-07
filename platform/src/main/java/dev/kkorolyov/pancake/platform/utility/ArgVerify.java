@@ -18,7 +18,7 @@ public final class ArgVerify {
 		throw new IllegalArgumentException(name + " must be <= " + bound + "; was " + value);
 	}
 
-	/** @throws IllegalArgumentException if {@code value =< bound} */
+	/** @throws IllegalArgumentException if {@code value <= bound} */
 	public static <T extends Comparable<T>> T greaterThan(String name, T bound, T value) {
 		if (value.compareTo(bound) > 0) return value;
 		throw new IllegalArgumentException(name + " must be > " + bound + "; was " + value);

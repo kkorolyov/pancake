@@ -5,19 +5,11 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.math.Vectors
 import org.lwjgl.openal.AL11.*
 import org.lwjgl.system.MemoryStack
-import java.io.InputStream
-import java.util.concurrent.Executors
-
-private const val STREAM_SLEEP = 100L
 
 /**
  * Represents an `OpenAL` source that can play audio.
  */
 class AudioSource : AutoCloseable {
-	private val streamRunner = Executors.newSingleThreadExecutor {
-		Thread(it).apply { isDaemon = true }
-	}
-
 	/**
 	 * Source ID.
 	 */
@@ -68,24 +60,6 @@ class AudioSource : AutoCloseable {
 	var refDistance: Float
 		get() = alCall { alGetSourcef(id, AL_REFERENCE_DISTANCE) }
 		set(value) = alCall { alSourcef(id, AL_REFERENCE_DISTANCE, value) }
-
-	/**
-	 * Sets this source to play data from [buffer].
-	 * If [buffer] is `null`, removes the current bound buffer.
-	 */
-	fun set(buffer: AudioBuffer?) {
-		alCall { alSourcei(id, AL_BUFFER, buffer?.id ?: 0) }
-	}
-
-	/**
-	 * Sets this source to stream data from [streamer].
-	 */
-	fun set(streamer: AudioStreamer) {
-		streamRunner.execute {
-			while (!streamer(this)) Thread.sleep(STREAM_SLEEP)
-			// TODO close when stopped playing
-		}
-	}
 
 	/**
 	 * Starts playback of this source.
