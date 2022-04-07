@@ -1,0 +1,81 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component////PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioEmitter///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-emitter/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioEmitter/AudioEmitter/#dev.kkorolyov.pancake.audio.al.AudioSource/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-emitter/-audio-emitter.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioEmitter/invoke/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-emitter/invoke.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioEmitter/setPosition/#dev.kkorolyov.pancake.platform.math.Vector3/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-emitter/set-position.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioEmitter/setVelocity/#dev.kkorolyov.pancake.platform.math.Vector3/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-emitter/set-velocity.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioReceiver///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-receiver/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioReceiver/AudioReceiver/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-receiver/-audio-receiver.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioReceiver/position/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-receiver/position.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.component/AudioReceiver/velocity/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.component/-audio-receiver/velocity.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.internal////PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.internal/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.internal//alAssert/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.internal/al-assert.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.internal//alCall/#kotlin.Function0[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.internal/al-call.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.internal//alLoad/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.internal/al-load.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.internal//asAl/javax.sound.sampled.AudioFormat#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.internal/as-al.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system////PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioPlaySystem///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-play-system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioPlaySystem/AudioPlaySystem/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-play-system/-audio-play-system.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioPositionSystem///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-position-system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioPositionSystem/AudioPositionSystem/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-position-system/-audio-position-system.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioReceiverPositionSystem///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-receiver-position-system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioReceiverPositionSystem/AudioReceiverPositionSystem/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-receiver-position-system/-audio-receiver-position-system.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioReceiverVelocitySystem///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-receiver-velocity-system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioReceiverVelocitySystem/AudioReceiverVelocitySystem/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-receiver-velocity-system/-audio-receiver-velocity-system.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioVelocitySystem///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-velocity-system/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al.system/AudioVelocitySystem/AudioVelocitySystem/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al.system/-audio-velocity-system/-audio-velocity-system.html
+$dokka.location:dev.kkorolyov.pancake.audio.al////PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.Companion///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/-companion/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.Companion/forValue/#kotlin.Int/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/-companion/for-value.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.MONO16///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/-m-o-n-o16/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.MONO8///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/-m-o-n-o8/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.STEREO16///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/-s-t-e-r-e-o16/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.STEREO8///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/-s-t-e-r-e-o8/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format/value/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/value.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/AudioBuffer/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-audio-buffer.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/attach/#dev.kkorolyov.pancake.audio.al.AudioSource/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/attach.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/close/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/close.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/fill/#dev.kkorolyov.pancake.audio.al.AudioBuffer.Format#kotlin.Int#java.nio.ByteBuffer/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/fill.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/fill/#dev.kkorolyov.pancake.audio.al.AudioBuffer.Format#kotlin.Int#java.nio.ShortBuffer/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/fill.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/fill/#java.io.InputStream/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/fill.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/id/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/id.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioData///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-data/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioData/attach/#dev.kkorolyov.pancake.audio.al.AudioSource/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-data/attach.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioListener///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-listener/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioListener/position/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-listener/position.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioListener/setOrientation/#dev.kkorolyov.pancake.platform.math.Matrix4/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-listener/set-orientation.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioListener/velocity/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-listener/velocity.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.Companion///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/-companion/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.Companion/forValue/#kotlin.Int/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/-companion/for-value.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.INITIAL///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/-i-n-i-t-i-a-l/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.PAUSED///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/-p-a-u-s-e-d/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.PLAYING///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/-p-l-a-y-i-n-g/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.STOPPED///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/-s-t-o-p-p-e-d/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State/value/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/value.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/AudioSource/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-audio-source.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/close/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/close.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/id/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/id.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/loop/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/loop.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/pause/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/pause.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/play/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/play.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/position/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/position.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/refDistance/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/ref-distance.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/reset/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/reset.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/state/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/state.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/stop/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/stop.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/velocity/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/velocity.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioStreamer///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-streamer/index.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioStreamer/AudioStreamer/#kotlin.Function0[java.io.InputStream]#kotlin.Int#kotlin.Int/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-streamer/-audio-streamer.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioStreamer/attach/#dev.kkorolyov.pancake.audio.al.AudioSource/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-streamer/attach.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioStreamer/close/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-streamer/close.html
+dev.kkorolyov.pancake.audio.al
+dev.kkorolyov.pancake.audio.al.component
+dev.kkorolyov.pancake.audio.al.internal
+dev.kkorolyov.pancake.audio.al.system
+
