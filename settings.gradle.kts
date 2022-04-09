@@ -4,15 +4,15 @@ include("platform")
 include("core")
 
 include("audio-jfx")
-withNested("audio-al", "linux", "windows", "macos")
+multiPlatform("audio-al")
 
 include("graphics-common")
 include("graphics-jfx")
-withNested("graphics-gl", "linux", "windows", "macos")
+multiPlatform("graphics-gl")
 
 include("input-common")
 include("input-jfx")
-withNested("input-glfw", "linux", "windows", "macos")
+multiPlatform("input-glfw")
 
 include("editor")
 include("editor-core")
@@ -21,10 +21,10 @@ include("test-utils")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-fun withNested(root: String, vararg nested: String) {
+fun multiPlatform(root: String) {
 	include(root)
 
-	nested.forEach {
+	listOf("linux", "windows", "macos").forEach {
 		include("$root:$it")
 
 		val dir = File("$root/$it")

@@ -11,8 +11,8 @@ description = "GLFW input system and control implementations"
 dependencies {
 	implementation(libs.bundles.stdlib)
 
-	implementation(platform(libs.lwjgl.bom))
-	implementation(libs.lwjgl.glfw)
+	api(platform(libs.lwjgl.bom))
+	api(libs.lwjgl.glfw)
 
 	api(projects.platform)
 	api(projects.inputCommon)

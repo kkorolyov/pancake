@@ -1,8 +1,8 @@
 module dev.kkorolyov.pancake.input.glfw {
-	requires kotlin.stdlib;
 	requires kotlin.stdlib.jdk7;
 	requires org.slf4j;
-	requires org.lwjgl.glfw;
+
+	requires transitive org.lwjgl.glfw;
 
 	requires transitive dev.kkorolyov.pancake.platform;
 	requires transitive dev.kkorolyov.pancake.input.common;

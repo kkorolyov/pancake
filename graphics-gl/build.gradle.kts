@@ -11,8 +11,8 @@ description = "OpenGL rendering system and renderable implementations"
 dependencies {
 	implementation(libs.bundles.stdlib)
 
-	implementation(platform(libs.lwjgl.bom))
-	implementation(libs.lwjgl.opengl)
+	api(platform(libs.lwjgl.bom))
+	api(libs.lwjgl.opengl)
 
 	api(projects.platform)
 	api(projects.graphicsCommon)

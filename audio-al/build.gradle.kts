@@ -11,9 +11,9 @@ description = "OpenAL audio system and struct implementations"
 dependencies {
 	implementation(libs.bundles.stdlib)
 
-	implementation(platform(libs.lwjgl.bom))
-	implementation(libs.lwjgl.openal)
-	implementation(libs.lwjgl.stb)
+	api(platform(libs.lwjgl.bom))
+	api(libs.lwjgl.openal)
+	api(libs.lwjgl.stb)
 
 	api(projects.platform)
 	implementation(projects.core)

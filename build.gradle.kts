@@ -14,7 +14,7 @@ tasks.wrapper {
 }
 
 reckon {
-	snapshots()
+	stages("rc", "final")
 	setScopeCalc(calcScopeFromProp())
 	setStageCalc(calcStageFromProp())
 }
@@ -58,9 +58,6 @@ subprojects {
 		mavenCentral()
 		maven {
 			url = uri("https://maven.pkg.github.com/kkorolyov/flub")
-			mavenContent {
-				releasesOnly()
-			}
 			credentials {
 				username = System.getenv("GITHUB_ACTOR")
 				password = System.getenv("GITHUB_TOKEN")
