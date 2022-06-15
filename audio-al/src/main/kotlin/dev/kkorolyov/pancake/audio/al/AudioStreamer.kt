@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.audio.al
 
 import dev.kkorolyov.pancake.audio.al.internal.alCall
+import dev.kkorolyov.pancake.audio.al.internal.alLoad
 import dev.kkorolyov.pancake.audio.al.internal.asAl
 import dev.kkorolyov.pancake.platform.utility.ArgVerify
 import org.lwjgl.openal.AL11.*
@@ -62,6 +63,7 @@ class AudioStreamer(
 
 		// FIXME this
 		override fun run() {
+			alLoad()
 			while (true) {
 				// initial load
 				if (alCall { alGetSourcei(source.id, AL_BUFFERS_QUEUED) } == 0 && alCall { alGetSourcei(source.id, AL_BUFFERS_PROCESSED) } == 0) {
