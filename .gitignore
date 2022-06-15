@@ -1,11 +1,13 @@
 # Build
 build/
-out/
 .gradle/
+docs/
+!docs/pancake.png
 
 # IDE
 .idea/
 *.iml
+out/
 
 # Resources
 *.log
