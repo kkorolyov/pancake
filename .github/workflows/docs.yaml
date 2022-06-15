@@ -1,0 +1,31 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: checkout
+        uses: actions/checkout@v3
+      - id: java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+      - id: generate
+        shell: bash
+        run: ./gradlew --no-daemon allDocs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: docs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+

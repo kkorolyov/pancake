@@ -14,11 +14,10 @@ jobs:
         version: [ 17 ]
 
     steps:
-      - name: checkout
+      - id: checkout
         uses: actions/checkout@v3
-      - name: publish-gradle
+      - id: publish-gradle
         uses: kkorolyov/publish-gradle@0.3.0
         with:
           java-version: ${{ matrix.version }}
-          publish-task: publish allDocs
           token: ${{ secrets.GITHUB_TOKEN }}
