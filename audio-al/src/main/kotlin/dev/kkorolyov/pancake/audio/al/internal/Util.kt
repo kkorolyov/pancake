@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.audio.al.AudioBuffer
 import org.lwjgl.openal.AL
 import org.lwjgl.openal.AL11.*
 import org.lwjgl.openal.ALC
-import org.lwjgl.openal.ALC10.alcCreateContext
 import org.lwjgl.openal.ALC11.*
 import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
@@ -27,15 +26,17 @@ private val alLoader = ThreadLocal.withInitial {
 
 /**
  * Ensures `OpenAL` capabilities are loaded and context initialized on the current thread.
+ * Calling this directly is usually not needed - instead prefer wrapping `OpenAL` calls in [alCall].
  */
 fun alLoad() {
 	alLoader.get()
 }
 
 /**
- * Invokes [block], follows it up with an [alAssert], and returns the result of [block],
+ * Ensures [alLoad], invokes [block], follows it up with an [alAssert], and returns the result of [block],
  */
 inline fun <T> alCall(block: () -> T): T {
+	alLoad()
 	val result = block()
 	alAssert()
 	return result
