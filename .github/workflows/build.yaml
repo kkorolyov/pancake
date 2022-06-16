@@ -18,7 +18,7 @@ jobs:
       - id: checkout
         uses: actions/checkout@v3
       - id: publish-gradle
-        uses: kkorolyov/publish-gradle@0.3.3
+        uses: kkorolyov/publish-gradle@0.3.4
         with:
           java-version: ${{ matrix.version }}
           publish-branch: master
