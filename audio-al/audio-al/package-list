@@ -60,6 +60,7 @@ $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State/value/#/Pointin
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/index.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/AudioSource/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-audio-source.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/close/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/close.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/gain/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/gain.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/id/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/id.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/loop/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/loop.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/pause/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/pause.html
