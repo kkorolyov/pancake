@@ -55,6 +55,13 @@ class AudioSource : AutoCloseable {
 		set(value) = alCall { alSourcei(id, AL_LOOPING, if (value) AL_TRUE else AL_FALSE) }
 
 	/**
+	 * Current volume of this source.
+	 */
+	var gain: Float
+		get() = alCall { alGetSourcef(id, AL_GAIN) }
+		set(value) = alCall { alSourcef(id, AL_GAIN, value) }
+
+	/**
 	 * Distance at which this source's volume is normally halved.
 	 */
 	var refDistance: Float
