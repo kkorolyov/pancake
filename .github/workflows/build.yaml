@@ -18,7 +18,8 @@ jobs:
       - id: checkout
         uses: actions/checkout@v3
       - id: publish-gradle
-        uses: kkorolyov/publish-gradle@0.3.1
+        uses: kkorolyov/publish-gradle@0.3.2
         with:
           java-version: ${{ matrix.version }}
+          publish-branch: master
           token: ${{ secrets.GITHUB_TOKEN }}
