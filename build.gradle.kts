@@ -5,7 +5,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
 	java
 	id("org.ajoberstar.reckon") version "0.+"
-	kotlin("jvm") version "1.6.+" apply false
+	kotlin("jvm") version "1.7.+" apply false
 	id("org.jetbrains.dokka") version "1.7.0" apply false
 	id("org.openjfx.javafxplugin") version "0.+" apply false
 	id("org.javamodularity.moduleplugin") version "1.+" apply false
