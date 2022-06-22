@@ -1,6 +1,5 @@
 plugins {
 	kotlin("jvm")
-	id("org.openjfx.javafxplugin")
 	id("org.jetbrains.dokka")
 	groovy
 	`maven-publish`
@@ -8,8 +7,15 @@ plugins {
 
 description = "JavaFX audio component and system implementations"
 
+val jfxLibs = libs.javafx.run { listOf(base, media, graphics) }
+
 dependencies {
 	implementation(libs.bundles.stdlib)
+	jfxLibs.forEach {
+		implementation(variantOf(it) {
+			classifier("linux")
+		})
+	}
 
 	api(projects.platform)
 	implementation(projects.core)
@@ -17,21 +23,11 @@ dependencies {
 	testImplementation(libs.bundles.test)
 }
 
-java {
-	withSourcesJar()
-}
 tasks.compileKotlin {
 	kotlinOptions {
 		jvmTarget = tasks.compileJava.get().targetCompatibility
 	}
-}
-javafx {
-	version = tasks.compileJava.get().targetCompatibility
-	modules("javafx.media")
-}
-
-tasks.test {
-	useJUnitPlatform()
+	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
 }
 
 publishing {
@@ -48,6 +44,54 @@ publishing {
 			credentials {
 				username = System.getenv("GITHUB_ACTOR")
 				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
+}
+
+subprojects {
+	apply<JavaLibraryPlugin>()
+	apply<MavenPublishPlugin>()
+
+	val parent = parent!!
+
+	description = "${parent.description} - $name variant"
+
+	tasks.clean {
+		doLast {
+			projectDir.deleteRecursively()
+		}
+	}
+
+	dependencyLocking {
+		configurations.all { resolutionStrategy.deactivateDependencyLocking() }
+	}
+
+	dependencies {
+		api(parent)
+		jfxLibs.forEach {
+			api(variantOf(it) {
+				classifier(name)
+			})
+		}
+	}
+
+	publishing {
+		publications {
+			create<MavenPublication>("mvn") {
+				from(components["java"])
+				artifactId = "${parent.name}-${project.name}"
+			}
+		}
+
+		repositories {
+			maven {
+				name = "GitHubPackages"
+				url = uri("https://maven.pkg.github.com/kkorolyov/pancake")
+				credentials {
+					username = System.getenv("GITHUB_ACTOR")
+					password = System.getenv("GITHUB_TOKEN")
+				}
 			}
 		}
 	}

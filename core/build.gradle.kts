@@ -15,15 +15,6 @@ dependencies {
 	testImplementation(projects.testUtils)
 }
 
-java {
-	withSourcesJar()
-	withJavadocJar()
-}
-
-tasks.test {
-	useJUnitPlatform()
-}
-
 publishing {
 	publications {
 		create<MavenPublication>("mvn") {

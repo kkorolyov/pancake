@@ -1,14 +1,10 @@
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
 	java
 	id("org.ajoberstar.reckon") version "0.+"
-	kotlin("jvm") version "1.6.+" apply false
-	id("org.jetbrains.dokka") version "1.7.0" apply false
-	id("org.openjfx.javafxplugin") version "0.+" apply false
-	id("org.javamodularity.moduleplugin") version "1.+" apply false
+	kotlin("jvm") version "1.7.+" apply false
+	id("org.jetbrains.dokka") version "1.7.+" apply false
 }
 
 tasks.wrapper {
@@ -134,5 +130,18 @@ subprojects {
 
 	dependencyLocking {
 		lockAllConfigurations()
+	}
+
+	afterEvaluate {
+		java {
+			withSourcesJar()
+			if (!plugins.hasPlugin("org.jetbrains.dokka")) {
+				withJavadocJar()
+			}
+		}
+
+		tasks.test {
+			useJUnitPlatform()
+		}
 	}
 }

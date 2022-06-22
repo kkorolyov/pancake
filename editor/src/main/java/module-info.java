@@ -3,8 +3,9 @@ import dev.kkorolyov.pancake.editor.ComponentDataFactory;
 module dev.kkorolyov.pancake.editor {
 	requires kotlin.stdlib;
 
-	requires javafx.graphics;
 	requires tornadofx;
+	requires javafx.base;
+	requires javafx.graphics;
 
 	requires org.slf4j;
 

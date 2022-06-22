@@ -1,15 +1,21 @@
 plugins {
 	`maven-publish`
 	kotlin("jvm")
-	id("org.openjfx.javafxplugin")
 	id("org.jetbrains.dokka")
-	id("org.javamodularity.moduleplugin")
 }
 
 description = "Provides debug fragments for Core components"
 
+val jfxLibs = libs.javafx.run { listOf(base, controls, graphics) }
+
 dependencies {
 	implementation(libs.tornadofx)
+
+	jfxLibs.forEach {
+		implementation(variantOf(it) {
+			classifier("linux")
+		})
+	}
 
 	implementation(projects.platform)
 	implementation(projects.core)
@@ -20,10 +26,7 @@ tasks.compileKotlin {
 	kotlinOptions {
 		jvmTarget = tasks.compileJava.get().targetCompatibility
 	}
-}
-javafx {
-	version = tasks.compileJava.get().targetCompatibility
-	modules("javafx.graphics", "javafx.fxml", "javafx.web", "javafx.swing")
+	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
 }
 
 publishing {
@@ -40,6 +43,54 @@ publishing {
 			credentials {
 				username = System.getenv("GITHUB_ACTOR")
 				password = System.getenv("GITHUB_TOKEN")
+			}
+		}
+	}
+}
+
+subprojects {
+	apply<JavaLibraryPlugin>()
+	apply<MavenPublishPlugin>()
+
+	val parent = parent!!
+
+	description = "${parent.description} - $name variant"
+
+	tasks.clean {
+		doLast {
+			projectDir.deleteRecursively()
+		}
+	}
+
+	dependencyLocking {
+		configurations.all { resolutionStrategy.deactivateDependencyLocking() }
+	}
+
+	dependencies {
+		api(parent)
+		jfxLibs.forEach {
+			api(variantOf(it) {
+				classifier(name)
+			})
+		}
+	}
+
+	publishing {
+		publications {
+			create<MavenPublication>("mvn") {
+				from(components["java"])
+				artifactId = "${parent.name}-${project.name}"
+			}
+		}
+
+		repositories {
+			maven {
+				name = "GitHubPackages"
+				url = uri("https://maven.pkg.github.com/kkorolyov/pancake")
+				credentials {
+					username = System.getenv("GITHUB_ACTOR")
+					password = System.getenv("GITHUB_TOKEN")
+				}
 			}
 		}
 	}

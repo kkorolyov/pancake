@@ -1,5 +1,4 @@
 plugins {
-	`java-library`
 	kotlin("jvm")
 	id("org.jetbrains.dokka")
 	groovy
@@ -8,11 +7,13 @@ plugins {
 
 description = "GLFW input system and control implementations"
 
+val lwjglLibs = libs.lwjgl.run { listOf(asProvider(), glfw) }
+
 dependencies {
 	implementation(libs.bundles.stdlib)
 
 	api(platform(libs.lwjgl.bom))
-	api(libs.lwjgl.glfw)
+	lwjglLibs.forEach(::api)
 
 	api(projects.platform)
 	api(projects.inputCommon)
@@ -21,19 +22,11 @@ dependencies {
 	testImplementation(libs.bundles.test)
 }
 
-java {
-	withSourcesJar()
-}
-
 tasks.compileKotlin {
 	kotlinOptions {
 		jvmTarget = tasks.compileJava.get().targetCompatibility
 	}
 	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
-}
-
-tasks.test {
-	useJUnitPlatform()
 }
 
 publishing {
@@ -56,8 +49,8 @@ publishing {
 }
 
 subprojects {
-	apply(plugin = "java-library")
-	apply(plugin = "maven-publish")
+	apply<JavaLibraryPlugin>()
+	apply<MavenPublishPlugin>()
 
 	val parent = parent!!
 
@@ -75,9 +68,9 @@ subprojects {
 
 	dependencies {
 		api(parent)
-		listOf(parent.libs.lwjgl.asProvider().get(), parent.libs.lwjgl.glfw.get()).forEach {
-			api(variantOf(provider { it }) {
-				classifier("natives-$name")
+		lwjglLibs.forEach {
+			api(variantOf(it) {
+				classifier(name)
 			})
 		}
 	}

@@ -1,30 +1,33 @@
+val lwjglVariants = listOf("natives-linux", "natives-windows", "natives-macos")
+val jfxVariants = listOf("linux", "win", "mac")
+
 rootProject.name = "pancake"
 
 include("platform")
 include("core")
 
-include("audio-jfx")
-multiPlatform("audio-al")
+multiPlatform("audio-jfx", jfxVariants)
+multiPlatform("audio-al", lwjglVariants)
 
 include("graphics-common")
-include("graphics-jfx")
-multiPlatform("graphics-gl")
+multiPlatform("graphics-jfx", jfxVariants)
+multiPlatform("graphics-gl", lwjglVariants)
 
 include("input-common")
-include("input-jfx")
-multiPlatform("input-glfw")
+multiPlatform("input-jfx", jfxVariants)
+multiPlatform("input-glfw", lwjglVariants)
 
-include("editor")
-include("editor-core")
+multiPlatform("editor", jfxVariants)
+multiPlatform("editor-core", jfxVariants)
 
 include("test-utils")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-fun multiPlatform(root: String) {
+fun multiPlatform(root: String, variants: List<String>) {
 	include(root)
 
-	listOf("linux", "windows", "macos").forEach {
+	variants.forEach {
 		include("$root:$it")
 
 		val dir = File("$root/$it")
