@@ -11,8 +11,9 @@ import dev.kkorolyov.pancake.editor.core.VelocityComponentDataFactory;
 module dev.kkorolyov.pancake.editor.core {
 	requires kotlin.stdlib;
 
-	requires javafx.base;
 	requires tornadofx;
+	requires javafx.base;
+	requires javafx.graphics;
 
 	requires dev.kkorolyov.pancake.platform;
 	requires dev.kkorolyov.pancake.core;

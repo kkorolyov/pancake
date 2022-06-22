@@ -15,19 +15,11 @@ dependencies {
 	testImplementation(libs.bundles.test)
 }
 
-java {
-	withSourcesJar()
-}
-
 tasks.compileKotlin {
 	kotlinOptions {
 		jvmTarget = tasks.compileJava.get().targetCompatibility
 	}
 	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
-}
-
-tasks.test {
-	useJUnitPlatform()
 }
 
 publishing {

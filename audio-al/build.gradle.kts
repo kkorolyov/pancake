@@ -1,5 +1,4 @@
 plugins {
-	`java-library`
 	kotlin("jvm")
 	id("org.jetbrains.dokka")
 	groovy
@@ -8,12 +7,13 @@ plugins {
 
 description = "OpenAL audio system and struct implementations"
 
+val lwjglLibs = libs.lwjgl.run { listOf(asProvider(), openal, stb) }
+
 dependencies {
 	implementation(libs.bundles.stdlib)
 
 	api(platform(libs.lwjgl.bom))
-	api(libs.lwjgl.openal)
-	api(libs.lwjgl.stb)
+	lwjglLibs.forEach(::api)
 
 	api(projects.platform)
 	implementation(projects.core)
@@ -21,19 +21,11 @@ dependencies {
 	testImplementation(libs.bundles.test)
 }
 
-java {
-	withSourcesJar()
-}
-
 tasks.compileKotlin {
 	kotlinOptions {
 		jvmTarget = tasks.compileJava.get().targetCompatibility
 	}
 	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
-}
-
-tasks.test {
-	useJUnitPlatform()
 }
 
 publishing {
@@ -56,8 +48,8 @@ publishing {
 }
 
 subprojects {
-	apply(plugin = "java-library")
-	apply(plugin = "maven-publish")
+	apply<JavaLibraryPlugin>()
+	apply<MavenPublishPlugin>()
 
 	val parent = parent!!
 
@@ -75,9 +67,9 @@ subprojects {
 
 	dependencies {
 		api(parent)
-		listOf(parent.libs.lwjgl.asProvider().get(), parent.libs.lwjgl.openal.get(), parent.libs.lwjgl.stb.get()).forEach {
-			api(variantOf(provider { it }) {
-				classifier("natives-$name")
+		lwjglLibs.forEach {
+			api(variantOf(it) {
+				classifier(name)
 			})
 		}
 	}
