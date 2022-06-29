@@ -31,13 +31,17 @@ tasks.register("allDocs") {
 	group = "documentation"
 	description = "Bundles all project documentation together"
 
-	val destination = "$projectDir/docs"
+	val destination = "${project.buildDir}/docs"
 	val subDocs = subprojects.map {
 		it.tasks.withType<DokkaTask>().filter { it.name == "dokkaHtml" }.ifEmpty { it.tasks.withType<Javadoc>() }
 	}.flatten()
 
 	dependsOn(subDocs)
 	doLast {
+		copy {
+			from(projectDir)
+			into(destination)
+		}
 		subDocs.forEach {
 			copy {
 				from(it)
@@ -101,12 +105,6 @@ tasks.register("allDocs") {
 			</html>
 			""".trimIndent()
 		)
-	}
-}
-
-tasks.clean {
-	doFirst {
-		File("$projectDir/docs").listFiles { _, name -> name != "pancake.png" }?.let { delete(*it) }
 	}
 }
 
