@@ -1,4 +1,3 @@
-val lwjglVariants = listOf("natives-linux", "natives-windows", "natives-macos")
 val jfxVariants = listOf("linux", "win", "mac")
 
 rootProject.name = "pancake"
@@ -7,15 +6,15 @@ include("platform")
 include("core")
 
 multiPlatform("audio-jfx", jfxVariants)
-multiPlatform("audio-al", lwjglVariants)
+include("audio-al")
 
 include("graphics-common")
 multiPlatform("graphics-jfx", jfxVariants)
-multiPlatform("graphics-gl", lwjglVariants)
+include("graphics-gl")
 
 include("input-common")
 multiPlatform("input-jfx", jfxVariants)
-multiPlatform("input-glfw", lwjglVariants)
+include("input-glfw")
 
 multiPlatform("editor", jfxVariants)
 multiPlatform("editor-core", jfxVariants)

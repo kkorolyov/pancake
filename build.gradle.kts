@@ -131,13 +131,6 @@ subprojects {
 	}
 
 	afterEvaluate {
-		java {
-			withSourcesJar()
-			if (!plugins.hasPlugin("org.jetbrains.dokka")) {
-				withJavadocJar()
-			}
-		}
-
 		tasks.test {
 			useJUnitPlatform()
 		}
