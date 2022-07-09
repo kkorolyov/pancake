@@ -4,15 +4,11 @@ plugins {
 }
 apply(from = "../kotlin.gradle")
 apply(from = "../publish.gradle.kts")
-apply(from = "../lwjgl.gradle.kts")
 
 description = "GLFW input system and control implementations"
 
-val lwjglLibs = (extra["lwjglExpand"] as (Any) -> List<Any>)(libs.lwjgl.run { listOf(asProvider(), glfw) })
 dependencies {
 	implementation(libs.bundles.stdlib)
-
-	lwjglLibs.forEach(::api)
 
 	api(projects.platform)
 	api(projects.inputCommon)
@@ -20,3 +16,5 @@ dependencies {
 
 	testImplementation(libs.bundles.test)
 }
+
+(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.glfw))

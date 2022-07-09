@@ -1,9 +1,9 @@
 plugins {
-	kotlin("jvm")
-	id("org.jetbrains.dokka")
+	`java-library`
 	groovy
-	`maven-publish`
 }
+apply(from = "../kotlin.gradle")
+apply(from = "../publish.gradle.kts")
 
 description = "Common rendering system utilities"
 
@@ -14,30 +14,4 @@ dependencies {
 	implementation(projects.core)
 
 	testImplementation(libs.bundles.test)
-}
-
-tasks.compileKotlin {
-	kotlinOptions {
-		jvmTarget = tasks.compileJava.get().targetCompatibility
-	}
-	destinationDirectory.set(tasks.compileJava.get().destinationDirectory)
-}
-
-publishing {
-	publications {
-		create<MavenPublication>("mvn") {
-			from(components["java"])
-		}
-	}
-
-	repositories {
-		maven {
-			name = "GitHubPackages"
-			url = uri("https://maven.pkg.github.com/kkorolyov/pancake")
-			credentials {
-				username = System.getenv("GITHUB_ACTOR")
-				password = System.getenv("GITHUB_TOKEN")
-			}
-		}
-	}
 }

@@ -10,7 +10,7 @@ configure<JavaPluginExtension> {
 
 configure<PublishingExtension> {
 	publications {
-		create<MavenPublication>("mvn") {
+		create<MavenPublication>("main") {
 			from(components["java"])
 		}
 	}

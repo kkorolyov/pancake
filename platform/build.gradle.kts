@@ -1,8 +1,8 @@
 plugins {
 	`java-library`
 	groovy
-	`maven-publish`
 }
+apply(from = "../publish.gradle.kts")
 
 description = "Main Pancake engine platform"
 
@@ -14,23 +14,4 @@ dependencies {
 
 	testImplementation(libs.bundles.test)
 	testImplementation(projects.testUtils)
-}
-
-publishing {
-	publications {
-		create<MavenPublication>("mvn") {
-			from(components["java"])
-		}
-	}
-
-	repositories {
-		maven {
-			name = "GitHubPackages"
-			url = uri("https://maven.pkg.github.com/kkorolyov/pancake")
-			credentials {
-				username = System.getenv("GITHUB_ACTOR")
-				password = System.getenv("GITHUB_TOKEN")
-			}
-		}
-	}
 }
