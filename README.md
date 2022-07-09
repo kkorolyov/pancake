@@ -6,5 +6,4 @@ A lightweight and extensible Entity-component system (ECS)-driven game engine wr
 
 ## Committing and Publishing
 
-By default, PRs and pushes to `master` will not publish new artifacts.  
-Use the `MAJOR`, `MINOR`, or `PATCH` keywords in a commit message to publish new artifacts from the build of that commit.
+Commits to `master` with `MAJOR`, `MINOR`, or `PATCH` keywords in the commit message will publish bumped artifact versions from the build of that commit.

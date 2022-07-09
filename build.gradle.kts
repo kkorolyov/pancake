@@ -4,7 +4,7 @@ plugins {
 	java
 	id("org.ajoberstar.reckon") version "0.+"
 	kotlin("jvm") version "1.7.+" apply false
-	id("org.jetbrains.dokka") version "1.7.+" apply false
+	id("org.jetbrains.dokka") version "1.6.+" apply false
 }
 
 tasks.wrapper {
@@ -39,7 +39,7 @@ tasks.register("allDocs") {
 	dependsOn(subDocs)
 	doLast {
 		copy {
-			from(projectDir)
+			from("$projectDir/docs")
 			into(destination)
 		}
 		subDocs.forEach {
