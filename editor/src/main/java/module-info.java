@@ -1,4 +1,4 @@
-// import dev.kkorolyov.pancake.editor.ComponentDataFactory;
+import dev.kkorolyov.pancake.editor.ComponentWidgetFactory;
 
 module dev.kkorolyov.pancake.editor {
 	requires kotlin.stdlib;
@@ -19,5 +19,5 @@ module dev.kkorolyov.pancake.editor {
 
 	opens icons;
 
-	// uses ComponentDataFactory;
+	uses ComponentWidgetFactory;
 }

@@ -23,6 +23,14 @@ class Window(
 		get() = visiblePtr.get()
 		set(value) = visiblePtr.set(value)
 
+	/**
+	 * Renders this as the focused window.
+	 */
+	fun focus() {
+		ImGui.setNextWindowFocus()
+		this()
+	}
+
 	override fun invoke() {
 		if (visible) {
 			if (ImGui.begin(label, visiblePtr)) {

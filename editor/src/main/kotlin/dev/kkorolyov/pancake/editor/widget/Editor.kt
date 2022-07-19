@@ -16,6 +16,7 @@ class Editor(
 ) : Widget {
 	private val loopDetails = LoopDetails(engine)
 	private val systems = SystemsTable(engine.perfMonitor)
+	private val entities = EntitiesTable(engine.entities)
 
 	override fun invoke() {
 		header("Loop Details") {
@@ -23,6 +24,9 @@ class Editor(
 		}
 		header("Systems") {
 			systems()
+		}
+		header("Entities") {
+			entities()
 		}
 	}
 }

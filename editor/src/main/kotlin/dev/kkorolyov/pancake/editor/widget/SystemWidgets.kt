@@ -11,21 +11,20 @@ import dev.kkorolyov.pancake.platform.utility.PerfMonitor
 import dev.kkorolyov.pancake.platform.utility.Sampler
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
-import imgui.flag.ImGuiTableFlags
 import kotlin.math.roundToInt
 
 /**
  * Renders overall system information from [perfMonitor].
  */
 class SystemsTable(private val perfMonitor: PerfMonitor) : Widget {
-	private val selection = SystemDetails()
-	private val details = Window("", selection, false.ptr())
 	private val showHooksPtr = false.ptr()
+
+	private val details = WindowManifest<String>()
 
 	override fun invoke() {
 		ImGui.checkbox("show hooks", showHooksPtr)
 
-		table("systems", 4, ImGuiTableFlags.Reorderable or ImGuiTableFlags.Resizable) {
+		table("systems", 4) {
 			ImGui.tableSetupColumn("System")
 			ImGui.tableSetupColumn("Signature")
 			ImGui.tableSetupColumn("Tick time (ns)")
@@ -41,9 +40,7 @@ class SystemsTable(private val perfMonitor: PerfMonitor) : Widget {
 						// hook systems (abstract classes most likely) have no details to show
 						name?.let {
 							if (ImGui.selectable(it, false, ImGuiSelectableFlags.SpanAllColumns)) {
-								selection.value = system to sampler
-								details.visible = true
-								details.label = "${system::class.simpleName}###systemDetails"
+								details[it] = { Window(it, SystemDetails(system to sampler)) }
 							}
 						} ?: ImGui.text("hook")
 					}
@@ -67,30 +64,25 @@ class SystemsTable(private val perfMonitor: PerfMonitor) : Widget {
 /**
  * Renders detailed system information for the current [value].
  */
-class SystemDetails(
-	/**
-	 * Value to render.
-	 */
-	var value: Pair<GameSystem, Sampler>? = null
-) : Widget {
+class SystemDetails(private val value: Pair<GameSystem, Sampler>) : Widget {
 	override fun invoke() {
-		value?.let { (system, sampler) ->
-			ImGui.text("Tick time (ns)")
-			indented {
-				ImGui.text(sampler.value.toString())
-			}
+		val (system, sampler) = value
 
-			ImGui.text("TPS")
-			indented {
-				ImGui.text((1e9 / sampler.value).roundToInt().toString())
-			}
+		ImGui.text("Tick time (ns)")
+		indented {
+			ImGui.text(sampler.value.toString())
+		}
 
-			ImGui.text("Signature")
-			indented {
-				list("##signature") {
-					system.signature.forEach {
-						ImGui.selectable(it.simpleName.toString())
-					}
+		ImGui.text("TPS")
+		indented {
+			ImGui.text((1e9 / sampler.value).roundToInt().toString())
+		}
+
+		ImGui.text("Signature")
+		indented {
+			list("##signature") {
+				system.signature.forEach {
+					ImGui.selectable(it.simpleName.toString())
 				}
 			}
 		}

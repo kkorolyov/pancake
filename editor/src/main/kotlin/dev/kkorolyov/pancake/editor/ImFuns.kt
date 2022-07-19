@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.editor
 
 import imgui.ImGui
+import imgui.flag.ImGuiTableFlags
 
 private typealias Op = () -> Unit
 
@@ -48,7 +49,7 @@ inline fun header(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, flags: Int, op: Op) {
+inline fun table(id: String, columns: Int, flags: Int = ImGuiTableFlags.Reorderable or ImGuiTableFlags.Resizable, op: Op) {
 	if (ImGui.beginTable(id, columns, flags)) {
 		op()
 		ImGui.endTable()
