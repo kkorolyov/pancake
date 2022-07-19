@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
 import dev.kkorolyov.pancake.platform.utility.Sampler;
@@ -29,6 +30,22 @@ public final class Pipeline {
 	}
 
 	/**
+	 * Returns a system that runs {@code op} once per update.
+	 * Useful for simple, pipeline-spanning hooks like setting up rendering, swapping buffers, or polling events.
+	 */
+	public static GameSystem run(Runnable op) {
+		return new GameSystem() {
+			@Override
+			protected void update(Entity entity, long dt) {}
+
+			@Override
+			protected void after() {
+				op.run();
+			}
+		};
+	}
+
+	/**
 	 * Returns a pipeline that runs this pipeline's systems with target {@code frequency}.
 	 * The returned pipeline ensures that its systems update at a constant {@code frequency} times per second.
 	 */
@@ -41,11 +58,11 @@ public final class Pipeline {
 	 */
 	public void update(long dt) {
 		lag += Math.abs(dt);
-		if (lag > 0 && lag >= delay) {
+		if (lag >= delay) {
 			long timestep = delay > 0 ? delay : lag;
 			long signedTimestep = dt < 0 ? -timestep : timestep;
 
-			while (lag >= delay) {
+			do {
 				for (GameSystem system : systems) {
 					Sampler sampler = perfMonitor.getSystem(system);
 					sampler.reset();
@@ -56,7 +73,7 @@ public final class Pipeline {
 				}
 
 				lag -= timestep;
-			}
+			} while (lag > delay);
 		}
 	}
 
