@@ -81,49 +81,49 @@ public final class Matrix4 extends Matrix3 {
 	}
 
 	public double getXw() {
-		return sanitize(xw);
+		return FloatOps.sanitize(xw);
 	}
 	public void setXw(double xw) {
 		this.xw = xw;
 	}
 
 	public double getYw() {
-		return sanitize(yw);
+		return FloatOps.sanitize(yw);
 	}
 	public void setYw(double yw) {
 		this.yw = yw;
 	}
 
 	public double getZw() {
-		return sanitize(zw);
+		return FloatOps.sanitize(zw);
 	}
 	public void setZw(double zw) {
 		this.zw = zw;
 	}
 
 	public double getWx() {
-		return sanitize(wx);
+		return FloatOps.sanitize(wx);
 	}
 	public void setWx(double wx) {
 		this.wx = wx;
 	}
 
 	public double getWy() {
-		return sanitize(wy);
+		return FloatOps.sanitize(wy);
 	}
 	public void setWy(double wy) {
 		this.wy = wy;
 	}
 
 	public double getWz() {
-		return sanitize(wz);
+		return FloatOps.sanitize(wz);
 	}
 	public void setWz(double wz) {
 		this.wz = wz;
 	}
 
 	public double getWw() {
-		return sanitize(ww);
+		return FloatOps.sanitize(ww);
 	}
 	public void setWw(double ww) {
 		this.ww = ww;
@@ -135,7 +135,7 @@ public final class Matrix4 extends Matrix3 {
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
 		Matrix4 matrix4 = (Matrix4) o;
-		return equals(matrix4.getXw(), getXw()) && equals(matrix4.getYw(), getYw()) && equals(matrix4.getZw(), getZw()) && equals(matrix4.getWx(), getWx()) && equals(matrix4.getWy(), getWy()) && equals(matrix4.getWz(), getWz()) && equals(matrix4.getWw(), getWw());
+		return FloatOps.equals(matrix4.getXw(), getXw()) && FloatOps.equals(matrix4.getYw(), getYw()) && FloatOps.equals(matrix4.getZw(), getZw()) && FloatOps.equals(matrix4.getWx(), getWx()) && FloatOps.equals(matrix4.getWy(), getWy()) && FloatOps.equals(matrix4.getWz(), getWz()) && FloatOps.equals(matrix4.getWw(), getWw());
 	}
 	@Override
 	public int hashCode() {

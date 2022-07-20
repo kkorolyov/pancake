@@ -2,8 +2,6 @@ package dev.kkorolyov.pancake.graphics.common.component
 
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector2
-import dev.kkorolyov.pancake.platform.math.Vector3
-import dev.kkorolyov.pancake.platform.math.Vectors
 import dev.kkorolyov.pancake.platform.utility.ArgVerify
 import java.util.*
 
@@ -25,7 +23,7 @@ class Lens(
 	/**
 	 * Offset of the target render medium in `px`.
 	 */
-	offset: Vector2 = Vectors.create(0.0, 0.0),
+	offset: Vector2 = Vector2.of(0.0, 0.0),
 	/**
 	 * Denotes which layers are rendered from the perspective of this lens.
 	 * e.g. a mask of `1011` renders drawable elements found on layers `0`, `2`, and `3`.
@@ -41,7 +39,7 @@ class Lens(
 	/**
 	 * Maps drawn units to pixel lengths.
 	 */
-	val scale: Vector2 = Vectors.create(
+	val scale: Vector2 = Vector2.of(
 		ArgVerify.greaterThan("scale.x", 0.0, scale.x),
 		ArgVerify.greaterThan("scale.y", 0.0, scale.y)
 	)
@@ -49,7 +47,7 @@ class Lens(
 	/**
 	 * Width and height of the target render medium in `px`.
 	 */
-	val size: Vector2 = Vectors.create(
+	val size: Vector2 = Vector2.of(
 		ArgVerify.greaterThan("size.x", 0.0, size.x),
 		ArgVerify.greaterThan("size.y", 0.0, size.y)
 	)
@@ -57,5 +55,5 @@ class Lens(
 	/**
 	 * Offset of the target render medium in `px`.
 	 */
-	val offset: Vector2 = Vectors.create(offset)
+	val offset: Vector2 = Vector2.of(offset)
 }

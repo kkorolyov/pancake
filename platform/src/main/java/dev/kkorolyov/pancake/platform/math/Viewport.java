@@ -7,13 +7,13 @@ package dev.kkorolyov.pancake.platform.math;
  */
 public final class Viewport {
 	private final Vector3 partitions;
-	private final Vector3 current = Vectors.create(0, 0, 0);
+	private final Vector3 current = Vector3.of(0, 0, 0);
 
-	private final Vector3 origin = Vectors.create(0, 0, 0);
-	private final Vector3 size = Vectors.create(0, 0, 0);
+	private final Vector3 origin = Vector3.of(0, 0, 0);
+	private final Vector3 size = Vector3.of(0, 0, 0);
 
-	private final Vector3 fullSize = Vectors.create(0, 0, 0);
-	private final Vector3 lastFullSize = Vectors.create(0, 0, 0);
+	private final Vector3 fullSize = Vector3.of(0, 0, 0);
+	private final Vector3 lastFullSize = Vector3.of(0, 0, 0);
 
 	/**
 	 * Constructs a new 2D viewport.
@@ -29,7 +29,7 @@ public final class Viewport {
 	 * @param zParts number of partitions along z-axis
 	 */
 	public Viewport(int xParts, int yParts, int zParts) {
-		partitions = Vectors.create(verify(xParts), verify(yParts), verify(zParts));
+		partitions = Vector3.of(verify(xParts), verify(yParts), verify(zParts));
 	}
 	private static double verify(double value) {
 		if (value < 1 || value > Integer.MAX_VALUE) throw new IllegalArgumentException("partition component must be >= 0 and <= MAX_INT; was " + value);

@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 import java.util.NavigableMap;
 import java.util.TreeMap;
@@ -14,7 +13,7 @@ import java.util.TreeMap;
  * Repositions chained entities.
  */
 public class ChainSystem extends GameSystem {
-	private final Vector3 transformToAnchor = Vectors.create(0, 0, 0);
+	private final Vector3 transformToAnchor = Vector3.of(0, 0, 0);
 	private final NavigableMap<Double, Vector3> sortedAnchors = new TreeMap<>();
 
 	/**

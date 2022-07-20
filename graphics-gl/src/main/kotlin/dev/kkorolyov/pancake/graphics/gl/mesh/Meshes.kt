@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.graphics.gl.mesh
 
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
-import dev.kkorolyov.pancake.platform.math.Vectors
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -16,10 +15,10 @@ fun rectangle(dimensions: Vector2, color: Vector3): Mesh {
 
 	return Mesh.vertex(
 		ColorPoint().apply {
-			add(Vectors.create(-halfX, -halfY, 0.0), color)
-			add(Vectors.create(halfX, -halfY, 0.0), color)
-			add(Vectors.create(halfX, halfY, 0.0), color)
-			add(Vectors.create(-halfX, halfY, 0.0), color)
+			add(Vector3.of(-halfX, -halfY, 0.0), color)
+			add(Vector3.of(halfX, -halfY, 0.0), color)
+			add(Vector3.of(halfX, halfY, 0.0), color)
+			add(Vector3.of(-halfX, halfY, 0.0), color)
 		},
 		Mesh.DrawMode.TRIANGLE_FAN
 	)
@@ -33,9 +32,9 @@ fun oval(dimensions: Vector2, color: Vector3, edgeColor: Vector3 = color, pointC
 
 	return Mesh.vertex(
 		ColorPoint().apply {
-			add(Vectors.create(0.0, 0.0, 0.0), color)
+			add(Vector3.of(0.0, 0.0, 0.0), color)
 			(0..pointCount).forEach {
-				add(Vectors.create(dimensions.x / 2 * cos(it * pi2 / pointCount), dimensions.y / 2 * sin(it * pi2 / pointCount), 0.0), edgeColor)
+				add(Vector3.of(dimensions.x / 2 * cos(it * pi2 / pointCount), dimensions.y / 2 * sin(it * pi2 / pointCount), 0.0), edgeColor)
 			}
 		},
 		Mesh.DrawMode.TRIANGLE_FAN

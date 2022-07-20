@@ -6,7 +6,6 @@ import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.math.Vector1
 import dev.kkorolyov.pancake.platform.math.Vector3
-import dev.kkorolyov.pancake.platform.math.Vectors
 
 import spock.lang.Specification
 
@@ -14,9 +13,9 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
 class TransformActionSpec extends Specification {
 	Vector3 setPosition = randVector()
-	Vector1 setOrientation = Vectors.create((Vector1) randVector())
+	Vector1 setOrientation = Vector3.of((Vector1) randVector())
 
-	Transform component = new Transform(Vectors.create(0, 0, 0), Vectors.create(0))
+	Transform component = new Transform(Vector3.of(0, 0, 0), Vector1.of(0))
 	Entity entity = new EntityPool().create().with {
 		it.put(component)
 		it
@@ -45,6 +44,6 @@ class TransformActionSpec extends Specification {
 		action.apply(entity)
 
 		then:
-		component.orientation == Vectors.create(0)
+		component.orientation == Vector1.of(0)
 	}
 }

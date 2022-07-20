@@ -7,7 +7,6 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public final class IntersectionSystem extends GameSystem {
 	private final Queue<Entity> toCheck = new ArrayDeque<>();
 
 	private double minOverlap;
-	private final Vector2 mtv = Vectors.create(0, 0);
+	private final Vector2 mtv = Vector2.of(0, 0);
 
 	private final Collection<Vector2> seenAxes = new ArrayList<>();
 	private final Projection aProj = new Projection(), bProj = new Projection();

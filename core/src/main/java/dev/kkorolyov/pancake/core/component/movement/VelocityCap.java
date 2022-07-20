@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
 /**
@@ -16,7 +15,7 @@ public final class VelocityCap implements Component {
 	 * @param value vector defining maximum speed
 	 */
 	public VelocityCap(Vector3 value) {
-		this.value = Vectors.create(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
+		this.value = Vector3.of(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
 	}
 	private static double verify(double value) {
 		return ArgVerify.greaterThanEqual("cap", 0.0, value);

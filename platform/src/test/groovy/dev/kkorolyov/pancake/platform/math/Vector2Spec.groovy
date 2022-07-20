@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake.platform.math
 
-
 import spock.lang.Specification
 
 class Vector2Spec extends Specification {
@@ -9,7 +8,7 @@ class Vector2Spec extends Specification {
 		Vector2.magnitude(vector) == magnitude
 
 		where:
-		vector << [Vectors.create(0, 0), Vectors.create(0, 1), Vectors.create(1, 0), Vectors.create(1, 1)]
+		vector << [Vector2.of(0, 0), Vector2.of(0, 1), Vector2.of(1, 0), Vector2.of(1, 1)]
 		magnitude << [0, 1, 1, Math.sqrt(2)]
 	}
 
@@ -18,7 +17,7 @@ class Vector2Spec extends Specification {
 		Vector2.dot(vector, other) == dot
 
 		where:
-		vector << [Vectors.create(0, 0), Vectors.create(0, 1), Vectors.create(1, 0), Vectors.create(1, 1)]
+		vector << [Vector2.of(0, 0), Vector2.of(0, 1), Vector2.of(1, 0), Vector2.of(1, 1)]
 		other = vector
 		dot << [0, 1, 1, 2]
 	}
@@ -28,8 +27,8 @@ class Vector2Spec extends Specification {
 		Vector2.distance(vector, other) == distance
 
 		where:
-		vector << [Vectors.create(0, 0), Vectors.create(0, 0), Vectors.create(0, 0), Vectors.create(1, 1)]
-		other << [Vectors.create(0, 0), Vectors.create(0, 1), Vectors.create(1, 0), Vectors.create(2, 2)]
+		vector << [Vector2.of(0, 0), Vector2.of(0, 0), Vector2.of(0, 0), Vector2.of(1, 1)]
+		other << [Vector2.of(0, 0), Vector2.of(0, 1), Vector2.of(1, 0), Vector2.of(2, 2)]
 		distance << [0, 1, 1, Math.sqrt(2)]
 	}
 
@@ -41,8 +40,8 @@ class Vector2Spec extends Specification {
 		vector == unit
 
 		where:
-		vector << [Vectors.create(0, 0), Vectors.create(0, 4), Vectors.create(5, 0), Vectors.create(7, 7)]
-		unit << [Vectors.create(0, 0), Vectors.create(0, 1), Vectors.create(1, 0), Vectors.create(7 / Math.sqrt(98), 7 / Math.sqrt(98))]
+		vector << [Vector2.of(0, 0), Vector2.of(0, 4), Vector2.of(5, 0), Vector2.of(7, 7)]
+		unit << [Vector2.of(0, 0), Vector2.of(0, 1), Vector2.of(1, 0), Vector2.of(7 / Math.sqrt(98), 7 / Math.sqrt(98))]
 	}
 
 	def "projects"() {
@@ -53,8 +52,8 @@ class Vector2Spec extends Specification {
 		vector == projection
 
 		where:
-		vector << [Vectors.create(1, 0), Vectors.create(1, 1), Vectors.create(2, 2), Vectors.create(4, 1)]
-		other << [Vectors.create(1, 0), Vectors.create(1, 0), Vectors.create(0, 1), Vectors.create(1, 0)]
-		projection << [Vectors.create(1, 0), Vectors.create(1, 0), Vectors.create(0, 2), Vectors.create(4, 0)]
+		vector << [Vector2.of(1, 0), Vector2.of(1, 1), Vector2.of(2, 2), Vector2.of(4, 1)]
+		other << [Vector2.of(1, 0), Vector2.of(1, 0), Vector2.of(0, 1), Vector2.of(1, 0)]
+		projection << [Vector2.of(1, 0), Vector2.of(1, 0), Vector2.of(0, 2), Vector2.of(4, 0)]
 	}
 }

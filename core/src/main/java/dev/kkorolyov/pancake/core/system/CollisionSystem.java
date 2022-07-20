@@ -8,16 +8,15 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * Updates intersecting entities with additional elastic collisions where applicable.
  */
 public final class CollisionSystem extends GameSystem {
-	private final Vector2 mtv = Vectors.create(0, 0);
-	private final Vector3 vTemp = Vectors.create(0, 0, 0);
-	private final Vector3 vDiff = Vectors.create(0, 0, 0);
-	private final Vector3 sDiff = Vectors.create(0, 0, 0);
+	private final Vector2 mtv = Vector2.of(0, 0);
+	private final Vector3 vTemp = Vector3.of(0, 0, 0);
+	private final Vector3 vDiff = Vector3.of(0, 0, 0);
+	private final Vector3 sDiff = Vector3.of(0, 0, 0);
 
 	/**
 	 * Constructs a new collision system.

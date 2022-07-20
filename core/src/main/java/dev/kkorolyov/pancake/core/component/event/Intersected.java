@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.core.component.event;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * Notes that an intersection with another entity occurred.
@@ -17,7 +16,7 @@ public final class Intersected implements Component {
 	 */
 	public Intersected(Entity other, Vector2 mtv) {
 		this.other = other;
-		this.mtv = Vectors.create(mtv);
+		this.mtv = Vector2.of(mtv);
 	}
 
 	/**

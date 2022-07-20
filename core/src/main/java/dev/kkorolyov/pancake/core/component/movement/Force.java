@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * Net force acting on an entity.
@@ -15,7 +14,7 @@ public final class Force implements Component {
 	 * @param value initial value in {@code N}
 	 */
 	public Force(Vector3 value) {
-		this.value = Vectors.create(value);
+		this.value = Vector3.of(value);
 	}
 
 	/**

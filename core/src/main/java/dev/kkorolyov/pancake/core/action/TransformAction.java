@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector1;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 import java.util.Objects;
 
@@ -29,8 +28,8 @@ public class TransformAction implements Action {
 	 * @param orientation orientation to set on accepted entities
 	 */
 	public TransformAction(Vector3 position, Vector1 orientation) {
-		this.position = Vectors.create(position);
-		this.orientation = orientation != null ? Vectors.create(orientation) : null;
+		this.position = Vector3.of(position);
+		this.orientation = orientation != null ? Vector1.of(orientation) : null;
 	}
 
 	@Override

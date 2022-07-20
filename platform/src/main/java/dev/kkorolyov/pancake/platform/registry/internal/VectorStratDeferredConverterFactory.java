@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.platform.registry.internal;
 
 import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.Deferred;
 
@@ -29,7 +28,7 @@ public final class VectorStratDeferredConverterFactory implements DeferredConver
 	}
 
 	private static Vector3 toVector(double[] components) {
-		return Vectors.create(
+		return Vector3.of(
 				components.length > 0 ? components[0] : 0,
 				components.length > 1 ? components[1] : 0,
 				components.length > 2 ? components[2] : 0
