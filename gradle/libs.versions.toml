@@ -10,6 +10,7 @@ tornadofx = "2.+"
 javafx = "17.+"
 
 lwjgl = "3.+"
+imgui = "1.+"
 
 spock = "2.+"
 byteBuddy = "1.+"
@@ -35,10 +36,12 @@ lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl" }
 lwjgl-openal = { module = "org.lwjgl:lwjgl-openal" }
 lwjgl-stb = { module = "org.lwjgl:lwjgl-stb" }
 
+imgui-binding = { module = "io.github.spair:imgui-java-binding", version.ref = "imgui" }
+imgui-lwjgl = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "imgui" }
+
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
 
 [bundles]
 stdlib = ["flub", "slf4j"]
-lwjgl = ["lwjgl", "lwjgl-glfw", "lwjgl-opengl", "lwjgl-stb"]
 test = ["spock", "byteBuddy"]

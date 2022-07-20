@@ -1,31 +1,36 @@
-import dev.kkorolyov.pancake.editor.ComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.ActionQueueComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.BoundsComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.DampingComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.ForceComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.MassComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.TransformComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.VelocityCapComponentDataFactory;
-import dev.kkorolyov.pancake.editor.core.VelocityComponentDataFactory;
+import dev.kkorolyov.pancake.editor.ComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.ActionQueueComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.BoundsComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.DampingComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.ForceComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.MassComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.TransformComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.VelocityCapComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.VelocityComponentWidgetFactory;
 
 module dev.kkorolyov.pancake.editor.core {
-	requires kotlin.stdlib;
+	requires kotlin.stdlib.jdk8;
 
-	requires tornadofx;
-	requires javafx.base;
-	requires javafx.graphics;
+	requires org.slf4j;
+
+	requires org.lwjgl;
+	requires org.lwjgl.opengl;
+	requires org.lwjgl.stb;
+	requires org.lwjgl.glfw;
+
+	requires imgui.binding;
 
 	requires dev.kkorolyov.pancake.platform;
 	requires dev.kkorolyov.pancake.core;
 	requires dev.kkorolyov.pancake.editor;
 
-	provides ComponentDataFactory with
-			ActionQueueComponentDataFactory,
-			BoundsComponentDataFactory,
-			DampingComponentDataFactory,
-			ForceComponentDataFactory,
-			MassComponentDataFactory,
-			TransformComponentDataFactory,
-			VelocityCapComponentDataFactory,
-			VelocityComponentDataFactory;
+	provides ComponentWidgetFactory with
+			ActionQueueComponentWidgetFactory,
+			BoundsComponentWidgetFactory,
+			DampingComponentWidgetFactory,
+			ForceComponentWidgetFactory,
+			MassComponentWidgetFactory,
+			TransformComponentWidgetFactory,
+			VelocityCapComponentWidgetFactory,
+			VelocityComponentWidgetFactory;
 }

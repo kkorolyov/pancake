@@ -1,5 +1,5 @@
 module dev.kkorolyov.pancake.input.common {
-	requires kotlin.stdlib;
+	requires kotlin.stdlib.jdk8;
 
 	requires dev.kkorolyov.pancake.platform;
 

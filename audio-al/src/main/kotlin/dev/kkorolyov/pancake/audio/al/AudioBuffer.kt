@@ -25,7 +25,7 @@ class AudioBuffer : AudioData, AutoCloseable {
 	 * Fills this buffer with the data in [stream].
 	 */
 	fun fill(stream: InputStream) {
-		val stream = AudioSystem.getAudioInputStream(stream)
+		val stream = AudioSystem.getAudioInputStream(stream.buffered())
 		MemoryStack.stackPush().use {
 			val format = stream.format
 			fill(format.asAl(), format.sampleRate.toInt(), it.bytes(*stream.readAllBytes()))

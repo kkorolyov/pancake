@@ -23,7 +23,7 @@ public final class Matrix4 extends Matrix3 {
 	/**
 	 * Returns a new 4x4 matrix for the given configuration.
 	 */
-	public static Matrix3 of(
+	public static Matrix4 of(
 			double xx, double xy, double xz, double xw,
 			double yx, double yy, double yz, double yw,
 			double zx, double zy, double zz, double zw,

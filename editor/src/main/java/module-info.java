@@ -1,22 +1,26 @@
-import dev.kkorolyov.pancake.editor.ComponentDataFactory;
+import dev.kkorolyov.pancake.editor.ComponentWidgetFactory;
 
 module dev.kkorolyov.pancake.editor {
-	requires kotlin.stdlib;
-
-	requires tornadofx;
-	requires javafx.base;
-	requires javafx.graphics;
+	requires kotlin.stdlib.jdk7;
+	requires kotlin.stdlib.jdk8;
 
 	requires org.slf4j;
 
-	requires dev.kkorolyov.pancake.platform;
-	requires dev.kkorolyov.pancake.core;
+	requires org.lwjgl;
+	requires org.lwjgl.opengl;
+	requires org.lwjgl.stb;
+	requires org.lwjgl.glfw;
+
+	requires imgui.binding;
+	requires imgui.lwjgl3;
+
+	requires transitive dev.kkorolyov.pancake.platform;
 
 	exports dev.kkorolyov.pancake.editor;
-	exports dev.kkorolyov.pancake.editor.controller to tornadofx;
-	exports dev.kkorolyov.pancake.editor.view to tornadofx;
+	exports dev.kkorolyov.pancake.editor.ext;
+	exports dev.kkorolyov.pancake.editor.widget;
 
 	opens icons;
 
-	uses ComponentDataFactory;
+	uses ComponentWidgetFactory;
 }

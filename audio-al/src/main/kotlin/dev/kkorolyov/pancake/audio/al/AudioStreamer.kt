@@ -21,12 +21,14 @@ private val log = LoggerFactory.getLogger(AudioStreamer::class.java)
  */
 class AudioStreamer(
 	/** Opens a new handle to an audio input stream. */
-	private val streamGen: () -> InputStream,
+	streamGen: () -> InputStream,
 	/** Maximum number of concurrent queued buffers per source. */
 	private val bufferCount: Int = 4,
 	/** Maximum bytes per queued buffer. */
 	private val bufferSize: Int = 32 shl 10
 ) : AudioData, AutoCloseable {
+	private val streamGen = { streamGen().buffered() }
+
 	init {
 		ArgVerify.greaterThan("bufferCount", 0, bufferCount)
 		ArgVerify.greaterThan("bufferSize", 0, bufferSize)
@@ -45,8 +47,8 @@ class AudioStreamer(
 	private val sources = mutableMapOf<AudioSource, Runner>()
 
 	override fun attach(source: AudioSource) {
-		sources.computeIfAbsent(source) {
-			val runner = Runner(it)
+		sources.getOrPut(source) {
+			val runner = Runner(source)
 			executor.execute(runner)
 			runner
 		}

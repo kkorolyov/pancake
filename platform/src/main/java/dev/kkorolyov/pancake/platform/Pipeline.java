@@ -1,16 +1,18 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
 import dev.kkorolyov.pancake.platform.utility.Sampler;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Updates a group of {@link GameSystem}s as a unit.
+ * NOTE: sharing the same system between pipelines can lead to undefined behavior.
  */
-public final class Pipeline {
+public final class Pipeline implements Iterable<GameSystem> {
 	private final GameSystem[] systems;
 	private PerfMonitor perfMonitor;
 
@@ -29,6 +31,22 @@ public final class Pipeline {
 	}
 
 	/**
+	 * Returns a system that runs {@code op} once per update.
+	 * Useful for simple, pipeline-spanning hooks like setting up rendering, swapping buffers, or polling events.
+	 */
+	public static GameSystem run(Runnable op) {
+		return new GameSystem() {
+			@Override
+			protected void update(Entity entity, long dt) {}
+
+			@Override
+			protected void after() {
+				op.run();
+			}
+		};
+	}
+
+	/**
 	 * Returns a pipeline that runs this pipeline's systems with target {@code frequency}.
 	 * The returned pipeline ensures that its systems update at a constant {@code frequency} times per second.
 	 */
@@ -39,13 +57,13 @@ public final class Pipeline {
 	/**
 	 * Updates this pipeline by {@code dt} elapsed ns.
 	 */
-	public void update(long dt) {
+	void update(long dt) {
 		lag += Math.abs(dt);
-		if (lag > 0 && lag >= delay) {
+		if (lag >= delay) {
 			long timestep = delay > 0 ? delay : lag;
 			long signedTimestep = dt < 0 ? -timestep : timestep;
 
-			while (lag >= delay) {
+			do {
 				for (GameSystem system : systems) {
 					Sampler sampler = perfMonitor.getSystem(system);
 					sampler.reset();
@@ -56,25 +74,32 @@ public final class Pipeline {
 				}
 
 				lag -= timestep;
-			}
+			} while (lag > delay);
 		}
 	}
 
 	/**
-	 * Attaches resources to this group.
+	 * Attaches resources to this pipeline.
 	 */
-	public void attach(EntityPool entities, PerfMonitor perfMonitor) {
+	void attach(EntityPool entities, PerfMonitor perfMonitor) {
 		this.perfMonitor = perfMonitor;
 
-		for (GameSystem system : systems) {
-			system.attach(entities);
-		}
+		for (GameSystem system : systems) system.attach(entities);
+	}
+	/**
+	 * Detaches all resources from this pipeline.
+	 */
+	void detach() {
+		perfMonitor = null;
+
+		for (GameSystem system : systems) system.detach();
 	}
 
 	/**
-	 * Returns this group's systems.
+	 * Returns an iterator over this pipeline's systems.
 	 */
-	public Collection<GameSystem> getSystems() {
-		return List.of(systems);
+	@Override
+	public Iterator<GameSystem> iterator() {
+		return Arrays.stream(systems).iterator();
 	}
 }
