@@ -16,8 +16,8 @@ include("input-common")
 multiPlatform("input-jfx", jfxVariants)
 include("input-glfw")
 
-multiPlatform("editor", jfxVariants)
-multiPlatform("editor-core", jfxVariants)
+include("editor")
+include("editor-core")
 
 include("test-utils")
 
