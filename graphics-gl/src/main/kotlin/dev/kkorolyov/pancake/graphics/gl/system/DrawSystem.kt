@@ -9,47 +9,20 @@ import dev.kkorolyov.pancake.graphics.gl.shader.Program
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Matrix4
-import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL46.*
-import org.slf4j.LoggerFactory
-
-private val log = LoggerFactory.getLogger(DrawSystem::class.java)
 
 /**
  * Draws entity [Model]s from the perspectives of all active [Camera]s.
  * Each program is provided a `uniform mat4 transform` transforming vertices to clip space.
  */
 class DrawSystem(
-	private val queue: CameraQueue,
-	/**
-	 * `OpenGL` context loading callback.
-	 */
-	private val context: () -> Unit,
-	/**
-	 * Buffer swap callback.
-	 */
-	private val swap: () -> Unit
+	private val queue: CameraQueue
 ) : GameSystem(Transform::class.java, Model::class.java) {
 	private val pending: MutableMap<Program, MutableList<Entity>> = mutableMapOf()
 	private val transform: Matrix4 = Matrix4.identity()
 
-	private val loader = ThreadLocal.withInitial {
-		context()
-		try {
-			GL.getCapabilities()
-		} catch (e: IllegalStateException) {
-			log.warn("OpenGL capabilities not yet loaded on thread '${Thread.currentThread().name}'; loading now")
-			GL.createCapabilities()
-		}
-	}
-
-	override fun before() {
-		loader.get()
-		glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
-	}
-
 	override fun update(entity: Entity, dt: Long) {
-		pending.computeIfAbsent(entity[Model::class.java].program) { mutableListOf() }.add((entity))
+		pending.getOrPut(entity[Model::class.java].program) { mutableListOf() }.add((entity))
 	}
 
 	override fun after() {
@@ -79,6 +52,7 @@ class DrawSystem(
 				entities.clear()
 			}
 		}
-		swap()
+
+		pending.clear()
 	}
 }
