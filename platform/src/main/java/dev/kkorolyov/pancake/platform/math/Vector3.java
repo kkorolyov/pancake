@@ -34,17 +34,35 @@ public final class Vector3 extends Vector2 {
 	}
 
 	/**
-	 * Returns a 3-dimensional vector initialized to {@code (value, value, value)}.
+	 * Returns a 3-dimensional vector initialized to {@code other}.
 	 */
-	public static Vector3 all(double value) {
-		return new Vector3(value, value, value);
+	public static Vector3 of(Vector1 other) {
+		return of(other.getX());
 	}
-
+	/**
+	 * Returns a 3-dimensional vector initialized to {@code other}.
+	 */
+	public static Vector3 of(Vector2 other) {
+		return of(other.getX(), other.getY());
+	}
 	/**
 	 * Returns a 3-dimensional vector initialized to {@code other}.
 	 */
 	public static Vector3 of(Vector3 other) {
-		return new Vector3(other.getX(), other.getY(), other.getZ());
+		return of(other.getX(), other.getY(), other.getZ());
+	}
+
+	/**
+	 * Returns a 3-dimensional vector initialized to {@code (x, 0, 0)}.
+	 */
+	public static Vector3 of(double x) {
+		return of(x, 0);
+	}
+	/**
+	 * Returns a 3-dimensional vector initialized to {@code (x, y, 0)}.
+	 */
+	public static Vector3 of(double x, double y) {
+		return of(x, y, 0);
 	}
 	/**
 	 * Returns a 3-dimensional vector initialized to {@code (x, y, z)}.

@@ -12,7 +12,7 @@ public sealed class Vector1 permits Vector2 {
 	 * Returns a 1-dimensional vector initialized to {@code other}.
 	 */
 	public static Vector1 of(Vector1 other) {
-		return new Vector1(other.getX());
+		return of(other.getX());
 	}
 	/**
 	 * Returns a 1-dimensional vector initialized to {@code (x)}.

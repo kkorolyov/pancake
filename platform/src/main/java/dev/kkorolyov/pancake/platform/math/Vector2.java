@@ -33,17 +33,23 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	}
 
 	/**
-	 * Returns a 2-dimensional vector initialized to {@code (value, value)}.
+	 * Returns a 2-dimensional vector initialized to {@code other}.
 	 */
-	public static Vector2 all(double value) {
-		return new Vector2(value, value);
+	public static Vector2 of(Vector1 other) {
+		return of(other.getX());
 	}
-
 	/**
 	 * Returns a 2-dimensional vector initialized to {@code other}.
 	 */
 	public static Vector2 of(Vector2 other) {
-		return new Vector2(other.getX(), other.getY());
+		return of(other.getX(), other.getY());
+	}
+
+	/**
+	 * Returns a 2-dimensional vector initialized to {@code (x, 0)}.
+	 */
+	public static Vector2 of(double x) {
+		return of(x, 0);
 	}
 	/**
 	 * Returns a 2-dimensional vector initialized to {@code (x, y)}.
