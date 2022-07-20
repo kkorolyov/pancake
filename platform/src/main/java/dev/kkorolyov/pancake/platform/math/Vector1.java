@@ -12,7 +12,14 @@ public sealed class Vector1 permits Vector2 {
 	 * Returns a 1-dimensional vector initialized to {@code other}.
 	 */
 	public static Vector1 of(Vector1 other) {
-		return of(other.getX());
+		return of(other.x);
+	}
+
+	/**
+	 * Returns a 1-dimensional vector initialized to {@code (0)}.
+	 */
+	public static Vector1 of() {
+		return of(0);
 	}
 	/**
 	 * Returns a 1-dimensional vector initialized to {@code (x)}.
@@ -22,43 +29,41 @@ public sealed class Vector1 permits Vector2 {
 	}
 
 	Vector1(double x) {
-		this.x = x;
-	}
-
-	/** @return x component */
-	public double getX() {
-		return FloatOps.sanitize(x);
-	}
-	/** @param value x component */
-	public void setX(double value) {
-		x = value;
+		setX(x);
 	}
 
 	/**
 	 * Scales this vector by {@code value}.
 	 */
 	public void scale(double value) {
-		x *= value;
+		setX(x * value);
 	}
 
 	/**
 	 * Sets this vector equal to {@code other}.
 	 * @param other vector to match
 	 */
-	public void set(Vector1 other) {
-		x = other.getX();
+	public final void set(Vector1 other) {
+		setX(other.x);
 	}
 	/**
 	 * Translates the head of this vector by {@code other}.
 	 */
-	public void add(Vector1 other) {
-		x += other.getX();
+	public final void add(Vector1 other) {
+		setX(x + other.x);
 	}
 	/**
 	 * Translates the head of this vector by {@code scale} proportion of {@code other}.
 	 */
-	public void add(Vector1 other, double scale) {
-		x += other.getX() * scale;
+	public final void add(Vector1 other, double scale) {
+		setX(x + other.x * scale);
+	}
+
+	public final double getX() {
+		return x;
+	}
+	public final void setX(double x) {
+		this.x = FloatOps.sanitize(x);
 	}
 
 	@Override
@@ -66,15 +71,15 @@ public sealed class Vector1 permits Vector2 {
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		Vector1 o = (Vector1) obj;
-		return FloatOps.equals(o.getX(), getX());
+		return FloatOps.equals(o.x, x);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(getX());
+		return Objects.hash(x);
 	}
 
 	@Override
 	public String toString() {
-		return "(" + getX() + ")";
+		return "(" + x + ")";
 	}
 }

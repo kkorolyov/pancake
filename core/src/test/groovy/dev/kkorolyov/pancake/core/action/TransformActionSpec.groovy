@@ -13,7 +13,7 @@ import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 
 class TransformActionSpec extends Specification {
 	Vector3 setPosition = randVector()
-	Vector1 setOrientation = Vector3.of((Vector1) randVector())
+	Vector1 setOrientation = Vector1.of(randVector())
 
 	Transform component = new Transform(Vector3.of(0, 0, 0), Vector1.of(0))
 	Entity entity = new EntityPool().create().with {

@@ -12,7 +12,7 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	 * Returns the dot product of {@code a} and {@code b}.
 	 */
 	public static double dot(Vector2 a, Vector2 b) {
-		return FloatOps.sanitize(a.getX() * b.getX() + a.getY() * b.getY());
+		return FloatOps.sanitize(a.getX() * b.getX() + a.y * b.y);
 	}
 	/**
 	 * Returns the length of {@code vector}.
@@ -27,7 +27,7 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 		return FloatOps.sanitize(
 				Math.sqrt(
 						Math.pow(a.getX() - b.getX(), 2) +
-								Math.pow(a.getY() - b.getY(), 2)
+								Math.pow(a.y - b.y, 2)
 				)
 		);
 	}
@@ -42,9 +42,15 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	 * Returns a 2-dimensional vector initialized to {@code other}.
 	 */
 	public static Vector2 of(Vector2 other) {
-		return of(other.getX(), other.getY());
+		return of(other.getX(), other.y);
 	}
 
+	/**
+	 * Returns a 2-dimensional vector initialized to {@code (0, 0)}.
+	 */
+	public static Vector2 of() {
+		return of(0);
+	}
 	/**
 	 * Returns a 2-dimensional vector initialized to {@code (x, 0)}.
 	 */
@@ -60,7 +66,7 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 
 	Vector2(double x, double y) {
 		super(x);
-		this.y = y;
+		setY(y);
 	}
 
 	/**
@@ -75,7 +81,7 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	 */
 	public void orthogonal() {
 		double temp = getX();
-		setX(-getY());
+		setX(-y);
 		setY(temp);
 	}
 	/**
@@ -89,46 +95,44 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	/**
 	 * Reflects this vector along {@code other}.
 	 */
-	public void reflect(Vector2 other) {
+	public final void reflect(Vector2 other) {
 		add(other, -2 * dot(this, other));
-	}
-
-	/** @return y component */
-	public double getY() {
-		return FloatOps.sanitize(y);
-	}
-	/** @param value y component */
-	public void setY(double value) {
-		y = value;
 	}
 
 	@Override
 	public void scale(double value) {
 		super.scale(value);
-		y *= value;
+		setY(y * value);
 	}
 
 	/**
 	 * Sets this vector equal to {@code other}.
 	 * @param other vector to match
 	 */
-	public void set(Vector2 other) {
+	public final void set(Vector2 other) {
 		set((Vector1) other);
-		y = other.getY();
+		setY(other.y);
 	}
 	/**
 	 * Translates the head of this vector by {@code other}.
 	 */
-	public void add(Vector2 other) {
+	public final void add(Vector2 other) {
 		add((Vector1) other);
-		y += other.getY();
+		setY(y + other.y);
 	}
 	/**
 	 * Translates the head of this vector by {@code scale} proportion of {@code other}.
 	 */
-	public void add(Vector2 other, double scale) {
+	public final void add(Vector2 other, double scale) {
 		add((Vector1) other, scale);
-		y += other.getY() * scale;
+		setY(y + other.y * scale);
+	}
+
+	public final double getY() {
+		return y;
+	}
+	public final void setY(double y) {
+		this.y = FloatOps.sanitize(y);
 	}
 
 	@Override
@@ -137,15 +141,15 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 		if (obj == null || getClass() != obj.getClass()) return false;
 		if (!super.equals(obj)) return false;
 		Vector2 o = (Vector2) obj;
-		return FloatOps.equals(o.getY(), getY());
+		return FloatOps.equals(o.y, y);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), getY());
+		return Objects.hash(super.hashCode(), y);
 	}
 
 	@Override
 	public String toString() {
-		return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY())) + ")";
+		return "(" + String.join(",", String.valueOf(getX()), String.valueOf(y)) + ")";
 	}
 }

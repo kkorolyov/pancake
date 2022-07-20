@@ -12,7 +12,7 @@ public final class Vector3 extends Vector2 {
 	 * Returns the dot product of {@code a} and {@code b}.
 	 */
 	public static double dot(Vector3 a, Vector3 b) {
-		return FloatOps.sanitize(a.getX() * b.getX() + a.getY() * b.getY() + a.getZ() * b.getZ());
+		return FloatOps.sanitize(a.getX() * b.getX() + a.getY() * b.getY() + a.z * b.z);
 	}
 	/**
 	 * Returns the length of {@code vector}.
@@ -28,7 +28,7 @@ public final class Vector3 extends Vector2 {
 				Math.sqrt(
 						Math.pow(a.getX() - b.getX(), 2) +
 								Math.pow(a.getY() - b.getY(), 2) +
-								Math.pow(a.getZ() - b.getZ(), 2)
+								Math.pow(a.z - b.z, 2)
 				)
 		);
 	}
@@ -49,9 +49,15 @@ public final class Vector3 extends Vector2 {
 	 * Returns a 3-dimensional vector initialized to {@code other}.
 	 */
 	public static Vector3 of(Vector3 other) {
-		return of(other.getX(), other.getY(), other.getZ());
+		return of(other.getX(), other.getY(), other.z);
 	}
 
+	/**
+	 * Returns a 3-dimensional vector initialized to {@code (0, 0, 0)}.
+	 */
+	public static Vector3 of() {
+		return of(0);
+	}
 	/**
 	 * Returns a 3-dimensional vector initialized to {@code (x, 0, 0)}.
 	 */
@@ -71,9 +77,9 @@ public final class Vector3 extends Vector2 {
 		return new Vector3(x, y, z);
 	}
 
-	Vector3(double x, double y, double z) {
+	private Vector3(double x, double y, double z) {
 		super(x, y);
-		this.z = z;
+		setZ(z);
 	}
 
 	/**
@@ -96,22 +102,13 @@ public final class Vector3 extends Vector2 {
 	 * Reflects this vector along {@code other}.
 	 */
 	public void reflect(Vector3 other) {
-		add(other, 2 * dot(this, other));
-	}
-
-	/** @return z component */
-	public double getZ() {
-		return FloatOps.sanitize(z);
-	}
-	/** @param value z component */
-	public void setZ(double value) {
-		z = value;
+		add(other, -2 * dot(this, other));
 	}
 
 	@Override
 	public void scale(double value) {
 		super.scale(value);
-		z *= value;
+		setZ(z * value);
 	}
 
 	/**
@@ -120,21 +117,28 @@ public final class Vector3 extends Vector2 {
 	 */
 	public void set(Vector3 other) {
 		set((Vector2) other);
-		z = other.getZ();
+		setZ(other.z);
 	}
 	/**
 	 * Translates the head of this vector by {@code other}.
 	 */
 	public void add(Vector3 other) {
 		add((Vector2) other);
-		z += other.getZ();
+		setZ(z + other.z);
 	}
 	/**
 	 * Translates the head of this vector by {@code scale} proportion of {@code other}.
 	 */
 	public void add(Vector3 other, double scale) {
 		add((Vector2) other, scale);
-		z += other.getZ() * scale;
+		setZ(z + other.z * scale);
+	}
+
+	public double getZ() {
+		return z;
+	}
+	public void setZ(double z) {
+		this.z = FloatOps.sanitize(z);
 	}
 
 	@Override
@@ -143,15 +147,15 @@ public final class Vector3 extends Vector2 {
 		if (obj == null || getClass() != obj.getClass()) return false;
 		if (!super.equals(obj)) return false;
 		Vector3 o = (Vector3) obj;
-		return FloatOps.equals(o.getZ(), getZ());
+		return FloatOps.equals(o.z, z);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), getZ());
+		return Objects.hash(super.hashCode(), z);
 	}
 
 	@Override
 	public String toString() {
-		return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY()), String.valueOf(getZ())) + ")";
+		return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY()), String.valueOf(z)) + ")";
 	}
 }

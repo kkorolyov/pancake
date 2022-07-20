@@ -118,12 +118,6 @@ subprojects {
 				password = System.getenv("GITHUB_TOKEN")
 			}
 		}
-		maven {
-			url = uri("https://oss.sonatype.org/content/repositories/snapshots")
-			mavenContent {
-				includeGroup("no.tornado")
-			}
-		}
 	}
 
 	dependencyLocking {
