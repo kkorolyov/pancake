@@ -56,14 +56,20 @@ public abstract class GameSystem {
 	/**
 	 * Attaches resources to this system.
 	 */
-	public void attach(EntityPool entities) {
+	void attach(EntityPool entities) {
 		this.entities = entities;
+	}
+	/**
+	 * Detaches all resources from this system.
+	 */
+	void detach() {
+		entities = null;
 	}
 
 	/**
 	 * Executes a single update on this system with {@code dt} {@code (ns)} timestep.
 	 */
-	public void update(long dt) {
+	void update(long dt) {
 		before();
 		for (Entity entity : entities.get(getSignature())) {
 			update(entity, dt);

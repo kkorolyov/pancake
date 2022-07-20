@@ -3,16 +3,18 @@ package dev.kkorolyov.pancake.platform;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Central game management module.
  * Serves as the link between entities with components containing data and systems specifying business logic.
+ * Updates a group of {@link Pipeline}s.
+ * NOTE: sharing the same pipeline between engines can lead to undefined behavior.
  */
-public final class GameEngine {
+public final class GameEngine implements Iterable<Pipeline> {
 	private final EntityPool entities = new EntityPool();
-	private final Pipeline[] pipelines;
+	private Pipeline[] pipelines;
 
 	private final PerfMonitor perfMonitor = new PerfMonitor();
 
@@ -23,8 +25,7 @@ public final class GameEngine {
 	 * Constructs a new game engine updating {@code pipelines}.
 	 */
 	public GameEngine(Pipeline... pipelines) {
-		this.pipelines = pipelines.clone();
-		for (Pipeline pipeline : this.pipelines) pipeline.attach(entities, perfMonitor);
+		setPipelines(pipelines);
 	}
 
 	/**
@@ -85,24 +86,35 @@ public final class GameEngine {
 	}
 
 	/**
-	 * Returns this engine's update pipelines.
-	 */
-	public Collection<Pipeline> getPipelines() {
-		return List.of(pipelines);
-	}
-
-	/**
 	 * Returns this engine's performance monitor.
 	 */
 	public PerfMonitor getPerfMonitor() {
 		return perfMonitor;
 	}
 
+	/**
+	 * Detaches all current pipelines and attaches {@code pipelines}.
+	 */
+	public void setPipelines(Pipeline... pipelines) {
+		for (Pipeline pipeline : pipelines) pipeline.detach();
+
+		this.pipelines = pipelines.clone();
+		for (Pipeline pipeline : this.pipelines) pipeline.attach(entities, perfMonitor);
+	}
+
+	/**
+	 * Returns an iterator over this engine's pipelines.
+	 */
+	@Override
+	public Iterator<Pipeline> iterator() {
+		return Arrays.stream(pipelines).iterator();
+	}
+
 	@Override
 	public String toString() {
 		return "GameEngine{" +
 				", entities=" + entities +
-				", pipelines=" + pipelines +
+				", pipelines=" + Arrays.toString(pipelines) +
 				", perfMonitor=" + perfMonitor +
 				'}';
 	}

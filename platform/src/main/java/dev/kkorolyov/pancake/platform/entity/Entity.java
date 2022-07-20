@@ -59,6 +59,9 @@ public final class Entity implements Iterable<Component> {
 		return id;
 	}
 
+	/**
+	 * Returns an iterator over this entity's components.
+	 */
 	@Override
 	public Iterator<Component> iterator() {
 		return components.values().iterator();

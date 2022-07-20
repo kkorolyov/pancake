@@ -5,13 +5,14 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
 import dev.kkorolyov.pancake.platform.utility.Sampler;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Updates a group of {@link GameSystem}s as a unit.
+ * NOTE: sharing the same system between pipelines can lead to undefined behavior.
  */
-public final class Pipeline {
+public final class Pipeline implements Iterable<GameSystem> {
 	private final GameSystem[] systems;
 	private PerfMonitor perfMonitor;
 
@@ -56,7 +57,7 @@ public final class Pipeline {
 	/**
 	 * Updates this pipeline by {@code dt} elapsed ns.
 	 */
-	public void update(long dt) {
+	void update(long dt) {
 		lag += Math.abs(dt);
 		if (lag >= delay) {
 			long timestep = delay > 0 ? delay : lag;
@@ -78,20 +79,27 @@ public final class Pipeline {
 	}
 
 	/**
-	 * Attaches resources to this group.
+	 * Attaches resources to this pipeline.
 	 */
-	public void attach(EntityPool entities, PerfMonitor perfMonitor) {
+	void attach(EntityPool entities, PerfMonitor perfMonitor) {
 		this.perfMonitor = perfMonitor;
 
-		for (GameSystem system : systems) {
-			system.attach(entities);
-		}
+		for (GameSystem system : systems) system.attach(entities);
+	}
+	/**
+	 * Detaches all resources from this pipeline.
+	 */
+	void detach() {
+		perfMonitor = null;
+
+		for (GameSystem system : systems) system.detach();
 	}
 
 	/**
-	 * Returns this group's systems.
+	 * Returns an iterator over this pipeline's systems.
 	 */
-	public Collection<GameSystem> getSystems() {
-		return List.of(systems);
+	@Override
+	public Iterator<GameSystem> iterator() {
+		return Arrays.stream(systems).iterator();
 	}
 }
