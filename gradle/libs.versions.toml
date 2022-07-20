@@ -6,9 +6,6 @@ jackson = "2.+"
 
 snakeyaml = "1.+"
 
-tornadofx = "2.+"
-javafx = "17.+"
-
 lwjgl = "3.+"
 imgui = "1.+"
 
@@ -22,12 +19,6 @@ slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 jackson = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
 
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
-tornadofx = { module = "no.tornado:tornadofx", version.ref = "tornadofx" }
-
-javafx-base = { module = "org.openjfx:javafx-base", version.ref = "javafx" }
-javafx-media = { module = "org.openjfx:javafx-media", version.ref = "javafx" }
-javafx-graphics = { module = "org.openjfx:javafx-graphics", version.ref = "javafx" }
-javafx-controls = { module = "org.openjfx:javafx-controls", version.ref = "javafx" }
 
 lwjgl-bom = { module = "org.lwjgl:lwjgl-bom", version.ref = "lwjgl" }
 lwjgl = { module = "org.lwjgl:lwjgl" }
