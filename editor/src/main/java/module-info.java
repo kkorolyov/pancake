@@ -15,6 +15,7 @@ module dev.kkorolyov.pancake.editor {
 	requires dev.kkorolyov.pancake.platform;
 
 	exports dev.kkorolyov.pancake.editor;
+	exports dev.kkorolyov.pancake.editor.ext;
 	exports dev.kkorolyov.pancake.editor.widget;
 
 	opens icons;

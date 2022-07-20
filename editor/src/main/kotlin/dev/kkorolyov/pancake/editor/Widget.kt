@@ -5,7 +5,7 @@ package dev.kkorolyov.pancake.editor
  */
 interface Widget {
 	/**
-	 * Renders the current state of this element at the current ImGui stack frame.
+	 * Draws the current state of this widget at the current ImGui stack frame.
 	 */
 	operator fun invoke()
 

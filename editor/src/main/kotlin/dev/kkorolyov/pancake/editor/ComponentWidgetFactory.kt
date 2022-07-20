@@ -22,4 +22,13 @@ interface ComponentWidgetFactory {
 	 * Returns a widget rendering [component], if this factory handles it.
 	 */
 	fun get(component: Component): Widget?
+
+	companion object {
+		/**
+		 * Returns a widget invoking [op] for [component] if it is of type [T].
+		 */
+		inline fun <reified T : Component> get(component: Component, crossinline op: T.() -> Unit): Widget? = (component as? T)?.let {
+			Widget { op(it) }
+		}
+	}
 }

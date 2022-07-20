@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.ptr
+import dev.kkorolyov.pancake.editor.ext.ptr
 import imgui.ImGui
 import imgui.type.ImBoolean
 

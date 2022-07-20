@@ -2,9 +2,9 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.column
+import dev.kkorolyov.pancake.editor.ext.ptr
 import dev.kkorolyov.pancake.editor.indented
 import dev.kkorolyov.pancake.editor.list
-import dev.kkorolyov.pancake.editor.ptr
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.utility.PerfMonitor
