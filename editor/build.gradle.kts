@@ -9,7 +9,7 @@ description = "Graphical debugging tools that can hook into a Pancake applicatio
 dependencies {
 	implementation(libs.bundles.stdlib)
 
-	implementation(libs.imgui.binding)
+	api(libs.imgui.binding)
 	implementation(libs.imgui.lwjgl)
 
 	implementation(projects.platform)

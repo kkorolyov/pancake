@@ -9,15 +9,16 @@ import dev.kkorolyov.pancake.editor.core.VelocityCapComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.VelocityComponentWidgetFactory;
 
 module dev.kkorolyov.pancake.editor.core {
-	requires kotlin.stdlib;
+	requires kotlin.stdlib.jdk8;
 
 	requires org.slf4j;
 
+	requires org.lwjgl;
 	requires org.lwjgl.opengl;
 	requires org.lwjgl.stb;
 	requires org.lwjgl.glfw;
+
 	requires imgui.binding;
-	requires imgui.lwjgl3;
 
 	requires dev.kkorolyov.pancake.platform;
 	requires dev.kkorolyov.pancake.core;

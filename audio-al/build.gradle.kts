@@ -16,4 +16,4 @@ dependencies {
 	testImplementation(libs.bundles.test)
 }
 
-(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.openal, libs.lwjgl.stb))
+(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.openal))

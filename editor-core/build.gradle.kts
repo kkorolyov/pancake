@@ -9,9 +9,6 @@ description = "Provides debug fragments for Core components"
 dependencies {
 	implementation(libs.bundles.stdlib)
 
-	implementation(libs.imgui.binding)
-	implementation(libs.imgui.lwjgl)
-
 	implementation(projects.platform)
 	implementation(projects.core)
 	implementation(projects.editor)

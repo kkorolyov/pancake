@@ -1,5 +1,5 @@
 module dev.kkorolyov.pancake.graphics.jfx {
-	requires kotlin.stdlib;
+	requires kotlin.stdlib.jdk8;
 	requires org.slf4j;
 
 	requires javafx.graphics;

@@ -139,19 +139,11 @@ subprojects {
 	extra["setupLwjgl"] = { deps: List<Provider<MinimalExternalModuleDependency>> ->
 		dependencies {
 			val api = configurations["api"]
-			val compileOnly = configurations["compileOnly"]
 
 			val allDeps = deps + libs.lwjgl.asProvider()
-			val allNatives = allDeps.map {
-				variantOf(it) {
-					// just pick one to compile the module-info
-					classifier("natives-linux")
-				}
-			}
 
 			api(platform(libs.lwjgl.bom))
 			allDeps.forEach { api(it) }
-			allNatives.forEach { compileOnly(it) }
 		}
 	}
 }

@@ -10,7 +10,6 @@ tornadofx = "2.+"
 javafx = "17.+"
 
 lwjgl = "3.+"
-
 imgui = "1.+"
 
 spock = "2.+"
@@ -45,5 +44,4 @@ byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
 
 [bundles]
 stdlib = ["flub", "slf4j"]
-lwjgl = ["lwjgl", "lwjgl-glfw", "lwjgl-opengl", "lwjgl-stb"]
 test = ["spock", "byteBuddy"]
