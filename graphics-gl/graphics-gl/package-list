@@ -55,7 +55,7 @@ $dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/hashCode/#/Point
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.shader/Shader/id/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.shader/-shader/id.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.system////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.system/DrawSystem///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/-draw-system/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.gl.system/DrawSystem/DrawSystem/#dev.kkorolyov.pancake.graphics.common.CameraQueue#kotlin.Function0[kotlin.Unit]#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/-draw-system/-draw-system.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.system/DrawSystem/DrawSystem/#dev.kkorolyov.pancake.graphics.common.CameraQueue/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/-draw-system/-draw-system.html
 dev.kkorolyov.pancake.graphics.gl.component
 dev.kkorolyov.pancake.graphics.gl.mesh
 dev.kkorolyov.pancake.graphics.gl.shader
