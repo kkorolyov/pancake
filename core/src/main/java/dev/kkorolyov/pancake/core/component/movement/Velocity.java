@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * Velocity of a moving entity.
@@ -15,7 +14,7 @@ public final class Velocity implements Component {
 	 * @param value initial value in {@code m/s}
 	 */
 	public Velocity(Vector3 value) {
-		this.value = Vectors.create(value);
+		this.value = Vector3.of(value);
 	}
 
 	/**

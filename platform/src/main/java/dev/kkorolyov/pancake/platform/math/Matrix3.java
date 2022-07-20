@@ -77,35 +77,35 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 	}
 
 	public final double getXz() {
-		return sanitize(xz);
+		return FloatOps.sanitize(xz);
 	}
 	public final void setXz(double xz) {
 		this.xz = xz;
 	}
 
 	public final double getYz() {
-		return sanitize(yz);
+		return FloatOps.sanitize(yz);
 	}
 	public final void setYz(double yz) {
 		this.yz = yz;
 	}
 
 	public final double getZx() {
-		return sanitize(zx);
+		return FloatOps.sanitize(zx);
 	}
 	public final void setZx(double zx) {
 		this.zx = zx;
 	}
 
 	public final double getZy() {
-		return sanitize(zy);
+		return FloatOps.sanitize(zy);
 	}
 	public final void setZy(double zy) {
 		this.zy = zy;
 	}
 
 	public final double getZz() {
-		return sanitize(zz);
+		return FloatOps.sanitize(zz);
 	}
 	public final void setZz(double zz) {
 		this.zz = zz;
@@ -117,7 +117,7 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
 		Matrix3 matrix3 = (Matrix3) o;
-		return equals(matrix3.getXz(), getXz()) && equals(matrix3.getYz(), getYz()) && equals(matrix3.getZx(), getZx()) && equals(matrix3.getZy(), getZy()) && equals(matrix3.getZz(), getZz());
+		return FloatOps.equals(matrix3.getXz(), getXz()) && FloatOps.equals(matrix3.getYz(), getYz()) && FloatOps.equals(matrix3.getZx(), getZx()) && FloatOps.equals(matrix3.getZy(), getZy()) && FloatOps.equals(matrix3.getZz(), getZz());
 	}
 	@Override
 	public int hashCode() {

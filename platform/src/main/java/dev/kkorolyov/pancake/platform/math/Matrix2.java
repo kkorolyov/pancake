@@ -28,13 +28,6 @@ public sealed class Matrix2 permits Matrix3 {
 		return new Matrix2(xx, xy, yx, yy);
 	}
 
-	static double sanitize(double val) {
-		return val == 0.0 ? 0 : val;
-	}
-	static boolean equals(double val, double other) {
-		return Math.abs(val - other) < 1e-9;
-	}
-
 	Matrix2(
 			double xx, double xy,
 			double yx, double yy
@@ -75,28 +68,28 @@ public sealed class Matrix2 permits Matrix3 {
 	}
 
 	public final double getXx() {
-		return sanitize(xx);
+		return FloatOps.sanitize(xx);
 	}
 	public final void setXx(double xx) {
 		this.xx = xx;
 	}
 
 	public final double getXy() {
-		return sanitize(xy);
+		return FloatOps.sanitize(xy);
 	}
 	public final void setXy(double xy) {
 		this.xy = xy;
 	}
 
 	public final double getYx() {
-		return sanitize(yx);
+		return FloatOps.sanitize(yx);
 	}
 	public final void setYx(double yx) {
 		this.yx = yx;
 	}
 
 	public final double getYy() {
-		return sanitize(yy);
+		return FloatOps.sanitize(yy);
 	}
 	public final void setYy(double yy) {
 		this.yy = yy;
@@ -107,7 +100,7 @@ public sealed class Matrix2 permits Matrix3 {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Matrix2 matrix2 = (Matrix2) o;
-		return equals(matrix2.getXx(), getXx()) && equals(matrix2.getXy(), getXy()) && equals(matrix2.getYx(), getYx()) && equals(matrix2.getYy(), getYy());
+		return FloatOps.equals(matrix2.getXx(), getXx()) && FloatOps.equals(matrix2.getXy(), getXy()) && FloatOps.equals(matrix2.getYx(), getYx()) && FloatOps.equals(matrix2.getYy(), getYy());
 	}
 	@Override
 	public int hashCode() {

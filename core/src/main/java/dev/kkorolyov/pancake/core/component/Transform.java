@@ -3,17 +3,16 @@ package dev.kkorolyov.pancake.core.component;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector1;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 /**
  * Position and orientation of an entity local to a parent transform.
  */
 public final class Transform implements Component {
 	private final Vector3 position;
-	private final Vector3 globalPosition = Vectors.create(0, 0, 0);
+	private final Vector3 globalPosition = Vector3.of(0, 0, 0);
 	// TODO quaternions
 	private final Vector1 orientation;
-	private final Vector1 globalOrientation = Vectors.create(0);
+	private final Vector1 globalOrientation = Vector1.of(0);
 
 	private Transform parent;
 	private boolean rotatesWithParent;
@@ -23,7 +22,7 @@ public final class Transform implements Component {
 	 * @see #Transform(Vector3, Vector1)
 	 */
 	public Transform(Vector3 position) {
-		this(position, Vectors.create(0));
+		this(position, Vector1.of(0));
 	}
 	/**
 	 * Constructs a transform with no parent.
@@ -37,7 +36,7 @@ public final class Transform implements Component {
 	 * @see #Transform(Vector3, Vector1, Transform, boolean)
 	 */
 	public Transform(Vector3 position, Transform parent, boolean rotatesWithParent) {
-		this(position, Vectors.create(0), parent, rotatesWithParent);
+		this(position, Vector1.of(0), parent, rotatesWithParent);
 	}
 	/**
 	 * Constructs a new transform.
@@ -47,8 +46,8 @@ public final class Transform implements Component {
 	 * @param rotatesWithParent {@code true} means this transform is effectively "glued" to its position on {@code parent} and follows rotational position accordingly
 	 */
 	public Transform(Vector3 position, Vector1 orientation, Transform parent, boolean rotatesWithParent) {
-		this.position = Vectors.create(position);
-		this.orientation = Vectors.create(orientation);
+		this.position = Vector3.of(position);
+		this.orientation = Vector1.of(orientation);
 		setParent(parent, rotatesWithParent);
 	}
 

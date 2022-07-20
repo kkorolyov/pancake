@@ -1,16 +1,16 @@
 package dev.kkorolyov.pancake.platform
 
 import dev.kkorolyov.pancake.platform.math.Vector3
-import dev.kkorolyov.pancake.platform.math.Vectors
 
 import java.util.concurrent.ThreadLocalRandom
+
 /**
  * Provides utility methods for Specs.
  */
 class SpecUtilities {
 	/** @return vector with randomized component values */
 	static Vector3 randVector() {
-		return Vectors.create(randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE))
+		return Vector3.of(randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE))
 	}
 
 	static int randInt(int bound = Integer.MAX_VALUE) {

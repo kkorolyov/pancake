@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.audio.al
 
 import dev.kkorolyov.pancake.audio.al.internal.alCall
 import dev.kkorolyov.pancake.platform.math.Vector3
-import dev.kkorolyov.pancake.platform.math.Vectors
 import org.lwjgl.openal.AL11.*
 import org.lwjgl.system.MemoryStack
 
@@ -29,7 +28,7 @@ class AudioSource : AutoCloseable {
 			MemoryStack.stackPush().use {
 				val pP = it.mallocFloat(3)
 				alGetSourcefv(id, AL_POSITION, pP)
-				Vectors.create(pP[0].toDouble(), pP[1].toDouble(), pP[2].toDouble())
+				Vector3.of(pP[0].toDouble(), pP[1].toDouble(), pP[2].toDouble())
 			}
 		}
 		set(value) = alCall { alSource3f(id, AL_POSITION, value.x.toFloat(), value.y.toFloat(), value.z.toFloat()) }
@@ -42,7 +41,7 @@ class AudioSource : AutoCloseable {
 			MemoryStack.stackPush().use {
 				val vP = it.mallocFloat(3)
 				alGetSourcefv(id, AL_VELOCITY, vP)
-				Vectors.create(vP[0].toDouble(), vP[1].toDouble(), vP[2].toDouble())
+				Vector3.of(vP[0].toDouble(), vP[1].toDouble(), vP[2].toDouble())
 			}
 		}
 		set(value) = alCall { alSource3f(id, AL_VELOCITY, value.x.toFloat(), value.y.toFloat(), value.z.toFloat()) }

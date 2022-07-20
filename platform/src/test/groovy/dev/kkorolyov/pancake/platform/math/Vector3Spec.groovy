@@ -8,7 +8,7 @@ class Vector3Spec extends Specification {
 		Vector3.magnitude(vector) == magnitude
 
 		where:
-		vector << [Vectors.create(0, 0, 0), Vectors.create(0, 0, 1), Vectors.create(0, 1, 0), Vectors.create(1, 0, 0), Vectors.create(1, 1, 1)]
+		vector << [Vector3.of(0, 0, 0), Vector3.of(0, 0, 1), Vector3.of(0, 1, 0), Vector3.of(1, 0, 0), Vector3.of(1, 1, 1)]
 		magnitude << [0, 1, 1, 1, Math.sqrt(3)]
 	}
 
@@ -17,7 +17,7 @@ class Vector3Spec extends Specification {
 		Vector3.dot(vector, other) == dot
 
 		where:
-		vector << [Vectors.create(0, 0, 0), Vectors.create(0, 0, 1), Vectors.create(0, 1, 0), Vectors.create(1, 0, 0), Vectors.create(1, 1, 1)]
+		vector << [Vector3.of(0, 0, 0), Vector3.of(0, 0, 1), Vector3.of(0, 1, 0), Vector3.of(1, 0, 0), Vector3.of(1, 1, 1)]
 		other = vector
 		dot << [0, 1, 1, 1, 3]
 	}
@@ -27,8 +27,8 @@ class Vector3Spec extends Specification {
 		Vector3.distance(vector, other) == distance
 
 		where:
-		vector << [Vectors.create(0, 0, 0), Vectors.create(0, 0, 0), Vectors.create(0, 0, 0), Vectors.create(0, 0, 0), Vectors.create(1, 1, 1)]
-		other << [Vectors.create(0, 0, 0), Vectors.create(0, 0, 1), Vectors.create(0, 1, 0), Vectors.create(1, 0, 0), Vectors.create(2, 2, 2)]
+		vector << [Vector3.of(0, 0, 0), Vector3.of(0, 0, 0), Vector3.of(0, 0, 0), Vector3.of(0, 0, 0), Vector3.of(1, 1, 1)]
+		other << [Vector3.of(0, 0, 0), Vector3.of(0, 0, 1), Vector3.of(0, 1, 0), Vector3.of(1, 0, 0), Vector3.of(2, 2, 2)]
 		distance << [0, 1, 1, 1, Math.sqrt(3)]
 	}
 
@@ -40,8 +40,8 @@ class Vector3Spec extends Specification {
 		vector == unit
 
 		where:
-		vector << [Vectors.create(0, 0, 0), Vectors.create(0, 0, 4), Vectors.create(0, 5, 0), Vectors.create(6, 0, 0), Vectors.create(7, 7, 7)]
-		unit << [Vectors.create(0, 0, 0), Vectors.create(0, 0, 1), Vectors.create(0, 1, 0), Vectors.create(1, 0, 0), Vectors.create(7 / Math.sqrt(147), 7 / Math.sqrt(147), 7 / Math.sqrt(147))]
+		vector << [Vector3.of(0, 0, 0), Vector3.of(0, 0, 4), Vector3.of(0, 5, 0), Vector3.of(6, 0, 0), Vector3.of(7, 7, 7)]
+		unit << [Vector3.of(0, 0, 0), Vector3.of(0, 0, 1), Vector3.of(0, 1, 0), Vector3.of(1, 0, 0), Vector3.of(7 / Math.sqrt(147), 7 / Math.sqrt(147), 7 / Math.sqrt(147))]
 	}
 
 	def "projects"() {
@@ -52,8 +52,8 @@ class Vector3Spec extends Specification {
 		vector == projection
 
 		where:
-		vector << [Vectors.create(1, 0, 0), Vectors.create(1, 1, 0), Vectors.create(2, 2, 0), Vectors.create(4, 1, 0)]
-		other << [Vectors.create(1, 0, 0), Vectors.create(1, 0, 0), Vectors.create(0, 1, 0), Vectors.create(1, 0, 0)]
-		projection << [Vectors.create(1, 0, 0), Vectors.create(1, 0, 0), Vectors.create(0, 2, 0), Vectors.create(4, 0, 0)]
+		vector << [Vector3.of(1, 0, 0), Vector3.of(1, 1, 0), Vector3.of(2, 2, 0), Vector3.of(4, 1, 0)]
+		other << [Vector3.of(1, 0, 0), Vector3.of(1, 0, 0), Vector3.of(0, 1, 0), Vector3.of(1, 0, 0)]
+		projection << [Vector3.of(1, 0, 0), Vector3.of(1, 0, 0), Vector3.of(0, 2, 0), Vector3.of(4, 0, 0)]
 	}
 }

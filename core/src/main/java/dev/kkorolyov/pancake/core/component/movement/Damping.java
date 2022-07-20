@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.core.component.movement;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
 /**
@@ -17,7 +16,7 @@ public final class Damping implements Component {
 	 * @param value damping to apply per component
 	 */
 	public Damping(Vector3 value) {
-		this.value = Vectors.create(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
+		this.value = Vector3.of(verify(value.getX()), verify(value.getY()), verify(value.getZ()));
 	}
 	private static double verify(double value) {
 		return ArgVerify.betweenInclusive("damping", 0.0, 1.0, value);

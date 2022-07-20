@@ -17,7 +17,7 @@ class SpawnerSpec extends Specification {
 	double interval = randDouble()
 	Vector3 origin = randVector()
 
-	Vector3 position = Mock()
+	Vector3 position = Vector3.of(1, 2, 3)
 	Transform transform = new Transform(position)
 	WeightedDistribution<Supplier<Iterable<Component>>> templates = new WeightedDistribution()
 			.add({ [transform] } as Supplier, 1)

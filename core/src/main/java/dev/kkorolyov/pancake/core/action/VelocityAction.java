@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ public final class VelocityAction implements Action {
 	 * @param velocity velocity to set
 	 */
 	public VelocityAction(Vector3 velocity) {
-		this.velocity = Vectors.create(velocity);
+		this.velocity = Vector3.of(velocity);
 	}
 
 	@Override

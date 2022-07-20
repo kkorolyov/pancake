@@ -4,7 +4,6 @@ import dev.kkorolyov.flub.data.Graph;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -30,36 +29,36 @@ public final class Bounds implements Component {
 		return new Bounds(
 				new Graph<Vector3, Void>()
 						.putUndirected(
-								Vectors.create(halfX, halfY, halfZ),
-								Vectors.create(-halfX, halfY, halfZ),
-								Vectors.create(halfX, -halfY, halfZ),
-								Vectors.create(halfX, halfY, -halfZ)
+								Vector3.of(halfX, halfY, halfZ),
+								Vector3.of(-halfX, halfY, halfZ),
+								Vector3.of(halfX, -halfY, halfZ),
+								Vector3.of(halfX, halfY, -halfZ)
 						)
 						.putUndirected(
-								Vectors.create(-halfX, -halfY, -halfZ),
-								Vectors.create(halfX, -halfY, -halfZ),
-								Vectors.create(-halfX, halfY, -halfZ),
-								Vectors.create(-halfX, -halfY, halfZ)
+								Vector3.of(-halfX, -halfY, -halfZ),
+								Vector3.of(halfX, -halfY, -halfZ),
+								Vector3.of(-halfX, halfY, -halfZ),
+								Vector3.of(-halfX, -halfY, halfZ)
 						)
 						.putUndirected(
-								Vectors.create(halfX, halfY, -halfZ),
-								Vectors.create(-halfX, halfY, -halfZ),
-								Vectors.create(halfX, -halfY, -halfZ)
+								Vector3.of(halfX, halfY, -halfZ),
+								Vector3.of(-halfX, halfY, -halfZ),
+								Vector3.of(halfX, -halfY, -halfZ)
 						)
 						.putUndirected(
-								Vectors.create(halfX, -halfY, halfZ),
-								Vectors.create(halfX, -halfY, -halfZ),
-								Vectors.create(-halfX, -halfY, halfZ)
+								Vector3.of(halfX, -halfY, halfZ),
+								Vector3.of(halfX, -halfY, -halfZ),
+								Vector3.of(-halfX, -halfY, halfZ)
 						)
 						.putUndirected(
-								Vectors.create(-halfX, halfY, halfZ),
-								Vectors.create(-halfX, halfY, -halfZ),
-								Vectors.create(-halfX, -halfY, halfZ)
+								Vector3.of(-halfX, halfY, halfZ),
+								Vector3.of(-halfX, halfY, -halfZ),
+								Vector3.of(-halfX, -halfY, halfZ)
 						)
 		);
 	}
 	public static Bounds round(double radius) {
-		return new Bounds(new Graph<Vector3, Void>().put(Vectors.create(radius, 0, 0)));
+		return new Bounds(new Graph<Vector3, Void>().put(Vector3.of(radius, 0, 0)));
 	}
 
 	/**
@@ -69,17 +68,17 @@ public final class Bounds implements Component {
 		this.vertices = StreamSupport.stream(vertices.spliterator(), false)
 				.map(Graph.Node::getValue)
 				.distinct()
-				.map(Vectors::create)
+				.map(Vector3::of)
 				.toArray(Vector3[]::new);
 		normals = StreamSupport.stream(vertices.spliterator(), false)
 				.flatMap(u -> u.getOutbounds().stream()
 						.flatMap(v -> {
-							Vector2 normal = Vectors.create((Vector2) v.getValue());
+							Vector2 normal = Vector2.of(v.getValue());
 							normal.add(u.getValue(), -1);
 							normal.orthogonal();
 							normal.normalize();
 							// add both normal and computed reverse
-							return Stream.of(normal, Vectors.create(normal.getX() * -1, normal.getY() * -1));
+							return Stream.of(normal, Vector3.of(normal.getX() * -1, normal.getY() * -1));
 						})
 				)
 				.distinct()

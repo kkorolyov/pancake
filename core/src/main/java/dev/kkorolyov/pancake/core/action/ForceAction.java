@@ -4,7 +4,6 @@ import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.math.Vectors;
 
 import java.util.Objects;
 
@@ -19,7 +18,7 @@ public final class ForceAction implements Action {
 	 * @param force force to add to accepted entities
 	 */
 	public ForceAction(Vector3 force) {
-		this.force = Vectors.create(force);
+		this.force = Vector3.of(force);
 	}
 
 	@Override
