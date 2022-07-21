@@ -32,6 +32,9 @@ imgui-lwjgl = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "img
 
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
+imgui-windows = { module = "io.github.spair:imgui-java-natives-windows", version.ref = "imgui" }
+imgui-macos = { module = "io.github.spair:imgui-java-natives-macos", version.ref = "imgui" }
+imgui-linux = { module = "io.github.spair:imgui-java-natives-linux", version.ref = "imgui" }
 
 [bundles]
 stdlib = ["flub", "slf4j"]
