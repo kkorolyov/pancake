@@ -4,15 +4,14 @@ plugins {
 apply(from = "$rootDir/kotlin.gradle")
 apply(from = "$rootDir/publish.gradle.kts")
 
-description = "Graphical debugging tools that can hook into a Pancake application"
+description = "Provides debug fragments for Core components"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
 
-	api(libs.imgui.binding)
-	implementation(libs.imgui.lwjgl)
-
 	implementation(projects.platform)
+	implementation(projects.core)
+	implementation(projects.editor)
 }
 
 (extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb))

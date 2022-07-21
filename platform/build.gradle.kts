@@ -2,7 +2,7 @@ plugins {
 	`java-library`
 	groovy
 }
-apply(from = "../publish.gradle.kts")
+apply(from = "$rootDir/publish.gradle.kts")
 
 description = "Main Pancake engine platform"
 

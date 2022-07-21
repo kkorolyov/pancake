@@ -2,15 +2,15 @@ plugins {
 	`java-library`
 	groovy
 }
+apply(from = "$rootDir/kotlin.gradle")
 apply(from = "$rootDir/publish.gradle.kts")
 
-description = "Collection of general, reusable systems and components for the Pancake engine"
+description = "Common input system utilities"
 
 dependencies {
 	implementation(libs.bundles.stdlib)
 
-	implementation(projects.platform)
+	api(projects.platform)
 
 	testImplementation(libs.bundles.test)
-	testImplementation(projects.testUtils)
 }
