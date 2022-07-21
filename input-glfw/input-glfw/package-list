@@ -34,9 +34,9 @@ $dokka.location:dev.kkorolyov.pancake.input.glfw.system////PointingToDeclaration
 $dokka.location:dev.kkorolyov.pancake.input.glfw.system/InputSystem///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.system/-input-system/index.html
 $dokka.location:dev.kkorolyov.pancake.input.glfw.system/InputSystem/InputSystem/#kotlin.LongArray/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.system/-input-system/-input-system.html
 $dokka.location:dev.kkorolyov.pancake.input.glfw////PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/index.html
-$dokka.location:dev.kkorolyov.pancake.input.glfw//toggle/#dev.kkorolyov.pancake.input.common.Compensated[dev.kkorolyov.pancake.platform.action.Action]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/toggle.html
-$dokka.location:dev.kkorolyov.pancake.input.glfw//whenKey/#kotlin.Array[kotlin.Pair[kotlin.Int,dev.kkorolyov.pancake.input.common.Reaction[dev.kkorolyov.pancake.input.glfw.input.KeyEvent]]]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/when-key.html
-$dokka.location:dev.kkorolyov.pancake.input.glfw//whenMouseButton/#kotlin.Array[kotlin.Pair[kotlin.Int,dev.kkorolyov.pancake.input.common.Reaction[dev.kkorolyov.pancake.input.glfw.input.MouseButtonEvent]]]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/when-mouse-button.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//toggle/#dev.kkorolyov.pancake.input.Compensated[dev.kkorolyov.pancake.platform.action.Action]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/toggle.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//whenKey/#kotlin.Array[kotlin.Pair[kotlin.Int,dev.kkorolyov.pancake.input.Reaction[dev.kkorolyov.pancake.input.glfw.input.KeyEvent]]]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/when-key.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//whenMouseButton/#kotlin.Array[kotlin.Pair[kotlin.Int,dev.kkorolyov.pancake.input.Reaction[dev.kkorolyov.pancake.input.glfw.input.MouseButtonEvent]]]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/when-mouse-button.html
 dev.kkorolyov.pancake.input.glfw
 dev.kkorolyov.pancake.input.glfw.input
 dev.kkorolyov.pancake.input.glfw.system

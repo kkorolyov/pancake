@@ -1,0 +1,29 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.graphics.component////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/Lens/#dev.kkorolyov.pancake.platform.math.Vector2#dev.kkorolyov.pancake.platform.math.Vector2#dev.kkorolyov.pancake.platform.math.Vector2#java.util.BitSet#kotlin.Boolean/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/-lens.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/active/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/active.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/mask/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/mask.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/offset/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/offset.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/scale/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/scale.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/size/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/size.html
+$dokka.location:dev.kkorolyov.pancake.graphics.system////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.system/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.system/CameraSystem///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.system/-camera-system/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.system/CameraSystem/CameraSystem/#dev.kkorolyov.pancake.graphics.CameraQueue/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.system/-camera-system/-camera-system.html
+$dokka.location:dev.kkorolyov.pancake.graphics////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Camera///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Camera/Camera/#dev.kkorolyov.pancake.platform.entity.Entity/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/-camera.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Camera/id/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/id.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Camera/lens/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/lens.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Camera/transform/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/transform.html
+$dokka.location:dev.kkorolyov.pancake.graphics/CameraQueue///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera-queue/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics/CameraQueue/CameraQueue/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera-queue/-camera-queue.html
+$dokka.location:dev.kkorolyov.pancake.graphics/CameraQueue/cameras/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera-queue/cameras.html
+$dokka.location:dev.kkorolyov.pancake.graphics/CameraQueue/ids/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera-queue/ids.html
+$dokka.location:dev.kkorolyov.pancake.graphics/CameraQueue/minusAssign/#kotlin.Int/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera-queue/minus-assign.html
+$dokka.location:dev.kkorolyov.pancake.graphics/CameraQueue/plusAssign/#dev.kkorolyov.pancake.platform.entity.Entity/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera-queue/plus-assign.html
+dev.kkorolyov.pancake.graphics
+dev.kkorolyov.pancake.graphics.component
+dev.kkorolyov.pancake.graphics.system
+
