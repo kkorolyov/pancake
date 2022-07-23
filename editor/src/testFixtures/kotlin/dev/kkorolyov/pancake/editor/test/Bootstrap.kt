@@ -1,4 +1,4 @@
-package e2e
+package dev.kkorolyov.pancake.editor.test
 
 import dev.kkorolyov.pancake.editor.Container
 import dev.kkorolyov.pancake.editor.widget.Editor

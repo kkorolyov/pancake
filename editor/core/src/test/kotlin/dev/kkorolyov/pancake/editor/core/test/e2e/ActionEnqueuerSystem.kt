@@ -1,4 +1,4 @@
-package e2e
+package dev.kkorolyov.pancake.editor.core.test.e2e
 
 import dev.kkorolyov.pancake.core.action.ForceAction
 import dev.kkorolyov.pancake.core.action.TransformAction

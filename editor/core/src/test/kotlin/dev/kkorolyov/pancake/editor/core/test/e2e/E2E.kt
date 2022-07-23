@@ -1,4 +1,4 @@
-package e2e
+package dev.kkorolyov.pancake.editor.core.test.e2e
 
 import dev.kkorolyov.flub.data.WeightedDistribution
 import dev.kkorolyov.pancake.core.component.ActionQueue
@@ -21,6 +21,10 @@ import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
 import dev.kkorolyov.pancake.core.system.SpawnSystem
 import dev.kkorolyov.pancake.core.system.cleanup.PhysicsCleanupSystem
+import dev.kkorolyov.pancake.editor.test.drawEnd
+import dev.kkorolyov.pancake.editor.test.drawStart
+import dev.kkorolyov.pancake.editor.test.editor
+import dev.kkorolyov.pancake.editor.test.start
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.Pipeline
 import dev.kkorolyov.pancake.platform.entity.Component

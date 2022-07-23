@@ -32,6 +32,6 @@ dependencies {
 tasks.register<JavaExec>("e2e") {
 	group = "verification"
 
-	mainClass.set("e2e.E2EKt")
+	mainClass.set("dev.kkorolyov.pancake.editor.test.e2e.E2EKt")
 	classpath = sourceSets.test.get().runtimeClasspath
 }
