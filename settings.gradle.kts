@@ -6,8 +6,6 @@ include("core")
 include("editor")
 includeIn("editor-core", "editor/core")
 
-include("test-utils")
-
 includeIn("audio-al", "audio/al")
 
 include("graphics")

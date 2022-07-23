@@ -1,5 +1,6 @@
 plugins {
 	`java-library`
+	`java-test-fixtures`
 	groovy
 }
 apply(from = "$rootDir/publish.gradle.kts")
@@ -7,11 +8,9 @@ apply(from = "$rootDir/publish.gradle.kts")
 description = "Main Pancake engine platform"
 
 dependencies {
-	implementation(libs.bundles.stdlib)
 	api(libs.flub)
 	implementation(libs.snakeyaml)
 	implementation(libs.jackson)
 
-	testImplementation(libs.bundles.test)
-	testImplementation(projects.testUtils)
+	testFixturesImplementation(libs.bundles.test)
 }

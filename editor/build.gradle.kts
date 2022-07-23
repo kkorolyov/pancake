@@ -10,8 +10,6 @@ apply(from = "$rootDir/publish.gradle.kts")
 description = "Graphical debugging tools that can hook into a Pancake application"
 
 dependencies {
-	implementation(libs.bundles.stdlib)
-
 	api(libs.imgui.binding)
 	implementation(libs.imgui.lwjgl)
 

@@ -7,8 +7,6 @@ apply(from = "$rootDir/publish.gradle.kts")
 description = "Provides debug fragments for Core components"
 
 dependencies {
-	implementation(libs.bundles.stdlib)
-
 	implementation(projects.platform)
 	implementation(projects.core)
 	implementation(projects.editor)

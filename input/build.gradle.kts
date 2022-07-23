@@ -8,9 +8,5 @@ apply(from = "$rootDir/publish.gradle.kts")
 description = "Common input system utilities"
 
 dependencies {
-	implementation(libs.bundles.stdlib)
-
 	api(projects.platform)
-
-	testImplementation(libs.bundles.test)
 }

@@ -8,8 +8,8 @@ import spock.lang.Specification
 
 import java.util.function.Supplier
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randDouble
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
+import static dev.kkorolyov.pancake.test.SpecUtilities.randDouble
+import static dev.kkorolyov.pancake.test.SpecUtilities.randVector
 
 class SpawnerSpec extends Specification {
 	double minRadius = randDouble()
