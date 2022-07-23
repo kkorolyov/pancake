@@ -12,6 +12,7 @@ dependencies {
 	implementation(projects.editor)
 
 	testImplementation(testFixtures(projects.editor))
+	testImplementation(testFixtures(projects.platform))
 
 	dependencyLocking {
 		ignoredDependencies.add("io.github.spair:imgui-java-natives*")
