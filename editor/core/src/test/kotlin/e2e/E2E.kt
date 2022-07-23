@@ -47,6 +47,9 @@ fun main() {
 				PhysicsCleanupSystem()
 			),
 			Pipeline(
+				ActionEnqueuerSystem()
+			),
+			Pipeline(
 				drawStart(),
 				editor(this),
 				drawEnd()
