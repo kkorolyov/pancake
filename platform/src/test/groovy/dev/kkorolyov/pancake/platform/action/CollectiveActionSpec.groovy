@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import spock.lang.Shared
 import spock.lang.Specification
 
-class CollectiveActionStratSpec extends Specification {
+class CollectiveActionSpec extends Specification {
 	@Shared Entity entity = new EntityPool().create()
 
 	List<Action> subActions = (1..4).collect { Mock(Action) }

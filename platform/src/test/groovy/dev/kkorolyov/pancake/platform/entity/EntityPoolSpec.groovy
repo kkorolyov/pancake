@@ -4,7 +4,6 @@ import spock.lang.Specification
 
 class EntityPoolSpec extends Specification {
 	Component component = mockComponent()
-	Collection<Class<? extends Component>> signature = List.of(component.class)
 
 	EntityPool entities = new EntityPool()
 
@@ -15,20 +14,6 @@ class EntityPoolSpec extends Specification {
 	def "create adds to pool"() {
 		expect:
 		entities.get(entities.create().id)
-	}
-	def "created entity has specified components"() {
-		when:
-		Entity entity = entities.create()
-		entity.put(component)
-
-		then:
-		Component otherComponent = new Component() {}
-
-		with(entity) {
-			get(component.class) == component
-			get(component.class) != mockComponent()
-			!get(otherComponent.class)
-		}
 	}
 
 	def "destroy removes entity"() {
@@ -51,7 +36,7 @@ class EntityPoolSpec extends Specification {
 		eBad.put(new Component() {})
 
 		expect:
-		entities.get(signature) as Set == [e1, e2].toSet()
+		entities.get([component.class]) as Set == [e1, e2].toSet()
 	}
 
 	private static Component mockComponent() {

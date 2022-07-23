@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.math;
+package dev.kkorolyov.pancake.platform.utility;
 
 import java.util.Arrays;
 
@@ -7,18 +7,18 @@ import java.util.Arrays;
  */
 public final class AveragedValue {
 	private final long[] samples;
-	private long value;
+	private double value;
 	private int counter;
 
 	/**
 	 * Constructs an averaged value with all 0 samples.
-	 * @param samples number of individual samples; must be {@code > 0}
+	 * @param count maximum number of individual samples; must be {@code > 0}
 	 */
-	public AveragedValue(int samples) {
-		if (samples <= 0) {
+	public AveragedValue(int count) {
+		if (count <= 0) {
 			throw new IllegalArgumentException("samples must be > 0");
 		}
-		this.samples = new long[samples];
+		samples = new long[count];
 	}
 
 	/**
@@ -26,20 +26,15 @@ public final class AveragedValue {
 	 * @param sample sample to add
 	 */
 	public void add(long sample) {
-		samples[counter++] = sample;
+		value -= ((double) samples[counter]) / samples.length;
+		value += ((double) (samples[counter] = sample)) / samples.length;
 
-		if (counter >= samples.length) {
-			value = 0;
-			for (long s : samples) value += s;
-			value /= samples.length;
-
-			counter = 0;
-		}
+		counter = (counter < samples.length - 1) ? counter + 1 : 0;
 	}
 
 	/** @return average value of current samples */
 	public long get() {
-		return value;
+		return (long) value;
 	}
 
 	/** @return maximum number of samples */

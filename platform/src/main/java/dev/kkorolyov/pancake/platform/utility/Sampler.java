@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.platform.utility;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.math.AveragedValue;
 
 /**
  * Samples time between invocations of a sampling method.

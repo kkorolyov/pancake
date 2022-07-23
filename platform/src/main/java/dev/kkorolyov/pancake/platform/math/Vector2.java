@@ -9,16 +9,16 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	private double y;
 
 	/**
-	 * Returns the dot product of {@code a} and {@code b}.
-	 */
-	public static double dot(Vector2 a, Vector2 b) {
-		return FloatOps.sanitize(a.getX() * b.getX() + a.y * b.y);
-	}
-	/**
 	 * Returns the length of {@code vector}.
 	 */
 	public static double magnitude(Vector2 vector) {
 		return FloatOps.sanitize(Math.sqrt(dot(vector, vector)));
+	}
+	/**
+	 * Returns the dot product of {@code a} and {@code b}.
+	 */
+	public static double dot(Vector2 a, Vector2 b) {
+		return FloatOps.sanitize(a.getX() * b.getX() + a.y * b.y);
 	}
 	/**
 	 * Returns the Euclidean distance between {@code a} and {@code b}.
@@ -96,7 +96,7 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	 * Reflects this vector along {@code other}.
 	 */
 	public final void reflect(Vector2 other) {
-		add(other, -2 * dot(this, other));
+		add(other, -2 * dot(this, other) / dot(other, other));
 	}
 
 	@Override

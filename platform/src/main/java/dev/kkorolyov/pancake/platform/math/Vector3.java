@@ -9,16 +9,16 @@ public final class Vector3 extends Vector2 {
 	private double z;
 
 	/**
-	 * Returns the dot product of {@code a} and {@code b}.
-	 */
-	public static double dot(Vector3 a, Vector3 b) {
-		return FloatOps.sanitize(a.getX() * b.getX() + a.getY() * b.getY() + a.z * b.z);
-	}
-	/**
 	 * Returns the length of {@code vector}.
 	 */
 	public static double magnitude(Vector3 vector) {
 		return FloatOps.sanitize(Math.sqrt(dot(vector, vector)));
+	}
+	/**
+	 * Returns the dot product of {@code a} and {@code b}.
+	 */
+	public static double dot(Vector3 a, Vector3 b) {
+		return FloatOps.sanitize(a.getX() * b.getX() + a.getY() * b.getY() + a.z * b.z);
 	}
 	/**
 	 * Returns the Euclidean distance between {@code a} and {@code b}.
@@ -102,7 +102,7 @@ public final class Vector3 extends Vector2 {
 	 * Reflects this vector along {@code other}.
 	 */
 	public void reflect(Vector3 other) {
-		add(other, -2 * dot(this, other));
+		add(other, -2 * dot(this, other) / dot(other, other));
 	}
 
 	@Override
