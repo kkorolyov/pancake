@@ -16,7 +16,7 @@ public final class AveragedValue {
 	 */
 	public AveragedValue(int count) {
 		if (count <= 0) {
-			throw new IllegalArgumentException("samples must be > 0");
+			throw new IllegalArgumentException("count must be > 0");
 		}
 		samples = new long[count];
 	}
@@ -38,7 +38,7 @@ public final class AveragedValue {
 	}
 
 	/** @return maximum number of samples */
-	public int size() {
+	public int getCount() {
 		return samples.length;
 	}
 

@@ -7,7 +7,9 @@ import java.util.Map;
 
 /**
  * Provides time sampling for a {@link dev.kkorolyov.pancake.platform.GameEngine} and its {@link GameSystem}s.
+ * @deprecated prefer a {@link Sampler} attached directly to the relevant instances
  */
+@Deprecated
 public final class PerfMonitor {
 	private final Sampler engine = new Sampler();
 	private final Map<GameSystem, Sampler> systems = new LinkedHashMap<>();
