@@ -156,6 +156,6 @@ public final class Vector3 extends Vector2 {
 
 	@Override
 	public String toString() {
-		return "(" + String.join(",", String.valueOf(getX()), String.valueOf(getY()), String.valueOf(z)) + ")";
+		return String.format("(%.9f,%.9f,%.9f)", getX(), getY(), z);
 	}
 }

@@ -80,6 +80,6 @@ public sealed class Vector1 permits Vector2 {
 
 	@Override
 	public String toString() {
-		return "(" + x + ")";
+		return String.format("(%.9f)", x);
 	}
 }

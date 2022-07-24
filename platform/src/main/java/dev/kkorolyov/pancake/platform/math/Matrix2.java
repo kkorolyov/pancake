@@ -106,4 +106,9 @@ public sealed class Matrix2 permits Matrix3 {
 	public int hashCode() {
 		return Objects.hash(getXx(), getXy(), getYx(), getYy());
 	}
+
+	@Override
+	public String toString() {
+		return String.format("((%.9f,%.9f),(%.9f,%.9f))", xx, xy, yx, yy);
+	}
 }

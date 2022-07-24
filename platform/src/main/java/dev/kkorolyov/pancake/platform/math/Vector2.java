@@ -150,6 +150,6 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 
 	@Override
 	public String toString() {
-		return "(" + String.join(",", String.valueOf(getX()), String.valueOf(y)) + ")";
+		return String.format("(%.9f,%.9f)", getX(), y);
 	}
 }
