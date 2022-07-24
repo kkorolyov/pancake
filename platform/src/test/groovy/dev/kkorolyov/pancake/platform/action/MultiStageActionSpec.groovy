@@ -9,7 +9,7 @@ import spock.lang.Specification
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.ACTIVATE
 import static dev.kkorolyov.pancake.platform.action.MultiStageAction.ArmingOption.DEACTIVATE
 
-class MultiStageActionStratSpec extends Specification {
+class MultiStageActionSpec extends Specification {
 	@Shared long holdThreshold = 0
 	@Shared long dt = 0
 	@Shared Entity entity = new EntityPool().create()

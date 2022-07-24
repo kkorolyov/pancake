@@ -141,4 +141,9 @@ public final class Matrix4 extends Matrix3 {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), getXw(), getYw(), getZw(), getWx(), getWy(), getWz(), getWw());
 	}
+
+	@Override
+	public String toString() {
+		return String.format("((%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f))", getXx(), getXy(), getXz(), xw, getYx(), getYy(), getYz(), yw, getZx(), getZy(), getZz(), zw, wx, wy, wz, ww);
+	}
 }

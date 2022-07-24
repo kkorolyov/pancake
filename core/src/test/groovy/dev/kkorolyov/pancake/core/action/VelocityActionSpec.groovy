@@ -8,7 +8,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 
 import spock.lang.Specification
 
-import static dev.kkorolyov.pancake.platform.SpecUtilities.randVector
+import static dev.kkorolyov.pancake.test.SpecUtilities.randVector
 
 class VelocityActionSpec extends Specification {
 	Vector3 set = randVector()

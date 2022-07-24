@@ -123,4 +123,9 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 	public int hashCode() {
 		return Objects.hash(super.hashCode(), getXz(), getYz(), getZx(), getZy(), getZz());
 	}
+
+	@Override
+	public String toString() {
+		return String.format("((%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f))", getXx(), getXy(), xz, getYx(), getYy(), yz, zx, zy, zz);
+	}
 }

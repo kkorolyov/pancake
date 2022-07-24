@@ -125,6 +125,11 @@ subprojects {
 	}
 
 	afterEvaluate {
+		dependencies {
+			implementation(libs.bundles.stdlib)
+			testImplementation(libs.bundles.test)
+		}
+
 		tasks.test {
 			useJUnitPlatform()
 		}

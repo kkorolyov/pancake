@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.platform.utility;
 
 import dev.kkorolyov.pancake.platform.Config;
-import dev.kkorolyov.pancake.platform.math.AveragedValue;
 
 /**
  * Samples time between invocations of a sampling method.
@@ -26,19 +25,16 @@ public final class Sampler {
 	}
 
 	/**
-	 * Samples time elapsed since the last invocation of {@link #reset()}.
-	 * Also resets this sampler's counter.
-	 */
-	public void sample() {
-		tick.add(System.nanoTime() - last);
-		reset();
-	}
-
-	/**
-	 * Resets this sampler's counter.
+	 * Sets this sampler's sample start time to the current system time.
 	 */
 	public void reset() {
 		last = System.nanoTime();
+	}
+	/**
+	 * Samples time elapsed since the last invocation of {@link #reset()}.
+	 */
+	public void sample() {
+		tick.add(System.nanoTime() - last);
 	}
 
 	/**
@@ -51,6 +47,6 @@ public final class Sampler {
 	 * Returns the maximum number of samples taken for an average value.
 	 */
 	public int getCount() {
-		return tick.size();
+		return tick.getCount();
 	}
 }

@@ -4,7 +4,9 @@ import java.util.Objects;
 
 /**
  * A point in 1-dimensional space.
+ * @deprecated provides minimal utility - prefer a {@code double} property
  */
+@Deprecated
 public sealed class Vector1 permits Vector2 {
 	private double x;
 
@@ -80,6 +82,6 @@ public sealed class Vector1 permits Vector2 {
 
 	@Override
 	public String toString() {
-		return "(" + x + ")";
+		return String.format("(%.9f)", x);
 	}
 }
