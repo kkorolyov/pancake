@@ -6,18 +6,18 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 import spock.lang.Specification
 
 class ObjectConvertersSpec extends Specification {
-	Converter<Object, Optional<Vector3>> converter = ObjectConverters.vector3()
+	Converter<Object, Vector3> converter = ObjectConverters.vector3()
 
 	def "reads vector3 with 1 element"() {
 		expect:
-		converter.convert([x] as Object).orElse(null) == Vector3.of(x)
+		converter.convert([x] as Object) == Vector3.of(x)
 
 		where:
 		x << (1..4)
 	}
 	def "reads vector3 with 2 elements"() {
 		expect:
-		converter.convert([x, y] as Object).orElse(null) == Vector3.of(x, y)
+		converter.convert([x, y] as Object) == Vector3.of(x, y)
 
 		where:
 		x << (1..4)
@@ -25,7 +25,7 @@ class ObjectConvertersSpec extends Specification {
 	}
 	def "reads vector3 with 3 elements"() {
 		expect:
-		converter.convert([x, y, z] as Object).orElse(null) == Vector3.of(x, y, z)
+		converter.convert([x, y, z] as Object) == Vector3.of(x, y, z)
 
 		where:
 		x << (1..4)

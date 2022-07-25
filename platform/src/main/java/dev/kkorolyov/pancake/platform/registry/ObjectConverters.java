@@ -4,7 +4,6 @@ import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 /**
@@ -13,15 +12,17 @@ import java.util.stream.StreamSupport;
 public final class ObjectConverters {
 	private ObjectConverters() {}
 
-	public static Converter<Object, Optional<Vector3>> vector3() {
-		return Converter.selective(
-				t -> t instanceof Iterable,
-				t -> asVector(
-						StreamSupport.stream(((Iterable<?>) t).spliterator(), false)
-								.map(String::valueOf)
-								.map(BigDecimal::new)
-								.mapToDouble(BigDecimal::doubleValue)
-								.toArray()
+	public static Converter<Object, Vector3> vector3() {
+		return Converter.enforcing(
+				Converter.selective(
+						t -> t instanceof Iterable,
+						t -> asVector(
+								StreamSupport.stream(((Iterable<?>) t).spliterator(), false)
+										.map(String::valueOf)
+										.map(BigDecimal::new)
+										.mapToDouble(BigDecimal::doubleValue)
+										.toArray()
+						)
 				)
 		);
 	}

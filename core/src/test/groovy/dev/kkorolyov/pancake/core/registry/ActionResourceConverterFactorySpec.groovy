@@ -13,33 +13,33 @@ import spock.lang.Specification
 
 class ActionResourceConverterFactorySpec extends Specification {
 	ActionResourceConverterFactory factory = new ActionResourceConverterFactory()
-	Converter<Object, Optional<Resource<Action>>> converter = factory.get()
+	Converter<Object, Resource<Action>> converter = Converter.enforcing(factory.get())
 
 	def "reads force"() {
 		expect:
 		converter.convert([
 				force: [1, 2, 3]
-		]).orElse(null).get(null) == new ForceAction(Vector3.of(1, 2, 3))
+		]).get(null) == new ForceAction(Vector3.of(1, 2, 3))
 	}
 
 	def "reads velocity"() {
 		expect:
 		converter.convert([
 				velocity: [1, 2, 3]
-		]).orElse(null).get(null) == new VelocityAction(Vector3.of(1, 2, 3))
+		]).get(null) == new VelocityAction(Vector3.of(1, 2, 3))
 	}
 
 	def "reads transform"() {
 		expect:
 		converter.convert([
 				position: [1, 2, 3]
-		]).orElse(null).get(null) == new TransformAction(Vector3.of(1, 2, 3))
+		]).get(null) == new TransformAction(Vector3.of(1, 2, 3))
 	}
 	def "reads transform with orientation"() {
 		expect:
 		converter.convert([
 				position: [1, 2, 3],
 				orientation: [4]
-		]).orElse(null).get(null) == new TransformAction(Vector3.of(1, 2, 3), Vector1.of(4))
+		]).get(null) == new TransformAction(Vector3.of(1, 2, 3), Vector1.of(4))
 	}
 }

@@ -15,7 +15,7 @@ import java.util.stream.StreamSupport;
  * {@link ResourceConverterFactory} for platform actions.
  */
 public final class ActionResourceConverterFactory implements ResourceConverterFactory<Action> {
-	private final Supplier<Converter<Object, Optional<Resource<Action>>>> autoConverter;
+	private final Supplier<? extends Converter<Object, Resource<Action>>> autoConverter;
 
 	/**
 	 * Public constructor for {@code ServiceLoader}.
@@ -23,7 +23,7 @@ public final class ActionResourceConverterFactory implements ResourceConverterFa
 	public ActionResourceConverterFactory() {
 		this(() -> ResourceConverters.get(Action.class));
 	}
-	ActionResourceConverterFactory(Supplier<Converter<Object, Optional<Resource<Action>>>> autoConverter) {
+	ActionResourceConverterFactory(Supplier<? extends Converter<Object, Resource<Action>>> autoConverter) {
 		this.autoConverter = autoConverter;
 	}
 
@@ -45,7 +45,7 @@ public final class ActionResourceConverterFactory implements ResourceConverterFa
 				t -> t instanceof Iterable<?>,
 				t -> registry -> new CollectiveAction(
 						StreamSupport.stream(((Iterable<?>) t).spliterator(), false)
-								.map(sub -> autoConverter.get().convert(sub).orElseThrow(() -> new IllegalArgumentException("cannot convert to Action resource: " + sub)))
+								.map(sub -> autoConverter.get().convert(sub))
 								.map(sub -> sub.get(registry))
 								::iterator
 				)
