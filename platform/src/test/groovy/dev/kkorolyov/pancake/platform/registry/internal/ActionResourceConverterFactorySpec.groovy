@@ -12,8 +12,8 @@ class ActionResourceConverterFactorySpec extends Specification {
 	Action ref = Mock()
 	Registry<Action> registry = new Registry<Action>()
 
-	ActionResourceConverterFactory factory = new ActionResourceConverterFactory({ factory.get() })
-	Converter<Object, Optional<Resource<Action>>> converter = factory.get()
+	ActionResourceConverterFactory factory = new ActionResourceConverterFactory({ Converter.enforcing(factory.get()) })
+	Converter<Object, Resource<Action>> converter = Converter.enforcing(factory.get())
 
 	def setup() {
 		registry.put("ref", Resource.constant(ref))
@@ -21,11 +21,11 @@ class ActionResourceConverterFactorySpec extends Specification {
 
 	def "reads reference"() {
 		expect:
-		converter.convert("ref").orElse(null).get(registry) == ref
+		converter.convert("ref").get(registry) == ref
 	}
 
 	def "reads collective"() {
 		expect:
-		converter.convert(["ref", "ref"] as Object).orElse(null).get(registry) == new CollectiveAction(ref, ref)
+		converter.convert(["ref", "ref"] as Object).get(registry) == new CollectiveAction(ref, ref)
 	}
 }
