@@ -27,13 +27,15 @@ $dokka.location:dev.kkorolyov.pancake.editor.widget/Image/close/#/PointingToDecl
 $dokka.location:dev.kkorolyov.pancake.editor.widget/Image/invoke/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-image/invoke.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/LoopDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-loop-details/index.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/LoopDetails/LoopDetails/#dev.kkorolyov.pancake.platform.GameEngine/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-loop-details/-loop-details.html
-$dokka.location:dev.kkorolyov.pancake.editor.widget/LoopDetails/engine/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-loop-details/engine.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/LoopDetails/invoke/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-loop-details/invoke.html
+$dokka.location:dev.kkorolyov.pancake.editor.widget/PipelinesTree///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-pipelines-tree/index.html
+$dokka.location:dev.kkorolyov.pancake.editor.widget/PipelinesTree/PipelinesTree/#kotlin.collections.Collection[dev.kkorolyov.pancake.platform.Pipeline]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-pipelines-tree/-pipelines-tree.html
+$dokka.location:dev.kkorolyov.pancake.editor.widget/PipelinesTree/invoke/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-pipelines-tree/invoke.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/SystemDetails///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-system-details/index.html
-$dokka.location:dev.kkorolyov.pancake.editor.widget/SystemDetails/SystemDetails/#kotlin.Pair[dev.kkorolyov.pancake.platform.GameSystem,dev.kkorolyov.pancake.platform.utility.Sampler]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-system-details/-system-details.html
+$dokka.location:dev.kkorolyov.pancake.editor.widget/SystemDetails/SystemDetails/#dev.kkorolyov.pancake.platform.GameSystem/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-system-details/-system-details.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/SystemDetails/invoke/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-system-details/invoke.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/SystemsTable///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-systems-table/index.html
-$dokka.location:dev.kkorolyov.pancake.editor.widget/SystemsTable/SystemsTable/#dev.kkorolyov.pancake.platform.utility.PerfMonitor/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-systems-table/-systems-table.html
+$dokka.location:dev.kkorolyov.pancake.editor.widget/SystemsTable/SystemsTable/#kotlin.collections.Collection[dev.kkorolyov.pancake.platform.GameSystem]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-systems-table/-systems-table.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/SystemsTable/invoke/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-systems-table/invoke.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/Window///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-window/index.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget/Window/Window/#kotlin.String#dev.kkorolyov.pancake.editor.Widget#imgui.type.ImBoolean/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/-window/-window.html
@@ -54,6 +56,7 @@ $dokka.location:dev.kkorolyov.pancake.editor//inputs/#kotlin.String#kotlin.Doubl
 $dokka.location:dev.kkorolyov.pancake.editor//list/#kotlin.String#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/list.html
 $dokka.location:dev.kkorolyov.pancake.editor//onClick/#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/on-click.html
 $dokka.location:dev.kkorolyov.pancake.editor//table/#kotlin.String#kotlin.Int#kotlin.Int#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/table.html
+$dokka.location:dev.kkorolyov.pancake.editor//text/#kotlin.Any/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/text.html
 $dokka.location:dev.kkorolyov.pancake.editor//tooltip/#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/tooltip.html
 $dokka.location:dev.kkorolyov.pancake.editor//tooltip/#kotlin.String/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/tooltip.html
 $dokka.location:dev.kkorolyov.pancake.editor//tree/#kotlin.String#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/tree.html
