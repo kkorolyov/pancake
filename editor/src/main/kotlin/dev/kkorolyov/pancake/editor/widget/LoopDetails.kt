@@ -13,18 +13,18 @@ import kotlin.math.roundToInt
 /**
  * Renders information about [engine]'s loop state.
  */
-class LoopDetails(val engine: GameEngine) : Widget {
+class LoopDetails(private val engine: GameEngine) : Widget {
 	private val playIcon = Image("icons/play.png")
 	private val pauseIcon = Image("icons/pause.png")
 
 	private val speedPtr = ImDouble()
 
 	override fun invoke() {
-		summary()
-
 		activeToggle()
 		ImGui.sameLine()
 		speed()
+
+		summary()
 	}
 
 	private fun summary() {

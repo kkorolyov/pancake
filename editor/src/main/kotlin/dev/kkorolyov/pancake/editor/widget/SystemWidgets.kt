@@ -12,10 +12,11 @@ import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
+import imgui.flag.ImGuiTableFlags
 import kotlin.math.roundToInt
 
 /**
- * Renders overall pipeline information of [pipelines].
+ * Renders overall information for [pipelines].
  */
 class PipelinesTree(private val pipelines: Collection<Pipeline>) : Widget {
 	private val details = mutableMapOf<Pipeline, SystemsTable>()
@@ -35,7 +36,7 @@ class PipelinesTree(private val pipelines: Collection<Pipeline>) : Widget {
 
 				text("Slowest system")
 				indented {
-					text(pipeline.maxBy { it.sampler.value }::class.simpleName ?: "hook")
+					text(pipeline.maxBy { it.sampler.value }::class.simpleName ?: "some hook")
 				}
 
 				details.getOrPut(pipeline) { SystemsTable(pipeline.toList()) }()
@@ -45,7 +46,7 @@ class PipelinesTree(private val pipelines: Collection<Pipeline>) : Widget {
 }
 
 /**
- * Renders overall system information of [systems].
+ * Renders overall information for [systems].
  */
 class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 	private val showHooksPtr = false.ptr()
@@ -93,7 +94,7 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 }
 
 /**
- * Renders detailed system information for the current [system].
+ * Renders detailed information for [system].
  */
 class SystemDetails(private val system: GameSystem) : Widget {
 	override fun invoke() {

@@ -44,7 +44,7 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 }
 
 /**
- * Renders detailed entity information for [entity].
+ * Renders detailed information for [entity].
  */
 class EntityDetails(private val entity: Entity) : Widget {
 	private val details = WindowManifest<KClass<out Component>>()

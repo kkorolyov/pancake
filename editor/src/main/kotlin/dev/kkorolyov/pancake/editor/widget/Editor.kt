@@ -18,9 +18,7 @@ class Editor(
 	private val entities by lazy { EntitiesTable(engine.entities) }
 
 	override fun invoke() {
-		header("Loop Details") {
-			loopDetails()
-		}
+		loopDetails()
 		header("Pipelines") {
 			pipelines()
 		}
