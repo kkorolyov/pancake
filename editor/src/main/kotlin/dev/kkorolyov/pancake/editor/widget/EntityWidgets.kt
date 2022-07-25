@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.editor.getComponentWidget
 import dev.kkorolyov.pancake.editor.indented
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.table
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
@@ -33,7 +34,7 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 					}
 				}
 				column {
-					ImGui.text(it.count().toString())
+					text(it.size())
 				}
 			}
 		}
@@ -43,18 +44,18 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 }
 
 /**
- * Renders detailed entity information for [value].
+ * Renders detailed information for [entity].
  */
-class EntityDetails(private val value: Entity) : Widget {
+class EntityDetails(private val entity: Entity) : Widget {
 	private val details = WindowManifest<KClass<out Component>>()
 
 	override fun invoke() {
-		ImGui.text("Components")
+		text("Components")
 		indented {
 			list("##components") {
-				value.forEach {
+				entity.forEach {
 					if (ImGui.selectable(it::class.simpleName.toString())) {
-						details[it::class] = { Window("${value.id}: ${it::class.simpleName}", getComponentWidget(it)) }
+						details[it::class] = { Window("${entity.id}: ${it::class.simpleName}", getComponentWidget(it)) }
 					}
 				}
 			}

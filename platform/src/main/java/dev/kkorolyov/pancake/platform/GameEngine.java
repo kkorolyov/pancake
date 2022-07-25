@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
+import dev.kkorolyov.pancake.platform.utility.Sampler;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -16,10 +16,10 @@ public final class GameEngine implements Iterable<Pipeline> {
 	private final EntityPool entities = new EntityPool();
 	private Pipeline[] pipelines;
 
-	private final PerfMonitor perfMonitor = new PerfMonitor();
-
 	private volatile boolean active;
 	private volatile double speed = 1;
+
+	private final Sampler sampler = new Sampler();
 
 	/**
 	 * Constructs a new game engine updating {@code pipelines}.
@@ -35,7 +35,6 @@ public final class GameEngine implements Iterable<Pipeline> {
 	public void start() {
 		if (!active) {
 			active = true;
-			perfMonitor.getEngine().reset();
 			long last = System.nanoTime();
 
 			while (active) {
@@ -44,8 +43,9 @@ public final class GameEngine implements Iterable<Pipeline> {
 				long dt = (long) (elapsed * speed);
 				last = now;
 
+				sampler.reset();
 				for (Pipeline pipeline : pipelines) pipeline.update(dt);
-				perfMonitor.getEngine().sample();
+				sampler.sample();
 			}
 		}
 	}
@@ -86,10 +86,10 @@ public final class GameEngine implements Iterable<Pipeline> {
 	}
 
 	/**
-	 * Returns this engine's performance monitor.
+	 * Returns this engine's sampler.
 	 */
-	public PerfMonitor getPerfMonitor() {
-		return perfMonitor;
+	public Sampler getSampler() {
+		return sampler;
 	}
 
 	/**
@@ -99,7 +99,14 @@ public final class GameEngine implements Iterable<Pipeline> {
 		for (Pipeline pipeline : pipelines) pipeline.detach();
 
 		this.pipelines = pipelines.clone();
-		for (Pipeline pipeline : this.pipelines) pipeline.attach(entities, perfMonitor);
+		for (Pipeline pipeline : this.pipelines) pipeline.attach(entities);
+	}
+
+	/**
+	 * Returns the number of pipelines in engine.
+	 */
+	public int size() {
+		return pipelines.length;
 	}
 
 	/**
@@ -115,7 +122,7 @@ public final class GameEngine implements Iterable<Pipeline> {
 		return "GameEngine{" +
 				", entities=" + entities +
 				", pipelines=" + Arrays.toString(pipelines) +
-				", perfMonitor=" + perfMonitor +
+				", sampler=" + sampler +
 				'}';
 	}
 }

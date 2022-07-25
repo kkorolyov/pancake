@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.platform.utility;
 import dev.kkorolyov.pancake.platform.Config;
 
 /**
- * Samples time between invocations of a sampling method.
+ * Samples time elapsed between invocations of a sampling method.
  */
 public final class Sampler {
 	private final AveragedValue tick;
@@ -15,13 +15,13 @@ public final class Sampler {
 	 * @see Config#get()
 	 */
 	public Sampler() {
-		this(Math.max(1, Integer.parseInt(Config.get().getProperty("samples"))));
+		this(Integer.parseInt(Config.get().getProperty("samples")));
 	}
 	/**
 	 * Constructs a new Sampler for {@code count} samples.
 	 */
 	public Sampler(int count) {
-		tick = new AveragedValue(count);
+		tick = new AveragedValue(ArgVerify.greaterThan("count", 0, count));
 	}
 
 	/**
@@ -48,5 +48,13 @@ public final class Sampler {
 	 */
 	public int getCount() {
 		return tick.getCount();
+	}
+
+	@Override
+	public String toString() {
+		return "Sampler{" +
+				"tick=" + tick +
+				", last=" + last +
+				'}';
 	}
 }

@@ -3,16 +3,20 @@ package dev.kkorolyov.pancake.platform;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.utility.Sampler;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Performs work on entities matching a certain component signature.
  */
-public abstract class GameSystem {
+public abstract class GameSystem implements Iterable<Class<? extends Component>> {
 	private final Collection<Class<? extends Component>> signature;
 	private EntityPool entities;
+
+	private final Sampler sampler = new Sampler();
 
 	/**
 	 * Constructs a new system with {@code signature} defining the minimum component set of entities processed by this system.
@@ -43,42 +47,70 @@ public abstract class GameSystem {
 	/**
 	 * Returns a new entity.
 	 */
-	protected Entity create() {
+	protected final Entity create() {
 		return entities.create();
 	}
 	/**
 	 * Destroys entity by {@code id}.
 	 */
-	protected void destroy(int id) {
+	protected final void destroy(int id) {
 		entities.destroy(id);
 	}
 
 	/**
 	 * Attaches resources to this system.
 	 */
-	void attach(EntityPool entities) {
+	final void attach(EntityPool entities) {
 		this.entities = entities;
 	}
 	/**
 	 * Detaches all resources from this system.
 	 */
-	void detach() {
+	final void detach() {
 		entities = null;
 	}
 
 	/**
 	 * Executes a single update on this system with {@code dt} {@code (ns)} timestep.
 	 */
-	void update(long dt) {
+	final void update(long dt) {
+		sampler.reset();
+
 		before();
-		for (Entity entity : entities.get(getSignature())) {
-			update(entity, dt);
-		}
+		for (Entity entity : entities.get(signature)) update(entity, dt);
 		after();
+
+		sampler.sample();
 	}
 
-	/** @return system required component signature */
-	public final Iterable<Class<? extends Component>> getSignature() {
-		return signature;
+	/**
+	 * Returns this system's sampler.
+	 */
+	public Sampler getSampler() {
+		return sampler;
+	}
+
+	/**
+	 * Returns the number of component types in this system's signature.
+	 */
+	public final int size() {
+		return signature.size();
+	}
+
+	/**
+	 * Returns an iterator over this system's component signature.
+	 */
+	@Override
+	public final Iterator<Class<? extends Component>> iterator() {
+		return signature.iterator();
+	}
+
+	@Override
+	public String toString() {
+		return "GameSystem{" +
+				"signature=" + signature +
+				", entities=" + entities +
+				", sampler=" + sampler +
+				'}';
 	}
 }

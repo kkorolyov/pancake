@@ -60,6 +60,13 @@ public final class Entity implements Iterable<Component> {
 	}
 
 	/**
+	 * Returns the number of components in this entity.
+	 */
+	public int size() {
+		return components.size();
+	}
+
+	/**
 	 * Returns an iterator over this entity's components.
 	 */
 	@Override

@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.header
-import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.GameEngine
 
 /**
@@ -14,16 +13,14 @@ class Editor(
 	 */
 	engine: GameEngine,
 ) : Widget {
-	private val loopDetails = LoopDetails(engine)
-	private val systems = SystemsTable(engine.perfMonitor)
-	private val entities = EntitiesTable(engine.entities)
+	private val loopDetails by lazy { LoopDetails(engine) }
+	private val pipelines by lazy { PipelinesTree(engine.toList()) }
+	private val entities by lazy { EntitiesTable(engine.entities) }
 
 	override fun invoke() {
-		header("Loop Details") {
-			loopDetails()
-		}
-		header("Systems") {
-			systems()
+		loopDetails()
+		header("Pipelines") {
+			pipelines()
 		}
 		header("Entities") {
 			entities()

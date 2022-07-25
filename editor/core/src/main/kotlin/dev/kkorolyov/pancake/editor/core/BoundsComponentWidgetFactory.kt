@@ -5,9 +5,9 @@ import dev.kkorolyov.pancake.editor.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.ext.readonly
 import dev.kkorolyov.pancake.editor.list
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.entity.Component
-import imgui.ImGui
 
 class BoundsComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(component: Component): Widget? = ComponentWidgetFactory.get<Bounds>(component) {
@@ -22,7 +22,7 @@ class BoundsComponentWidgetFactory : ComponentWidgetFactory {
 			}
 		}
 		tree("Magnitude") {
-			ImGui.text(magnitude.toString())
+			text(magnitude)
 		}
 	}
 }
