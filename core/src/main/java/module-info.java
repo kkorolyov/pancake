@@ -1,5 +1,5 @@
-import dev.kkorolyov.pancake.core.registry.ActionStratDeferredConverterFactory;
-import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
+import dev.kkorolyov.pancake.core.registry.ActionResourceConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
 
 module dev.kkorolyov.pancake.core {
 	requires org.slf4j;
@@ -13,5 +13,5 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.system;
 	exports dev.kkorolyov.pancake.core.system.cleanup;
 
-	provides DeferredConverterFactory.ActionStrat with ActionStratDeferredConverterFactory;
+	provides ResourceConverterFactory with ActionResourceConverterFactory;
 }

@@ -1,6 +1,5 @@
-import dev.kkorolyov.pancake.platform.plugin.DeferredConverterFactory;
-import dev.kkorolyov.pancake.platform.registry.internal.ActionStratDeferredConverterFactory;
-import dev.kkorolyov.pancake.platform.registry.internal.VectorStratDeferredConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.internal.ActionResourceConverterFactory;
 
 module dev.kkorolyov.pancake.platform {
 	// logging
@@ -20,12 +19,8 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.math;
 	exports dev.kkorolyov.pancake.platform.registry;
 	exports dev.kkorolyov.pancake.platform.utility;
-	exports dev.kkorolyov.pancake.platform.plugin;
 
-	// resource reader factories
-	uses DeferredConverterFactory.VectorStrat;
-	uses DeferredConverterFactory.ActionStrat;
+	uses ResourceConverterFactory;
 
-	provides DeferredConverterFactory.VectorStrat with VectorStratDeferredConverterFactory;
-	provides DeferredConverterFactory.ActionStrat with ActionStratDeferredConverterFactory;
+	provides ResourceConverterFactory with ActionResourceConverterFactory;
 }
