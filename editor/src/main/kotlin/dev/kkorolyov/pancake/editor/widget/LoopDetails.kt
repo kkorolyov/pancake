@@ -1,8 +1,11 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.indented
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.GameEngine
+import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
 import imgui.type.ImDouble
 import kotlin.math.roundToInt
@@ -17,16 +20,33 @@ class LoopDetails(val engine: GameEngine) : Widget {
 	private val speedPtr = ImDouble()
 
 	override fun invoke() {
-		tps()
+		summary()
 
 		activeToggle()
 		ImGui.sameLine()
 		speed()
 	}
 
-	private fun tps() {
-		ImGui.text((1e9 / engine.perfMonitor.engine.value).roundToInt().toString())
-		tooltip("Average ticks per second")
+	private fun summary() {
+		text("Tick time (ns)")
+		indented {
+			text(engine.sampler.value)
+		}
+
+		text("TPS")
+		indented {
+			text((1e9 / engine.sampler.value).roundToInt())
+		}
+
+		text("Pipelines")
+		indented {
+			text(engine.size())
+		}
+
+		text("Systems")
+		indented {
+			text(engine.sumOf(Pipeline::size))
+		}
 	}
 
 	private fun activeToggle() {

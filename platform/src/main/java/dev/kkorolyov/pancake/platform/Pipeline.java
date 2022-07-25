@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
-import dev.kkorolyov.pancake.platform.utility.PerfMonitor;
 import dev.kkorolyov.pancake.platform.utility.Sampler;
 
 import java.util.Arrays;
@@ -14,10 +13,11 @@ import java.util.Iterator;
  */
 public final class Pipeline implements Iterable<GameSystem> {
 	private final GameSystem[] systems;
-	private PerfMonitor perfMonitor;
 
 	private final long delay;
 	private long lag;
+
+	private final Sampler sampler = new Sampler();
 
 	/**
 	 * Constructs a new pipeline running {@code systems}.
@@ -64,14 +64,9 @@ public final class Pipeline implements Iterable<GameSystem> {
 			long signedTimestep = dt < 0 ? -timestep : timestep;
 
 			do {
-				for (GameSystem system : systems) {
-					Sampler sampler = perfMonitor.getSystem(system);
-					sampler.reset();
-
-					system.update(signedTimestep);
-
-					sampler.sample();
-				}
+				sampler.reset();
+				for (GameSystem system : systems) system.update(signedTimestep);
+				sampler.sample();
 
 				lag -= timestep;
 			} while (lag > delay);
@@ -81,18 +76,28 @@ public final class Pipeline implements Iterable<GameSystem> {
 	/**
 	 * Attaches resources to this pipeline.
 	 */
-	void attach(EntityPool entities, PerfMonitor perfMonitor) {
-		this.perfMonitor = perfMonitor;
-
+	void attach(EntityPool entities) {
 		for (GameSystem system : systems) system.attach(entities);
 	}
 	/**
 	 * Detaches all resources from this pipeline.
 	 */
 	void detach() {
-		perfMonitor = null;
-
 		for (GameSystem system : systems) system.detach();
+	}
+
+	/**
+	 * Returns this pipeline's sampler.
+	 */
+	public Sampler getSampler() {
+		return sampler;
+	}
+
+	/**
+	 * Returns the number of systems in this pipeline.
+	 */
+	public int size() {
+		return systems.length;
 	}
 
 	/**
@@ -101,5 +106,15 @@ public final class Pipeline implements Iterable<GameSystem> {
 	@Override
 	public Iterator<GameSystem> iterator() {
 		return Arrays.stream(systems).iterator();
+	}
+
+	@Override
+	public String toString() {
+		return "Pipeline{" +
+				"systems=" + Arrays.toString(systems) +
+				", delay=" + delay +
+				", lag=" + lag +
+				", sampler=" + sampler +
+				'}';
 	}
 }

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.platform
 
-import dev.kkorolyov.pancake.platform.utility.PerfMonitor
+import dev.kkorolyov.pancake.platform.entity.EntityPool
 
 import spock.lang.Specification
 
@@ -10,7 +10,7 @@ class PipelineSpec extends Specification {
 	Pipeline pipeline = new Pipeline(systems)
 
 	def setup() {
-		pipeline.attach(null, new PerfMonitor())
+		pipeline.attach(new EntityPool())
 	}
 
 	def "updates systems with given dt"() {
@@ -19,7 +19,7 @@ class PipelineSpec extends Specification {
 
 		then:
 		systems.each {
-			1 * it.update(dt)
+			1 * it.before()
 		}
 
 		where:
@@ -31,14 +31,14 @@ class PipelineSpec extends Specification {
 		long timestep = 1e9 / frequency
 
 		pipeline = pipeline.withFrequency(frequency)
-		pipeline.attach(null, new PerfMonitor())
+		pipeline.attach(new EntityPool())
 
 		when:
 		pipeline.update(dt + 1)
 
 		then:
 		systems.each {
-			frequency * it.update(timestep)
+			frequency * it.before()
 		}
 
 		where:
@@ -49,7 +49,7 @@ class PipelineSpec extends Specification {
 		long timestep = 1e9 / frequency
 
 		pipeline = pipeline.withFrequency(frequency)
-		pipeline.attach(null, new PerfMonitor())
+		pipeline.attach(new EntityPool())
 
 		when:
 		pipeline.update(dt + 1)
@@ -57,7 +57,7 @@ class PipelineSpec extends Specification {
 
 		then:
 		systems.each {
-			frequency * it.update(timestep)
+			frequency * it.before()
 		}
 
 		where:

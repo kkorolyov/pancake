@@ -8,6 +8,13 @@ import imgui.flag.ImGuiTableFlags
 private typealias Op = () -> Unit
 
 /**
+ * Draws [value] as text.
+ */
+fun text(value: Any) {
+	ImGui.text(value.toString())
+}
+
+/**
  * Draws tooltip [text] when the last set item is hovered.
  */
 fun tooltip(text: String) {
