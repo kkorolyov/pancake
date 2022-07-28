@@ -40,6 +40,7 @@ tasks.register("allDocs") {
 	doLast {
 		copy {
 			from("$projectDir/docs")
+			include("pancake.png")
 			into(destination)
 		}
 		subDocs.forEach {
