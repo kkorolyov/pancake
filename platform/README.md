@@ -4,12 +4,12 @@ The bare-bones, most basic, foundational base of the engine.
 
 Provides a few specialized, fundamental constructs:
 
-* `GameEngine` runs the simulation loop
-* `Pipeline` groups related systems into an atomically-updated unit
-* `GameSystem` executes specialized logic given relevant entities and their components
-* `EntityPool` creates, destroys, and returns entities
-* `Entity` provides a uniquely identifiable, mutable collection of components
-* `Component` contains specialized data
+* [`GameEngine`](src/main/java/dev/kkorolyov/pancake/platform/GameEngine.java) runs the simulation loop
+* [`Pipeline`](src/main/java/dev/kkorolyov/pancake/platform/Pipeline.java) groups related systems into an atomically-updated unit
+* [`GameSystem`](src/main/java/dev/kkorolyov/pancake/platform/GameSystem.java) executes specialized logic given relevant entities and their components
+* [`EntityPool`](src/main/java/dev/kkorolyov/pancake/platform/entity/EntityPool.java) creates, destroys, and returns entities
+* [`Entity`](src/main/java/dev/kkorolyov/pancake/platform/entity/Entity.java) provides a uniquely identifiable, mutable collection of components
+* [`Component`](src/main/java/dev/kkorolyov/pancake/platform/entity/Component.java) contains specialized data
 
 ```mermaid
 classDiagram
@@ -170,6 +170,19 @@ sequenceDiagram
 
 A `GameEngine` creates its own unique `EntityPool` which is shared with all attached `GameSystem`s.
 The `EntityPool` supports creation, destruction, and locating of entities through `Component` signature.
+
+---
+
+# Loading resources
+
+The [`Resources`](src/main/java/dev/kkorolyov/pancake/platform/Resources.java) class provides consistent mechanisms to opening streams to files.
+
+`inStream` first tries to locate the file at the given path on the filesystem.
+If not found, it tries to locate the file on the classpath.
+If that also does not exist, it returns a `null` stream.
+The rationale being that a Pancake application can ship with embedded default resources that can be replaced by the end-user without needing to repackage the entire application.
+
+`outStream` simply opens an output stream to the given path on the filesystem.
 
 ---
 
