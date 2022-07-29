@@ -140,8 +140,8 @@ sequenceDiagram
 
 	E->>+P: update(dt)
 	P->>P: lag += abs(dt)
-	opt lag > 0 && lag >= delay
-		loop while lag >= delay
+	opt lag >= delay
+		loop while lag > delay
 			P->>+S: update(signedDelay)
 			S-->>-P: 
 			P->>P: lag -= delay
@@ -154,7 +154,17 @@ sequenceDiagram
 
 The platform provides an abstract `GameSystem` class intended to house the majority of custom implementation.
 
-TODO sequence diagram of Pipeline->GameSystem update
+```mermaid
+sequenceDiagram
+	actor P as Pipeline
+	participant S as GameSystem
+	
+	P->>+S: update(dt)
+	S->>S: before()
+	S->>S: updateEntities(dt)
+	S->>S: after()
+	S-->>-P: 
+```
 
 ## Entities
 
