@@ -3,8 +3,8 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
 	java
 	id("org.ajoberstar.reckon") version "0.+"
-	kotlin("jvm") version "1.7.+" apply false
-	id("org.jetbrains.dokka") version "1.7.+" apply false
+	kotlin("jvm") version "1.7.10" apply false
+	id("org.jetbrains.dokka") version "1.7.10" apply false
 }
 
 tasks.wrapper {
