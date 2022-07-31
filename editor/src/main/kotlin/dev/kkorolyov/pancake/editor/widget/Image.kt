@@ -11,15 +11,22 @@ import org.lwjgl.stb.STBImage.stbi_load_from_memory
 import org.lwjgl.system.MemoryStack
 
 /**
- * Renders an image at the given [path].
+ * Renders an image at a given path.
  */
-class Image(
-	/**
-	 * Image path.
-	 */
-	private val path: String,
+class Image private constructor(
+	private val tlData: ThreadLocal<ImageData>,
+	private val width: Float? = null,
+	private val height: Float? = null
 ) : Widget, AutoCloseable {
-	private val tlId = ThreadLocal.withInitial {
+	/**
+	 * Returns an image that renders at its native size.
+	 */
+	constructor(
+		/**
+		 * Image path.
+		 */
+		path: String
+	) : this(ThreadLocal.withInitial {
 		Resources.inStream(path)?.use {
 			val data = it.readBytes().let { bytes ->
 				val buffer = BufferUtils.createByteBuffer(bytes.size)
@@ -47,32 +54,38 @@ class Image(
 					glBindTexture(GL_TEXTURE_2D, 0)
 					stbi_image_free(stbData)
 
-					tlWidth.set(width[0].toFloat())
-					tlHeight.set(height[0].toFloat())
-
-					id
+					ImageData(id, width[0].toFloat(), height[0].toFloat())
 				} ?: throw IllegalArgumentException("no such image: $path")
 			}
 		}
-	}
-	private val tlWidth = ThreadLocal<Float>()
-	private val tlHeight = ThreadLocal<Float>()
+	})
+
+	/**
+	 * Returns a variant of this image rendering at custom [width] and [height].
+	 */
+	fun withSize(width: Float, height: Float): Image = Image(tlData, width, height)
 
 	override fun invoke() {
-		ImGui.image(tlId.get(), tlWidth.get(), tlHeight.get())
+		val (id, width, height) = tlData.get()
+		ImGui.image(id, this.width ?: width, this.height ?: height)
 	}
 
 	/**
 	 * Renders an `ImGui` button from this image and returns its click state.
 	 */
-	fun clickable(): Boolean = ImGui.imageButton(tlId.get(), tlWidth.get(), tlHeight.get())
+	fun clickable(): Boolean {
+		val (id, width, height) = tlData.get()
+		return ImGui.imageButton(id, this.width ?: width, this.height ?: height)
+	}
 
 	/**
 	 * Deletes the backing `OpenGL` objects in the current thread context.
 	 * Subsequent access to this image in the current thread context will regenerate them.
 	 */
 	override fun close() {
-		tlId.get()?.let(::glDeleteTextures)
-		tlId.remove()
+		glDeleteTextures(tlData.get().id)
+		tlData.remove()
 	}
 }
+
+private data class ImageData(val id: Int, val width: Float, val height: Float)
