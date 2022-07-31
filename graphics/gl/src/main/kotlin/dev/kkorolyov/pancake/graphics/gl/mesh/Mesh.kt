@@ -66,43 +66,31 @@ private class BaseMesh(
 	val indices: IntArray? = null,
 	val mode: Mesh.DrawMode = Mesh.DrawMode.TRIANGLES,
 ) : Mesh {
-	private val tlId = ThreadLocal.withInitial {
+	private val tlData = ThreadLocal.withInitial {
 		val vao = glGenVertexArrays()
 		glBindVertexArray(vao)
 
 		// bind buffers
-		tlVbo.get()
-		tlEbo.get()
-
-		indices?.let {
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glGenBuffers())
+		val vbo = glGenBuffers()
+		vertexBuffer(vbo)
+		val ebo = indices?.let {
+			val ebo = glGenBuffers()
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, it, GL_STATIC_DRAW)
+			ebo
 		}
 
 		glBindVertexArray(0)
 		glBindBuffer(GL_ARRAY_BUFFER, 0)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
 
-		vao
-	}
-	private val tlVbo = ThreadLocal.withInitial {
-		val vbo = glGenBuffers()
-		vertexBuffer(vbo)
-		vbo
-	}
-	private val tlEbo = ThreadLocal.withInitial {
-		indices?.let {
-			val ebo = glGenBuffers()
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo)
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, it, GL_STATIC_DRAW)
-			ebo
-		}
+		BufferData(vao, vbo, ebo)
 	}
 
 	private val count = indices?.size ?: vertexBuffer.size
 
 	override val id: Int
-		get() = tlId.get()
+		get() = tlData.get().vao
 
 	override fun subMesh(count: Int, offset: Int): Mesh = subMesh(count, offset, mode)
 	override fun subMesh(count: Int, offset: Int, mode: Mesh.DrawMode) = SubMesh(this, count, offset, mode)
@@ -117,13 +105,13 @@ private class BaseMesh(
 	}
 
 	override fun close() {
-		glDeleteVertexArrays(id)
-		glDeleteBuffers(tlVbo.get())
-		tlEbo.get()?.let(::glDeleteBuffers)
+		val (vao, vbo, ebo) = tlData.get()
 
-		tlId.remove()
-		tlVbo.remove()
-		tlEbo.remove()
+		glDeleteVertexArrays(vao)
+		glDeleteBuffers(vbo)
+		ebo?.let(::glDeleteBuffers)
+
+		tlData.remove()
 	}
 }
 
@@ -145,3 +133,5 @@ private class SubMesh(
 
 	override fun close() = parent.close()
 }
+
+private data class BufferData(val vao: Int, val vbo: Int, val ebo: Int?)
