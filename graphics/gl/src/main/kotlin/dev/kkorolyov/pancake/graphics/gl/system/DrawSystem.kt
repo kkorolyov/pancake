@@ -4,8 +4,8 @@ import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.graphics.Camera
 import dev.kkorolyov.pancake.graphics.CameraQueue
 import dev.kkorolyov.pancake.graphics.gl.component.Model
-import dev.kkorolyov.pancake.graphics.gl.mesh.Mesh
-import dev.kkorolyov.pancake.graphics.gl.shader.Program
+import dev.kkorolyov.pancake.graphics.gl.Mesh
+import dev.kkorolyov.pancake.graphics.gl.Program
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Matrix4

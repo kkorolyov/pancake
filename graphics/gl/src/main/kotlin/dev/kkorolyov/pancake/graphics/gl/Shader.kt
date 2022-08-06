@@ -1,8 +1,7 @@
-package dev.kkorolyov.pancake.graphics.gl.shader
+package dev.kkorolyov.pancake.graphics.gl
 
 import dev.kkorolyov.pancake.graphics.gl.internal.Cache
 import org.lwjgl.opengl.GL46.*
-import org.lwjgl.system.MemoryStack
 import java.io.InputStream
 
 /**
@@ -44,12 +43,8 @@ class Shader(
 		glShaderSource(id, *sources)
 		glCompileShader(id)
 
-		MemoryStack.stackPush().use {
-			val statusP = it.mallocInt(1)
-			glGetShaderiv(id, GL_COMPILE_STATUS, statusP)
+		if (glGetShaderi(id, GL_COMPILE_STATUS) == 0) throw IllegalArgumentException("Cannot compile $type shader: ${glGetShaderInfoLog(id)}")
 
-			if (statusP[0] == GL_FALSE) throw IllegalArgumentException("Cannot compile $type shader: ${glGetShaderInfoLog(id)}")
-		}
 		id
 	}
 
@@ -72,20 +67,14 @@ class Shader(
 	 * Subsequent interactions with this shader will first initialize a new backing object.
 	 */
 	override fun close() {
-		if (id.initialized) {
-			glDeleteShader(id())
-			id.invalidate()
-		}
+		id.invalidate(::glDeleteShader)
 	}
 
 	/**
 	 * Shader type.
 	 */
 	enum class Type(
-		/**
-		 * `OpenGL` value represented by this type.
-		 */
-		val value: Int
+		internal val value: Int
 	) {
 		VERTEX(GL_VERTEX_SHADER),
 		FRAGMENT(GL_FRAGMENT_SHADER)

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.graphics.gl.mesh
+package dev.kkorolyov.pancake.graphics.gl
 
 import dev.kkorolyov.pancake.graphics.gl.internal.Cache
 import org.lwjgl.opengl.GL46.*
@@ -33,10 +33,7 @@ interface Mesh : AutoCloseable {
 	 * Represents an `OpenGL` drawing mode.
 	 */
 	enum class DrawMode(
-		/**
-		 * `OpenGL` value represented by this mode.
-		 */
-		val value: Int
+		internal val value: Int
 	) {
 		TRIANGLES(GL_TRIANGLES),
 		TRIANGLE_STRIP(GL_TRIANGLE_STRIP),
@@ -97,14 +94,10 @@ private class BaseMesh(
 	}
 
 	override fun close() {
-		if (data.initialized) {
-			val (vao, vbo, ebo) = data()
-
+		data.invalidate { (vao, vbo, ebo) ->
 			glDeleteVertexArrays(vao)
 			glDeleteBuffers(vbo)
 			ebo?.let(::glDeleteBuffers)
-
-			data.invalidate()
 		}
 	}
 }

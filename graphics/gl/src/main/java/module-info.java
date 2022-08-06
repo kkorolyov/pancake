@@ -10,8 +10,7 @@ module dev.kkorolyov.pancake.graphics.gl {
 	requires transitive dev.kkorolyov.pancake.graphics;
 	requires dev.kkorolyov.pancake.core;
 
-	exports dev.kkorolyov.pancake.graphics.gl.mesh;
-	exports dev.kkorolyov.pancake.graphics.gl.shader;
+	exports dev.kkorolyov.pancake.graphics.gl;
 	exports dev.kkorolyov.pancake.graphics.gl.component;
 	exports dev.kkorolyov.pancake.graphics.gl.system;
 }

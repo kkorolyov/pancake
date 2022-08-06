@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.graphics.gl.mesh
+package dev.kkorolyov.pancake.graphics.gl
 
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -14,7 +14,7 @@ fun rectangle(dimensions: Vector2, color: Vector3): Mesh {
 	val halfY = dimensions.y / 2
 
 	return Mesh.vertex(
-		ColorPoint().apply {
+		VertexBuffer().apply {
 			add(Vector3.of(-halfX, -halfY, 0.0), color)
 			add(Vector3.of(halfX, -halfY, 0.0), color)
 			add(Vector3.of(halfX, halfY, 0.0), color)
@@ -31,7 +31,7 @@ fun oval(dimensions: Vector2, color: Vector3, edgeColor: Vector3 = color, pointC
 	val pi2 = PI * 2
 
 	return Mesh.vertex(
-		ColorPoint().apply {
+		VertexBuffer().apply {
 			add(Vector3.of(0.0, 0.0, 0.0), color)
 			(0..pointCount).forEach {
 				add(Vector3.of(dimensions.x / 2 * cos(it * pi2 / pointCount), dimensions.y / 2 * sin(it * pi2 / pointCount), 0.0), edgeColor)

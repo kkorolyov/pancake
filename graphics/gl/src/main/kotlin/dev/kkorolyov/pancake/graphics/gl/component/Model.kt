@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.graphics.gl.component
 
-import dev.kkorolyov.pancake.graphics.gl.mesh.Mesh
-import dev.kkorolyov.pancake.graphics.gl.shader.Program
+import dev.kkorolyov.pancake.graphics.gl.Mesh
+import dev.kkorolyov.pancake.graphics.gl.Program
 import dev.kkorolyov.pancake.platform.entity.Component
 
 /**

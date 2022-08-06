@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.graphics.gl.shader
+package dev.kkorolyov.pancake.graphics.gl
 
 import dev.kkorolyov.pancake.graphics.gl.internal.Cache
 import dev.kkorolyov.pancake.platform.math.Matrix4
@@ -22,21 +22,11 @@ class Program(
 		val id = glCreateProgram()
 		if (id == 0) throw IllegalStateException("Cannot create shader program")
 
-		try {
-			shaders.forEach { it.attach(id) }
-			glLinkProgram(id)
+		shaders.forEach { it.attach(id) }
+		glLinkProgram(id)
+		shaders.forEach { it.detach(id) }
 
-			MemoryStack.stackPush().use {
-				val statusP = it.mallocInt(1)
-				glGetProgramiv(id, GL_LINK_STATUS, statusP)
-
-				if (statusP[0] == GL_FALSE) throw IllegalArgumentException("Cannot link shader program: ${glGetProgramInfoLog(id)}")
-			}
-
-			shaders.forEach { it.detach(id) }
-		} finally {
-			shaders.forEach(Shader::close)
-		}
+		if (glGetProgrami(id, GL_LINK_STATUS) == 0) throw IllegalArgumentException("Cannot link shader program: ${glGetProgramInfoLog(id)}")
 
 		id
 	}
@@ -44,7 +34,9 @@ class Program(
 	/**
 	 * Uses this program as part of the current rendering state.
 	 */
-	operator fun invoke(): Unit = glUseProgram(id())
+	operator fun invoke() {
+		glUseProgram(id())
+	}
 
 	/**
 	 * Sets the [location] uniform's value to [value].
@@ -108,9 +100,6 @@ class Program(
 	 * Subsequent interactions with this program will first initialize a new backing object.
 	 */
 	override fun close() {
-		if (id.initialized) {
-			glDeleteProgram(id())
-			id.invalidate()
-		}
+		id.invalidate(::glDeleteProgram)
 	}
 }

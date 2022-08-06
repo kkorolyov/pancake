@@ -4,6 +4,7 @@ package dev.kkorolyov.pancake.graphics.gl.internal
  * Memoizes the return of [initializer] and can also be manually invalidated.
  */
 class Cache<T>(private val initializer: () -> T) {
+	@Volatile
 	private var value: T? = null
 
 	/**
@@ -29,11 +30,16 @@ class Cache<T>(private val initializer: () -> T) {
 
 	/**
 	 * Invalidates the current value.
-	 * The subsequent [invoke] call will reinitialize it.
+	 * If specified, invokes [block] with the current value before invalidating it.
 	 */
-	fun invalidate() {
-		synchronized(this) {
-			value = null
+	fun invalidate(block: ((T) -> Unit)? = null) {
+		if (initialized) {
+			synchronized(this) {
+				if (initialized) {
+					block?.invoke(value!!)
+					value = null
+				}
+			}
 		}
 	}
 }
