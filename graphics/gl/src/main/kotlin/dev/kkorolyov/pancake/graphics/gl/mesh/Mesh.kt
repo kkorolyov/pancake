@@ -1,18 +1,13 @@
 package dev.kkorolyov.pancake.graphics.gl.mesh
 
+import dev.kkorolyov.pancake.graphics.gl.internal.Cache
 import org.lwjgl.opengl.GL46.*
 
 /**
  * A configuration of drawable vertex data.
  * Can draw either by vertices or indices.
- * The backing `OpenGL` objects are thread-local, so accessing this mesh from different threads will affect different `OpenGL` objects.
  */
 interface Mesh : AutoCloseable {
-	/**
-	 * ID of the referenced `OpenGL` VAO in the current thread context.
-	 */
-	val id: Int
-
 	/**
 	 * Draws this mesh using the current `OpenGL` context.
 	 */
@@ -29,8 +24,8 @@ interface Mesh : AutoCloseable {
 	fun subMesh(count: Int, offset: Int, mode: DrawMode): Mesh
 
 	/**
-	 * Deletes the backing `OpenGL` objects in the current thread context.
-	 * Subsequent access to this mesh in the current thread context will regenerate them.
+	 * Deletes the backing `OpenGL` object if it has been initialized.
+	 * Subsequent interactions with this mesh will first initialize a new backing object.
 	 */
 	override fun close()
 
@@ -66,7 +61,7 @@ private class BaseMesh(
 	val indices: IntArray? = null,
 	val mode: Mesh.DrawMode = Mesh.DrawMode.TRIANGLES,
 ) : Mesh {
-	private val tlData = ThreadLocal.withInitial {
+	private val data = Cache {
 		val vao = glGenVertexArrays()
 		glBindVertexArray(vao)
 
@@ -89,9 +84,6 @@ private class BaseMesh(
 
 	private val count = indices?.size ?: vertexBuffer.size
 
-	override val id: Int
-		get() = tlData.get().vao
-
 	override fun subMesh(count: Int, offset: Int): Mesh = subMesh(count, offset, mode)
 	override fun subMesh(count: Int, offset: Int, mode: Mesh.DrawMode) = SubMesh(this, count, offset, mode)
 
@@ -100,18 +92,20 @@ private class BaseMesh(
 	}
 
 	fun draw(count: Int, offset: Int, mode: Mesh.DrawMode) {
-		glBindVertexArray(id)
+		glBindVertexArray(data().vao)
 		if (indices != null) glDrawElements(mode.value, count, GL_UNSIGNED_INT, offset * Int.SIZE_BYTES.toLong()) else glDrawArrays(mode.value, offset, count)
 	}
 
 	override fun close() {
-		val (vao, vbo, ebo) = tlData.get()
+		if (data.initialized) {
+			val (vao, vbo, ebo) = data()
 
-		glDeleteVertexArrays(vao)
-		glDeleteBuffers(vbo)
-		ebo?.let(::glDeleteBuffers)
+			glDeleteVertexArrays(vao)
+			glDeleteBuffers(vbo)
+			ebo?.let(::glDeleteBuffers)
 
-		tlData.remove()
+			data.invalidate()
+		}
 	}
 }
 
@@ -120,18 +114,13 @@ private class SubMesh(
 	private val count: Int,
 	private val offset: Int,
 	private val mode: Mesh.DrawMode
-) : Mesh {
-	override val id: Int
-		get() = parent.id
-
+) : Mesh by parent {
 	override fun draw() {
 		parent.draw(count, offset, mode)
 	}
 
 	override fun subMesh(count: Int, offset: Int) = subMesh(count, offset, mode)
 	override fun subMesh(count: Int, offset: Int, mode: Mesh.DrawMode) = SubMesh(parent, count, offset, mode)
-
-	override fun close() = parent.close()
 }
 
 private data class BufferData(val vao: Int, val vbo: Int, val ebo: Int?)

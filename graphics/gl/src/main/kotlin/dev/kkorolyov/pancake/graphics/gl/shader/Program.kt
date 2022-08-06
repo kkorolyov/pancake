@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.graphics.gl.shader
 
+import dev.kkorolyov.pancake.graphics.gl.internal.Cache
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -7,8 +8,9 @@ import org.lwjgl.opengl.GL46.*
 import org.lwjgl.system.MemoryStack
 
 /**
- * Represents an `OpenGL` program that can be [use]d for rendering.
- * The backing `OpenGL` program is thread-local, so accessing this program from different threads will affect different `OpenGL` objects.
+ * Represents an `OpenGL` program that can be used for rendering.
+ * The backing `OpenGL` object is allocated lazily and cached until [close].
+ * A single instance can be reused across shared `OpenGL` contexts.
  */
 class Program(
 	/**
@@ -16,12 +18,12 @@ class Program(
 	 */
 	vararg shaders: Shader
 ) : AutoCloseable {
-	private val tlId = ThreadLocal.withInitial {
+	private val id = Cache {
 		val id = glCreateProgram()
 		if (id == 0) throw IllegalStateException("Cannot create shader program")
 
 		try {
-			shaders.forEach { glAttachShader(id, it.id) }
+			shaders.forEach { it.attach(id) }
 			glLinkProgram(id)
 
 			MemoryStack.stackPush().use {
@@ -31,7 +33,7 @@ class Program(
 				if (statusP[0] == GL_FALSE) throw IllegalArgumentException("Cannot link shader program: ${glGetProgramInfoLog(id)}")
 			}
 
-			shaders.forEach { glDetachShader(id, it.id) }
+			shaders.forEach { it.detach(id) }
 		} finally {
 			shaders.forEach(Shader::close)
 		}
@@ -40,41 +42,35 @@ class Program(
 	}
 
 	/**
-	 * ID of the referenced `OpenGL` program in the current thread context.
-	 */
-	val id: Int
-		get() = tlId.get()
-
-	/**
 	 * Uses this program as part of the current rendering state.
 	 */
-	fun use(): Unit = glUseProgram(id)
+	operator fun invoke(): Unit = glUseProgram(id())
 
 	/**
-	 * Sets the [name] uniform's value to [value].
+	 * Sets the [location] uniform's value to [value].
 	 */
-	fun set(name: String, value: Float) {
-		glUniform1f(glGetUniformLocation(id, name), value)
+	operator fun set(location: Int, value: Float) {
+		glUniform1f(location, value)
 	}
 
 	/**
-	 * Sets the [name] uniform's value to [value].
+	 * Sets the [location] uniform's value to [value].
 	 */
-	fun set(name: String, value: Vector2) {
-		glUniform2f(glGetUniformLocation(id, name), value.x.toFloat(), value.y.toFloat())
+	operator fun set(location: Int, value: Vector2) {
+		glUniform2f(location, value.x.toFloat(), value.y.toFloat())
 	}
 
 	/**
-	 * Sets the [name] uniform's value to [value].
+	 * Sets the [location] uniform's value to [value].
 	 */
-	fun set(name: String, value: Vector3) {
-		glUniform3f(glGetUniformLocation(id, name), value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
+	operator fun set(location: Int, value: Vector3) {
+		glUniform3f(location, value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
 	}
 
 	/**
-	 * Sets the [name] uniform's value to [value].
+	 * Sets the [location] uniform's value to [value].
 	 */
-	fun set(name: String, value: Matrix4) {
+	operator fun set(location: Int, value: Matrix4) {
 		MemoryStack.stackPush().use {
 			val uP = it.mallocFloat(16)
 
@@ -103,29 +99,18 @@ class Program(
 
 			uP.flip()
 
-			glUniformMatrix4fv(glGetUniformLocation(id, name), false, uP)
+			glUniformMatrix4fv(location, false, uP)
 		}
 	}
 
 	/**
-	 * Deletes this program in the current thread context.
-	 * Subsequent access to this program in the current thread context will re-link it.
+	 * Deletes the backing `OpenGL` object if it has been initialized.
+	 * Subsequent interactions with this program will first initialize a new backing object.
 	 */
 	override fun close() {
-		glDeleteProgram(id)
-		tlId.remove()
-	}
-
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (javaClass != other?.javaClass) return false
-
-		other as Program
-
-		return id == other.id
-	}
-
-	override fun hashCode(): Int {
-		return id
+		if (id.initialized) {
+			glDeleteProgram(id())
+			id.invalidate()
+		}
 	}
 }

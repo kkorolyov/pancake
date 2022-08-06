@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL46.*
 
 /**
  * Draws entity [Model]s from the perspectives of all active [Camera]s.
- * Each program is provided a `uniform mat4 transform` transforming vertices to clip space.
+ * Each program is provided a `(location = 0) mat4` uniform transforming vertices to clip space.
  */
 class DrawSystem(
 	private val queue: CameraQueue
@@ -32,7 +32,7 @@ class DrawSystem(
 			}
 
 			pending.forEach { (program, entities) ->
-				program.use()
+				program()
 				entities.forEach {
 					val meshes = it[Model::class.java].meshes
 					val position = it[Transform::class.java].globalPosition
@@ -45,7 +45,7 @@ class DrawSystem(
 					transform.yw = (position.y - camera.transform.globalPosition.y) * transform.yy
 					transform.zw = position.z - camera.transform.globalPosition.z
 
-					program.set("transform", transform)
+					program[0] = transform
 
 					meshes.forEach(Mesh::draw)
 				}

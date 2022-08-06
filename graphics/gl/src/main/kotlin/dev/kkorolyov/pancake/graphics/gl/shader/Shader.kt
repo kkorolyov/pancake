@@ -1,12 +1,14 @@
 package dev.kkorolyov.pancake.graphics.gl.shader
 
+import dev.kkorolyov.pancake.graphics.gl.internal.Cache
 import org.lwjgl.opengl.GL46.*
 import org.lwjgl.system.MemoryStack
 import java.io.InputStream
 
 /**
  * Represents an `OpenGL` shader that can be used in a [Program].
- * The backing `OpenGL` shader is thread-local, so accessing this shader from different threads will affect different `OpenGL` objects.
+ * The backing `OpenGL` object is allocated lazily and cached until [close].
+ * A single instance can be reused across shared `OpenGL` contexts.
  */
 class Shader(
 	/**
@@ -35,7 +37,7 @@ class Shader(
 			.toTypedArray()
 	)
 
-	private val tlId = ThreadLocal.withInitial {
+	private val id = Cache {
 		val id = glCreateShader(type.value)
 		if (id == 0) throw IllegalStateException("Cannot create shader")
 
@@ -52,33 +54,29 @@ class Shader(
 	}
 
 	/**
-	 * ID of this shader in the current thread context.
+	 * Attaches this shader to [program].
 	 */
-	val id: Int
-		get() = tlId.get()
+	fun attach(program: Int) {
+		glAttachShader(program, id())
+	}
 
 	/**
-	 * Deletes this shader in the current thread context.
-	 * Subsequent access to this shader in the current thread context will recompile it.
+	 * Detaches this shader from [program].
+	 */
+	fun detach(program: Int) {
+		glDetachShader(program, id())
+	}
+
+	/**
+	 * Deletes the backing `OpenGL` object if it has been initialized.
+	 * Subsequent interactions with this shader will first initialize a new backing object.
 	 */
 	override fun close() {
-		glDeleteShader(id)
-		tlId.remove()
+		if (id.initialized) {
+			glDeleteShader(id())
+			id.invalidate()
+		}
 	}
-
-	override fun equals(other: Any?): Boolean {
-		if (this === other) return true
-		if (javaClass != other?.javaClass) return false
-
-		other as Shader
-
-		return id == other.id
-	}
-
-	override fun hashCode(): Int {
-		return id
-	}
-
 
 	/**
 	 * Shader type.
