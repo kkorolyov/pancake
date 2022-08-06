@@ -5,6 +5,7 @@ module dev.kkorolyov.pancake.graphics.gl {
 
 	requires transitive org.lwjgl;
 	requires transitive org.lwjgl.opengl;
+	requires transitive org.lwjgl.stb;
 
 	requires transitive dev.kkorolyov.pancake.platform;
 	requires transitive dev.kkorolyov.pancake.graphics;

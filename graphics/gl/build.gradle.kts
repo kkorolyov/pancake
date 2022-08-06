@@ -13,4 +13,4 @@ dependencies {
 	implementation(projects.core)
 }
 
-(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.opengl))
+(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.opengl, libs.lwjgl.stb))
