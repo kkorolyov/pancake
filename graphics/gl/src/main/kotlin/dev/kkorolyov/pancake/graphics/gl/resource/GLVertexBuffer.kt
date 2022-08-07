@@ -69,11 +69,14 @@ class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Freque
 				glBufferData(GL_ARRAY_BUFFER, vertexP, hint.value)
 			}
 
+			var offset = 0
 			glBindVertexBuffer(0, id, 0, attributeSum * Float.SIZE_BYTES)
-			for (i in 0 until attributeLengths.size) {
+			attributeLengths.forEachIndexed { i, length ->
 				glEnableVertexAttribArray(i)
-				glVertexAttribFormat(i, attributeLengths[i], GL_FLOAT, false, if (i == 0) 0 else attributeLengths[i - 1] * Float.SIZE_BYTES)
+				glVertexAttribFormat(i, length, GL_FLOAT, false, offset * Float.SIZE_BYTES)
 				glVertexAttribBinding(i, 0)
+
+				offset += length
 			}
 
 			changed = false
