@@ -1,27 +1,21 @@
-package dev.kkorolyov.pancake.graphics.gl
+package dev.kkorolyov.pancake.graphics.gl.resource
 
+import dev.kkorolyov.pancake.graphics.gl.Pixels
 import dev.kkorolyov.pancake.graphics.gl.internal.Cache
+import dev.kkorolyov.pancake.graphics.resource.Texture
 import org.lwjgl.opengl.GL46.*
 
 /**
- * Represents an `OpenGL` texture.
- * The backing `OpenGL` object is allocated lazily and cached until [close].
- * A single instance can be reused across shared `OpenGL` contexts.
+ * An `OpenGL` texture that can be reused across shared contexts.
  */
-class Texture(
+class GLTexture(
 	wrapS: Wrap? = null,
 	wrapT: Wrap? = null,
 	filterMin: Filter? = null,
 	filterMag: Filter? = null,
 	pixels: () -> Pixels
-) : AutoCloseable {
-	/**
-	 * ID of the backing `OpenGL` object.
-	 */
-	val id: Int
-		get() = data().id
-
-	private val data = Cache {
+) : Texture {
+	private val cache = Cache {
 		pixels().use { pixels ->
 			val id = glGenTextures()
 			glBindTexture(pixels.target, id)
@@ -43,11 +37,22 @@ class Texture(
 	}
 
 	/**
+	 * ID of the backing `OpenGL` object.
+	 */
+	override val id: Int
+		get() = cache().id
+
+	/**
 	 * Uses this texture as part of the current rendering state.
 	 */
-	operator fun invoke() {
-		val (id, target) = data()
+	override fun activate() {
+		val (id, target) = cache()
 		glBindTexture(target, id)
+	}
+
+	override fun deactivate() {
+		val (_, target) = cache()
+		glBindTexture(target, 0)
 	}
 
 	/**
@@ -55,11 +60,11 @@ class Texture(
 	 * Subsequent interactions with this texture will first initialize a new backing object.
 	 */
 	override fun close() {
-		data.invalidate { (id, _) -> glDeleteTextures(id) }
+		cache.invalidate { (id, _) -> glDeleteTextures(id) }
 	}
 
 	/**
-	 * Represents an `OpenGL` texture wrapping mode.
+	 * An `OpenGL` texture wrapping mode.
 	 */
 	enum class Wrap(internal val value: Int) {
 		REPEAT(GL_REPEAT),
@@ -68,7 +73,7 @@ class Texture(
 		CLAMP_TO_BORDER(GL_CLAMP_TO_BORDER)
 	}
 	/**
-	 * Represents an `OpenGL` texture filtering mode.
+	 * An `OpenGL` texture filtering mode.
 	 */
 	enum class Filter(internal val value: Int) {
 		NEAREST(GL_NEAREST),

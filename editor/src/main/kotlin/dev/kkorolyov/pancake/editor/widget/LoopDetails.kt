@@ -1,12 +1,12 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.indented
-import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.field
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
+import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import kotlin.math.roundToInt
 
@@ -14,9 +14,7 @@ import kotlin.math.roundToInt
  * Renders information about [engine]'s loop state.
  */
 class LoopDetails(private val engine: GameEngine) : Widget {
-	private val playIcon = Image("icons/play.png", 16F)
-	private val pauseIcon = Image("icons/pause.png", 16F)
-
+	private val activePtr = ImBoolean()
 	private val speedPtr = ImDouble()
 
 	override fun invoke() {
@@ -28,10 +26,11 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 	}
 
 	private fun activeToggle() {
-		if ((if (engine.speed == 0.0) pauseIcon else playIcon).clickable()) {
-			engine.speed = if (engine.speed == 0.0) 1.0 else 0.0
-		}
-		tooltip("Current active state")
+		val lastActive = activePtr.get()
+		activePtr.set(engine.speed != 0.0)
+		ImGui.checkbox("active", activePtr)
+
+		if (lastActive != activePtr.get()) engine.speed = if (activePtr.get()) 1.0 else 0.0
 	}
 
 	private fun speed() {
@@ -42,24 +41,9 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 	}
 
 	private fun summary() {
-		text("Tick time (ns)")
-		indented {
-			text(engine.sampler.value)
-		}
-
-		text("TPS")
-		indented {
-			text((1e9 / engine.sampler.value).roundToInt())
-		}
-
-		text("Pipelines")
-		indented {
-			text(engine.size())
-		}
-
-		text("Systems")
-		indented {
-			text(engine.sumOf(Pipeline::size))
-		}
+		field("Tick time (ns)", engine.sampler.value)
+		field("TPS", (1e9 / engine.sampler.value).roundToInt())
+		field("Pipelines", engine.size())
+		field("Systems", engine.sumOf(Pipeline::size))
 	}
 }

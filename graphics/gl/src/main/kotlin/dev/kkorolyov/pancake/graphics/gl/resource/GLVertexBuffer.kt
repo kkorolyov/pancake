@@ -1,5 +1,7 @@
-package dev.kkorolyov.pancake.graphics.gl
+package dev.kkorolyov.pancake.graphics.gl.resource
 
+import dev.kkorolyov.pancake.graphics.gl.internal.Cache
+import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import org.lwjgl.opengl.GL46.*
@@ -12,29 +14,29 @@ private fun count(vector: Vector2) = when (vector) {
 }
 
 /**
- * Buffers data to an `OpenGL` vertex buffer object.
+ * An `OpenGL` vertex buffer that can be reused across shared contexts.
  */
-class VertexBuffer {
+class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW)) : VertexBuffer {
 	private val vertices = mutableListOf<Array<out Vector2>>()
+	private var changed = false
 
-	/**
-	 * Number of vertices buffered by this.
-	 */
-	val size: Int
-		get() = vertices.size
-
-	/**
-	 * Adds a vertex composed of `attributes` to this buffer.
-	 */
-	fun add(vararg attributes: Vector2) {
-		this.vertices += attributes
+	private val cache = Cache {
+		glGenBuffers()
 	}
 
-	/**
-	 * Binds and buffers current data into the vertex buffer object [vbo].
-	 */
-	operator fun invoke(vbo: Int) {
-		if (vertices.isNotEmpty()) {
+	override val id by cache
+	override val size: Int
+		get() = vertices.size
+
+	override fun add(vararg attributes: Vector2) {
+		changed = true
+		vertices += attributes
+	}
+
+	override fun activate() {
+		glBindBuffer(GL_ARRAY_BUFFER, id)
+
+		if (changed) {
 			// set the sizes of the largest attributes encountered in any vertex
 			val attributeLengths = IntArray(vertices.maxOf(Array<out Vector2>::size))
 			vertices.forEach { vertex ->
@@ -43,8 +45,6 @@ class VertexBuffer {
 				}
 			}
 			val attributeSum = attributeLengths.sum()
-
-			glBindBuffer(GL_ARRAY_BUFFER, vbo)
 
 			MemoryStack.stackPush().use { stack ->
 				val vertexP = stack.mallocFloat(size * attributeSum)
@@ -65,17 +65,26 @@ class VertexBuffer {
 					}
 				}
 				vertexP.flip()
-				glBufferData(GL_ARRAY_BUFFER, vertexP, GL_STATIC_DRAW)
+
+				glBufferData(GL_ARRAY_BUFFER, vertexP, hint.value)
 			}
 
-			glBindVertexBuffer(0, vbo, 0, attributeSum * Float.SIZE_BYTES)
+			glBindVertexBuffer(0, id, 0, attributeSum * Float.SIZE_BYTES)
 			for (i in 0 until attributeLengths.size) {
 				glEnableVertexAttribArray(i)
 				glVertexAttribFormat(i, attributeLengths[i], GL_FLOAT, false, if (i == 0) 0 else attributeLengths[i - 1] * Float.SIZE_BYTES)
 				glVertexAttribBinding(i, 0)
 			}
 
-			glBindBuffer(GL_ARRAY_BUFFER, 0)
+			changed = false
 		}
+	}
+
+	override fun deactivate() {
+		glBindBuffer(GL_ARRAY_BUFFER, 0)
+	}
+
+	override fun close() {
+		cache.invalidate(::glDeleteBuffers)
 	}
 }

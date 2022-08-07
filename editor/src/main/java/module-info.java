@@ -15,7 +15,7 @@ module dev.kkorolyov.pancake.editor {
 	requires imgui.lwjgl3;
 
 	requires transitive dev.kkorolyov.pancake.platform;
-	requires transitive dev.kkorolyov.pancake.graphics.gl;
+	requires transitive dev.kkorolyov.pancake.graphics;
 
 	exports dev.kkorolyov.pancake.editor;
 	exports dev.kkorolyov.pancake.editor.ext;

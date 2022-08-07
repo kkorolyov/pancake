@@ -12,6 +12,6 @@ module dev.kkorolyov.pancake.graphics.gl {
 	requires dev.kkorolyov.pancake.core;
 
 	exports dev.kkorolyov.pancake.graphics.gl;
-	exports dev.kkorolyov.pancake.graphics.gl.component;
+	exports dev.kkorolyov.pancake.graphics.gl.resource;
 	exports dev.kkorolyov.pancake.graphics.gl.system;
 }

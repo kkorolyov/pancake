@@ -3,9 +3,9 @@ package dev.kkorolyov.pancake.graphics.gl.system
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.graphics.Camera
 import dev.kkorolyov.pancake.graphics.CameraQueue
-import dev.kkorolyov.pancake.graphics.gl.component.Model
-import dev.kkorolyov.pancake.graphics.gl.Mesh
-import dev.kkorolyov.pancake.graphics.gl.Program
+import dev.kkorolyov.pancake.graphics.component.Model
+import dev.kkorolyov.pancake.graphics.resource.Mesh
+import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Matrix4
@@ -32,7 +32,7 @@ class DrawSystem(
 			}
 
 			pending.forEach { (program, entities) ->
-				program()
+				program.activate()
 				entities.forEach {
 					val meshes = it[Model::class.java].meshes
 					val position = it[Transform::class.java].globalPosition
@@ -49,10 +49,11 @@ class DrawSystem(
 
 					meshes.forEach(Mesh::draw)
 				}
+				program.deactivate()
+
+				// clear for next update
 				entities.clear()
 			}
 		}
-
-		pending.clear()
 	}
 }

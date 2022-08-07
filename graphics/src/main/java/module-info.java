@@ -5,6 +5,7 @@ module dev.kkorolyov.pancake.graphics {
 	requires dev.kkorolyov.pancake.core;
 
 	exports dev.kkorolyov.pancake.graphics;
+	exports dev.kkorolyov.pancake.graphics.resource;
 	exports dev.kkorolyov.pancake.graphics.component;
 	exports dev.kkorolyov.pancake.graphics.system;
 }

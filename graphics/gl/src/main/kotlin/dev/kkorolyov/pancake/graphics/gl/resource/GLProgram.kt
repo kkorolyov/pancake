@@ -1,68 +1,58 @@
-package dev.kkorolyov.pancake.graphics.gl
+package dev.kkorolyov.pancake.graphics.gl.resource
 
 import dev.kkorolyov.pancake.graphics.gl.internal.Cache
+import dev.kkorolyov.pancake.graphics.resource.Program
+import dev.kkorolyov.pancake.graphics.resource.Shader
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
+import org.lwjgl.opengl.GL46
 import org.lwjgl.opengl.GL46.*
 import org.lwjgl.system.MemoryStack
 
 /**
- * Represents an `OpenGL` program that can be used for rendering.
- * The backing `OpenGL` object is allocated lazily and cached until [close].
- * A single instance can be reused across shared `OpenGL` contexts.
+ * An `OpenGL` program that can be reused across shared contexts.
  */
-class Program(
+class GLProgram(
 	/**
 	 * Shaders to link.
 	 */
 	vararg shaders: Shader
-) : AutoCloseable {
-	private val id = Cache {
+) : Program {
+	private val cache = Cache {
 		val id = glCreateProgram()
 		if (id == 0) throw IllegalStateException("Cannot create shader program")
 
-		shaders.forEach { it.attach(id) }
+		shaders.forEach { glAttachShader(id, it.id) }
 		glLinkProgram(id)
-		shaders.forEach { it.detach(id) }
+		shaders.forEach { glDetachShader(id, it.id) }
 
 		if (glGetProgrami(id, GL_LINK_STATUS) == 0) throw IllegalArgumentException("Cannot link shader program: ${glGetProgramInfoLog(id)}")
 
 		id
 	}
 
-	/**
-	 * Uses this program as part of the current rendering state.
-	 */
-	operator fun invoke() {
-		glUseProgram(id())
+	override fun activate() {
+		glUseProgram(id)
 	}
 
-	/**
-	 * Sets the [location] uniform's value to [value].
-	 */
-	operator fun set(location: Int, value: Float) {
+	override fun deactivate() {
+		glUseProgram(0)
+	}
+
+	override fun set(location: Int, value: Float) {
 		glUniform1f(location, value)
 	}
 
-	/**
-	 * Sets the [location] uniform's value to [value].
-	 */
-	operator fun set(location: Int, value: Vector2) {
+	override fun set(location: Int, value: Vector2) {
 		glUniform2f(location, value.x.toFloat(), value.y.toFloat())
 	}
 
-	/**
-	 * Sets the [location] uniform's value to [value].
-	 */
-	operator fun set(location: Int, value: Vector3) {
+	override fun set(location: Int, value: Vector3) {
 		glUniform3f(location, value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
 	}
 
-	/**
-	 * Sets the [location] uniform's value to [value].
-	 */
-	operator fun set(location: Int, value: Matrix4) {
+	override fun set(location: Int, value: Matrix4) {
 		MemoryStack.stackPush().use {
 			val uP = it.mallocFloat(16)
 
@@ -95,11 +85,9 @@ class Program(
 		}
 	}
 
-	/**
-	 * Deletes the backing `OpenGL` object if it has been initialized.
-	 * Subsequent interactions with this program will first initialize a new backing object.
-	 */
+	override val id by cache
+
 	override fun close() {
-		id.invalidate(::glDeleteProgram)
+		cache.invalidate(GL46::glDeleteProgram)
 	}
 }

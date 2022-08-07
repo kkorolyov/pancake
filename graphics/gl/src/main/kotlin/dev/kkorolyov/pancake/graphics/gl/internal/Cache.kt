@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.graphics.gl.internal
 
+import kotlin.reflect.KProperty
+
 /**
  * Memoizes the return of [initializer] and can also be manually invalidated.
  */
@@ -27,6 +29,10 @@ class Cache<T>(private val initializer: () -> T) {
 		}
 		return value!!
 	}
+	/**
+	 * Allows this cache to be used as a delegate property.
+	 */
+	operator fun getValue(thisRef: Any?, property: KProperty<*>) = invoke()
 
 	/**
 	 * Invalidates the current value.
