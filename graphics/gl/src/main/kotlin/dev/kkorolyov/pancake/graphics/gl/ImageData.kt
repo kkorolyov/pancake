@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.gl
 
-import org.lwjgl.opengl.GL46.*
+import dev.kkorolyov.pancake.graphics.PixelBuffer
 import org.lwjgl.stb.STBImage
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
@@ -8,40 +8,14 @@ import java.io.InputStream
 import java.nio.ByteBuffer
 
 /**
- * A pixel buffer read from `inStream`.
+ * Buffers pixel data from the image at `inStream`.
  */
-class Pixels(inStream: InputStream) : AutoCloseable {
-	/**
-	 * Buffer data.
-	 */
-	val buffer: ByteBuffer
-	/**
-	 * Source image width.
-	 */
-	val width: Int
-	/**
-	 * Source image height.
-	 */
-	val height: Int
-	/**
-	 * Source image depth.
-	 */
-	val depth: Int
-	/**
-	 * Number of components in source image.
-	 */
-	val channels: Int
-
-	/**
-	 * The `OpenGL` texture target matching this buffer.
-	 */
-	val target: Int
-		get() = if (depth > 0) GL_TEXTURE_3D else if (height > 0) GL_TEXTURE_2D else GL_TEXTURE_1D
-	/**
-	 * The `OpenGL` texture format matching this buffer.
-	 */
-	val format: Int
-		get() = if (channels == 4) GL_RGBA else if (channels == 3) GL_RGB else if (channels == 2) GL_RG else GL_R
+class ImageData(inStream: InputStream) : PixelBuffer {
+	override val data: ByteBuffer
+	override val width: Int
+	override val height: Int
+	override val depth: Int
+	override val channels: Int
 
 	init {
 		inStream.use {
@@ -60,7 +34,7 @@ class Pixels(inStream: InputStream) : AutoCloseable {
 
 				if (stbData == null) throw IllegalStateException("cannot load image: $inStream")
 
-				buffer = stbData
+				this.data = stbData
 				this.width = width[0]
 				this.height = height[0]
 				depth = 0
@@ -69,10 +43,7 @@ class Pixels(inStream: InputStream) : AutoCloseable {
 		}
 	}
 
-	/**
-	 * Frees the backing buffer.
-	 */
 	override fun close() {
-		STBImage.stbi_image_free(buffer)
+		STBImage.stbi_image_free(data)
 	}
 }
