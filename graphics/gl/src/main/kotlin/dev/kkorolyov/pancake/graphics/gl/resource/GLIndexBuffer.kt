@@ -8,7 +8,7 @@ import org.lwjgl.system.MemoryStack
 /**
  * An `OpenGL` index buffer that can be reused across shared contexts.
  */
-class GLIndexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW)) : IndexBuffer {
+class GLIndexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW), init: GLIndexBuffer.() -> Unit = {}) : IndexBuffer {
 	private val indices = mutableListOf<Int>()
 	private var changed = false
 
@@ -19,6 +19,10 @@ class GLIndexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequen
 	override val id by cache
 	override val size: Int
 		get() = indices.size
+
+	init {
+		init()
+	}
 
 	override fun add(index: Int) {
 		changed = true

@@ -9,7 +9,7 @@ import java.io.InputStream
 /**
  * Returns a pixel buffer from the image at [inStream].
  */
-fun PixelBuffer.Companion.fromImage(inStream: InputStream): PixelBuffer = inStream.use {
+fun PixelBuffer.Companion.image(inStream: InputStream): PixelBuffer = inStream.use {
 	val data = it.readBytes().let { bytes ->
 		val buffer = MemoryUtil.memAlloc(bytes.size)
 		bytes.forEach(buffer::put)

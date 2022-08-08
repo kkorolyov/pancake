@@ -16,7 +16,7 @@ class GLMesh(
 	private val vertexBuffer: VertexBuffer,
 	private val indexBuffer: IndexBuffer? = null,
 	private val mode: Mode = Mode.TRIANGLES,
-	private vararg val textures: Texture
+	textures: List<Texture> = listOf()
 ) : Mesh {
 	private val cache = Cache {
 		val id = glGenVertexArrays()
@@ -33,6 +33,8 @@ class GLMesh(
 
 		id
 	}
+
+	private val textures = textures.toTypedArray()
 
 	override val id: Int
 		get() = cache()

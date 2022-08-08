@@ -1,11 +1,14 @@
 package dev.kkorolyov.pancake.graphics.gl.test.e2e
 
-import dev.kkorolyov.pancake.graphics.gl.ImageData
+import dev.kkorolyov.pancake.graphics.PixelBuffer
+import dev.kkorolyov.pancake.graphics.gl.image
 import dev.kkorolyov.pancake.graphics.gl.resource.GLMesh
 import dev.kkorolyov.pancake.graphics.gl.resource.GLProgram
 import dev.kkorolyov.pancake.graphics.gl.resource.GLShader
 import dev.kkorolyov.pancake.graphics.gl.resource.GLTexture
 import dev.kkorolyov.pancake.graphics.gl.resource.GLVertexBuffer
+import dev.kkorolyov.pancake.graphics.resource.Mesh
+import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -40,62 +43,49 @@ private val textureProgram = GLProgram(
 )
 
 private val texture = GLTexture {
-	ImageData(Resources.inStream("wall.jpg"))
+	PixelBuffer.image(Resources.inStream("wall.jpg"))
 }
 
 private val solidMesh = GLMesh(
-	GLVertexBuffer().apply {
-		add(Vector2.of(-0.5, -0.5), Vector3.of(0.0, 1.0))
-		add(Vector2.of(0.5, -0.5), Vector3.of(0.0, 1.0))
-		add(Vector2.of(0.5, 0.5), Vector3.of(0.0, 1.0))
-		add(Vector2.of(-0.5, 0.5), Vector3.of(0.0, 1.0))
+	GLVertexBuffer {
+		val color = Vector3.of(0.0, 0.5)
+
+		add(Vector2.of(-0.5, -0.5), color)
+		add(Vector2.of(0.5, -0.5), color)
+		add(Vector2.of(0.0, 0.5), color)
 	},
-	mode = GLMesh.Mode.TRIANGLE_FAN
+	mode = GLMesh.Mode.TRIANGLES
 )
 private val rainbowMesh = GLMesh(
-	GLVertexBuffer().apply {
+	GLVertexBuffer {
 		add(Vector2.of(-0.5, -0.5), Vector3.of(1.0))
 		add(Vector2.of(0.5, -0.5), Vector3.of(0.0, 1.0))
-		add(Vector2.of(0.5, 0.5), Vector3.of(0.0, 0.0, 1.0))
-		add(Vector2.of(-0.5, 0.5), Vector3.of(1.0, 0.0, 1.0))
+		add(Vector2.of(0.0, 0.5), Vector3.of(0.0, 0.0, 1.0))
 	},
-	mode = GLMesh.Mode.TRIANGLE_FAN
+	mode = GLMesh.Mode.TRIANGLES
 )
 private val textureMesh = GLMesh(
-//	GLVertexBuffer().apply {
-//		rectangle(Vector2.of(1.0, 1.0), Vector3.of())
-//	},
-	GLVertexBuffer().apply {
-		add(Vector2.of(-0.5, -0.5), Vector3.of(), Vector2.of())
-		add(Vector2.of(0.5, -0.5), Vector3.of(), Vector2.of(1.0))
-		add(Vector2.of(0.5, 0.5), Vector3.of(), Vector2.of(1.0, 1.0))
-		add(Vector2.of(-0.5, 0.5), Vector3.of(), Vector2.of(0.0, 1.0))
+	GLVertexBuffer {
+		add(Vector2.of(-0.5, -0.5), Vector2.of())
+		add(Vector2.of(0.5, -0.5), Vector2.of(1.0))
+		add(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0))
 	},
-	texture = texture,
-	mode = GLMesh.Mode.TRIANGLE_FAN
+	mode = GLMesh.Mode.TRIANGLES,
+	textures = listOf(texture)
 )
 
-private var program = colorProgram
-private var mesh = solidMesh
+private val scenes = mapOf(
+	GLFW_KEY_1 to Scene(colorProgram, solidMesh),
+	GLFW_KEY_2 to Scene(colorProgram, rainbowMesh),
+	GLFW_KEY_3 to Scene(textureProgram, textureMesh)
+)
+private var scene = scenes.values.first()
 
 fun main() {
 	glfwSetKeyCallback(window) { _, key, _, action, _ ->
 		if (action == GLFW_PRESS) {
-			when (key) {
-				GLFW_KEY_1 -> {
-					program = colorProgram
-					mesh = solidMesh
-				}
-
-				GLFW_KEY_2 -> {
-					program = colorProgram
-					mesh = rainbowMesh
-				}
-
-				GLFW_KEY_3 -> {
-					program = textureProgram
-					mesh = textureMesh
-				}
+			scenes[key]?.let {
+				scene = it
 			}
 		}
 	}.use { }
@@ -103,6 +93,7 @@ fun main() {
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
+		val (program, mesh) = scene
 		program.activate()
 		mesh.draw()
 
@@ -110,3 +101,5 @@ fun main() {
 		glfwPollEvents()
 	}
 }
+
+private data class Scene(val program: Program, val mesh: Mesh)
