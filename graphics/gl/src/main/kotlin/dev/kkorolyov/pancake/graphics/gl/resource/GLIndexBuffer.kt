@@ -33,6 +33,8 @@ class GLIndexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequen
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id)
 
 		if (changed) {
+			changed = false
+
 			MemoryStack.stackPush().use { stack ->
 				val indexP = stack.mallocInt(indices.size)
 				indices.forEach(indexP::put)

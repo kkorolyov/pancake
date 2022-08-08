@@ -41,6 +41,8 @@ class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Freque
 		glBindBuffer(GL_ARRAY_BUFFER, id)
 
 		if (changed) {
+			changed = false
+
 			// set the sizes of the largest attributes encountered in any vertex
 			val attributeLengths = IntArray(vertices.maxOf(Array<out Vector2>::size))
 			vertices.forEach { vertex ->
@@ -82,8 +84,6 @@ class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Freque
 
 				offset += length
 			}
-
-			changed = false
 		}
 	}
 

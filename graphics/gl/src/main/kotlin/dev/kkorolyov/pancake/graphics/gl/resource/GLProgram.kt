@@ -19,6 +19,8 @@ class GLProgram(
 	 */
 	vararg shaders: Shader
 ) : Program {
+	private val uniforms = mutableMapOf<Int, Any>()
+
 	private val cache = Cache {
 		val id = glCreateProgram()
 		if (id == 0) throw IllegalStateException("Cannot create shader program")
@@ -34,6 +36,49 @@ class GLProgram(
 
 	override fun activate() {
 		glUseProgram(id)
+
+		if (uniforms.isNotEmpty()) {
+			uniforms.forEach { (location, value) ->
+				when (value) {
+					is Float -> glProgramUniform1f(id, location, value)
+					is Vector3 -> glProgramUniform3f(id, location, value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
+					is Vector2 -> glProgramUniform2f(id, location, value.x.toFloat(), value.y.toFloat())
+					is Matrix4 -> MemoryStack.stackPush().use {
+						val uP = it.mallocFloat(16)
+
+						value.apply {
+							uP
+								.put(xx.toFloat())
+								.put(yx.toFloat())
+								.put(zx.toFloat())
+								.put(wx.toFloat())
+
+								.put(xy.toFloat())
+								.put(yy.toFloat())
+								.put(zy.toFloat())
+								.put(wy.toFloat())
+
+								.put(xz.toFloat())
+								.put(yz.toFloat())
+								.put(zz.toFloat())
+								.put(wz.toFloat())
+
+								.put(xw.toFloat())
+								.put(yw.toFloat())
+								.put(zw.toFloat())
+								.put(ww.toFloat())
+						}
+
+						uP.flip()
+
+						glProgramUniformMatrix4fv(id, location, false, uP)
+					}
+
+					else -> throw IllegalArgumentException("unknown uniform type: ${value::class}")
+				}
+			}
+			uniforms.clear()
+		}
 	}
 
 	override fun deactivate() {
@@ -41,48 +86,19 @@ class GLProgram(
 	}
 
 	override fun set(location: Int, value: Float) {
-		glUniform1f(location, value)
+		uniforms[location] = value
 	}
 
 	override fun set(location: Int, value: Vector2) {
-		glUniform2f(location, value.x.toFloat(), value.y.toFloat())
+		uniforms[location] = value
 	}
 
 	override fun set(location: Int, value: Vector3) {
-		glUniform3f(location, value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
+		uniforms[location] = value
 	}
 
 	override fun set(location: Int, value: Matrix4) {
-		MemoryStack.stackPush().use {
-			val uP = it.mallocFloat(16)
-
-			value.apply {
-				uP
-					.put(xx.toFloat())
-					.put(yx.toFloat())
-					.put(zx.toFloat())
-					.put(wx.toFloat())
-
-					.put(xy.toFloat())
-					.put(yy.toFloat())
-					.put(zy.toFloat())
-					.put(wy.toFloat())
-
-					.put(xz.toFloat())
-					.put(yz.toFloat())
-					.put(zz.toFloat())
-					.put(wz.toFloat())
-
-					.put(xw.toFloat())
-					.put(yw.toFloat())
-					.put(zw.toFloat())
-					.put(ww.toFloat())
-			}
-
-			uP.flip()
-
-			glUniformMatrix4fv(location, false, uP)
-		}
+		uniforms[location] = value
 	}
 
 	override val id by cache
