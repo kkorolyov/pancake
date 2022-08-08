@@ -14,4 +14,18 @@ interface GraphicsResource : AutoCloseable {
 	 * Subsequent interactions with this resource will initialize a new backing representation.
 	 */
 	override fun close()
+
+	/**
+	 * A resource that must be explicitly activated to apply to the current render state.
+	 */
+	interface Active : GraphicsResource {
+		/**
+		 * Activates this resource on the current render state.
+		 */
+		fun activate()
+		/**
+		 * Deactivates this resource on the current render state.
+		 */
+		fun deactivate()
+	}
 }

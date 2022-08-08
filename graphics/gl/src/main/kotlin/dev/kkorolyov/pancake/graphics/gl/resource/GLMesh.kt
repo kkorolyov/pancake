@@ -40,7 +40,8 @@ class GLMesh(
 		get() = cache()
 
 	override fun draw(offset: Int, count: Int?) {
-		glBindVertexArray(id)
+		activate()
+
 		textures.forEachIndexed { i, texture ->
 			glBindTextureUnit(i, texture.id)
 		}
@@ -48,6 +49,10 @@ class GLMesh(
 		indexBuffer?.let { buffer ->
 			glDrawElements(mode.value, count ?: buffer.size, GL_UNSIGNED_INT, offset * Int.SIZE_BYTES.toLong())
 		} ?: glDrawArrays(mode.value, offset, count ?: vertexBuffer.size)
+	}
+
+	override fun activate() {
+		glBindVertexArray(id)
 	}
 
 	override fun deactivate() {

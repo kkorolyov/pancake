@@ -8,16 +8,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 /**
  * A usable program composed of shaders and uniforms to render with.
  */
-interface Program : GraphicsResource {
-	/**
-	 * Activates this program on the current render state.
-	 */
-	fun activate()
-	/**
-	 * Deactivates this program on the current render state.
-	 */
-	fun deactivate()
-
+interface Program : GraphicsResource.Active {
 	/**
 	 * Sets the [location] uniform's value to [value].
 	 */
