@@ -16,7 +16,7 @@ private fun count(vector: Vector2) = when (vector) {
 /**
  * An `OpenGL` vertex buffer that can be reused across shared contexts.
  */
-class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW)) : VertexBuffer {
+class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW), init: GLVertexBuffer.() -> Unit = {}) : VertexBuffer {
 	private val vertices = mutableListOf<Array<out Vector2>>()
 	private var changed = false
 
@@ -27,6 +27,10 @@ class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Freque
 	override val id by cache
 	override val size: Int
 		get() = vertices.size
+
+	init {
+		init()
+	}
 
 	override fun add(vararg attributes: Vector2) {
 		changed = true
