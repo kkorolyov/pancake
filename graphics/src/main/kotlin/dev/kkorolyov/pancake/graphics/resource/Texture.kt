@@ -5,4 +5,4 @@ import dev.kkorolyov.pancake.graphics.GraphicsResource
 /**
  * A texture map.
  */
-interface Texture : GraphicsResource.Active
+interface Texture : GraphicsResource

@@ -35,8 +35,6 @@ class GLProgram(
 	}
 
 	override fun activate() {
-		glUseProgram(id)
-
 		if (uniforms.isNotEmpty()) {
 			uniforms.forEach { (location, value) ->
 				when (value) {
@@ -79,6 +77,8 @@ class GLProgram(
 			}
 			uniforms.clear()
 		}
+
+		glUseProgram(id)
 	}
 
 	override fun deactivate() {

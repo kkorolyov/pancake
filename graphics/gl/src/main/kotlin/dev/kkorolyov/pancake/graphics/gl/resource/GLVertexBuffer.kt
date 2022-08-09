@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import org.lwjgl.opengl.GL46.*
-import org.lwjgl.system.MemoryStack
 import kotlin.math.max
 
 private fun count(vector: Vector2) = when (vector) {
@@ -16,82 +15,68 @@ private fun count(vector: Vector2) = when (vector) {
 /**
  * An `OpenGL` vertex buffer that can be reused across shared contexts.
  */
-class GLVertexBuffer(private val hint: BufferHint = BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW), init: GLVertexBuffer.() -> Unit = {}) : VertexBuffer {
-	private val vertices = mutableListOf<Array<out Vector2>>()
-	private var changed = false
-
+class GLVertexBuffer private constructor(override val structure: List<Int>, override val size: Int, data: FloatArray) : VertexBuffer {
 	private val cache = Cache {
-		glGenBuffers()
+		val id = glCreateBuffers()
+		glNamedBufferData(id, data, BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW).value)
+		id
 	}
 
 	override val id by cache
-	override val size: Int
-		get() = vertices.size
-
-	init {
-		init()
-	}
-
-	override fun add(vararg attributes: Vector2) {
-		changed = true
-		vertices += attributes
-	}
-
-	override fun activate() {
-		glBindBuffer(GL_ARRAY_BUFFER, id)
-
-		if (changed) {
-			changed = false
-
-			// set the sizes of the largest attributes encountered in any vertex
-			val attributeLengths = IntArray(vertices.maxOf(Array<out Vector2>::size))
-			vertices.forEach { vertex ->
-				vertex.forEachIndexed { i, attr ->
-					attributeLengths[i] = max(attributeLengths[i], count(attr))
-				}
-			}
-			val attributeSum = attributeLengths.sum()
-
-			MemoryStack.stackPush().use { stack ->
-				val vertexP = stack.mallocFloat(size * attributeSum)
-
-				vertices.forEach { vertex ->
-					attributeLengths.forEachIndexed { i, length ->
-						if (vertex.size > i) {
-							val vector = vertex[i]
-							vertexP.put(vector.x.toFloat()).put(vector.y.toFloat())
-							if (vector is Vector3) vertexP.put(vector.z.toFloat())
-
-							// pad any remainder
-							for (j in count(vector) until length) vertexP.put(0F)
-						} else {
-							// pad the entire attribute
-							for (j in 0 until length) vertexP.put(0F)
-						}
-					}
-				}
-				vertexP.flip()
-
-				glBufferData(GL_ARRAY_BUFFER, vertexP, hint.value)
-			}
-
-			var offset = 0
-			glBindVertexBuffer(0, id, 0, attributeSum * Float.SIZE_BYTES)
-			attributeLengths.forEachIndexed { i, length ->
-				glEnableVertexAttribArray(i)
-				glVertexAttribFormat(i, length, GL_FLOAT, false, offset * Float.SIZE_BYTES)
-				glVertexAttribBinding(i, 0)
-
-				offset += length
-			}
-		}
-	}
-
-	override fun deactivate() {
-		glBindBuffer(GL_ARRAY_BUFFER, 0)
-	}
 
 	override fun close() {
 		cache.invalidate(::glDeleteBuffers)
+	}
+
+	companion object {
+		/**
+		 * Returns a vertex buffer configured according to [init].
+		 */
+		operator fun invoke(init: VertexBuffer.Builder.() -> Unit): GLVertexBuffer {
+			val builder = Builder()
+			builder.init()
+			return builder.build()
+		}
+	}
+
+	private class Builder : VertexBuffer.Builder {
+		private val vertices = mutableListOf<Array<out Vector2>>()
+
+		override fun add(vararg attributes: Vector2) {
+			vertices += attributes
+		}
+
+		override fun build(): GLVertexBuffer {
+			val structure = IntArray(vertices.maxOf(Array<out Vector2>::size)).apply {
+				vertices.forEach { vertex ->
+					vertex.forEachIndexed { i, attr ->
+						set(i, max(get(i), count(attr)))
+					}
+				}
+			}
+			val data = vertices.flatMap { vertex ->
+				structure.flatMapIndexed { i, length ->
+					mutableListOf<Float>().apply {
+						// serialize each element
+						if (vertex.size > i) {
+							val vector = vertex[i]
+
+							add(vector.x.toFloat())
+							add(vector.y.toFloat())
+
+							if (vector is Vector3) add(vector.z.toFloat())
+
+							// pad any remainder
+							for (j in count(vector) until length) add(0F)
+						} else {
+							// pad the entire attribute
+							for (j in 0 until length) add(0F)
+						}
+					}
+				}
+			}
+
+			return GLVertexBuffer(structure.asList(), vertices.size, data.toFloatArray())
+		}
 	}
 }

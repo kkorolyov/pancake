@@ -21,17 +21,21 @@ class GLMesh(
 	private val textures = textures.toTypedArray()
 
 	private val cache = Cache {
-		val id = glGenVertexArrays()
+		val id = glCreateVertexArrays()
 
-		// bind to VAO
-		glBindVertexArray(id)
-		vertexBuffer.activate()
-		indexBuffer?.activate()
+		glVertexArrayVertexBuffer(id, 0, vertexBuffer.id, 0, vertexBuffer.structure.sum() * Float.SIZE_BYTES)
+		indexBuffer?.let {
+			glVertexArrayElementBuffer(id, it.id)
+		}
 
-		// clear state
-		glBindVertexArray(0)
-		vertexBuffer.deactivate()
-		indexBuffer?.deactivate()
+		var offset = 0
+		vertexBuffer.structure.forEachIndexed { i, length ->
+			glEnableVertexArrayAttrib(id, i)
+			glVertexArrayAttribFormat(id, i, length, GL_FLOAT, false, offset * Float.SIZE_BYTES)
+			glVertexArrayAttribBinding(id, i, 0)
+
+			offset += length
+		}
 
 		id
 	}
@@ -42,10 +46,6 @@ class GLMesh(
 	override fun draw(offset: Int, count: Int?) {
 		activate()
 
-		textures.forEachIndexed { i, texture ->
-			glBindTextureUnit(i, texture.id)
-		}
-
 		indexBuffer?.let { buffer ->
 			glDrawElements(mode.value, count ?: buffer.size, GL_UNSIGNED_INT, offset * Int.SIZE_BYTES.toLong())
 		} ?: glDrawArrays(mode.value, offset, count ?: vertexBuffer.size)
@@ -53,10 +53,18 @@ class GLMesh(
 
 	override fun activate() {
 		glBindVertexArray(id)
+
+		textures.forEachIndexed { i, texture ->
+			glBindTextureUnit(i, texture.id)
+		}
 	}
 
 	override fun deactivate() {
 		glBindVertexArray(0)
+
+		textures.forEachIndexed { i, _ ->
+			glBindTextureUnit(i, 0)
+		}
 	}
 
 	override fun close() {
