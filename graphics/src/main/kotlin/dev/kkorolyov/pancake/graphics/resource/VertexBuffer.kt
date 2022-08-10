@@ -18,17 +18,14 @@ interface VertexBuffer : GraphicsResource {
 	val size: Int
 
 	/**
-	 * A multi-step vertex buffer builder.
+	 * Sets the vertices in this buffer to [vertices] starting at [offset].
+	 * Each vertex must match [structure] and the number of vertices must be `<= [size] - [offset]`.
 	 */
-	interface Builder {
-		/**
-		 * Appends a vertex composed of [attributes] to this builder.
-		 */
-		fun add(vararg attributes: Vector2)
-
-		/**
-		 * Returns a vertex buffer from the current vertices added to this builder.
-		 */
-		fun build(): VertexBuffer
+	fun set(offset: Long, vararg vertices: Array<Vector2>)
+	/**
+	 * [set] with offset `0`.
+	 */
+	fun set(vararg vertices: Array<Vector2>) {
+		set(0, *vertices)
 	}
 }

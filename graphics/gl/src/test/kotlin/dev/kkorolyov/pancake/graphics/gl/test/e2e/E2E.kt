@@ -9,6 +9,7 @@ import dev.kkorolyov.pancake.graphics.gl.resource.GLTexture
 import dev.kkorolyov.pancake.graphics.gl.resource.GLVertexBuffer
 import dev.kkorolyov.pancake.graphics.resource.Mesh
 import dev.kkorolyov.pancake.graphics.resource.Program
+import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
 import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector2
@@ -52,33 +53,31 @@ private val texture = GLTexture {
 	PixelBuffer.image(Resources.inStream("wall.jpg"))
 }
 
-private val solidMesh = GLMesh(
-	GLVertexBuffer {
-		val color = Vector3.of(0.0, 0.5)
+private val solidVertices = Vector3.of(0.0, 0.5).let { color ->
+	arrayOf(
+		arrayOf(Vector2.of(-0.5, -0.5), color),
+		arrayOf(Vector2.of(0.5, -0.5), color),
+		arrayOf(Vector2.of(0.0, 0.5), color)
+	)
+}
+private val rainbowVertices = arrayOf(
+	arrayOf(Vector2.of(-0.5, -0.5), Vector3.of(1.0)),
+	arrayOf(Vector2.of(0.5, -0.5), Vector3.of(0.0, 1.0)),
+	arrayOf(Vector2.of(0.0, 0.5), Vector3.of(0.0, 0.0, 1.0))
+)
+private val textureVertices = arrayOf(
+	arrayOf(Vector2.of(-0.5, -0.5), Vector2.of()),
+	arrayOf(Vector2.of(0.5, -0.5), Vector2.of(1.0)),
+	arrayOf(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0))
+)
 
-		add(Vector2.of(-0.5, -0.5), color)
-		add(Vector2.of(0.5, -0.5), color)
-		add(Vector2.of(0.0, 0.5), color)
-	},
-	mode = GLMesh.Mode.TRIANGLES
-)
-private val rainbowMesh = GLMesh(
-	GLVertexBuffer {
-		add(Vector2.of(-0.5, -0.5), Vector3.of(1.0))
-		add(Vector2.of(0.5, -0.5), Vector3.of(0.0, 1.0))
-		add(Vector2.of(0.0, 0.5), Vector3.of(0.0, 0.0, 1.0))
-	},
-	mode = GLMesh.Mode.TRIANGLES
-)
-private val textureMesh = GLMesh(
-	GLVertexBuffer {
-		add(Vector2.of(-0.5, -0.5), Vector2.of())
-		add(Vector2.of(0.5, -0.5), Vector2.of(1.0))
-		add(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0))
-	},
-	mode = GLMesh.Mode.TRIANGLES,
-	textures = listOf(texture)
-)
+private val solidBuffer: VertexBuffer = GLVertexBuffer(*solidVertices)
+private val rainbowBuffer: VertexBuffer = GLVertexBuffer(*rainbowVertices)
+private val textureBuffer: VertexBuffer = GLVertexBuffer(*textureVertices)
+
+private val solidMesh = GLMesh(solidBuffer, mode = GLMesh.Mode.TRIANGLES)
+private val rainbowMesh = GLMesh(rainbowBuffer, mode = GLMesh.Mode.TRIANGLES)
+private val textureMesh = GLMesh(textureBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
 
 private val scenes = mapOf(
 	GLFW_KEY_1 to Scene(colorProgram, solidMesh),
@@ -95,10 +94,38 @@ private var dragX = 0.0
 private var dragY = 0.0
 
 fun main() {
+	val vertBuffers = mapOf(
+		solidVertices to solidBuffer,
+		rainbowVertices to rainbowBuffer,
+		textureVertices to textureBuffer
+	)
+
 	glfwSetKeyCallback(window) { _, key, _, action, _ ->
 		if (action == GLFW_PRESS) {
+			// test various meshes
 			scenes[key]?.let {
 				currentScene = it
+			}
+
+			// test ad-hoc vertex buffer changes
+			if (key == GLFW_KEY_W) {
+				vertBuffers.forEach { (vertices, buffer) ->
+					vertices.forEach {
+						it.forEach {
+							it.scale(1.1)
+						}
+					}
+					buffer.set(*vertices)
+				}
+			} else if (key == GLFW_KEY_S) {
+				vertBuffers.forEach { (vertices, buffer) ->
+					vertices.forEach {
+						it.forEach {
+							it.scale(0.9)
+						}
+					}
+					buffer.set(*vertices)
+				}
 			}
 		}
 	}.use { }
@@ -113,6 +140,7 @@ fun main() {
 
 				glfwGetWindowSize(window, widthP, heightP)
 
+				// test uniforms
 				transform(dX = (x - dragX) / widthP[0], dY = (y - dragY) / heightP[0])
 			}
 		}

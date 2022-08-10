@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL46.*
 class GLIndexBuffer(vararg indices: Int) : IndexBuffer {
 	private val cache = Cache {
 		val id = glCreateBuffers()
-		glNamedBufferData(id, indices, BufferHint(BufferHint.Frequency.STATIC, BufferHint.Usage.DRAW).value)
+		glNamedBufferData(id, indices, GL_STATIC_DRAW)
 		id
 	}
 
