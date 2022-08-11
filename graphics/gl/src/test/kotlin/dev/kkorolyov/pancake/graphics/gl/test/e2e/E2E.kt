@@ -17,10 +17,12 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 import org.lwjgl.glfw.GLFW.*
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL46.*
+import org.lwjgl.opengl.GLUtil
 import org.lwjgl.system.MemoryStack
 
 private val window by lazy {
 	if (!glfwInit()) throw IllegalStateException("Cannot init GLFW")
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE)
 	val window = glfwCreateWindow(640, 640, "graphics-gl test", 0, 0)
 	if (window == 0L) throw IllegalStateException("Cannot create window")
 
@@ -28,7 +30,7 @@ private val window by lazy {
 	glfwSwapInterval(1)
 
 	GL.createCapabilities()
-
+	GLUtil.setupDebugMessageCallback()
 	glfwSetWindowSizeCallback(window) { _, width, height ->
 		glViewport(0, 0, width, height)
 	}

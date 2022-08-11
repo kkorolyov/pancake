@@ -16,7 +16,7 @@ class Editor(
 	private val loopDetails by lazy { LoopDetails(engine) }
 	private val pipelines by lazy { PipelinesTree(engine.toList()) }
 	private val entities by lazy { EntitiesTable(engine.entities) }
-	private val gl by lazy { GlDetails() }
+	private val gl by lazy { GLDetails() }
 
 	override fun invoke() {
 		loopDetails()
