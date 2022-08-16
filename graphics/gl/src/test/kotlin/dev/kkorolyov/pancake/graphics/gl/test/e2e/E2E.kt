@@ -47,19 +47,19 @@ private val window by lazy {
 private val colorProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("color.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("color.frag"))
-).apply {
+) {
 	set(0, Matrix4.identity())
 }
 private val textureProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("texture.frag"))
-).apply {
+) {
 	set(0, Matrix4.identity())
 }
 private val fontProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("font.frag"))
-).apply {
+) {
 	set(0, Matrix4.identity())
 }
 

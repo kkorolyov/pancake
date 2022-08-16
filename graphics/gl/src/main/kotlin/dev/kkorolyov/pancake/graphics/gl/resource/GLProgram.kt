@@ -14,12 +14,12 @@ import org.lwjgl.system.MemoryStack
  * An `OpenGL` program that can be reused across shared contexts.
  */
 class GLProgram(
-	/**
-	 * Shaders to link.
-	 */
-	vararg shaders: Shader
+	vararg shaders: Shader,
+	uniforms: Map<Int, Any> = mapOf()
 ) : Program {
-	private val uniforms = mutableMapOf<Int, Any>()
+	constructor(vararg shaders: Shader, init: Setup.() -> Unit) : this(*shaders, uniforms = Setup().apply(init).uniforms)
+
+	private val uniforms = uniforms.toMap()
 
 	private val cache = Cache {
 		val id = glCreateProgram()
@@ -31,53 +31,20 @@ class GLProgram(
 
 		if (glGetProgrami(id, GL_LINK_STATUS) == 0) throw IllegalArgumentException("Cannot link shader program: ${glGetProgramInfoLog(id)}")
 
+		this.uniforms.forEach { (location, value) ->
+			when (value) {
+				is Float -> set(id, location, value)
+				is Vector3 -> set(id, location, value)
+				is Vector2 -> set(id, location, value)
+				is Matrix4 -> set(id, location, value)
+				else -> throw IllegalArgumentException("unknown uniform type: ${value::class}")
+			}
+		}
+
 		id
 	}
 
 	override fun activate() {
-		if (uniforms.isNotEmpty()) {
-			uniforms.forEach { (location, value) ->
-				when (value) {
-					is Float -> glProgramUniform1f(id, location, value)
-					is Vector3 -> glProgramUniform3f(id, location, value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
-					is Vector2 -> glProgramUniform2f(id, location, value.x.toFloat(), value.y.toFloat())
-					is Matrix4 -> MemoryStack.stackPush().use {
-						val uP = it.mallocFloat(16)
-
-						value.apply {
-							uP
-								.put(xx.toFloat())
-								.put(yx.toFloat())
-								.put(zx.toFloat())
-								.put(wx.toFloat())
-
-								.put(xy.toFloat())
-								.put(yy.toFloat())
-								.put(zy.toFloat())
-								.put(wy.toFloat())
-
-								.put(xz.toFloat())
-								.put(yz.toFloat())
-								.put(zz.toFloat())
-								.put(wz.toFloat())
-
-								.put(xw.toFloat())
-								.put(yw.toFloat())
-								.put(zw.toFloat())
-								.put(ww.toFloat())
-						}
-
-						uP.flip()
-
-						glProgramUniformMatrix4fv(id, location, false, uP)
-					}
-
-					else -> throw IllegalArgumentException("unknown uniform type: ${value::class}")
-				}
-			}
-			uniforms.clear()
-		}
-
 		glUseProgram(id)
 	}
 
@@ -86,24 +53,98 @@ class GLProgram(
 	}
 
 	override fun set(location: Int, value: Float) {
-		uniforms[location] = value
+		set(id, location, value)
+	}
+
+	private fun set(id: Int, location: Int, value: Float) {
+		glProgramUniform1f(id, location, value)
 	}
 
 	override fun set(location: Int, value: Vector2) {
-		uniforms[location] = value
+		set(id, location, value)
+	}
+
+	private fun set(id: Int, location: Int, value: Vector2) {
+		glProgramUniform2f(id, location, value.x.toFloat(), value.y.toFloat())
 	}
 
 	override fun set(location: Int, value: Vector3) {
-		uniforms[location] = value
+		set(id, location, value)
+	}
+
+	private fun set(id: Int, location: Int, value: Vector3) {
+		glProgramUniform3f(id, location, value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
 	}
 
 	override fun set(location: Int, value: Matrix4) {
-		uniforms[location] = value
+		set(id, location, value)
+	}
+
+	private fun set(id: Int, location: Int, value: Matrix4) {
+		MemoryStack.stackPush().use { stack ->
+			glProgramUniformMatrix4fv(id, location, false,
+				value.run {
+					stack.floats(
+						xx.toFloat(),
+						yx.toFloat(),
+						zx.toFloat(),
+						wx.toFloat(),
+
+						xy.toFloat(),
+						yy.toFloat(),
+						zy.toFloat(),
+						wy.toFloat(),
+
+						xz.toFloat(),
+						yz.toFloat(),
+						zz.toFloat(),
+						wz.toFloat(),
+
+						xw.toFloat(),
+						yw.toFloat(),
+						zw.toFloat(),
+						ww.toFloat()
+					)
+				}
+			)
+		}
 	}
 
 	override val id by cache
 
 	override fun close() {
 		cache.invalidate(GL46::glDeleteProgram)
+	}
+
+	/**
+	 * Configures program uniform values.
+	 */
+	class Setup {
+		internal val uniforms = mutableMapOf<Int, Any>()
+
+		/**
+		 * Sets the [location] uniform's initial [value].
+		 */
+		fun set(location: Int, value: Float) {
+			uniforms[location] = value
+		}
+		/**
+		 * Sets the [location] uniform's initial [value].
+		 */
+		fun set(location: Int, value: Vector2) {
+			uniforms[location] = value
+		}
+		/**
+		 * Sets the [location] uniform's initial [value].
+		 */
+		fun set(location: Int, value: Vector3) {
+			uniforms[location] = value
+		}
+		/**
+		 * Sets the [location] uniform's initial [value].
+		 */
+		fun set(location: Int, value: Matrix4) {
+			uniforms[location] = value
+		}
 	}
 }
