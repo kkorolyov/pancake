@@ -53,7 +53,9 @@ $dokka.location:dev.kkorolyov.pancake.graphics/GraphicsResource///PointingToDecl
 $dokka.location:dev.kkorolyov.pancake.graphics/GraphicsResource/close/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-graphics-resource/close.html
 $dokka.location:dev.kkorolyov.pancake.graphics/GraphicsResource/id/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-graphics-resource/id.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion/blank/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/blank.html
+$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion/blank1/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/blank1.html
+$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion/blank2/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/blank2.html
+$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion/blank3/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/blank3.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/PixelBuffer/#kotlin.Int#kotlin.Int#kotlin.Int#kotlin.Int#java.nio.ByteBuffer#kotlin.Function1[java.nio.ByteBuffer,kotlin.Unit]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-pixel-buffer.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/channels/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/channels.html
