@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.graphics.resource.Texture
 import org.lwjgl.opengl.GL46.*
 
 private fun PixelBuffer.target() = if (depth > 0) GL_TEXTURE_3D else if (height > 0) GL_TEXTURE_2D else GL_TEXTURE_1D
-private fun PixelBuffer.format() = if (channels == 4) GL_RGBA8 to GL_RGBA else if (channels == 3) GL_RGB8 to GL_RGB else if (channels == 2) GL_RG8 to GL_RG else GL_R8 to GL_R
+private fun PixelBuffer.format() = if (channels == 4) GL_RGBA8 to GL_RGBA else if (channels == 3) GL_RGB8 to GL_RGB else if (channels == 2) GL_RG8 to GL_RG else GL_R8 to GL_RED
 
 /**
  * An `OpenGL` texture that can be reused across shared contexts.

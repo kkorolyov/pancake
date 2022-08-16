@@ -55,10 +55,10 @@ class GLVertexBuffer(vararg vertices: Array<out Vector2>) : VertexBuffer {
 					if (vector is Vector3) add(vector.z.toFloat())
 
 					// pad any remainder
-					for (j in count(vector) until length) add(0F)
+					for (j in count(vector) until length) add(0f)
 				} else {
 					// pad the entire attribute
-					for (j in 0 until length) add(0F)
+					for (j in 0 until length) add(0f)
 				}
 			}
 		}

@@ -39,18 +39,8 @@ object AudioListener {
 	fun setOrientation(orientation: Matrix4) {
 		alCall {
 			MemoryStack.stackPush().use {
-				val oP = it.mallocFloat(6)
 				// TODO use orientation to rotate
-				oP
-					.put(0F)
-					.put(0F)
-					.put(-1F)
-					.put(0F)
-					.put(1F)
-					.put(0F)
-				oP.flip()
-
-				alListenerfv(AL_ORIENTATION, oP)
+				alListenerfv(AL_ORIENTATION, it.floats(0f, 0f, -1f, 0f, 1f, 0f))
 			}
 		}
 	}

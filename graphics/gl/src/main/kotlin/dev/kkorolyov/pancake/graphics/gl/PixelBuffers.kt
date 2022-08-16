@@ -22,7 +22,6 @@ fun PixelBuffer.Companion.image(inStream: InputStream): PixelBuffer = inStream.u
 
 		val stbData = STBImage.stbi_load_from_memory(data, width, height, channels, 0)
 		MemoryUtil.memFree(data)
-
 		if (stbData == null) throw IllegalStateException("cannot load image: $inStream")
 
 		PixelBuffer(width[0], height[0], 0, channels[0], stbData, STBImage::stbi_image_free)

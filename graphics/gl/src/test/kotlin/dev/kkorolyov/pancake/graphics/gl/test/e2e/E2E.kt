@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.graphics.gl.test.e2e
 
 import dev.kkorolyov.pancake.graphics.PixelBuffer
+import dev.kkorolyov.pancake.graphics.gl.Font
 import dev.kkorolyov.pancake.graphics.gl.image
 import dev.kkorolyov.pancake.graphics.gl.resource.GLMesh
 import dev.kkorolyov.pancake.graphics.gl.resource.GLProgram
@@ -35,6 +36,9 @@ private val window by lazy {
 		glViewport(0, 0, width, height)
 	}
 
+	glEnable(GL_BLEND)
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
 	window
 }
 
@@ -47,6 +51,12 @@ private val colorProgram = GLProgram(
 private val textureProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("texture.frag"))
+).apply {
+	set(0, Matrix4.identity())
+}
+private val fontProgram = GLProgram(
+	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
+	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("font.frag"))
 ).apply {
 	set(0, Matrix4.identity())
 }
@@ -81,13 +91,25 @@ private val solidMesh = GLMesh(solidBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val rainbowMesh = GLMesh(rainbowBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val textureMesh = GLMesh(textureBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
 
-private val scenes = mapOf(
-	GLFW_KEY_1 to Scene(colorProgram, solidMesh),
-	GLFW_KEY_2 to Scene(colorProgram, rainbowMesh),
-	GLFW_KEY_3 to Scene(textureProgram, textureMesh)
+private val font = Font("roboto-mono.ttf", 20)
+
+private val scenes = listOf(
+	Scene(colorProgram, solidMesh),
+	Scene(colorProgram, rainbowMesh),
+	Scene(textureProgram, textureMesh),
+	Scene(fontProgram, font(
+		(0 until 6).joinToString("\n") { row ->
+			val columns = 16
+			val offset = row * columns + 32
+
+			(offset until offset + columns).map(::Char).joinToString("") { it.toString() }
+		}
+	))
 )
 
-private var currentScene = scenes.values.first()
+private var wireframe = false
+
+private var currentScene = scenes.first()
 private var currentScale = 1.0
 private var currentX = 0.0
 private var currentY = 0.0
@@ -105,8 +127,9 @@ fun main() {
 	glfwSetKeyCallback(window) { _, key, _, action, _ ->
 		if (action == GLFW_PRESS) {
 			// test various meshes
-			scenes[key]?.let {
-				currentScene = it
+			val sceneI = key - GLFW_KEY_1
+			if (sceneI >= 0 && sceneI < scenes.size) {
+				currentScene = scenes[sceneI]
 			}
 
 			// test ad-hoc vertex buffer changes
@@ -129,8 +152,16 @@ fun main() {
 					buffer.set(*vertices)
 				}
 			}
+
+			// show wireframes
+			if (key == GLFW_KEY_F) {
+				wireframe = !wireframe
+				glPolygonMode(GL_FRONT_AND_BACK, if (wireframe) GL_LINE else GL_FILL)
+			}
 		}
 	}.use { }
+
+	// test uniforms
 	glfwSetScrollCallback(window) { _, _, yOffset ->
 		transform(dScale = yOffset / 10)
 	}.use { }
@@ -142,7 +173,6 @@ fun main() {
 
 				glfwGetWindowSize(window, widthP, heightP)
 
-				// test uniforms
 				transform(dX = (x - dragX) / widthP[0], dY = (y - dragY) / heightP[0])
 			}
 		}
@@ -167,7 +197,7 @@ private fun transform(dScale: Double = 0.0, dX: Double = 0.0, dY: Double = 0.0) 
 	currentX += dX
 	currentY += dY
 
-	arrayOf(colorProgram, textureProgram).forEach {
+	arrayOf(colorProgram, textureProgram, fontProgram).forEach {
 		it[0] = Matrix4.identity().apply {
 			scale(currentScale)
 			xw = currentX * 2
