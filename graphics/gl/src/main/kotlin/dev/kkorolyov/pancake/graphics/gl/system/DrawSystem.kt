@@ -3,9 +3,9 @@ package dev.kkorolyov.pancake.graphics.gl.system
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.graphics.Camera
 import dev.kkorolyov.pancake.graphics.CameraQueue
-import dev.kkorolyov.pancake.graphics.gl.component.Model
-import dev.kkorolyov.pancake.graphics.gl.mesh.Mesh
-import dev.kkorolyov.pancake.graphics.gl.shader.Program
+import dev.kkorolyov.pancake.graphics.component.Model
+import dev.kkorolyov.pancake.graphics.resource.Mesh
+import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Matrix4
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL46.*
 
 /**
  * Draws entity [Model]s from the perspectives of all active [Camera]s.
- * Each program is provided a `uniform mat4 transform` transforming vertices to clip space.
+ * Each program is provided a `(location = 0) mat4` uniform transforming vertices to clip space.
  */
 class DrawSystem(
 	private val queue: CameraQueue
@@ -32,7 +32,7 @@ class DrawSystem(
 			}
 
 			pending.forEach { (program, entities) ->
-				program.use()
+				program.activate()
 				entities.forEach {
 					val meshes = it[Model::class.java].meshes
 					val position = it[Transform::class.java].globalPosition
@@ -45,14 +45,15 @@ class DrawSystem(
 					transform.yw = (position.y - camera.transform.globalPosition.y) * transform.yy
 					transform.zw = position.z - camera.transform.globalPosition.z
 
-					program.set("transform", transform)
+					program[0] = transform
 
 					meshes.forEach(Mesh::draw)
 				}
+				program.deactivate()
+
+				// clear for next update
 				entities.clear()
 			}
 		}
-
-		pending.clear()
 	}
 }

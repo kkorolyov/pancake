@@ -12,7 +12,7 @@ class CameraQueue {
 	 * If `entity` is not already present in this queue, adds it and assigns a [Camera] to it.
 	 */
 	operator fun plusAssign(entity: Entity) {
-		values.computeIfAbsent(entity.id) { Camera(entity) }
+		values.getOrPut(entity.id) { Camera(entity) }
 	}
 
 	/**

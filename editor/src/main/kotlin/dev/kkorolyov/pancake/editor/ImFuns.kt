@@ -10,15 +10,15 @@ private typealias Op = () -> Unit
 /**
  * Draws [value] as text.
  */
-fun text(value: Any) {
+fun text(value: Any?) {
 	ImGui.text(value.toString())
 }
 
 /**
  * Draws tooltip [text] when the last set item is hovered.
  */
-fun tooltip(text: String) {
-	if (ImGui.isItemHovered()) ImGui.setTooltip(text)
+fun tooltip(value: Any?) {
+	if (ImGui.isItemHovered()) ImGui.setTooltip(value.toString())
 }
 /**
  * Runs [op] in a tooltip when the last set item is hovered.
@@ -88,6 +88,16 @@ inline fun indented(op: Op) {
 	ImGui.indent()
 	op()
 	ImGui.unindent()
+}
+
+/**
+ * Draws a simple form field-like entry with [name] and [value].
+ */
+fun field(name: Any, value: Any?) {
+	text(name)
+	indented {
+		text(value)
+	}
 }
 
 /**

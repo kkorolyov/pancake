@@ -9,7 +9,7 @@ import dev.kkorolyov.pancake.platform.Pipeline
 import dev.kkorolyov.pancake.platform.Resources
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL
-import org.lwjgl.opengl.GL46
+import org.lwjgl.opengl.GL46.*
 
 private const val editorSettings = "editor.ini"
 
@@ -38,7 +38,7 @@ private lateinit var editor: Window
  */
 fun drawStart(): GameSystem = Pipeline.run {
 	GLFW.glfwMakeContextCurrent(window)
-	GL46.glClear(GL46.GL_COLOR_BUFFER_BIT or GL46.GL_DEPTH_BUFFER_BIT)
+	glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 }
 
 /**
