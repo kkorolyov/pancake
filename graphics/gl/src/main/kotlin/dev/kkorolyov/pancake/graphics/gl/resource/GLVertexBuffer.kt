@@ -14,8 +14,11 @@ private fun count(vector: Vector2) = when (vector) {
 
 /**
  * An `OpenGL` vertex buffer that can be reused across shared contexts.
+ * Initialized with `vertices`.
  */
 class GLVertexBuffer(vararg vertices: Array<out Vector2>) : VertexBuffer {
+	constructor(init: Builder.() -> Unit) : this(*Builder().apply(init).vertices.toTypedArray())
+
 	override val structure: List<Int> = IntArray(vertices.maxOf(Array<out Vector2>::size)).apply {
 		vertices.forEach { vertex ->
 			vertex.forEachIndexed { i, attr ->
@@ -76,22 +79,11 @@ class GLVertexBuffer(vararg vertices: Array<out Vector2>) : VertexBuffer {
 		cache.invalidate(::glDeleteBuffers)
 	}
 
-	companion object {
-		/**
-		 * Returns a vertex buffer configured according to [init].
-		 */
-		operator fun invoke(init: Builder.() -> Unit): GLVertexBuffer {
-			val builder = Builder()
-			builder.init()
-			return builder.build()
-		}
-	}
-
 	/**
 	 * Builds vertex buffers.
 	 */
 	class Builder {
-		private val vertices = mutableListOf<Array<out Vector2>>()
+		internal val vertices = mutableListOf<Array<out Vector2>>()
 
 		/**
 		 * Adds a vertex of [attributes] to this builder.
@@ -99,7 +91,5 @@ class GLVertexBuffer(vararg vertices: Array<out Vector2>) : VertexBuffer {
 		fun add(vararg attributes: Vector2) {
 			vertices += attributes
 		}
-
-		internal fun build(): GLVertexBuffer = GLVertexBuffer(*vertices.toTypedArray())
 	}
 }

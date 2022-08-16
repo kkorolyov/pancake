@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.graphics.gl.test.e2e
 
 import dev.kkorolyov.pancake.graphics.PixelBuffer
+import dev.kkorolyov.pancake.graphics.ellipse
 import dev.kkorolyov.pancake.graphics.gl.Font
 import dev.kkorolyov.pancake.graphics.gl.image
 import dev.kkorolyov.pancake.graphics.gl.resource.GLMesh
@@ -8,6 +9,7 @@ import dev.kkorolyov.pancake.graphics.gl.resource.GLProgram
 import dev.kkorolyov.pancake.graphics.gl.resource.GLShader
 import dev.kkorolyov.pancake.graphics.gl.resource.GLTexture
 import dev.kkorolyov.pancake.graphics.gl.resource.GLVertexBuffer
+import dev.kkorolyov.pancake.graphics.rectangle
 import dev.kkorolyov.pancake.graphics.resource.Mesh
 import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
@@ -45,19 +47,19 @@ private val window by lazy {
 private val colorProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("color.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("color.frag"))
-).apply {
+) {
 	set(0, Matrix4.identity())
 }
 private val textureProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("texture.frag"))
-).apply {
+) {
 	set(0, Matrix4.identity())
 }
 private val fontProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("font.frag"))
-).apply {
+) {
 	set(0, Matrix4.identity())
 }
 
@@ -90,6 +92,24 @@ private val textureBuffer: VertexBuffer = GLVertexBuffer(*textureVertices)
 private val solidMesh = GLMesh(solidBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val rainbowMesh = GLMesh(rainbowBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val textureMesh = GLMesh(textureBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
+private val rectangleMesh = GLMesh(
+	GLVertexBuffer {
+		rectangle(Vector2.of(1.0, 1.0)) { position, texCoord ->
+			add(position, texCoord)
+		}
+	},
+	mode = GLMesh.Mode.TRIANGLE_FAN,
+	textures = listOf(texture)
+)
+private val ellipseMesh = GLMesh(
+	GLVertexBuffer {
+		ellipse(Vector2.of(1.0, 1.0)) { position, texCoord ->
+			add(position, texCoord)
+		}
+	},
+	mode = GLMesh.Mode.TRIANGLE_FAN,
+	textures = listOf(texture)
+)
 
 private val font = Font("roboto-mono.ttf", 20)
 
@@ -97,6 +117,8 @@ private val scenes = listOf(
 	Scene(colorProgram, solidMesh),
 	Scene(colorProgram, rainbowMesh),
 	Scene(textureProgram, textureMesh),
+	Scene(textureProgram, rectangleMesh),
+	Scene(textureProgram, ellipseMesh),
 	Scene(fontProgram, font(
 		(0 until 6).joinToString("\n") { row ->
 			val columns = 16

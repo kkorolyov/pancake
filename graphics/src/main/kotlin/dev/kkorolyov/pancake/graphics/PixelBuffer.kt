@@ -42,10 +42,26 @@ data class PixelBuffer(
 
 	companion object {
 		/**
-		 * Returns a single-element buffer of the value `255`.
+		 * Returns a 1D single-element buffer of the value `255`.
 		 */
-		fun blank() = PixelBuffer(1, 0, 0, 1, ByteBuffer.allocateDirect(1).apply {
-			put((255 and 0xff).toByte())
-		}) {}
+		fun blank1() = blank(1)
+		/**
+		 * Returns a 2D single-element buffer of the value `255`.
+		 */
+		fun blank2() = blank(1, 1)
+		/**
+		 * Returns a 3D single-element buffer of the value `255`.
+		 */
+		fun blank3() = blank(1, 1, 1)
+
+		private fun blank(width: Int = 0, height: Int = 0, depth: Int = 0) = PixelBuffer(width, height, depth, 4, ByteBuffer.allocateDirect(4).apply {
+			val value = (255 and 0xff).toByte()
+
+			(0 until capacity()).forEach {
+				put(it, value)
+			}
+		}) {
+			// no need to free manually - ByteBuffer has a Cleaner that will free on GC
+		}
 	}
 }

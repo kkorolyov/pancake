@@ -10,22 +10,22 @@ import dev.kkorolyov.pancake.platform.math.Vector3
  */
 interface Program : GraphicsResource.Active {
 	/**
-	 * Sets the [location] uniform's value to [value].
+	 * Sets the [location] uniform's [value].
 	 */
 	operator fun set(location: Int, value: Float)
 
 	/**
-	 * Sets the [location] uniform's value to [value].
+	 * Sets the [location] uniform's [value].
 	 */
 	operator fun set(location: Int, value: Vector2)
 
 	/**
-	 * Sets the [location] uniform's value to [value].
+	 * Sets the [location] uniform's [value].
 	 */
 	operator fun set(location: Int, value: Vector3)
 
 	/**
-	 * Sets the [location] uniform's value to [value].
+	 * Sets the [location] uniform's [value].
 	 */
 	operator fun set(location: Int, value: Matrix4)
 }
