@@ -10,6 +10,7 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.component;
 	exports dev.kkorolyov.pancake.core.component.event;
 	exports dev.kkorolyov.pancake.core.component.movement;
+	exports dev.kkorolyov.pancake.core.component.tag;
 	exports dev.kkorolyov.pancake.core.system;
 	exports dev.kkorolyov.pancake.core.system.cleanup;
 

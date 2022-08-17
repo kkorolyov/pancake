@@ -21,8 +21,6 @@ public final class Bounds implements Component {
 	private final Vector2[] normals;
 	private final double magnitude;
 
-	private boolean correctable;
-
 	public static Bounds box(Vector3 dimensions) {
 		double halfX = dimensions.getX() / 2, halfY = dimensions.getY() / 2, halfZ = dimensions.getZ() / 2;
 
@@ -119,20 +117,5 @@ public final class Bounds implements Component {
 	 */
 	public boolean isRound() {
 		return vertices.length == 1;
-	}
-
-	/**
-	 * Returns {@code true} if when this boundary intersects with another, the owning entity should be modified to alleviate the intersection.
-	 */
-	public boolean isCorrectable() {
-		return correctable;
-	}
-	/**
-	 * Sets correctable state to {@code correctable}.
-	 * Defaults to {@code false}.
-	 * @see #isCorrectable()
-	 */
-	public void setCorrectable(boolean correctable) {
-		this.correctable = correctable;
 	}
 }

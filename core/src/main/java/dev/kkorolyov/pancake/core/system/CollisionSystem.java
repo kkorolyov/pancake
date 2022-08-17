@@ -4,48 +4,62 @@ import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
+import dev.kkorolyov.pancake.core.component.tag.Collidable;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+
 /**
- * Updates intersecting entities with additional elastic collisions where applicable.
+ * Simmulates collisions for {@link Collidable} {@link Intersected} entities.
+ * <p>
+ * In any intersection, reflects that entity with the lesser non-{@code null} {@link Collidable} component.
+ * If both {@link Collidable} components are equal, collides both entities.
  */
 public final class CollisionSystem extends GameSystem {
-	private final Vector2 mtv = Vector2.of(0, 0);
+	private static final Comparator<Collidable> COMPARATOR = Comparator.nullsLast(Comparator.naturalOrder());
+
 	private final Vector3 vTemp = Vector3.of(0, 0, 0);
 	private final Vector3 vDiff = Vector3.of(0, 0, 0);
 	private final Vector3 sDiff = Vector3.of(0, 0, 0);
+
+	private final Collection<Intersected> events = new HashSet<>();
 
 	/**
 	 * Constructs a new collision system.
 	 */
 	public CollisionSystem() {
-		super(Intersected.class);
+		super(Intersected.class, Collidable.class, Velocity.class);
 	}
 
 	@Override
 	public void update(Entity entity, long dt) {
-		Intersected intersected = entity.get(Intersected.class);
+		Intersected event = entity.get(Intersected.class);
+		if (events.add(event)) {
+			int priority = COMPARATOR.compare(event.getA().get(Collidable.class), event.getB().get(Collidable.class));
 
-		Transform aTransform = entity.get(Transform.class);
-		Transform bTransform = intersected.getOther().get(Transform.class);
-		Velocity aVelocity = entity.get(Velocity.class);
-		Velocity bVelocity = intersected.getOther().get(Velocity.class);
-		Mass aMass = entity.get(Mass.class);
-		Mass bMass = intersected.getOther().get(Mass.class);
+			Transform aTransform = event.getA().get(Transform.class);
+			Transform bTransform = event.getB().get(Transform.class);
 
-		mtv.set(intersected.getMtv());
-		if (aVelocity != null) {
-			if (aMass != null && bVelocity != null && bMass != null) collide(aTransform.getPosition(), bTransform.getPosition(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
-			else {
-				reflect(aVelocity.getValue(), mtv);
+			Velocity aVelocity = event.getA().get(Velocity.class);
+			Velocity bVelocity = event.getB().get(Velocity.class);
+
+			Mass aMass = event.getA().get(Mass.class);
+			Mass bMass = event.getB().get(Mass.class);
+
+			if (priority <= 0 && aVelocity != null) {
+				if (aTransform != null && aMass != null && priority == 0 && bVelocity != null && bTransform != null && bMass != null) {
+					collide(aTransform.getPosition(), bTransform.getPosition(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
+				} else {
+					reflect(aVelocity.getValue(), event.getMtvA());
+				}
+			} else {
+				reflect(bVelocity.getValue(), event.getMtvB());
 			}
-		} else if (bVelocity != null) {
-			// reverse so relative to B
-			mtv.scale(-1);
-			reflect(bVelocity.getValue(), mtv);
 		}
 	}
 	private void collide(Vector3 aPos, Vector3 bPos, Vector3 aVelocity, Vector3 bVelocity, double aMass, double bMass) {
@@ -73,5 +87,10 @@ public final class CollisionSystem extends GameSystem {
 	}
 	private static void reflect(Vector2 velocity, Vector2 normal) {
 		velocity.reflect(normal);
+	}
+
+	@Override
+	protected void after() {
+		events.clear();
 	}
 }

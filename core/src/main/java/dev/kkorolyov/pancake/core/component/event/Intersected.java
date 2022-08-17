@@ -5,31 +5,55 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 
 /**
- * Notes that an intersection with another entity occurred.
+ * Notes that an intersection between entities occurred.
+ * Each mutually-intersecting entity is provided the same instance of this component.
  */
 public final class Intersected implements Component {
-	private final Entity other;
-	private final Vector2 mtv;
+	private final Entity a, b;
+	private final Vector2 mtvA, mtvB;
 
 	/**
-	 * Constructs a new intersected event with {@code other} including owning-entity-relative normalized {@code mtv} used to remove overlap.
+	 * Constructs a new intersected component between {@code a} and {@code b} with the {@code a}-relative {@code mtv}.
+	 * Assigns the component to both {@code a} and {@code b}.
 	 */
-	public Intersected(Entity other, Vector2 mtv) {
-		this.other = other;
-		this.mtv = Vector2.of(mtv);
+	public static void create(Entity a, Entity b, Vector2 mtv) {
+		Intersected intersected = new Intersected(a, b, mtv);
+		a.put(intersected);
+		b.put(intersected);
+	}
+
+	private Intersected(Entity a, Entity b, Vector2 mtv) {
+		this.a = a;
+		this.b = b;
+
+		mtvA = Vector2.of(mtv);
+		mtvB = Vector2.of(mtv);
+		mtvB.scale(-1);
 	}
 
 	/**
-	 * Returns the entity intersecting with the owning entity.
+	 * Returns the first intersecting entity.
 	 */
-	public Entity getOther() {
-		return other;
+	public Entity getA() {
+		return a;
+	}
+	/**
+	 * Returns the second intersecting entity.
+	 */
+	public Entity getB() {
+		return b;
 	}
 
 	/**
-	 * Returns the minimum translation vector used to separate entities relative to the owning entity.
+	 * Returns the {@link #getA()}-relative minimum translation vector to separate it from {@link #getB()}.
 	 */
-	public Vector2 getMtv() {
-		return mtv;
+	public Vector2 getMtvA() {
+		return mtvA;
+	}
+	/**
+	 * Returns the {@link #getB()}-relative minimum translation vector to separate it from {@link #getA()}.
+	 */
+	public Vector2 getMtvB() {
+		return mtvB;
 	}
 }

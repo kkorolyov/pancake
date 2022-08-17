@@ -3,8 +3,10 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
+import dev.kkorolyov.pancake.core.component.tag.Correctable;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.math.FloatOps;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
@@ -14,7 +16,8 @@ import java.util.Collection;
 import java.util.Queue;
 
 /**
- * Detects entity intersections and enqueues intersection events with normalized minimum translation vectors.
+ * Detects entity intersections.
+ * Adds an {@link Intersected} component to each intersecting entity.
  */
 public final class IntersectionSystem extends GameSystem {
 	private final Queue<Entity> toCheck = new ArrayDeque<>();
@@ -25,9 +28,6 @@ public final class IntersectionSystem extends GameSystem {
 	private final Collection<Vector2> seenAxes = new ArrayList<>();
 	private final Projection aProj = new Projection(), bProj = new Projection();
 
-	/**
-	 * Constructs a new intersection system.
-	 */
 	public IntersectionSystem() {
 		super(Transform.class, Bounds.class);
 	}
@@ -52,28 +52,15 @@ public final class IntersectionSystem extends GameSystem {
 		Bounds aBounds = a.get(Bounds.class);
 		Bounds bBounds = b.get(Bounds.class);
 
-		// polygons can be far enough apart to not need a more precise check
 		// only consider when either can be corrected
-		if ((aBounds.isCorrectable() || bBounds.isCorrectable()) && isClose(aTransform, bTransform, aBounds, bBounds)) {
+		// polygons can be far enough apart to not need a more precise check
+		if ((a.get(Correctable.class) != null || b.get(Correctable.class) != null) && isClose(aTransform, bTransform, aBounds, bBounds)) {
 			if (aBounds.isRound() && bBounds.isRound()) processRound(aTransform, bTransform, aBounds, bBounds);
 			else processPoly(aTransform, bTransform, aBounds, bBounds);
 
-			if (mtv.getX() != 0 || mtv.getY() != 0) {
-				a.put(new Intersected(b, mtv));
-
+			if (!(FloatOps.equals(mtv.getX(), 0) && FloatOps.equals(mtv.getY(), 0))) {
 				mtv.scale(minOverlap);
-
-				// move appropriate entity(s) to remove overlap
-				if (aBounds.isCorrectable()) {
-					if (bBounds.isCorrectable()) {
-						aTransform.getPosition().add(mtv, 0.5);
-						bTransform.getPosition().add(mtv, -0.5);
-					} else {
-						aTransform.getPosition().add(mtv);
-					}
-				} else {
-					bTransform.getPosition().add(mtv, -1);
-				}
+				Intersected.create(a, b, mtv);
 			}
 			minOverlap = 0;
 			mtv.setX(0);
