@@ -12,6 +12,7 @@ $dokka.location:dev.kkorolyov.pancake.graphics.component/Model///PointingToDecla
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/Model/#dev.kkorolyov.pancake.graphics.resource.Program#kotlin.Array[dev.kkorolyov.pancake.graphics.resource.Mesh]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/-model.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/meshes/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/meshes.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/program/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/program.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Model/setMeshes/#kotlin.Array[dev.kkorolyov.pancake.graphics.resource.Mesh]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/set-meshes.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource/IndexBuffer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/-index-buffer/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource/IndexBuffer/size/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/-index-buffer/size.html
