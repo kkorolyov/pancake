@@ -5,19 +5,24 @@ import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.core.component.tag.Collidable;
-import dev.kkorolyov.pancake.core.component.tag.Correctable;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 
 /**
  * Simmulates collisions for {@link Collidable} {@link Intersected} entities.
+ * <p>
+ * In any intersection, reflects that entity with the lesser non-{@code null} {@link Collidable} component.
+ * If both {@link Collidable} components are equal, collides both entities.
  */
 public final class CollisionSystem extends GameSystem {
+	private static final Comparator<Collidable> COMPARATOR = Comparator.nullsLast(Comparator.naturalOrder());
+
 	private final Vector3 vTemp = Vector3.of(0, 0, 0);
 	private final Vector3 vDiff = Vector3.of(0, 0, 0);
 	private final Vector3 sDiff = Vector3.of(0, 0, 0);
@@ -28,15 +33,14 @@ public final class CollisionSystem extends GameSystem {
 	 * Constructs a new collision system.
 	 */
 	public CollisionSystem() {
-		super(Intersected.class, Correctable.class, Velocity.class);
+		super(Intersected.class, Collidable.class, Velocity.class);
 	}
 
 	@Override
 	public void update(Entity entity, long dt) {
 		Intersected event = entity.get(Intersected.class);
 		if (events.add(event)) {
-			boolean aCollidable = event.getA().get(Collidable.class) != null;
-			boolean bCollidable = event.getB().get(Collidable.class) != null;
+			int priority = COMPARATOR.compare(event.getA().get(Collidable.class), event.getB().get(Collidable.class));
 
 			Transform aTransform = event.getA().get(Transform.class);
 			Transform bTransform = event.getB().get(Transform.class);
@@ -47,8 +51,8 @@ public final class CollisionSystem extends GameSystem {
 			Mass aMass = event.getA().get(Mass.class);
 			Mass bMass = event.getB().get(Mass.class);
 
-			if (aCollidable && aVelocity != null) {
-				if (aTransform != null && aMass != null && bCollidable && bVelocity != null && bTransform != null && bMass != null) {
+			if (priority <= 0 && aVelocity != null) {
+				if (aTransform != null && aMass != null && priority == 0 && bVelocity != null && bTransform != null && bMass != null) {
 					collide(aTransform.getPosition(), bTransform.getPosition(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
 				} else {
 					reflect(aVelocity.getValue(), event.getMtvA());
