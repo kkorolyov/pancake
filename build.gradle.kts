@@ -4,7 +4,7 @@ plugins {
 	java
 	id("org.ajoberstar.reckon") version "0.+"
 	kotlin("jvm") version "1.7.10" apply false
-	id("org.jetbrains.dokka") version "1.7.10" apply false
+	id("org.jetbrains.dokka") version "1.7.20" apply false
 }
 
 tasks.wrapper {
