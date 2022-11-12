@@ -55,10 +55,9 @@ data class PixelBuffer(
 		fun blank3() = blank(1, 1, 1)
 
 		private fun blank(width: Int = 0, height: Int = 0, depth: Int = 0) = PixelBuffer(width, height, depth, 4, ByteBuffer.allocateDirect(4).apply {
-			val value = (255 and 0xff).toByte()
-
 			(0 until capacity()).forEach {
-				put(it, value)
+				// -1 signed == 255 unsigned
+				put(it, -1)
 			}
 		}) {
 			// no need to free manually - ByteBuffer has a Cleaner that will free on GC
