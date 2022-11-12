@@ -56,6 +56,12 @@ private val textureProgram = GLProgram(
 ) {
 	set(0, Matrix4.identity())
 }
+private val coTexProgram = GLProgram(
+	GLShader(GLShader.Type.VERTEX, Resources.inStream("coTex.vert")),
+	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("coTex.frag"))
+) {
+	set(0, Matrix4.identity())
+}
 private val fontProgram = GLProgram(
 	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
 	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("font.frag"))
@@ -84,14 +90,22 @@ private val textureVertices = arrayOf(
 	arrayOf(Vector2.of(0.5, -0.5), Vector2.of(1.0)),
 	arrayOf(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0))
 )
+private val coTexVertices = arrayOf(
+	arrayOf(Vector2.of(-0.5, -0.5), Vector2.of(), Vector3.of(0.0, 0.0, 1.0)),
+	arrayOf(Vector2.of(0.5, -0.5), Vector2.of(1.0), Vector3.of(0.0, 1.0)),
+	arrayOf(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0), Vector3.of(1.0))
+)
 
 private val solidBuffer: VertexBuffer = GLVertexBuffer(*solidVertices)
 private val rainbowBuffer: VertexBuffer = GLVertexBuffer(*rainbowVertices)
 private val textureBuffer: VertexBuffer = GLVertexBuffer(*textureVertices)
+private val coTexBuffer = GLVertexBuffer(*coTexVertices)
 
 private val solidMesh = GLMesh(solidBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val rainbowMesh = GLMesh(rainbowBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val textureMesh = GLMesh(textureBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
+private val coTexMesh = GLMesh(coTexBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(GLTexture(pixels = PixelBuffer.Companion::blank2)))
+
 private val rectangleMesh = GLMesh(
 	GLVertexBuffer {
 		rectangle(Vector2.of(1.0, 1.0)) { position, texCoord ->
@@ -114,11 +128,15 @@ private val ellipseMesh = GLMesh(
 private val font = Font("roboto-mono.ttf", 20)
 
 private val scenes = listOf(
+	// triangles
 	Scene(colorProgram, solidMesh),
 	Scene(colorProgram, rainbowMesh),
 	Scene(textureProgram, textureMesh),
+	// other shapes
 	Scene(textureProgram, rectangleMesh),
 	Scene(textureProgram, ellipseMesh),
+	// speshul
+	Scene(coTexProgram, coTexMesh),
 	Scene(fontProgram, font(
 		(0 until 6).joinToString("\n") { row ->
 			val columns = 16
