@@ -6,7 +6,8 @@ import imgui.ImGui
 import imgui.type.ImBoolean
 
 /**
- * Renders a top-level window.
+ * Renders [content] within a top-level window.
+ * Can optionally be provided [flags] and additional [setup] to run before rendering.
  */
 class Window(
 	/**
@@ -14,7 +15,9 @@ class Window(
 	 */
 	var label: String,
 	private val content: Widget,
-	private val visiblePtr: ImBoolean = true.ptr()
+	private val visiblePtr: ImBoolean = true.ptr(),
+	private val flags: Int = 0,
+	private val setup: () -> Unit = {}
 ) : Widget {
 	/**
 	 * Whether this is visible.
@@ -33,7 +36,8 @@ class Window(
 
 	override fun invoke() {
 		if (visible) {
-			if (ImGui.begin(label, visiblePtr)) {
+			setup()
+			if (ImGui.begin(label, visiblePtr, flags)) {
 				content()
 			}
 			ImGui.end()
