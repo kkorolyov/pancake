@@ -39,6 +39,15 @@ inline fun onClick(op: Op) {
 }
 
 /**
+ * Runs [op] within a group.
+ */
+inline fun group(op: Op) {
+	ImGui.beginGroup()
+	op()
+	ImGui.endGroup()
+}
+
+/**
  * Runs [op] in a tree node labeled [label].
  */
 inline fun tree(label: String, op: Op) {
