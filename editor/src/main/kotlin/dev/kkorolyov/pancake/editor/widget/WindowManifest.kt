@@ -13,6 +13,16 @@ class WindowManifest<T> : Widget {
 	private var recent: Window? = null
 
 	/**
+	 * The number of windows in this manifest.
+	 */
+	val size: Int
+		get() = windows.size
+
+	/**
+	 * Returns the window bound to [key], if any.
+	 */
+	operator fun get(key: T): Window? = windows[key]
+	/**
 	 * Focuses the current window bound to [key] if it exists, else binds the window returned from [initializer].
 	 */
 	operator fun set(key: T, initializer: () -> Window) {
@@ -21,6 +31,8 @@ class WindowManifest<T> : Widget {
 			log.debug("add window {{}}", window.label)
 			window
 		}
+
+		recent?.visible = true
 	}
 
 	override fun invoke() {
