@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.input.glfw.system
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.input.component.Input
-import dev.kkorolyov.pancake.input.glfw.input.ActionEvent.Action.Companion.forValue
+import dev.kkorolyov.pancake.input.glfw.input.StateEvent.State.Companion.forValue
 import dev.kkorolyov.pancake.input.glfw.input.CursorPosEvent
 import dev.kkorolyov.pancake.input.glfw.input.InputEvent
 import dev.kkorolyov.pancake.input.glfw.input.KeyEvent
