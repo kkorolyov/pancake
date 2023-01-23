@@ -80,6 +80,7 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 				write(ImGui.saveIniSettingsToMemory())
 				flush()
 			}
+			ImGui.getIO().wantSaveIniSettings = false
 		} else {
 			log.info("no settings changed - skipping save")
 		}
