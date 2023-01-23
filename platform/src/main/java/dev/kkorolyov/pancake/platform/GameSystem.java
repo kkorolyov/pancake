@@ -27,6 +27,23 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	}
 
 	/**
+	 * Returns a system that runs {@code op} once per update.
+	 * Useful for simple, pipeline-spanning hooks like setting up rendering, swapping buffers, or polling events.
+	 */
+	public static GameSystem hook(Runnable op) {
+		// dummy component to avoid iterating over all entities
+		return new GameSystem(DummyComponent.class) {
+			@Override
+			protected void update(Entity entity, long dt) {}
+
+			@Override
+			protected void after() {
+				op.run();
+			}
+		};
+	}
+
+	/**
 	 * Invoked on each entity affected by this system.
 	 * @param entity entity to update
 	 * @param dt {@code ns} elapsed since last {@code update} to this system
@@ -72,6 +89,7 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 
 	/**
 	 * Executes a single update on this system with {@code dt} {@code (ns)} timestep.
+	 * A {@code dt < 0} is allowed (can imply e.g. update in reverse).
 	 */
 	final void update(long dt) {
 		sampler.reset();
@@ -113,4 +131,6 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 				", sampler=" + sampler +
 				'}';
 	}
+
+	private static class DummyComponent implements Component {}
 }

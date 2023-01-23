@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.editor.widget.Editor
 import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameSystem
-import dev.kkorolyov.pancake.platform.Pipeline
 import dev.kkorolyov.pancake.platform.Resources
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL
@@ -36,7 +35,7 @@ private lateinit var editor: Window
 /**
  * Returns a system setting up GL context to draw frame.
  */
-fun drawStart(): GameSystem = Pipeline.run {
+fun drawStart(): GameSystem = GameSystem.hook {
 	GLFW.glfwMakeContextCurrent(window)
 	glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 }
@@ -44,7 +43,7 @@ fun drawStart(): GameSystem = Pipeline.run {
 /**
  * Returns a system swapping frame buffers and polling input events.
  */
-fun drawEnd(): GameSystem = Pipeline.run {
+fun drawEnd(): GameSystem = GameSystem.hook {
 	GLFW.glfwSwapBuffers(window)
 	GLFW.glfwPollEvents()
 }
@@ -54,7 +53,7 @@ fun drawEnd(): GameSystem = Pipeline.run {
  */
 fun editor(engine: GameEngine): GameSystem {
 	editor = Window("Editor", Editor(engine))
-	return Pipeline.run {
+	return GameSystem.hook {
 		container(editor)
 	}
 }

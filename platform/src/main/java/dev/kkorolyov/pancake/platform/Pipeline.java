@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake.platform;
 
-import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
 import dev.kkorolyov.pancake.platform.utility.Sampler;
 
@@ -31,22 +30,6 @@ public final class Pipeline implements Iterable<GameSystem> {
 	}
 
 	/**
-	 * Returns a system that runs {@code op} once per update.
-	 * Useful for simple, pipeline-spanning hooks like setting up rendering, swapping buffers, or polling events.
-	 */
-	public static GameSystem run(Runnable op) {
-		return new GameSystem() {
-			@Override
-			protected void update(Entity entity, long dt) {}
-
-			@Override
-			protected void after() {
-				op.run();
-			}
-		};
-	}
-
-	/**
 	 * Returns a pipeline that runs this pipeline's systems with target {@code frequency}.
 	 * The returned pipeline ensures that its systems update at a constant {@code frequency} times per second.
 	 */
@@ -56,6 +39,7 @@ public final class Pipeline implements Iterable<GameSystem> {
 
 	/**
 	 * Updates this pipeline by {@code dt} elapsed ns.
+	 * A {@code dt < 0} is supported (can imply e.g. update in reverse).
 	 */
 	void update(long dt) {
 		lag += Math.abs(dt);
