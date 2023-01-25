@@ -9,7 +9,16 @@ import spock.lang.Specification
 class PipelineSpec extends Specification {
 	GameSystem[] systems = (1..4).collect { Spy(new MockSystem()) }
 
-	Pipeline pipeline = setupPipeline(new Pipeline(systems))
+	EntityPool entities = new EntityPool()
+	Suspend suspend = new Suspend()
+
+	Pipeline pipeline = new Pipeline(systems)
+
+	def setup() {
+		entities.create().put(new MockComponent())
+
+		pipeline.attach(entities, suspend)
+	}
 
 	def "updates systems with given dt"() {
 		when:
@@ -28,7 +37,7 @@ class PipelineSpec extends Specification {
 	def "updates systems with fixed dt to catch up"() {
 		long timestep = 1e9 / frequency
 
-		pipeline = setupPipeline(pipeline.withFrequency(frequency))
+		pipeline.withFrequency(frequency)
 
 		when:
 		pipeline.update(dt + 1)
@@ -45,7 +54,7 @@ class PipelineSpec extends Specification {
 	def "waits to update systems with fixed dt to slow down"() {
 		long timestep = 1e9 / frequency
 
-		pipeline = setupPipeline(pipeline.withFrequency(frequency))
+		pipeline.withFrequency(frequency)
 
 		when:
 		pipeline.update(dt + 1)
@@ -61,13 +70,32 @@ class PipelineSpec extends Specification {
 		dt << (1..10).collect { 1e9 / 2 as long }
 	}
 
-	private static def setupPipeline(Pipeline pipeline) {
-		EntityPool entities = new EntityPool()
-		entities.create().put(new MockComponent())
+	def "updates if not suspendable and suspended"() {
+		when:
+		suspend.add(new Suspend.Handle() {})
+		pipeline.update(dt)
 
-		pipeline.attach(entities)
+		then:
+		systems.each {
+			1 * it.update(_, dt)
+		}
 
-		return pipeline
+		where:
+		dt << (-10..10)
+	}
+	def "does not update if suspendable and suspended"() {
+		when:
+		pipeline.withSuspendable()
+		suspend.add(new Suspend.Handle() {})
+		pipeline.update(dt)
+
+		then:
+		systems.each {
+			0 * it._
+		}
+
+		where:
+		dt << (-10..10)
 	}
 
 	private static class MockComponent implements Component {}

@@ -13,7 +13,13 @@ import java.util.Iterator;
 public final class Pipeline implements Iterable<GameSystem> {
 	private final GameSystem[] systems;
 
-	private final long delay;
+	// options
+	private long delay;
+	private boolean suspendable;
+
+	// shared resources
+	private Suspend suspend;
+
 	private long lag;
 
 	private final Sampler sampler = new Sampler();
@@ -22,54 +28,72 @@ public final class Pipeline implements Iterable<GameSystem> {
 	 * Constructs a new pipeline running {@code systems}.
 	 */
 	public Pipeline(GameSystem... systems) {
-		this(0, systems);
-	}
-	private Pipeline(long delay, GameSystem... systems) {
-		this.delay = delay;
 		this.systems = systems.clone();
 	}
 
 	/**
-	 * Returns a pipeline that runs this pipeline's systems with target {@code frequency}.
-	 * The returned pipeline ensures that its systems update at a constant {@code frequency} times per second.
+	 * Configures this pipeline to ensure that its systems update at a constant {@code frequency} times per second.
+	 * Returns this pipeline as a convenience for chaining operations.
 	 */
 	public Pipeline withFrequency(int frequency) {
-		return new Pipeline((long) 1e9 / frequency, systems);
+		delay = (long) 1e9 / frequency;
+		return this;
+	}
+	/**
+	 * Configures this pipeline to ignore calls to {@link #update(long)} when its attached {@link Suspend#isActive()}.
+	 * Returns this pipeline as a convenience for chaining operations.
+	 */
+	public Pipeline withSuspendable() {
+		suspendable = true;
+		return this;
 	}
 
 	/**
 	 * Updates this pipeline by {@code dt} elapsed ns.
 	 * A {@code dt < 0} is supported (can imply e.g. update in reverse).
+	 * Does nothing if {@link #isSuspended()}.
 	 */
 	void update(long dt) {
-		lag += Math.abs(dt);
-		if (lag >= delay) {
-			long timestep = delay > 0 ? delay : lag;
-			long signedTimestep = dt < 0 ? -timestep : timestep;
+		if (!(suspendable && suspend.isActive())) {
+			lag += Math.abs(dt);
+			if (lag >= delay) {
+				long timestep = delay > 0 ? delay : lag;
+				long signedTimestep = dt < 0 ? -timestep : timestep;
 
-			do {
-				sampler.reset();
-				for (GameSystem system : systems) system.update(signedTimestep);
-				sampler.sample();
+				do {
+					sampler.reset();
+					for (GameSystem system : systems) system.update(signedTimestep);
+					sampler.sample();
 
-				lag -= timestep;
-			} while (lag > delay);
+					lag -= timestep;
+				} while (lag > delay);
+			}
 		}
 	}
 
 	/**
 	 * Attaches resources to this pipeline.
 	 */
-	void attach(EntityPool entities) {
-		for (GameSystem system : systems) system.attach(entities);
+	void attach(EntityPool entities, Suspend suspend) {
+		this.suspend = suspend;
+
+		for (GameSystem system : systems) system.attach(entities, suspend);
 	}
 	/**
 	 * Detaches all resources from this pipeline.
 	 */
 	void detach() {
+		suspend = null;
+
 		for (GameSystem system : systems) system.detach();
 	}
 
+	/**
+	 * Returns {@code true} if this pipeline accepts suspend requests and its attached {@link Suspend#isActive()}.
+	 */
+	public boolean isSuspended() {
+		return suspendable && suspend.isActive();
+	}
 	/**
 	 * Returns this pipeline's sampler.
 	 */
@@ -97,6 +121,8 @@ public final class Pipeline implements Iterable<GameSystem> {
 		return "Pipeline{" +
 				"systems=" + Arrays.toString(systems) +
 				", delay=" + delay +
+				", suspendable=" + suspendable +
+				", suspend=" + suspend +
 				", lag=" + lag +
 				", sampler=" + sampler +
 				'}';
