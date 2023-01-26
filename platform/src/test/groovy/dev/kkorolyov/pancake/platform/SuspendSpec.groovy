@@ -12,7 +12,7 @@ class SuspendSpec extends Specification {
 
 	def "is active when one handle"() {
 		when:
-		suspend.add(new Suspend.Handle() {})
+		suspend.add(new Object())
 
 		then:
 		suspend.active
@@ -20,16 +20,16 @@ class SuspendSpec extends Specification {
 
 	def "is active when many handles"() {
 		when:
-		suspend.add(new Suspend.Handle() {})
-		suspend.add(new Suspend.Handle() {})
+		suspend.add(new Object())
+		suspend.add(new Object())
 
 		then:
 		suspend.active
 	}
 
 	def "is active when some handles removed"() {
-		Suspend.Handle handle = new Suspend.Handle() {}
-		Suspend.Handle other = new Suspend.Handle() {}
+		Object handle = new Object()
+		Object other = new Object()
 
 		suspend.add(handle)
 		suspend.add(other)
@@ -43,8 +43,8 @@ class SuspendSpec extends Specification {
 	}
 
 	def "is not active when all handles removed"() {
-		Suspend.Handle handle = new Suspend.Handle() {}
-		Suspend.Handle other = new Suspend.Handle() {}
+		Object handle = new Object()
+		Object other = new Object()
 
 		suspend.add(handle)
 		suspend.add(other)

@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform;
 
 import dev.kkorolyov.pancake.platform.entity.EntityPool;
+import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 import dev.kkorolyov.pancake.platform.utility.Sampler;
 
 import java.util.Arrays;
@@ -10,17 +11,11 @@ import java.util.Iterator;
  * Updates a group of {@link GameSystem}s as a unit.
  * NOTE: sharing the same system between pipelines can lead to undefined behavior.
  */
-public final class Pipeline implements Iterable<GameSystem> {
+public sealed class Pipeline implements Iterable<GameSystem> {
 	private final GameSystem[] systems;
 
-	// options
-	private long delay;
-	private boolean suspendable;
-
 	// shared resources
-	private Suspend suspend;
-
-	private long lag;
+	Suspend suspend;
 
 	private final Sampler sampler = new Sampler();
 
@@ -32,43 +27,26 @@ public final class Pipeline implements Iterable<GameSystem> {
 	}
 
 	/**
-	 * Configures this pipeline to ensure that its systems update at a constant {@code frequency} times per second.
-	 * Returns this pipeline as a convenience for chaining operations.
+	 * Returns a variant of this pipeline that ensures its systems update at a constant {@code frequency} times per second.
 	 */
-	public Pipeline withFrequency(int frequency) {
-		delay = (long) 1e9 / frequency;
-		return this;
+	public Pipeline fixed(int frequency) {
+		return new Fixed(frequency, systems);
 	}
 	/**
-	 * Configures this pipeline to ignore calls to {@link #update(long)} when its attached {@link Suspend#isActive()}.
-	 * Returns this pipeline as a convenience for chaining operations.
+	 * Returns a variant of this pipeline that does not update when its attached {@link Suspend#isActive()}.
 	 */
-	public Pipeline withSuspendable() {
-		suspendable = true;
-		return this;
+	public Pipeline suspendable() {
+		return new Suspendable(systems);
 	}
 
 	/**
 	 * Updates this pipeline by {@code dt} elapsed ns.
 	 * A {@code dt < 0} is supported (can imply e.g. update in reverse).
-	 * Does nothing if {@link #isSuspended()}.
 	 */
 	void update(long dt) {
-		if (!(suspendable && suspend.isActive())) {
-			lag += Math.abs(dt);
-			if (lag >= delay) {
-				long timestep = delay > 0 ? delay : lag;
-				long signedTimestep = dt < 0 ? -timestep : timestep;
-
-				do {
-					sampler.reset();
-					for (GameSystem system : systems) system.update(signedTimestep);
-					sampler.sample();
-
-					lag -= timestep;
-				} while (lag > delay);
-			}
-		}
+		sampler.reset();
+		for (GameSystem system : systems) system.update(dt);
+		sampler.sample();
 	}
 
 	/**
@@ -77,7 +55,7 @@ public final class Pipeline implements Iterable<GameSystem> {
 	void attach(EntityPool entities, Suspend suspend) {
 		this.suspend = suspend;
 
-		for (GameSystem system : systems) system.attach(entities, suspend);
+		for (GameSystem system : systems) system.attach(entities);
 	}
 	/**
 	 * Detaches all resources from this pipeline.
@@ -88,12 +66,6 @@ public final class Pipeline implements Iterable<GameSystem> {
 		for (GameSystem system : systems) system.detach();
 	}
 
-	/**
-	 * Returns {@code true} if this pipeline accepts suspend requests and its attached {@link Suspend#isActive()}.
-	 */
-	public boolean isSuspended() {
-		return suspendable && suspend.isActive();
-	}
 	/**
 	 * Returns this pipeline's sampler.
 	 */
@@ -120,11 +92,56 @@ public final class Pipeline implements Iterable<GameSystem> {
 	public String toString() {
 		return "Pipeline{" +
 				"systems=" + Arrays.toString(systems) +
-				", delay=" + delay +
-				", suspendable=" + suspendable +
 				", suspend=" + suspend +
-				", lag=" + lag +
 				", sampler=" + sampler +
 				'}';
+	}
+
+	private static final class Fixed extends Pipeline {
+		private final long delay;
+
+		private long lag;
+
+		private Fixed(int frequency, GameSystem[] systems) {
+			super(systems);
+
+			delay = (long) 1e9 / ArgVerify.greaterThan("frequency", 0, frequency);
+		}
+
+		@Override
+		void update(long dt) {
+			lag += Math.abs(dt);
+			if (lag >= delay) {
+				long signedTimestep = dt < 0 ? -delay : delay;
+
+				do {
+					super.update(signedTimestep);
+					lag -= delay;
+				} while (lag > delay);
+			}
+		}
+
+		@Override
+		public String toString() {
+			return super.toString() + ".Fixed{delay=" + delay + "}";
+		}
+	}
+
+	private static final class Suspendable extends Pipeline {
+		private Suspendable(GameSystem[] systems) {
+			super(systems);
+		}
+
+		@Override
+		void update(long dt) {
+			if (!suspend.isActive()) {
+				super.update(dt);
+			}
+		}
+
+		@Override
+		public String toString() {
+			return super.toString() + ".Suspendable";
+		}
 	}
 }

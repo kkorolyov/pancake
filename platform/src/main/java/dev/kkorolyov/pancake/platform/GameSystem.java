@@ -12,14 +12,11 @@ import java.util.Iterator;
 /**
  * Performs work on entities matching a certain component signature.
  */
-public abstract class GameSystem implements Iterable<Class<? extends Component>>, Suspend.Handle {
+public abstract class GameSystem implements Iterable<Class<? extends Component>> {
 	private final Collection<Class<? extends Component>> signature;
 
 	// shared resources
 	private EntityPool entities;
-	private Suspend suspend;
-
-	private boolean suspendable;
 
 	private final Sampler sampler = new Sampler();
 
@@ -29,13 +26,6 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	@SafeVarargs
 	protected GameSystem(Class<? extends Component>... signature) {
 		this.signature = Arrays.stream(signature).toList();
-	}
-
-	/**
-	 * Configures this system to ignore calls to {@link #update(long)} when its attached {@link Suspend#isActive()}.
-	 */
-	protected void withSuspendable() {
-		suspendable = true;
 	}
 
 	/**
@@ -74,13 +64,13 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	protected void after() {}
 
 	/**
-	 * Returns a new entity.
+	 * Returns a new entity created from the attached {@link EntityPool}.
 	 */
 	protected final Entity create() {
 		return entities.create();
 	}
 	/**
-	 * Destroys entity by {@code id}.
+	 * Destroys entity by {@code id} from the attached {@link EntityPool}.
 	 */
 	protected final void destroy(int id) {
 		entities.destroy(id);
@@ -89,41 +79,30 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	/**
 	 * Attaches resources to this system.
 	 */
-	final void attach(EntityPool entities, Suspend suspend) {
+	final void attach(EntityPool entities) {
 		this.entities = entities;
-		this.suspend = suspend;
 	}
 	/**
 	 * Detaches all resources from this system.
 	 */
 	final void detach() {
 		entities = null;
-		suspend = null;
 	}
 
 	/**
 	 * Executes a single update on this system with {@code dt} {@code (ns)} timestep.
 	 * A {@code dt < 0} is allowed (can imply e.g. update in reverse).
-	 * Does nothing if {@link #isSuspended()}.
 	 */
-	final void update(long dt) {
-		if (!isSuspended()) {
-			sampler.reset();
+	void update(long dt) {
+		sampler.reset();
 
-			before();
-			for (Entity entity : entities.get(signature)) update(entity, dt);
-			after();
+		before();
+		for (Entity entity : entities.get(signature)) update(entity, dt);
+		after();
 
-			sampler.sample();
-		}
+		sampler.sample();
 	}
 
-	/**
-	 * Returns {@code true} if this system accepts suspend requests and its attached {@link Suspend#isActive()}.
-	 */
-	public final boolean isSuspended() {
-		return suspendable && suspend.isActive();
-	}
 	/**
 	 * Returns this system's sampler.
 	 */
@@ -151,7 +130,6 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 		return "GameSystem{" +
 				"signature=" + signature +
 				", entities=" + entities +
-				", suspend=" + suspend +
 				", sampler=" + sampler +
 				'}';
 	}

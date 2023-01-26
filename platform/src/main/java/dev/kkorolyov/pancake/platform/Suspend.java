@@ -8,20 +8,20 @@ import java.util.HashSet;
  * A bit more complicated than a simple boolean to allow for multiple distinct handles to layer on requests to suspend.
  */
 public final class Suspend {
-	private final Collection<Handle> handles = new HashSet<>();
+	private final Collection<Object> handles = new HashSet<>();
 
 	/**
 	 * Adds {@code handle} to the set of open suspend handles.
 	 * Does nothing if {@code handle} is already in the set.
 	 */
-	public void add(Handle handle) {
+	public void add(Object handle) {
 		handles.add(handle);
 	}
 	/**
 	 * Removes {@code handle} from the set of open suspend handles.
 	 * Does nothing if {@code handle} is not in the set.
 	 */
-	public void remove(Handle handle) {
+	public void remove(Object handle) {
 		handles.remove(handle);
 	}
 
@@ -37,16 +37,5 @@ public final class Suspend {
 		return "Suspend{" +
 				"handles=" + handles +
 				'}';
-	}
-
-	/**
-	 * A distinct request to suspend.
-	 */
-	public interface Handle {
-		/**
-		 * The global shared suspend handle.
-		 * Can be used as a top or root level request to suspend when finer detail is unnecessary.
-		 */
-		Handle GLOBAL = new Handle() {};
 	}
 }

@@ -17,7 +17,7 @@ class PipelineSpec extends Specification {
 	def setup() {
 		entities.create().put(new MockComponent())
 
-		pipeline.attach(entities, suspend)
+		setupPipeline(pipeline)
 	}
 
 	def "updates systems with given dt"() {
@@ -37,7 +37,7 @@ class PipelineSpec extends Specification {
 	def "updates systems with fixed dt to catch up"() {
 		long timestep = 1e9 / frequency
 
-		pipeline.withFrequency(frequency)
+		pipeline = setupPipeline(pipeline.fixed(frequency))
 
 		when:
 		pipeline.update(dt + 1)
@@ -54,7 +54,7 @@ class PipelineSpec extends Specification {
 	def "waits to update systems with fixed dt to slow down"() {
 		long timestep = 1e9 / frequency
 
-		pipeline.withFrequency(frequency)
+		pipeline = setupPipeline(pipeline.fixed(frequency))
 
 		when:
 		pipeline.update(dt + 1)
@@ -70,9 +70,9 @@ class PipelineSpec extends Specification {
 		dt << (1..10).collect { 1e9 / 2 as long }
 	}
 
-	def "updates if not suspendable and suspended"() {
+	def "updates if suspended"() {
 		when:
-		suspend.add(new Suspend.Handle() {})
+		suspend.add(new Object())
 		pipeline.update(dt)
 
 		then:
@@ -85,8 +85,8 @@ class PipelineSpec extends Specification {
 	}
 	def "does not update if suspendable and suspended"() {
 		when:
-		pipeline.withSuspendable()
-		suspend.add(new Suspend.Handle() {})
+		pipeline = setupPipeline(pipeline.suspendable())
+		suspend.add(new Object())
 		pipeline.update(dt)
 
 		then:
@@ -96,6 +96,12 @@ class PipelineSpec extends Specification {
 
 		where:
 		dt << (-10..10)
+	}
+
+	private Pipeline setupPipeline(Pipeline pipeline) {
+		pipeline.attach(entities, suspend)
+
+		return pipeline
 	}
 
 	private static class MockComponent implements Component {}
