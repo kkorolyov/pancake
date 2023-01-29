@@ -14,6 +14,8 @@ import java.util.Iterator;
  */
 public abstract class GameSystem implements Iterable<Class<? extends Component>> {
 	private final Collection<Class<? extends Component>> signature;
+
+	// shared resources
 	private EntityPool entities;
 
 	private final Sampler sampler = new Sampler();
@@ -24,6 +26,23 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	@SafeVarargs
 	protected GameSystem(Class<? extends Component>... signature) {
 		this.signature = Arrays.stream(signature).toList();
+	}
+
+	/**
+	 * Returns a system that runs {@code op} once per update.
+	 * Useful for simple, pipeline-spanning hooks like setting up rendering, swapping buffers, or polling events.
+	 */
+	public static GameSystem hook(Runnable op) {
+		// dummy component to avoid iterating over all entities
+		return new GameSystem(DummyComponent.class) {
+			@Override
+			protected void update(Entity entity, long dt) {}
+
+			@Override
+			protected void after() {
+				op.run();
+			}
+		};
 	}
 
 	/**
@@ -45,13 +64,13 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	protected void after() {}
 
 	/**
-	 * Returns a new entity.
+	 * Returns a new entity created from the attached {@link EntityPool}.
 	 */
 	protected final Entity create() {
 		return entities.create();
 	}
 	/**
-	 * Destroys entity by {@code id}.
+	 * Destroys entity by {@code id} from the attached {@link EntityPool}.
 	 */
 	protected final void destroy(int id) {
 		entities.destroy(id);
@@ -72,8 +91,9 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 
 	/**
 	 * Executes a single update on this system with {@code dt} {@code (ns)} timestep.
+	 * A {@code dt < 0} is allowed (can imply e.g. update in reverse).
 	 */
-	final void update(long dt) {
+	void update(long dt) {
 		sampler.reset();
 
 		before();
@@ -86,7 +106,7 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	/**
 	 * Returns this system's sampler.
 	 */
-	public Sampler getSampler() {
+	public final Sampler getSampler() {
 		return sampler;
 	}
 
@@ -113,4 +133,6 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 				", sampler=" + sampler +
 				'}';
 	}
+
+	private static class DummyComponent implements Component {}
 }

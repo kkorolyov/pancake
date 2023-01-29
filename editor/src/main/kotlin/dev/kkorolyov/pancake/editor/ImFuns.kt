@@ -15,7 +15,7 @@ fun text(value: Any?) {
 }
 
 /**
- * Draws tooltip [text] when the last set item is hovered.
+ * Draws [value] as text in a tooltip when the last set item is hovered.
  */
 fun tooltip(value: Any?) {
 	if (ImGui.isItemHovered()) ImGui.setTooltip(value.toString())
@@ -62,6 +62,25 @@ inline fun tree(label: String, op: Op) {
  */
 inline fun header(label: String, op: Op) {
 	if (ImGui.collapsingHeader(label)) op()
+}
+
+/**
+ * Runs [op] in a tab bar labeled [label].
+ */
+inline fun tabBar(label: String, op: Op) {
+	if (ImGui.beginTabBar(label)) {
+		op()
+		ImGui.endTabBar()
+	}
+}
+/**
+ * Runs [op] in a tab item labeled [label].
+ */
+inline fun tabItem(label: String, op: Op) {
+	if (ImGui.beginTabItem(label)) {
+		op()
+		ImGui.endTabItem()
+	}
 }
 
 /**

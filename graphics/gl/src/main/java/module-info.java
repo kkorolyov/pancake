@@ -1,6 +1,5 @@
 module dev.kkorolyov.pancake.graphics.gl {
-	requires kotlin.stdlib.jdk7;
-	requires kotlin.stdlib.jdk8;
+	requires kotlin.stdlib;
 	requires org.slf4j;
 
 	requires transitive org.lwjgl;

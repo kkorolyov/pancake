@@ -13,7 +13,10 @@ import java.util.Iterator;
  * NOTE: sharing the same pipeline between engines can lead to undefined behavior.
  */
 public final class GameEngine implements Iterable<Pipeline> {
+	// shared resources
 	private final EntityPool entities = new EntityPool();
+	private final Suspend suspend = new Suspend();
+
 	private Pipeline[] pipelines;
 
 	private volatile boolean active;
@@ -84,6 +87,12 @@ public final class GameEngine implements Iterable<Pipeline> {
 	public EntityPool getEntities() {
 		return entities;
 	}
+	/**
+	 * Returns this engine's suspend resource.
+	 */
+	public Suspend getSuspend() {
+		return suspend;
+	}
 
 	/**
 	 * Returns this engine's sampler.
@@ -99,7 +108,7 @@ public final class GameEngine implements Iterable<Pipeline> {
 		for (Pipeline pipeline : pipelines) pipeline.detach();
 
 		this.pipelines = pipelines.clone();
-		for (Pipeline pipeline : this.pipelines) pipeline.attach(entities);
+		for (Pipeline pipeline : this.pipelines) pipeline.attach(entities, suspend);
 	}
 
 	/**

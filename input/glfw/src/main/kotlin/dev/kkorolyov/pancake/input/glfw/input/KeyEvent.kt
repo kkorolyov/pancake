@@ -10,7 +10,7 @@ data class KeyEvent(
 	/** `GLFW` scan code. */
 	val scanCode: Int,
 	/** Key action. */
-	override val action: ActionEvent.Action,
+	override val state: StateEvent.State,
 	/** `GLFW` key modifier bits. */
 	val mods: Int
-) : ActionEvent
+) : StateEvent

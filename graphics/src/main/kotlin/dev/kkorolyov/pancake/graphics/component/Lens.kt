@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.graphics.component
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.utility.ArgVerify
-import java.util.*
+import java.util.BitSet
 
 /**
  * A view on some set of drawn layers at some pixel:unit scaling factor.

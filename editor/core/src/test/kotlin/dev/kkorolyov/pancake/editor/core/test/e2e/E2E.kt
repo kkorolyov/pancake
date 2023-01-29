@@ -36,7 +36,7 @@ import kotlin.random.Random
 fun main() {
 	start(GameEngine().apply {
 		setPipelines(
-			Pipeline(
+			Pipeline.of(
 				AccelerationSystem(),
 				ActionSystem(),
 				CappingSystem(),
@@ -47,13 +47,13 @@ fun main() {
 				MovementSystem(),
 				SpawnSystem()
 			),
-			Pipeline(
+			Pipeline.of(
 				PhysicsCleanupSystem()
 			),
-			Pipeline(
+			Pipeline.of(
 				ActionEnqueuerSystem()
 			),
-			Pipeline(
+			Pipeline.of(
 				drawStart(),
 				editor(this),
 				drawEnd()
