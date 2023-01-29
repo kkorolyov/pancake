@@ -6,10 +6,18 @@
     <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
@@ -21,6 +29,7 @@ if(savedDarkMode === true){
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
 <div class="navigation-wrapper" id="navigation-wrapper">
@@ -31,7 +40,7 @@ if(savedDarkMode === true){
             </a>
     </div>
     <div>
-0.1.0-rc.0.1+e80e144    </div>
+0.1.0-rc.0.1+f1d791c    </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
@@ -43,10 +52,10 @@ if(savedDarkMode === true){
     </div>
     <div id="main">
 <div class="main-content" id="content" pageIds="graphics-gl::dev.kkorolyov.pancake.graphics.gl.resource/GLTexture///PointingToDeclaration//-588056836">
-  <div class="breadcrumbs"><a href="../../../index.html">graphics-gl</a><span class="delimiter">/</span><a href="../index.html">dev.kkorolyov.pancake.graphics.gl.resource</a><span class="delimiter">/</span><a href="index.html">GLTexture</a></div>
+  <div class="breadcrumbs"><a href="../../../index.html">graphics-gl</a><span class="delimiter">/</span><a href="../index.html">dev.kkorolyov.pancake.graphics.gl.resource</a><span class="delimiter">/</span><span class="current">GLTexture</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>GLTexture</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">GLTexture</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;wrapS<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;wrapT<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;filterMin<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;filterMag<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;pixels<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.graphics/PixelBuffer///PointingToDeclaration/">PixelBuffer</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.kkorolyov.pancake.graphics.resource/Texture///PointingToDeclaration/">Texture</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">An <code class="lang-kotlin">OpenGL</code> texture that can be reused across shared contexts.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">GLTexture</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wrapS<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">wrapT<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">filterMin<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter ">filterMag<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter ">pixels<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.graphics/PixelBuffer///PointingToDeclaration/">PixelBuffer</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.kkorolyov.pancake.graphics.resource/Texture///PointingToDeclaration/">Texture</span></div><p class="paragraph">An <code class="lang-kotlin">OpenGL</code> texture that can be reused across shared contexts.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
@@ -62,7 +71,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-g-l-texture.html"><span class="token function">GLTexture</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;wrapS<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;wrapT<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;filterMin<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;filterMag<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;pixels<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.graphics/PixelBuffer///PointingToDeclaration/">PixelBuffer</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-g-l-texture.html"><span class="token function">GLTexture</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wrapS<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">wrapT<span class="token operator">: </span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">filterMin<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter ">filterMag<span class="token operator">: </span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter ">pixels<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.graphics/PixelBuffer///PointingToDeclaration/">PixelBuffer</span></span></span><span class="token punctuation">)</span></div></div></div>
               </div>
             </div>
           </div>
@@ -79,7 +88,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-filter/index.html">Filter</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">An <code class="lang-kotlin">OpenGL</code> texture filtering mode.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-filter/index.html">Filter</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-filter/index.html">GLTexture.Filter</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">An <code class="lang-kotlin">OpenGL</code> texture filtering mode.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -94,7 +103,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-wrap/index.html">Wrap</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">An <code class="lang-kotlin">OpenGL</code> texture wrapping mode.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-wrap/index.html">Wrap</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-wrap/index.html">GLTexture.Wrap</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">An <code class="lang-kotlin">OpenGL</code> texture wrapping mode.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -111,7 +120,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="close.html"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Deletes the backing <code class="lang-kotlin">OpenGL</code> object if it has been initialized. Subsequent interactions with this texture will first initialize a new backing object.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="close.html"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Deletes the backing <code class="lang-kotlin">OpenGL</code> object if it has been initialized. Subsequent interactions with this texture will first initialize a new backing object.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -128,7 +137,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><a data-name="378300046%2FProperties%2F-588056836" anchor-label="id" id="378300046%2FProperties%2F-588056836" data-filterable-set=":graphics-gl:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="id.html">id</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="378300046%2FProperties%2F-588056836" anchor-label="id" id="378300046%2FProperties%2F-588056836" data-filterable-set=":graphics-gl:dokkaHtml/main"></a><p class="paragraph">ID of the backing <code class="lang-kotlin">OpenGL</code> object.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics-gl:dokkaHtml/main"><a data-name="378300046%2FProperties%2F-588056836" anchor-label="id" id="378300046%2FProperties%2F-588056836" data-filterable-set=":graphics-gl:dokkaHtml/main"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="id.html">id</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><a data-name="378300046%2FProperties%2F-588056836" anchor-label="id" id="378300046%2FProperties%2F-588056836" data-filterable-set=":graphics-gl:dokkaHtml/main"></a><p class="paragraph">ID of the backing <code class="lang-kotlin">OpenGL</code> object.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -138,7 +147,7 @@ if(savedDarkMode === true){
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>

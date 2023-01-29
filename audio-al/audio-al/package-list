@@ -35,6 +35,8 @@ $dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.STEREO16///Poi
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format.STEREO8///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/-s-t-e-r-e-o8/index.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/index.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format/value/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/value.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format/valueOf/#kotlin.String/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/value-of.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer.Format/values/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-format/values.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/index.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/AudioBuffer/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/-audio-buffer.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioBuffer/attach/#dev.kkorolyov.pancake.audio.al.AudioSource/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-buffer/attach.html
@@ -57,6 +59,8 @@ $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.PLAYING///Point
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State.STOPPED///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/-s-t-o-p-p-e-d/index.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/index.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State/value/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/value.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State/valueOf/#kotlin.String/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/value-of.html
+$dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource.State/values/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-state/values.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource///PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/index.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/AudioSource/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/-audio-source.html
 $dokka.location:dev.kkorolyov.pancake.audio.al/AudioSource/close/#/PointingToDeclaration/audio-al/dev.kkorolyov.pancake.audio.al/-audio-source/close.html

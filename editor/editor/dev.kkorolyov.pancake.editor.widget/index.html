@@ -6,10 +6,18 @@
     <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
 <script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../styles/style.css" rel="Stylesheet">
 <link href="../../styles/jetbrains-mono.css" rel="Stylesheet">
@@ -21,6 +29,7 @@ if(savedDarkMode === true){
 <script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
 <div class="navigation-wrapper" id="navigation-wrapper">
@@ -31,7 +40,7 @@ if(savedDarkMode === true){
             </a>
     </div>
     <div>
-0.1.0-rc.0.1+e80e144    </div>
+0.1.0-rc.0.1+f1d791c    </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
@@ -43,9 +52,9 @@ if(savedDarkMode === true){
     </div>
     <div id="main">
 <div class="main-content" id="content" pageIds="editor::dev.kkorolyov.pancake.editor.widget////PointingToDeclaration//741329428">
-  <div class="breadcrumbs"><a href="../../index.html">editor</a><span class="delimiter">/</span><a href="index.html">dev.kkorolyov.pancake.editor.widget</a></div>
+  <div class="breadcrumbs"><a href="../../index.html">editor</a><span class="delimiter">/</span><span class="current">dev.kkorolyov.pancake.editor.widget</span></div>
   <div class="cover ">
-    <h1 class="cover"><span><span>Package</span></span> <span>dev.</span><wbr></wbr><span>kkorolyov.</span><wbr></wbr><span>pancake.</span><wbr></wbr><span>editor.</span><wbr></wbr><span>widget</span></h1>
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
@@ -61,7 +70,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-child/index.html">Child</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">content<span class="token operator">: </span><a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders an embedded window.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-child/index.html">Child</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">content<span class="token operator">: </span><a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders an embedded window.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -76,7 +85,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-editor/index.html">Editor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">engine<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders the overall editor view for a <span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-editor/index.html">Editor</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">engine<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders the overall editor view for a <span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -91,7 +100,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-entities-table/index.html">EntitiesTable</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entities<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.entity/EntityPool///PointingToDeclaration/">EntityPool</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders entity listings from <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/EntitiesTable/entities/#/PointingToDeclaration/">entities</span>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-entities-table/index.html">EntitiesTable</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entities<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.entity/EntityPool///PointingToDeclaration/">EntityPool</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders entity listings from <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/EntitiesTable/entities/#/PointingToDeclaration/">entities</span>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -106,7 +115,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-entity-details/index.html">EntityDetails</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entity<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.entity/Entity///PointingToDeclaration/">Entity</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders detailed information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/EntityDetails/entity/#/PointingToDeclaration/">entity</span>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-entity-details/index.html">EntityDetails</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entity<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.entity/Entity///PointingToDeclaration/">Entity</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders detailed information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/EntityDetails/entity/#/PointingToDeclaration/">entity</span>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -121,7 +130,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-g-l-details/index.html">GLDetails</a> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders information about the current OpenGL implementation.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-g-l-details/index.html">GLDetails</a> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders information about the current OpenGL implementation.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -136,7 +145,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-image/index.html">Image</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;texture<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.graphics.resource/Texture///PointingToDeclaration/">Texture</span><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;width<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;height<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span>width</span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders an image from a given <code class="lang-kotlin">texture</code> at the given <code class="lang-kotlin">width</code> and <code class="lang-kotlin">height</code>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-image/index.html">Image</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">texture<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.graphics.resource/Texture///PointingToDeclaration/">Texture</span><span class="token punctuation">, </span></span><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span>width</span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders an image from a given <code class="lang-kotlin">texture</code> at the given <code class="lang-kotlin">width</code> and <code class="lang-kotlin">height</code>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -151,7 +160,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-log/index.html">Log</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">data<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/ByteArrayOutputStream.html">ByteArrayOutputStream</a></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders lines from <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/Log/data/#/PointingToDeclaration/">data</span> as a scrolling log.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-log/index.html">Log</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">data<span class="token operator">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/ByteArrayOutputStream.html">ByteArrayOutputStream</a></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders lines from <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/Log/data/#/PointingToDeclaration/">data</span> as a scrolling log.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -166,7 +175,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-loop-details/index.html">LoopDetails</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">engine<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders information about <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/LoopDetails/engine/#/PointingToDeclaration/">engine</span>'s loop state.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-loop-details/index.html">LoopDetails</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">engine<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameEngine///PointingToDeclaration/">GameEngine</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders information about <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/LoopDetails/engine/#/PointingToDeclaration/">engine</span>'s loop state.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -181,7 +190,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-pipelines-tree/index.html">PipelinesTree</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pipelines<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.platform/Pipeline///PointingToDeclaration/">Pipeline</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders overall information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/PipelinesTree/pipelines/#/PointingToDeclaration/">pipelines</span>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-pipelines-tree/index.html">PipelinesTree</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pipelines<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.platform/Pipeline///PointingToDeclaration/">Pipeline</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders overall information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/PipelinesTree/pipelines/#/PointingToDeclaration/">pipelines</span>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -196,7 +205,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-system-details/index.html">SystemDetails</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">system<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameSystem///PointingToDeclaration/">GameSystem</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders detailed information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/SystemDetails/system/#/PointingToDeclaration/">system</span>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-system-details/index.html">SystemDetails</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">system<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameSystem///PointingToDeclaration/">GameSystem</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders detailed information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/SystemDetails/system/#/PointingToDeclaration/">system</span>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -211,7 +220,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-systems-table/index.html">SystemsTable</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">systems<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameSystem///PointingToDeclaration/">GameSystem</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders overall information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/SystemsTable/systems/#/PointingToDeclaration/">systems</span>.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-systems-table/index.html">SystemsTable</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">systems<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><span class="token keyword"></span><span data-unresolved-link="dev.kkorolyov.pancake.platform/GameSystem///PointingToDeclaration/">GameSystem</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders overall information for <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/SystemsTable/systems/#/PointingToDeclaration/">systems</span>.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -226,7 +235,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-window/index.html">Window</a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span class="token keyword">var </span>label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;content<span class="token operator">: </span><a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;visiblePtr<span class="token operator">: </span><span data-unresolved-link="imgui.type/ImBoolean///PointingToDeclaration/">ImBoolean</span><span class="token operator"> = </span>true.ptr()</span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders a top-level window.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-window/index.html">Window</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">content<span class="token operator">: </span><a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="token punctuation">, </span></span><span class="parameter ">visiblePtr<span class="token operator">: </span><span data-unresolved-link="imgui.type/ImBoolean///PointingToDeclaration/">ImBoolean</span><span class="token operator"> = </span>true.ptr()<span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">setup<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/Window/content/#/PointingToDeclaration/">content</span> within a top-level window. Can optionally be provided <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/Window/flags/#/PointingToDeclaration/">flags</span> and additional <span data-unresolved-link="dev.kkorolyov.pancake.editor.widget/Window/setup/#/PointingToDeclaration/">setup</span> to run before rendering.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -241,7 +250,7 @@ if(savedDarkMode === true){
                 </span></span></div>
             <div>
               <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-window-manifest/index.html">WindowManifest</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-window-manifest/index.html">T</a><span class="token operator">&gt;</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Renders a persistent collection of windows bound to unique keys.</p></div></div></div>
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-window-manifest/index.html">WindowManifest</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-window-manifest/index.html">T</a><span class="token operator">&gt;</span> : <a href="../dev.kkorolyov.pancake.editor/-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">Renders a persistent collection of windows bound to unique keys.</p></div></div></div>
               </div>
             </div>
           </div>
@@ -251,7 +260,7 @@ if(savedDarkMode === true){
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>
