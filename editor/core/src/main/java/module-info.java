@@ -9,7 +9,7 @@ import dev.kkorolyov.pancake.editor.core.VelocityCapComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.VelocityComponentWidgetFactory;
 
 module dev.kkorolyov.pancake.editor.core {
-	requires kotlin.stdlib.jdk8;
+	requires kotlin.stdlib;
 
 	requires org.slf4j;
 

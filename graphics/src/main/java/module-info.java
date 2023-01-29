@@ -1,5 +1,5 @@
 module dev.kkorolyov.pancake.graphics {
-	requires kotlin.stdlib.jdk8;
+	requires kotlin.stdlib;
 
 	requires dev.kkorolyov.pancake.platform;
 	requires dev.kkorolyov.pancake.core;
