@@ -19,11 +19,15 @@ public sealed class Pipeline implements Iterable<GameSystem> {
 
 	private final Sampler sampler = new Sampler();
 
-	/**
-	 * Constructs a new pipeline running {@code systems}.
-	 */
-	public Pipeline(GameSystem... systems) {
+	private Pipeline(GameSystem[] systems) {
 		this.systems = systems.clone();
+	}
+
+	/**
+	 * Returns a new pipeline running {@code systems}.
+	 */
+	public static Pipeline of(GameSystem... systems) {
+		return new Pipeline(systems);
 	}
 
 	/**

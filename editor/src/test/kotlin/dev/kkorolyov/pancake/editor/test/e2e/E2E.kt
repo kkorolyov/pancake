@@ -10,7 +10,7 @@ import dev.kkorolyov.pancake.platform.Pipeline
 fun main() {
 	start(GameEngine().apply {
 		setPipelines(
-			Pipeline(
+			Pipeline.of(
 				drawStart(),
 				editor(this),
 				drawEnd()
