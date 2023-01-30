@@ -12,7 +12,7 @@ class PipelineSpec extends Specification {
 	EntityPool entities = new EntityPool()
 	Suspend suspend = new Suspend()
 
-	Pipeline pipeline = new Pipeline(systems)
+	Pipeline pipeline = Pipeline.of(systems)
 
 	def setup() {
 		entities.create().put(new MockComponent())
