@@ -36,21 +36,21 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 			double zx, double zy, double zz
 	) {
 		super(xx, xy, yx, yy);
-		this.xz = xz;
-		this.yz = yz;
-		this.zx = zx;
-		this.zy = zy;
-		this.zz = zz;
+		setXz(xz);
+		setYz(yz);
+		setZx(zx);
+		setZy(zy);
+		setZz(zz);
 	}
 
 	@Override
 	public void scale(double value) {
 		super.scale(value);
-		xz *= value;
-		yz *= value;
-		zx *= value;
-		zy *= value;
-		zz *= value;
+		setXz(xz * value);
+		setYz(yz * value);
+		setZx(zx * value);
+		setZy(zy * value);
+		setZz(zz * value);
 	}
 
 	/**
@@ -58,57 +58,57 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 	 */
 	public final void add(Matrix3 other) {
 		add((Matrix2) other);
-		xz += other.xz;
-		yz += other.yz;
-		zx += other.zx;
-		zy += other.zy;
-		zz += other.zz;
+		setXz(xz + other.xz);
+		setYz(yz + other.yz);
+		setZx(zx + other.zx);
+		setZy(zy + other.zy);
+		setZz(zz + other.zz);
 	}
 	/**
 	 * Adds {@code scale} proportion of {@code other}'s components to this matrix.
 	 */
 	public final void add(Matrix3 other, double scale) {
 		add((Matrix2) other, scale);
-		xz += other.xz * scale;
-		yz += other.yz * scale;
-		zx += other.zx * scale;
-		zy += other.zy * scale;
-		zz += other.zz * scale;
+		setXz(xz + other.xz * scale);
+		setYz(yz + other.yz * scale);
+		setZx(zx + other.zx * scale);
+		setZy(zy + other.zy * scale);
+		setZz(zz + other.zz * scale);
 	}
 
 	public final double getXz() {
-		return FloatOps.sanitize(xz);
+		return xz;
 	}
 	public final void setXz(double xz) {
-		this.xz = xz;
+		this.xz = FloatOps.sanitize(xz);
 	}
 
 	public final double getYz() {
-		return FloatOps.sanitize(yz);
+		return yz;
 	}
 	public final void setYz(double yz) {
-		this.yz = yz;
+		this.yz = FloatOps.sanitize(yz);
 	}
 
 	public final double getZx() {
-		return FloatOps.sanitize(zx);
+		return zx;
 	}
 	public final void setZx(double zx) {
-		this.zx = zx;
+		this.zx = FloatOps.sanitize(zx);
 	}
 
 	public final double getZy() {
-		return FloatOps.sanitize(zy);
+		return zy;
 	}
 	public final void setZy(double zy) {
-		this.zy = zy;
+		this.zy = FloatOps.sanitize(zy);
 	}
 
 	public final double getZz() {
-		return FloatOps.sanitize(zz);
+		return zz;
 	}
 	public final void setZz(double zz) {
-		this.zz = zz;
+		this.zz = FloatOps.sanitize(zz);
 	}
 
 	@Override
@@ -117,11 +117,11 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
 		Matrix3 matrix3 = (Matrix3) o;
-		return FloatOps.equals(matrix3.getXz(), getXz()) && FloatOps.equals(matrix3.getYz(), getYz()) && FloatOps.equals(matrix3.getZx(), getZx()) && FloatOps.equals(matrix3.getZy(), getZy()) && FloatOps.equals(matrix3.getZz(), getZz());
+		return FloatOps.equals(matrix3.xz, xz) && FloatOps.equals(matrix3.yz, yz) && FloatOps.equals(matrix3.zx, zx) && FloatOps.equals(matrix3.zy, zy) && FloatOps.equals(matrix3.zz, zz);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), getXz(), getYz(), getZx(), getZy(), getZz());
+		return Objects.hash(super.hashCode(), xz, yz, zx, zy, zz);
 	}
 
 	@Override

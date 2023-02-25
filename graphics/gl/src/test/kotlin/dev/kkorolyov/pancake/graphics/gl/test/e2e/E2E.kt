@@ -23,6 +23,16 @@ import org.lwjgl.opengl.GL46.*
 import org.lwjgl.opengl.GLUtil
 import org.lwjgl.system.MemoryStack
 
+private val helpText = """
+	graphics-gl E2E test suite
+	
+	1-9 - scene select
+	W,S - scale through vertex buffer manipulation
+	F - toggle wireframe mode
+	mouse click + drag - translate/pan through shader uniform
+	mouse scroll - scale through shader uniform
+""".trimIndent()
+
 private val window by lazy {
 	if (!glfwInit()) throw IllegalStateException("Cannot init GLFW")
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE)
@@ -34,7 +44,7 @@ private val window by lazy {
 
 	GL.createCapabilities()
 	GLUtil.setupDebugMessageCallback()
-	glfwSetWindowSizeCallback(window) { _, width, height ->
+	glfwSetFramebufferSizeCallback(window) { _, width, height ->
 		glViewport(0, 0, width, height)
 	}
 
@@ -125,9 +135,11 @@ private val ellipseMesh = GLMesh(
 	textures = listOf(texture)
 )
 
-private val font = Font("roboto-mono.ttf", 20)
+private val font = Font("roboto-mono.ttf", 14)
 
 private val scenes = listOf(
+	// help
+	Scene(fontProgram, font(helpText)),
 	// triangles
 	Scene(colorProgram, solidMesh),
 	Scene(colorProgram, rainbowMesh),
@@ -211,7 +223,7 @@ fun main() {
 				val widthP = stack.mallocInt(1)
 				val heightP = stack.mallocInt(1)
 
-				glfwGetWindowSize(window, widthP, heightP)
+				glfwGetFramebufferSize(window, widthP, heightP)
 
 				transform(dX = (x - dragX) / widthP[0], dY = (y - dragY) / heightP[0])
 			}
@@ -237,9 +249,10 @@ private fun transform(dScale: Double = 0.0, dX: Double = 0.0, dY: Double = 0.0) 
 	currentX += dX
 	currentY += dY
 
-	arrayOf(colorProgram, textureProgram, fontProgram).forEach {
-		it[0] = Matrix4.identity().apply {
+	scenes.forEach { (program, _) ->
+		program[0] = Matrix4.identity().apply {
 			scale(currentScale)
+			ww = 1.0
 			xw = currentX * 2
 			yw = -currentY * 2
 		}

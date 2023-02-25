@@ -4,6 +4,8 @@ import dev.kkorolyov.pancake.graphics.PixelBuffer
 import dev.kkorolyov.pancake.graphics.gl.internal.Cache
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import org.lwjgl.opengl.GL46.*
+import kotlin.math.floor
+import kotlin.math.log2
 
 private fun PixelBuffer.target() = if (depth > 0) GL_TEXTURE_3D else if (height > 0) GL_TEXTURE_2D else GL_TEXTURE_1D
 private fun PixelBuffer.format() = if (channels == 4) GL_RGBA8 to GL_RGBA else if (channels == 3) GL_RGB8 to GL_RGB else if (channels == 2) GL_RG8 to GL_RG else GL_R8 to GL_RED
@@ -14,7 +16,7 @@ private fun PixelBuffer.format() = if (channels == 4) GL_RGBA8 to GL_RGBA else i
 class GLTexture(
 	wrapS: Wrap = Wrap.CLAMP_TO_EDGE,
 	wrapT: Wrap = Wrap.CLAMP_TO_EDGE,
-	filterMin: Filter = Filter.LINEAR,
+	filterMin: Filter = Filter.LINEAR_MIPMAP_LINEAR,
 	filterMag: Filter = Filter.LINEAR,
 	pixels: () -> PixelBuffer
 ) : Texture {
@@ -28,22 +30,26 @@ class GLTexture(
 			filterMag.let { glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, it.value) }
 
 			val (internalFormat, format) = pixels.format()
+			val levels = 1 + floor(log2(maxOf(pixels.width, pixels.height, pixels.depth).toDouble())).toInt()
 			when (pixels.target()) {
 				GL_TEXTURE_1D -> {
-					glTextureStorage1D(id, 1, internalFormat, pixels.width)
+					glTextureStorage1D(id, levels, internalFormat, pixels.width)
 					glTextureSubImage1D(id, 0, 0, pixels.width, format, GL_UNSIGNED_BYTE, pixels.data)
 				}
 
 				GL_TEXTURE_2D -> {
-					glTextureStorage2D(id, 1, internalFormat, pixels.width, pixels.height)
+					glTextureStorage2D(id, levels, internalFormat, pixels.width, pixels.height)
 					glTextureSubImage2D(id, 0, 0, 0, pixels.width, pixels.height, format, GL_UNSIGNED_BYTE, pixels.data)
 				}
 
 				GL_TEXTURE_3D -> {
-					glTextureStorage3D(id, 1, internalFormat, pixels.width, pixels.height, pixels.depth)
+					glTextureStorage3D(id, levels, internalFormat, pixels.width, pixels.height, pixels.depth)
 					glTextureSubImage3D(id, 0, 0, 0, 0, pixels.width, pixels.height, pixels.depth, format, GL_UNSIGNED_BYTE, pixels.data)
 				}
 			}
+
+			// TODO ok to always assume mipmaps?
+			if (levels > 1) glGenerateTextureMipmap(id)
 
 			id
 		}
@@ -76,6 +82,10 @@ class GLTexture(
 	 */
 	enum class Filter(internal val value: Int) {
 		NEAREST(GL_NEAREST),
-		LINEAR(GL_LINEAR)
+		LINEAR(GL_LINEAR),
+		NEAREST_MIPMAP_NEAREST(GL_NEAREST_MIPMAP_NEAREST),
+		LINEAR_MIPMAP_NEAREST(GL_LINEAR_MIPMAP_NEAREST),
+		NEAREST_MIPMAP_LINEAR(GL_NEAREST_MIPMAP_LINEAR),
+		LINEAR_MIPMAP_LINEAR(GL_LINEAR_MIPMAP_LINEAR),
 	}
 }
