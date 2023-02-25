@@ -6,6 +6,7 @@ $dokka.location:dev.kkorolyov.pancake.editor.ext//input/dev.kkorolyov.pancake.pl
 $dokka.location:dev.kkorolyov.pancake.editor.ext//ptr/kotlin.Boolean#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.ext/ptr.html
 $dokka.location:dev.kkorolyov.pancake.editor.ext//ptr/kotlin.Double#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.ext/ptr.html
 $dokka.location:dev.kkorolyov.pancake.editor.ext//ptr/kotlin.Int#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.ext/ptr.html
+$dokka.location:dev.kkorolyov.pancake.editor.ext//ptr/kotlin.Long#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.ext/ptr.html
 $dokka.location:dev.kkorolyov.pancake.editor.ext//readonly/dev.kkorolyov.pancake.platform.math.Vector2#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.ext/readonly.html
 $dokka.location:dev.kkorolyov.pancake.editor.ext//readonly/dev.kkorolyov.pancake.platform.math.Vector3#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.ext/readonly.html
 $dokka.location:dev.kkorolyov.pancake.editor.widget////PointingToDeclaration/editor/dev.kkorolyov.pancake.editor.widget/index.html
