@@ -32,67 +32,67 @@ public sealed class Matrix2 permits Matrix3 {
 			double xx, double xy,
 			double yx, double yy
 	) {
-		this.xx = xx;
-		this.xy = xy;
-		this.yx = yx;
-		this.yy = yy;
+		setXx(xx);
+		setXy(xy);
+		setYx(yx);
+		setYy(yy);
 	}
 
 	/**
 	 * Scales this matrix by {@code value}.
 	 */
 	public void scale(double value) {
-		xx *= value;
-		xy *= value;
-		yx *= value;
-		yy *= value;
+		setXx(xx * value);
+		setXy(xy * value);
+		setYx(yx * value);
+		setYy(yy * value);
 	}
 
 	/**
 	 * Adds {@code other}'s components to this matrix.
 	 */
 	public final void add(Matrix2 other) {
-		xx += other.xx;
-		xy += other.xy;
-		yx += other.yx;
-		yy += other.yy;
+		setXx(xx + other.xx);
+		setXy(xy + other.xy);
+		setYx(yx + other.yx);
+		setYy(yy + other.yy);
 	}
 	/**
 	 * Adds {@code scale} proportion of {@code other}'s components to this matrix.
 	 */
 	public final void add(Matrix2 other, double scale) {
-		xx += other.xx * scale;
-		xy += other.xy * scale;
-		yx += other.yx * scale;
-		yy += other.yy * scale;
+		setXx(xx + other.xx * scale);
+		setXy(xy + other.xy * scale);
+		setYx(yx + other.yx * scale);
+		setYy(yy + other.yy * scale);
 	}
 
 	public final double getXx() {
-		return FloatOps.sanitize(xx);
+		return xx;
 	}
 	public final void setXx(double xx) {
-		this.xx = xx;
+		this.xx = FloatOps.sanitize(xx);
 	}
 
 	public final double getXy() {
-		return FloatOps.sanitize(xy);
+		return xy;
 	}
 	public final void setXy(double xy) {
-		this.xy = xy;
+		this.xy = FloatOps.sanitize(xy);
 	}
 
 	public final double getYx() {
-		return FloatOps.sanitize(yx);
+		return yx;
 	}
 	public final void setYx(double yx) {
-		this.yx = yx;
+		this.yx = FloatOps.sanitize(yx);
 	}
 
 	public final double getYy() {
-		return FloatOps.sanitize(yy);
+		return yy;
 	}
 	public final void setYy(double yy) {
-		this.yy = yy;
+		this.yy = FloatOps.sanitize(yy);
 	}
 
 	@Override
@@ -100,11 +100,11 @@ public sealed class Matrix2 permits Matrix3 {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Matrix2 matrix2 = (Matrix2) o;
-		return FloatOps.equals(matrix2.getXx(), getXx()) && FloatOps.equals(matrix2.getXy(), getXy()) && FloatOps.equals(matrix2.getYx(), getYx()) && FloatOps.equals(matrix2.getYy(), getYy());
+		return FloatOps.equals(matrix2.xx, xx) && FloatOps.equals(matrix2.xy, xy) && FloatOps.equals(matrix2.yx, yx) && FloatOps.equals(matrix2.yy, yy);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(getXx(), getXy(), getYx(), getYy());
+		return Objects.hash(xx, xy, yx, yy);
 	}
 
 	@Override
