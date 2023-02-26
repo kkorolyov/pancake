@@ -9,13 +9,13 @@ import java.io.InputStream
 /**
  * Returns a pixel buffer from the image at [inStream].
  */
-fun PixelBuffer.Companion.image(inStream: InputStream): PixelBuffer = inStream.use {
-	val data = it.readBytes().let { bytes ->
+fun PixelBuffer.Companion.image(inStream: InputStream): PixelBuffer {
+	val data = inStream.readBytes().let { bytes ->
 		val buffer = MemoryUtil.memAlloc(bytes.size)
 		bytes.forEach(buffer::put)
 		buffer.flip()
 	}
-	MemoryStack.stackPush().use { stack ->
+	return MemoryStack.stackPush().use { stack ->
 		val width = stack.mallocInt(1)
 		val height = stack.mallocInt(1)
 		val channels = stack.mallocInt(1)

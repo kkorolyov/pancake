@@ -55,32 +55,32 @@ private val window by lazy {
 }
 
 private val colorProgram = GLProgram(
-	GLShader(GLShader.Type.VERTEX, Resources.inStream("color.vert")),
-	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("color.frag"))
+	Resources.inStream("color.vert").use { GLShader(GLShader.Type.VERTEX, it) },
+	Resources.inStream("color.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
 	set(0, Matrix4.identity())
 }
 private val textureProgram = GLProgram(
-	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
-	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("texture.frag"))
+	Resources.inStream("texture.vert").use { GLShader(GLShader.Type.VERTEX, it) },
+	Resources.inStream("texture.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
 	set(0, Matrix4.identity())
 }
 private val coTexProgram = GLProgram(
-	GLShader(GLShader.Type.VERTEX, Resources.inStream("coTex.vert")),
-	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("coTex.frag"))
+	Resources.inStream("coTex.vert").use { GLShader(GLShader.Type.VERTEX, it) },
+	Resources.inStream("coTex.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
 	set(0, Matrix4.identity())
 }
 private val fontProgram = GLProgram(
-	GLShader(GLShader.Type.VERTEX, Resources.inStream("texture.vert")),
-	GLShader(GLShader.Type.FRAGMENT, Resources.inStream("font.frag"))
+	Resources.inStream("texture.vert").use { GLShader(GLShader.Type.VERTEX, it) },
+	Resources.inStream("font.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
 	set(0, Matrix4.identity())
 }
 
 private val texture = GLTexture {
-	PixelBuffer.image(Resources.inStream("wall.jpg"))
+	Resources.inStream("wall.jpg").use { PixelBuffer.image(it) }
 }
 
 private val solidVertices = Vector3.of(0.0, 0.5).let { color ->
@@ -135,7 +135,7 @@ private val ellipseMesh = GLMesh(
 	textures = listOf(texture)
 )
 
-private val font = Font("roboto-mono.ttf", 14)
+private val font = Resources.inStream("roboto-mono.ttf").use { Font(it, 14) }
 
 private val scenes = listOf(
 	// help
