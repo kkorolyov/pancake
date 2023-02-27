@@ -1,6 +1,5 @@
 package dev.kkorolyov.pancake.graphics.gl.test.e2e
 
-import dev.kkorolyov.pancake.graphics.PixelBuffer
 import dev.kkorolyov.pancake.graphics.ellipse
 import dev.kkorolyov.pancake.graphics.gl.Font
 import dev.kkorolyov.pancake.graphics.gl.image
@@ -80,7 +79,7 @@ private val fontProgram = GLProgram(
 }
 
 private val texture = GLTexture {
-	Resources.inStream("wall.jpg").use { PixelBuffer.image(it) }
+	Resources.inStream("wall.jpg").use(::image)
 }
 
 private val solidVertices = Vector3.of(0.0, 0.5).let { color ->
@@ -114,7 +113,7 @@ private val coTexBuffer = GLVertexBuffer(*coTexVertices)
 private val solidMesh = GLMesh(solidBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val rainbowMesh = GLMesh(rainbowBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val textureMesh = GLMesh(textureBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
-private val coTexMesh = GLMesh(coTexBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(GLTexture(pixels = PixelBuffer.Companion::blank2)))
+private val coTexMesh = GLMesh(coTexBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
 
 private val rectangleMesh = GLMesh(
 	GLVertexBuffer {
