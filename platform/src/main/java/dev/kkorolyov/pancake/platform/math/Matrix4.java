@@ -190,9 +190,9 @@ public final class Matrix4 extends Matrix3 {
 	public void scale(Vector3 scale) {
 		Matrix4 op = initOp();
 
-		op.setXx(getXx() * scale.getX());
-		op.setYy(getYy() * scale.getY());
-		op.setZz(getZz() * scale.getZ());
+		op.setXx(scale.getX());
+		op.setYy(scale.getY());
+		op.setZz(scale.getZ());
 
 		multiply(op);
 	}

@@ -7,24 +7,24 @@ import java.nio.ByteBuffer
  */
 data class PixelBuffer(
 	/**
-	 * Source image width.
+	 * Width of the image represented by this buffer, in `px`.
 	 */
 	val width: Int,
 	/**
-	 * Source image height.
+	 * Height of the image represented by this buffer, in `px`.
 	 */
 	val height: Int,
 	/**
-	 * Source image depth.
+	 * Depth of the image represented by this buffer, in `px`.
 	 */
 	val depth: Int,
 	/**
-	 * Number of components in source image.
-	 * e.g. `R == 1`, `RG == 2`, `RGB == 3`, `RGBA == 4`.
+	 * Number of components/bytes per pixel.
+	 * e.g. `R` vs `RG` vs `RGB` vs `RGBA`
 	 */
 	val channels: Int,
 	/**
-	 * Pixel data.
+	 * Underlying pixel bytes.
 	 */
 	val data: ByteBuffer,
 	/**
@@ -34,33 +34,30 @@ data class PixelBuffer(
 ) : AutoCloseable {
 
 	/**
+	 * Flips the pixels stored in this buffer along the y-axis.
+	 * For rendering APIs that expect the first pixel to be the bottom-left of the image, instead of the top left.
+	 */
+	fun flipVertical() {
+		val rowBytes = width * channels
+
+		for (rowI in 0 until height / 2) {
+			val offset = rowI * rowBytes
+			val mirrorOffset = (height - 1 - rowI) * rowBytes
+			for (colI in 0 until rowBytes) {
+				val i = offset + colI
+				val mirrorI = mirrorOffset + colI
+
+				val temp = data[i]
+				data.put(i, data[mirrorI])
+				data.put(mirrorI, temp)
+			}
+		}
+	}
+
+	/**
 	 * Frees allocated pixel [data].
 	 */
 	override fun close() {
 		free(data)
-	}
-
-	companion object {
-		/**
-		 * Returns a 1D single-element buffer of the value `255`.
-		 */
-		fun blank1() = blank(1)
-		/**
-		 * Returns a 2D single-element buffer of the value `255`.
-		 */
-		fun blank2() = blank(1, 1)
-		/**
-		 * Returns a 3D single-element buffer of the value `255`.
-		 */
-		fun blank3() = blank(1, 1, 1)
-
-		private fun blank(width: Int = 0, height: Int = 0, depth: Int = 0) = PixelBuffer(width, height, depth, 4, ByteBuffer.allocateDirect(4).apply {
-			(0 until capacity()).forEach {
-				// -1 signed == 255 unsigned
-				put(it, -1)
-			}
-		}) {
-			// no need to free manually - ByteBuffer has a Cleaner that will free on GC
-		}
 	}
 }

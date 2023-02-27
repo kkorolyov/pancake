@@ -24,6 +24,7 @@ import org.lwjgl.stb.STBTruetype.stbtt_PackFontRanges
 import org.lwjgl.stb.STBTruetype.stbtt_ScaleForPixelHeight
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil
+import java.io.InputStream
 import kotlin.math.max
 import kotlin.math.min
 
@@ -36,18 +37,16 @@ private const val numChars = 96
 private const val indent = 2
 
 /**
- * Generates meshes for rendering text using the font at `path` at pixel height `size`.
+ * Generates meshes for rendering text using the font from `inStream` at pixel height `size`.
  * Mesh vertices take the form `(vec2 pos, vec2 texCoord)`.
  * Shaders drawing these meshes should use the sampled texture's `r` component as an alpha value.
  * For proper blending, ensure that `glEnable(GL_BLEND)` and `glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)` are set.
  */
-class Font(path: String, size: Int) : AutoCloseable {
-	private val fData = (Resources.inStream(path) ?: throw IllegalArgumentException("no such font: $path")).use {
-		it.readBytes().let { bytes ->
-			val buffer = MemoryUtil.memAlloc(bytes.size)
-			bytes.forEach(buffer::put)
-			buffer.flip()
-		}
+class Font(inStream: InputStream, size: Int) : AutoCloseable {
+	private val fData = inStream.readBytes().let { bytes ->
+		val buffer = MemoryUtil.memAlloc(bytes.size)
+		bytes.forEach(buffer::put)
+		buffer.flip()
 	}
 	private val cdata = STBTTPackedchar.malloc(numChars)
 	private val pixels = MemoryUtil.memAlloc(pw * ph).apply {
@@ -61,14 +60,14 @@ class Font(path: String, size: Int) : AutoCloseable {
 					cdata.close()
 					MemoryUtil.memFree(this)
 
-					throw IllegalStateException("cannot pack font: $path")
+					throw IllegalStateException("cannot pack font")
 				}
 				if (!stbtt_PackFontRanges(it, fData, 0, ranges)) {
 					MemoryUtil.memFree(fData)
 					cdata.close()
 					MemoryUtil.memFree(this)
 
-					throw IllegalStateException("cannot pack font: $path")
+					throw IllegalStateException("cannot pack font")
 				}
 				stbtt_PackEnd(it)
 			}
@@ -93,7 +92,7 @@ class Font(path: String, size: Int) : AutoCloseable {
 				bitmap.close()
 				close()
 
-				throw IllegalStateException("cannot initialize font: $path")
+				throw IllegalStateException("cannot initialize font")
 			}
 		}.use { info ->
 			scale = stbtt_ScaleForPixelHeight(info, size.toFloat())
