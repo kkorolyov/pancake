@@ -88,9 +88,9 @@ $dokka.location:dev.kkorolyov.pancake.graphics.gl.system////PointingToDeclaratio
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.system/DrawSystem///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/-draw-system/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.system/DrawSystem/DrawSystem/#dev.kkorolyov.pancake.graphics.CameraQueue/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.system/-draw-system/-draw-system.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.gl//image/dev.kkorolyov.pancake.graphics.PixelBuffer.Companion#java.io.InputStream/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/image.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl//image/#java.io.InputStream#kotlin.Boolean/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/image.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl/Font///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/-font/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.gl/Font/Font/#kotlin.String#kotlin.Int/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/-font/-font.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl/Font/Font/#java.io.InputStream#kotlin.Int/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/-font/-font.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl/Font/close/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/-font/close.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl/Font/invoke/#kotlin.String/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/-font/invoke.html
 dev.kkorolyov.pancake.graphics.gl

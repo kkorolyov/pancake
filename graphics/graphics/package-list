@@ -36,6 +36,17 @@ $dokka.location:dev.kkorolyov.pancake.graphics.system/CameraSystem/CameraSystem/
 $dokka.location:dev.kkorolyov.pancake.graphics////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics//ellipse/#dev.kkorolyov.pancake.platform.math.Vector2#kotlin.Int#kotlin.Function2[dev.kkorolyov.pancake.platform.math.Vector2,dev.kkorolyov.pancake.platform.math.Vector2,kotlin.Unit]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/ellipse.html
 $dokka.location:dev.kkorolyov.pancake.graphics//rectangle/#dev.kkorolyov.pancake.platform.math.Vector2#kotlin.Function2[dev.kkorolyov.pancake.platform.math.Vector2,dev.kkorolyov.pancake.platform.math.Vector2,kotlin.Unit]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/rectangle.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas.Viewport///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/-viewport/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas.Viewport/Viewport/#kotlin.Double#kotlin.Double#kotlin.Double#kotlin.Double/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/-viewport/-viewport.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas.Viewport/s0/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/-viewport/s0.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas.Viewport/s1/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/-viewport/s1.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas.Viewport/t0/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/-viewport/t0.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas.Viewport/t1/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/-viewport/t1.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas/Atlas/#kotlin.Array[dev.kkorolyov.pancake.graphics.PixelBuffer]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/-atlas.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas/close/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/close.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas/pixels/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/pixels.html
+$dokka.location:dev.kkorolyov.pancake.graphics/Atlas/viewports/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-atlas/viewports.html
 $dokka.location:dev.kkorolyov.pancake.graphics/Camera///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics/Camera/Camera/#dev.kkorolyov.pancake.platform.entity.Entity/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/-camera.html
 $dokka.location:dev.kkorolyov.pancake.graphics/Camera/id/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-camera/id.html
@@ -53,16 +64,13 @@ $dokka.location:dev.kkorolyov.pancake.graphics/GraphicsResource.Active/deactivat
 $dokka.location:dev.kkorolyov.pancake.graphics/GraphicsResource///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-graphics-resource/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics/GraphicsResource/close/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-graphics-resource/close.html
 $dokka.location:dev.kkorolyov.pancake.graphics/GraphicsResource/id/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-graphics-resource/id.html
-$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion/blank1/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/blank1.html
-$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion/blank2/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/blank2.html
-$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer.Companion/blank3/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-companion/blank3.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/PixelBuffer/#kotlin.Int#kotlin.Int#kotlin.Int#kotlin.Int#java.nio.ByteBuffer#kotlin.Function1[java.nio.ByteBuffer,kotlin.Unit]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/-pixel-buffer.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/channels/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/channels.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/close/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/close.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/data/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/data.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/depth/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/depth.html
+$dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/flipVertical/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/flip-vertical.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/height/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/height.html
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/width/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/width.html
 dev.kkorolyov.pancake.graphics
