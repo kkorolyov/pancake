@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.graphics.gl.resource
 
 import dev.kkorolyov.pancake.graphics.PixelBuffer
-import dev.kkorolyov.pancake.graphics.gl.internal.Cache
+import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import org.lwjgl.opengl.GL46.*
 import kotlin.math.floor

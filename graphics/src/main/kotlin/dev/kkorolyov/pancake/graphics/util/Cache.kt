@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.graphics.gl.internal
+package dev.kkorolyov.pancake.graphics.util
 
 import kotlin.reflect.KProperty
 
@@ -16,9 +16,10 @@ class Cache<T>(private val initializer: () -> T) {
 		get() = value != null
 
 	/**
-	 * Returns the value after initializing it if not yet done so.
+	 * For using this cache as a delegate property.
+	 * Returns the value stored in this cache - initializing it if not yet done so.
 	 */
-	operator fun invoke(): T {
+	operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
 		if (value == null) {
 			synchronized(this) {
 				if (value == null) {
@@ -29,13 +30,9 @@ class Cache<T>(private val initializer: () -> T) {
 		}
 		return value!!
 	}
-	/**
-	 * Allows this cache to be used as a delegate property.
-	 */
-	operator fun getValue(thisRef: Any?, property: KProperty<*>) = invoke()
 
 	/**
-	 * Invalidates the current value.
+	 * Invalidates the current value, if it is initialized.
 	 * If specified, invokes [block] with the current value before invalidating it.
 	 */
 	fun invalidate(block: ((T) -> Unit)? = null) {

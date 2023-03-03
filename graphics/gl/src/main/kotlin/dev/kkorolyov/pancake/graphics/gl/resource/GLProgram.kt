@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.gl.resource
 
-import dev.kkorolyov.pancake.graphics.gl.internal.Cache
+import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.graphics.resource.Shader
 import dev.kkorolyov.pancake.platform.math.Matrix4

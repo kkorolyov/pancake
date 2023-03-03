@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.gl.resource
 
-import dev.kkorolyov.pancake.graphics.gl.internal.Cache
+import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3

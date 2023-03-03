@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.gl.resource
 
-import dev.kkorolyov.pancake.graphics.gl.internal.Cache
+import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.graphics.resource.IndexBuffer
 import dev.kkorolyov.pancake.graphics.resource.Mesh
 import dev.kkorolyov.pancake.graphics.resource.Texture
@@ -15,10 +15,10 @@ import org.lwjgl.opengl.GL46.*
 class GLMesh(
 	private val vertexBuffer: VertexBuffer,
 	private val indexBuffer: IndexBuffer? = null,
-	private val mode: Mode = Mode.TRIANGLES,
-	textures: List<Texture> = listOf()
+	textures: Collection<Texture> = listOf(),
+	private val mode: Mode = Mode.TRIANGLES
 ) : Mesh {
-	private val textures = textures.toTypedArray()
+	private val textures = textures.toList()
 
 	private val cache = Cache {
 		val id = glCreateVertexArrays()
@@ -40,8 +40,7 @@ class GLMesh(
 		id
 	}
 
-	override val id: Int
-		get() = cache()
+	override val id: Int by cache
 
 	override fun draw(offset: Int, count: Int?) {
 		activate()
