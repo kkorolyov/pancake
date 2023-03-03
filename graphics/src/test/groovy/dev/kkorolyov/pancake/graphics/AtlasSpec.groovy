@@ -18,7 +18,7 @@ class AtlasSpec extends Specification {
 
 	def "derives atlas size from inputs"() {
 		when:
-		Atlas atlas = new Atlas(*buffers)
+		Atlas atlas = new Atlas(buffers)
 
 		then:
 		atlas.pixels.width == expectedWidth
@@ -52,7 +52,7 @@ class AtlasSpec extends Specification {
 
 	def "packs buffer data"() {
 		when:
-		Atlas atlas = new Atlas(*buffers)
+		Atlas atlas = new Atlas(buffers)
 
 		then:
 		array(atlas.pixels.data) == expected as byte[]
@@ -89,7 +89,7 @@ class AtlasSpec extends Specification {
 
 	def "generates quads"() {
 		when:
-		Atlas atlas = new Atlas(*buffers)
+		Atlas atlas = new Atlas(buffers)
 
 		then:
 		atlas.viewports == expected
