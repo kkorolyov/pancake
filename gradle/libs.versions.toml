@@ -1,7 +1,7 @@
 [versions]
 flub = "0.+"
 
-slf4j = "1.+"
+slf4j = "2.+"
 jackson = "2.+"
 
 snakeyaml = "1.+"
