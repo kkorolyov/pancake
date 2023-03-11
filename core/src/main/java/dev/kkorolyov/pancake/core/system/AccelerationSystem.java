@@ -18,7 +18,7 @@ public class AccelerationSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		Velocity velocity = entity.get(Velocity.class);
 		Force force = entity.get(Force.class);
 		Mass mass = entity.get(Mass.class);

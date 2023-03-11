@@ -18,7 +18,7 @@ public class DampingSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		Damping damping = entity.get(Damping.class);
 		Velocity velocity = entity.get(Velocity.class);
 		Force force = entity.get(Force.class);

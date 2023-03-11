@@ -33,7 +33,7 @@ public final class IntersectionSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		toCheck.add(entity);
 	}
 	@Override

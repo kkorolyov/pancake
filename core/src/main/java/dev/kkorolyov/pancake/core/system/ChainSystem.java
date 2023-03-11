@@ -25,7 +25,7 @@ public class ChainSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		Chain chain = entity.get(Chain.class);
 		Position position = entity.get(Position.class);
 		Orientation orientation = entity.get(Orientation.class);

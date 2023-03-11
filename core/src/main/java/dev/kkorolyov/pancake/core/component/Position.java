@@ -12,7 +12,7 @@ public final class Position implements Component {
 
 	private Position parent;
 
-	private final ThreadLocal<Vector3> globalValue = ThreadLocal.withInitial(Vector3::of);
+	private final ThreadLocal<Vector3> tGlobalValue = ThreadLocal.withInitial(Vector3::of);
 
 	/**
 	 * Constructs a new position with initial {@code value}.
@@ -34,14 +34,14 @@ public final class Position implements Component {
 	 * If this component has no parent, this is the same as {@link #getValue()}.
 	 */
 	public Vector3 getGlobalValue() {
-		Vector3 result = globalValue.get();
-		result.set(value);
+		Vector3 globalValue = tGlobalValue.get();
+		globalValue.set(value);
 
 		if (parent != null) {
-			result.add(parent.getGlobalValue());
+			globalValue.add(parent.getGlobalValue());
 		}
 
-		return result;
+		return globalValue;
 	}
 
 	/**
