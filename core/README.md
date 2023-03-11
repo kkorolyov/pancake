@@ -48,7 +48,7 @@ dependencies {
 
 [`DampingSystem`](src/main/java/dev/kkorolyov/pancake/core/system/DampingSystem.java) diminishes an entity's [`Velocity`](src/main/java/dev/kkorolyov/pancake/core/component/movement/Velocity.java) proportionally according its [`Damping`](src/main/java/dev/kkorolyov/pancake/core/component/movement/Damping.java).
 
-[`MovementSystem`](src/main/java/dev/kkorolyov/pancake/core/system/MovementSystem.java) translates an entity's [`Transform`](src/main/java/dev/kkorolyov/pancake/core/component/Transform.java) by its [`Velocity`](src/main/java/dev/kkorolyov/pancake/core/component/movement/Velocity.java).
+[`MovementSystem`](src/main/java/dev/kkorolyov/pancake/core/system/MovementSystem.java) translates an entity's [`Position`](src/main/java/dev/kkorolyov/pancake/core/component/Position.java) by its [`Velocity`](src/main/java/dev/kkorolyov/pancake/core/component/movement/Velocity.java).
 
 The suggested ordering of these systems is `Acceleration -> Capping -> Movement -> Damping`.
 
@@ -58,7 +58,7 @@ The suggested ordering of these systems is `Acceleration -> Capping -> Movement 
 
 [`CorrectionSystem`](src/main/java/dev/kkorolyov/pancake/core/system/CorrectionSystem.java) repositions [`Intersected`](src/main/java/dev/kkorolyov/pancake/core/component/event/Intersected.java) [`Correctable`](src/main/java/dev/kkorolyov/pancake/core/component/tag/Correctable.java) entities just enough to remove the intersection between them.
 
-[`IntersectionSystem`](src/main/java/dev/kkorolyov/pancake/core/system/IntersectionSystem.java) detects entity intersections given their [`Transform`](src/main/java/dev/kkorolyov/pancake/core/component/Transform.java) and [`Bounds`](src/main/java/dev/kkorolyov/pancake/core/component/Bounds.java).
+[`IntersectionSystem`](src/main/java/dev/kkorolyov/pancake/core/system/IntersectionSystem.java) detects entity intersections given their [`Position`](src/main/java/dev/kkorolyov/pancake/core/component/Position.java) and [`Bounds`](src/main/java/dev/kkorolyov/pancake/core/component/Bounds.java).
 Applies an [`Intersected`](src/main/java/dev/kkorolyov/pancake/core/component/event/Intersected.java) event component to each intersecting entity.
 
 [`PhysicsCleanupSystem`](src/main/java/dev/kkorolyov/pancake/core/system/cleanup/PhysicsCleanupSystem.java) removes [`Intersected`](src/main/java/dev/kkorolyov/pancake/core/component/event/Intersected.java) event components from entities.
@@ -69,6 +69,6 @@ The suggested ordering of these systems is `Intersection -> Correction -> Collis
 
 [`ActionSystem`](src/main/java/dev/kkorolyov/pancake/core/system/ActionSystem.java) dequeues and applies actions from an entity's [`ActionQueue`](src/main/java/dev/kkorolyov/pancake/core/component/ActionQueue.java).
 
-[`ChainSystem`](src/main/java/dev/kkorolyov/pancake/core/system/ChainSystem.java) repositions an entity's [`Transform`](src/main/java/dev/kkorolyov/pancake/core/component/Transform.java) in accordance to its [`Chain`](src/main/java/dev/kkorolyov/pancake/core/component/Chain.java) to another entity.
+[`ChainSystem`](src/main/java/dev/kkorolyov/pancake/core/system/ChainSystem.java) repositions an entity's [`Position`](src/main/java/dev/kkorolyov/pancake/core/component/Position.java) in accordance to its [`Chain`](src/main/java/dev/kkorolyov/pancake/core/component/Chain.java) to another entity.
 
-[`SpawnSystem`](src/main/java/dev/kkorolyov/pancake/core/system/SpawnSystem.java) creates new entities originating at a given entity's [`Transform`](src/main/java/dev/kkorolyov/pancake/core/component/Transform.java) and according to its [`Spawner`](src/main/java/dev/kkorolyov/pancake/core/component/Spawner.java).
+[`SpawnSystem`](src/main/java/dev/kkorolyov/pancake/core/system/SpawnSystem.java) creates new entities originating at a given entity's [`Position`](src/main/java/dev/kkorolyov/pancake/core/component/Position.java) and according to its [`Spawner`](src/main/java/dev/kkorolyov/pancake/core/component/Spawner.java).

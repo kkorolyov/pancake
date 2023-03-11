@@ -4,8 +4,8 @@ import dev.kkorolyov.flub.data.WeightedDistribution
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.core.component.Chain
+import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.Spawner
-import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
 import dev.kkorolyov.pancake.core.component.movement.Mass
@@ -67,7 +67,7 @@ fun main() {
 					if (Random.nextBoolean()) Bounds.box(randVector()) else Bounds.round(Random.nextDouble()),
 					Chain(randVector(), Random.nextDouble(), if (Random.nextBoolean()) listOf(randVector()) else listOf()),
 					Spawner((1..10).random().toDouble(), (10..20).random().toDouble(), 0.0, WeightedDistribution<Supplier<MutableIterable<Component>>?>().apply { add(Supplier { mutableListOf(Mass(Random.nextDouble())) }, 1) }),
-					Transform(randVector(), randVector(), Transform(randVector(), randVector()), Random.nextBoolean()),
+					Position(randVector()).apply { parent = Position(randVector()) },
 					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
 					Force(randVector()),
 					Mass(Random.nextDouble()),

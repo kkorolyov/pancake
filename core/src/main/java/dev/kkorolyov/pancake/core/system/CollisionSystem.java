@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.Transform;
+import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.movement.Mass;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
@@ -42,8 +42,8 @@ public final class CollisionSystem extends GameSystem {
 		if (events.add(event)) {
 			int priority = COMPARATOR.compare(event.getA().get(Collidable.class), event.getB().get(Collidable.class));
 
-			Transform aTransform = event.getA().get(Transform.class);
-			Transform bTransform = event.getB().get(Transform.class);
+			Position aPosition = event.getA().get(Position.class);
+			Position bPosition = event.getB().get(Position.class);
 
 			Velocity aVelocity = event.getA().get(Velocity.class);
 			Velocity bVelocity = event.getB().get(Velocity.class);
@@ -52,8 +52,8 @@ public final class CollisionSystem extends GameSystem {
 			Mass bMass = event.getB().get(Mass.class);
 
 			if (priority <= 0 && aVelocity != null) {
-				if (aTransform != null && aMass != null && priority == 0 && bVelocity != null && bTransform != null && bMass != null) {
-					collide(aTransform.getPosition(), bTransform.getPosition(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
+				if (aPosition != null && aMass != null && priority == 0 && bVelocity != null && bPosition != null && bMass != null) {
+					collide(aPosition.getValue(), bPosition.getValue(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
 				} else {
 					reflect(aVelocity.getValue(), event.getMtvA());
 				}

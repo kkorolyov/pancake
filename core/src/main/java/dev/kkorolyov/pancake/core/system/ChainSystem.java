@@ -1,7 +1,8 @@
 package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Chain;
-import dev.kkorolyov.pancake.core.component.Transform;
+import dev.kkorolyov.pancake.core.component.Orientation;
+import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
@@ -13,48 +14,49 @@ import java.util.TreeMap;
  * Repositions chained entities.
  */
 public class ChainSystem extends GameSystem {
-	private final Vector3 transformToAnchor = Vector3.of(0, 0, 0);
+	private final Vector3 positionToAnchor = Vector3.of(0, 0, 0);
 	private final NavigableMap<Double, Vector3> sortedAnchors = new TreeMap<>();
 
 	/**
 	 * Constructs a new chain system.
 	 */
 	public ChainSystem() {
-		super(Transform.class, Chain.class);
+		super(Position.class, Chain.class);
 	}
 
 	@Override
 	public void update(Entity entity, long dt) {
 		Chain chain = entity.get(Chain.class);
-		Transform transform = entity.get(Transform.class);
+		Position position = entity.get(Position.class);
+		Orientation orientation = entity.get(Orientation.class);
 
-		updatePositionAnchor(chain, transform);
-		updateRotationAnchors(chain, transform);
+		updatePositionAnchor(chain, position);
+		if (orientation != null) updateRotationAnchors(chain, position, orientation);
 	}
-	private void updatePositionAnchor(Chain chain, Transform transform) {
+	private void updatePositionAnchor(Chain chain, Position position) {
 		Vector3 anchor = chain.getPositionAnchor();
 		if (anchor == null) return;
 
-		transformToAnchor.set(anchor);
-		transformToAnchor.add(transform.getPosition(), -1);
+		positionToAnchor.set(anchor);
+		positionToAnchor.add(position.getValue(), -1);
 
-		double gap = Vector3.magnitude(transformToAnchor) - chain.getPlay();
+		double gap = Vector3.magnitude(positionToAnchor) - chain.getPlay();
 		if (gap > 0) {
-			transformToAnchor.scale(1 / Vector3.magnitude(transformToAnchor));
-			transformToAnchor.scale(gap);
+			positionToAnchor.scale(1 / Vector3.magnitude(positionToAnchor));
+			positionToAnchor.scale(gap);
 
-			transform.getPosition().add(transformToAnchor);
+			position.getValue().add(positionToAnchor);
 		}
 	}
-	private void updateRotationAnchors(Chain chain, Transform transform) {
+	private void updateRotationAnchors(Chain chain, Position position, Orientation orientation) {
 		for (Vector3 anchor : chain.getRotationAnchors()) {
-			sortedAnchors.put(Vector3.distance(transform.getPosition(), anchor), anchor);
+			sortedAnchors.put(Vector3.distance(position.getValue(), anchor), anchor);
 		}
 		if (sortedAnchors.size() > 0) {
-			transformToAnchor.set(sortedAnchors.firstEntry().getValue());
-			transformToAnchor.add(transform.getPosition(), -1);
+			positionToAnchor.set(sortedAnchors.firstEntry().getValue());
+			positionToAnchor.add(position.getValue(), -1);
 
-			transform.getOrientation().setX(Math.atan2(transformToAnchor.getY(), transformToAnchor.getX()));
+			orientation.getValue().setX(Math.atan2(positionToAnchor.getY(), positionToAnchor.getX()));
 		}
 		sortedAnchors.clear();
 	}

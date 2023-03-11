@@ -2,10 +2,9 @@ package dev.kkorolyov.pancake.core.registry
 
 import dev.kkorolyov.flub.function.convert.Converter
 import dev.kkorolyov.pancake.core.action.ForceAction
-import dev.kkorolyov.pancake.core.action.TransformAction
+import dev.kkorolyov.pancake.core.action.PositionAction
 import dev.kkorolyov.pancake.core.action.VelocityAction
 import dev.kkorolyov.pancake.platform.action.Action
-import dev.kkorolyov.pancake.platform.math.Vector1
 import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.registry.Resource
 
@@ -29,17 +28,10 @@ class ActionResourceConverterFactorySpec extends Specification {
 		]).get(null) == new VelocityAction(Vector3.of(1, 2, 3))
 	}
 
-	def "reads transform"() {
+	def "reads position"() {
 		expect:
 		converter.convert([
 				position: [1, 2, 3]
-		]).get(null) == new TransformAction(Vector3.of(1, 2, 3))
-	}
-	def "reads transform with orientation"() {
-		expect:
-		converter.convert([
-				position: [1, 2, 3],
-				orientation: [4]
-		]).get(null) == new TransformAction(Vector3.of(1, 2, 3), Vector1.of(4))
+		]).get(null) == new PositionAction(Vector3.of(1, 2, 3))
 	}
 }
