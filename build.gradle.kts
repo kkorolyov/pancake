@@ -131,6 +131,12 @@ subprojects {
 			testImplementation(libs.bundles.test)
 		}
 
+		java {
+			toolchain {
+				languageVersion.set(JavaLanguageVersion.of(JavaVersion.current().majorVersion))
+			}
+		}
+
 		tasks.test {
 			useJUnitPlatform()
 		}
