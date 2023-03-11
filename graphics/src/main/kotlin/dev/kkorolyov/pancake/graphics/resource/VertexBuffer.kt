@@ -19,7 +19,7 @@ interface VertexBuffer : GraphicsResource {
 
 	/**
 	 * Sets the vertices in this buffer to [vertices] starting at [offset].
-	 * Each vertex must match [structure] and the number of vertices must be `<= [size] - [offset]`.
+	 * Each vertex must match [structure] and the number of vertices must be `<=` [size] - [offset].
 	 */
 	fun set(offset: Long, vararg vertices: Array<Vector2>)
 	/**
