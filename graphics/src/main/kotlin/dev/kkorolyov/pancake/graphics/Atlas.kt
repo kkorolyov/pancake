@@ -13,7 +13,7 @@ import kotlin.math.sqrt
  * Provides indexed viewports to packed buffers in the order the buffers were provided.
  * Can provide custom `spacing` `px` to add between backed buffers - defaults to a value derived from the maximum buffer dimensions.
  */
-class Atlas(buffers: Collection<PixelBuffer>, spacing: Int? = null) : AutoCloseable {
+class Atlas @JvmOverloads constructor(buffers: Collection<PixelBuffer>, spacing: Int? = null) : AutoCloseable {
 	/**
 	 * The pixels of the packed atlas.
 	 */
