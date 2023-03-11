@@ -6,7 +6,6 @@ import dev.kkorolyov.pancake.graphics.gl.resource.GLMesh
 import dev.kkorolyov.pancake.graphics.gl.resource.GLTexture
 import dev.kkorolyov.pancake.graphics.gl.resource.GLVertexBuffer
 import dev.kkorolyov.pancake.graphics.resource.Mesh
-import dev.kkorolyov.pancake.platform.Resources
 import dev.kkorolyov.pancake.platform.math.Vector2
 import org.lwjgl.stb.STBTTAlignedQuad
 import org.lwjgl.stb.STBTTFontinfo

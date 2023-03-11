@@ -112,8 +112,8 @@ private val coTexBuffer = GLVertexBuffer(*coTexVertices)
 
 private val solidMesh = GLMesh(solidBuffer, mode = GLMesh.Mode.TRIANGLES)
 private val rainbowMesh = GLMesh(rainbowBuffer, mode = GLMesh.Mode.TRIANGLES)
-private val textureMesh = GLMesh(textureBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
-private val coTexMesh = GLMesh(coTexBuffer, mode = GLMesh.Mode.TRIANGLES, textures = listOf(texture))
+private val textureMesh = GLMesh(textureBuffer, textures = listOf(texture), mode = GLMesh.Mode.TRIANGLES)
+private val coTexMesh = GLMesh(coTexBuffer, textures = listOf(texture), mode = GLMesh.Mode.TRIANGLES)
 
 private val rectangleMesh = GLMesh(
 	GLVertexBuffer {
@@ -121,8 +121,8 @@ private val rectangleMesh = GLMesh(
 			add(position, texCoord)
 		}
 	},
-	mode = GLMesh.Mode.TRIANGLE_FAN,
-	textures = listOf(texture)
+	textures = listOf(texture),
+	mode = GLMesh.Mode.TRIANGLE_FAN
 )
 private val ellipseMesh = GLMesh(
 	GLVertexBuffer {
@@ -130,8 +130,8 @@ private val ellipseMesh = GLMesh(
 			add(position, texCoord)
 		}
 	},
-	mode = GLMesh.Mode.TRIANGLE_FAN,
-	textures = listOf(texture)
+	textures = listOf(texture),
+	mode = GLMesh.Mode.TRIANGLE_FAN
 )
 
 private val font = Resources.inStream("roboto-mono.ttf").use { Font(it, 14) }

@@ -11,8 +11,9 @@ import kotlin.math.sqrt
 /**
  * A collection of [PixelBuffer]s packed as a single buffer.
  * Provides indexed viewports to packed buffers in the order the buffers were provided.
+ * Can provide custom `spacing` `px` to add between backed buffers - defaults to a value derived from the maximum buffer dimensions.
  */
-class Atlas(vararg buffers: PixelBuffer) : AutoCloseable {
+class Atlas @JvmOverloads constructor(buffers: Collection<PixelBuffer>, spacing: Int? = null) : AutoCloseable {
 	/**
 	 * The pixels of the packed atlas.
 	 */
@@ -22,7 +23,7 @@ class Atlas(vararg buffers: PixelBuffer) : AutoCloseable {
 	 * Viewports to the individual buffers in the packed atlas.
 	 * In the same order as the original inputs.
 	 */
-	val viewports: Array<Viewport>
+	val viewports: List<Viewport>
 
 	init {
 		var maxWidth = 0
@@ -38,7 +39,7 @@ class Atlas(vararg buffers: PixelBuffer) : AutoCloseable {
 		// calculate atlas num elements per dimension
 		val elementsPerRow = ceil(sqrt(buffers.size.toDouble())).toInt()
 		// add some spacing between packed buffers to minimize bleed
-		val spacing = log2(maxWidth.toDouble()).roundToInt()
+		val spacing = spacing ?: log2(maxWidth.toDouble()).roundToInt()
 		// smallest power of 2 greater than minimum width
 		val atlasWidth = 2.0.pow(ceil(log2(maxWidth.toDouble() * elementsPerRow + spacing * (elementsPerRow - 1)))).toInt()
 
@@ -62,7 +63,7 @@ class Atlas(vararg buffers: PixelBuffer) : AutoCloseable {
 			val viewport = Viewport(xPixelOffset.toDouble() / atlasWidth, yPixelOffset.toDouble() / atlasWidth, (xPixelOffset + buffer.width).toDouble() / atlasWidth, (yPixelOffset + buffer.height).toDouble() / atlasWidth)
 
 			viewport
-		}.toTypedArray()
+		}
 
 		// for now, constrain to 2D textures
 		pixels = PixelBuffer(atlasWidth, atlasWidth, 0, maxChannels, data) {
