@@ -4,7 +4,7 @@ flub = "0.+"
 slf4j = "1.+"
 jackson = "2.+"
 
-snakeyaml = "1.+"
+snakeyaml = "2.+"
 
 lwjgl = "3.+"
 imgui = "1.+"
