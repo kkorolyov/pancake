@@ -8,7 +8,7 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 /**
  * Applies velocity to entity positions.
  */
-public class MovementSystem extends GameSystem {
+public final class MovementSystem extends GameSystem {
 	/**
 	 * Constructs a new movement system.
 	 */
@@ -17,7 +17,7 @@ public class MovementSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		Position position = entity.get(Position.class);
 		Velocity velocity = entity.get(Velocity.class);
 

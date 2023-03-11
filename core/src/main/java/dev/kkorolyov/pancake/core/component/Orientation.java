@@ -12,7 +12,7 @@ public final class Orientation implements Component {
 
 	private Orientation parent;
 
-	private final ThreadLocal<Vector3> globalValue = ThreadLocal.withInitial(Vector3::of);
+	private final ThreadLocal<Vector3> tGlobalValue = ThreadLocal.withInitial(Vector3::of);
 
 	/**
 	 * Constructs a new orientation with initial {@code value}.

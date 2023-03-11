@@ -18,7 +18,7 @@ public class SpawnSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		Spawner spawner = entity.get(Spawner.class);
 		Position position = entity.get(Position.class);
 

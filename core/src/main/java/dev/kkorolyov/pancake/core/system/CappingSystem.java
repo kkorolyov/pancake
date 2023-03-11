@@ -17,7 +17,7 @@ public final class CappingSystem extends GameSystem {
 		super(Velocity.class, VelocityCap.class);
 	}
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		VelocityCap velocityCap = entity.get(VelocityCap.class);
 		Vector3 velocity = entity.get(Velocity.class).getValue();
 

@@ -37,7 +37,7 @@ public final class CollisionSystem extends GameSystem {
 	}
 
 	@Override
-	public void update(Entity entity, long dt) {
+	protected void update(Entity entity, long dt) {
 		Intersected event = entity.get(Intersected.class);
 		if (events.add(event)) {
 			int priority = COMPARATOR.compare(event.getA().get(Collidable.class), event.getB().get(Collidable.class));
