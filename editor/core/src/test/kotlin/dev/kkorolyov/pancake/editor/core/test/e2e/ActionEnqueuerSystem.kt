@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.editor.core.test.e2e
 
 import dev.kkorolyov.pancake.core.action.ForceAction
-import dev.kkorolyov.pancake.core.action.TransformAction
+import dev.kkorolyov.pancake.core.action.PositionAction
 import dev.kkorolyov.pancake.core.action.VelocityAction
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.platform.GameSystem
@@ -11,7 +11,7 @@ import kotlin.random.Random
 
 private fun randAction() = listOf(
 	{ ForceAction(randVector()) },
-	{ TransformAction(randVector(), randVector()) },
+	{ PositionAction(randVector()) },
 	{ VelocityAction(randVector()) }
 ).random()()
 

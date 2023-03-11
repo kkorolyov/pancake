@@ -17,10 +17,9 @@ class SpawnerSpec extends Specification {
 	double interval = randDouble()
 	Vector3 origin = randVector()
 
-	Vector3 position = Vector3.of(1, 2, 3)
-	Transform transform = new Transform(position)
+	Position position = new Position(Vector3.of(1, 2, 3))
 	WeightedDistribution<Supplier<Iterable<Component>>> templates = new WeightedDistribution()
-			.add({ [transform] } as Supplier, 1)
+			.add({ [position] } as Supplier, 1)
 
 	Spawner spawner = new Spawner(minRadius, maxRadius, interval, templates)
 

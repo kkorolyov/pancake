@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.gl.system
 
-import dev.kkorolyov.pancake.core.component.Transform
+import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.graphics.Camera
 import dev.kkorolyov.pancake.graphics.CameraQueue
 import dev.kkorolyov.pancake.graphics.component.Model
@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL46.*
  */
 class DrawSystem(
 	private val queue: CameraQueue
-) : GameSystem(Transform::class.java, Model::class.java) {
+) : GameSystem(Position::class.java, Model::class.java) {
 	private val pending: MutableMap<Program, MutableList<Entity>> = mutableMapOf()
 	private val transform: Matrix4 = Matrix4.identity()
 
@@ -35,15 +35,17 @@ class DrawSystem(
 				program.activate()
 				entities.forEach {
 					val meshes = it[Model::class.java].meshes
-					val position = it[Transform::class.java].globalPosition
+					val position = it[Position::class.java].globalValue
+					val cameraPosition = camera.position.globalValue
 
 					camera.lens.let {
 						transform.xx = it.scale.x / it.size.x * 2
 						transform.yy = it.scale.y / it.size.y * 2
 					}
-					transform.xw = (position.x - camera.transform.globalPosition.x) * transform.xx
-					transform.yw = (position.y - camera.transform.globalPosition.y) * transform.yy
-					transform.zw = position.z - camera.transform.globalPosition.z
+
+					transform.xw = (position.x - cameraPosition.x) * transform.xx
+					transform.yw = (position.y - cameraPosition.y) * transform.yy
+					transform.zw = position.z - cameraPosition.z
 
 					program[0] = transform
 

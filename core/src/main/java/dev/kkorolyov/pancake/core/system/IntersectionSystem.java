@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Bounds;
-import dev.kkorolyov.pancake.core.component.Transform;
+import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.tag.Correctable;
 import dev.kkorolyov.pancake.platform.GameSystem;
@@ -29,7 +29,7 @@ public final class IntersectionSystem extends GameSystem {
 	private final Projection aProj = new Projection(), bProj = new Projection();
 
 	public IntersectionSystem() {
-		super(Transform.class, Bounds.class);
+		super(Position.class, Bounds.class);
 	}
 
 	@Override
@@ -46,17 +46,17 @@ public final class IntersectionSystem extends GameSystem {
 		toCheck.clear();
 	}
 	private void process(Entity a, Entity b) {
-		Transform aTransform = a.get(Transform.class);
-		Transform bTransform = b.get(Transform.class);
+		Position aPosition = a.get(Position.class);
+		Position bPosition = b.get(Position.class);
 
 		Bounds aBounds = a.get(Bounds.class);
 		Bounds bBounds = b.get(Bounds.class);
 
 		// only consider when either can be corrected
 		// polygons can be far enough apart to not need a more precise check
-		if ((a.get(Correctable.class) != null || b.get(Correctable.class) != null) && isClose(aTransform, bTransform, aBounds, bBounds)) {
-			if (aBounds.isRound() && bBounds.isRound()) processRound(aTransform, bTransform, aBounds, bBounds);
-			else processPoly(aTransform, bTransform, aBounds, bBounds);
+		if ((a.get(Correctable.class) != null || b.get(Correctable.class) != null) && isClose(aPosition, bPosition, aBounds, bBounds)) {
+			if (aBounds.isRound() && bBounds.isRound()) processRound(aPosition, bPosition, aBounds, bBounds);
+			else processPoly(aPosition, bPosition, aBounds, bBounds);
 
 			if (!(FloatOps.equals(mtv.getX(), 0) && FloatOps.equals(mtv.getY(), 0))) {
 				mtv.scale(minOverlap);
@@ -67,20 +67,20 @@ public final class IntersectionSystem extends GameSystem {
 			mtv.setY(0);
 		}
 	}
-	private static boolean isClose(Transform aTransform, Transform bTransform, Bounds aBounds, Bounds bBounds) {
-		return aBounds.getMagnitude() + bBounds.getMagnitude() > Vector3.distance(aTransform.getPosition(), bTransform.getPosition());
+	private static boolean isClose(Position aPosition, Position bPosition, Bounds aBounds, Bounds bBounds) {
+		return aBounds.getMagnitude() + bBounds.getMagnitude() > Vector3.distance(aPosition.getValue(), bPosition.getValue());
 	}
 
-	private void processRound(Transform aTransform, Transform bTransform, Bounds aBounds, Bounds bBounds) {
-		double midDistance = Vector2.distance(aTransform.getPosition(), bTransform.getPosition());
+	private void processRound(Position aPosition, Position bPosition, Bounds aBounds, Bounds bBounds) {
+		double midDistance = Vector2.distance(aPosition.getValue(), bPosition.getValue());
 		double overlap = aBounds.getMagnitude() + bBounds.getMagnitude() - midDistance;
 
 		if (overlap > 0) {
 			minOverlap = overlap;
 
 			if (midDistance != 0) {
-				mtv.set(aTransform.getPosition());
-				mtv.add(bTransform.getPosition(), -1);
+				mtv.set(aPosition.getValue());
+				mtv.add(bPosition.getValue(), -1);
 				mtv.scale(1 / midDistance);
 			} else {
 				// same position, just shift along x-axis
@@ -88,9 +88,9 @@ public final class IntersectionSystem extends GameSystem {
 			}
 		}
 	}
-	private void processPoly(Transform aTransform, Transform bTransform, Bounds aBounds, Bounds bBounds) {
+	private void processPoly(Position aPosition, Position bPosition, Bounds aBounds, Bounds bBounds) {
 		for (Vector2 axis : aBounds.getNormals()) {
-			if (!processAxis(axis, aTransform, bTransform, aBounds, bBounds)) {
+			if (!processAxis(axis, aPosition, bPosition, aBounds, bBounds)) {
 				minOverlap = 0;
 				mtv.setX(0);
 				mtv.setY(0);
@@ -99,7 +99,7 @@ public final class IntersectionSystem extends GameSystem {
 			}
 		}
 		for (Vector2 axis : bBounds.getNormals()) {
-			if (!processAxis(axis, aTransform, bTransform, aBounds, bBounds)) {
+			if (!processAxis(axis, aPosition, bPosition, aBounds, bBounds)) {
 				minOverlap = 0;
 				mtv.setX(0);
 				mtv.setY(0);
@@ -110,14 +110,14 @@ public final class IntersectionSystem extends GameSystem {
 		seenAxes.clear();
 	}
 
-	private boolean processAxis(Vector2 axis, Transform aTransform, Transform bTransform, Bounds aBounds, Bounds bBounds) {
+	private boolean processAxis(Vector2 axis, Position aPosition, Position bPosition, Bounds aBounds, Bounds bBounds) {
 		for (Vector2 seen : seenAxes) {
 			if (isSameAxis(seen, axis)) return true;
 		}
 		seenAxes.add(axis);
 
-		project(aTransform, aBounds, axis, aProj);
-		project(bTransform, bBounds, axis, bProj);
+		project(aPosition, aBounds, axis, aProj);
+		project(bPosition, bBounds, axis, bProj);
 
 		double overlap = aProj.getOverlap(bProj);
 		if (overlap == 0) {
@@ -138,7 +138,7 @@ public final class IntersectionSystem extends GameSystem {
 		return (Double.compare(a.getX(), b.getX()) == 0 && Double.compare(a.getY(), b.getY()) == 0)
 				|| (Double.compare(-a.getX(), b.getX()) == 0 && Double.compare(-a.getY(), b.getY()) == 0);
 	}
-	private static void project(Transform transform, Bounds bounds, Vector2 axis, Projection projection) {
+	private static void project(Position position, Bounds bounds, Vector2 axis, Projection projection) {
 		if (bounds.isRound()) {
 			projection.put(bounds.getMagnitude());
 			projection.put(-bounds.getMagnitude());
@@ -147,7 +147,7 @@ public final class IntersectionSystem extends GameSystem {
 				projection.put(Vector2.dot(axis, vertex));
 			}
 		}
-		projection.translate(Vector2.dot(axis, transform.getPosition()));
+		projection.translate(Vector2.dot(axis, position.getValue()));
 	}
 
 	private static final class Projection {

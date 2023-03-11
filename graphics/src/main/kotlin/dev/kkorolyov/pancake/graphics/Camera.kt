@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics
 
-import dev.kkorolyov.pancake.core.component.Transform
+import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.graphics.component.Lens
 import dev.kkorolyov.pancake.platform.entity.Entity
 
@@ -17,10 +17,10 @@ class Camera(
 		get() = entity.id
 
 	/**
-	 * Camera transform.
+	 * Camera position.
 	 */
-	val transform: Transform
-		get() = entity[Transform::class.java] ?: throw IllegalStateException("camera must have a transform")
+	val position: Position
+		get() = entity[Position::class.java] ?: throw IllegalStateException("camera must have a position")
 
 	/**
 	 * Camera lens.

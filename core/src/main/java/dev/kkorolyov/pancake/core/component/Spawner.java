@@ -27,7 +27,7 @@ public class Spawner implements Component {
 	 * @param minRadius radius past which clones are spawned
 	 * @param maxRadius radius within which clones are spawned
 	 * @param interval minimum seconds between spawns when active; negative implies inactive with {@code abs(interval)} interval
-	 * @param templates generators of randomly-selected templates to clone and spawn; each template should contain a {@link Transform} where non-zero position components denote axes to randomize
+	 * @param templates generators of randomly-selected templates to clone and spawn; each template should contain a {@link Position} where non-zero position components denote axes to randomize
 	 */
 	public Spawner(double minRadius, double maxRadius, double interval, WeightedDistribution<Supplier<Iterable<Component>>> templates) {
 		setRadius(minRadius, maxRadius);
@@ -59,8 +59,8 @@ public class Spawner implements Component {
 		Iterable<Component> clone = templates.get().get();
 
 		for (Component component : clone) {
-			if (component instanceof Transform) {
-				Vector3 position = ((Transform) component).getPosition();
+			if (component instanceof Position) {
+				Vector3 position = ((Position) component).getValue();
 				randomPosition(position);
 				position.add(origin);
 
@@ -95,7 +95,7 @@ public class Spawner implements Component {
 	public boolean isActive() {
 		return interval > 0;
 	}
-	/** @param active	{@code true} enables spawns at a regular interval */
+	/** @param active {@code true} enables spawns at a regular interval */
 	public void setActive(boolean active) {
 		if (isActive() != active) interval *= -1;
 	}
@@ -123,7 +123,7 @@ public class Spawner implements Component {
 	public WeightedDistribution<Supplier<Iterable<Component>>> getTemplates() {
 		return templates;
 	}
-	/** @param templates generators of randomly-selected templates to clone and spawn; each template should contain a {@link Transform} where non-zero position components denote axes to randomize */
+	/** @param templates generators of randomly-selected templates to clone and spawn; each template should contain a {@link Position} where non-zero position components denote axes to randomize */
 	public void setTemplates(WeightedDistribution<Supplier<Iterable<Component>>> templates) {
 		this.templates = templates;
 	}

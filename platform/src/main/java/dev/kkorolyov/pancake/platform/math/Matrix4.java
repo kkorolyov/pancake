@@ -158,6 +158,7 @@ public final class Matrix4 extends Matrix3 {
 	 * Applies a rotation of {@code radians} about {@code axis} on this matrix.
 	 * Intended for building a transformation matrix from an {@link #identity()} matrix.
 	 * Should be applied after translation but before scaling.
+	 * Assumes that {@code axis} is a unit vector.
 	 * @see #scale(Vector3)
 	 * @see #translate(Vector3)
 	 */
