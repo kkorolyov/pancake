@@ -22,21 +22,14 @@ class ChaseSystemSpec extends Specification {
 	long dt = 1
 
 	EntityPool entities = new EntityPool()
-
 	Chase chase = new Chase(target, strength, buffer)
-
 	ChaseSystem system = new ChaseSystem()
 
 	def "pushes towards target when far away"() {
 		Position position = new Position(positionV)
 		Force force = new Force(Vector3.of())
 		Entity entity = entities.create()
-
-		entity.put(
-				chase,
-				position,
-				force
-		)
+		entity.put(chase, position, force)
 
 		when:
 		system.update(entity, dt)
@@ -52,12 +45,7 @@ class ChaseSystemSpec extends Specification {
 		Position position = new Position(positionV)
 		Force force = new Force(Vector3.of())
 		Entity entity = entities.create()
-
-		entity.put(
-				chase,
-				position,
-				force
-		)
+		entity.put(chase, position, force)
 
 		when:
 		system.update(entity, dt)
@@ -73,12 +61,7 @@ class ChaseSystemSpec extends Specification {
 		Position position = new Position(positionV)
 		Force force = new Force(forceV)
 		Entity entity = entities.create()
-
-		entity.put(
-				chase,
-				position,
-				force
-		)
+		entity.put(chase, position, force)
 
 		when:
 		system.update(entity, dt)
