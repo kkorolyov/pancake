@@ -11,6 +11,7 @@ imgui = "1.+"
 
 spock = "2.+"
 byteBuddy = "1.+"
+log4j = "2.+"
 
 [libraries]
 flub = { module = "dev.kkorolyov:flub", version.ref = "flub" }
@@ -32,10 +33,12 @@ imgui-lwjgl = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "img
 
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
+log4j = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
+
 imgui-windows = { module = "io.github.spair:imgui-java-natives-windows", version.ref = "imgui" }
 imgui-macos = { module = "io.github.spair:imgui-java-natives-macos", version.ref = "imgui" }
 imgui-linux = { module = "io.github.spair:imgui-java-natives-linux", version.ref = "imgui" }
 
 [bundles]
 stdlib = ["flub", "slf4j"]
-test = ["spock", "byteBuddy"]
+test = ["spock", "byteBuddy", "log4j"]
