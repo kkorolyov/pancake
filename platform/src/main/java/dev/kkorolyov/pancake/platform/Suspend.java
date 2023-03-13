@@ -24,6 +24,12 @@ public final class Suspend {
 	public void remove(Object handle) {
 		handles.remove(handle);
 	}
+	/**
+	 * If {@code handle} is not in the set of open suspend handles, adds it - otherwise, removes it.
+	 */
+	public void toggle(Object handle) {
+		if (!handles.add(handle)) handles.remove(handle);
+	}
 
 	/**
 	 * Returns {@code true} if this has at least one open handle.
