@@ -10,6 +10,8 @@ import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import kotlin.math.roundToInt
 
+private val suspendLock = object {}
+
 /**
  * Renders information about [engine]'s loop state.
  */
@@ -26,17 +28,15 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 	}
 
 	private fun activeToggle() {
-		val lastActive = activePtr.get()
-		activePtr.set(engine.speed != 0.0)
-		ImGui.checkbox("active", activePtr)
-
-		if (lastActive != activePtr.get()) engine.speed = if (activePtr.get()) 1.0 else 0.0
+		activePtr.set(!engine.suspend.isActive)
+		if (ImGui.checkbox("active", activePtr)) {
+			if (activePtr.get()) engine.suspend.remove(suspendLock) else engine.suspend.add(suspendLock)
+		}
 	}
 
 	private fun speed() {
 		speedPtr.set(engine.speed)
-		ImGui.inputDouble("##speed", speedPtr, 0.1, 1.0, "%.2f")
-		engine.speed = speedPtr.get()
+		if (ImGui.inputDouble("##speed", speedPtr, 0.1, 1.0, "%.2f")) engine.speed = speedPtr.get()
 		tooltip("Current speed scale")
 	}
 
