@@ -10,9 +10,15 @@ import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
+import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
 import kotlin.reflect.KClass
+
+private const val ENTITY_MIN_WIDTH = 200.0
+private const val ENTITY_MIN_HEIGHT = 200.0
+private const val COMPONENT_MIN_WIDTH = 100.0
+private const val COMPONENT_MIN_HEIGHT = 100.0
 
 /**
  * Renders entity listings from [entities].
@@ -30,7 +36,7 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 			entities.forEach {
 				column {
 					if (ImGui.selectable(it.id.toString(), false, ImGuiSelectableFlags.SpanAllColumns)) {
-						details[it.id] = { Window("Entity ${it.id}", EntityDetails(it)) }
+						details[it.id] = { Window("Entity ${it.id}", EntityDetails(it), minSize = Vector2.of(ENTITY_MIN_WIDTH, ENTITY_MIN_HEIGHT)) }
 					}
 				}
 				column {
@@ -55,7 +61,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 			list("##components") {
 				entity.forEach {
 					if (ImGui.selectable(it::class.simpleName.toString())) {
-						details[it::class] = { Window("${entity.id}: ${it::class.simpleName}", getComponentWidget(it)) }
+						details[it::class] = { Window("Entity ${entity.id}: ${it::class.simpleName}", getComponentWidget(it), minSize = Vector2.of(COMPONENT_MIN_WIDTH, COMPONENT_MIN_HEIGHT)) }
 					}
 				}
 			}
