@@ -12,7 +12,6 @@ import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
-import imgui.flag.ImGuiTableFlags
 import kotlin.math.roundToInt
 
 /**
@@ -54,8 +53,6 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 	private val details = WindowManifest<String>()
 
 	override fun invoke() {
-		ImGui.checkbox("show hooks", showHooksPtr)
-
 		table("systems", 4) {
 			ImGui.tableSetupColumn("System")
 			ImGui.tableSetupColumn("Signature")
@@ -77,7 +74,7 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 						} ?: text("hook")
 					}
 					column {
-						text(system.joinToString { it.simpleName })
+						text(name?.let { system.joinToString { it.simpleName } } ?: "")
 					}
 					column {
 						text(system.sampler.value)
@@ -88,6 +85,8 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 				}
 			}
 		}
+
+		if (systems.any { it::class.simpleName == null }) ImGui.checkbox("show hooks", showHooksPtr)
 
 		details()
 	}
