@@ -8,20 +8,19 @@ import imgui.flag.ImGuiInputTextFlags
 /**
  * Renders an input for [this] at the current ImGui stack frame.
  */
-fun Vector2.input() {
-	input(true)
+fun Vector2.input(label: String) {
+	input(label, true)
 }
 /**
  * Renders a readonly representation of [this] at the current ImGui stack frame.
  */
-fun Vector2.readonly() {
-	input(false)
+fun Vector2.readonly(label: String) {
+	input(label, false)
 }
 
-private fun Vector2.input(writable: Boolean) {
+private fun Vector2.input(label: String, writable: Boolean) {
 	val ptr = doubleArrayOf(x, y)
-	inputs("value", ptr, 0.0, 0.0, "%.3f", if (writable) ImGuiInputTextFlags.None else ImGuiInputTextFlags.ReadOnly)
-	if (writable) {
+	if (inputs(label, ptr, 0.0, 0.0, "%.3f", if (writable) ImGuiInputTextFlags.None else ImGuiInputTextFlags.ReadOnly)) {
 		x = ptr[0]
 		y = ptr[1]
 	}
@@ -30,20 +29,19 @@ private fun Vector2.input(writable: Boolean) {
 /**
  * Renders an input for [this] at the current ImGui stack frame.
  */
-fun Vector3.input() {
-	input(true)
+fun Vector3.input(label: String) {
+	input(label, true)
 }
 /**
  * Renders a readonly representation of [this] at the current ImGui stack frame.
  */
-fun Vector3.readonly() {
-	input(false)
+fun Vector3.readonly(label: String) {
+	input(label, false)
 }
 
-private fun Vector3.input(writable: Boolean) {
+private fun Vector3.input(label: String, writable: Boolean) {
 	val ptr = doubleArrayOf(x, y, z)
-	inputs("value", ptr, 0.0, 0.0, "%.3f", if (writable) ImGuiInputTextFlags.None else ImGuiInputTextFlags.ReadOnly)
-	if (writable) {
+	if (inputs(label, ptr, 0.0, 0.0, "%.3f", if (writable) ImGuiInputTextFlags.None else ImGuiInputTextFlags.ReadOnly)) {
 		x = ptr[0]
 		y = ptr[1]
 		z = ptr[2]

@@ -131,17 +131,24 @@ fun field(name: Any, value: Any?) {
 /**
  * Draws a multi-segment input for [values].
  * Mutates [values] with the current corresponding input values.
+ * Returns `true` if any value was modified.
  */
-fun inputs(id: String, values: DoubleArray, step: Double, stepMax: Double, format: String, flags: Int = ImGuiInputTextFlags.None) {
+fun inputs(label: String, values: DoubleArray, step: Double, stepMax: Double, format: String, flags: Int = ImGuiInputTextFlags.None): Boolean {
+	var result = false
+
 	ImGui.beginGroup()
 	ImGui.pushItemWidth(((ImGui.getContentRegionAvailX() - ImGui.getStyle().framePaddingX - ImGui.getStyle().windowPaddingX) / values.size) - (ImGui.getStyle().itemSpacingX / values.size - 2))
 	values.forEachIndexed { i, value ->
 		val ptr = value.ptr()
-		ImGui.inputDouble("##${id}${i}", ptr, step, stepMax, format, flags)
-		values[i] = ptr.get()
+		if (ImGui.inputDouble("${label}${i}", ptr, step, stepMax, format, flags)) {
+			values[i] = ptr.get()
+			result = true
+		}
 
 		if (i < values.size - 1) ImGui.sameLine()
 	}
 	ImGui.popItemWidth()
 	ImGui.endGroup()
+
+	return result
 }
