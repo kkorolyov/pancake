@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.ext.ptr
 import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.ImGui
+import imgui.flag.ImGuiCond
 import imgui.flag.ImGuiWindowFlags
 import imgui.type.ImBoolean
 
@@ -27,7 +28,7 @@ class Window(
 	private val visiblePtr: ImBoolean = true.ptr(),
 	private val minSize: Vector2 = Vector2.of(0.0, 0.0),
 	private val maxSize: Vector2 = Vector2.of(Double.MAX_VALUE, Double.MAX_VALUE),
-	private var flags: Int = 0,
+	flags: Int = 0,
 	private val fullscreen: Boolean = false
 ) : Widget {
 	/**
@@ -37,9 +38,7 @@ class Window(
 		get() = visiblePtr.get()
 		set(value) = visiblePtr.set(value)
 
-	init {
-		if (fullscreen) flags = flags or FULLSCREEN_FLAGS
-	}
+	private val flags = if (fullscreen) flags or FULLSCREEN_FLAGS else flags
 
 	/**
 	 * Renders this as the focused window.
@@ -51,14 +50,21 @@ class Window(
 
 	override fun invoke() {
 		if (visible) {
-			ImGui.setNextWindowSizeConstraints(minSize.x.toFloat(), minSize.y.toFloat(), maxSize.x.toFloat(), maxSize.y.toFloat())
 			if (fullscreen) {
-				ImGui.getMainViewport().let { ImGui.setNextWindowPos(it.posX, it.posY) }
-				ImGui.getIO().displaySize.let { ImGui.setNextWindowSize(it.x, it.y) }
+				ImGui.getMainViewport().let {
+					ImGui.setNextWindowPos(it.posX, it.posY)
+					ImGui.setNextWindowSize(it.sizeX, it.sizeY)
+				}
+			} else {
+				ImGui.setNextWindowSizeConstraints(minSize.x.toFloat(), minSize.y.toFloat(), maxSize.x.toFloat(), maxSize.y.toFloat())
+
+				// on first use, set this window where the current window is
+				ImGui.getWindowPos().let {
+					ImGui.setNextWindowPos(it.x, it.y, ImGuiCond.FirstUseEver)
+				}
 			}
-			// ensure shown in cases of child/parent windows docked to it - to avoid visibility feedback loop
-			// FIXME this doesn't handle cases of grand-child/parent windows docked to this window
-			if (ImGui.begin(label, visiblePtr, flags) || ImGui.isWindowDocked()) {
+
+			if (ImGui.begin(label, visiblePtr, flags)) {
 				content()
 			}
 			ImGui.end()
