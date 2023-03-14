@@ -8,6 +8,6 @@ import dev.kkorolyov.pancake.platform.entity.Component
 
 class ForceComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(component: Component): Widget? = ComponentWidgetFactory.get<Force>(component) {
-		value.input()
+		value.input("##value")
 	}
 }

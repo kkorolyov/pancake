@@ -4,25 +4,35 @@ import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.editor.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.ext.readonly
+import dev.kkorolyov.pancake.editor.group
+import dev.kkorolyov.pancake.editor.indented
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.text
-import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.entity.Component
 
 class BoundsComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(component: Component): Widget? = ComponentWidgetFactory.get<Bounds>(component) {
-		tree("Vertices") {
-			list("##vertices") {
-				vertices.forEach { it.readonly() }
+		group {
+			text("Vertices")
+			indented {
+				list("##vertices") {
+					vertices.forEach { it.readonly("##vertices") }
+				}
 			}
 		}
-		tree("Normals") {
-			list("##normals") {
-				normals.forEach { it.readonly() }
+		group {
+			text("Normals")
+			indented {
+				list("##normals") {
+					normals.forEach { it.readonly("##normals") }
+				}
 			}
 		}
-		tree("Magnitude") {
-			text(magnitude)
+		group {
+			text("Magnitude")
+			indented {
+				text(magnitude)
+			}
 		}
 	}
 }

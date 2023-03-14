@@ -5,16 +5,24 @@ import dev.kkorolyov.pancake.editor.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.ext.input
 import dev.kkorolyov.pancake.editor.ext.readonly
-import dev.kkorolyov.pancake.editor.tree
+import dev.kkorolyov.pancake.editor.group
+import dev.kkorolyov.pancake.editor.indented
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.entity.Component
 
 class OrientationComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(component: Component): Widget? = ComponentWidgetFactory.get<Orientation>(component) {
-		tree("Value") {
-			value.input()
+		group {
+			text("Value")
+			indented {
+				value.input("##value")
+			}
 		}
-		tree("Global Value") {
-			globalValue.readonly()
+		group {
+			text("Global Value")
+			indented {
+				globalValue.readonly("##globalValue")
+			}
 		}
 	}
 }
