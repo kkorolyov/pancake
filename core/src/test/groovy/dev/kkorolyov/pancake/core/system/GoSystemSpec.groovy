@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.system
 
-import dev.kkorolyov.pancake.core.component.Chase
+import dev.kkorolyov.pancake.core.component.Go
 import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.movement.Force
 import dev.kkorolyov.pancake.platform.entity.Entity
@@ -10,7 +10,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 import spock.lang.Shared
 import spock.lang.Specification
 
-class ChaseSystemSpec extends Specification {
+class GoSystemSpec extends Specification {
 	@Shared
 	Vector3 target = Vector3.of()
 	@Shared
@@ -22,8 +22,8 @@ class ChaseSystemSpec extends Specification {
 	long dt = 1
 
 	EntityPool entities = new EntityPool()
-	Chase chase = new Chase(target, strength, buffer)
-	ChaseSystem system = new ChaseSystem()
+	Go chase = new Go(target, strength, buffer)
+	GoSystem system = new GoSystem()
 
 	def "pushes towards target when far away"() {
 		Position position = new Position(positionV)
