@@ -6,5 +6,5 @@ dev.kkorolyov.pancake.editor.core.GoComponentWidgetFactory
 dev.kkorolyov.pancake.editor.core.MassComponentWidgetFactory
 dev.kkorolyov.pancake.editor.core.PositionComponentWidgetFactory
 dev.kkorolyov.pancake.editor.core.OrientationComponentWidgetFactory
-dev.kkorolyov.pancake.editor.core.VelocityCapComponentWidgetFactory
+dev.kkorolyov.pancake.editor.core.VelocityLimitComponentWidgetFactory
 dev.kkorolyov.pancake.editor.core.VelocityComponentWidgetFactory

@@ -28,9 +28,9 @@ public final class GoSystem extends GameSystem {
 		newForce.set(go.getTarget());
 		newForce.add(position.getValue(), -1);
 
-		if (Vector3.magnitude(newForce) > go.getBuffer()) {
-			newForce.normalize();
-			newForce.scale(go.getStrength());
+		double magnitude = Vector3.magnitude(newForce);
+		if (magnitude > go.getBuffer()) {
+			newForce.scale(go.getStrength() / magnitude);
 			force.getValue().set(newForce);
 		}
 	}

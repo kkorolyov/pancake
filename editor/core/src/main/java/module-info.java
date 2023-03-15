@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.editor.core.DampingComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.ForceComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.MassComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.PositionComponentWidgetFactory;
-import dev.kkorolyov.pancake.editor.core.VelocityCapComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.core.VelocityLimitComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.VelocityComponentWidgetFactory;
 
 module dev.kkorolyov.pancake.editor.core {
@@ -31,6 +31,6 @@ module dev.kkorolyov.pancake.editor.core {
 			ForceComponentWidgetFactory,
 			MassComponentWidgetFactory,
 			PositionComponentWidgetFactory,
-			VelocityCapComponentWidgetFactory,
+			VelocityLimitComponentWidgetFactory,
 			VelocityComponentWidgetFactory;
 }

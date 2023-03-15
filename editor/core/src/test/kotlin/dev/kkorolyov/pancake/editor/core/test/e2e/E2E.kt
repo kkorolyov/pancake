@@ -7,14 +7,13 @@ import dev.kkorolyov.pancake.core.component.Chain
 import dev.kkorolyov.pancake.core.component.Go
 import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.Spawner
+import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
 import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
 import dev.kkorolyov.pancake.core.component.movement.Mass
 import dev.kkorolyov.pancake.core.component.movement.Velocity
-import dev.kkorolyov.pancake.core.component.movement.VelocityCap
 import dev.kkorolyov.pancake.core.system.AccelerationSystem
 import dev.kkorolyov.pancake.core.system.ActionSystem
-import dev.kkorolyov.pancake.core.system.CappingSystem
 import dev.kkorolyov.pancake.core.system.ChainSystem
 import dev.kkorolyov.pancake.core.system.CollisionSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
@@ -23,6 +22,7 @@ import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
 import dev.kkorolyov.pancake.core.system.SpawnSystem
 import dev.kkorolyov.pancake.core.system.cleanup.PhysicsCleanupSystem
+import dev.kkorolyov.pancake.core.system.limit.LimitSystem
 import dev.kkorolyov.pancake.editor.test.drawEnd
 import dev.kkorolyov.pancake.editor.test.drawStart
 import dev.kkorolyov.pancake.editor.test.editor
@@ -42,7 +42,7 @@ fun main() {
 				GoSystem(),
 				AccelerationSystem(),
 				ActionSystem(),
-				CappingSystem(),
+				LimitSystem(Velocity::class.java, VelocityLimit::class.java),
 				ChainSystem(),
 				CollisionSystem(),
 				DampingSystem(),
@@ -75,7 +75,7 @@ fun main() {
 					Force(randVector()),
 					Mass(Random.nextDouble()),
 					Velocity(randVector()),
-					VelocityCap(Vector3.of(Random.nextDouble(100.0), Random.nextDouble(100.0), Random.nextDouble(100.0))),
+					VelocityLimit(Random.nextDouble(100.0)),
 					Go(randVector(), Random.nextDouble(10.0), Random.nextDouble(10.0))
 				)
 			}
