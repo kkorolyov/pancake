@@ -22,14 +22,14 @@ class GoSystemSpec extends Specification {
 	long dt = 1
 
 	EntityPool entities = new EntityPool()
-	Go chase = new Go(target, strength, buffer)
+	Go go = new Go(target, strength, buffer)
 	GoSystem system = new GoSystem()
 
 	def "pushes towards target when far away"() {
 		Position position = new Position(positionV)
 		Force force = new Force(Vector3.of())
 		Entity entity = entities.create()
-		entity.put(chase, position, force)
+		entity.put(go, position, force)
 
 		when:
 		system.update(entity, dt)
@@ -49,7 +49,7 @@ class GoSystemSpec extends Specification {
 		Position position = new Position(positionV)
 		Force force = new Force(Vector3.of())
 		Entity entity = entities.create()
-		entity.put(chase, position, force)
+		entity.put(go, position, force)
 
 		when:
 		system.update(entity, dt)
