@@ -13,11 +13,12 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
+import imgui.flag.ImGuiTableFlags
 import kotlin.reflect.KClass
 
 private const val ENTITY_MIN_WIDTH = 200.0
 private const val ENTITY_MIN_HEIGHT = 200.0
-private const val COMPONENT_MIN_WIDTH = 100.0
+private const val COMPONENT_MIN_WIDTH = 200.0
 private const val COMPONENT_MIN_HEIGHT = 100.0
 
 /**
@@ -27,7 +28,7 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 	private val details = WindowManifest<Int>()
 
 	override fun invoke() {
-		table("entities", 2) {
+		table("entities", 2, ImGuiTableFlags.SizingStretchProp) {
 			ImGui.tableSetupColumn("ID")
 			ImGui.tableSetupColumn("Components")
 			ImGui.tableSetupScrollFreeze(1, 1)

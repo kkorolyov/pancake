@@ -1,11 +1,23 @@
 package dev.kkorolyov.pancake.editor
 
-import dev.kkorolyov.pancake.editor.ext.ptr
+import dev.kkorolyov.pancake.platform.math.Vector2
+import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImGui
 import imgui.flag.ImGuiInputTextFlags
 import imgui.flag.ImGuiTableFlags
+import imgui.type.ImBoolean
+import imgui.type.ImDouble
 
-private typealias Op = () -> Unit
+// reuse the same carrier to all imgui input functions
+// public only to allow inline functions
+/** NO TOUCHY */
+val tDouble = ThreadLocal.withInitial(::ImDouble)
+/** NO TOUCHY */
+val tBoolean = ThreadLocal.withInitial { ImBoolean(false) }
+/** NO TOUCHY */
+val tDouble2 = ThreadLocal.withInitial(Vector2::of)
+/** NO TOUCHY */
+val tDouble3 = ThreadLocal.withInitial(Vector3::of)
 
 /**
  * Draws [value] as text.
@@ -86,7 +98,7 @@ inline fun tabItem(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, flags: Int = ImGuiTableFlags.Reorderable or ImGuiTableFlags.Resizable, op: Op) {
+inline fun table(id: String, columns: Int, flags: Int = ImGuiTableFlags.None, op: Op) {
 	if (ImGui.beginTable(id, columns, flags)) {
 		op()
 		ImGui.endTable()
@@ -119,36 +131,88 @@ inline fun indented(op: Op) {
 }
 
 /**
- * Draws a simple form field-like entry with [name] and [value].
+ * Draws a checkbox with [label] for [value], invoking [onChange] with the updated value if changed.
  */
-fun field(name: Any, value: Any?) {
-	text(name)
-	indented {
-		text(value)
-	}
-}
+inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>) {
+	val ptr = tBoolean.get()
+	ptr.set(value)
 
+	if (ImGui.checkbox(label, ptr)) onChange(ptr.get())
+}
 /**
- * Draws a multi-segment input for [values].
- * Mutates [values] with the current corresponding input values.
- * Returns `true` if any value was modified.
+ * Draws an input field with [label] for [value] with [format] specifier, [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
  */
-fun inputs(label: String, values: DoubleArray, step: Double, stepMax: Double, format: String, flags: Int = ImGuiInputTextFlags.None): Boolean {
-	var result = false
+inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}) {
+	val ptr = tDouble.get()
+	ptr.set(value)
+
+	if (ImGui.inputDouble(label, ptr, step, stepFast, format, flags)) onChange(ptr.get())
+}
+/**
+ * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * @see input
+ */
+inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}) {
+	var changed = false
+	val ptr = tDouble2.get()
+	ptr.set(value)
 
 	ImGui.beginGroup()
-	ImGui.pushItemWidth(((ImGui.getContentRegionAvailX() - ImGui.getStyle().framePaddingX - ImGui.getStyle().windowPaddingX) / values.size) - (ImGui.getStyle().itemSpacingX / values.size - 2))
-	values.forEachIndexed { i, value ->
-		val ptr = value.ptr()
-		if (ImGui.inputDouble("${label}${i}", ptr, step, stepMax, format, flags)) {
-			values[i] = ptr.get()
-			result = true
-		}
+	ImGui.pushItemWidth(((ImGui.getContentRegionAvailX() - ImGui.getStyle().framePaddingX - ImGui.getStyle().windowPaddingX) / 2) - (ImGui.getStyle().itemSpacingX / 2 - 2))
 
-		if (i < values.size - 1) ImGui.sameLine()
+	input("${label}.x", ptr.x, format, step, stepFast, flags) {
+		ptr.x = it
+		changed = true
 	}
+	ImGui.sameLine()
+	input("${label}.y", ptr.y, format, step, stepFast, flags) {
+		ptr.y = it
+		changed = true
+	}
+
 	ImGui.popItemWidth()
 	ImGui.endGroup()
 
-	return result
+	if (changed) onChange(ptr)
 }
+/**
+ * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * @see input
+ */
+inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}) {
+	var changed = false
+	val ptr = tDouble3.get()
+	ptr.set(value)
+
+	ImGui.beginGroup()
+	ImGui.pushItemWidth(((ImGui.getContentRegionAvailX() - ImGui.getStyle().framePaddingX - ImGui.getStyle().windowPaddingX) / 3) - (ImGui.getStyle().itemSpacingX / 3 - 2))
+
+	input("${label}.x", ptr.x, format, step, stepFast, flags) {
+		ptr.x = it
+		changed = true
+	}
+	ImGui.sameLine()
+	input("${label}.y", ptr.y, format, step, stepFast, flags) {
+		ptr.y = it
+		changed = true
+	}
+	ImGui.sameLine()
+	input("${label}.z", ptr.z, format, step, stepFast, flags) {
+		ptr.z = it
+		changed = true
+	}
+
+	ImGui.popItemWidth()
+	ImGui.endGroup()
+
+	if (changed) onChange(ptr)
+}
+
+/**
+ * Operation run within a nesting imgui construct.
+ */
+typealias Op = () -> Unit
+/**
+ * Invoked with a changed `T` value.
+ */
+typealias OnChange<T> = (T) -> Unit

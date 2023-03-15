@@ -9,10 +9,8 @@ import dev.kkorolyov.pancake.platform.entity.Component
 
 class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(component: Component): Widget? = ComponentWidgetFactory.get<ActionQueue>(component) {
-		Widget {
-			list("##data") {
-				forEach(::text)
-			}
+		list("##data") {
+			forEach(::text)
 		}
 	}
 }

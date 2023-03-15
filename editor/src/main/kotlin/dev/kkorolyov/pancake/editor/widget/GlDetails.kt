@@ -1,12 +1,13 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.ext.ptr
-import dev.kkorolyov.pancake.editor.field
-import dev.kkorolyov.pancake.editor.header
+import dev.kkorolyov.pancake.editor.column
+import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.list
+import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
-import imgui.ImGui
+import dev.kkorolyov.pancake.editor.tree
+import imgui.flag.ImGuiTableFlags
 import org.lwjgl.opengl.GL46.*
 import org.lwjgl.opengl.GLUtil
 import org.lwjgl.opengl.NVXGPUMemoryInfo
@@ -66,14 +67,33 @@ class GLDetails : Widget {
 		Log(out)
 	}
 
-	private val wireframePtr = false.ptr()
+	private var wireframe = false
 
 	override fun invoke() {
-		field("Vendor", vendor)
-		field("Renderer", renderer)
-		field("Version", version)
+		table("details", 2, ImGuiTableFlags.SizingStretchProp) {
+			column { text("Vendor") }
+			column { text(vendor) }
 
-		header("Extensions") {
+			column { text("Renderer") }
+			column { text(renderer) }
+
+			column { text("Version") }
+			column { text(version) }
+
+			column { text("Max vertex attributes") }
+			column { text(maxVertexAttributes) }
+
+			column { text("Max uniforms") }
+			column { text(maxUniforms) }
+
+			column { text("Total memory") }
+			column { text(memTotal) }
+
+			column { text("Free memory") }
+			column { text(memFree) }
+		}
+
+		tree("Extensions") {
 			list("##extensions") {
 				extensions?.split(" ")?.forEach {
 					text(it)
@@ -81,18 +101,13 @@ class GLDetails : Widget {
 			}
 		}
 
-		field("Max vertex attributes", maxVertexAttributes)
-		field("Max uniforms", maxUniforms)
-
-		field("Total memory", memTotal)
-		field("Free memory", memFree)
-
-		header("Debug") {
+		tree("Debug") {
 			debugLog()
 		}
 
-		ImGui.checkbox("wireframe", wireframePtr)
-
-		glPolygonMode(GL_FRONT_AND_BACK, if (wireframePtr.get()) GL_LINE else GL_FILL)
+		input("wireframe", wireframe) {
+			wireframe = it
+			glPolygonMode(GL_FRONT_AND_BACK, if (wireframe) GL_LINE else GL_FILL)
+		}
 	}
 }

@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.ext.ptr
 import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.ImGui
 import imgui.flag.ImGuiCond
@@ -25,10 +24,10 @@ class Window(
 	 */
 	var label: String,
 	private val content: Widget,
-	private val visiblePtr: ImBoolean = true.ptr(),
+	private val visiblePtr: ImBoolean = ImBoolean(true),
 	private val minSize: Vector2 = Vector2.of(0.0, 0.0),
 	private val maxSize: Vector2 = Vector2.of(Double.MAX_VALUE, Double.MAX_VALUE),
-	flags: Int = 0,
+	flags: Int = ImGuiWindowFlags.None,
 	private val fullscreen: Boolean = false
 ) : Widget {
 	/**

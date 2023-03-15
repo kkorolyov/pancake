@@ -17,7 +17,6 @@ module dev.kkorolyov.pancake.editor {
 	requires transitive dev.kkorolyov.pancake.graphics;
 
 	exports dev.kkorolyov.pancake.editor;
-	exports dev.kkorolyov.pancake.editor.ext;
 	exports dev.kkorolyov.pancake.editor.widget;
 
 	opens icons;

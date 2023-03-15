@@ -4,6 +4,7 @@ import dev.kkorolyov.flub.data.WeightedDistribution
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.core.component.Chain
+import dev.kkorolyov.pancake.core.component.Go
 import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.Spawner
 import dev.kkorolyov.pancake.core.component.movement.Damping
@@ -17,6 +18,7 @@ import dev.kkorolyov.pancake.core.system.CappingSystem
 import dev.kkorolyov.pancake.core.system.ChainSystem
 import dev.kkorolyov.pancake.core.system.CollisionSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
+import dev.kkorolyov.pancake.core.system.GoSystem
 import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
 import dev.kkorolyov.pancake.core.system.SpawnSystem
@@ -37,6 +39,7 @@ fun main() {
 	start(GameEngine().apply {
 		setPipelines(
 			Pipeline.of(
+				GoSystem(),
 				AccelerationSystem(),
 				ActionSystem(),
 				CappingSystem(),
@@ -72,7 +75,8 @@ fun main() {
 					Force(randVector()),
 					Mass(Random.nextDouble()),
 					Velocity(randVector()),
-					VelocityCap(Vector3.of(Random.nextDouble(100.0), Random.nextDouble(100.0), Random.nextDouble(100.0)))
+					VelocityCap(Vector3.of(Random.nextDouble(100.0), Random.nextDouble(100.0), Random.nextDouble(100.0))),
+					Go(randVector(), Random.nextDouble(10.0), Random.nextDouble(10.0))
 				)
 			}
 		}
