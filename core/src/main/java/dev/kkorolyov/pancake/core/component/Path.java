@@ -4,12 +4,13 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.ArrayDeque;
+import java.util.Iterator;
 import java.util.Queue;
 
 /**
  * Maintains a sequence of steps to go through.
  */
-public final class Path implements Component {
+public final class Path implements Component, Iterable<Vector3> {
 	private final Queue<Vector3> steps = new ArrayDeque<>();
 
 	/**
@@ -23,7 +24,7 @@ public final class Path implements Component {
 	 * Adds {@code step} to the end of the step queue.
 	 */
 	public void add(Vector3 step) {
-		steps.add(step);
+		steps.add(Vector3.of(step));
 	}
 
 	/**
@@ -38,5 +39,13 @@ public final class Path implements Component {
 	 */
 	public boolean hasNext() {
 		return !steps.isEmpty();
+	}
+
+	/**
+	 * Returns an iterator of the current steps in order.
+	 */
+	@Override
+	public Iterator<Vector3> iterator() {
+		return steps.iterator();
 	}
 }

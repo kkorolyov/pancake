@@ -131,7 +131,21 @@ inline fun indented(op: Op) {
 }
 
 /**
- * Draws a checkbox with [label] for [value], invoking [onChange] with the updated value if changed.
+ * Draws the next thing on the same line as the previous one.
+ */
+fun sameLine() {
+	ImGui.sameLine()
+}
+
+/**
+ * Draws a button with [label], invoking [onPress] when the button is pressed.
+ */
+inline fun button(label: String, onPress: Op = {}) {
+	if (ImGui.button(label)) onPress()
+}
+
+/**
+ * Draws a checkbox with [label], for [value], invoking [onChange] with the updated value if changed.
  */
 inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>) {
 	val ptr = tBoolean.get()
@@ -140,7 +154,7 @@ inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>) {
 	if (ImGui.checkbox(label, ptr)) onChange(ptr.get())
 }
 /**
- * Draws an input field with [label] for [value] with [format] specifier, [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Draws an input field with [label], for [value] with [format] specifier, [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
  */
 inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}) {
 	val ptr = tDouble.get()

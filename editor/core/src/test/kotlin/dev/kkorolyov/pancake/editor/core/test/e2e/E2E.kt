@@ -5,6 +5,7 @@ import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.core.component.Chain
 import dev.kkorolyov.pancake.core.component.Go
+import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.Spawner
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
@@ -20,6 +21,7 @@ import dev.kkorolyov.pancake.core.system.DampingSystem
 import dev.kkorolyov.pancake.core.system.GoSystem
 import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
+import dev.kkorolyov.pancake.core.system.PathSystem
 import dev.kkorolyov.pancake.core.system.SpawnSystem
 import dev.kkorolyov.pancake.core.system.cleanup.PhysicsCleanupSystem
 import dev.kkorolyov.pancake.core.system.limit.LimitSystem
@@ -39,6 +41,7 @@ fun main() {
 	start(GameEngine().apply {
 		setPipelines(
 			Pipeline.of(
+				PathSystem(),
 				GoSystem(),
 				AccelerationSystem(),
 				ActionSystem(),
@@ -76,7 +79,8 @@ fun main() {
 					Mass(Random.nextDouble()),
 					Velocity(randVector()),
 					VelocityLimit(Random.nextDouble(100.0)),
-					Go(randVector(), Random.nextDouble(10.0), Random.nextDouble(10.0))
+					Go(randVector(), Random.nextDouble(10.0), Random.nextDouble(10.0)),
+					Path()
 				)
 			}
 		}
