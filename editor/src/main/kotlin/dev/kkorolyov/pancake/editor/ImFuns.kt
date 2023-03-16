@@ -131,7 +131,7 @@ inline fun indented(op: Op) {
 }
 
 /**
- * Draws the next thing on the same line as the previous one.
+ * Draws the next item on the same line as the previous one.
  */
 fun sameLine() {
 	ImGui.sameLine()
@@ -223,7 +223,21 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 }
 
 /**
- * Operation run within a nesting imgui construct.
+ * Runs [op] whenever the last item is focused.
+ */
+inline fun onFocus(op: Op) {
+	if (ImGui.isItemFocused()) op()
+}
+
+/**
+ * Runs [op] when [key] is pressed.
+ */
+inline fun onKey(key: Int, op: Op) {
+	if (ImGui.isKeyPressed(key, false)) op()
+}
+
+/**
+ * Arbitrary operation.
  */
 typealias Op = () -> Unit
 /**

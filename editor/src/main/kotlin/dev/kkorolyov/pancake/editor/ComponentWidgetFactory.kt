@@ -7,8 +7,8 @@ import java.util.ServiceLoader
 private val factories = ThreadLocal.withInitial { ServiceLoader.load(ComponentWidgetFactory::class.java).toList() }
 
 /**
- * Returns the most suitable widget for displaying [component] by traversing [ComponentWidgetFactory] providers on the classpath.
- * Falls back to a basic `toString` representation of [component].
+ * Returns the most suitable widget for displaying [component] from all [ComponentWidgetFactory] providers on the classpath.
+ * Falls back to a basic `toString` representation of [component] if no provider found.
  */
 fun getComponentWidget(component: Component): Widget = factories.get().firstNotNullOfOrNull { it.get(component) } ?: Widget {
 	text(component)
