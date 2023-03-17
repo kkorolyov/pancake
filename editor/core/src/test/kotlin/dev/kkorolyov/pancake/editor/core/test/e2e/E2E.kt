@@ -4,7 +4,6 @@ import dev.kkorolyov.flub.data.WeightedDistribution
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.core.component.Chain
-import dev.kkorolyov.pancake.core.component.Go
 import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.Spawner
@@ -79,8 +78,7 @@ fun main() {
 					Mass(Random.nextDouble()),
 					Velocity(randVector()),
 					VelocityLimit(Random.nextDouble(100.0)),
-					Go(randVector(), Random.nextDouble(10.0), Random.nextDouble(10.0)),
-					Path()
+					Path(Random.nextDouble(10.0), Random.nextDouble(10.0))
 				)
 			}
 		}
