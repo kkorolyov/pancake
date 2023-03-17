@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Clipper
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.text
 import imgui.ImGui
@@ -14,7 +15,7 @@ class Log(private val data: ByteArrayOutputStream) : Widget {
 	private val clipper = Clipper<String>(::text)
 
 	override fun invoke() {
-		if (ImGui.button("Clear")) data.reset()
+		button("Clear") { data.reset() }
 		list("##log") {
 			clipper(data.toString().lines())
 

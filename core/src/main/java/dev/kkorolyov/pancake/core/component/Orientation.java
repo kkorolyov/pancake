@@ -12,8 +12,6 @@ public final class Orientation implements Component {
 
 	private Orientation parent;
 
-	private final ThreadLocal<Vector3> tGlobalValue = ThreadLocal.withInitial(Vector3::of);
-
 	/**
 	 * Constructs a new orientation with initial {@code value}.
 	 */
@@ -24,17 +22,9 @@ public final class Orientation implements Component {
 
 	/**
 	 * Returns the unit vector representing where this component faces relative to its parent orientation.
-	 * If this component has no parent, this is the same as {@link #getGlobalValue}.
 	 */
 	public Vector3 getValue() {
 		return value;
-	}
-	/**
-	 * Returns the unit vector representing where this component faces in global space.
-	 * If this component has no parent, this is the same as {@link #getValue()}.
-	 */
-	public Vector3 getGlobalValue() {
-		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 	/**

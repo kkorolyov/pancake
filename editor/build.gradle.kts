@@ -16,6 +16,8 @@ dependencies {
 	implementation(projects.platform)
 	api(projects.graphics)
 
+	implementation(libs.classgraph)
+
 	testFixturesImplementation(projects.platform)
 	val lwjglNatives = if (OperatingSystem.current().isWindows) "natives-windows" else if (OperatingSystem.current().isMacOsX) "natives-macos" else "natives-linux"
 	listOf(libs.lwjgl.asProvider(), libs.lwjgl.glfw, libs.lwjgl.opengl, libs.lwjgl.stb).forEach {

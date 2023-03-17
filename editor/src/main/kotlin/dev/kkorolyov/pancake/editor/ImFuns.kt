@@ -1,11 +1,27 @@
 package dev.kkorolyov.pancake.editor
 
-import dev.kkorolyov.pancake.editor.ext.ptr
+import dev.kkorolyov.pancake.platform.math.Vector2
+import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImGui
 import imgui.flag.ImGuiInputTextFlags
+import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
+import imgui.type.ImBoolean
+import imgui.type.ImDouble
+import imgui.type.ImInt
 
-private typealias Op = () -> Unit
+// reuse the same carrier to all imgui input functions
+// public only to allow inline functions
+/** NO TOUCHY */
+val tBoolean by ThreadLocal.withInitial { ImBoolean(false) }
+/** NO TOUCHY */
+val tInt by ThreadLocal.withInitial(::ImInt)
+/** NO TOUCHY */
+val tDouble by ThreadLocal.withInitial(::ImDouble)
+/** NO TOUCHY */
+val tDouble2 by ThreadLocal.withInitial(Vector2::of)
+/** NO TOUCHY */
+val tDouble3 by ThreadLocal.withInitial(Vector3::of)
 
 /**
  * Draws [value] as text.
@@ -48,6 +64,14 @@ inline fun group(op: Op) {
 }
 
 /**
+ * Runs [op] within an embedded region named [id].
+ */
+inline fun child(id: String, op: Op) {
+	if (ImGui.beginChild(id)) op()
+	ImGui.endChild()
+}
+
+/**
  * Runs [op] in a tree node labeled [label].
  */
 inline fun tree(label: String, op: Op) {
@@ -86,7 +110,7 @@ inline fun tabItem(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, flags: Int = ImGuiTableFlags.Reorderable or ImGuiTableFlags.Resizable, op: Op) {
+inline fun table(id: String, columns: Int, flags: Int = ImGuiTableFlags.None, op: Op) {
 	if (ImGui.beginTable(id, columns, flags)) {
 		op()
 		ImGui.endTable()
@@ -102,8 +126,8 @@ inline fun column(op: Op) {
 /**
  * Runs [op] in a list box labeled [label].
  */
-inline fun list(label: String, op: Op) {
-	if (ImGui.beginListBox(label)) {
+inline fun list(label: String, stretch: Boolean = false, op: Op) {
+	if (ImGui.beginListBox(label, if (label.startsWith("##")) -1.0f else 0.0f, if (stretch) -1.0f else 0.0f)) {
 		op()
 		ImGui.endListBox()
 	}
@@ -119,29 +143,185 @@ inline fun indented(op: Op) {
 }
 
 /**
- * Draws a simple form field-like entry with [name] and [value].
+ * Draws the next item on the same line as the previous one.
  */
-fun field(name: Any, value: Any?) {
-	text(name)
-	indented {
-		text(value)
-	}
+fun sameLine() {
+	ImGui.sameLine()
 }
 
 /**
- * Draws a multi-segment input for [values].
- * Mutates [values] with the current corresponding input values.
+ * Draws a selectable area with [label] and [flags], invoking [onClick] when it is selected.
+ * Returns `true` when selected.
  */
-fun inputs(id: String, values: DoubleArray, step: Double, stepMax: Double, format: String, flags: Int = ImGuiInputTextFlags.None) {
-	ImGui.beginGroup()
-	ImGui.pushItemWidth(((ImGui.getContentRegionAvailX() - ImGui.getStyle().framePaddingX - ImGui.getStyle().windowPaddingX) / values.size) - (ImGui.getStyle().itemSpacingX / values.size - 2))
-	values.forEachIndexed { i, value ->
-		val ptr = value.ptr()
-		ImGui.inputDouble("##${id}${i}", ptr, step, stepMax, format, flags)
-		values[i] = ptr.get()
-
-		if (i < values.size - 1) ImGui.sameLine()
-	}
-	ImGui.popItemWidth()
-	ImGui.endGroup()
+inline fun selectable(label: String, flags: Int = ImGuiSelectableFlags.None, onClick: Op): Boolean {
+	val result = ImGui.selectable(label, false, flags)
+	if (result) onClick()
+	return result
 }
+
+/**
+ * Draws a button with [label], invoking [onClick] when the button is pressed.
+ * Returns `true` when pressed.
+ */
+inline fun button(label: String, onClick: Op): Boolean {
+	val result = ImGui.button(label)
+	if (result) onClick()
+	return result
+}
+
+/**
+ * Draws a checkbox with [label], for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Boolean {
+	val ptr = tBoolean
+	ptr.set(value)
+
+	val result = ImGui.checkbox(label, ptr)
+	if (result) onChange(ptr.get())
+	return result
+}
+/**
+ * Draws an input field with [label], for [value], [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Int> = {}): Boolean {
+	val ptr = tInt
+	ptr.set(value)
+
+	val result = stretch(label) { ImGui.inputInt(label, ptr, step, stepFast, flags) }
+	if (result) onChange(ptr.get())
+	return result
+}
+/**
+ * Draws an input field with [label], for [value] with [format] specifier, [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}): Boolean {
+	val ptr = tDouble
+	ptr.set(value)
+
+	val result = stretch(label) { ImGui.inputDouble(label, ptr, step, stepFast, format, flags) }
+	if (result) onChange(ptr.get())
+	return result
+}
+/**
+ * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ * @see input
+ */
+inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
+	var changed = false
+	val ptr = tDouble2
+	ptr.set(value)
+
+	table(label, 2, ImGuiTableFlags.SizingStretchSame) {
+		column {
+			input("${label}.x", ptr.x, format, step, stepFast, flags) {
+				ptr.x = it
+				changed = true
+			}
+		}
+		column {
+			input("${label}.y", ptr.y, format, step, stepFast, flags) {
+				ptr.y = it
+				changed = true
+			}
+		}
+	}
+
+	if (changed) onChange(ptr)
+	return changed
+}
+/**
+ * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ * @see input
+ */
+inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
+	var changed = false
+	val ptr = tDouble3
+	ptr.set(value)
+
+	group {
+		table(label, 3, ImGuiTableFlags.SizingStretchSame) {
+			column {
+				input("${label}.x", ptr.x, format, step, stepFast, flags) {
+					ptr.x = it
+					changed = true
+				}
+			}
+			column {
+				input("${label}.y", ptr.y, format, step, stepFast, flags) {
+					ptr.y = it
+					changed = true
+				}
+			}
+			column {
+				input("${label}.z", ptr.z, format, step, stepFast, flags) {
+					ptr.z = it
+					changed = true
+				}
+			}
+		}
+	}
+
+	if (changed) onChange(ptr)
+	return changed
+}
+
+/**
+ * Runs [op] whenever the last item is focused.
+ * Returns `true` when focused.
+ */
+inline fun onFocus(op: Op): Boolean {
+	val result = ImGui.isItemFocused()
+	if (result) op()
+	return result
+}
+
+/**
+ * Runs [op] when [key] is pressed.
+ * Returns `true` when pressed.
+ */
+inline fun onKey(key: Int, op: Op): Boolean {
+	val result = ImGui.isKeyPressed(key, false)
+	if (result) op()
+	return result
+}
+
+/**
+ * Runs [op] when mouse [button] is double-click.
+ * Returns `true` when double-clicked.
+ */
+inline fun onDoubleClick(button: Int, op: Op): Boolean {
+	val result = ImGui.isMouseDoubleClicked(button)
+	if (result) op()
+	return result
+}
+
+/**
+ * Runs [op] within a width region calculated from its [label] and returns its result.
+ */
+inline fun <T> stretch(label: String, op: () -> T): T {
+	val result: T
+
+	if (label.startsWith("##")) {
+		ImGui.pushItemWidth(-1.0f)
+		result = op()
+		ImGui.popItemWidth()
+	} else {
+		result = op()
+	}
+
+	return result
+}
+
+/**
+ * Arbitrary operation.
+ */
+typealias Op = () -> Unit
+/**
+ * Invoked with a changed `T` value.
+ */
+typealias OnChange<T> = (T) -> Unit

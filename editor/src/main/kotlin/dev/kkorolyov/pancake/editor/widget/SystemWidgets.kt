@@ -2,9 +2,11 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.column
-import dev.kkorolyov.pancake.editor.ext.ptr
 import dev.kkorolyov.pancake.editor.indented
+import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.list
+import dev.kkorolyov.pancake.editor.onDoubleClick
+import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tree
@@ -13,6 +15,7 @@ import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
+import org.lwjgl.glfw.GLFW.*
 import kotlin.math.roundToInt
 
 /**
@@ -49,14 +52,13 @@ class PipelinesTree(private val pipelines: Collection<Pipeline>) : Widget {
  * Renders overall information for [systems].
  */
 class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
-	private val showHooksPtr = false.ptr()
+	private var showHooks = false
 
+	private var detail = Widget { text("select a system to preview") }
 	private val details = WindowManifest<String>()
 
 	override fun invoke() {
-		ImGui.checkbox("show hooks", showHooksPtr)
-
-		table("systems", 4) {
+		table("systems", 4, ImGuiTableFlags.Resizable or ImGuiTableFlags.SizingStretchProp) {
 			ImGui.tableSetupColumn("System")
 			ImGui.tableSetupColumn("Signature")
 			ImGui.tableSetupColumn("Tick time (ns)")
@@ -67,17 +69,21 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 			systems.forEach { system ->
 				val name = system::class.simpleName
 
-				if (name != null || showHooksPtr.get()) {
+				if (name != null || showHooks) {
 					column {
 						// hook systems (abstract classes most likely) have no details to show
 						name?.let {
-							if (ImGui.selectable(it, false, ImGuiSelectableFlags.SpanAllColumns)) {
-								details[it] = { Window(it, SystemDetails(system)) }
+							selectable(it, ImGuiSelectableFlags.SpanAllColumns or ImGuiSelectableFlags.AllowDoubleClick) {
+								detail = SystemDetails(system)
+
+								onDoubleClick(GLFW_MOUSE_BUTTON_1) {
+									details[it] = { Window(it, detail) }
+								}
 							}
 						} ?: text("hook")
 					}
 					column {
-						text(system.joinToString { it.simpleName })
+						text(name?.let { system.joinToString { it.simpleName } } ?: "")
 					}
 					column {
 						text(system.sampler.value)
@@ -88,6 +94,8 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 				}
 			}
 		}
+		if (systems.any { it::class.simpleName == null }) input("show hooks", showHooks) { showHooks = it }
+		detail()
 
 		details()
 	}

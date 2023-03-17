@@ -74,16 +74,13 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 		// force initialize if needed
 		imguiGlfw
 
-		if (ImGui.getIO().wantSaveIniSettings) {
-			log.info("saving settings")
-			settings.bufferedWriter().apply {
-				write(ImGui.saveIniSettingsToMemory())
-				flush()
-			}
-			ImGui.getIO().wantSaveIniSettings = false
-		} else {
-			log.info("no settings changed - skipping save")
+		log.info("saving settings")
+		settings.bufferedWriter().apply {
+			write(ImGui.saveIniSettingsToMemory())
+			flush()
 		}
+		ImGui.getIO().wantSaveIniSettings = false
+
 		close()
 	}
 	/**

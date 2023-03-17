@@ -52,7 +52,7 @@ fun drawEnd(): GameSystem = GameSystem.hook {
  * Returns a system rendering an editor for [engine].
  */
 fun editor(engine: GameEngine): GameSystem {
-	editor = Window("Editor", Editor(engine))
+	editor = Window("Editor", Editor(engine), fullscreen = true)
 	return GameSystem.hook {
 		container(editor)
 	}

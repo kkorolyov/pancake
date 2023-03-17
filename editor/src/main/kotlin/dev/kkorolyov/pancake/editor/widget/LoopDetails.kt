@@ -1,21 +1,23 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.field
+import dev.kkorolyov.pancake.editor.column
+import dev.kkorolyov.pancake.editor.input
+import dev.kkorolyov.pancake.editor.table
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
-import imgui.type.ImBoolean
-import imgui.type.ImDouble
+import imgui.flag.ImGuiTableFlags
 import kotlin.math.roundToInt
+
+private val suspendLock = object {}
 
 /**
  * Renders information about [engine]'s loop state.
  */
 class LoopDetails(private val engine: GameEngine) : Widget {
-	private val activePtr = ImBoolean()
-	private val speedPtr = ImDouble()
 
 	override fun invoke() {
 		activeToggle()
@@ -26,24 +28,29 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 	}
 
 	private fun activeToggle() {
-		val lastActive = activePtr.get()
-		activePtr.set(engine.speed != 0.0)
-		ImGui.checkbox("active", activePtr)
-
-		if (lastActive != activePtr.get()) engine.speed = if (activePtr.get()) 1.0 else 0.0
+		input("active", !engine.suspend.isActive) {
+			if (it) engine.suspend.remove(suspendLock) else engine.suspend.add(suspendLock)
+		}
 	}
 
 	private fun speed() {
-		speedPtr.set(engine.speed)
-		ImGui.inputDouble("##speed", speedPtr, 0.1, 1.0, "%.2f")
-		engine.speed = speedPtr.get()
+		input("##speed", engine.speed) { engine.speed = it }
 		tooltip("Current speed scale")
 	}
 
 	private fun summary() {
-		field("Tick time (ns)", engine.sampler.value)
-		field("TPS", (1e9 / engine.sampler.value).roundToInt())
-		field("Pipelines", engine.size())
-		field("Systems", engine.sumOf(Pipeline::size))
+		table("summary", 2, ImGuiTableFlags.SizingFixedFit) {
+			column { text("Tick time (ns)") }
+			column { text(engine.sampler.value) }
+
+			column { text("TPS") }
+			column { text((1e9 / engine.sampler.value).roundToInt()) }
+
+			column { text("Pipelines") }
+			column { text(engine.size()) }
+
+			column { text("Systems") }
+			column { text(engine.sumOf(Pipeline::size)) }
+		}
 	}
 }
