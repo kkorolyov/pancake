@@ -45,7 +45,24 @@ class GoSystemSpec extends Specification {
 		positionV << [Vector3.of(1, 1, 1), Vector3.of(1, 2, 10), Vector3.of(-1, 1, -4), Vector3.of(10, 40, -10)]
 	}
 
-	def "does nothing if within target buffer"() {
+	def "resets force when within target buffer"() {
+		Position position = new Position(positionV)
+		Force force = new Force(forceV)
+		Entity entity = entities.create()
+		entity.put(go, position, force)
+
+		when:
+		system.update(entity, dt)
+
+		then:
+		force.value == Vector3.of()
+
+		where:
+		positionV << [Vector3.of(1, 0), Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of(0.5, 0.5)]
+		forceV << [Vector3.of(1, 4), Vector3.of(8, 8), Vector3.of(3), Vector3.of(4, 5, 1)]
+	}
+
+	def "removes go when within target buffer"() {
 		Position position = new Position(positionV)
 		Force force = new Force(Vector3.of())
 		Entity entity = entities.create()
@@ -56,6 +73,7 @@ class GoSystemSpec extends Specification {
 
 		then:
 		force.value == Vector3.of()
+		entity.get(Go) == null
 
 		where:
 		positionV << [Vector3.of(1, 0), Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of(0.5, 0.5)]

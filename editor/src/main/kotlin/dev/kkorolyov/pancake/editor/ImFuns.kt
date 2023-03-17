@@ -8,13 +8,16 @@ import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
 import imgui.type.ImDouble
+import imgui.type.ImInt
 
 // reuse the same carrier to all imgui input functions
 // public only to allow inline functions
 /** NO TOUCHY */
-val tDouble by ThreadLocal.withInitial(::ImDouble)
-/** NO TOUCHY */
 val tBoolean by ThreadLocal.withInitial { ImBoolean(false) }
+/** NO TOUCHY */
+val tInt by ThreadLocal.withInitial(::ImInt)
+/** NO TOUCHY */
+val tDouble by ThreadLocal.withInitial(::ImDouble)
 /** NO TOUCHY */
 val tDouble2 by ThreadLocal.withInitial(Vector2::of)
 /** NO TOUCHY */
@@ -175,6 +178,18 @@ inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Bo
 	ptr.set(value)
 
 	val result = ImGui.checkbox(label, ptr)
+	if (result) onChange(ptr.get())
+	return result
+}
+/**
+ * Draws an input field with [label], for [value], [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Int> = {}): Boolean {
+	val ptr = tInt
+	ptr.set(value)
+
+	val result = stretch(label) { ImGui.inputInt(label, ptr, step, stepFast, flags) }
 	if (result) onChange(ptr.get())
 	return result
 }

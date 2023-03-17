@@ -10,6 +10,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3;
 /**
  * Makes entities go where they request to.
  * Alters {@link Force} with {@link Go#getStrength()} magnitude to get {@link Position} within {@link Go#getBuffer()} units of {@link Go#getTarget()}.
+ * Removes {@link Go} components from entities that have reached their targets.
  */
 public final class GoSystem extends GameSystem {
 	private static final ThreadLocal<Vector3> tNewForce = ThreadLocal.withInitial(Vector3::of);
@@ -32,6 +33,10 @@ public final class GoSystem extends GameSystem {
 		if (magnitude > go.getBuffer()) {
 			newForce.scale(go.getStrength() / magnitude);
 			force.getValue().set(newForce);
+		} else {
+			// done moving, reset force and remove the Go
+			force.getValue().scale(0);
+			entity.remove(Go.class);
 		}
 	}
 }

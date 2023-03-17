@@ -14,21 +14,25 @@ class PathSystemSpec extends Specification {
 	@Shared
 	long dt = 1
 
+	double strength = 40
+	double buffer = 0
+
 	EntityPool entities = new EntityPool()
 	PathSystem system = new PathSystem()
 
-	def "moves towards next step if at target"() {
+	def "moves towards next step if entity has no Go component"() {
 		Position position = new Position(positionV)
-		Go go = new Go(positionV, 1, 0)
-		Path path = new Path(next)
+		Path path = new Path(strength, buffer, next)
 		Entity entity = entities.create()
-		entity.put(position, go, path)
+		entity.put(position, path)
 
 		when:
 		system.update(entity, dt)
 
 		then:
-		go.target == next
+		entity.get(Go).target == next
+		entity.get(Go).strength == strength
+		entity.get(Go).buffer == buffer
 		!path.hasNext()
 
 		where:
@@ -36,10 +40,10 @@ class PathSystemSpec extends Specification {
 		next << [Vector3.of(1), Vector3.of(17, 14, 5)]
 	}
 
-	def "does not set next if not at target"() {
+	def "does not set next if entity has Go component"() {
 		Position position = new Position(positionV)
 		Go go = new Go(targetV, 1, 0)
-		Path path = new Path(next)
+		Path path = new Path(strength, buffer, next)
 		Entity entity = entities.create()
 		entity.put(position, go, path)
 
@@ -58,16 +62,15 @@ class PathSystemSpec extends Specification {
 
 	def "does not set next if no more steps"() {
 		Position position = new Position(positionV)
-		Go go = new Go(targetV, 1, 0)
-		Path path = new Path()
+		Path path = new Path(strength, buffer)
 		Entity entity = entities.create()
-		entity.put(position, go, path)
+		entity.put(position, path)
 
 		when:
 		system.update(entity, dt)
 
 		then:
-		go.target == targetV
+		entity.get(Go) == null
 		!path.hasNext()
 
 		where:

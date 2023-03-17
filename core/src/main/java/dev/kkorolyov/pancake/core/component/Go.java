@@ -5,7 +5,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
 /**
- * Where an entity wants to go and how intent it is on getting there.
+ * Ephemeral marker of where an entity wants to go and how intent it is on getting there.
  */
 public final class Go implements Component {
 	private final Vector3 target;
@@ -16,7 +16,7 @@ public final class Go implements Component {
 	 * Constructs a new go component with position {@code target}, {@code strength} of force to apply, and {@code buffer} distance around target considered as reached.
 	 */
 	public Go(Vector3 target, double strength, double buffer) {
-		this.target = Vector3.of(target);
+		this.target = target;
 		setStrength(strength);
 		setBuffer(buffer);
 	}
