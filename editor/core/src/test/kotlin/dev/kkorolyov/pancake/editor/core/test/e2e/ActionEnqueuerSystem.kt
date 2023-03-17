@@ -20,10 +20,8 @@ private fun randAction() = listOf(
  */
 class ActionEnqueuerSystem : GameSystem(ActionQueue::class.java) {
 	override fun update(entity: Entity, dt: Long) {
-		entity[ActionQueue::class.java].enqueue(
-			(1..Random.nextInt(11)).map {
-				randAction()
-			}
-		)
+		(1..Random.nextInt(11)).map {
+			entity[ActionQueue::class.java].add(randAction())
+		}
 	}
 }

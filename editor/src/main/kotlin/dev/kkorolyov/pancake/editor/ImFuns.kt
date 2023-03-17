@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImGui
 import imgui.flag.ImGuiInputTextFlags
+import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
 import imgui.type.ImDouble
@@ -11,13 +12,13 @@ import imgui.type.ImDouble
 // reuse the same carrier to all imgui input functions
 // public only to allow inline functions
 /** NO TOUCHY */
-val tDouble = ThreadLocal.withInitial(::ImDouble)
+val tDouble by ThreadLocal.withInitial(::ImDouble)
 /** NO TOUCHY */
-val tBoolean = ThreadLocal.withInitial { ImBoolean(false) }
+val tBoolean by ThreadLocal.withInitial { ImBoolean(false) }
 /** NO TOUCHY */
-val tDouble2 = ThreadLocal.withInitial(Vector2::of)
+val tDouble2 by ThreadLocal.withInitial(Vector2::of)
 /** NO TOUCHY */
-val tDouble3 = ThreadLocal.withInitial(Vector3::of)
+val tDouble3 by ThreadLocal.withInitial(Vector3::of)
 
 /**
  * Draws [value] as text.
@@ -57,6 +58,14 @@ inline fun group(op: Op) {
 	ImGui.beginGroup()
 	op()
 	ImGui.endGroup()
+}
+
+/**
+ * Runs [op] within an embedded region named [id].
+ */
+inline fun child(id: String, op: Op) {
+	if (ImGui.beginChild(id)) op()
+	ImGui.endChild()
 }
 
 /**
@@ -114,8 +123,8 @@ inline fun column(op: Op) {
 /**
  * Runs [op] in a list box labeled [label].
  */
-inline fun list(label: String, op: Op) {
-	if (ImGui.beginListBox(label)) {
+inline fun list(label: String, stretch: Boolean = false, op: Op) {
+	if (ImGui.beginListBox(label, if (label.startsWith("##")) -1.0f else 0.0f, if (stretch) -1.0f else 0.0f)) {
 		op()
 		ImGui.endListBox()
 	}
@@ -138,102 +147,159 @@ fun sameLine() {
 }
 
 /**
- * Draws a button with [label], invoking [onPress] when the button is pressed.
+ * Draws a selectable area with [label] and [flags], invoking [onClick] when it is selected.
+ * Returns `true` when selected.
  */
-inline fun button(label: String, onPress: Op = {}) {
-	if (ImGui.button(label)) onPress()
+inline fun selectable(label: String, flags: Int = ImGuiSelectableFlags.None, onClick: Op): Boolean {
+	val result = ImGui.selectable(label, false, flags)
+	if (result) onClick()
+	return result
+}
+
+/**
+ * Draws a button with [label], invoking [onClick] when the button is pressed.
+ * Returns `true` when pressed.
+ */
+inline fun button(label: String, onClick: Op): Boolean {
+	val result = ImGui.button(label)
+	if (result) onClick()
+	return result
 }
 
 /**
  * Draws a checkbox with [label], for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
  */
-inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>) {
-	val ptr = tBoolean.get()
+inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Boolean {
+	val ptr = tBoolean
 	ptr.set(value)
 
-	if (ImGui.checkbox(label, ptr)) onChange(ptr.get())
+	val result = ImGui.checkbox(label, ptr)
+	if (result) onChange(ptr.get())
+	return result
 }
 /**
  * Draws an input field with [label], for [value] with [format] specifier, [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
  */
-inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}) {
-	val ptr = tDouble.get()
+inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}): Boolean {
+	val ptr = tDouble
 	ptr.set(value)
 
-	if (ImGui.inputDouble(label, ptr, step, stepFast, format, flags)) onChange(ptr.get())
+	val result = stretch(label) { ImGui.inputDouble(label, ptr, step, stepFast, format, flags) }
+	if (result) onChange(ptr.get())
+	return result
 }
 /**
  * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
  * @see input
  */
-inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}) {
+inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
 	var changed = false
-	val ptr = tDouble2.get()
+	val ptr = tDouble2
 	ptr.set(value)
 
-	ImGui.beginGroup()
-	ImGui.pushItemWidth(((ImGui.getContentRegionAvailX() - ImGui.getStyle().framePaddingX - ImGui.getStyle().windowPaddingX) / 2) - (ImGui.getStyle().itemSpacingX / 2 - 2))
-
-	input("${label}.x", ptr.x, format, step, stepFast, flags) {
-		ptr.x = it
-		changed = true
+	table(label, 2, ImGuiTableFlags.SizingStretchSame) {
+		column {
+			input("${label}.x", ptr.x, format, step, stepFast, flags) {
+				ptr.x = it
+				changed = true
+			}
+		}
+		column {
+			input("${label}.y", ptr.y, format, step, stepFast, flags) {
+				ptr.y = it
+				changed = true
+			}
+		}
 	}
-	ImGui.sameLine()
-	input("${label}.y", ptr.y, format, step, stepFast, flags) {
-		ptr.y = it
-		changed = true
-	}
-
-	ImGui.popItemWidth()
-	ImGui.endGroup()
 
 	if (changed) onChange(ptr)
+	return changed
 }
 /**
  * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
  * @see input
  */
-inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}) {
+inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
 	var changed = false
-	val ptr = tDouble3.get()
+	val ptr = tDouble3
 	ptr.set(value)
 
-	ImGui.beginGroup()
-	ImGui.pushItemWidth(((ImGui.getContentRegionAvailX() - ImGui.getStyle().framePaddingX - ImGui.getStyle().windowPaddingX) / 3) - (ImGui.getStyle().itemSpacingX / 3 - 2))
-
-	input("${label}.x", ptr.x, format, step, stepFast, flags) {
-		ptr.x = it
-		changed = true
+	group {
+		table(label, 3, ImGuiTableFlags.SizingStretchSame) {
+			column {
+				input("${label}.x", ptr.x, format, step, stepFast, flags) {
+					ptr.x = it
+					changed = true
+				}
+			}
+			column {
+				input("${label}.y", ptr.y, format, step, stepFast, flags) {
+					ptr.y = it
+					changed = true
+				}
+			}
+			column {
+				input("${label}.z", ptr.z, format, step, stepFast, flags) {
+					ptr.z = it
+					changed = true
+				}
+			}
+		}
 	}
-	ImGui.sameLine()
-	input("${label}.y", ptr.y, format, step, stepFast, flags) {
-		ptr.y = it
-		changed = true
-	}
-	ImGui.sameLine()
-	input("${label}.z", ptr.z, format, step, stepFast, flags) {
-		ptr.z = it
-		changed = true
-	}
-
-	ImGui.popItemWidth()
-	ImGui.endGroup()
 
 	if (changed) onChange(ptr)
+	return changed
 }
 
 /**
  * Runs [op] whenever the last item is focused.
+ * Returns `true` when focused.
  */
-inline fun onFocus(op: Op) {
-	if (ImGui.isItemFocused()) op()
+inline fun onFocus(op: Op): Boolean {
+	val result = ImGui.isItemFocused()
+	if (result) op()
+	return result
 }
 
 /**
  * Runs [op] when [key] is pressed.
+ * Returns `true` when pressed.
  */
-inline fun onKey(key: Int, op: Op) {
-	if (ImGui.isKeyPressed(key, false)) op()
+inline fun onKey(key: Int, op: Op): Boolean {
+	val result = ImGui.isKeyPressed(key, false)
+	if (result) op()
+	return result
+}
+
+/**
+ * Runs [op] when mouse [button] is double-click.
+ * Returns `true` when double-clicked.
+ */
+inline fun onDoubleClick(button: Int, op: Op): Boolean {
+	val result = ImGui.isMouseDoubleClicked(button)
+	if (result) op()
+	return result
+}
+
+/**
+ * Runs [op] within a width region calculated from its [label] and returns its result.
+ */
+inline fun <T> stretch(label: String, op: () -> T): T {
+	val result: T
+
+	if (label.startsWith("##")) {
+		ImGui.pushItemWidth(-1.0f)
+		result = op()
+		ImGui.popItemWidth()
+	} else {
+		result = op()
+	}
+
+	return result
 }
 
 /**

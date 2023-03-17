@@ -7,6 +7,7 @@ import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.propertiesTable
 import dev.kkorolyov.pancake.editor.propertyRow
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
 
@@ -17,5 +18,9 @@ class GoComponentWidgetFactory : ComponentWidgetFactory {
 			propertyRow("Strength") { input("##${"Strength"}", strength) { it: Double -> this.setStrength(it) } }
 			propertyRow("Buffer") { input("##${"Buffer"}", buffer) { it: Double -> this.setBuffer(it) } }
 		}
+	}
+
+	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Go>(c, onNew) {
+		text("TODO Go")
 	}
 }

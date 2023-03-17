@@ -6,7 +6,6 @@ import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.Resources
-import dev.kkorolyov.pancake.platform.math.Vector2
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL46.*

@@ -9,6 +9,8 @@ snakeyaml = "2.+"
 lwjgl = "3.+"
 imgui = "1.+"
 
+classgraph = "4.+"
+
 spock = "2.+"
 byteBuddy = "1.+"
 log4j = "2.+"
@@ -30,6 +32,8 @@ lwjgl-stb = { module = "org.lwjgl:lwjgl-stb" }
 
 imgui-binding = { module = "io.github.spair:imgui-java-binding", version.ref = "imgui" }
 imgui-lwjgl = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "imgui" }
+
+classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
 
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }

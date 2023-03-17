@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.ActionQueue;
 import dev.kkorolyov.pancake.platform.GameSystem;
+import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ public class ActionSystem extends GameSystem {
 	@Override
 	protected void update(Entity entity, long dt) {
 		ActionQueue actionQueue = entity.get(ActionQueue.class);
-		actionQueue.apply(entity);
+		for (Action action : actionQueue) action.apply(entity);
 		actionQueues.add(actionQueue);
 	}
 

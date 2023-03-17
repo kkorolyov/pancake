@@ -38,7 +38,7 @@ class InputSystem(vararg windows: Long) : GameSystem(Input::class.java, ActionQu
 	override fun update(entity: Entity, dt: Long) {
 		val input = entity[Input::class.java]
 		val actionQueue = entity[ActionQueue::class.java]
-		events.forEach { input(it)?.let(actionQueue::enqueue) }
+		events.forEach { input(it)?.let(actionQueue::add) }
 	}
 
 	override fun after() = events.clear()

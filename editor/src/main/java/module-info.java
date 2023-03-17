@@ -1,3 +1,4 @@
+import dev.kkorolyov.pancake.editor.ActionWidgetFactory;
 import dev.kkorolyov.pancake.editor.ComponentWidgetFactory;
 
 module dev.kkorolyov.pancake.editor {
@@ -16,10 +17,13 @@ module dev.kkorolyov.pancake.editor {
 	requires transitive dev.kkorolyov.pancake.platform;
 	requires transitive dev.kkorolyov.pancake.graphics;
 
+	requires io.github.classgraph;
+
 	exports dev.kkorolyov.pancake.editor;
 	exports dev.kkorolyov.pancake.editor.widget;
 
 	opens icons;
 
 	uses ComponentWidgetFactory;
+	uses ActionWidgetFactory;
 }

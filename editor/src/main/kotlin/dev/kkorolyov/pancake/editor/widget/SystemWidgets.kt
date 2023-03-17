@@ -5,6 +5,8 @@ import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.indented
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.list
+import dev.kkorolyov.pancake.editor.onDoubleClick
+import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tree
@@ -13,6 +15,7 @@ import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
+import org.lwjgl.glfw.GLFW.*
 import kotlin.math.roundToInt
 
 /**
@@ -51,6 +54,7 @@ class PipelinesTree(private val pipelines: Collection<Pipeline>) : Widget {
 class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 	private var showHooks = false
 
+	private var detail = Widget { text("select a system to preview") }
 	private val details = WindowManifest<String>()
 
 	override fun invoke() {
@@ -69,8 +73,12 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 					column {
 						// hook systems (abstract classes most likely) have no details to show
 						name?.let {
-							if (ImGui.selectable(it, false, ImGuiSelectableFlags.SpanAllColumns)) {
-								details[it] = { Window(it, SystemDetails(system)) }
+							selectable(it, ImGuiSelectableFlags.SpanAllColumns or ImGuiSelectableFlags.AllowDoubleClick) {
+								detail = SystemDetails(system)
+
+								onDoubleClick(GLFW_MOUSE_BUTTON_1) {
+									details[it] = { Window(it, detail) }
+								}
 							}
 						} ?: text("hook")
 					}
@@ -86,8 +94,8 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 				}
 			}
 		}
-
 		if (systems.any { it::class.simpleName == null }) input("show hooks", showHooks) { showHooks = it }
+		detail()
 
 		details()
 	}
