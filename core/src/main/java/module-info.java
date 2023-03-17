@@ -14,6 +14,7 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.component.tag;
 	exports dev.kkorolyov.pancake.core.system;
 	exports dev.kkorolyov.pancake.core.system.cleanup;
+	exports dev.kkorolyov.pancake.core.system.limit;
 
 	provides ResourceConverterFactory with ActionResourceConverterFactory;
 }
