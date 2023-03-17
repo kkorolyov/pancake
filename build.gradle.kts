@@ -1,4 +1,5 @@
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	java
@@ -131,14 +132,12 @@ subprojects {
 			testImplementation(libs.bundles.test)
 		}
 
-		java {
-			toolchain {
-				languageVersion.set(JavaLanguageVersion.of(JavaVersion.current().majorVersion))
-			}
-		}
-
 		tasks.test {
 			useJUnitPlatform()
+		}
+
+		tasks.withType<KotlinCompile> {
+			outputs.cacheIf { false }
 		}
 	}
 
