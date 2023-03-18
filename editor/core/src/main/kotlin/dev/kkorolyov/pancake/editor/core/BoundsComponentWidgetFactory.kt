@@ -14,22 +14,26 @@ import imgui.flag.ImGuiInputTextFlags
 
 class BoundsComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Bounds>(t) {
-		propertiesTable("bounds") {
-			propertyRow("Vertices") {
-				list("##vertices") {
-					vertices.forEach { input3("##vertices", it, flags = ImGuiInputTextFlags.ReadOnly) }
+		Widget {
+			propertiesTable("bounds") {
+				propertyRow("Vertices") {
+					list("##vertices") {
+						vertices.forEach { input3("##vertices", it, flags = ImGuiInputTextFlags.ReadOnly) }
+					}
 				}
-			}
-			propertyRow("Normals") {
-				list("##normals") {
-					vertices.forEach { input3("##normals", it, flags = ImGuiInputTextFlags.ReadOnly) }
+				propertyRow("Normals") {
+					list("##normals") {
+						vertices.forEach { input3("##normals", it, flags = ImGuiInputTextFlags.ReadOnly) }
+					}
 				}
+				propertyRow("Magnitude") { input("##magnitude", magnitude, flags = ImGuiInputTextFlags.ReadOnly) }
 			}
-			propertyRow("Magnitude") { input("##magnitude", magnitude, flags = ImGuiInputTextFlags.ReadOnly) }
 		}
 	}
 
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Bounds>(c, onNew) {
-		text("TODO Bounds")
+		Widget {
+			text("TODO Bounds")
+		}
 	}
 }

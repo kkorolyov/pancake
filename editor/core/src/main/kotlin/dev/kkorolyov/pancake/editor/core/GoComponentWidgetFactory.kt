@@ -13,14 +13,18 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 
 class GoComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Go>(t) {
-		propertiesTable("go") {
-			propertyRow("Target") { input3("##${"Target"}", target) { it: Vector3 -> target.set(it) } }
-			propertyRow("Strength") { input("##${"Strength"}", strength) { it: Double -> this.setStrength(it) } }
-			propertyRow("Buffer") { input("##${"Buffer"}", buffer) { it: Double -> this.setBuffer(it) } }
+		Widget {
+			propertiesTable("go") {
+				propertyRow("Target") { input3("##${"Target"}", target) { it: Vector3 -> target.set(it) } }
+				propertyRow("Strength") { input("##${"Strength"}", strength) { it: Double -> this.setStrength(it) } }
+				propertyRow("Buffer") { input("##${"Buffer"}", buffer) { it: Double -> this.setBuffer(it) } }
+			}
 		}
 	}
 
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Go>(c, onNew) {
-		text("TODO Go")
+		Widget {
+			text("TODO Go")
+		}
 	}
 }

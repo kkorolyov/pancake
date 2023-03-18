@@ -9,10 +9,14 @@ import dev.kkorolyov.pancake.platform.entity.Component
 
 class VelocityLimitComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<VelocityLimit>(t) {
-		input("##value", value) { value = it }
+		Widget {
+			input("##value", value) { value = it }
+		}
 	}
 
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<VelocityLimit>(c, onNew) {
-		text("TODO VelocityLimit")
+		Widget {
+			text("TODO VelocityLimit")
+		}
 	}
 }

@@ -10,15 +10,19 @@ import dev.kkorolyov.pancake.platform.entity.Component
 
 class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<ActionQueue>(t) {
-		list("##data") {
-			forEach {
-				getActionWidget(it)()
+		Widget {
+			list("##data") {
+				forEach {
+					getActionWidget(it)()
+				}
 			}
+			// TODO support adding actions
 		}
-		// TODO support adding actions
 	}
 
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<ActionQueue>(c, onNew) {
-		text("TODO ActionQueue")
+		Widget {
+			text("TODO ActionQueue")
+		}
 	}
 }

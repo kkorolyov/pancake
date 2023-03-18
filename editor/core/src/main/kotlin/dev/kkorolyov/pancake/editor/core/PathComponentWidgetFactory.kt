@@ -15,24 +15,28 @@ import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.flag.ImGuiInputTextFlags
 import org.lwjgl.glfw.GLFW
 
-private val tNewStep by ThreadLocal.withInitial(Vector3::of)
-
 class PathComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Path>(t) {
-		list("##steps") {
-			forEachIndexed { i, value -> input3("##value.${i}", value, flags = ImGuiInputTextFlags.ReadOnly) }
-		}
+		val tNewStep by ThreadLocal.withInitial(Vector3::of)
 
-		val newStep = tNewStep
-		input3("##newStep", newStep) { newStep.set(it) }
-		tooltip("<ENTER> to add step")
-		onFocus {
-			onKey(GLFW.GLFW_KEY_ENTER) { add(newStep) }
-			onKey(GLFW.GLFW_KEY_KP_ENTER) { add(newStep) }
+		Widget {
+			list("##steps") {
+				forEachIndexed { i, value -> input3("##value.${i}", value, flags = ImGuiInputTextFlags.ReadOnly) }
+			}
+
+			val newStep = tNewStep
+			input3("##newStep", newStep) { newStep.set(it) }
+			tooltip("<ENTER> to add step")
+			onFocus {
+				onKey(GLFW.GLFW_KEY_ENTER) { add(Vector3.of(newStep)) }
+				onKey(GLFW.GLFW_KEY_KP_ENTER) { add(Vector3.of(newStep)) }
+			}
 		}
 	}
 
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Path>(c, onNew) {
-		text("TODO Path")
+		Widget {
+			text("TODO Path")
+		}
 	}
 }

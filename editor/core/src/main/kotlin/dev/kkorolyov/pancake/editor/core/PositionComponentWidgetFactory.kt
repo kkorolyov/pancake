@@ -9,10 +9,14 @@ import dev.kkorolyov.pancake.platform.entity.Component
 
 class PositionComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Position>(t) {
-		input3("##value", value) { value.set(it) }
+		Widget {
+			input3("##value", value) { value.set(it) }
+		}
 	}
 
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Position>(c, onNew) {
-		text("TODO Position")
+		Widget {
+			text("TODO Position")
+		}
 	}
 }

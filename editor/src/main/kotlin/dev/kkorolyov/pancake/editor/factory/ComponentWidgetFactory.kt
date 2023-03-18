@@ -48,15 +48,13 @@ inline fun propertyRow(label: String, op: Op) {
 interface ComponentWidgetFactory : WidgetFactory<Component> {
 	companion object {
 		/**
-		 * Returns a widget invoking [op] for [component] if it is of type [T].
+		 * Returns the result of invoking [op] for [component] if it is of type [T].
 		 */
-		inline fun <reified T : Component> get(component: Component, crossinline op: T.() -> Unit): Widget? = (component as? T)?.let {
-			Widget { op(it) }
-		}
+		inline fun <reified T : Component> get(component: Component, crossinline op: T.() -> Widget): Widget? = (component as? T)?.let(op)
 
 		/**
-		 * Returns a widget invoking [op] with [onNew] if it is for instances of type [T].
+		 * Returns the result of invoking [op] with [onNew] if it is for instances of type [T].
 		 */
-		inline fun <reified T : Component> get(c: Class<Component>, noinline onNew: (Component) -> Unit, crossinline op: ((T) -> Unit) -> Unit): Widget? = if (c == T::class.java) Widget { op(onNew) } else null
+		inline fun <reified T : Component> get(c: Class<Component>, noinline onNew: (Component) -> Unit, crossinline op: ((T) -> Unit) -> Widget): Widget? = if (c == T::class.java) op(onNew) else null
 	}
 }
