@@ -1,5 +1,8 @@
-package dev.kkorolyov.pancake.editor
+package dev.kkorolyov.pancake.editor.factory
 
+import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.getValue
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.action.Action
 import java.util.ServiceLoader
 
@@ -23,17 +26,7 @@ fun getActionWidget(c: Class<Action>, onNew: (Action) -> Unit): Widget = factori
 /**
  * Returns widgets drawing given [Action]s.
  */
-interface ActionWidgetFactory {
-	/**
-	 * Returns a widget drawing [action], if this factory handles it.
-	 */
-	fun get(action: Action): Widget?
-
-	/**
-	 * Returns a widget drawing a creator of [c]-type actions and invoking [onNew] with created instances, if this factory handles it.
-	 */
-	fun get(c: Class<Action>, onNew: (Action) -> Unit): Widget?
-
+interface ActionWidgetFactory : WidgetFactory<Action> {
 	companion object {
 		/**
 		 * Returns a widget invoking [op] for [action] if it is of type [T].

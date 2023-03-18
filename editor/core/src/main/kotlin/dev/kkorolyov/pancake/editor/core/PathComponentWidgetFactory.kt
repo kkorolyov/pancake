@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.editor.core
 
 import dev.kkorolyov.pancake.core.component.Path
-import dev.kkorolyov.pancake.editor.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.list
@@ -18,7 +18,7 @@ import org.lwjgl.glfw.GLFW
 private val tNewStep by ThreadLocal.withInitial(Vector3::of)
 
 class PathComponentWidgetFactory : ComponentWidgetFactory {
-	override fun get(component: Component): Widget? = ComponentWidgetFactory.get<Path>(component) {
+	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Path>(t) {
 		list("##steps") {
 			forEachIndexed { i, value -> input3("##value.${i}", value, flags = ImGuiInputTextFlags.ReadOnly) }
 		}

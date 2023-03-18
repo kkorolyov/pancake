@@ -1,5 +1,11 @@
-package dev.kkorolyov.pancake.editor
+package dev.kkorolyov.pancake.editor.factory
 
+import dev.kkorolyov.pancake.editor.Op
+import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.column
+import dev.kkorolyov.pancake.editor.getValue
+import dev.kkorolyov.pancake.editor.table
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.entity.Component
 import imgui.flag.ImGuiTableFlags
 import java.util.ServiceLoader
@@ -37,19 +43,9 @@ inline fun propertyRow(label: String, op: Op) {
 }
 
 /**
- * Returns widgets drawing given [Component]s.
+ * Returns widgets drawing [Component]s.
  */
-interface ComponentWidgetFactory {
-	/**
-	 * Returns a widget drawing [component], if this factory handles it.
-	 */
-	fun get(component: Component): Widget?
-
-	/**
-	 * Returns a widget drawing a creator of [c]-type components and invoking [onNew] with created instances, if this factory handles it.
-	 */
-	fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget?
-
+interface ComponentWidgetFactory : WidgetFactory<Component> {
 	companion object {
 		/**
 		 * Returns a widget invoking [op] for [component] if it is of type [T].

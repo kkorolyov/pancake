@@ -23,8 +23,8 @@ dependencies {
 
 tasks.register("generateTestResources") {
 	val servicesDir = "$buildDir/resources/test/META-INF/services"
-	val actionWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.ActionWidgetFactory")
-	val componentWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.ComponentWidgetFactory")
+	val actionWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ActionWidgetFactory")
+	val componentWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory")
 
 	outputs.files(actionWidgetFactoryServicesFile, componentWidgetFactoryServicesFile)
 
@@ -32,15 +32,17 @@ tasks.register("generateTestResources") {
 		val moduleInfoText = file("$projectDir/src/main/java/module-info.java").readText()
 
 		actionWidgetFactoryServicesFile.writeText(
-			"""dev\.kkorolyov\.pancake\.editor\..+?ActionWidgetFactory""".toRegex().findAll(moduleInfoText)
-				.map(MatchResult::value)
+			"""import (.*\w+?ActionWidgetFactory)""".toRegex().findAll(moduleInfoText)
+				.map { it.groups[1] }
 				.joinToString("\n")
 		)
 		componentWidgetFactoryServicesFile.writeText(
-			"""dev\.kkorolyov\.pancake\.editor\..+?ComponentWidgetFactory""".toRegex().findAll(moduleInfoText)
-				.map(MatchResult::value)
+			"""import (.*\w+?ComponentWidgetFactory)""".toRegex().findAll(moduleInfoText)
+				.map { it.groupValues[1] }
 				.joinToString("\n")
 		)
+		print(actionWidgetFactoryServicesFile.readText())
+		println(componentWidgetFactoryServicesFile.readText())
 	}
 }
 

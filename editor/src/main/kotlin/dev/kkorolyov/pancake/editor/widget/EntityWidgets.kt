@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.column
-import dev.kkorolyov.pancake.editor.getComponentWidget
+import dev.kkorolyov.pancake.editor.factory.getComponentWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.onDoubleClick
