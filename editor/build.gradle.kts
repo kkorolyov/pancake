@@ -1,11 +1,11 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-	`java-library`
+	configKotlin
+	configLwjgl
+	configPublish
 	`java-test-fixtures`
 }
-apply(from = "$rootDir/kotlin.gradle")
-apply(from = "$rootDir/publish.gradle.kts")
 
 description = "Graphical debugging tools that can hook into a Pancake application"
 
@@ -30,7 +30,8 @@ dependencies {
 	}
 }
 
-(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb))
+val setupLwjgl: (Any) -> Unit by extra
+setupLwjgl(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb))
 
 tasks.register<JavaExec>("e2e") {
 	group = "verification"

@@ -1,8 +1,8 @@
 plugins {
-	`java-library`
+	configKotlin
+	configLwjgl
+	configPublish
 }
-apply(from = "$rootDir/kotlin.gradle")
-apply(from = "$rootDir/publish.gradle.kts")
 
 description = "Provides debug fragments for Core components"
 
@@ -19,7 +19,8 @@ dependencies {
 	}
 }
 
-(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb))
+val setupLwjgl: (Any) -> Unit by extra
+setupLwjgl(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb))
 
 tasks.register("generateTestResources") {
 	val servicesDir = "$buildDir/resources/test/META-INF/services"

@@ -1,4 +1,6 @@
 [versions]
+kotlin = "1.8.10"
+
 flub = "0.+"
 
 slf4j = "2.+"
@@ -16,6 +18,9 @@ byteBuddy = "1.+"
 log4j = "2.+"
 
 [libraries]
+gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin" }
+
 flub = { module = "dev.kkorolyov:flub", version.ref = "flub" }
 
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
