@@ -15,12 +15,15 @@ private val factories by ThreadLocal.withInitial { ServiceLoader.load(ComponentW
 private val noop by lazy { Widget {} }
 
 /**
- * Returns the most suitable widget for displaying [component] from all [ComponentWidgetFactory] providers on the classpath.
- * Falls back to a basic `toString` representation of [component] if no provider found.
+ * Returns a widget displaying the `toString` representation of [component].
  */
-fun getComponentWidget(component: Component): Widget = factories.firstNotNullOfOrNull { it.get(component) } ?: Widget {
-	text(component)
-}
+fun basicComponentWidget(component: Component): Widget = Widget { text(component) }
+
+/**
+ * Returns the most suitable widget for displaying [component] from all [ComponentWidgetFactory] providers on the classpath.
+ * Falls back to [basicComponentWidget] if no provider found.
+ */
+fun getComponentWidget(component: Component): Widget = factories.firstNotNullOfOrNull { it.get(component) } ?: basicComponentWidget(component)
 /**
  * Returns the most suitable widget for displaying a [c]-type component creator invoking [onNew] from all [ComponentWidgetFactory] providers on the classpath.
  * Falls back to a no-op widget if no provider found.

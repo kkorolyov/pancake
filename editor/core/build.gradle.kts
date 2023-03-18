@@ -25,8 +25,13 @@ tasks.register("generateTestResources") {
 	val servicesDir = "$buildDir/resources/test/META-INF/services"
 	val actionWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ActionWidgetFactory")
 	val componentWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory")
+	val gameSystemWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.GameSystemWidgetFactory")
 
-	outputs.files(actionWidgetFactoryServicesFile, componentWidgetFactoryServicesFile)
+	outputs.files(
+		actionWidgetFactoryServicesFile,
+		componentWidgetFactoryServicesFile,
+		gameSystemWidgetFactoryServicesFile
+	)
 
 	doLast {
 		val moduleInfoText = file("$projectDir/src/main/java/module-info.java").readText()
@@ -41,8 +46,11 @@ tasks.register("generateTestResources") {
 				.map { it.groupValues[1] }
 				.joinToString("\n")
 		)
-		print(actionWidgetFactoryServicesFile.readText())
-		println(componentWidgetFactoryServicesFile.readText())
+		gameSystemWidgetFactoryServicesFile.writeText(
+			"""import (.*\w+?SystemWidgetFactory)""".toRegex().findAll(moduleInfoText)
+				.map { it.groupValues[1] }
+				.joinToString("\n")
+		)
 	}
 }
 

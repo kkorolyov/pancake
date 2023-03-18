@@ -150,6 +150,13 @@ fun sameLine() {
 }
 
 /**
+ * Draws a separator line.
+ */
+fun separator() {
+	ImGui.separator()
+}
+
+/**
  * Draws a selectable area with [label] and [flags], invoking [onClick] when it is selected.
  * Returns `true` when selected.
  */
