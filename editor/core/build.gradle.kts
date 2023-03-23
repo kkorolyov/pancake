@@ -38,18 +38,18 @@ tasks.register("generateTestResources") {
 		val moduleInfoText = file("$projectDir/src/main/java/module-info.java").readText()
 
 		actionWidgetFactoryServicesFile.writeText(
-			"""import (.*\w+?ActionWidgetFactory)""".toRegex().findAll(moduleInfoText)
-				.map { it.groups[1] }
+			"""(?<=import\s)[\w.]*\w+ActionWidgetFactory""".toRegex().findAll(moduleInfoText)
+				.map(MatchResult::value)
 				.joinToString("\n")
 		)
 		componentWidgetFactoryServicesFile.writeText(
-			"""import (.*\w+?ComponentWidgetFactory)""".toRegex().findAll(moduleInfoText)
-				.map { it.groupValues[1] }
+			"""(?<=import\s)[\w.]*\w+ComponentWidgetFactory""".toRegex().findAll(moduleInfoText)
+				.map(MatchResult::value)
 				.joinToString("\n")
 		)
 		gameSystemWidgetFactoryServicesFile.writeText(
-			"""import (.*\w+?SystemWidgetFactory)""".toRegex().findAll(moduleInfoText)
-				.map { it.groupValues[1] }
+			"""(?<=import\s)[\w.]*\w+SystemWidgetFactory""".toRegex().findAll(moduleInfoText)
+				.map(MatchResult::value)
 				.joinToString("\n")
 		)
 	}
@@ -61,8 +61,4 @@ tasks.register<JavaExec>("e2e") {
 
 	mainClass.set("dev.kkorolyov.pancake.editor.core.test.e2e.E2EKt")
 	classpath = sourceSets.test.get().runtimeClasspath
-
-	doLast {
-		println(sourceSets.test.get().output.map { it.path })
-	}
 }
