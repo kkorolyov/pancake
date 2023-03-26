@@ -1,12 +1,15 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.column
-import dev.kkorolyov.pancake.editor.factory.EntityWidgetFactory
+import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.onDoubleClick
 import dev.kkorolyov.pancake.editor.selectable
+import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.ImGui
@@ -20,6 +23,8 @@ private val entityMinSize = Vector2.of(200.0, 200.0)
  * Renders entity listings from [entities].
  */
 class EntitiesTable(private val entities: EntityPool) : Widget {
+	private val preview = MemoizedContent(::EntityDetails, Widget { text("Select an entity to preview") })
+
 	private val details = WindowManifest<Int>()
 
 	override fun invoke() {
@@ -32,8 +37,16 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 			entities.forEach {
 				column {
 					selectable(it.id.toString(), ImGuiSelectableFlags.SpanAllColumns or ImGuiSelectableFlags.AllowDoubleClick) {
+						preview(it)
+
 						onDoubleClick(GLFW_MOUSE_BUTTON_1) {
-							details[it.id] = { Window("Entity ${it.id}", EntityWidgetFactory.get(it), minSize = entityMinSize) }
+							details[it.id] = { Window("Entity ${it.id}", preview.value, minSize = entityMinSize) }
+							preview.reset()
+						}
+					}
+					contextMenu {
+						selectable("destroy") {
+							entities.destroy(it.id)
 						}
 					}
 				}
@@ -42,6 +55,14 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 				}
 			}
 		}
+
+		button("+") {
+			preview(entities.create())
+		}
+		tooltip("New entity")
+
+		separator()
+		preview.value()
 
 		details()
 	}

@@ -22,7 +22,7 @@ import kotlin.math.roundToInt
 class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 	private var showHooks = false
 
-	private var detail = Widget { text("select a system to preview") }
+	private val preview = MemoizedContent(::getGameSystemWidget, Widget { text("Select a system to preview") })
 	private val details = WindowManifest<String>()
 
 	override fun invoke() {
@@ -42,10 +42,11 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 						// hook systems (abstract classes most likely) have no details to show
 						name?.let {
 							selectable(it, ImGuiSelectableFlags.SpanAllColumns or ImGuiSelectableFlags.AllowDoubleClick) {
-								detail = getGameSystemWidget(system)
+								preview(system)
 
 								onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
-									details[it] = { Window(it, detail) }
+									details[it] = { Window(it, preview.value) }
+									preview.reset()
 								}
 							}
 						} ?: text("hook")
@@ -63,8 +64,9 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 			}
 		}
 		if (systems.any { it::class.simpleName == null }) input("show hooks", showHooks) { showHooks = it }
+
 		separator()
-		detail()
+		preview.value()
 
 		details()
 	}
