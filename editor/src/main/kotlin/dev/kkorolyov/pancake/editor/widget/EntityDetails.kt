@@ -16,6 +16,7 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.flag.ImGuiSelectableFlags
+import imgui.type.ImBoolean
 import io.github.classgraph.ClassGraph
 import org.lwjgl.glfw.GLFW
 import kotlin.reflect.KClass
@@ -26,11 +27,11 @@ private val componentTypes by ThreadLocal.withInitial {
 	ClassGraph().enableClassInfo().scan().use { result ->
 		result.getClassesImplementing(Component::class.java)
 			.filter { !it.isAbstract && !it.isInterface }
-			.map { info ->
-				info.loadClass(Component::class.java)
-			}
+			.map { it.loadClass(Component::class.java) }
 	}
 }
+
+private val noopModal = Modal("noop", Widget {}, ImBoolean(false))
 
 /**
  * Displays and provides for modification of [entity] properties.
@@ -39,7 +40,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 	private val preview = MemoizedContent(::getComponentWidget, Widget { text("Select a component to preview") })
 	private val details = WindowManifest<KClass<out Component>>()
 
-	private var create: Modal? = null
+	private var create: Modal = noopModal
 
 	private var toRemove: Class<out Component>? = null
 
@@ -50,6 +51,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 			contextMenu(true) {
 				drawAddMenu()
 			}
+
 			entity.forEach {
 				selectable(it::class.simpleName.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
 					// display inline on single click
@@ -77,7 +79,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 		separator()
 		preview.value()
 
-		create?.invoke()
+		create()
 
 		details()
 	}
@@ -90,7 +92,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 						create = Modal(
 							"New ${type.simpleName}",
 							getComponentWidget(type) {
-								create?.visible = false
+								create.visible = false
 								entity.put(it)
 							},
 							minSize = componentMinSize

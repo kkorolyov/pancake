@@ -31,13 +31,11 @@ interface ActionWidgetFactory : WidgetFactory<Action> {
 		/**
 		 * Returns a widget invoking [op] for [action] if it is of type [T].
 		 */
-		inline fun <reified T : Action> get(action: Action, crossinline op: T.() -> Unit): Widget? = (action as? T)?.let {
-			Widget { op(it) }
-		}
+		inline fun <reified T : Action> get(action: Action, crossinline op: T.() -> Widget): Widget? = (action as? T)?.let(op)
 
 		/**
 		 * Returns a widget invoking [op] with [onNew] if it is for instances of type [T].
 		 */
-		inline fun <reified T : Action> get(c: Class<out Action>, noinline onNew: (Action) -> Unit, crossinline op: ((T) -> Unit) -> Unit): Widget? = if (c == T::class.java) Widget { op(onNew) } else null
+		inline fun <reified T : Action> get(c: Class<out Action>, noinline onNew: (Action) -> Unit, crossinline op: ((T) -> Unit) -> Widget): Widget? = if (c == T::class.java) op(onNew) else null
 	}
 }

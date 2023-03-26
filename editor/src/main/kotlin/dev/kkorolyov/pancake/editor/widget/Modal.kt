@@ -40,10 +40,11 @@ class Modal(
 		}
 		if (visible) {
 			ImGui.setNextWindowSizeConstraints(minSize.x.toFloat(), minSize.y.toFloat(), maxSize.x.toFloat(), maxSize.y.toFloat())
-		}
-		if (ImGui.beginPopupModal(label, visiblePtr, flags)) {
-			content()
-			ImGui.endPopup()
+
+			if (ImGui.beginPopupModal(label, visiblePtr, flags)) {
+				content()
+				ImGui.endPopup()
+			}
 		}
 	}
 }

@@ -11,6 +11,8 @@ dependencies {
 	implementation(projects.core)
 	implementation(projects.editor)
 
+	implementation(libs.classgraph)
+
 	testImplementation(testFixtures(projects.editor))
 	testImplementation(testFixtures(projects.platform))
 
