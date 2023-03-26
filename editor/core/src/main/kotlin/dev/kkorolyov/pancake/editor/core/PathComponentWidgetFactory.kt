@@ -3,7 +3,10 @@ package dev.kkorolyov.pancake.editor.core
 import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
+import dev.kkorolyov.pancake.editor.factory.propertiesTable
+import dev.kkorolyov.pancake.editor.factory.propertyRow
 import dev.kkorolyov.pancake.editor.getValue
+import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.onFocus
@@ -20,16 +23,26 @@ class PathComponentWidgetFactory : ComponentWidgetFactory {
 		val tNewStep by ThreadLocal.withInitial(Vector3::of)
 
 		Widget {
-			list("##steps") {
-				forEachIndexed { i, value -> input3("##value.${i}", value, flags = ImGuiInputTextFlags.ReadOnly) }
-			}
+			propertiesTable("path") {
+				propertyRow("Strength") {
+					input("##strength", strength) { strength = it }
+				}
+				propertyRow("Buffer") {
+					input("##buffer", buffer) { buffer = it }
+				}
+				propertyRow("Steps") {
+					list("##steps") {
+						forEachIndexed { i, value -> input3("##value.${i}", value, flags = ImGuiInputTextFlags.ReadOnly) }
+					}
 
-			val newStep = tNewStep
-			input3("##newStep", newStep) { newStep.set(it) }
-			tooltip("<ENTER> to add step")
-			onFocus {
-				onKey(GLFW.GLFW_KEY_ENTER) { add(Vector3.of(newStep)) }
-				onKey(GLFW.GLFW_KEY_KP_ENTER) { add(Vector3.of(newStep)) }
+					val newStep = tNewStep
+					input3("##newStep", newStep) { newStep.set(it) }
+					tooltip("<ENTER> to add step")
+					onFocus {
+						onKey(GLFW.GLFW_KEY_ENTER) { add(Vector3.of(newStep)) }
+						onKey(GLFW.GLFW_KEY_KP_ENTER) { add(Vector3.of(newStep)) }
+					}
+				}
 			}
 		}
 	}
