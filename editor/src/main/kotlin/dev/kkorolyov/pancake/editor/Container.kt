@@ -37,7 +37,7 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	private lateinit var imguiGl: ImGuiImplGl3
 
 	/**
-	 * Loads initial GUI settings from `settings`.
+	 * Reads and applies GUI settings from `settings`.
 	 */
 	fun load(settings: InputStream) {
 		// force initialize if needed
@@ -47,6 +47,20 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 		settings.bufferedReader().use {
 			ImGui.loadIniSettingsFromMemory(it.readLines().joinToString("\n"))
 		}
+	}
+	/**
+	 * Writes current GUI settings to `settings`.
+	 */
+	fun save(settings: OutputStream) {
+		// force initialize if needed
+		imguiGlfw
+
+		log.info("saving settings")
+		settings.bufferedWriter().apply {
+			write(ImGui.saveIniSettingsToMemory())
+			flush()
+		}
+		ImGui.getIO().wantSaveIniSettings = false
 	}
 
 	/**
@@ -67,22 +81,6 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 		GLFW.glfwMakeContextCurrent(context)
 	}
 
-	/**
-	 * Writes current GUI settings to `settings` and disposes of this container's GUI contexts.
-	 */
-	fun close(settings: OutputStream) {
-		// force initialize if needed
-		imguiGlfw
-
-		log.info("saving settings")
-		settings.bufferedWriter().apply {
-			write(ImGui.saveIniSettingsToMemory())
-			flush()
-		}
-		ImGui.getIO().wantSaveIniSettings = false
-
-		close()
-	}
 	/**
 	 * Disposes of this container's GUI contexts.
 	 */
