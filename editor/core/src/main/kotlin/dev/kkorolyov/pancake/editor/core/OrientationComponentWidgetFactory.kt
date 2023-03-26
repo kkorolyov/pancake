@@ -2,10 +2,12 @@ package dev.kkorolyov.pancake.editor.core
 
 import dev.kkorolyov.pancake.core.component.Orientation
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.input3
-import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
+import dev.kkorolyov.pancake.platform.math.Vector3
 
 class OrientationComponentWidgetFactory : ComponentWidgetFactory {
 	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Orientation>(t) {
@@ -14,9 +16,13 @@ class OrientationComponentWidgetFactory : ComponentWidgetFactory {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Orientation>(c, onNew) {
+	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get(c, onNew) {
+		val value = Vector3.of()
+
 		Widget {
-			text("TODO Orientation")
+			input3("##value", value) { value.set(it) }
+			tooltip("value")
+			button("apply") { it(Orientation(value)) }
 		}
 	}
 }

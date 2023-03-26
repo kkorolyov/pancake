@@ -1,15 +1,15 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.factory.getComponentWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
+import dev.kkorolyov.pancake.editor.menu
+import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.onDoubleClick
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.separator
-import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
@@ -39,60 +39,65 @@ class EntityDetails(private val entity: Entity) : Widget {
 	private val preview = MemoizedContent(::getComponentWidget, Widget { text("Select a component to preview") })
 	private val details = WindowManifest<KClass<out Component>>()
 
-	private var create = Widget { text("Select a component type to add") }
+	private var create: Modal? = null
 
 	private var toRemove: Class<out Component>? = null
 
 	override fun invoke() {
-		table("${entity.id}.content", 2) {
-			column {
-				text("Current")
-				tooltip("click to preview, double-click to open in new window")
-				list("##components") {
-					entity.forEach {
-						selectable(it::class.simpleName.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
-							// display inline on single click
-							preview(it)
+		text("Current")
+		tooltip("click to preview, double-click to open in new window")
+		list("##components") {
+			contextMenu(true) {
+				drawAddMenu()
+			}
+			entity.forEach {
+				selectable(it::class.simpleName.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
+					// display inline on single click
+					preview(it)
 
-							onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
-								// in window on double click
-								details[it::class] = { Window("Entity ${entity.id}: ${it::class.simpleName}", preview.value, minSize = componentMinSize) }
-								preview.reset()
-							}
-						}
-						contextMenu {
-							selectable("remove") {
-								toRemove = it::class.java
-							}
-						}
+					onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
+						// in window on double click
+						details[it::class] = { Window("Entity ${entity.id}: ${it::class.simpleName}", preview.value, minSize = componentMinSize) }
+						preview.reset()
 					}
 				}
-				toRemove?.let {
-					entity.remove(it)
-					toRemove = null
-				}
-			}
-			column {
-				text("Add new")
-				list("##newComponents") {
-					componentTypes.forEach { type ->
-						selectable(type.simpleName) {
-							create = getComponentWidget(type, entity::put)
-						}
+				contextMenu {
+					drawAddMenu()
+					menuItem("remove") {
+						toRemove = it::class.java
 					}
 				}
-			}
-
-			column {
-				separator()
-				preview.value()
-			}
-			column {
-				separator()
-				create()
 			}
 		}
+		toRemove?.let {
+			entity.remove(it)
+			toRemove = null
+		}
+
+		separator()
+		preview.value()
+
+		create?.invoke()
 
 		details()
+	}
+
+	private fun drawAddMenu() {
+		menu("add") {
+			componentTypes.forEach { type ->
+				if (entity[type] == null) {
+					menuItem(type.simpleName) {
+						create = Modal(
+							"New ${type.simpleName}",
+							getComponentWidget(type) {
+								create?.visible = false
+								entity.put(it)
+							},
+							minSize = componentMinSize
+						)
+					}
+				}
+			}
+		}
 	}
 }

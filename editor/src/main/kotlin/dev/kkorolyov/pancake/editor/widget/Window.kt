@@ -16,13 +16,12 @@ private const val FULLSCREEN_FLAGS = ImGuiWindowFlags.NoDecoration or
 
 /**
  * Renders [content] within a top-level window.
- * Can optionally be provided [flags] and additional [setup] to run before rendering.
  */
 class Window(
 	/**
 	 * Window title.
 	 */
-	var label: String,
+	val label: String,
 	private val content: Widget,
 	private val visiblePtr: ImBoolean = ImBoolean(true),
 	private val minSize: Vector2 = Vector2.of(0.0, 0.0),

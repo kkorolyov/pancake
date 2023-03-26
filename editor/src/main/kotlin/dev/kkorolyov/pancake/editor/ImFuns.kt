@@ -50,9 +50,10 @@ inline fun tooltip(op: Op) {
 
 /**
  * Runs [op] in a context menu popup over the last clicked item.
+ * If [force] is `true`, opens the menu even if the last item is non-interactive.
  */
-inline fun contextMenu(flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
-	if (ImGui.beginPopupContextItem(flags)) {
+inline fun contextMenu(force: Boolean = false, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
+	if (if (force) ImGui.beginPopupContextWindow(flags) else ImGui.beginPopupContextItem(flags)) {
 		op()
 		ImGui.endPopup()
 	}
@@ -154,6 +155,25 @@ inline fun indented(op: Op) {
 }
 
 /**
+ * Invokes [op] within a menu of [label].
+ */
+inline fun menu(label: String, op: Op) {
+	if (ImGui.beginMenu(label)) {
+		op()
+		ImGui.endMenu()
+	}
+}
+/**
+ * Draws a menu item of [label], invoking [onClick] when it is selected.
+ * Returns `true` when selected.
+ */
+inline fun menuItem(label: String, onClick: Op): Boolean {
+	val result = ImGui.menuItem(label)
+	if (result) onClick()
+	return result
+}
+
+/**
  * Draws the next item on the same line as the previous one.
  */
 fun sameLine() {
@@ -165,6 +185,16 @@ fun sameLine() {
  */
 fun separator() {
 	ImGui.separator()
+}
+
+/**
+ * Runs [op] within an interaction-disabled scope if [disabled] is `true`.
+ * Otherwise, just runs [op].
+ */
+inline fun disabledIf(disabled: Boolean, op: Op) {
+	if (disabled) ImGui.beginDisabled()
+	op()
+	if (disabled) ImGui.endDisabled()
 }
 
 /**

@@ -2,6 +2,8 @@ package dev.kkorolyov.pancake.editor.core
 
 import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.button
+import dev.kkorolyov.pancake.editor.disabledIf
 import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.factory.propertiesTable
 import dev.kkorolyov.pancake.editor.factory.propertyRow
@@ -11,7 +13,6 @@ import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.onFocus
 import dev.kkorolyov.pancake.editor.onKey
-import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -47,9 +48,22 @@ class PathComponentWidgetFactory : ComponentWidgetFactory {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Path>(c, onNew) {
+	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get(c, onNew) {
+		var strength = 0.0
+		var buffer = 0.0
+
 		Widget {
-			text("TODO Path")
+			propertiesTable("path") {
+				propertyRow("Strength") {
+					input("##strength", strength) { strength = it }
+				}
+				propertyRow("Buffer") {
+					input("##buffer", buffer) { buffer = it }
+				}
+			}
+			disabledIf(strength < 0.0 || buffer < 0.0) {
+				button("apply") { it(Path(strength, buffer)) }
+			}
 		}
 	}
 }

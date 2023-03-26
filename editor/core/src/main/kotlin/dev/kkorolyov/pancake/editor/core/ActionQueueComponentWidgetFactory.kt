@@ -5,7 +5,6 @@ import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
 import dev.kkorolyov.pancake.editor.factory.getActionWidget
 import dev.kkorolyov.pancake.editor.list
-import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.entity.Component
 
 class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
@@ -20,9 +19,9 @@ class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<ActionQueue>(c, onNew) {
+	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get(c, onNew) {
 		Widget {
-			text("TODO ActionQueue")
+			it(ActionQueue())
 		}
 	}
 }

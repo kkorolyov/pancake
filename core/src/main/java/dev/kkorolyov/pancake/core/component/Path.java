@@ -17,9 +17,9 @@ public final class Path implements Component, Iterable<Vector3> {
 	private final Queue<Vector3> steps = new ArrayDeque<>();
 
 	/**
-	 * Constructs a new path with {@code strength}, {@code buffer}, and initial {@code steps} sequence.
+	 * Constructs a new path with {@code strength} and {@code buffer} to apply to all steps.
 	 */
-	public Path(double strength, double buffer, Vector3... steps) {
+	public Path(double strength, double buffer) {
 		setStrength(strength);
 		setBuffer(buffer);
 		for (Vector3 step : steps) add(step);
