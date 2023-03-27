@@ -1,5 +1,6 @@
-import dev.kkorolyov.pancake.editor.ActionWidgetFactory;
-import dev.kkorolyov.pancake.editor.ComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.factory.ActionWidgetFactory;
+import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.factory.GameSystemWidgetFactory;
 
 module dev.kkorolyov.pancake.editor {
 	requires kotlin.stdlib;
@@ -20,10 +21,12 @@ module dev.kkorolyov.pancake.editor {
 	requires io.github.classgraph;
 
 	exports dev.kkorolyov.pancake.editor;
+	exports dev.kkorolyov.pancake.editor.factory;
 	exports dev.kkorolyov.pancake.editor.widget;
 
 	opens icons;
 
-	uses ComponentWidgetFactory;
 	uses ActionWidgetFactory;
+	uses ComponentWidgetFactory;
+	uses GameSystemWidgetFactory;
 }

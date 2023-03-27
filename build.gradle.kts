@@ -1,11 +1,8 @@
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
 	java
 	id("org.ajoberstar.reckon") version "0.+"
-	kotlin("jvm") version "1.8.10" apply false
-	id("org.jetbrains.dokka") version "1.8.10" apply false
 }
 
 tasks.wrapper {
@@ -107,48 +104,5 @@ tasks.register("allDocs") {
 			</html>
 			""".trimIndent()
 		)
-	}
-}
-
-subprojects {
-	repositories {
-		mavenCentral()
-		maven {
-			url = uri("https://maven.pkg.github.com/kkorolyov/flub")
-			credentials {
-				username = System.getenv("GITHUB_ACTOR")
-				password = System.getenv("GITHUB_TOKEN")
-			}
-		}
-	}
-
-	dependencyLocking {
-		lockAllConfigurations()
-	}
-
-	afterEvaluate {
-		dependencies {
-			implementation(libs.bundles.stdlib)
-			testImplementation(libs.bundles.test)
-		}
-
-		tasks.test {
-			useJUnitPlatform()
-		}
-
-		tasks.withType<KotlinCompile> {
-			outputs.cacheIf { false }
-		}
-	}
-
-	extra["setupLwjgl"] = { deps: List<Provider<MinimalExternalModuleDependency>> ->
-		dependencies {
-			val api = configurations["api"]
-
-			val allDeps = deps + libs.lwjgl.asProvider()
-
-			api(platform(libs.lwjgl.bom))
-			allDeps.forEach { api(it) }
-		}
 	}
 }

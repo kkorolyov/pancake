@@ -1,9 +1,8 @@
 plugins {
-	`java-library`
-	groovy
+	configKotlin
+	configLwjgl
+	configPublish
 }
-apply(from = "$rootDir/kotlin.gradle")
-apply(from = "$rootDir/publish.gradle.kts")
 
 description = "OpenGL rendering system and renderable implementations"
 
@@ -23,7 +22,8 @@ dependencies {
 	}
 }
 
-(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.opengl, libs.lwjgl.stb))
+val setupLwjgl: (Any) -> Unit by extra
+setupLwjgl(listOf(libs.lwjgl.opengl, libs.lwjgl.stb))
 
 tasks.register<JavaExec>("e2e") {
 	group = "verification"

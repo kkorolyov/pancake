@@ -1,9 +1,8 @@
 plugins {
-	`java-library`
-	groovy
+	configKotlin
+	configLwjgl
+	configPublish
 }
-apply(from = "$rootDir/kotlin.gradle")
-apply(from = "$rootDir/publish.gradle.kts")
 
 description = "OpenAL audio system and struct implementations"
 
@@ -12,4 +11,5 @@ dependencies {
 	implementation(projects.core)
 }
 
-(extra["setupLwjgl"] as (Any) -> Unit)(listOf(libs.lwjgl.openal))
+val setupLwjgl: (Any) -> Unit by extra
+setupLwjgl(listOf(libs.lwjgl.openal))

@@ -29,29 +29,15 @@ private fun prettyMem(value: Double, unit: Char) = String.format("%.2f%siB", val
  * Renders information about the current OpenGL implementation.
  */
 class GLDetails : Widget {
-	private val vendor by lazy {
-		glGetString(GL_VENDOR)
-	}
-	private val renderer by lazy {
-		glGetString(GL_RENDERER)
-	}
-	private val version by lazy {
-		glGetString(GL_VERSION)
-	}
-	private val extensions by lazy {
-		glGetString(GL_EXTENSIONS)
-	}
+	private val vendor = glGetString(GL_VENDOR)
+	private val renderer = glGetString(GL_RENDERER)
+	private val version = glGetString(GL_VERSION)
+	private val extensions = glGetString(GL_EXTENSIONS)
 
-	private val maxVertexAttributes by lazy {
-		glGetInteger(GL_MAX_VERTEX_ATTRIBS)
-	}
-	private val maxUniforms by lazy {
-		glGetInteger(GL_MAX_UNIFORM_LOCATIONS)
-	}
+	private val maxVertexAttributes = glGetInteger(GL_MAX_VERTEX_ATTRIBS)
+	private val maxUniforms = glGetInteger(GL_MAX_UNIFORM_LOCATIONS)
 
-	private val memTotal by lazy {
-		prettyMem(glGetInteger(NVXGPUMemoryInfo.GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX))
-	}
+	private val memTotal = prettyMem(glGetInteger(NVXGPUMemoryInfo.GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX))
 	private val memFree
 		get() = prettyMem(glGetInteger(NVXGPUMemoryInfo.GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX))
 

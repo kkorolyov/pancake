@@ -1,9 +1,7 @@
 plugins {
-	`java-library`
-	groovy
+	configKotlin
+	configPublish
 }
-apply(from = "$rootDir/kotlin.gradle")
-apply(from = "$rootDir/publish.gradle.kts")
 
 description = "Common input system utilities"
 

@@ -22,7 +22,8 @@ class PathSystemSpec extends Specification {
 
 	def "moves towards next step if entity has no Go component"() {
 		Position position = new Position(positionV)
-		Path path = new Path(strength, buffer, next)
+		Path path = new Path(strength, buffer)
+		path.add(next)
 		Entity entity = entities.create()
 		entity.put(position, path)
 
@@ -43,7 +44,8 @@ class PathSystemSpec extends Specification {
 	def "does not set next if entity has Go component"() {
 		Position position = new Position(positionV)
 		Go go = new Go(targetV, 1, 0)
-		Path path = new Path(strength, buffer, next)
+		Path path = new Path(strength, buffer)
+		path.add(next)
 		Entity entity = entities.create()
 		entity.put(position, go, path)
 

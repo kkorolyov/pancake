@@ -1,8 +1,6 @@
 plugins {
-	`java-library`
-	groovy
+	configPublish
 }
-apply(from = "$rootDir/publish.gradle.kts")
 
 description = "Collection of general, reusable systems and components for the Pancake engine"
 

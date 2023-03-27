@@ -68,5 +68,6 @@ fun start(engine: GameEngine) {
 
 	engine.start()
 
-	Resources.outStream(editorSettings)?.use(container::close) ?: container.close()
+	Resources.outStream(editorSettings)?.use(container::save)
+	container.close()
 }

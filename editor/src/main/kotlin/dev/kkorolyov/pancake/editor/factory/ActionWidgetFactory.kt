@@ -1,5 +1,8 @@
-package dev.kkorolyov.pancake.editor
+package dev.kkorolyov.pancake.editor.factory
 
+import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.getValue
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.action.Action
 import java.util.ServiceLoader
 
@@ -23,28 +26,16 @@ fun getActionWidget(c: Class<Action>, onNew: (Action) -> Unit): Widget = factori
 /**
  * Returns widgets drawing given [Action]s.
  */
-interface ActionWidgetFactory {
-	/**
-	 * Returns a widget drawing [action], if this factory handles it.
-	 */
-	fun get(action: Action): Widget?
-
-	/**
-	 * Returns a widget drawing a creator of [c]-type actions and invoking [onNew] with created instances, if this factory handles it.
-	 */
-	fun get(c: Class<Action>, onNew: (Action) -> Unit): Widget?
-
+interface ActionWidgetFactory : WidgetFactory<Action> {
 	companion object {
 		/**
 		 * Returns a widget invoking [op] for [action] if it is of type [T].
 		 */
-		inline fun <reified T : Action> get(action: Action, crossinline op: T.() -> Unit): Widget? = (action as? T)?.let {
-			Widget { op(it) }
-		}
+		inline fun <reified T : Action> get(action: Action, crossinline op: T.() -> Widget): Widget? = (action as? T)?.let(op)
 
 		/**
 		 * Returns a widget invoking [op] with [onNew] if it is for instances of type [T].
 		 */
-		inline fun <reified T : Action> get(c: Class<out Action>, noinline onNew: (Action) -> Unit, crossinline op: ((T) -> Unit) -> Unit): Widget? = if (c == T::class.java) Widget { op(onNew) } else null
+		inline fun <reified T : Action> get(c: Class<out Action>, noinline onNew: (Action) -> Unit, crossinline op: ((T) -> Unit) -> Widget): Widget? = if (c == T::class.java) op(onNew) else null
 	}
 }

@@ -1,5 +1,11 @@
-package dev.kkorolyov.pancake.editor
+package dev.kkorolyov.pancake.editor.factory
 
+import dev.kkorolyov.pancake.editor.Op
+import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.column
+import dev.kkorolyov.pancake.editor.getValue
+import dev.kkorolyov.pancake.editor.table
+import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.entity.Component
 import imgui.flag.ImGuiTableFlags
 import java.util.ServiceLoader
@@ -9,12 +15,15 @@ private val factories by ThreadLocal.withInitial { ServiceLoader.load(ComponentW
 private val noop by lazy { Widget {} }
 
 /**
- * Returns the most suitable widget for displaying [component] from all [ComponentWidgetFactory] providers on the classpath.
- * Falls back to a basic `toString` representation of [component] if no provider found.
+ * Returns a widget displaying the `toString` representation of [component].
  */
-fun getComponentWidget(component: Component): Widget = factories.firstNotNullOfOrNull { it.get(component) } ?: Widget {
-	text(component)
-}
+fun basicComponentWidget(component: Component): Widget = Widget { text(component) }
+
+/**
+ * Returns the most suitable widget for displaying [component] from all [ComponentWidgetFactory] providers on the classpath.
+ * Falls back to [basicComponentWidget] if no provider found.
+ */
+fun getComponentWidget(component: Component): Widget = factories.firstNotNullOfOrNull { it.get(component) } ?: basicComponentWidget(component)
 /**
  * Returns the most suitable widget for displaying a [c]-type component creator invoking [onNew] from all [ComponentWidgetFactory] providers on the classpath.
  * Falls back to a no-op widget if no provider found.
@@ -37,30 +46,18 @@ inline fun propertyRow(label: String, op: Op) {
 }
 
 /**
- * Returns widgets drawing given [Component]s.
+ * Returns widgets drawing [Component]s.
  */
-interface ComponentWidgetFactory {
-	/**
-	 * Returns a widget drawing [component], if this factory handles it.
-	 */
-	fun get(component: Component): Widget?
-
-	/**
-	 * Returns a widget drawing a creator of [c]-type components and invoking [onNew] with created instances, if this factory handles it.
-	 */
-	fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget?
-
+interface ComponentWidgetFactory : WidgetFactory<Component> {
 	companion object {
 		/**
-		 * Returns a widget invoking [op] for [component] if it is of type [T].
+		 * Returns the result of invoking [op] for [component] if it is of type [T].
 		 */
-		inline fun <reified T : Component> get(component: Component, crossinline op: T.() -> Unit): Widget? = (component as? T)?.let {
-			Widget { op(it) }
-		}
+		inline fun <reified T : Component> get(component: Component, crossinline op: T.() -> Widget): Widget? = (component as? T)?.let(op)
 
 		/**
-		 * Returns a widget invoking [op] with [onNew] if it is for instances of type [T].
+		 * Returns the result of invoking [op] with [onNew] if it is for instances of type [T].
 		 */
-		inline fun <reified T : Component> get(c: Class<Component>, noinline onNew: (Component) -> Unit, crossinline op: ((T) -> Unit) -> Unit): Widget? = if (c == T::class.java) Widget { op(onNew) } else null
+		inline fun <reified T : Component> get(c: Class<Component>, noinline onNew: (Component) -> Unit, crossinline op: ((T) -> Unit) -> Widget): Widget? = if (c == T::class.java) op(onNew) else null
 	}
 }

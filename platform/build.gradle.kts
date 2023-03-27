@@ -1,9 +1,7 @@
 plugins {
-	`java-library`
+	configPublish
 	`java-test-fixtures`
-	groovy
 }
-apply(from = "$rootDir/publish.gradle.kts")
 
 description = "Main Pancake engine platform"
 
