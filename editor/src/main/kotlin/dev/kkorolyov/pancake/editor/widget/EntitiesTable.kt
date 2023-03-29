@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.editor.widget
 
+import dev.kkorolyov.pancake.editor.MemoizedContent
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.column
