@@ -1,9 +1,10 @@
 package dev.kkorolyov.pancake.core.registry;
 
 import dev.kkorolyov.flub.function.convert.Converter;
-import dev.kkorolyov.pancake.core.action.ForceAction;
-import dev.kkorolyov.pancake.core.action.PositionAction;
-import dev.kkorolyov.pancake.core.action.VelocityAction;
+import dev.kkorolyov.pancake.core.component.Orientation;
+import dev.kkorolyov.pancake.core.component.Position;
+import dev.kkorolyov.pancake.core.component.movement.Force;
+import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.registry.ObjectConverters;
@@ -24,25 +25,44 @@ public final class ActionResourceConverterFactory implements ResourceConverterFa
 		return Converter.reducing(
 				force(),
 				velocity(),
-				position()
+				position(),
+				orientation()
 		);
 	}
 	private Converter<Object, Optional<Resource<Action>>> force() {
 		return Converter.selective(
-				t -> t instanceof Map<?, ?> && ((Map<?, ?>) t).containsKey("force"),
-				t -> Resource.constant(new ForceAction(asVector(((Map<?, ?>) t).get("force"))))
+				t -> t instanceof Map && ((Map<?, ?>) t).containsKey("force"),
+				t -> {
+					Vector3 force = asVector(((Map<?, ?>) t).get("force"));
+					return Resource.constant(entity -> entity.get(Force.class).getValue().add(force));
+				}
 		);
 	}
 	private Converter<Object, Optional<Resource<Action>>> velocity() {
 		return Converter.selective(
-				t -> t instanceof Map<?, ?> && ((Map<?, ?>) t).containsKey("velocity"),
-				t -> Resource.constant(new VelocityAction(asVector(((Map<?, ?>) t).get("velocity"))))
+				t -> t instanceof Map && ((Map<?, ?>) t).containsKey("velocity"),
+				t -> {
+					Vector3 velocity = asVector(((Map<?, ?>) t).get("velocity"));
+					return Resource.constant(entity -> entity.get(Velocity.class).getValue().set(velocity));
+				}
 		);
 	}
 	private Converter<Object, Optional<Resource<Action>>> position() {
 		return Converter.selective(
-				t -> t instanceof Map<?, ?> && ((Map<?, ?>) t).containsKey("position"),
-				t -> Resource.constant(new PositionAction(asVector(((Map<?, ?>) t).get("position"))))
+				t -> t instanceof Map && ((Map<?, ?>) t).containsKey("position"),
+				t -> {
+					Vector3 position = asVector(((Map<?, ?>) t).get("position"));
+					return Resource.constant(entity -> entity.get(Position.class).getValue().set(position));
+				}
+		);
+	}
+	private Converter<Object, Optional<Resource<Action>>> orientation() {
+		return Converter.selective(
+				t -> t instanceof Map && ((Map<?, ?>) t).containsKey("orientation"),
+				t -> {
+					Vector3 orientation = asVector(((Map<?, ?>) t).get("orientation"));
+					return Resource.constant(entity -> entity.get(Orientation.class).getValue().set(orientation));
+				}
 		);
 	}
 
