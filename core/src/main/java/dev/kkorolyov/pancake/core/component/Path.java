@@ -34,6 +34,13 @@ public final class Path implements Component, Iterable<Vector3> {
 	}
 
 	/**
+	 * Clears the step queue.
+	 */
+	public void clear() {
+		steps.clear();
+	}
+
+	/**
 	 * Returns the intended force magnitude to get to any step's target.
 	 */
 	public double getStrength() {
