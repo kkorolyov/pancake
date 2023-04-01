@@ -9,7 +9,7 @@ import dev.kkorolyov.pancake.editor.core.PathComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.PositionComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.VelocityComponentWidgetFactory;
 import dev.kkorolyov.pancake.editor.core.VelocityLimitComponentWidgetFactory;
-import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory;
+import dev.kkorolyov.pancake.editor.factory.WidgetFactory;
 
 module dev.kkorolyov.pancake.editor.core {
 	requires kotlin.stdlib;
@@ -29,7 +29,8 @@ module dev.kkorolyov.pancake.editor.core {
 
 	requires io.github.classgraph;
 
-	provides ComponentWidgetFactory with
+	provides WidgetFactory with
+			// components
 			ActionQueueComponentWidgetFactory,
 			BoundsComponentWidgetFactory,
 			DampingComponentWidgetFactory,

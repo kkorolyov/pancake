@@ -4,20 +4,22 @@ import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
-import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
-import dev.kkorolyov.pancake.editor.factory.propertiesTable
-import dev.kkorolyov.pancake.editor.factory.propertyRow
+import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.list
+import dev.kkorolyov.pancake.editor.propertiesTable
+import dev.kkorolyov.pancake.editor.propertyRow
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.flag.ImGuiInputTextFlags
 
-class BoundsComponentWidgetFactory : ComponentWidgetFactory {
-	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Bounds>(t) {
+class BoundsComponentWidgetFactory : WidgetFactory<Component> {
+	override val type: Class<Component> = Component::class.java
+
+	override fun get(t: Component): Widget? = WidgetFactory.get<Bounds>(t) {
 		Widget {
 			propertiesTable("bounds") {
 				propertyRow("Vertices") {
@@ -35,7 +37,7 @@ class BoundsComponentWidgetFactory : ComponentWidgetFactory {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get<Bounds>(c, onNew) {
+	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Bounds>(c, onNew) {
 		var radius = 0.0
 		val dimensions = Vector3.of()
 

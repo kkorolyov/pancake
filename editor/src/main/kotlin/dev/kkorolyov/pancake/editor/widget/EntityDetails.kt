@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.editor.widget
 import dev.kkorolyov.pancake.editor.MemoizedContent
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.contextMenu
-import dev.kkorolyov.pancake.editor.factory.getComponentWidget
+import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
@@ -38,7 +38,7 @@ private val noopModal = Modal("noop", Widget {}, ImBoolean(false))
  * Displays and provides for modification of [entity] properties.
  */
 class EntityDetails(private val entity: Entity) : Widget {
-	private val preview = MemoizedContent(::getComponentWidget, Widget { text("Select a component to preview") })
+	private val preview = MemoizedContent<Component>({ getWidget(Component::class.java, it) }, Widget { text("Select a component to preview") })
 	private val details = WindowManifest<KClass<out Component>>()
 
 	private var create: Modal = noopModal
@@ -92,7 +92,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 					menuItem(type.simpleName) {
 						create = Modal(
 							"New ${type.simpleName}",
-							getComponentWidget(type) {
+							getWidget(Component::class.java, type) {
 								create.visible = false
 								entity.put(it)
 							},

@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.editor.widget
 import dev.kkorolyov.pancake.editor.MemoizedContent
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.column
-import dev.kkorolyov.pancake.editor.factory.getGameSystemWidget
+import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.onDoubleClick
 import dev.kkorolyov.pancake.editor.selectable
@@ -23,7 +23,7 @@ import kotlin.math.roundToInt
 class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 	private var showHooks = false
 
-	private val preview = MemoizedContent(::getGameSystemWidget, Widget { text("Select a system to preview") })
+	private val preview = MemoizedContent<GameSystem>({ getWidget(GameSystem::class.java, it) }, Widget { text("Select a system to preview") })
 	private val details = WindowManifest<String>()
 
 	override fun invoke() {

@@ -3,8 +3,8 @@ package dev.kkorolyov.pancake.editor.core
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.contextMenu
-import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
-import dev.kkorolyov.pancake.editor.factory.getActionWidget
+import dev.kkorolyov.pancake.editor.factory.WidgetFactory
+import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
@@ -28,8 +28,10 @@ private val actionTypes by ThreadLocal.withInitial {
 
 private val noopModal = Modal("noop", Widget {}, ImBoolean(false))
 
-class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
-	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<ActionQueue>(t) {
+class ActionQueueComponentWidgetFactory : WidgetFactory<Component> {
+	override val type: Class<Component> = Component::class.java
+
+	override fun get(t: Component): Widget? = WidgetFactory.get<ActionQueue>(t) {
 		var create: Modal = noopModal
 
 		Widget {
@@ -40,7 +42,7 @@ class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
 							menuItem(type.simpleName) {
 								create = Modal(
 									"New ${type.simpleName}",
-									getActionWidget(type) {
+									getWidget(Action::class.java, type) {
 										create.visible = false
 										add(it)
 									},
@@ -52,7 +54,7 @@ class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
 				}
 
 				forEach {
-					getActionWidget(it)()
+					getWidget(Action::class.java, it)()
 				}
 			}
 
@@ -60,7 +62,7 @@ class ActionQueueComponentWidgetFactory : ComponentWidgetFactory {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get(c, onNew) {
+	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, ActionQueue>(c, onNew) {
 		Widget {
 			it(ActionQueue())
 		}
