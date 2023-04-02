@@ -2,15 +2,14 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.MemoizedContent
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.contextMenu
+import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.onDoubleClick
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
-import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.ImGui
@@ -25,8 +24,10 @@ private val entityMinSize = Vector2.of(200.0, 200.0)
  */
 class EntitiesTable(private val entities: EntityPool) : Widget {
 	private val preview = MemoizedContent(::EntityDetails, Widget { text("Select an entity to preview") })
-
 	private val details = WindowManifest<Int>()
+
+	private var toAdd = false
+	private var toRemove: Int? = null
 
 	override fun invoke() {
 		table("entities", 2, ImGuiTableFlags.SizingStretchProp) {
@@ -34,6 +35,10 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 			ImGui.tableSetupColumn("Components")
 			ImGui.tableSetupScrollFreeze(1, 1)
 			ImGui.tableHeadersRow()
+
+			contextMenu(true) {
+				drawAddMenu()
+			}
 
 			entities.forEach {
 				column {
@@ -46,8 +51,9 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 						}
 					}
 					contextMenu {
-						selectable("destroy") {
-							entities.destroy(it.id)
+						drawAddMenu()
+						menuItem("destroy") {
+							toRemove = it.id
 						}
 					}
 				}
@@ -56,15 +62,26 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 				}
 			}
 		}
-
-		button("+") {
+		// augment elements only after done iterating
+		if (toAdd) {
 			preview(entities.create())
+			toAdd = false
 		}
-		tooltip("New entity")
+		toRemove?.let {
+			entities.destroy(it)
+			preview.reset()
+			toRemove = null
+		}
 
 		separator()
 		preview.value()
 
 		details()
+	}
+
+	private fun drawAddMenu() {
+		menuItem("new") {
+			toAdd = true
+		}
 	}
 }

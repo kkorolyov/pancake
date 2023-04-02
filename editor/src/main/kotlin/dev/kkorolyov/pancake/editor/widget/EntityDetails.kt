@@ -12,7 +12,6 @@ import dev.kkorolyov.pancake.editor.onDoubleClick
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.text
-import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Vector2
@@ -43,11 +42,10 @@ class EntityDetails(private val entity: Entity) : Widget {
 
 	private var create: Modal = noopModal
 
+	private var toAdd: Component? = null
 	private var toRemove: Class<out Component>? = null
 
 	override fun invoke() {
-		text("Current")
-		tooltip("click to preview, double-click to open in new window")
 		list("##components") {
 			contextMenu(true) {
 				drawAddMenu()
@@ -72,8 +70,14 @@ class EntityDetails(private val entity: Entity) : Widget {
 				}
 			}
 		}
+		// augment elements only after done iterating
+		toAdd?.let {
+			entity.put(it)
+			toAdd = null
+		}
 		toRemove?.let {
 			entity.remove(it)
+			preview.reset()
 			toRemove = null
 		}
 
@@ -94,7 +98,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 							"New ${type.simpleName}",
 							getWidget(Component::class.java, type) {
 								create.visible = false
-								entity.put(it)
+								toAdd = it
 							},
 							minSize = componentMinSize
 						)

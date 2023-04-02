@@ -11,9 +11,9 @@ import dev.kkorolyov.pancake.test.SpecUtilities.randVector
 import kotlin.random.Random
 
 private val actions = listOf(
-	Action { it[Force::class.java].value.add(randVector()) },
-	Action { it[Velocity::class.java].value.set(randVector()) },
-	Action { it[Position::class.java].value.set(randVector()) }
+	Action { it[Force::class.java]?.value?.add(randVector()) },
+	Action { it[Velocity::class.java]?.value?.set(randVector()) },
+	Action { it[Position::class.java]?.value?.set(randVector()) }
 )
 
 /**
