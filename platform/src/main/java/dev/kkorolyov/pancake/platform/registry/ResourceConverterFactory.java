@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.registry;
 
 import dev.kkorolyov.flub.function.convert.Converter;
+import dev.kkorolyov.pancake.platform.io.BasicParsers;
 
 import java.util.Optional;
 import java.util.function.Predicate;

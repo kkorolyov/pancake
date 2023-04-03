@@ -6,8 +6,8 @@ import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.core.component.movement.Force;
 import dev.kkorolyov.pancake.core.component.movement.Velocity;
 import dev.kkorolyov.pancake.platform.action.Action;
+import dev.kkorolyov.pancake.platform.io.ObjectConverters;
 import dev.kkorolyov.pancake.platform.math.Vector3;
-import dev.kkorolyov.pancake.platform.registry.ObjectConverters;
 import dev.kkorolyov.pancake.platform.registry.Resource;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
 

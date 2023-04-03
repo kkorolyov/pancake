@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.registry;
+package dev.kkorolyov.pancake.platform.io;
 
 import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.math.Vector3;

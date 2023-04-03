@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.platform;
 
+import dev.kkorolyov.pancake.platform.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,9 @@ import java.util.Properties;
 
 /**
  * Provides access to configuration.
+ * @deprecated prefer app-level config files
  */
+@Deprecated
 public final class Config {
 	private static final String EXTENSION = ".properties";
 	private static final String DEFAULT_EXTENSION = ".default" + EXTENSION;

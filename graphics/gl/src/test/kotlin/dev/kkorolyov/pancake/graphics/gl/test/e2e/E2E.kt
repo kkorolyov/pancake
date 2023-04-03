@@ -12,7 +12,7 @@ import dev.kkorolyov.pancake.graphics.rectangle
 import dev.kkorolyov.pancake.graphics.resource.Mesh
 import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
-import dev.kkorolyov.pancake.platform.Resources
+import dev.kkorolyov.pancake.platform.io.Resources
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
