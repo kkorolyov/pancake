@@ -24,6 +24,13 @@ public final class Correctable implements Component, Comparable<Correctable> {
 		this.priority = priority;
 	}
 
+	/**
+	 * Returns the correction priority of this component.
+	 */
+	public int getPriority() {
+		return priority;
+	}
+
 	@Override
 	public int compareTo(Correctable o) {
 		return Integer.compare(priority, o.priority);

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.ServiceLoader;
@@ -33,8 +34,8 @@ public final class ComponentConverters {
 				Map<String, List<ComponentConverter<?>>> result = new HashMap<>();
 
 				typeToConverter.forEach((type, converter) -> {
-					result.computeIfAbsent(type.getName(), k -> new ArrayList<>()).add(converter);
-					result.computeIfAbsent(type.getSimpleName(), k -> new ArrayList<>()).add(converter);
+					result.computeIfAbsent(type.getName().toLowerCase(Locale.ROOT), k -> new ArrayList<>()).add(converter);
+					result.computeIfAbsent(type.getSimpleName().toLowerCase(Locale.ROOT), k -> new ArrayList<>()).add(converter);
 				});
 
 				return result;
@@ -50,7 +51,7 @@ public final class ComponentConverters {
 	 * If no matching converter found, throws {@link NoSuchElementException}.
 	 */
 	public static <T extends Component> ComponentConverter<T> get(String name) {
-		var results = converters.get().get(name);
+		var results = converters.get().get(name.toLowerCase(Locale.ROOT));
 		if (results != null) {
 			if (results.size() == 1) {
 				return (ComponentConverter<T>) results.get(0);
