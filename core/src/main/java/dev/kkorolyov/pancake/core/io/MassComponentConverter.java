@@ -6,7 +6,7 @@ import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
 public final class MassComponentConverter implements ComponentConverter<Mass> {
 	@Override
 	public Mass read(Object data) {
-		return new Mass((Double) data);
+		return new Mass(((Number) data).doubleValue());
 	}
 	@Override
 	public Object write(Mass mass) {

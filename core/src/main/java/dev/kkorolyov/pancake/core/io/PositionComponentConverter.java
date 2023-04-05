@@ -9,7 +9,7 @@ import java.util.Arrays;
 public final class PositionComponentConverter implements ComponentConverter<Position> {
 	@Override
 	public Position read(Object data) {
-		return new Position(ObjectConverters.vector3().convert((Iterable<?>) data));
+		return new Position(ObjectConverters.vector3().convert((Iterable<Number>) data));
 	}
 	@Override
 	public Object write(Position position) {

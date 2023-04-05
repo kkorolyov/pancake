@@ -12,11 +12,11 @@ public final class PathComponentConverter implements ComponentConverter<Path> {
 	public Path read(Object data) {
 		var map = (Map<String, Object>) data;
 
-		var result = new Path((Double) map.get("strength"), (Double) map.get("buffer"));
+		var result = new Path(((Number) map.get("strength")).doubleValue(), ((Number) map.get("buffer")).doubleValue());
 		var steps = map.get("steps");
 		if (steps != null) {
 			var vectorConverter = ObjectConverters.vector3();
-			for (Iterable<?> step : ((Iterable<Iterable<?>>) steps)) {
+			for (var step : ((Iterable<Iterable<Number>>) steps)) {
 				result.add(vectorConverter.convert(step));
 			}
 		}

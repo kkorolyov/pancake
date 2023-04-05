@@ -9,7 +9,7 @@ import java.util.Arrays;
 public final class ForceComponentConverter implements ComponentConverter<Force> {
 	@Override
 	public Force read(Object data) {
-		return new Force(ObjectConverters.vector3().convert((Iterable<?>) data));
+		return new Force(ObjectConverters.vector3().convert((Iterable<Number>) data));
 	}
 	@Override
 	public Object write(Force force) {

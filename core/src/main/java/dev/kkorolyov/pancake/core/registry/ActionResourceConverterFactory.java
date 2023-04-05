@@ -18,7 +18,7 @@ import java.util.Optional;
  * {@link ResourceConverterFactory} for core actions.
  */
 public final class ActionResourceConverterFactory implements ResourceConverterFactory<Action> {
-	private final Converter<Iterable<?>, Vector3> vector3Converter = ObjectConverters.vector3();
+	private final Converter<Iterable<Number>, Vector3> vector3Converter = ObjectConverters.vector3();
 
 	@Override
 	public Converter<Object, Optional<Resource<Action>>> get() {
@@ -67,7 +67,7 @@ public final class ActionResourceConverterFactory implements ResourceConverterFa
 	}
 
 	private Vector3 asVector(Object o) {
-		return o == null ? null : vector3Converter.convert((Iterable<?>) o);
+		return o == null ? null : vector3Converter.convert((Iterable<Number>) o);
 	}
 
 	@Override

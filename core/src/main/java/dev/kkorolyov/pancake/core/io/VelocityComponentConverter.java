@@ -9,7 +9,7 @@ import java.util.Arrays;
 public final class VelocityComponentConverter implements ComponentConverter<Velocity> {
 	@Override
 	public Velocity read(Object data) {
-		return new Velocity(ObjectConverters.vector3().convert((Iterable<?>) data));
+		return new Velocity(ObjectConverters.vector3().convert((Iterable<Number>) data));
 	}
 	@Override
 	public Object write(Velocity velocity) {

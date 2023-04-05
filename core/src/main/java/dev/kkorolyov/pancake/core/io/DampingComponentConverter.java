@@ -9,7 +9,7 @@ import java.util.Arrays;
 public final class DampingComponentConverter implements ComponentConverter<Damping> {
 	@Override
 	public Damping read(Object data) {
-		return new Damping(ObjectConverters.vector3().convert((Iterable<?>) data));
+		return new Damping(ObjectConverters.vector3().convert((Iterable<Number>) data));
 	}
 	@Override
 	public Object write(Damping damping) {
