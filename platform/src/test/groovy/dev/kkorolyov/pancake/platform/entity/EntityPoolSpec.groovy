@@ -3,7 +3,7 @@ package dev.kkorolyov.pancake.platform.entity
 import spock.lang.Specification
 
 class EntityPoolSpec extends Specification {
-	Component component = mockComponent()
+	Component component = new Component() {}
 
 	EntityPool entities = new EntityPool()
 
@@ -37,9 +37,5 @@ class EntityPoolSpec extends Specification {
 
 		expect:
 		entities.get([component.class]) as Set == [e1, e2].toSet()
-	}
-
-	private static Component mockComponent() {
-		return new Component() {}
 	}
 }

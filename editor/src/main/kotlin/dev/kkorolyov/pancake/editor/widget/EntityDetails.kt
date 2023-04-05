@@ -1,8 +1,9 @@
 package dev.kkorolyov.pancake.editor.widget
 
+import dev.kkorolyov.pancake.editor.MemoizedContent
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.contextMenu
-import dev.kkorolyov.pancake.editor.factory.getComponentWidget
+import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
@@ -11,7 +12,6 @@ import dev.kkorolyov.pancake.editor.onDoubleClick
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.text
-import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Vector2
@@ -37,16 +37,15 @@ private val noopModal = Modal("noop", Widget {}, ImBoolean(false))
  * Displays and provides for modification of [entity] properties.
  */
 class EntityDetails(private val entity: Entity) : Widget {
-	private val preview = MemoizedContent(::getComponentWidget, Widget { text("Select a component to preview") })
+	private val preview = MemoizedContent<Component>({ getWidget(Component::class.java, it) }, Widget { text("Select a component to preview") })
 	private val details = WindowManifest<KClass<out Component>>()
 
 	private var create: Modal = noopModal
 
+	private var toAdd: Component? = null
 	private var toRemove: Class<out Component>? = null
 
 	override fun invoke() {
-		text("Current")
-		tooltip("click to preview, double-click to open in new window")
 		list("##components") {
 			contextMenu(true) {
 				drawAddMenu()
@@ -71,8 +70,14 @@ class EntityDetails(private val entity: Entity) : Widget {
 				}
 			}
 		}
+		// augment elements only after done iterating
+		toAdd?.let {
+			entity.put(it)
+			toAdd = null
+		}
 		toRemove?.let {
 			entity.remove(it)
+			preview.reset()
 			toRemove = null
 		}
 
@@ -91,9 +96,9 @@ class EntityDetails(private val entity: Entity) : Widget {
 					menuItem(type.simpleName) {
 						create = Modal(
 							"New ${type.simpleName}",
-							getComponentWidget(type) {
+							getWidget(Component::class.java, type) {
 								create.visible = false
-								entity.put(it)
+								toAdd = it
 							},
 							minSize = componentMinSize
 						)

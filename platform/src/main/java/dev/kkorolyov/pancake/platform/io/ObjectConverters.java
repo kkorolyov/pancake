@@ -1,9 +1,8 @@
-package dev.kkorolyov.pancake.platform.registry;
+package dev.kkorolyov.pancake.platform.io;
 
 import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
-import java.math.BigDecimal;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -35,12 +34,16 @@ public final class ObjectConverters {
 							.map(this::convert)
 							.toList();
 				} else if (t instanceof String) {
-					return replacements.entrySet().stream()
+					var replaced = replacements.entrySet().stream()
 							.reduce(
 									(String) t,
 									(result, e) -> result.replace(e.getKey().toString(), e.getValue().toString()),
 									(result, result1) -> result
 							);
+					try {
+						return Double.parseDouble(replaced);
+					} catch (NumberFormatException ignored) {}
+					return replaced;
 				} else {
 					return replacements.getOrDefault(t, t);
 				}
@@ -49,14 +52,12 @@ public final class ObjectConverters {
 	}
 
 	/**
-	 * Returns a converter converting iterables to 3D vectors.
+	 * Returns a converter converting number iterables to 3D vectors.
 	 */
-	public static Converter<Iterable<?>, Vector3> vector3() {
+	public static Converter<Iterable<Number>, Vector3> vector3() {
 		return t -> asVector(
 				StreamSupport.stream(t.spliterator(), false)
-						.map(String::valueOf)
-						.map(BigDecimal::new)
-						.mapToDouble(BigDecimal::doubleValue)
+						.mapToDouble(Number::doubleValue)
 						.toArray()
 		);
 	}

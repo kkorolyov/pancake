@@ -24,6 +24,13 @@ public final class Collidable implements Component, Comparable<Collidable> {
 		this.priority = priority;
 	}
 
+	/**
+	 * Returns the collision priority of this component.
+	 */
+	public int getPriority() {
+		return priority;
+	}
+
 	@Override
 	public int compareTo(Collidable o) {
 		return Integer.compare(priority, o.priority);

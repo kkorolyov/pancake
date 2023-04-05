@@ -23,6 +23,13 @@ class CameraQueue {
 	}
 
 	/**
+	 * Removes all cameras from this queue.
+	 */
+	fun clear() {
+		values.clear()
+	}
+
+	/**
 	 * IDs of all camera entities in this queue.
 	 */
 	val ids: Collection<Int>

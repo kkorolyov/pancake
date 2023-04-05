@@ -7,6 +7,12 @@ package dev.kkorolyov.pancake.platform.utility;
 public final class ArgVerify {
 	private ArgVerify() {}
 
+	/** @throws IllegalArgumentException if {@code value == null} */
+	public static <T> T nonNull(String name, T value) {
+		if (value != null) return value;
+		throw new IllegalArgumentException(name + " must be non-null");
+	}
+
 	/** @throws IllegalArgumentException if {@code value >= bound} */
 	public static <T extends Comparable<T>> T lessThan(String name, T bound, T value) {
 		if (value.compareTo(bound) < 0) return value;

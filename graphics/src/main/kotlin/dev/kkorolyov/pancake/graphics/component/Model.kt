@@ -13,8 +13,7 @@ class Model(var program: Program, vararg meshes: Mesh) : Component {
 	/**
 	 * Ordered model meshes.
 	 */
-	val meshes: List<Mesh>
-		get() = _meshes
+	val meshes: List<Mesh> by ::_meshes
 
 	/**
 	 * Sets current meshes to [meshes].

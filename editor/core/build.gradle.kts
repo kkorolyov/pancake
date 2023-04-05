@@ -29,28 +29,20 @@ tasks.register("generateTestResources") {
 	val actionWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ActionWidgetFactory")
 	val componentWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory")
 	val gameSystemWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.GameSystemWidgetFactory")
+	val widgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.WidgetFactory")
 
 	outputs.files(
 		actionWidgetFactoryServicesFile,
 		componentWidgetFactoryServicesFile,
-		gameSystemWidgetFactoryServicesFile
+		gameSystemWidgetFactoryServicesFile,
+		widgetFactoryServicesFile
 	)
 
 	doLast {
 		val moduleInfoText = file("$projectDir/src/main/java/module-info.java").readText()
 
-		actionWidgetFactoryServicesFile.writeText(
-			"""(?<=import\s)[\w.]*\w+ActionWidgetFactory""".toRegex().findAll(moduleInfoText)
-				.map(MatchResult::value)
-				.joinToString("\n")
-		)
-		componentWidgetFactoryServicesFile.writeText(
-			"""(?<=import\s)[\w.]*\w+ComponentWidgetFactory""".toRegex().findAll(moduleInfoText)
-				.map(MatchResult::value)
-				.joinToString("\n")
-		)
-		gameSystemWidgetFactoryServicesFile.writeText(
-			"""(?<=import\s)[\w.]*\w+SystemWidgetFactory""".toRegex().findAll(moduleInfoText)
+		widgetFactoryServicesFile.writeText(
+			"""(?<=import\s)[\w.]*\w+(Action|Component|System)WidgetFactory""".toRegex().findAll(moduleInfoText)
 				.map(MatchResult::value)
 				.joinToString("\n")
 		)

@@ -4,23 +4,25 @@ import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
-import dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory
-import dev.kkorolyov.pancake.editor.factory.propertiesTable
-import dev.kkorolyov.pancake.editor.factory.propertyRow
+import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.onFocus
 import dev.kkorolyov.pancake.editor.onKey
+import dev.kkorolyov.pancake.editor.propertiesTable
+import dev.kkorolyov.pancake.editor.propertyRow
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.flag.ImGuiInputTextFlags
 import org.lwjgl.glfw.GLFW
 
-class PathComponentWidgetFactory : ComponentWidgetFactory {
-	override fun get(t: Component): Widget? = ComponentWidgetFactory.get<Path>(t) {
+class PathComponentWidgetFactory : WidgetFactory<Component> {
+	override val type: Class<Component> = Component::class.java
+
+	override fun get(t: Component): Widget? = WidgetFactory.get<Path>(t) {
 		val tNewStep by ThreadLocal.withInitial(Vector3::of)
 
 		Widget {
@@ -48,7 +50,7 @@ class PathComponentWidgetFactory : ComponentWidgetFactory {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = ComponentWidgetFactory.get(c, onNew) {
+	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Path>(c, onNew) {
 		var strength = 0.0
 		var buffer = 0.0
 

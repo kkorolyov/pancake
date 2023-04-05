@@ -1,6 +1,4 @@
-package dev.kkorolyov.pancake.editor.widget
-
-import dev.kkorolyov.pancake.editor.Widget
+package dev.kkorolyov.pancake.editor
 
 private val noop by lazy { Widget {} }
 

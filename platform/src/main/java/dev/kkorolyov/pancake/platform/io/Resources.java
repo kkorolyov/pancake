@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform;
+package dev.kkorolyov.pancake.platform.io;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

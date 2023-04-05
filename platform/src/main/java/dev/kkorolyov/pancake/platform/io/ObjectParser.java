@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.platform.registry;
+package dev.kkorolyov.pancake.platform.io;
 
 import dev.kkorolyov.flub.function.convert.Converter;
 
@@ -10,6 +10,7 @@ import static java.util.stream.Collectors.toMap;
 /**
  * Parses keyed {@link T}s from an input stream.
  */
+@FunctionalInterface
 public interface ObjectParser<T> {
 	/**
 	 * Returns keyed {@link T}s parsed from {@code in}.
