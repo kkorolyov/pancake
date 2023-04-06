@@ -76,8 +76,12 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 		imguiGl.renderDrawData(ImGui.getDrawData())
 
 		val context = GLFW.glfwGetCurrentContext()
-		ImGui.updatePlatformWindows()
-		ImGui.renderPlatformWindowsDefault()
+
+		if (ImGui.getIO().configFlags and ImGuiConfigFlags.ViewportsEnable > 0) {
+			ImGui.updatePlatformWindows()
+			ImGui.renderPlatformWindowsDefault()
+		}
+
 		GLFW.glfwMakeContextCurrent(context)
 	}
 

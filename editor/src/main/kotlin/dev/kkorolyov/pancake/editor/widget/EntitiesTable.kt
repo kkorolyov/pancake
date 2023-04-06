@@ -36,11 +36,9 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 			ImGui.tableSetupScrollFreeze(1, 1)
 			ImGui.tableHeadersRow()
 
-			contextMenu(true) {
-				drawAddMenu()
-			}
-
+			var empty = true
 			entities.forEach {
+				empty = false
 				column {
 					selectable(it.id.toString(), ImGuiSelectableFlags.SpanAllColumns or ImGuiSelectableFlags.AllowDoubleClick) {
 						preview(it)
@@ -59,6 +57,16 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 				}
 				column {
 					text(it.size())
+				}
+			}
+
+			if (empty) {
+				// draw a dummy row for contextual actions on empty tables
+				column {
+					selectable("##empty", ImGuiSelectableFlags.SpanAllColumns) {}
+					contextMenu {
+						drawAddMenu()
+					}
 				}
 			}
 		}

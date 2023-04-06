@@ -47,10 +47,6 @@ class EntityDetails(private val entity: Entity) : Widget {
 
 	override fun invoke() {
 		list("##components") {
-			contextMenu(true) {
-				drawAddMenu()
-			}
-
 			entity.forEach {
 				selectable(it::class.simpleName.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
 					// display inline on single click
@@ -67,6 +63,14 @@ class EntityDetails(private val entity: Entity) : Widget {
 					menuItem("remove") {
 						toRemove = it::class.java
 					}
+				}
+			}
+
+			if (entity.size() <= 0) {
+				// draw a dummy row for contextual actions on empty lists
+				selectable("##empty") {}
+				contextMenu {
+					drawAddMenu()
 				}
 			}
 		}

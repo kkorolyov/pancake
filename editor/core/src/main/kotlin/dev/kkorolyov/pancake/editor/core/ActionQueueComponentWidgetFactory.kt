@@ -36,7 +36,7 @@ class ActionQueueComponentWidgetFactory : WidgetFactory<Component> {
 
 		Widget {
 			list("##data") {
-				contextMenu(true) {
+				contextMenu("data") {
 					menu("add") {
 						actionTypes.forEach { type ->
 							menuItem(type.simpleName) {

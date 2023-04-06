@@ -52,8 +52,8 @@ inline fun tooltip(op: Op) {
  * Runs [op] in a context menu popup over the last clicked item.
  * If [force] is `true`, opens the menu even if the last item is non-interactive.
  */
-inline fun contextMenu(force: Boolean = false, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
-	if (if (force) ImGui.beginPopupContextWindow(flags) else ImGui.beginPopupContextItem(flags)) {
+inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
+	if (id?.let { ImGui.beginPopupContextItem(it, flags) } ?: ImGui.beginPopupContextItem(flags)) {
 		op()
 		ImGui.endPopup()
 	}
