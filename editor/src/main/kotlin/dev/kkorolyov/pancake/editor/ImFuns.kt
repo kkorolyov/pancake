@@ -10,11 +10,14 @@ import imgui.flag.ImGuiTableFlags
 import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import imgui.type.ImInt
+import imgui.type.ImString
 
 // reuse the same carrier to all imgui input functions
 // public only to allow inline functions
 /** NO TOUCHY */
-val tBoolean by ThreadLocal.withInitial { ImBoolean(false) }
+val tString by ThreadLocal.withInitial(::ImString)
+/** NO TOUCHY */
+val tBoolean by ThreadLocal.withInitial(::ImBoolean)
 /** NO TOUCHY */
 val tInt by ThreadLocal.withInitial(::ImInt)
 /** NO TOUCHY */
@@ -52,8 +55,8 @@ inline fun tooltip(op: Op) {
  * Runs [op] in a context menu popup over the last clicked item.
  * If [force] is `true`, opens the menu even if the last item is non-interactive.
  */
-inline fun contextMenu(force: Boolean = false, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
-	if (if (force) ImGui.beginPopupContextWindow(flags) else ImGui.beginPopupContextItem(flags)) {
+inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
+	if (id?.let { ImGui.beginPopupContextItem(it, flags) } ?: ImGui.beginPopupContextItem(flags)) {
 		op()
 		ImGui.endPopup()
 	}
@@ -217,6 +220,18 @@ inline fun button(label: String, onClick: Op): Boolean {
 	return result
 }
 
+/**
+ * Draws an input field with [label], for [value], and input [flags], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun input(label: String, value: String, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<String>): Boolean {
+	val ptr = tString
+	ptr.set(value)
+
+	val result = ImGui.inputText(label, ptr, flags)
+	if (result) onChange(ptr.get())
+	return result
+}
 /**
  * Draws a checkbox with [label], for [value], invoking [onChange] with the updated value if changed.
  * Returns `true` when changed.

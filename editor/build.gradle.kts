@@ -17,6 +17,7 @@ dependencies {
 	api(projects.graphics)
 
 	implementation(libs.classgraph)
+	implementation(libs.snakeyaml)
 
 	testFixturesImplementation(projects.platform)
 	val lwjglNatives = if (OperatingSystem.current().isWindows) "natives-windows" else if (OperatingSystem.current().isMacOsX) "natives-macos" else "natives-linux"

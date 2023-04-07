@@ -13,7 +13,6 @@ import dev.kkorolyov.pancake.editor.widget.Modal
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector2
-import imgui.type.ImBoolean
 import io.github.classgraph.ClassGraph
 
 private val actionMinSize = Vector2.of(200.0, 100.0)
@@ -26,24 +25,22 @@ private val actionTypes by ThreadLocal.withInitial {
 	}
 }
 
-private val noopModal = Modal("noop", Widget {}, ImBoolean(false))
-
 class ActionQueueComponentWidgetFactory : WidgetFactory<Component> {
 	override val type: Class<Component> = Component::class.java
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<ActionQueue>(t) {
-		var create: Modal = noopModal
+		var create: Modal? = null
 
 		Widget {
 			list("##data") {
-				contextMenu(true) {
+				contextMenu("data") {
 					menu("add") {
 						actionTypes.forEach { type ->
 							menuItem(type.simpleName) {
 								create = Modal(
 									"New ${type.simpleName}",
 									getWidget(Action::class.java, type) {
-										create.visible = false
+										create?.visible = false
 										add(it)
 									},
 									minSize = actionMinSize
@@ -58,7 +55,7 @@ class ActionQueueComponentWidgetFactory : WidgetFactory<Component> {
 				}
 			}
 
-			create()
+			create?.invoke()
 		}
 	}
 

@@ -1,12 +1,10 @@
 package dev.kkorolyov.pancake.editor.core.test.e2e
 
-import dev.kkorolyov.flub.data.WeightedDistribution
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.core.component.Chain
 import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.core.component.Position
-import dev.kkorolyov.pancake.core.component.Spawner
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
 import dev.kkorolyov.pancake.core.component.movement.Damping
 import dev.kkorolyov.pancake.core.component.movement.Force
@@ -30,10 +28,8 @@ import dev.kkorolyov.pancake.editor.test.editor
 import dev.kkorolyov.pancake.editor.test.start
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.Pipeline
-import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.test.SpecUtilities.randVector
-import java.util.function.Supplier
 import kotlin.random.Random
 
 fun main() {
@@ -71,7 +67,6 @@ fun main() {
 					ActionQueue(),
 					if (Random.nextBoolean()) Bounds.box(randVector()) else Bounds.round(Random.nextDouble()),
 					Chain(randVector(), Random.nextDouble(), if (Random.nextBoolean()) listOf(randVector()) else listOf()),
-					Spawner((1..10).random().toDouble(), (10..20).random().toDouble(), 0.0, WeightedDistribution<Supplier<MutableIterable<Component>>?>().apply { add(Supplier { mutableListOf(Mass(Random.nextDouble())) }, 1) }),
 					Position(randVector()).apply { parent = Position(randVector()) },
 					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
 					Force(randVector()),

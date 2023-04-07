@@ -25,24 +25,25 @@ val setupLwjgl: (Any) -> Unit by extra
 setupLwjgl(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb))
 
 tasks.register("generateTestResources") {
-	val servicesDir = "$buildDir/resources/test/META-INF/services"
-	val actionWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ActionWidgetFactory")
-	val componentWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.ComponentWidgetFactory")
-	val gameSystemWidgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.GameSystemWidgetFactory")
-	val widgetFactoryServicesFile = file("$servicesDir/dev.kkorolyov.pancake.editor.factory.WidgetFactory")
+	val componentConverterServicesFile = file("$buildDir/resources/test/META-INF/services/dev.kkorolyov.pancake.platform.entity.ComponentConverter")
+	val widgetFactoryServicesFile = file("$buildDir/resources/test/META-INF/services/dev.kkorolyov.pancake.editor.factory.WidgetFactory")
 
 	outputs.files(
-		actionWidgetFactoryServicesFile,
-		componentWidgetFactoryServicesFile,
-		gameSystemWidgetFactoryServicesFile,
+		componentConverterServicesFile,
 		widgetFactoryServicesFile
 	)
 
 	doLast {
-		val moduleInfoText = file("$projectDir/src/main/java/module-info.java").readText()
+		val componentConverterModuleInfoText = file("${project(":core").projectDir}/src/main/java/module-info.java").readText()
+		val widgetFactoryModuleInfoText = file("$projectDir/src/main/java/module-info.java").readText()
 
+		componentConverterServicesFile.writeText(
+			"""(?<=import\s)[\w.]*\w+ComponentConverter""".toRegex().findAll(componentConverterModuleInfoText)
+				.map(MatchResult::value)
+				.joinToString("\n")
+		)
 		widgetFactoryServicesFile.writeText(
-			"""(?<=import\s)[\w.]*\w+(Action|Component|System)WidgetFactory""".toRegex().findAll(moduleInfoText)
+			"""(?<=import\s)[\w.]*\w+(Action|Component|System)WidgetFactory""".toRegex().findAll(widgetFactoryModuleInfoText)
 				.map(MatchResult::value)
 				.joinToString("\n")
 		)

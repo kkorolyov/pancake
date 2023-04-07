@@ -16,7 +16,6 @@ import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.flag.ImGuiSelectableFlags
-import imgui.type.ImBoolean
 import io.github.classgraph.ClassGraph
 import org.lwjgl.glfw.GLFW
 import kotlin.reflect.KClass
@@ -31,8 +30,6 @@ private val componentTypes by ThreadLocal.withInitial {
 	}
 }
 
-private val noopModal = Modal("noop", Widget {}, ImBoolean(false))
-
 /**
  * Displays and provides for modification of [entity] properties.
  */
@@ -40,17 +37,13 @@ class EntityDetails(private val entity: Entity) : Widget {
 	private val preview = MemoizedContent<Component>({ getWidget(Component::class.java, it) }, Widget { text("Select a component to preview") })
 	private val details = WindowManifest<KClass<out Component>>()
 
-	private var create: Modal = noopModal
+	private var create: Modal? = null
 
 	private var toAdd: Component? = null
 	private var toRemove: Class<out Component>? = null
 
 	override fun invoke() {
 		list("##components") {
-			contextMenu(true) {
-				drawAddMenu()
-			}
-
 			entity.forEach {
 				selectable(it::class.simpleName.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
 					// display inline on single click
@@ -69,6 +62,14 @@ class EntityDetails(private val entity: Entity) : Widget {
 					}
 				}
 			}
+
+			if (entity.size() <= 0) {
+				// draw a dummy row for contextual actions on empty lists
+				selectable("##empty") {}
+				contextMenu {
+					drawAddMenu()
+				}
+			}
 		}
 		// augment elements only after done iterating
 		toAdd?.let {
@@ -84,7 +85,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 		separator()
 		preview.value()
 
-		create()
+		create?.invoke()
 
 		details()
 	}
@@ -97,7 +98,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 						create = Modal(
 							"New ${type.simpleName}",
 							getWidget(Component::class.java, type) {
-								create.visible = false
+								create?.visible = false
 								toAdd = it
 							},
 							minSize = componentMinSize
