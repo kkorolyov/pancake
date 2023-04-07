@@ -18,9 +18,9 @@ class GoComponentWidgetFactory : WidgetFactory<Component> {
 	override fun get(t: Component): Widget? = WidgetFactory.get<Go>(t) {
 		Widget {
 			propertiesTable("go") {
-				propertyRow("Target") { input3("##${"Target"}", target) { it: Vector3 -> target.set(it) } }
-				propertyRow("Strength") { input("##${"Strength"}", strength) { it: Double -> this.setStrength(it) } }
-				propertyRow("Buffer") { input("##${"Buffer"}", buffer) { it: Double -> this.setBuffer(it) } }
+				propertyRow("Target") { input3("##target}", target) { target.set(it) } }
+				propertyRow("Strength") { input("##strength}", strength) { strength = it } }
+				propertyRow("Buffer") { input("##buffer}", buffer) { buffer = it } }
 			}
 		}
 	}
