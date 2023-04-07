@@ -9,6 +9,7 @@ module dev.kkorolyov.pancake.editor {
 	requires org.lwjgl.opengl;
 	requires org.lwjgl.stb;
 	requires org.lwjgl.glfw;
+	requires org.lwjgl.nfd;
 
 	requires imgui.binding;
 	requires imgui.lwjgl3;
