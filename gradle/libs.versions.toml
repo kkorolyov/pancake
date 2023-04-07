@@ -34,6 +34,7 @@ lwjgl-glfw = { module = "org.lwjgl:lwjgl-glfw" }
 lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl" }
 lwjgl-openal = { module = "org.lwjgl:lwjgl-openal" }
 lwjgl-stb = { module = "org.lwjgl:lwjgl-stb" }
+lwjgl-nfd = { module = "org.lwjgl:lwjgl-nfd" }
 
 imgui-binding = { module = "io.github.spair:imgui-java-binding", version.ref = "imgui" }
 imgui-lwjgl = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "imgui" }

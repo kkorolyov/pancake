@@ -21,7 +21,7 @@ dependencies {
 
 	testFixturesImplementation(projects.platform)
 	val lwjglNatives = if (OperatingSystem.current().isWindows) "natives-windows" else if (OperatingSystem.current().isMacOsX) "natives-macos" else "natives-linux"
-	listOf(libs.lwjgl.asProvider(), libs.lwjgl.glfw, libs.lwjgl.opengl, libs.lwjgl.stb).forEach {
+	listOf(libs.lwjgl.asProvider(), libs.lwjgl.glfw, libs.lwjgl.opengl, libs.lwjgl.stb, libs.lwjgl.nfd).forEach {
 		testFixturesImplementation(variantOf(it) { classifier(lwjglNatives) })
 	}
 	testFixturesImplementation(libs.imgui.run { if (OperatingSystem.current().isWindows) windows else if (OperatingSystem.current().isMacOsX) macos else linux })
@@ -32,7 +32,7 @@ dependencies {
 }
 
 val setupLwjgl: (Any) -> Unit by extra
-setupLwjgl(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb))
+setupLwjgl(listOf(libs.lwjgl.opengl, libs.lwjgl.glfw, libs.lwjgl.stb, libs.lwjgl.nfd))
 
 tasks.register<JavaExec>("e2e") {
 	group = "verification"
