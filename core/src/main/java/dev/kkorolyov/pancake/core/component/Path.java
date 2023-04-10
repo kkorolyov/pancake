@@ -7,22 +7,24 @@ import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Queue;
+import java.util.function.Predicate;
 
 /**
  * Maintains a sequence of steps to go through.
  */
-public final class Path implements Component, Iterable<Vector3> {
+public final class Path implements Component, Iterable<Vector3>, Iterator<Vector3> {
 	private double strength;
-	private double buffer;
+	private double proximity;
+	private SnapStrategy snapStrategy;
 	private final Queue<Vector3> steps = new ArrayDeque<>();
 
 	/**
-	 * Constructs a new path with {@code strength} and {@code buffer} to apply to all steps.
+	 * Constructs a new path with {@code strength}, {@code proximity}, and {@code snapStrategy} to apply to steps.
 	 */
-	public Path(double strength, double buffer) {
+	public Path(double strength, double proximity, SnapStrategy snapStrategy) {
 		setStrength(strength);
-		setBuffer(buffer);
-		for (Vector3 step : steps) add(step);
+		setProximity(proximity);
+		this.snapStrategy = snapStrategy;
 	}
 
 	/**
@@ -54,28 +56,51 @@ public final class Path implements Component, Iterable<Vector3> {
 	}
 
 	/**
-	 * Returns the distance around any step's target to consider as having reached the target.
+	 * Returns the radius around any step's target to consider as having reached the target.
 	 */
-	public double getBuffer() {
-		return buffer;
+	public double getProximity() {
+		return proximity;
 	}
 	/**
-	 * Sets the distance around any step's target to consider as having reached the target to {@code buffer}.
+	 * Sets the radius around any step's target to consider as having reached the target to {@code buffer}.
 	 */
-	public void setBuffer(double buffer) {
-		this.buffer = ArgVerify.greaterThanEqual("buffer", 0.0, buffer);
+	public void setProximity(double proximity) {
+		this.proximity = ArgVerify.greaterThanEqual("buffer", 0.0, proximity);
 	}
 
 	/**
-	 * Dequeues and returns the next step, or {@code null} if no more steps.
+	 * Returns the strategy used to determine whether the last step returned from a {@link Path#next()} call should end in a snap to target.
 	 */
+	public SnapStrategy getSnapStrategy() {
+		return snapStrategy;
+	}
+	/**
+	 * Sets the strategy used to determine whether the last step returned from a {@link Path#next()} call should end in a snap to target to {@code snapStrategy}.
+	 */
+	public void setSnapStrategy(SnapStrategy snapStrategy) {
+		this.snapStrategy = snapStrategy;
+	}
+
+	/**
+	 * Returns whether the owning entity's position should be set to exactly this component's target once it is within proximity.
+	 */
+	public boolean isSnap() {
+		return snapStrategy.apply(this);
+	}
+
+	/**
+	 * Dequeues and returns the next step.
+	 * Throws {@link java.util.NoSuchElementException} if no more steps.
+	 */
+	@Override
 	public Vector3 next() {
-		return steps.poll();
+		return steps.remove();
 	}
 
 	/**
 	 * Returns whether this path has at least one more step remaining.
 	 */
+	@Override
 	public boolean hasNext() {
 		return !steps.isEmpty();
 	}
@@ -86,5 +111,24 @@ public final class Path implements Component, Iterable<Vector3> {
 	@Override
 	public Iterator<Vector3> iterator() {
 		return steps.iterator();
+	}
+
+	/**
+	 * Determines whether the last step returned from a {@link Path#next()} call is meant to end in a snap to target.
+	 */
+	public enum SnapStrategy {
+		ALL(path -> true),
+		NONE(path -> false),
+		LAST(path -> !path.hasNext());
+
+		private final Predicate<? super Path> test;
+
+		SnapStrategy(Predicate<? super Path> test) {
+			this.test = test;
+		}
+
+		private boolean apply(Path path) {
+			return test.test(path);
+		}
 	}
 }

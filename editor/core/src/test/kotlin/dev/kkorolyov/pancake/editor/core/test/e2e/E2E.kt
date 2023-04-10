@@ -73,7 +73,7 @@ fun main() {
 					Mass(Random.nextDouble()),
 					Velocity(randVector()),
 					VelocityLimit(Random.nextDouble(100.0)),
-					Path(Random.nextDouble(10.0), Random.nextDouble(10.0))
+					Path(Random.nextDouble(10.0), Random.nextDouble(10.0), Path.SnapStrategy.values()[Random.nextInt(Path.SnapStrategy.values().size)])
 				)
 			}
 		}
