@@ -12,13 +12,11 @@ public final class PathComponentConverter implements ComponentConverter<Path> {
 	public Path read(Object data) {
 		var map = (Map<String, Object>) data;
 
-		var result = new Path(((Number) map.get("strength")).doubleValue(), ((Number) map.get("buffer")).doubleValue());
+		var result = new Path(((Number) map.get("strength")).doubleValue(), ((Number) map.get("proximity")).doubleValue(), Path.SnapStrategy.valueOf((String) map.get("snapStrategy")));
 		var steps = map.get("steps");
 		if (steps != null) {
 			var vectorConverter = ObjectConverters.vector3();
-			for (var step : ((Iterable<Iterable<Number>>) steps)) {
-				result.add(vectorConverter.convert(step));
-			}
+			for (var step : ((Iterable<Iterable<Number>>) steps)) result.add(vectorConverter.convert(step));
 		}
 
 		return result;
@@ -27,7 +25,8 @@ public final class PathComponentConverter implements ComponentConverter<Path> {
 	public Object write(Path path) {
 		return Map.of(
 				"strength", path.getStrength(),
-				"buffer", path.getBuffer(),
+				"buffer", path.getProximity(),
+				"snapStrategy", path.getSnapStrategy().name(),
 				"steps", StreamSupport.stream(path.spliterator(), false).toList()
 		);
 	}

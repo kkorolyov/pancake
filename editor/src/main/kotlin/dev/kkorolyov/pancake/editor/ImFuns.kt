@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.editor
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImGui
+import imgui.flag.ImGuiComboFlags
 import imgui.flag.ImGuiInputTextFlags
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
@@ -231,6 +232,29 @@ inline fun input(label: String, value: String, flags: Int = ImGuiInputTextFlags.
 	val result = ImGui.inputText(label, ptr, flags)
 	if (result) onChange(ptr.get())
 	return result
+}
+/**
+ * Draws an input field with [label], for [value] as a dropdown of all [T] values, and input [flags], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun <reified T : Enum<T>> input(label: String, value: T, flags: Int = ImGuiComboFlags.None, onChange: OnChange<T>): Boolean {
+	var result: T? = null
+
+	if (ImGui.beginCombo(label, value.name, flags)) {
+		for (enumValue in enumValues<T>()) {
+			if (enumValue == value) {
+				selectable(enumValue.name) { }
+				ImGui.setItemDefaultFocus()
+			} else {
+				selectable(enumValue.name) { result = enumValue }
+			}
+		}
+
+		ImGui.endCombo()
+	}
+
+	result?.let(onChange)
+	return result != null
 }
 /**
  * Draws a checkbox with [label], for [value], invoking [onChange] with the updated value if changed.

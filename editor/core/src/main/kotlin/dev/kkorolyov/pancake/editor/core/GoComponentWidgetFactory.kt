@@ -20,7 +20,8 @@ class GoComponentWidgetFactory : WidgetFactory<Component> {
 			propertiesTable("go") {
 				propertyRow("Target") { input3("##target}", target) { target.set(it) } }
 				propertyRow("Strength") { input("##strength}", strength) { strength = it } }
-				propertyRow("Buffer") { input("##buffer}", buffer) { buffer = it } }
+				propertyRow("Proximity") { input("##proximity}", proximity) { proximity = it } }
+				propertyRow("Snap") { input("##snap", isSnap) { isSnap = it } }
 			}
 		}
 	}
@@ -28,16 +29,18 @@ class GoComponentWidgetFactory : WidgetFactory<Component> {
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Go>(c, onNew) {
 		val target = Vector3.of()
 		var strength = 0.0
-		var buffer = 0.0
+		var proximity = 0.0
+		var snap = false
 
 		Widget {
 			propertiesTable("go") {
-				propertyRow("Target") { input3("##${"Target"}", target) { target.set(it) } }
-				propertyRow("Strength") { input("##${"Strength"}", strength) { strength = it } }
-				propertyRow("Buffer") { input("##${"Buffer"}", buffer) { buffer = it } }
+				propertyRow("Target") { input3("##target", target) { target.set(it) } }
+				propertyRow("Strength") { input("##strength", strength) { strength = it } }
+				propertyRow("Proximity") { input("##proximity", proximity) { proximity = it } }
+				propertyRow("Snap") { input("##snap", snap) { snap = it } }
 			}
-			disabledIf(strength < 0.0 || buffer < 0.0) {
-				button("apply") { it(Go(target, strength, buffer)) }
+			disabledIf(strength < 0.0 || proximity < 0.0) {
+				button("apply") { it(Go(target, strength, proximity, snap)) }
 			}
 		}
 	}

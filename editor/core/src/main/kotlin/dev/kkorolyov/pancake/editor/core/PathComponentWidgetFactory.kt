@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.editor.core
 
 import dev.kkorolyov.pancake.core.component.Path
+import dev.kkorolyov.pancake.core.component.Path.SnapStrategy
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
@@ -30,8 +31,11 @@ class PathComponentWidgetFactory : WidgetFactory<Component> {
 				propertyRow("Strength") {
 					input("##strength", strength) { strength = it }
 				}
-				propertyRow("Buffer") {
-					input("##buffer", buffer) { buffer = it }
+				propertyRow("Proximity") {
+					input("##proximity", proximity) { proximity = it }
+				}
+				propertyRow("Snap Strategy") {
+					input("##snapStrategy", snapStrategy) { snapStrategy = it }
 				}
 				propertyRow("Steps") {
 					list("##steps") {
@@ -52,19 +56,23 @@ class PathComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Path>(c, onNew) {
 		var strength = 0.0
-		var buffer = 0.0
+		var proximity = 0.0
+		var snapStrategy = SnapStrategy.ALL
 
 		Widget {
 			propertiesTable("path") {
 				propertyRow("Strength") {
 					input("##strength", strength) { strength = it }
 				}
-				propertyRow("Buffer") {
-					input("##buffer", buffer) { buffer = it }
+				propertyRow("Proximity") {
+					input("##proximity", proximity) { proximity = it }
+				}
+				propertyRow("Snap Strategy") {
+					input("##snapStrategy", snapStrategy) { snapStrategy = it }
 				}
 			}
-			disabledIf(strength < 0.0 || buffer < 0.0) {
-				button("apply") { it(Path(strength, buffer)) }
+			disabledIf(strength < 0.0 || proximity < 0.0) {
+				button("apply") { it(Path(strength, proximity, snapStrategy)) }
 			}
 		}
 	}

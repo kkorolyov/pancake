@@ -10,15 +10,17 @@ import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 public final class Go implements Component {
 	private final Vector3 target;
 	private double strength;
-	private double buffer;
+	private double proximity;
+	private boolean snap;
 
 	/**
-	 * Constructs a new go component with position {@code target}, {@code strength} of force to apply, and {@code buffer} distance around target considered as reached.
+	 * Constructs a new go component with position {@code target}, {@code strength} of force to apply, {@code proximity} radius around target considered as this component's entity having reached its target, and whether to {@code snap} position within proximity of target.
 	 */
-	public Go(Vector3 target, double strength, double buffer) {
+	public Go(Vector3 target, double strength, double proximity, boolean snap) {
 		this.target = target;
 		setStrength(strength);
-		setBuffer(buffer);
+		setProximity(proximity);
+		this.snap = snap;
 	}
 
 	/**
@@ -42,15 +44,28 @@ public final class Go implements Component {
 	}
 
 	/**
-	 * Returns the distance around the target to consider as having reached the target.
+	 * Returns the radius around the target to consider as having reached the target.
 	 */
-	public double getBuffer() {
-		return buffer;
+	public double getProximity() {
+		return proximity;
 	}
 	/**
-	 * Sets the distance around the target to consider as having reached the target to {@code buffer}.
+	 * Sets the radius around the target to consider as having reached the target to {@code buffer}.
 	 */
-	public void setBuffer(double buffer) {
-		this.buffer = ArgVerify.greaterThanEqual("buffer", 0.0, buffer);
+	public void setProximity(double proximity) {
+		this.proximity = ArgVerify.greaterThanEqual("radius", 0.0, proximity);
+	}
+
+	/**
+	 * Returns whether the owning entity's position should be set to exactly this component's target once it is within proximity.
+	 */
+	public boolean isSnap() {
+		return snap;
+	}
+	/**
+	 * Sets whether the owning entity's position should be set to exactly this component's target once it is within proximity to {@code snap}.
+	 */
+	public void setSnap(boolean snap) {
+		this.snap = snap;
 	}
 }
