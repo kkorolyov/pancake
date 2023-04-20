@@ -10,12 +10,6 @@ class Cache<T>(private val initializer: () -> T) {
 	private var value: T? = null
 
 	/**
-	 * Whether this cache currently has a value.
-	 */
-	val initialized: Boolean
-		get() = value != null
-
-	/**
 	 * For using this cache as a delegate property.
 	 * Returns the value stored in this cache - initializing it if not yet done so.
 	 */
@@ -24,7 +18,6 @@ class Cache<T>(private val initializer: () -> T) {
 			synchronized(this) {
 				if (value == null) {
 					value = initializer()
-					return value!!
 				}
 			}
 		}
@@ -36,9 +29,9 @@ class Cache<T>(private val initializer: () -> T) {
 	 * If specified, invokes [block] with the current value before invalidating it.
 	 */
 	fun invalidate(block: ((T) -> Unit)? = null) {
-		if (initialized) {
+		if (value != null) {
 			synchronized(this) {
-				if (initialized) {
+				if (value != null) {
 					block?.invoke(value!!)
 					value = null
 				}
