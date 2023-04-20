@@ -1,10 +1,11 @@
 rootProject.name = "pancake"
 
 include("platform")
+
 include("core")
+includeIn("core-editor", "core/editor")
 
 include("editor")
-includeIn("editor-core", "editor/core")
 
 includeIn("audio-al", "audio/al")
 

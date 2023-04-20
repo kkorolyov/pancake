@@ -1,14 +1,13 @@
 # editor
 
 Realtime Pancake application editor widgets library.
-[editor-core](core/README.md) adds widgets for components and systems provided by [core](../core/README.md).
 
 ---
 
 # Usage
 
 This module requires [`lwjgl`](https://github.com/LWJGL/lwjgl3) and [`imgui-java`](https://github.com/SpaiR/imgui-java) native binaries to be on the classpath: [`lwjgl`, `lwjgl-glfw`, `lwjgl-opengl`, `lwjgl-stb`, `imgui-<platform>`].
-It is not necessary to provide a version specifier for the `lwjgl` dependencies.
+It is not necessary to provide a version specifier for the `lwjgl` dependencies - it is assumed the version will be provided by `lwjgl`-enabled `pancake` dependencies.
 
 ## Gradle
 
