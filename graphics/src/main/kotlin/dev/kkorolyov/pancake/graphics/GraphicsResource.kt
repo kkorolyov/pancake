@@ -29,3 +29,12 @@ interface GraphicsResource : AutoCloseable {
 		fun deactivate()
 	}
 }
+
+/**
+ * Activates this resource, runs [op], then deactivates this resource.
+ */
+inline fun GraphicsResource.Active.scoped(op: () -> Unit) {
+	activate()
+	op()
+	deactivate()
+}

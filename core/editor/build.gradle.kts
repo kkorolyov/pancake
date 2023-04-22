@@ -13,8 +13,8 @@ dependencies {
 
 	implementation(libs.classgraph)
 
-	testImplementation(testFixtures(projects.editor))
 	testImplementation(testFixtures(projects.platform))
+	testImplementation(testFixtures(projects.editor))
 
 	dependencyLocking {
 		ignoredDependencies.add("io.github.spair:imgui-java-natives*")
@@ -54,6 +54,6 @@ tasks.register<JavaExec>("e2e") {
 	group = "verification"
 	dependsOn("generateTestResources")
 
-	mainClass.set("dev.kkorolyov.pancake.editor.core.test.e2e.E2EKt")
+	mainClass.set("dev.kkorolyov.pancake.core.editor.test.e2e.E2EKt")
 	classpath = sourceSets.test.get().runtimeClasspath
 }

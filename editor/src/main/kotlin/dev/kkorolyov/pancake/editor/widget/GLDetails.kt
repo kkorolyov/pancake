@@ -48,7 +48,7 @@ class GLDetails : Widget {
 				super.write(b, off, len)
 			}
 		}
-		GLUtil.setupDebugMessageCallback(PrintStream(out))
+		GLUtil.setupDebugMessageCallback(PrintStream(out)).use {}
 
 		Log(out)
 	}

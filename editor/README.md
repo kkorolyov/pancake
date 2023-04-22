@@ -28,6 +28,10 @@ dependencies {
 	implementation("org.lwjgl:lwjgl-stb::natives-$platform")
 
 	implementation("io.github.spair:imgui-java-natives-$platform:1.+")
+
+	dependencyLocking {
+		ignoredDependencies.add("io.github.spair:imgui-java-natives*")
+	}
 }
 ```
 
@@ -76,5 +80,9 @@ dependencies {
 		else if (os.isMacOsX) libs.imgui.macos
 		else libs.imgui.linux
 	)
+
+	dependencyLocking {
+		ignoredDependencies.add("io.github.spair:imgui-java-natives*")
+	}
 }
 ```

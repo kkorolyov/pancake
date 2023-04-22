@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.editor
 
+import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImGui
@@ -189,6 +190,13 @@ fun sameLine() {
  */
 fun separator() {
 	ImGui.separator()
+}
+
+/**
+ * Draws [texture] with [width] and [height].
+ */
+fun image(texture: Texture, width: Float, height: Float) {
+	ImGui.image(texture.id, width, height)
 }
 
 /**
