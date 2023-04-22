@@ -1,6 +1,6 @@
 # core-editor
 
-Adds [editor](../../editor/README.md) widgets for components provided by [core](../README.md).
+Adds [editor](../../editor/README.md) widgets for components provided by [graphics](../README.md).
 
 ---
 
@@ -16,7 +16,7 @@ This module depends on [editor](../../editor/README.md) and provides implementat
 
 ```kotlin
 dependencies {
-	implementation("dev.kkorolyov.pancake:core-editor:<pancake-version>")
+	implementation("dev.kkorolyov.pancake:graphics-editor:<pancake-version>")
 }
 ```
 
@@ -29,13 +29,13 @@ dependencies {
 pancake = "<pancake-version>"
 
 [libraries]
-pancake-core-editor = { module = "dev.kkorolyov.pancake:core-editor", version.ref = "pancake" }
+pancake-core-editor = { module = "dev.kkorolyov.pancake:graphics-editor", version.ref = "pancake" }
 ```
 
 `build.gradle(.kts)`
 
 ```kotlin
 dependencies {
-	implementation(libs.pancake.core.editor)
+	implementation(libs.pancake.graphics.editor)
 }
 ```
