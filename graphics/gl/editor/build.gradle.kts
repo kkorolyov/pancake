@@ -10,6 +10,7 @@ dependencies {
 	implementation(projects.platform)
 	implementation(projects.graphicsGl)
 	implementation(projects.editor)
+	implementation(projects.graphicsEditor)
 
 	testImplementation(testFixtures(projects.platform))
 	testImplementation(testFixtures(projects.editor))
