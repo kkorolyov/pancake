@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.core.editor.test.e2e
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Position
-import dev.kkorolyov.pancake.core.component.movement.Force
-import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.component.Force
+import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Entity

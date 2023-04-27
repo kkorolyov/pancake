@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.audio.al.system
 
 import dev.kkorolyov.pancake.audio.al.component.AudioEmitter
-import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 

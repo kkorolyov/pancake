@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.editor
 
-import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.editor
 
-import dev.kkorolyov.pancake.core.component.movement.Mass
+import dev.kkorolyov.pancake.core.component.Mass
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf

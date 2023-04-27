@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.io;
 
-import dev.kkorolyov.pancake.core.component.movement.Damping;
+import dev.kkorolyov.pancake.core.component.Damping;
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
 import dev.kkorolyov.pancake.platform.io.ObjectConverters;
 

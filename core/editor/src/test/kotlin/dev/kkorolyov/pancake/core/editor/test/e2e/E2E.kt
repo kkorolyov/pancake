@@ -3,13 +3,13 @@ package dev.kkorolyov.pancake.core.editor.test.e2e
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
 import dev.kkorolyov.pancake.core.component.Chain
+import dev.kkorolyov.pancake.core.component.Damping
+import dev.kkorolyov.pancake.core.component.Force
+import dev.kkorolyov.pancake.core.component.Mass
 import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.core.component.Position
+import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
-import dev.kkorolyov.pancake.core.component.movement.Damping
-import dev.kkorolyov.pancake.core.component.movement.Force
-import dev.kkorolyov.pancake.core.component.movement.Mass
-import dev.kkorolyov.pancake.core.component.movement.Velocity
 import dev.kkorolyov.pancake.core.system.AccelerationSystem
 import dev.kkorolyov.pancake.core.system.ActionSystem
 import dev.kkorolyov.pancake.core.system.ChainSystem
@@ -17,11 +17,10 @@ import dev.kkorolyov.pancake.core.system.CollisionSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
 import dev.kkorolyov.pancake.core.system.GoSystem
 import dev.kkorolyov.pancake.core.system.IntersectionSystem
+import dev.kkorolyov.pancake.core.system.LimitSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
 import dev.kkorolyov.pancake.core.system.PathSystem
-import dev.kkorolyov.pancake.core.system.SpawnSystem
 import dev.kkorolyov.pancake.core.system.cleanup.PhysicsCleanupSystem
-import dev.kkorolyov.pancake.core.system.limit.LimitSystem
 import dev.kkorolyov.pancake.editor.test.drawEnd
 import dev.kkorolyov.pancake.editor.test.drawStart
 import dev.kkorolyov.pancake.editor.test.editor
@@ -46,7 +45,6 @@ fun main() {
 				DampingSystem(),
 				IntersectionSystem(),
 				MovementSystem(),
-				SpawnSystem()
 			),
 			Pipeline.of(
 				PhysicsCleanupSystem()

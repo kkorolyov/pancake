@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.io;
 
-import dev.kkorolyov.pancake.core.component.movement.Mass;
+import dev.kkorolyov.pancake.core.component.Mass;
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
 
 public final class MassComponentConverter implements ComponentConverter<Mass> {

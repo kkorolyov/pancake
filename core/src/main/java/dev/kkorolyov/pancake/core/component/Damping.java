@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core.component.movement;
+package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;

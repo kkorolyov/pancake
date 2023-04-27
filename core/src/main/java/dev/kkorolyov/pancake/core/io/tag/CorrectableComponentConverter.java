@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core.io;
+package dev.kkorolyov.pancake.core.io.tag;
 
 import dev.kkorolyov.pancake.core.component.tag.Correctable;
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;

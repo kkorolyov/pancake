@@ -9,8 +9,10 @@ import java.util.function.Supplier;
 
 /**
  * Provides clones of entity templates between 2 radii around some position.
+ * @deprecated application-specific, should be removed from core library
  */
-public class Spawner implements Component {
+@Deprecated
+public final class Spawner implements Component {
 	private static final double PI = Math.PI;
 	private static final Random rand = new Random();
 

@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core.io;
+package dev.kkorolyov.pancake.core.io.limit;
 
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit;
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;

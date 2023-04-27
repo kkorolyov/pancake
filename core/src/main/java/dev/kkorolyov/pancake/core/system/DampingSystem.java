@@ -1,15 +1,15 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.movement.Damping;
-import dev.kkorolyov.pancake.core.component.movement.Force;
-import dev.kkorolyov.pancake.core.component.movement.Velocity;
+import dev.kkorolyov.pancake.core.component.Damping;
+import dev.kkorolyov.pancake.core.component.Force;
+import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 
 /**
  * Applies damping to entity velocities.
  */
-public class DampingSystem extends GameSystem {
+public final class DampingSystem extends GameSystem {
 	/**
 	 * Constructs a new damping system.
 	 */

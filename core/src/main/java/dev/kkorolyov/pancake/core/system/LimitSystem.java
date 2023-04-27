@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.core.system.limit;
+package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.limit.Limit;
 import dev.kkorolyov.pancake.platform.GameSystem;
