@@ -8,50 +8,94 @@ import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.image
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.sameLine
-import dev.kkorolyov.pancake.editor.selectable
+import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
+import dev.kkorolyov.pancake.editor.widget.Modal
 import dev.kkorolyov.pancake.graphics.component.Model
 import dev.kkorolyov.pancake.graphics.editor.factory.getSnapshot
 import dev.kkorolyov.pancake.graphics.resource.Mesh
+import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.platform.entity.Component
+
+private const val IMAGE_WIDTH = 128
+private const val IMAGE_HEIGHT = 128
+
+private val snapshots = mutableListOf<MutableMap<Class<out Mesh>, Snapshot>>()
+
+private fun getSharedSnapshot(i: Int, c: Class<out Mesh>) = snapshots.getOrElse(i) {
+	for (j in (snapshots.size..i)) {
+		snapshots.add(mutableMapOf())
+	}
+	snapshots[i]
+}.getOrPut(c) { getSnapshot(c, IMAGE_WIDTH, IMAGE_HEIGHT) }
 
 class ModelComponentWidgetFactory : WidgetFactory<Component> {
 	override val type = Component::class.java
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Model>(t) {
-		val width = 128
-		val height = 128
-		val mesh = MemoizedContent<Mesh>({ getWidget(Mesh::class.java, it) })
 		val allMeshes = MemoizedContent<List<Mesh>>({
-			val snapshot = getSnapshot(it.first(), width, height)
-			Widget { image(snapshot(it), width.toFloat(), height.toFloat()) }
+			val texture = getSharedSnapshot(0, it.first()::class.java)(it)
+			Widget { image(texture, IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat()) }
+		})
+		val mesh = MemoizedContent<Mesh>({
+			val texture = getSharedSnapshot(1, it::class.java)(listOf(it))
+			Widget { image(texture, IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat()) }
 		})
 
-		Widget {
-			if (meshes.isNotEmpty()) {
-				allMeshes(meshes)
-				allMeshes.value()
-			}
+		var editProgram: Modal? = null
+		var editMeshes: Modal? = null
 
+		Widget {
 			text("program: ${program.id}")
+			sameLine()
+			button("edit##program") {
+				editProgram = Modal("Set program", getWidget(Program::class.java, program::class.java) {
+					editProgram?.visible = false
+					program = it
+				})
+			}
 			sameLine()
 			button("free") { program.close() }
 
-			text("meshes")
-			list("##meshes") {
-				meshes.forEach {
-					selectable(it.id.toString()) { it.close() }
-					tooltip {
-						mesh(it)
-						mesh.value()
+			separator()
+
+			text("meshes (${meshes.size})")
+			if (meshes.isNotEmpty()) {
+				sameLine()
+				button("edit##meshes") {
+					editMeshes = Modal("Set meshes", MeshesBuilder(meshes.first()::class.java) {
+						editMeshes?.visible = false
+						setMeshes(*it.toTypedArray())
+					})
+				}
+			}
+			sameLine()
+			button("free") { meshes.forEach(Mesh::close) }
+
+			if (meshes.isNotEmpty()) {
+				allMeshes(meshes)
+				allMeshes.value()
+
+				sameLine()
+
+				list("##meshes") {
+					meshes.forEach {
+						text(it.id)
+						tooltip {
+							mesh(it)
+							mesh.value()
+						}
 					}
 				}
 			}
+
+			editProgram?.invoke()
+			editMeshes?.invoke()
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? {
 		TODO("Not yet implemented")
 	}
 }

@@ -59,7 +59,7 @@ class ActionQueueComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, ActionQueue>(c, onNew) {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<ActionQueue>(c, onNew) {
 		Widget {
 			it(ActionQueue())
 		}

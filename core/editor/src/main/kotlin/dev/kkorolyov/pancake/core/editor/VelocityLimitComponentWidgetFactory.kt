@@ -18,7 +18,7 @@ class VelocityLimitComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, VelocityLimit>(c, onNew) {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<VelocityLimit>(c, onNew) {
 		var value = 0.0
 
 		Widget {

@@ -18,7 +18,7 @@ class PositionComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Position>(c, onNew) {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Position>(c, onNew) {
 		val value = Vector3.of()
 
 		Widget {

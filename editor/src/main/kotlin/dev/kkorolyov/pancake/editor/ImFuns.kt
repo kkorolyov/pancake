@@ -32,14 +32,14 @@ val tDouble3 by ThreadLocal.withInitial(Vector3::of)
 /**
  * Draws [value] as text.
  */
-fun text(value: Any?) {
+fun text(value: Any) {
 	ImGui.text(value.toString())
 }
 
 /**
  * Draws [value] as text in a tooltip when the last set item is hovered.
  */
-fun tooltip(value: Any?) {
+fun tooltip(value: Any) {
 	if (ImGui.isItemHovered()) ImGui.setTooltip(value.toString())
 }
 /**
@@ -55,7 +55,7 @@ inline fun tooltip(op: Op) {
 
 /**
  * Runs [op] in a context menu popup over the last clicked item.
- * If [force] is `true`, opens the menu even if the last item is non-interactive.
+ * Accepts a manual item [id] to bind to.
  */
 inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
 	if (id?.let { ImGui.beginPopupContextItem(it, flags) } ?: ImGui.beginPopupContextItem(flags)) {
@@ -210,11 +210,11 @@ inline fun disabledIf(disabled: Boolean, op: Op) {
 }
 
 /**
- * Draws a selectable area with [label] and [flags], invoking [onClick] when it is selected.
+ * Draws a selectable area for [value] as text, using [flags], invoking [onClick] when it is selected.
  * Returns `true` when selected.
  */
-inline fun selectable(label: String, flags: Int = ImGuiSelectableFlags.None, onClick: Op): Boolean {
-	val result = ImGui.selectable(label, false, flags)
+inline fun selectable(value: Any, flags: Int = ImGuiSelectableFlags.None, onClick: Op): Boolean {
+	val result = ImGui.selectable(value.toString(), false, flags)
 	if (result) onClick()
 	return result
 }

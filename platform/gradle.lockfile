@@ -2,11 +2,11 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 ch.randelshofer:fastdoubleparser:0.8.0=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-annotations:2.15.0-rc3=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-core:2.15.0-rc3=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-databind:2.15.0-rc3=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0-rc3=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson:jackson-bom:2.15.0-rc3=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-annotations:2.15.0=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-core:2.15.0=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-databind:2.15.0=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson:jackson-bom:2.15.0=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 dev.kkorolyov:flub:0.3.1=compileClasspath,runtimeClasspath,testCompileClasspath,testFixturesCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 net.bytebuddy:byte-buddy:1.14.4=testCompileClasspath,testFixturesCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 org.apache.groovy:groovy-bom:4.0.6=testCompileClasspath,testFixturesCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath

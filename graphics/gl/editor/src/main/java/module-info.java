@@ -1,12 +1,15 @@
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory;
 import dev.kkorolyov.pancake.graphics.editor.factory.SnapshotFactory;
 import dev.kkorolyov.pancake.graphics.gl.editor.GLMeshWidgetFactory;
+import dev.kkorolyov.pancake.graphics.gl.editor.GLProgramWidgetFactory;
 import dev.kkorolyov.pancake.graphics.gl.editor.GLSnapshotFactory;
 
 module dev.kkorolyov.pancake.graphics.gl.editor {
 	requires kotlin.stdlib;
 
 	requires org.slf4j;
+
+	requires org.lwjgl.nfd;
 
 	requires imgui.binding;
 
@@ -19,7 +22,8 @@ module dev.kkorolyov.pancake.graphics.gl.editor {
 	opens dev.kkorolyov.pancake.graphics.gl.editor.shaders;
 
 	provides WidgetFactory with
-			GLMeshWidgetFactory;
+			GLMeshWidgetFactory,
+			GLProgramWidgetFactory;
 	provides SnapshotFactory with
 			GLSnapshotFactory;
 }

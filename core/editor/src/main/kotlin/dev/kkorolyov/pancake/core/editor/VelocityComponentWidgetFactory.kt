@@ -18,7 +18,7 @@ class VelocityComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Velocity>(c, onNew) {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Velocity>(c, onNew) {
 		val value = Vector3.of()
 
 		Widget {

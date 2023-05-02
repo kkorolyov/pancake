@@ -42,13 +42,13 @@ fun basicGameSystemWidget(system: GameSystem): Widget = Widget {
  */
 fun <T> getWidget(c: Class<T>, t: T): Widget = factories[c]?.firstNotNullOfOrNull { (it as WidgetFactory<T>).get(t) } ?: when (t) {
 	is GameSystem -> basicGameSystemWidget(t)
-	else -> Widget { text(t) }
+	else -> Widget { text(t ?: null.toString()) }
 }
 /**
  * Returns the most suitable widget for displaying an [sc]-type component creator invoking [onNew] from all [c]-type [WidgetFactory] providers on the classpath.
  * Falls back to a no-op widget if no suitable provider found.
  */
-fun <T, ST : Class<T>> getWidget(c: Class<T>, sc: ST, onNew: (T) -> Unit): Widget = factories[c]?.firstNotNullOfOrNull { (it as WidgetFactory<T>).get(sc, onNew) } ?: noop
+fun <T, ST : Class<out T>> getWidget(c: Class<T>, sc: ST, onNew: (T) -> Unit): Widget = factories[c]?.firstNotNullOfOrNull { (it as WidgetFactory<T>).get(sc, onNew) } ?: noop
 
 /**
  * Returns widgets responsible for displaying, editing, or creating [T] instances.
@@ -68,7 +68,7 @@ interface WidgetFactory<T> {
 	/**
 	 * Returns a widget drawing a creator of [c]-type subclass of [T] and invoking [onNew] with created instances, if this factory handles doing so.
 	 */
-	fun get(c: Class<T>, onNew: (T) -> Unit): Widget?
+	fun get(c: Class<out T>, onNew: (T) -> Unit): Widget?
 
 	companion object {
 		/**
@@ -79,6 +79,6 @@ interface WidgetFactory<T> {
 		/**
 		 * Returns the result of invoking [op] with [onNew] if it is for instances of subtype [U].
 		 */
-		inline fun <T, reified U : T> get(c: Class<T>, noinline onNew: (T) -> Unit, crossinline op: ((U) -> Unit) -> Widget): Widget? = if (c == U::class.java) op(onNew) else null
+		inline fun <reified T> get(c: Class<out Any>, noinline onNew: (T) -> Unit, crossinline op: ((T) -> Unit) -> Widget): Widget? = if (c == T::class.java) op(onNew) else null
 	}
 }

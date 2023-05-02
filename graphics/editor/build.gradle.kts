@@ -1,6 +1,5 @@
 plugins {
 	configKotlin
-	configLwjgl
 	configPublish
 }
 

@@ -54,7 +54,7 @@ class PathComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Path>(c, onNew) {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Path>(c, onNew) {
 		var strength = 0.0
 		var proximity = 0.0
 		var snapStrategy = SnapStrategy.ALL

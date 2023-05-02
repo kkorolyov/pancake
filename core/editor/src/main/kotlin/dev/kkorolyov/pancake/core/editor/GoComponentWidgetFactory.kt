@@ -26,7 +26,7 @@ class GoComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Go>(c, onNew) {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Go>(c, onNew) {
 		val target = Vector3.of()
 		var strength = 0.0
 		var proximity = 0.0

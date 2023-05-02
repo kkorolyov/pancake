@@ -37,7 +37,7 @@ class BoundsComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Component, Bounds>(c, onNew) {
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Bounds>(c, onNew) {
 		var radius = 0.0
 		val dimensions = Vector3.of()
 
