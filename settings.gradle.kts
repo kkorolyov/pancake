@@ -1,18 +1,22 @@
 rootProject.name = "pancake"
 
 include("platform")
+
 include("core")
+includeIn("core-editor", "core/editor")
 
 include("editor")
-includeIn("editor-core", "editor/core")
 
 includeIn("audio-al", "audio/al")
 
 include("graphics")
 includeIn("graphics-gl", "graphics/gl")
+includeIn("graphics-editor", "graphics/editor")
+includeIn("graphics-gl-editor", "graphics/gl/editor")
 
 include("input")
 includeIn("input-glfw", "input/glfw")
+includeIn("input-editor", "input/editor")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

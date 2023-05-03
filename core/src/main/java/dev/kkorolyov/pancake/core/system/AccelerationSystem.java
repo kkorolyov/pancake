@@ -1,15 +1,15 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.movement.Force;
-import dev.kkorolyov.pancake.core.component.movement.Mass;
-import dev.kkorolyov.pancake.core.component.movement.Velocity;
+import dev.kkorolyov.pancake.core.component.Force;
+import dev.kkorolyov.pancake.core.component.Mass;
+import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 
 /**
  * Accelerates entities by force.
  */
-public class AccelerationSystem extends GameSystem {
+public final class AccelerationSystem extends GameSystem {
 	/**
 	 * Constructs a new acceleration system.
 	 */

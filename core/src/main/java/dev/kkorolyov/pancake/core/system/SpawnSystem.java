@@ -8,8 +8,10 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 
 /**
  * Spawns entity clones from spawner entities.
+ * @deprecated application-specific, should be removed from core library
  */
-public class SpawnSystem extends GameSystem {
+@Deprecated
+public final class SpawnSystem extends GameSystem {
 	/**
 	 * Constructs a new spawn system.
 	 */

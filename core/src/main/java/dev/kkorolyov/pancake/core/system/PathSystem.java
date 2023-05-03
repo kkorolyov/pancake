@@ -8,7 +8,7 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 /**
  * Moves an entity sequentially through the steps in a {@link Path} by adding {@link Go} instances to it.
  */
-public class PathSystem extends GameSystem {
+public final class PathSystem extends GameSystem {
 	public PathSystem() {
 		super(Path.class);
 	}

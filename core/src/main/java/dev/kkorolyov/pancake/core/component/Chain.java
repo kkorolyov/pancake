@@ -12,7 +12,7 @@ import java.util.Set;
  * Moves towards the positional anchor when the distance between the anchor and the chained entity passes some threshold.
  * Faces towards the nearest rotational anchor.
  */
-public class Chain implements Component {
+public final class Chain implements Component {
 	private Vector3 positionAnchor;
 	private double play;
 	private final Set<Vector3> rotationAnchors = new HashSet<>();

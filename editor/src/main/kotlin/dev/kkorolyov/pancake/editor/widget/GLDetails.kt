@@ -29,10 +29,10 @@ private fun prettyMem(value: Double, unit: Char) = String.format("%.2f%siB", val
  * Renders information about the current OpenGL implementation.
  */
 class GLDetails : Widget {
-	private val vendor = glGetString(GL_VENDOR)
-	private val renderer = glGetString(GL_RENDERER)
-	private val version = glGetString(GL_VERSION)
-	private val extensions = glGetString(GL_EXTENSIONS)
+	private val vendor = glGetString(GL_VENDOR) ?: ""
+	private val renderer = glGetString(GL_RENDERER) ?: ""
+	private val version = glGetString(GL_VERSION) ?: ""
+	private val extensions = glGetString(GL_EXTENSIONS) ?: ""
 
 	private val maxVertexAttributes = glGetInteger(GL_MAX_VERTEX_ATTRIBS)
 	private val maxUniforms = glGetInteger(GL_MAX_UNIFORM_LOCATIONS)
@@ -48,7 +48,7 @@ class GLDetails : Widget {
 				super.write(b, off, len)
 			}
 		}
-		GLUtil.setupDebugMessageCallback(PrintStream(out))
+		GLUtil.setupDebugMessageCallback(PrintStream(out)).use {}
 
 		Log(out)
 	}
@@ -81,7 +81,7 @@ class GLDetails : Widget {
 
 		tree("Extensions") {
 			list("##extensions") {
-				extensions?.split(" ")?.forEach {
+				extensions.split(" ").forEach {
 					text(it)
 				}
 			}

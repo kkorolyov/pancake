@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.editor.widget
 
+import dev.kkorolyov.pancake.editor.FileAccess
 import dev.kkorolyov.pancake.editor.MemoizedContent
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
@@ -24,9 +25,6 @@ import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
 import org.lwjgl.glfw.GLFW.*
-import org.lwjgl.system.MemoryStack
-import org.lwjgl.util.nfd.NFDFilterItem
-import org.lwjgl.util.nfd.NativeFileDialog
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -134,7 +132,7 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 						exportYaml()
 						exportPath = ""
 					} catch (e: Exception) {
-						error = Modal("ERROR", Widget { text(e.message) })
+						error = Modal("ERROR", Widget { text(e.message ?: e) })
 						log.error("export error", e)
 					}
 				}
@@ -154,22 +152,11 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 	}
 
 	private fun import() {
-		MemoryStack.stackPush().use {
-			val pathP = it.mallocPointer(1)
-			val filters = NFDFilterItem.malloc(1, it)
-			filters.get(0)
-				.name(it.UTF8("YAML"))
-				.spec(it.UTF8("yaml,yml"))
-
-			if (NativeFileDialog.NFD_OpenDialog(pathP, filters, System.getProperty("user.dir")) == NativeFileDialog.NFD_OKAY) {
-				val path = pathP.getStringUTF8(0)
-				NativeFileDialog.NFD_FreePath(pathP.get(0))
-
-				if (path.endsWith(".yaml") || path.endsWith(".yml")) {
-					importYaml(path)
-				} else {
-					throw IllegalArgumentException("unknown file type [$path]")
-				}
+		FileAccess.pickFile(FileAccess.Filter("YAML", "yaml", "yml"))?.let {
+			if (it.endsWith(".yaml") || it.endsWith(".yml")) {
+				importYaml(it)
+			} else {
+				throw IllegalArgumentException("unknown file type [$it]")
 			}
 		}
 	}

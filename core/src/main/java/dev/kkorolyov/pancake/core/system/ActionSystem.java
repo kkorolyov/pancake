@@ -11,7 +11,7 @@ import java.util.HashSet;
 /**
  * Dequeues and applies actions on entities.
  */
-public class ActionSystem extends GameSystem {
+public final class ActionSystem extends GameSystem {
 	private final Collection<ActionQueue> actionQueues = new HashSet<>();
 
 	/**

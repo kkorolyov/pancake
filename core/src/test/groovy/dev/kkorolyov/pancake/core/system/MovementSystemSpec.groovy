@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.system
 
 import dev.kkorolyov.pancake.core.component.Position
-import dev.kkorolyov.pancake.core.component.movement.Velocity
+import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.math.Vector3

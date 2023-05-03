@@ -13,7 +13,7 @@ import java.util.TreeMap;
 /**
  * Repositions chained entities.
  */
-public class ChainSystem extends GameSystem {
+public final class ChainSystem extends GameSystem {
 	private final Vector3 positionToAnchor = Vector3.of(0, 0, 0);
 	private final NavigableMap<Double, Vector3> sortedAnchors = new TreeMap<>();
 

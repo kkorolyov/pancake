@@ -2,8 +2,8 @@ package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
-import dev.kkorolyov.pancake.core.component.movement.Mass;
-import dev.kkorolyov.pancake.core.component.movement.Velocity;
+import dev.kkorolyov.pancake.core.component.Mass;
+import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.core.component.tag.Collidable;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;

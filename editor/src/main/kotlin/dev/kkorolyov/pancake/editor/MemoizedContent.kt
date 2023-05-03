@@ -22,7 +22,6 @@ class MemoizedContent<K>(private val generator: (K) -> Widget, private val defau
 		if (key != current) {
 			current = key
 			_value = generator(key)
-			println("new content for $key")
 		}
 	}
 
