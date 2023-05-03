@@ -2,10 +2,10 @@ module:dev.kkorolyov.pancake.core
 dev.kkorolyov.pancake.core.component
 dev.kkorolyov.pancake.core.component.event
 dev.kkorolyov.pancake.core.component.limit
-dev.kkorolyov.pancake.core.component.movement
 dev.kkorolyov.pancake.core.component.tag
 dev.kkorolyov.pancake.core.io
+dev.kkorolyov.pancake.core.io.limit
+dev.kkorolyov.pancake.core.io.tag
 dev.kkorolyov.pancake.core.registry
 dev.kkorolyov.pancake.core.system
 dev.kkorolyov.pancake.core.system.cleanup
-dev.kkorolyov.pancake.core.system.limit
