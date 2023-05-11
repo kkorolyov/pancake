@@ -2,7 +2,8 @@ package dev.kkorolyov.pancake.platform.registry.internal
 
 import dev.kkorolyov.flub.function.convert.Converter
 import dev.kkorolyov.pancake.platform.action.Action
-import dev.kkorolyov.pancake.platform.action.CollectiveAction
+import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.Resource
 
@@ -24,8 +25,14 @@ class ActionResourceConverterFactorySpec extends Specification {
 		converter.convert("ref").get(registry) == ref
 	}
 
-	def "reads collective"() {
-		expect:
-		converter.convert(["ref", "ref"] as Object).get(registry) == new CollectiveAction(ref, ref)
+	def "reads many"() {
+		Entity entity = new EntityPool().create()
+
+		when:
+		Action result = converter.convert(["ref", "ref"] as Object).get(registry)
+		result.apply(entity)
+
+		then:
+		2 * ref.apply(entity)
 	}
 }
