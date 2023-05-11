@@ -34,14 +34,12 @@ public final class CorrectionSystem extends GameSystem {
 			Position aPosition = event.getA().get(Position.class);
 			Position bPosition = event.getB().get(Position.class);
 
-			if (priority <= 0 && aPosition != null) {
-				if (priority == 0 && bPosition != null) {
-					// split the correction
-					aPosition.getValue().add(event.getMtvA(), 0.5);
-					bPosition.getValue().add(event.getMtvB(), 0.5);
-				} else {
-					aPosition.getValue().add(event.getMtvA());
-				}
+			if (priority == 0) {
+				// split the correction
+				aPosition.getValue().add(event.getMtvA(), 0.5);
+				bPosition.getValue().add(event.getMtvB(), 0.5);
+			} else if (priority < 0) {
+				aPosition.getValue().add(event.getMtvA());
 			} else {
 				bPosition.getValue().add(event.getMtvB());
 			}
