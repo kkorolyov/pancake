@@ -1,6 +1,7 @@
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.ActionResourceConverterFactory;
+import dev.kkorolyov.pancake.platform.registry.internal.EntityTemplateResourceConverterFactory;
 
 module dev.kkorolyov.pancake.platform {
 	// logging
@@ -25,5 +26,7 @@ module dev.kkorolyov.pancake.platform {
 	uses ComponentConverter;
 	uses ResourceConverterFactory;
 
-	provides ResourceConverterFactory with ActionResourceConverterFactory;
+	provides ResourceConverterFactory with
+			ActionResourceConverterFactory,
+			EntityTemplateResourceConverterFactory;
 }
