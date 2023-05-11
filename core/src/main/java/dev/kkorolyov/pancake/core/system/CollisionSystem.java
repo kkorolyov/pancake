@@ -33,7 +33,7 @@ public final class CollisionSystem extends GameSystem {
 	 * Constructs a new collision system.
 	 */
 	public CollisionSystem() {
-		super(Intersected.class, Collidable.class, Velocity.class);
+		super(Intersected.class, Collidable.class, Position.class, Velocity.class);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public final class CollisionSystem extends GameSystem {
 			Mass bMass = event.getB().get(Mass.class);
 
 			if (priority <= 0 && aVelocity != null) {
-				if (aPosition != null && aMass != null && priority == 0 && bVelocity != null && bPosition != null && bMass != null) {
+				if (aMass != null && priority == 0 && bVelocity != null && bMass != null) {
 					collide(aPosition.getValue(), bPosition.getValue(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
 				} else {
 					reflect(aVelocity.getValue(), event.getMtvA());
