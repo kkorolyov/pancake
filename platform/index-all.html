@@ -59,7 +59,7 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/ActionResourceConverterFactory.html" class="type-name-link" title="class in dev.kkorolyov.pancake.platform.registry.internal">ActionResourceConverterFactory</a> - Class in <a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/package-summary.html">dev.kkorolyov.pancake.platform.registry.internal</a></dt>
 <dd>
-<div class="block"><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html" title="interface in dev.kkorolyov.pancake.platform.registry"><code>ResourceConverterFactory</code></a> for platform actions.</div>
+<div class="block"><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html" title="interface in dev.kkorolyov.pancake.platform.registry"><code>ResourceConverterFactory</code></a> for basic actions.</div>
 </dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/ActionResourceConverterFactory.html#%3Cinit%3E()" class="member-name-link">ActionResourceConverterFactory()</a> - Constructor for class dev.kkorolyov.pancake.platform.registry.internal.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/ActionResourceConverterFactory.html" title="class in dev.kkorolyov.pancake.platform.registry.internal">ActionResourceConverterFactory</a></dt>
 <dd>
@@ -135,10 +135,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Alters an entity in some way.</div>
 </dd>
-<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html#apply(dev.kkorolyov.pancake.platform.entity.Entity)" class="member-name-link">apply(Entity)</a> - Method in class dev.kkorolyov.pancake.platform.action.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html" title="class in dev.kkorolyov.pancake.platform.action">CollectiveAction</a></dt>
-<dd>
-<div class="block">Applies all contained, accepting actions to an entity.</div>
-</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/EntityTemplate.html#apply(dev.kkorolyov.pancake.platform.entity.Entity)" class="member-name-link">apply(Entity)</a> - Method in class dev.kkorolyov.pancake.platform.entity.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/EntityTemplate.html" title="class in dev.kkorolyov.pancake.platform.entity">EntityTemplate</a></dt>
 <dd>
 <div class="block">Sets this template's components on <code>entity</code>.</div>
@@ -179,16 +175,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Clears all loaded configurations.</div>
-</dd>
-<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html" class="type-name-link" title="class in dev.kkorolyov.pancake.platform.action">CollectiveAction</a> - Class in <a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/package-summary.html">dev.kkorolyov.pancake.platform.action</a></dt>
-<dd>
-<div class="block">An <a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/Action.html" title="interface in dev.kkorolyov.pancake.platform.action"><code>Action</code></a> which applies a collection of delegate actions.</div>
-</dd>
-<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html#%3Cinit%3E(dev.kkorolyov.pancake.platform.action.Action...)" class="member-name-link">CollectiveAction(Action...)</a> - Constructor for class dev.kkorolyov.pancake.platform.action.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html" title="class in dev.kkorolyov.pancake.platform.action">CollectiveAction</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html#%3Cinit%3E(java.lang.Iterable)" class="member-name-link">CollectiveAction(Iterable&lt;? extends Action&gt;)</a> - Constructor for class dev.kkorolyov.pancake.platform.action.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html" title="class in dev.kkorolyov.pancake.platform.action">CollectiveAction</a></dt>
-<dd>
-<div class="block">Constructs a new collective action</div>
 </dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/Component.html" class="type-name-link" title="interface in dev.kkorolyov.pancake.platform.entity">Component</a> - Interface in <a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/package-summary.html">dev.kkorolyov.pancake.platform.entity</a></dt>
 <dd>
@@ -284,12 +270,16 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/EntityTemplate.html#%3Cinit%3E(java.lang.Iterable)" class="member-name-link">EntityTemplate(Iterable&lt;? extends Supplier&lt;Component&gt;&gt;)</a> - Constructor for class dev.kkorolyov.pancake.platform.entity.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/EntityTemplate.html" title="class in dev.kkorolyov.pancake.platform.entity">EntityTemplate</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/EntityTemplateResourceConverterFactory.html" class="type-name-link" title="class in dev.kkorolyov.pancake.platform.registry.internal">EntityTemplateResourceConverterFactory</a> - Class in <a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/package-summary.html">dev.kkorolyov.pancake.platform.registry.internal</a></dt>
+<dd>
+<div class="block"><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html" title="interface in dev.kkorolyov.pancake.platform.registry"><code>ResourceConverterFactory</code></a> for basic entity templates.</div>
+</dd>
+<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/EntityTemplateResourceConverterFactory.html#%3Cinit%3E()" class="member-name-link">EntityTemplateResourceConverterFactory()</a> - Constructor for class dev.kkorolyov.pancake.platform.registry.internal.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/EntityTemplateResourceConverterFactory.html" title="class in dev.kkorolyov.pancake.platform.registry.internal">EntityTemplateResourceConverterFactory</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/math/FloatOps.html#equals(double,double)" class="member-name-link">equals(double, double)</a> - Static method in class dev.kkorolyov.pancake.platform.math.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/math/FloatOps.html" title="class in dev.kkorolyov.pancake.platform.math">FloatOps</a></dt>
 <dd>
 <div class="block">Returns whether <code>val</code> and <code>other</code> are near enough to consider equal for most computations.</div>
 </dd>
-<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in class dev.kkorolyov.pancake.platform.action.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html" title="class in dev.kkorolyov.pancake.platform.action">CollectiveAction</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/Entity.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in class dev.kkorolyov.pancake.platform.entity.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/Entity.html" title="class in dev.kkorolyov.pancake.platform.entity">Entity</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/math/Matrix2.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Method in class dev.kkorolyov.pancake.platform.math.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/math/Matrix2.html" title="class in dev.kkorolyov.pancake.platform.math">Matrix2</a></dt>
@@ -342,6 +332,8 @@ loadScripts(document, 'script');</script>
 &nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/ActionResourceConverterFactory.html#get()" class="member-name-link">get()</a> - Method in class dev.kkorolyov.pancake.platform.registry.internal.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/ActionResourceConverterFactory.html" title="class in dev.kkorolyov.pancake.platform.registry.internal">ActionResourceConverterFactory</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/EntityTemplateResourceConverterFactory.html#get()" class="member-name-link">get()</a> - Method in class dev.kkorolyov.pancake.platform.registry.internal.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/EntityTemplateResourceConverterFactory.html" title="class in dev.kkorolyov.pancake.platform.registry.internal">EntityTemplateResourceConverterFactory</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html#get()" class="member-name-link">get()</a> - Method in interface dev.kkorolyov.pancake.platform.registry.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html" title="interface in dev.kkorolyov.pancake.platform.registry">ResourceConverterFactory</a></dt>
 <dd>
 <div class="block">Returns a converter of basic objects to <a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html" title="interface in dev.kkorolyov.pancake.platform.registry"><code>ResourceConverterFactory</code></a> resources.</div>
@@ -380,8 +372,6 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the maximum number of samples taken for an average value.</div>
 </dd>
-<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html#getDelegates()" class="member-name-link">getDelegates()</a> - Method in class dev.kkorolyov.pancake.platform.action.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html" title="class in dev.kkorolyov.pancake.platform.action">CollectiveAction</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/GameEngine.html#getEntities()" class="member-name-link">getEntities()</a> - Method in class dev.kkorolyov.pancake.platform.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/GameEngine.html" title="class in dev.kkorolyov.pancake.platform">GameEngine</a></dt>
 <dd>
 <div class="block">Returns this engine's entity pool.</div>
@@ -421,6 +411,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the type of component this converts.</div>
 </dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/ActionResourceConverterFactory.html#getType()" class="member-name-link">getType()</a> - Method in class dev.kkorolyov.pancake.platform.registry.internal.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/ActionResourceConverterFactory.html" title="class in dev.kkorolyov.pancake.platform.registry.internal">ActionResourceConverterFactory</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/EntityTemplateResourceConverterFactory.html#getType()" class="member-name-link">getType()</a> - Method in class dev.kkorolyov.pancake.platform.registry.internal.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/internal/EntityTemplateResourceConverterFactory.html" title="class in dev.kkorolyov.pancake.platform.registry.internal">EntityTemplateResourceConverterFactory</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html#getType()" class="member-name-link">getType()</a> - Method in interface dev.kkorolyov.pancake.platform.registry.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/registry/ResourceConverterFactory.html" title="interface in dev.kkorolyov.pancake.platform.registry">ResourceConverterFactory</a></dt>
 <dd>
@@ -477,8 +469,6 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:H">H</h2>
 <dl class="index">
-<dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html#hashCode()" class="member-name-link">hashCode()</a> - Method in class dev.kkorolyov.pancake.platform.action.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/action/CollectiveAction.html" title="class in dev.kkorolyov.pancake.platform.action">CollectiveAction</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/Entity.html#hashCode()" class="member-name-link">hashCode()</a> - Method in class dev.kkorolyov.pancake.platform.entity.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/entity/Entity.html" title="class in dev.kkorolyov.pancake.platform.entity">Entity</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/math/Matrix2.html#hashCode()" class="member-name-link">hashCode()</a> - Method in class dev.kkorolyov.pancake.platform.math.<a href="dev.kkorolyov.pancake.platform/dev/kkorolyov/pancake/platform/math/Matrix2.html" title="class in dev.kkorolyov.pancake.platform.math">Matrix2</a></dt>
