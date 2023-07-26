@@ -27,22 +27,4 @@ public interface ObjectParser<T> {
 						e -> converter.convert(e.getValue())
 				));
 	}
-
-	/**
-	 * Returns a parser using this parser and {@link ObjectConverters#replacing(Map)} with the replacement map found in the initially-parsed object at {@code key}.
-	 * Assumes that the value at {@code key} is parsed to a {@link Map}.
-	 */
-	default ObjectParser<Object> preprocessReplacementMap(String key) {
-		return in -> {
-			Map<String, T> base = parse(in);
-			Converter<Object, Object> replacer = ObjectConverters.replacing((Map<Object, Object>) base.get(key));
-
-			return base.entrySet().stream()
-					.filter(e -> !e.getKey().equals(key))
-					.collect(toMap(
-							Map.Entry::getKey,
-							e -> replacer.convert(e.getValue())
-					));
-		};
-	}
 }

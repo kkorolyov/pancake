@@ -43,6 +43,15 @@ public final class EntityTemplate {
 	}
 
 	/**
+	 * Returns a new template combining all of this template's setup with {@code other}'s.
+	 */
+	public EntityTemplate and(EntityTemplate other) {
+		var result = new EntityTemplate(components);
+		result.components.addAll(other.components);
+		return result;
+	}
+
+	/**
 	 * Sets this template's components on {@code entity}.
 	 */
 	public void apply(Entity entity) {
