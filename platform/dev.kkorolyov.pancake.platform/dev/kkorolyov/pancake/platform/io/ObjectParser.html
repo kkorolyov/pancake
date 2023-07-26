@@ -11,7 +11,7 @@
 <link rel="stylesheet" type="text/css" href="../../../../../../script-dir/jquery-ui.min.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../../jquery-ui.overrides.css" title="Style">
 <script type="text/javascript" src="../../../../../../script.js"></script>
-<script type="text/javascript" src="../../../../../../script-dir/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="../../../../../../script-dir/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
@@ -105,11 +105,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns keyed <a href="ObjectParser.html" title="interface in dev.kkorolyov.pancake.platform.io"><code>ObjectParser</code></a>s parsed from <code>in</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="ObjectParser.html" title="interface in dev.kkorolyov.pancake.platform.io">ObjectParser</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#preprocessReplacementMap(java.lang.String)" class="member-name-link">preprocessReplacementMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Returns a parser using this parser and <a href="ObjectConverters.html#replacing(java.util.Map)"><code>ObjectConverters.replacing(Map)</code></a> with the replacement map found in the initially-parsed object at <code>key</code>.</div>
-</div>
 </div>
 </div>
 </div>
@@ -136,14 +131,6 @@ loadScripts(document, 'script');</script>
 <h3>andThen</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;R&gt;</span>&nbsp;<span class="return-type"><a href="ObjectParser.html" title="interface in dev.kkorolyov.pancake.platform.io">ObjectParser</a>&lt;R&gt;</span>&nbsp;<span class="element-name">andThen</span><wbr><span class="parameters">(dev.kkorolyov.flub.function.convert.Converter&lt;? super <a href="ObjectParser.html" title="type parameter in ObjectParser">T</a>,<wbr>? extends R&gt;&nbsp;converter)</span></div>
 <div class="block">Returns a parser that parses using this parser and converts parsed values with <code>converter</code>.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="preprocessReplacementMap(java.lang.String)">
-<h3>preprocessReplacementMap</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="ObjectParser.html" title="interface in dev.kkorolyov.pancake.platform.io">ObjectParser</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name">preprocessReplacementMap</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</span></div>
-<div class="block">Returns a parser using this parser and <a href="ObjectConverters.html#replacing(java.util.Map)"><code>ObjectConverters.replacing(Map)</code></a> with the replacement map found in the initially-parsed object at <code>key</code>.
- Assumes that the value at <code>key</code> is parsed to a <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link"><code>Map</code></a>.</div>
 </section>
 </li>
 </ul>
