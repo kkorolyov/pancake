@@ -2,18 +2,12 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
 	java
-	id("org.ajoberstar.reckon") version "0.+"
 }
 
 tasks.wrapper {
 	distributionType = Wrapper.DistributionType.ALL
 }
 
-reckon {
-	stages("rc", "final")
-	setScopeCalc(calcScopeFromProp())
-	setStageCalc(calcStageFromProp())
-}
 tasks.reckonTagCreate {
 	dependsOn(tasks.check)
 }
