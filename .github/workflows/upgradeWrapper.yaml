@@ -26,10 +26,8 @@ jobs:
       - id: gradle
         uses: gradle/gradle-build-action@v2
 
-      - id: git
+      - id: upgrade
         run: |
           git config user.email "<>"
           git config user.name "GitHub Action"
-
-      - id: upgrade
-        run: ./gradlew upgradeGradleWrapperAll
+          ./gradlew upgradeGradleWrapperAll
