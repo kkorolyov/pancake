@@ -4,10 +4,6 @@ plugins {
 	java
 }
 
-tasks.wrapper {
-	distributionType = Wrapper.DistributionType.ALL
-}
-
 tasks.reckonTagCreate {
 	dependsOn(tasks.check)
 }

@@ -1,0 +1,21 @@
+name: update wrapper
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  updateWrapper:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        version: [ 17 ]
+
+    steps:
+      - id: checkout
+        uses: actions/checkout@v3
+
+      - id: update
+        uses: gradle-update/update-gradle-wrapper-action@v1
