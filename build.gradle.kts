@@ -2,10 +2,16 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
 	java
+	alias(libs.plugins.gradle.wrapperUpgrade)
 }
 
-tasks.wrapper {
-	distributionType = Wrapper.DistributionType.ALL
+wrapperUpgrade {
+	gradle {
+		register("pancake") {
+			repo.set("kkorolyov/pancake")
+			baseBranch.set("master")
+		}
+	}
 }
 
 tasks.reckonTagCreate {

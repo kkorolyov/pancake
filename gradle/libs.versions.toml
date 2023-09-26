@@ -1,5 +1,6 @@
 [versions]
 kotlin = "1.8.10"
+wrapperUpgrade = "0.11.+"
 
 flub = "0.+"
 
@@ -17,7 +18,11 @@ spock = "2.+"
 byteBuddy = "1.+"
 log4j = "2.+"
 
+[plugins]
+gradle-wrapperUpgrade = { id = "org.gradle.wrapper-upgrade", version.ref = "wrapperUpgrade" }
+
 [libraries]
+# actually plugins, but applied through buildSrc
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin" }
 
