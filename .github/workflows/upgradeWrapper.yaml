@@ -28,6 +28,6 @@ jobs:
 
       - id: upgrade
         run: |
-          git config user.email "<>"
-          git config user.name "GitHub Action"
+          git config --global user.email "<>"
+          git config --global user.name "GitHub Action"
           ./gradlew upgradeGradleWrapperAll
