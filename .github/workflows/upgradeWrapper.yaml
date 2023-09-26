@@ -26,8 +26,10 @@ jobs:
       - id: gradle
         uses: gradle/gradle-build-action@v2
 
-      - id: upgrade
+      - id: git
         run: |
-          git config --global user.email "<>"
-          git config --global user.name "GitHub Action"
-          ./gradlew upgradeGradleWrapperAll
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - id: upgrade
+        run: ./gradlew upgradeGradleWrapperAll
