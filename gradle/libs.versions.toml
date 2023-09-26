@@ -18,6 +18,7 @@ byteBuddy = "1.+"
 log4j = "2.+"
 
 [libraries]
+# actually plugins, but applied through buildSrc
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin" }
 
