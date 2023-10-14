@@ -59,8 +59,15 @@ class Atlas @JvmOverloads constructor(buffers: Collection<PixelBuffer>, spacing:
 				data.put(pixelOffset * maxChannels + dataI % buffer.channels, buffer.data[dataI])
 			}
 
+			// constrain the viewport a tiny bit to ensure the center of the texel is sampled, instead of the edge
+			val halfPixelOffset = 0.5
 			// generate a viewport spanning the portion
-			val viewport = Viewport(xPixelOffset.toDouble() / atlasWidth, yPixelOffset.toDouble() / atlasWidth, (xPixelOffset + buffer.width).toDouble() / atlasWidth, (yPixelOffset + buffer.height).toDouble() / atlasWidth)
+			val viewport = Viewport(
+				(xPixelOffset + halfPixelOffset) / atlasWidth,
+				(yPixelOffset + halfPixelOffset) / atlasWidth,
+				(xPixelOffset + buffer.width - halfPixelOffset) / atlasWidth,
+				(yPixelOffset + buffer.height - halfPixelOffset) / atlasWidth
+			)
 
 			viewport
 		}
