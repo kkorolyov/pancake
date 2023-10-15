@@ -8,7 +8,8 @@ out vec2 texCoord;
 layout (location = 0) uniform mat4 transform;
 
 void main() {
-	gl_Position = transform * vec4(position, 1);
+	// drawing to a texture, so vertical flip
+	gl_Position = transform * vec4(position.x, position.y * -1, position.z, 1);
 
 	// pass-through
 	texCoord = inTexCoord;
