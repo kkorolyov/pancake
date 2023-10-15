@@ -1,11 +1,13 @@
 package dev.kkorolyov.pancake.graphics.gl.resource
 
-import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.graphics.resource.IndexBuffer
 import dev.kkorolyov.pancake.graphics.resource.Mesh
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
+import dev.kkorolyov.pancake.graphics.util.Cache
 import org.lwjgl.opengl.GL46.*
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * An `OpenGL` mesh that draws from [vertexBuffer] using draw [mode].
@@ -41,6 +43,33 @@ class GLMesh(
 	}
 
 	override val id: Int by cache
+
+	override val bounds: List<List<Pair<Double, Double>>>
+		get() {
+			// not cached as the underlying buffers could change
+			val vertices = indexBuffer?.let { indices ->
+				val result = IntArray(indices.size)
+				for (i in 0 until indices.size) {
+					result[i] = indices.get(i)
+				}
+				result
+			} ?: (0 until vertexBuffer.size).toList().toIntArray()
+
+			return vertexBuffer.structure.mapIndexed { attribute, componentSize ->
+				(0 until componentSize).map { component ->
+					var min = 0.0
+					var max = 0.0
+
+					vertices.forEach { vertex ->
+						val value = vertexBuffer.get(vertex, attribute, component)
+						min = min(min, value)
+						max = max(max, value)
+					}
+
+					min to max
+				}
+			}
+		}
 
 	override fun draw(offset: Int, count: Int?) {
 		activate()

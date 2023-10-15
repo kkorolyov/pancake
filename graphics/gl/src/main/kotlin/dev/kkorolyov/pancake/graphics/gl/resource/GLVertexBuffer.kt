@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.graphics.gl.resource
 
-import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
+import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import org.lwjgl.opengl.GL46.*
@@ -66,6 +66,17 @@ class GLVertexBuffer(vararg vertices: Array<out Vector2>) : VertexBuffer {
 			}
 		}
 	}.toFloatArray()
+
+	override fun get(vertex: Int, attribute: Int, component: Int): Double {
+		if (vertex < 0 || vertex >= size) throw IndexOutOfBoundsException("vertex [$vertex] is not in the range [0, $size)")
+		if (attribute < 0 || attribute >= structure.size) throw IndexOutOfBoundsException("attribute [$attribute] is not in the range [0, ${structure.size})")
+		if (component < 0 || component >= structure[attribute]) throw IndexOutOfBoundsException("attribute [$component] is not in the range [0, ${structure[attribute]})")
+
+		val vertexOffset = vertex * structure.sum()
+		val attributeOffset = structure.subList(0, attribute).sum()
+
+		return data[vertexOffset + attributeOffset + component].toDouble()
+	}
 
 	override fun set(offset: Long, vararg vertices: Array<Vector2>) {
 		val data = serialize(vertices)
