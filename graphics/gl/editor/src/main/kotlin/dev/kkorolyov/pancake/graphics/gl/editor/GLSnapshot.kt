@@ -14,37 +14,68 @@ import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector3
 import org.lwjgl.opengl.GL46.*
 import org.lwjgl.system.MemoryUtil
+import kotlin.math.max
 
+// width and height of the snapshot viewport
+private const val RESOLUTION = 512
+
+private val transform = Matrix4.identity()
 private val program by lazy {
 	GLProgram(
 		Resources.inStream("dev/kkorolyov/pancake/graphics/gl/editor/shaders/image.vert").use { GLShader(GLShader.Type.VERTEX, it) },
 		Resources.inStream("dev/kkorolyov/pancake/graphics/gl/editor/shaders/image.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 	) {
-		// pancake meshes are defined on a [-0.5,0.5] scale; double up to the OpenGL [-1,1] scale
-		set(0, Matrix4.identity().apply {
-			scale(Vector3.of(2.0, 2.0))
-		})
+		set(0, transform)
 	}
 }
 
 /**
  * [Snapshot] accepting OpenGL meshes.
  */
-class GLSnapshot(private val width: Int, private val height: Int) : Snapshot {
+class GLSnapshot : Snapshot {
 	private val texture = GLTexture {
-		PixelBuffer(width, height, 0, 4, MemoryUtil.memAlloc(0), MemoryUtil::memFree)
+		PixelBuffer(RESOLUTION, RESOLUTION, 0, 4, MemoryUtil.memCalloc(RESOLUTION * RESOLUTION * 4), MemoryUtil::memFree)
 	}
 	private val frameBuffer = GLFrameBuffer(texture)
 
 	override fun invoke(meshes: List<Mesh>): Texture {
+		// clear any existing texture
+		close()
+
+		// like the above program, assume first attribute is position
+		val positionBounds = meshes.map { it.bounds[0] }
+		val minX = positionBounds.minOf {
+			it[0].first
+		}
+		val maxX = positionBounds.maxOf {
+			it[0].second
+		}
+		val minY = positionBounds.minOf {
+			it[1].first
+		}
+		val maxY = positionBounds.maxOf {
+			it[1].second
+		}
+
+		// scale the minimum amount to fit all dimensions to avoid stretching
+		val scale = 2 / max(maxX - minX, maxY - minY)
+
+		// scale to fit the viewport
+		program[0] = transform.apply {
+			reset()
+			scale(Vector3.of(scale, scale))
+		}
+
 		frameBuffer.scoped {
-			glViewport(0, 0, width, height)
+			glViewport(0, 0, RESOLUTION, RESOLUTION)
 			glClear(GL_COLOR_BUFFER_BIT)
 
 			program.scoped {
 				meshes.forEach { it.draw() }
 			}
 		}
+		// regenerate mipmaps after updating texture
+		glGenerateTextureMipmap(texture.id)
 
 		return texture
 	}

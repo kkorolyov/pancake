@@ -20,7 +20,7 @@ private const val IMAGE_HEIGHT = 128
  */
 class MeshesBuilder(private val c: Class<out Mesh>, private val onConfirm: (List<Mesh>) -> Unit) : Widget {
 	// TODO this only closes on apply - not close
-	private val snapshot = getSnapshot(c, IMAGE_WIDTH, IMAGE_HEIGHT)
+	private val snapshot = getSnapshot(c)
 	private val meshes = mutableListOf<Mesh>()
 
 	private var create: Modal? = null

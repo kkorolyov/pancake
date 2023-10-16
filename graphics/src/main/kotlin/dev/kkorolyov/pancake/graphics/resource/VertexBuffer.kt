@@ -18,6 +18,14 @@ interface VertexBuffer : GraphicsResource {
 	val size: Int
 
 	/**
+	 * Returns [vertex]'s [attribute]'s [component]'s value.
+	 * [vertex] must be in the range `[0, size)`
+	 * [attribute] must be in the range `[0, structure.size)`
+	 * [component] must be in the range `[0, structure[attribute].size)`
+	 */
+	fun get(vertex: Int, attribute: Int, component: Int): Double
+
+	/**
 	 * Sets the vertices in this buffer to [vertices] starting at [offset].
 	 * Each vertex must match [structure] and the number of vertices must be `<=` [size] - [offset].
 	 */

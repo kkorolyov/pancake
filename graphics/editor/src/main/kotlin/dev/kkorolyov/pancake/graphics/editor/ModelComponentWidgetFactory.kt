@@ -28,7 +28,7 @@ private fun getSharedSnapshot(i: Int, c: Class<out Mesh>) = snapshots.getOrElse(
 		snapshots.add(mutableMapOf())
 	}
 	snapshots[i]
-}.getOrPut(c) { getSnapshot(c, IMAGE_WIDTH, IMAGE_HEIGHT) }
+}.getOrPut(c) { getSnapshot(c) }
 
 class ModelComponentWidgetFactory : WidgetFactory<Component> {
 	override val type = Component::class.java

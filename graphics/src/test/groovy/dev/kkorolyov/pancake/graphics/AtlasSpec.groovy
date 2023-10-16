@@ -107,12 +107,12 @@ class AtlasSpec extends Specification {
 		]
 		expected << [
 				[
-						new Atlas.Viewport(0, 0, 0.5, 0.5),
-						new Atlas.Viewport(0.5, 0, 1, 0.5),
-						new Atlas.Viewport(0, 0.5, 0.5, 1),
+						new Atlas.Viewport(0.25, 0.25, 0.25, 0.25),
+						new Atlas.Viewport(0.75, 0.25, 0.75, 0.25),
+						new Atlas.Viewport(0.25, 0.75, 0.25, 0.75),
 				],
 				[
-						new Atlas.Viewport(0, 0, 0.5, 0.75)
+						new Atlas.Viewport(0.125, 0.125, 0.375, 0.625)
 				],
 		]
 	}
