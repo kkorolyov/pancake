@@ -1,7 +1,5 @@
 package dev.kkorolyov.pancake.platform.utility;
 
-import dev.kkorolyov.pancake.platform.Config;
-
 /**
  * Samples time elapsed between invocations of a sampling method.
  */
@@ -11,11 +9,10 @@ public final class Sampler {
 	private long last;
 
 	/**
-	 * Constructs a new Sampler with sample count from the platform config's {@code samples} property.
-	 * @see Config#get()
+	 * Constructs a new Sampler with a sample count of {@code 30}.
 	 */
 	public Sampler() {
-		this(Integer.parseInt(Config.get().getProperty("samples")));
+		this(30);
 	}
 	/**
 	 * Constructs a new Sampler for {@code count} samples.
