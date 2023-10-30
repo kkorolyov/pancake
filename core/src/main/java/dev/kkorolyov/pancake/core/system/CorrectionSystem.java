@@ -7,7 +7,6 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
 
 /**
@@ -17,8 +16,6 @@ import java.util.HashSet;
  * If both {@link Correctable} components are equal, repositions both entities by half the repositioning distance.
  */
 public final class CorrectionSystem extends GameSystem {
-	private static final Comparator<Correctable> COMPARATOR = Comparator.nullsLast(Comparator.naturalOrder());
-
 	private final Collection<Intersected> events = new HashSet<>();
 
 	public CorrectionSystem() {
@@ -28,8 +25,8 @@ public final class CorrectionSystem extends GameSystem {
 	@Override
 	protected void update(Entity entity, long dt) {
 		Intersected event = entity.get(Intersected.class);
-		if (events.add(event)) {
-			int priority = COMPARATOR.compare(event.getA().get(Correctable.class), event.getB().get(Correctable.class));
+		if (events.add(event) && event.getA().get(Correctable.class) != null && event.getB().get(Correctable.class) != null) {
+			int priority = event.getA().get(Correctable.class).compareTo(event.getB().get(Correctable.class));
 
 			Position aPosition = event.getA().get(Position.class);
 			Position bPosition = event.getB().get(Position.class);

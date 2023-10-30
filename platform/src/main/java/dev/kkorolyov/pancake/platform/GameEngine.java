@@ -46,9 +46,9 @@ public final class GameEngine implements Iterable<Pipeline> {
 				long dt = (long) (elapsed * speed);
 				last = now;
 
-				sampler.reset();
+				sampler.start();
 				for (Pipeline pipeline : pipelines) pipeline.update(dt);
-				sampler.sample();
+				sampler.end();
 			}
 		}
 	}
