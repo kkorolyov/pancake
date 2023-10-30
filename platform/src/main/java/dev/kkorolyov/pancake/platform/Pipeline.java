@@ -48,9 +48,9 @@ public sealed class Pipeline implements Iterable<GameSystem> {
 	 * A {@code dt < 0} is supported (can imply e.g. update in reverse).
 	 */
 	void update(long dt) {
-		sampler.reset();
+		sampler.start();
 		for (GameSystem system : systems) system.update(dt);
-		sampler.sample();
+		sampler.end();
 	}
 
 	/**

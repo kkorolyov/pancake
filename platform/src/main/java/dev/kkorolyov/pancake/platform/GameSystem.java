@@ -94,13 +94,13 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	 * A {@code dt < 0} is allowed (can imply e.g. update in reverse).
 	 */
 	void update(long dt) {
-		sampler.reset();
+		sampler.start();
 
 		before();
 		for (Entity entity : entities.get(signature)) update(entity, dt);
 		after();
 
-		sampler.sample();
+		sampler.end();
 	}
 
 	/**

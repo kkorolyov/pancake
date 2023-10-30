@@ -6,7 +6,7 @@ package dev.kkorolyov.pancake.platform.utility;
 public final class Sampler {
 	private final AveragedValue tick;
 
-	private long last;
+	private long start;
 
 	/**
 	 * Constructs a new Sampler with a sample count of {@code 30}.
@@ -24,14 +24,14 @@ public final class Sampler {
 	/**
 	 * Sets this sampler's sample start time to the current system time.
 	 */
-	public void reset() {
-		last = System.nanoTime();
+	public void start() {
+		start = System.nanoTime();
 	}
 	/**
-	 * Samples time elapsed since the last invocation of {@link #reset()}.
+	 * Samples time elapsed since the last invocation of {@link #start()}.
 	 */
-	public void sample() {
-		tick.add(System.nanoTime() - last);
+	public void end() {
+		tick.add(System.nanoTime() - start);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public final class Sampler {
 	public String toString() {
 		return "Sampler{" +
 				"tick=" + tick +
-				", last=" + last +
+				", start=" + start +
 				'}';
 	}
 }
