@@ -44,7 +44,7 @@ public final class CorrectionSystem extends GameSystem {
 	}
 
 	@Override
-	protected void after() {
+	protected void after(long dt) {
 		events.clear();
 	}
 }

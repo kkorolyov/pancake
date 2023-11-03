@@ -39,29 +39,29 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 			protected void update(Entity entity, long dt) {}
 
 			@Override
-			protected void after() {
+			protected void after(long dt) {
 				op.run();
 			}
 		};
 	}
 
 	/**
-	 * Invoked on each entity affected by this system.
+	 * Invoked on each entity affected by this system in the current update cycle.
 	 * @param entity entity to update
-	 * @param dt {@code ns} elapsed since last {@code update} to this system
+	 * @param dt {@code ns} timestep for the current update cycle - approximately equivalent to the time elapsed since the last cycle
 	 */
 	protected abstract void update(Entity entity, long dt);
 
 	/**
-	 * Invoked at the beginning of an update cycle.
+	 * Invoked at the beginning of an update cycle with the current {@code dt} {@code ns} timestep.
 	 * Intended for any static pre-update logic.
 	 */
-	protected void before() {}
+	protected void before(long dt) {}
 	/**
-	 * Invoked at the end of an update cycle.
+	 * Invoked at the end of an update cycle with the current {@code dt} {@code ns} timestep.
 	 * Intended for any static post-update logic.
 	 */
-	protected void after() {}
+	protected void after(long dt) {}
 
 	/**
 	 * Returns a new entity created from the attached {@link EntityPool}.
@@ -96,9 +96,9 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	void update(long dt) {
 		sampler.start();
 
-		before();
+		before(dt);
 		for (Entity entity : entities.get(signature)) update(entity, dt);
-		after();
+		after(dt);
 
 		sampler.end();
 	}

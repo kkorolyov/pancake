@@ -37,7 +37,7 @@ public final class IntersectionSystem extends GameSystem {
 		toCheck.add(entity);
 	}
 	@Override
-	public void after() {
+	public void after(long dt) {
 		for (Entity a = toCheck.poll(); a != null; a = toCheck.poll()) {
 			for (Entity b : toCheck) {
 				process(a, b);

@@ -90,7 +90,7 @@ public final class CollisionSystem extends GameSystem {
 	}
 
 	@Override
-	protected void after() {
+	protected void after(long dt) {
 		events.clear();
 	}
 }

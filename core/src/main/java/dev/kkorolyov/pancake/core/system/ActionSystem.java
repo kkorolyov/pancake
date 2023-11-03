@@ -29,9 +29,9 @@ public final class ActionSystem extends GameSystem {
 	}
 
 	@Override
-	public void after() {
+	public void after(long dt) {
 		for (ActionQueue actionQueue : actionQueues) {
-			actionQueue.clear();
+			actionQueue.flush(dt);
 		}
 		actionQueues.clear();
 	}

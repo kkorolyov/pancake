@@ -17,7 +17,7 @@ class CameraSystem(private val queue: CameraQueue) : GameSystem(Lens::class.java
 		seen.remove(entity.id)
 	}
 
-	override fun after() {
+	override fun after(dt: Long) {
 		seen.forEach(queue::minusAssign)
 		seen.clear()
 		seen.addAll(queue.ids)
