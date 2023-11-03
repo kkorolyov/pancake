@@ -9,6 +9,7 @@ import dev.kkorolyov.pancake.platform.utility.ArgVerify;
  * Damping values are in the interval {@code [0, 1]}, essentially translating to {@code [immediate stop, no damping]}.
  */
 public final class Damping implements Component {
+	private static final double EFFECTIVE_ZERO = 1e-9;
 	private final Vector3 value;
 
 	/**
@@ -34,7 +35,7 @@ public final class Damping implements Component {
 		velocity.setZ(velocity.getZ() * damp(velocity.getZ(), force.getZ(), value.getZ()));
 	}
 	private static double damp(double velocity, double force, double damping) {
-		return (velocity < 0 ? force >= 0 : force <= 0) ? damping : 1;
+		return (velocity < 0 ? force >= -EFFECTIVE_ZERO : force <= EFFECTIVE_ZERO) ? damping : 1;
 	}
 
 	/**
