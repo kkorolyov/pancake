@@ -45,6 +45,35 @@ public final class Intersected implements Component {
 	}
 
 	/**
+	 * Returns the {@link #getA()} or {@link #getB()} entity that is not {@code entity}.
+	 * Throws {@link IllegalArgumentException} if {@code entity} is neither of the entities of this event.
+	 */
+	public Entity getOther(Entity entity) {
+		if (entity.equals(b)) return a;
+		else if (entity.equals(a)) return b;
+		else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getId() + "]");
+	}
+
+	/**
+	 * Returns the {@link #getMtvA()} or {@link #getMtvB()} matching {@code entity}.
+	 * Throws {@link IllegalArgumentException} if {@code entity} is neither of the entities of this event.
+	 */
+	public Vector2 getMtv(Entity entity) {
+		if (entity.equals(a)) return mtvA;
+		else if (entity.equals(b)) return mtvB;
+		else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getId() + "]");
+	}
+	/**
+	 * Returns the {@link #getMtvA()} or {@link #getMtvB()} matching the entity that is not {@code entity}.
+	 * Throws {@link IllegalArgumentException} if {@code entity} is neither of the entities of this event.
+	 */
+	public Vector2 getOtherMtv(Entity entity) {
+		if (entity.equals(b)) return mtvA;
+		else if (entity.equals(a)) return mtvB;
+		else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getId() + "]");
+	}
+
+	/**
 	 * Returns the {@link #getA()}-relative minimum translation vector to separate it from {@link #getB()}.
 	 */
 	public Vector2 getMtvA() {

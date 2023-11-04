@@ -26,7 +26,7 @@ class DrawSystem(
 		pending.getOrPut(entity[Model::class.java].program) { mutableListOf() }.add((entity))
 	}
 
-	override fun after() {
+	override fun after(dt: Long) {
 		queue.cameras.forEach { camera ->
 			camera.lens.apply {
 				glViewport(offset.x.toInt(), offset.y.toInt(), size.x.toInt(), size.y.toInt())

@@ -33,7 +33,7 @@ class InputSystem(vararg windows: Long) : GameSystem(Input::class.java, ActionQu
 		}
 	}
 
-	override fun before() = glfwPollEvents()
+	override fun before(dt: Long) = glfwPollEvents()
 
 	override fun update(entity: Entity, dt: Long) {
 		val input = entity[Input::class.java]
@@ -41,5 +41,5 @@ class InputSystem(vararg windows: Long) : GameSystem(Input::class.java, ActionQu
 		events.forEach { input(it)?.let(actionQueue::add) }
 	}
 
-	override fun after() = events.clear()
+	override fun after(dt: Long) = events.clear()
 }

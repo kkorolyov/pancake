@@ -35,14 +35,14 @@ class GameSystemSpec extends Specification {
 		system.update(dt)
 
 		then:
-		1 * system.before()
+		1 * system.before(dt)
 	}
 	def "runs after"() {
 		when:
 		system.update(dt)
 
 		then:
-		1 * system.after()
+		1 * system.after(dt)
 	}
 
 	def "updates matching entities"() {
