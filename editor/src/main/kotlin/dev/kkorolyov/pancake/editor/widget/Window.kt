@@ -24,10 +24,12 @@ class Window(
 	val label: String,
 	private val content: Widget,
 	private val visiblePtr: ImBoolean = ImBoolean(true),
+	private val size: Vector2 = Vector2.of(0.0, 0.0),
 	private val minSize: Vector2 = Vector2.of(0.0, 0.0),
 	private val maxSize: Vector2 = Vector2.of(Double.MAX_VALUE, Double.MAX_VALUE),
 	flags: Int = ImGuiWindowFlags.None,
-	private val fullscreen: Boolean = false
+	private val fullscreen: Boolean = false,
+	private val openAtCurrentWindow: Boolean = false
 ) : Widget {
 	/**
 	 * Whether this is visible.
@@ -54,11 +56,13 @@ class Window(
 					ImGui.setNextWindowSize(it.sizeX, it.sizeY)
 				}
 			} else {
+				ImGui.setNextWindowSize(size.x.toFloat(), size.y.toFloat(), ImGuiCond.FirstUseEver)
 				ImGui.setNextWindowSizeConstraints(minSize.x.toFloat(), minSize.y.toFloat(), maxSize.x.toFloat(), maxSize.y.toFloat())
 
-				// on first use, set this window where the current window is
-				ImGui.getWindowPos().let {
-					ImGui.setNextWindowPos(it.x, it.y, ImGuiCond.FirstUseEver)
+				if (openAtCurrentWindow) {
+					ImGui.getWindowPos().let {
+						ImGui.setNextWindowPos(it.x, it.y, ImGuiCond.FirstUseEver)
+					}
 				}
 			}
 

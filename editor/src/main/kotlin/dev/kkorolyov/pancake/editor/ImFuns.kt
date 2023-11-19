@@ -1,14 +1,19 @@
 package dev.kkorolyov.pancake.editor
 
+import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
-import imgui.ImGui
 import imgui.flag.ImGuiComboFlags
+import imgui.flag.ImGuiDir
+import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiInputTextFlags
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
+import imgui.flag.ImGuiWindowFlags
+import imgui.internal.ImGui
+import imgui.internal.flag.ImGuiDockNodeFlags
 import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import imgui.type.ImInt
@@ -28,6 +33,67 @@ val tDouble by ThreadLocal.withInitial(::ImDouble)
 val tDouble2 by ThreadLocal.withInitial(Vector2::of)
 /** NO TOUCHY */
 val tDouble3 by ThreadLocal.withInitial(Vector3::of)
+
+/**
+ * Initializes [id] dock space with [setup], if it does not yet exist.
+ * Otherwise, simply draws the current [id] dock space.
+ */
+inline fun dockSpace(id: String, setup: Op) {
+	val nodeId = ImGui.getID(id)
+
+	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) {
+		ImGui.dockBuilderAddNode(nodeId, ImGuiDockNodeFlags.DockSpace)
+		ImGui.dockBuilderSetNodeSize(nodeId, ImGui.getContentRegionAvailX(), ImGui.getContentRegionAvailY())
+
+		setup()
+	}
+
+	ImGui.dockSpace(nodeId)
+}
+/**
+ * Adds [window] to [id] dock space.
+ * Throws [IllegalArgumentException] if [id] dock space does not exist.
+ */
+fun dock(id: String, window: Window) {
+	val nodeId = ImGui.getID(id)
+	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
+
+	ImGui.dockBuilderDockWindow(window.label, nodeId)
+	ImGui.dockBuilderFinish(nodeId)
+}
+/**
+ * Adds [other] to the same dock node as [window].
+ * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+ */
+fun dock(window: Window, other: Window) {
+	ImGui.begin(window.label)
+	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+	ImGui.end()
+
+	val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
+	if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
+	ImGui.dockBuilderDockWindow(other.label, nodeId)
+
+	ImGui.dockBuilderFinish(nodeId)
+}
+/**
+ * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
+ * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+ */
+fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
+	ImGui.begin(window.label)
+	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+	ImGui.end()
+
+	val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
+
+	val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
+
+	ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
+	ImGui.dockBuilderDockWindow(other.label, otherId)
+
+	ImGui.dockBuilderFinish(nodeIdPtr.get())
+}
 
 /**
  * Draws [value] as text.
@@ -70,6 +136,18 @@ inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseBut
 inline fun onClick(op: Op) {
 	if (ImGui.isItemClicked()) op()
 }
+/**
+ * Runs [op] when the last set item is hovered.
+ */
+inline fun onHover(flags: Int = ImGuiHoveredFlags.None, op: Op) {
+	if (ImGui.isItemHovered(flags)) op()
+}
+/**
+ * Runs [op] while the last set item is active (e.g. held down, being edited).
+ */
+inline fun onActive(op: Op) {
+	if (ImGui.isItemActive()) op()
+}
 
 /**
  * Runs [op] within a group.
@@ -83,8 +161,8 @@ inline fun group(op: Op) {
 /**
  * Runs [op] within an embedded region named [id].
  */
-inline fun child(id: String, op: Op) {
-	if (ImGui.beginChild(id)) op()
+inline fun child(id: String, width: Float = 0.0f, height: Float = 0.0f, border: Boolean = false, flags: Int = ImGuiWindowFlags.None, op: Op) {
+	if (ImGui.beginChild(id, width, height, border, flags)) op()
 	ImGui.endChild()
 }
 
@@ -194,9 +272,11 @@ fun separator() {
 
 /**
  * Draws [texture] with [width] and [height].
+ * Optionally [flip]s the image vertically when rendering.
  */
-fun image(texture: Texture, width: Float, height: Float) {
-	ImGui.image(texture.id, width, height)
+fun image(texture: Texture, width: Float, height: Float, flip: Boolean = false) {
+	if (flip) ImGui.image(texture.id, width, height, 0.0f, 1.0f, 1.0f, 0.0f)
+	else ImGui.image(texture.id, width, height)
 }
 
 /**
