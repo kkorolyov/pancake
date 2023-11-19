@@ -5,7 +5,9 @@ import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.flag.ImGuiComboFlags
+import imgui.flag.ImGuiCond
 import imgui.flag.ImGuiDir
+import imgui.flag.ImGuiDragDropFlags
 import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiInputTextFlags
 import imgui.flag.ImGuiPopupFlags
@@ -147,6 +149,43 @@ inline fun onHover(flags: Int = ImGuiHoveredFlags.None, op: Op) {
  */
 inline fun onActive(op: Op) {
 	if (ImGui.isItemActive()) op()
+}
+
+/**
+ * Runs [op] when the last set item is dragged.
+ * [op] should include a call to [setDragDropPayload] and any calls to draw in the drag-drop preview tooltip.
+ * See also: [onDrop]
+ */
+inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Op) {
+	if (ImGui.beginDragDropSource(flags)) {
+		op()
+		ImGui.endDragDropSource()
+	}
+}
+/**
+ * Runs [op] when a dragged payload is dropped on the last set item.
+ * See also: [onDrag]
+ */
+inline fun onDrop(op: Op) {
+	if (ImGui.beginDragDropTarget()) {
+		op()
+		ImGui.endDragDropTarget()
+	}
+}
+/**
+ * Should be invoked from within an [onDrag].
+ * Sets the dragged [payload], with optional unique [id] and [condition].
+ */
+fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
+	id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
+}
+/**
+ * Should be invoked from within an [onDrop].
+ * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
+ */
+inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
+	val payload = id?.let { ImGui.acceptDragDropPayload(it, flags, T::class.java) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
+	payload?.let(op)
 }
 
 /**

@@ -29,7 +29,7 @@ class Window(
 	private val maxSize: Vector2 = Vector2.of(Double.MAX_VALUE, Double.MAX_VALUE),
 	flags: Int = ImGuiWindowFlags.None,
 	private val fullscreen: Boolean = false,
-	private val openAtCurrentWindow: Boolean = false
+	private val openAt: OpenAt? = null
 ) : Widget {
 	/**
 	 * Whether this is visible.
@@ -59,10 +59,20 @@ class Window(
 				ImGui.setNextWindowSize(size.x.toFloat(), size.y.toFloat(), ImGuiCond.FirstUseEver)
 				ImGui.setNextWindowSizeConstraints(minSize.x.toFloat(), minSize.y.toFloat(), maxSize.x.toFloat(), maxSize.y.toFloat())
 
-				if (openAtCurrentWindow) {
-					ImGui.getWindowPos().let {
-						ImGui.setNextWindowPos(it.x, it.y, ImGuiCond.FirstUseEver)
+				when (openAt) {
+					OpenAt.CurrentWindow -> {
+						ImGui.getWindowPos().let {
+							ImGui.setNextWindowPos(it.x, it.y, ImGuiCond.FirstUseEver)
+						}
 					}
+
+					OpenAt.Cursor -> {
+						ImGui.getIO().mousePos.let {
+							ImGui.setNextWindowPos(it.x, it.y, ImGuiCond.FirstUseEver)
+						}
+					}
+
+					else -> {}
 				}
 			}
 
@@ -72,4 +82,9 @@ class Window(
 			ImGui.end()
 		}
 	}
+}
+
+enum class OpenAt {
+	CurrentWindow,
+	Cursor
 }
