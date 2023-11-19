@@ -43,15 +43,15 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 			Widget { image(texture, IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat()) }
 		})
 
-		var editProgram: Modal? = null
-		var editMeshes: Modal? = null
+		val editProgram = Modal("Set program")
+		val editMeshes = Modal("Set meshes")
 
 		Widget {
 			text("program: ${program.id}")
 			sameLine()
 			button("edit##program") {
-				editProgram = Modal("Set program", getWidget(Program::class.java, program::class.java) {
-					editProgram?.visible = false
+				editProgram.open(getWidget(Program::class.java, program::class.java) {
+					editProgram.close()
 					program = it
 				})
 			}
@@ -64,8 +64,8 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 			if (meshes.isNotEmpty()) {
 				sameLine()
 				button("edit##meshes") {
-					editMeshes = Modal("Set meshes", MeshesBuilder(meshes.first()::class.java) {
-						editMeshes?.visible = false
+					editMeshes.open(MeshesBuilder(meshes.first()::class.java) {
+						editMeshes.close()
 						setMeshes(*it.toTypedArray())
 					})
 				}

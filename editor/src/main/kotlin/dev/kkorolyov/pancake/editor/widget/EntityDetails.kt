@@ -38,6 +38,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 	private val details = WindowManifest<KClass<out Component>>()
 
 	private var create: Modal? = null
+	private var createContent: Widget? = null
 
 	private var toAdd: Component? = null
 	private var toRemove: Class<out Component>? = null
@@ -85,6 +86,11 @@ class EntityDetails(private val entity: Entity) : Widget {
 		separator()
 		preview.value()
 
+		// open outside the menu creating the modal because ID stack
+		createContent?.let {
+			create?.open(it)
+			createContent = null
+		}
 		create?.invoke()
 
 		details()
@@ -97,12 +103,12 @@ class EntityDetails(private val entity: Entity) : Widget {
 					menuItem(type.simpleName) {
 						create = Modal(
 							"New ${type.simpleName}",
-							getWidget(Component::class.java, type) {
-								create?.visible = false
-								toAdd = it
-							},
 							minSize = componentMinSize
 						)
+						createContent = getWidget(Component::class.java, type) {
+							create?.close()
+							toAdd = it
+						}
 					}
 				}
 			}
