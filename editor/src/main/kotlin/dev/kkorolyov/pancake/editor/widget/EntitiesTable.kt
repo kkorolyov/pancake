@@ -19,6 +19,7 @@ import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.editor.useDragDropPayload
+import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.EntityTemplate
@@ -39,18 +40,18 @@ private val log = LoggerFactory.getLogger(EntitiesTable::class.java)
 
 /**
  * Renders entity listings from [entities].
+ * Submits expanded entity windows by entity to [entityManifest] and component windows by component to [componentManifest], which are both expected to be rendered externally.
+ * This is to avoid feedback loops with docking dependent windows together.
  */
-class EntitiesTable(private val entities: EntityPool) : Widget {
+class EntitiesTable(private val entities: EntityPool, private val entityManifest: WindowManifest<Entity>, private val componentManifest: WindowManifest<Component>) : Widget {
 	private val aliases = mutableMapOf<Entity, String>()
 	private val selected = mutableSetOf<Entity>()
 
 	private var exportPath = ""
 
-	private val current = DebouncedValue(::EntityDetails)
+	private val current = DebouncedValue<Entity, EntityDetails> { EntityDetails(it, componentManifest) }
 
 	private val inlineDetails = Popup("inlineDetails")
-	private val details = WindowManifest<Int>()
-
 	private val errorMsg = Modal("ERROR")
 
 	private var focusedEntity: Int? = null
@@ -126,7 +127,7 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 
 		onDrop {
 			useDragDropPayload<Entity> {
-				details[it.id] = { Window("Entity ${it.id}", EntityDetails(it), minSize = entityMinSize, openAt = OpenAt.Cursor) }
+				entityManifest[it] = { Window("Entity ${it.id}", EntityDetails(it, componentManifest), minSize = entityMinSize, openAt = OpenAt.Cursor) }
 			}
 		}
 
@@ -135,7 +136,7 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 			import()
 		}
 
-		if (!selected.isEmpty()) {
+		if (selected.isNotEmpty()) {
 			separator()
 
 			text("Export ${selected.joinToString { aliases[it] ?: it.id.toString() }}")
@@ -155,8 +156,6 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 				}
 			}
 		}
-
-		details()
 
 		errorMsg()
 	}

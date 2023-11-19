@@ -19,12 +19,13 @@ import kotlin.math.roundToInt
 
 /**
  * Renders overall information for [systems].
+ * Submits expanded system windows by system to [systemManifest], which is expected to be rendered externally.
+ * This is to avoid feedback loops with docking dependent windows together.
  */
-class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
+class SystemsTable(private val systems: Collection<GameSystem>, private val systemManifest: WindowManifest<GameSystem>) : Widget {
 	private var showHooks = false
 
 	private val preview = MemoizedContent<GameSystem>({ getWidget(GameSystem::class.java, it) }, Widget { text("Select a system to preview") })
-	private val details = WindowManifest<String>()
 
 	override fun invoke() {
 		table("systems", 4, ImGuiTableFlags.Resizable or ImGuiTableFlags.SizingStretchProp) {
@@ -46,7 +47,7 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 								preview(system)
 
 								onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
-									details[it] = { Window(it, preview.value) }
+									systemManifest[system] = { Window(it, preview.value) }
 									preview.reset()
 								}
 							}
@@ -68,7 +69,5 @@ class SystemsTable(private val systems: Collection<GameSystem>) : Widget {
 
 		separator()
 		preview.value()
-
-		details()
 	}
 }

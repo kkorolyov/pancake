@@ -18,7 +18,6 @@ import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.flag.ImGuiSelectableFlags
 import io.github.classgraph.ClassGraph
 import org.lwjgl.glfw.GLFW
-import kotlin.reflect.KClass
 
 private val componentMinSize = Vector2.of(200.0, 100.0)
 
@@ -32,10 +31,11 @@ private val componentTypes by ThreadLocal.withInitial {
 
 /**
  * Displays and provides for modification of [entity] properties.
+ * Submits expanded component windows by component to [componentManifest], which is expected to be rendered externally.
+ * This is to avoid feedback loops with docking dependent windows together.
  */
-class EntityDetails(private val entity: Entity) : Widget {
+class EntityDetails(private val entity: Entity, private val componentManifest: WindowManifest<Component>) : Widget {
 	private val preview = MemoizedContent<Component>({ getWidget(Component::class.java, it) }, Widget { text("Select a component to preview") })
-	private val details = WindowManifest<KClass<out Component>>()
 
 	private var create: Modal? = null
 	private var createContent: Widget? = null
@@ -52,7 +52,7 @@ class EntityDetails(private val entity: Entity) : Widget {
 
 					onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
 						// in window on double click
-						details[it::class] = { Window("Entity ${entity.id}: ${it::class.simpleName}", preview.value, minSize = componentMinSize) }
+						componentManifest[it] = { Window("Entity ${entity.id}: ${it::class.simpleName}", preview.value, minSize = componentMinSize) }
 						preview.reset()
 					}
 				}
@@ -92,8 +92,6 @@ class EntityDetails(private val entity: Entity) : Widget {
 			createContent = null
 		}
 		create?.invoke()
-
-		details()
 	}
 
 	private fun drawAddMenu() {
