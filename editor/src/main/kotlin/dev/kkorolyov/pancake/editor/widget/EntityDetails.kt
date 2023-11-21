@@ -1,23 +1,23 @@
 package dev.kkorolyov.pancake.editor.widget
 
-import dev.kkorolyov.pancake.editor.MemoizedContent
+import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.child
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
 import dev.kkorolyov.pancake.editor.menuItem
-import dev.kkorolyov.pancake.editor.onDoubleClick
+import dev.kkorolyov.pancake.editor.onDrag
+import dev.kkorolyov.pancake.editor.onDrop
 import dev.kkorolyov.pancake.editor.selectable
-import dev.kkorolyov.pancake.editor.separator
-import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.setDragDropPayload
+import dev.kkorolyov.pancake.editor.useDragDropPayload
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Vector2
-import imgui.flag.ImGuiSelectableFlags
 import io.github.classgraph.ClassGraph
-import org.lwjgl.glfw.GLFW
 
 private val componentMinSize = Vector2.of(200.0, 100.0)
 
@@ -35,7 +35,9 @@ private val componentTypes by ThreadLocal.withInitial {
  * This is to avoid feedback loops with docking dependent windows together.
  */
 class EntityDetails(private val entity: Entity, private val componentManifest: WindowManifest<Component>) : Widget {
-	private val preview = MemoizedContent<Component>({ getWidget(Component::class.java, it) }, Widget { text("Select a component to preview") })
+	private val current = DebouncedValue<Component, Widget> { getWidget(Component::class.java, it) }
+
+	private val inlineDetails = Popup("inlineDetails")
 
 	private var create: Modal? = null
 	private var createContent: Widget? = null
@@ -44,34 +46,37 @@ class EntityDetails(private val entity: Entity, private val componentManifest: W
 	private var toRemove: Class<out Component>? = null
 
 	override fun invoke() {
-		list("##components") {
-			entity.forEach {
-				selectable(it::class.simpleName.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
-					// display inline on single click
-					preview(it)
-
-					onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
-						// in window on double click
-						componentManifest[it] = { Window("Entity ${entity.id}: ${it::class.simpleName}", preview.value, minSize = componentMinSize) }
-						preview.reset()
+		child("components", width = 200f, height = 200f) {
+			list("##components") {
+				entity.forEach {
+					selectable(it::class.simpleName ?: it::class) {
+						inlineDetails.open(current.set(it))
+					}
+					contextMenu {
+						drawAddMenu()
+						menuItem("remove") {
+							toRemove = it::class.java
+						}
+					}
+					onDrag {
+						setDragDropPayload(it, "component")
+						current.set(it)()
 					}
 				}
-				contextMenu {
-					drawAddMenu()
-					menuItem("remove") {
-						toRemove = it::class.java
-					}
-				}
-			}
 
-			if (entity.size() <= 0) {
-				// draw a dummy row for contextual actions on empty lists
 				selectable("##empty") {}
 				contextMenu {
 					drawAddMenu()
 				}
+				inlineDetails()
 			}
 		}
+		onDrop {
+			useDragDropPayload<Component>("component") {
+				componentManifest[it] = { Window("Entity ${entity.id}: ${it::class.simpleName}", getWidget(Component::class.java, it), minSize = componentMinSize, openAt = OpenAt.Cursor) }
+			}
+		}
+
 		// augment elements only after done iterating
 		toAdd?.let {
 			entity.put(it)
@@ -79,12 +84,8 @@ class EntityDetails(private val entity: Entity, private val componentManifest: W
 		}
 		toRemove?.let {
 			entity.remove(it)
-			preview.reset()
 			toRemove = null
 		}
-
-		separator()
-		preview.value()
 
 		// open outside the menu creating the modal because ID stack
 		createContent?.let {

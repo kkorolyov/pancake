@@ -49,7 +49,7 @@ class EntitiesTable(private val entities: EntityPool, private val entityManifest
 
 	private var exportPath = ""
 
-	private val current = DebouncedValue<Entity, EntityDetails> { EntityDetails(it, componentManifest) }
+	private val current = DebouncedValue<Entity, Widget> { EntityDetails(it, componentManifest) }
 
 	private val inlineDetails = Popup("inlineDetails")
 	private val errorMsg = Modal("ERROR")
@@ -72,7 +72,7 @@ class EntitiesTable(private val entities: EntityPool, private val entityManifest
 
 				entities.forEach {
 					column {
-						selectable(it.id.toString()) {
+						selectable(it.id) {
 							inlineDetails.open(current.set(it))
 						}
 						contextMenu {
@@ -121,10 +121,10 @@ class EntitiesTable(private val entities: EntityPool, private val entityManifest
 				toRemove?.let {
 					selected.remove(it)
 					entities.destroy(it.id)
+					toRemove = null
 				}
 			}
 		}
-
 		onDrop {
 			useDragDropPayload<Entity> {
 				entityManifest[it] = { Window("Entity ${it.id}", EntityDetails(it, componentManifest), minSize = entityMinSize, openAt = OpenAt.Cursor) }

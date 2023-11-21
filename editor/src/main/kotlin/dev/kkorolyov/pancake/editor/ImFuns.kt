@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
+import imgui.ImVec2
 import imgui.flag.ImGuiComboFlags
 import imgui.flag.ImGuiCond
 import imgui.flag.ImGuiDir
@@ -20,6 +21,7 @@ import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import imgui.type.ImInt
 import imgui.type.ImString
+import kotlin.math.pow
 
 // reuse the same carrier to all imgui input functions
 // public only to allow inline functions
@@ -35,6 +37,8 @@ val tDouble by ThreadLocal.withInitial(::ImDouble)
 val tDouble2 by ThreadLocal.withInitial(Vector2::of)
 /** NO TOUCHY */
 val tDouble3 by ThreadLocal.withInitial(Vector3::of)
+/** NO TOUCHY */
+val tVec2 by ThreadLocal.withInitial(::ImVec2)
 
 /**
  * Initializes [id] dock space with [setup], if it does not yet exist.
@@ -184,7 +188,7 @@ fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiC
  * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
  */
 inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
-	val payload = id?.let { ImGui.acceptDragDropPayload(it, flags, T::class.java) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
+	val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
 	payload?.let(op)
 }
 
@@ -397,25 +401,37 @@ inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Bo
 }
 /**
  * Draws an input field with [label], for [value], [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits without overflow.
  * Returns `true` when changed.
  */
-inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Int> = {}): Boolean {
+inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, flags: Int = ImGuiInputTextFlags.None, digitWidth: Int = 3, onChange: OnChange<Int> = {}): Boolean {
 	val ptr = tInt
 	ptr.set(value)
 
-	val result = stretch(label) { ImGui.inputInt(label, ptr, step, stepFast, flags) }
+	val width = if (label.startsWith("##")) calcWidth(10.0.pow(digitWidth).toString()) else null
+
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputInt(label, ptr, step, stepFast, flags)
+	width?.let { ImGui.popItemWidth() }
+
 	if (result) onChange(ptr.get())
 	return result
 }
 /**
  * Draws an input field with [label], for [value] with [format] specifier, [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits (while considering [format]) without overflow.
  * Returns `true` when changed.
  */
-inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}): Boolean {
+inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, digitWidth: Int = 3, onChange: OnChange<Double> = {}): Boolean {
 	val ptr = tDouble
 	ptr.set(value)
 
-	val result = stretch(label) { ImGui.inputDouble(label, ptr, step, stepFast, format, flags) }
+	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) else null
+
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputDouble(label, ptr, step, stepFast, format, flags)
+	width?.let { ImGui.popItemWidth() }
+
 	if (result) onChange(ptr.get())
 	return result
 }
@@ -529,6 +545,16 @@ inline fun <T> stretch(label: String, op: () -> T): T {
 	}
 
 	return result
+}
+
+/**
+ * Returns the width of [text].
+ * Ignores hidden areas of labels (i.e ##).
+ */
+fun calcWidth(text: String): Float {
+	val ptr = tVec2
+	ImGui.calcTextSize(ptr, text)
+	return ptr.x
 }
 
 /**
