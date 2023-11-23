@@ -21,7 +21,7 @@ class PipelinesTree(private val pipelines: Collection<Pipeline>, private val sys
 	override fun invoke() {
 		pipelines.forEachIndexed { i, pipeline ->
 			tree("Pipeline $i") {
-				table("pipeline.${i}", 2, ImGuiTableFlags.SizingFixedSame) {
+				table("pipeline.${i}", 2, flags = ImGuiTableFlags.SizingFixedSame) {
 					column { text("Tick time (ns)") }
 					column { text(pipeline.sampler.value) }
 

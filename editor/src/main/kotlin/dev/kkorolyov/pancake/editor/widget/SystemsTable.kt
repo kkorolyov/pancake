@@ -28,7 +28,7 @@ class SystemsTable(private val systems: Collection<GameSystem>, private val syst
 	private val preview = MemoizedContent<GameSystem>({ getWidget(GameSystem::class.java, it) }, Widget { text("Select a system to preview") })
 
 	override fun invoke() {
-		table("systems", 4, ImGuiTableFlags.Resizable or ImGuiTableFlags.SizingStretchProp) {
+		table("systems", 4, flags = ImGuiTableFlags.Resizable or ImGuiTableFlags.SizingStretchProp) {
 			ImGui.tableSetupColumn("System")
 			ImGui.tableSetupColumn("Signature")
 			ImGui.tableSetupColumn("Tick time (ns)")

@@ -7,7 +7,7 @@ import imgui.flag.ImGuiTableFlags
  * Labels the table [id] and invokes [op] within the table.
  */
 inline fun propertiesTable(id: String, op: Op) {
-	table(id, 2, ImGuiTableFlags.SizingStretchProp, op)
+	table(id, 2, flags = ImGuiTableFlags.SizingStretchProp, op = op)
 }
 /**
  * Helper for drawing a 2-column row suited for displaying property [label] with [op].

@@ -34,7 +34,7 @@ class GLProgramWidgetFactory : WidgetFactory<Program> {
 		var newType = GLShader.Type.VERTEX
 
 		Widget {
-			table("##shaders", 3, ImGuiTableFlags.SizingStretchProp) {
+			table("##shaders", 3, flags = ImGuiTableFlags.SizingStretchProp) {
 				if (shaders.isNotEmpty()) {
 					var toRemove: String? = null
 

@@ -18,7 +18,7 @@ private val noop by lazy { Widget {} }
  * Returns a widget displaying basic data (data common to all systems) of [system].
  */
 fun basicGameSystemWidget(system: GameSystem): Widget = Widget {
-	table("gameSystem", 2, ImGuiTableFlags.SizingStretchProp) {
+	table("gameSystem", 2, flags = ImGuiTableFlags.SizingStretchProp) {
 		column { text("Tick time (ns)") }
 		column { text(system.sampler.value) }
 

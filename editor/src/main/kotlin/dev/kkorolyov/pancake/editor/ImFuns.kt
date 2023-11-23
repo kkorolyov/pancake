@@ -204,7 +204,7 @@ inline fun group(op: Op) {
 /**
  * Runs [op] within an embedded region named [id].
  */
-inline fun child(id: String, width: Float = 0.0f, height: Float = 0.0f, border: Boolean = false, flags: Int = ImGuiWindowFlags.None, op: Op) {
+inline fun child(id: String, width: Float = 0f, height: Float = 0f, border: Boolean = false, flags: Int = ImGuiWindowFlags.None, op: Op) {
 	if (ImGui.beginChild(id, width, height, border, flags)) op()
 	ImGui.endChild()
 }
@@ -248,8 +248,8 @@ inline fun tabItem(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, flags: Int = ImGuiTableFlags.None, op: Op) {
-	if (ImGui.beginTable(id, columns, flags)) {
+inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: Op) {
+	if (ImGui.beginTable(id, columns, flags, width, height)) {
 		op()
 		ImGui.endTable()
 	}
@@ -264,8 +264,8 @@ inline fun column(op: Op) {
 /**
  * Runs [op] in a list box labeled [label].
  */
-inline fun list(label: String, stretch: Boolean = false, op: Op) {
-	if (ImGui.beginListBox(label, if (label.startsWith("##")) -1.0f else 0.0f, if (stretch) -1.0f else 0.0f)) {
+inline fun list(label: String, width: Float = 0f, height: Float = 0f, op: Op) {
+	if (ImGui.beginListBox(label, width, height)) {
 		op()
 		ImGui.endListBox()
 	}
@@ -318,7 +318,7 @@ fun separator() {
  * Optionally [flip]s the image vertically when rendering.
  */
 fun image(texture: Texture, width: Float, height: Float, flip: Boolean = false) {
-	if (flip) ImGui.image(texture.id, width, height, 0.0f, 1.0f, 1.0f, 0.0f)
+	if (flip) ImGui.image(texture.id, width, height, 0f, 1f, 1f, 0f)
 	else ImGui.image(texture.id, width, height)
 }
 
@@ -404,7 +404,7 @@ inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Bo
  * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits without overflow.
  * Returns `true` when changed.
  */
-inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, flags: Int = ImGuiInputTextFlags.None, digitWidth: Int = 3, onChange: OnChange<Int> = {}): Boolean {
+inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Int> = {}): Boolean {
 	val ptr = tInt
 	ptr.set(value)
 
@@ -422,7 +422,7 @@ inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, fl
  * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits (while considering [format]) without overflow.
  * Returns `true` when changed.
  */
-inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, digitWidth: Int = 3, onChange: OnChange<Double> = {}): Boolean {
+inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}): Boolean {
 	val ptr = tDouble
 	ptr.set(value)
 
@@ -437,23 +437,24 @@ inline fun input(label: String, value: Double, format: String = "%.3f", step: Do
 }
 /**
  * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits (while considering [format]) without overflow.
  * Returns `true` when changed.
  * @see input
  */
-inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
+inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
 	var changed = false
 	val ptr = tDouble2
 	ptr.set(value)
 
-	table(label, 2, ImGuiTableFlags.SizingStretchSame) {
+	table(label, 2, width = calcWidth(format.format(10.0.pow(digitWidth))) * 2) {
 		column {
-			input("${label}.x", ptr.x, format, step, stepFast, flags) {
+			input("${label}.x", ptr.x, format, step, stepFast, digitWidth, flags) {
 				ptr.x = it
 				changed = true
 			}
 		}
 		column {
-			input("${label}.y", ptr.y, format, step, stepFast, flags) {
+			input("${label}.y", ptr.y, format, step, stepFast, digitWidth, flags) {
 				ptr.y = it
 				changed = true
 			}
@@ -465,33 +466,32 @@ inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: 
 }
 /**
  * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits (while considering [format]) without overflow.
  * Returns `true` when changed.
  * @see input
  */
-inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
+inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
 	var changed = false
 	val ptr = tDouble3
 	ptr.set(value)
 
-	group {
-		table(label, 3, ImGuiTableFlags.SizingStretchSame) {
-			column {
-				input("${label}.x", ptr.x, format, step, stepFast, flags) {
-					ptr.x = it
-					changed = true
-				}
+	table(label, 3, width = calcWidth(format.format(10.0.pow(digitWidth))) * 3) {
+		column {
+			input("${label}.x", ptr.x, format, step, stepFast, digitWidth, flags) {
+				ptr.x = it
+				changed = true
 			}
-			column {
-				input("${label}.y", ptr.y, format, step, stepFast, flags) {
-					ptr.y = it
-					changed = true
-				}
+		}
+		column {
+			input("${label}.y", ptr.y, format, step, stepFast, digitWidth, flags) {
+				ptr.y = it
+				changed = true
 			}
-			column {
-				input("${label}.z", ptr.z, format, step, stepFast, flags) {
-					ptr.z = it
-					changed = true
-				}
+		}
+		column {
+			input("${label}.z", ptr.z, format, step, stepFast, digitWidth, flags) {
+				ptr.z = it
+				changed = true
 			}
 		}
 	}
@@ -527,23 +527,6 @@ inline fun onKey(key: Int, op: Op): Boolean {
 inline fun onDoubleClick(button: Int, op: Op): Boolean {
 	val result = ImGui.isMouseDoubleClicked(button)
 	if (result) op()
-	return result
-}
-
-/**
- * Runs [op] within a width region calculated from its [label] and returns its result.
- */
-inline fun <T> stretch(label: String, op: () -> T): T {
-	val result: T
-
-	if (label.startsWith("##")) {
-		ImGui.pushItemWidth(-1.0f)
-		result = op()
-		ImGui.popItemWidth()
-	} else {
-		result = op()
-	}
-
 	return result
 }
 

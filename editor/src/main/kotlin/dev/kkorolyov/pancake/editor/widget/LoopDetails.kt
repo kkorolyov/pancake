@@ -39,7 +39,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 	}
 
 	private fun summary() {
-		table("summary", 2, ImGuiTableFlags.SizingFixedFit) {
+		table("summary", 2, flags = ImGuiTableFlags.SizingFixedFit) {
 			column { text("Tick time (ns)") }
 			column { text(engine.sampler.value) }
 
