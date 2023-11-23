@@ -1,31 +1,31 @@
 package dev.kkorolyov.pancake.editor.widget
 
-import dev.kkorolyov.pancake.editor.MemoizedContent
+import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.input
-import dev.kkorolyov.pancake.editor.onDoubleClick
+import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
-import dev.kkorolyov.pancake.editor.separator
+import dev.kkorolyov.pancake.editor.setDragDropPayload
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.GameSystem
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
-import org.lwjgl.glfw.GLFW
 import kotlin.math.roundToInt
 
 /**
  * Renders overall information for [systems].
- * Submits expanded system windows by system to [systemManifest], which is expected to be rendered externally.
- * This is to avoid feedback loops with docking dependent windows together.
+ * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [GameSystem].
  */
-class SystemsTable(private val systems: Collection<GameSystem>, private val systemManifest: WindowManifest<GameSystem>) : Widget {
+class SystemsTable(private val systems: Collection<GameSystem>, private val dragDropId: String? = null) : Widget {
 	private var showHooks = false
 
-	private val preview = MemoizedContent<GameSystem>({ getWidget(GameSystem::class.java, it) }, Widget { text("Select a system to preview") })
+	private val current = DebouncedValue<GameSystem, Widget> { getWidget(GameSystem::class.java, it) }
+
+	private val inlineDetails = Popup("inlineDetails")
 
 	override fun invoke() {
 		table("systems", 4, flags = ImGuiTableFlags.Resizable or ImGuiTableFlags.SizingStretchProp) {
@@ -43,12 +43,13 @@ class SystemsTable(private val systems: Collection<GameSystem>, private val syst
 					column {
 						// hook systems (abstract classes most likely) have no details to show
 						name?.let {
-							selectable(it, ImGuiSelectableFlags.SpanAllColumns or ImGuiSelectableFlags.AllowDoubleClick) {
-								preview(system)
-
-								onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
-									systemManifest[system] = { Window(it, preview.value) }
-									preview.reset()
+							selectable(it, ImGuiSelectableFlags.SpanAllColumns) {
+								inlineDetails.open(current.set(system))
+							}
+							dragDropId?.let { id ->
+								onDrag {
+									setDragDropPayload(system, id)
+									current.set(system)()
 								}
 							}
 						} ?: text("hook")
@@ -64,10 +65,9 @@ class SystemsTable(private val systems: Collection<GameSystem>, private val syst
 					}
 				}
 			}
+
+			inlineDetails()
 		}
 		if (systems.any { it::class.simpleName == null }) input("show hooks", showHooks) { showHooks = it }
-
-		separator()
-		preview.value()
 	}
 }
