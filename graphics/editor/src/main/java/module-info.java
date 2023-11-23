@@ -1,4 +1,5 @@
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory;
+import dev.kkorolyov.pancake.graphics.editor.LensComponentWidgetFactory;
 import dev.kkorolyov.pancake.graphics.editor.ModelComponentWidgetFactory;
 import dev.kkorolyov.pancake.graphics.editor.factory.SnapshotFactory;
 
@@ -19,5 +20,6 @@ module dev.kkorolyov.pancake.graphics.editor {
 	uses SnapshotFactory;
 
 	provides WidgetFactory with
+			LensComponentWidgetFactory,
 			ModelComponentWidgetFactory;
 }
