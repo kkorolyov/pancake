@@ -74,7 +74,7 @@ class Editor(
 	private fun drawDropHandlers() {
 		onDrop {
 			useDragDropPayload<GameSystem>(systemDragDropId) {
-				systemManifest[it] = { Window(it::class.simpleName ?: "GameSystem", getWidget(GameSystem::class.java, it), openAt = OpenAt.Cursor) }
+				systemManifest[it] = { Window(it::class.simpleName ?: "GameSystem", withDropHandlers(getWidget(GameSystem::class.java, it)), openAt = OpenAt.Cursor) }
 			}
 			useDragDropPayload<Entity>(entityDragDropId) {
 				entityManifest[it] = { Window("Entity ${it.id}", withDropHandlers(EntityDetails(it, componentDragDropId)), openAt = OpenAt.Cursor) }

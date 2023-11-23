@@ -38,7 +38,7 @@ fun basicGameSystemWidget(system: GameSystem): Widget = Widget {
 
 /**
  * Returns the most suitable widget for displaying [t] from all [c]-type [WidgetFactory] providers on the classpath.
- * Falls back to the default widget for [t]'s type if no suitable provider found.
+ * Falls back to the default widget for [t]'s base type if no suitable provider found.
  */
 fun <T> getWidget(c: Class<T>, t: T): Widget = factories[c]?.firstNotNullOfOrNull { (it as WidgetFactory<T>).get(t) } ?: when (t) {
 	is GameSystem -> basicGameSystemWidget(t)
@@ -56,7 +56,7 @@ fun <T, ST : Class<out T>> getWidget(c: Class<T>, sc: ST, onNew: (T) -> Unit): W
  */
 interface WidgetFactory<T> {
 	/**
-	 * The top-level class of thing this factory provides widgets for.
+	 * The base class of thing this factory provides widgets for.
 	 */
 	val type: Class<T>
 
@@ -77,7 +77,7 @@ interface WidgetFactory<T> {
 		inline fun <reified T> get(t: Any, crossinline op: T.() -> Widget): Widget? = (t as? T)?.let(op)
 
 		/**
-		 * Returns the result of invoking [op] with [onNew] if it is for instances of subtype [U].
+		 * Returns the result of invoking [op] with [onNew] if [c] type matches [T].
 		 */
 		inline fun <reified T> get(c: Class<out Any>, noinline onNew: (T) -> Unit, crossinline op: ((T) -> Unit) -> Widget): Widget? = if (c == T::class.java) op(onNew) else null
 	}

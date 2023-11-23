@@ -32,11 +32,15 @@ val tBoolean by ThreadLocal.withInitial(::ImBoolean)
 /** NO TOUCHY */
 val tInt by ThreadLocal.withInitial(::ImInt)
 /** NO TOUCHY */
+val tFloat2 by ThreadLocal.withInitial { FloatArray(2) }
+/** NO TOUCHY */
+val tFloat3 by ThreadLocal.withInitial { FloatArray(3) }
+/** NO TOUCHY */
 val tDouble by ThreadLocal.withInitial(::ImDouble)
 /** NO TOUCHY */
-val tDouble2 by ThreadLocal.withInitial(Vector2::of)
+val tVector2 by ThreadLocal.withInitial(Vector2::of)
 /** NO TOUCHY */
-val tDouble3 by ThreadLocal.withInitial(Vector3::of)
+val tVector3 by ThreadLocal.withInitial(Vector3::of)
 /** NO TOUCHY */
 val tVec2 by ThreadLocal.withInitial(::ImVec2)
 
@@ -408,7 +412,7 @@ inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, di
 	val ptr = tInt
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) calcWidth(10.0.pow(digitWidth).toString()) else null
+	val width = if (label.startsWith("##")) calcWidth("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputInt(label, ptr, step, stepFast, flags)
@@ -426,7 +430,7 @@ inline fun input(label: String, value: Double, format: String = "%.3f", step: Do
 	val ptr = tDouble
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) else null
+	val width = if (label.startsWith("##")) calcWidth("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputDouble(label, ptr, step, stepFast, format, flags)
@@ -442,27 +446,24 @@ inline fun input(label: String, value: Double, format: String = "%.3f", step: Do
  * @see input
  */
 inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
-	var changed = false
-	val ptr = tDouble2
-	ptr.set(value)
+	// TODO replace with calls to fixed ImGui.inputScalarN bindings
+	val ptr = tFloat2
+	ptr[0] = value.x.toFloat()
+	ptr[1] = value.y.toFloat()
 
-	table(label, 2, width = calcWidth(format.format(10.0.pow(digitWidth))) * 2) {
-		column {
-			input("${label}.x", ptr.x, format, step, stepFast, digitWidth, flags) {
-				ptr.x = it
-				changed = true
-			}
-		}
-		column {
-			input("${label}.y", ptr.y, format, step, stepFast, digitWidth, flags) {
-				ptr.y = it
-				changed = true
-			}
-		}
+	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 2 else null
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputFloat2(label, ptr, format, flags)
+	width?.let { ImGui.popItemWidth() }
+
+	if (result) {
+		val returnPtr = tVector2
+		returnPtr.x = ptr[0].toDouble()
+		returnPtr.y = ptr[1].toDouble()
+
+		onChange(returnPtr)
 	}
-
-	if (changed) onChange(ptr)
-	return changed
+	return result
 }
 /**
  * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
@@ -471,33 +472,26 @@ inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: 
  * @see input
  */
 inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
-	var changed = false
-	val ptr = tDouble3
-	ptr.set(value)
+	// TODO replace with calls to fixed ImGui.inputScalarN bindings
+	val ptr = tFloat3
+	ptr[0] = value.x.toFloat()
+	ptr[1] = value.y.toFloat()
+	ptr[2] = value.z.toFloat()
 
-	table(label, 3, width = calcWidth(format.format(10.0.pow(digitWidth))) * 3) {
-		column {
-			input("${label}.x", ptr.x, format, step, stepFast, digitWidth, flags) {
-				ptr.x = it
-				changed = true
-			}
-		}
-		column {
-			input("${label}.y", ptr.y, format, step, stepFast, digitWidth, flags) {
-				ptr.y = it
-				changed = true
-			}
-		}
-		column {
-			input("${label}.z", ptr.z, format, step, stepFast, digitWidth, flags) {
-				ptr.z = it
-				changed = true
-			}
-		}
+	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 3 else null
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputFloat3(label, ptr, format, flags)
+	width?.let { ImGui.popItemWidth() }
+
+	if (result) {
+		val returnPtr = tVector3
+		returnPtr.x = ptr[0].toDouble()
+		returnPtr.y = ptr[1].toDouble()
+		returnPtr.z = ptr[2].toDouble()
+
+		onChange(returnPtr)
 	}
-
-	if (changed) onChange(ptr)
-	return changed
+	return result
 }
 
 /**
