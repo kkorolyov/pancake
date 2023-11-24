@@ -16,7 +16,7 @@ public final class PathComponentConverter implements ComponentConverter<Path> {
 		var steps = map.get("steps");
 		if (steps != null) {
 			var vectorConverter = ObjectConverters.vector3();
-			for (var step : ((Iterable<Iterable<Number>>) steps)) result.add(vectorConverter.convert(step));
+			for (var step : ((Iterable<Iterable<Number>>) steps)) result.add(vectorConverter.convertOut(step));
 		}
 
 		return result;
@@ -27,7 +27,7 @@ public final class PathComponentConverter implements ComponentConverter<Path> {
 				"strength", path.getStrength(),
 				"buffer", path.getProximity(),
 				"snapStrategy", path.getSnapStrategy().name(),
-				"steps", StreamSupport.stream(path.spliterator(), false).toList()
+				"steps", StreamSupport.stream(path.spliterator(), false).map(ObjectConverters.vector3()::convertIn).toList()
 		);
 	}
 

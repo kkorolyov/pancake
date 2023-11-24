@@ -4,16 +4,14 @@ import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
 import dev.kkorolyov.pancake.platform.io.ObjectConverters;
 
-import java.util.Arrays;
-
 public final class PositionComponentConverter implements ComponentConverter<Position> {
 	@Override
 	public Position read(Object data) {
-		return new Position(ObjectConverters.vector3().convert((Iterable<Number>) data));
+		return new Position(ObjectConverters.vector3().convertOut((Iterable<Number>) data));
 	}
 	@Override
 	public Object write(Position position) {
-		return Arrays.asList(position.getValue().getX(), position.getValue().getY(), position.getValue().getZ());
+		return ObjectConverters.vector3().convertIn(position.getValue());
 	}
 
 	@Override

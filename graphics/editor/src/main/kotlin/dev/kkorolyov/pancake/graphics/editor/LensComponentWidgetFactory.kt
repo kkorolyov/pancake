@@ -29,7 +29,7 @@ class LensComponentWidgetFactory : WidgetFactory<Component> {
 					input2("##offset", offset, onChange = offset::set)
 				}
 				propertyRow("Mask") {
-					input("##mask", mask.toString(), flags = ImGuiInputTextFlags.ReadOnly) {}
+					input("##mask", mask.toLongArray().contentToString(), flags = ImGuiInputTextFlags.ReadOnly) {}
 				}
 				propertyRow("Active") {
 					input("##active", active) { active = it }
