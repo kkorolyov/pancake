@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
@@ -13,7 +14,11 @@ import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.setDragDropPayload
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.entity.EntityTemplate
+import imgui.ImGui
 import io.github.classgraph.ClassGraph
+import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.Yaml
 
 private val componentTypes by ThreadLocal.withInitial {
 	ClassGraph().enableClassInfo().scan().use { result ->
@@ -64,6 +69,9 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 				drawAddMenu()
 			}
 			inlineDetails()
+		}
+		button("copy yaml") {
+			ImGui.setClipboardText(Yaml(DumperOptions().apply { width = 1000 }).dump(EntityTemplate.write(entity)))
 		}
 
 		// augment elements only after done iterating
