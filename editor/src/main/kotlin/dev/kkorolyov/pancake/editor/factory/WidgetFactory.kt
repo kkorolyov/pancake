@@ -56,7 +56,7 @@ fun <T, ST : Class<out T>> getWidget(c: Class<T>, sc: ST, onNew: (T) -> Unit): W
  */
 interface WidgetFactory<T> {
 	/**
-	 * The base class of thing this factory provides widgets for.
+	 * The generic class of thing this factory provides widgets for.
 	 */
 	val type: Class<T>
 

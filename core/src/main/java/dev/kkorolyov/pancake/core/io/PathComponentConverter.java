@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.core.io;
 import dev.kkorolyov.pancake.core.component.Path;
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
 import dev.kkorolyov.pancake.platform.io.ObjectConverters;
+import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.Map;
 import java.util.stream.StreamSupport;
@@ -15,7 +16,7 @@ public final class PathComponentConverter implements ComponentConverter<Path> {
 		var result = new Path(((Number) map.get("strength")).doubleValue(), ((Number) map.get("proximity")).doubleValue(), Path.SnapStrategy.valueOf((String) map.get("snapStrategy")));
 		var steps = map.get("steps");
 		if (steps != null) {
-			var vectorConverter = ObjectConverters.vector3();
+			var vectorConverter = ObjectConverters.get(Object.class, Iterable.class, Vector3.class);
 			for (var step : ((Iterable<Iterable<Number>>) steps)) result.add(vectorConverter.convertOut(step));
 		}
 
@@ -27,7 +28,7 @@ public final class PathComponentConverter implements ComponentConverter<Path> {
 				"strength", path.getStrength(),
 				"buffer", path.getProximity(),
 				"snapStrategy", path.getSnapStrategy().name(),
-				"steps", StreamSupport.stream(path.spliterator(), false).map(ObjectConverters.vector3()::convertIn).toList()
+				"steps", StreamSupport.stream(path.spliterator(), false).map(ObjectConverters.get(Object.class, Iterable.class, Vector3.class)::convertIn).toList()
 		);
 	}
 

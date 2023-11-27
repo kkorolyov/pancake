@@ -19,7 +19,7 @@ import java.util.Optional;
  * {@link ResourceConverterFactory} for core actions.
  */
 public final class ActionResourceConverterFactory implements ResourceConverterFactory<Action> {
-	private final BiConverter<Iterable<Number>, Vector3> vector3Converter = ObjectConverters.vector3();
+	private final BiConverter<Iterable, Vector3> vector3Converter = ObjectConverters.get(Object.class, Iterable.class, Vector3.class);
 
 	@Override
 	public Converter<Object, Optional<Resource<Action>>> get() {

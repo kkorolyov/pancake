@@ -1,4 +1,6 @@
 import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
+import dev.kkorolyov.pancake.platform.io.ObjectConverterFactory;
+import dev.kkorolyov.pancake.platform.io.internal.MathObjectConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.ActionResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.EntityTemplateResourceConverterFactory;
@@ -24,8 +26,11 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.utility;
 
 	uses ComponentConverter;
+	uses ObjectConverterFactory;
 	uses ResourceConverterFactory;
 
+	provides ObjectConverterFactory with
+			MathObjectConverterFactory;
 	provides ResourceConverterFactory with
 			ActionResourceConverterFactory,
 			EntityTemplateResourceConverterFactory;

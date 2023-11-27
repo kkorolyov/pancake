@@ -1,56 +1,44 @@
 package dev.kkorolyov.pancake.platform.io;
 
 import dev.kkorolyov.flub.function.convert.BiConverter;
-import dev.kkorolyov.pancake.platform.math.Vector2;
-import dev.kkorolyov.pancake.platform.math.Vector3;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.stream.StreamSupport;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.ServiceLoader;
+import java.util.stream.Collectors;
 
 /**
- * Returns common basic object -> typed object converters.
+ * Provides access to dynamically-loaded {@link ObjectConverterFactory} implementations.
  */
 public final class ObjectConverters {
+	private static final Logger log = LoggerFactory.getLogger(ObjectConverters.class);
+
+	private static final ThreadLocal<Map<Class<?>, List<ObjectConverterFactory>>> factories = ThreadLocal.withInitial(() -> {
+				Map<Class<?>, List<ObjectConverterFactory>> result = ServiceLoader.load(ObjectConverterFactory.class).stream()
+						.map(ServiceLoader.Provider::get)
+						.collect(Collectors.groupingBy(ObjectConverterFactory::getType));
+
+				result.forEach((c, providers) -> log.info("loaded {} {} providers: {}", providers.size(), c, providers));
+
+				return result;
+			}
+	);
 	private ObjectConverters() {}
 
 	/**
-	 * Returns a converter converting between number iterables and 2D vectors.
+	 * Returns the {@code c}-type converter supporting {@code inC <-> outC} conversions.
+	 * If no matching converter found, throws {@link NoSuchElementException}.
 	 */
-	public static BiConverter<Iterable<Number>, Vector2> vector2() {
-		return new BiConverter<>(
-				t -> asVector2(
-						StreamSupport.stream(t.spliterator(), false)
-								.mapToDouble(Number::doubleValue)
-								.toArray()
-				),
-				t -> Arrays.asList(t.getX(), t.getY())
-		);
-	}
-	/**
-	 * Returns a converter converting between number iterables and 3D vectors.
-	 */
-	public static BiConverter<Iterable<Number>, Vector3> vector3() {
-		return new BiConverter<>(
-				t -> asVector3(
-						StreamSupport.stream(t.spliterator(), false)
-								.mapToDouble(Number::doubleValue)
-								.toArray()
-				),
-				t -> Arrays.asList(t.getX(), t.getY(), t.getZ())
-		);
-	}
-
-	private static Vector2 asVector2(double[] components) {
-		return Vector2.of(
-				components.length > 0 ? components[0] : 0,
-				components.length > 1 ? components[1] : 0
-		);
-	}
-	private static Vector3 asVector3(double[] components) {
-		return Vector3.of(
-				components.length > 0 ? components[0] : 0,
-				components.length > 1 ? components[1] : 0,
-				components.length > 2 ? components[2] : 0
-		);
+	public static <T, I, O extends T> BiConverter<I, O> get(Class<T> c, Class<I> inC, Class<O> outC) {
+		return factories.get().getOrDefault(c, Collections.emptyList()).stream()
+				.map(t -> t.get(inC, outC))
+				.filter(Objects::nonNull)
+				.findFirst()
+				.orElseThrow(() -> new NoSuchElementException("no [%s]-type provider found for converting between [%s] and [%s]".formatted(c, inC, outC)));
 	}
 }
