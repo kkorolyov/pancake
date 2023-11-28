@@ -1,13 +1,12 @@
 package dev.kkorolyov.pancake.core.registry;
 
-import dev.kkorolyov.flub.function.convert.BiConverter;
 import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.core.component.Force;
 import dev.kkorolyov.pancake.core.component.Orientation;
 import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.platform.action.Action;
-import dev.kkorolyov.pancake.platform.io.ObjectConverters;
+import dev.kkorolyov.pancake.platform.io.Structizers;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.registry.Resource;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
@@ -19,8 +18,6 @@ import java.util.Optional;
  * {@link ResourceConverterFactory} for core actions.
  */
 public final class ActionResourceConverterFactory implements ResourceConverterFactory<Action> {
-	private final BiConverter<Iterable, Vector3> vector3Converter = ObjectConverters.get(Object.class, Iterable.class, Vector3.class);
-
 	@Override
 	public Converter<Object, Optional<Resource<Action>>> get() {
 		return Converter.reducing(
@@ -68,7 +65,7 @@ public final class ActionResourceConverterFactory implements ResourceConverterFa
 	}
 
 	private Vector3 asVector(Object o) {
-		return o == null ? null : vector3Converter.convertOut((Iterable<Number>) o);
+		return o == null ? null : Structizers.fromStruct(Vector3.class, o);
 	}
 
 	@Override

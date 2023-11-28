@@ -1,5 +1,5 @@
-import dev.kkorolyov.pancake.graphics.io.LensComponentConverter;
-import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
+import dev.kkorolyov.pancake.graphics.io.ComponentStructizer;
+import dev.kkorolyov.pancake.platform.io.Structizer;
 
 module dev.kkorolyov.pancake.graphics {
 	requires kotlin.stdlib;
@@ -13,6 +13,6 @@ module dev.kkorolyov.pancake.graphics {
 	exports dev.kkorolyov.pancake.graphics.component;
 	exports dev.kkorolyov.pancake.graphics.system;
 
-	provides ComponentConverter with
-			LensComponentConverter;
+	provides Structizer with
+			ComponentStructizer;
 }

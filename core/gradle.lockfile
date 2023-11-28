@@ -1,26 +1,26 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-ch.randelshofer:fastdoubleparser:0.8.0=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-annotations:2.15.0=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-core:2.15.0=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.core:jackson-databind:2.15.0=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.0=runtimeClasspath,testRuntimeClasspath
-com.fasterxml.jackson:jackson-bom:2.15.0=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-annotations:2.16.0=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-core:2.16.0=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-databind:2.16.0=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.16.0=runtimeClasspath,testRuntimeClasspath
+com.fasterxml.jackson:jackson-bom:2.16.0=runtimeClasspath,testRuntimeClasspath
 dev.kkorolyov:flub:0.3.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
-net.bytebuddy:byte-buddy:1.14.4=testCompileClasspath,testRuntimeClasspath
+io.github.classgraph:classgraph:4.8.165=runtimeClasspath,testRuntimeClasspath
+net.bytebuddy:byte-buddy:1.14.10=testCompileClasspath,testRuntimeClasspath
 org.apache.groovy:groovy-bom:4.0.6=testCompileClasspath,testRuntimeClasspath
 org.apache.groovy:groovy:4.0.6=testCompileClasspath,testRuntimeClasspath
-org.apache.logging.log4j:log4j-api:2.20.0=testCompileClasspath,testRuntimeClasspath
-org.apache.logging.log4j:log4j-core:2.20.0=testRuntimeClasspath
-org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0=testCompileClasspath,testRuntimeClasspath
+org.apache.logging.log4j:log4j-api:2.22.0=testCompileClasspath,testRuntimeClasspath
+org.apache.logging.log4j:log4j-core:2.22.0=testRuntimeClasspath
+org.apache.logging.log4j:log4j-slf4j2-impl:2.22.0=testCompileClasspath,testRuntimeClasspath
 org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath
 org.hamcrest:hamcrest:2.2=testCompileClasspath,testRuntimeClasspath
 org.junit.platform:junit-platform-commons:1.9.0=testCompileClasspath,testRuntimeClasspath
 org.junit.platform:junit-platform-engine:1.9.0=testCompileClasspath,testRuntimeClasspath
 org.junit:junit-bom:5.9.0=testCompileClasspath,testRuntimeClasspath
 org.opentest4j:opentest4j:1.2.0=testCompileClasspath,testRuntimeClasspath
-org.slf4j:slf4j-api:2.0.7=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.slf4j:slf4j-api:2.0.9=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.spockframework:spock-core:2.4-M1-groovy-4.0=testCompileClasspath,testRuntimeClasspath
-org.yaml:snakeyaml:2.0=runtimeClasspath,testRuntimeClasspath
+org.yaml:snakeyaml:2.2=runtimeClasspath,testRuntimeClasspath
 empty=annotationProcessor,testAnnotationProcessor
