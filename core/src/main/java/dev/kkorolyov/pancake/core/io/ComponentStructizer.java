@@ -38,21 +38,21 @@ public class ComponentStructizer implements Structizer {
 						Structizer.select(ActionQueue.class, t -> List.of()),
 						// TODO
 						Structizer.select(Bounds.class, t -> List.of()),
-						Structizer.select(Damping.class, t -> Structizers.toStruct(t.getValue())),
-						Structizer.select(Force.class, t -> Structizers.toStruct(t.getValue())),
-						Structizer.select(Mass.class, t -> t.getValue()),
-						Structizer.select(Orientation.class, t -> Structizers.toStruct(t.getValue())),
-						Structizer.select(Position.class, t -> Structizers.toStruct(t.getValue())),
 						Structizer.select(Path.class, t -> Map.of(
 								"strength", t.getStrength(),
-								"buffer", t.getProximity(),
+								"proximity", t.getProximity(),
 								"snapStrategy", t.getSnapStrategy().name(),
 								"steps", StreamSupport.stream(t.spliterator(), false).map(Structizers::toStruct).toList()
 						)),
-						Structizer.select(Velocity.class, t -> Structizers.toStruct(t.getValue())),
-						Structizer.select(Correctable.class, t -> t.getPriority()),
 						Structizer.select(Collidable.class, t -> t.getPriority()),
-						Structizer.select(VelocityLimit.class, t -> t.getValue())
+						Structizer.select(Correctable.class, t -> t.getPriority()),
+						Structizer.select(Mass.class, t -> t.getValue()),
+						Structizer.select(VelocityLimit.class, t -> t.getValue()),
+						Structizer.select(Damping.class, t -> Structizers.toStruct(t.getValue())),
+						Structizer.select(Force.class, t -> Structizers.toStruct(t.getValue())),
+						Structizer.select(Orientation.class, t -> Structizers.toStruct(t.getValue())),
+						Structizer.select(Position.class, t -> Structizers.toStruct(t.getValue())),
+						Structizer.select(Velocity.class, t -> Structizers.toStruct(t.getValue()))
 				));
 	}
 
@@ -74,7 +74,7 @@ public class ComponentStructizer implements Structizer {
 											var result = new Path(((Number) t.get("strength")).doubleValue(), ((Number) t.get("proximity")).doubleValue(), Path.SnapStrategy.valueOf((String) t.get("snapStrategy")));
 											var steps = t.get("steps");
 											if (steps != null) {
-												for (var step : ((Iterable<Number>) steps)) result.add(Structizers.fromStruct(Vector3.class, step));
+												for (var step : ((Iterable<Iterable<Number>>) steps)) result.add(Structizers.fromStruct(Vector3.class, step));
 											}
 
 											return result;
