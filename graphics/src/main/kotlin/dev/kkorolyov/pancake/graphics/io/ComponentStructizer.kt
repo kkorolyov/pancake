@@ -19,7 +19,7 @@ class ComponentStructizer : Structizer {
 					"scale" to Structizers.toStruct(it.scale),
 					"size" to Structizers.toStruct(it.size),
 					"offset" to Structizers.toStruct(it.offset),
-					"mask" to it.mask.toLongArray(),
+					"mask" to it.mask.toLongArray().asList(),
 					"active" to it.active
 				)
 			},
@@ -36,7 +36,7 @@ class ComponentStructizer : Structizer {
 				it["offset"]?.let { result.offset.set(Structizers.fromStruct(Vector2::class.java, it as Iterable<Number>)) }
 				it["mask"]?.let {
 					result.mask.clear()
-					result.mask.or(BitSet.valueOf(it as LongArray))
+					result.mask.or(BitSet.valueOf((it as Collection<Long>).toLongArray()))
 				}
 				it["active"]?.let { result.active = it as Boolean }
 
