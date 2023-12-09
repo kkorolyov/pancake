@@ -8,9 +8,11 @@ import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.disabledIf
+import dev.kkorolyov.pancake.editor.group
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.onDrag
+import dev.kkorolyov.pancake.editor.sameLine
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.setDragDropPayload
@@ -26,6 +28,7 @@ import dev.kkorolyov.pancake.platform.io.Resources
 import dev.kkorolyov.pancake.platform.registry.Registry
 import dev.kkorolyov.pancake.platform.registry.ResourceConverters
 import imgui.ImGui
+import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
@@ -43,8 +46,6 @@ private val log = LoggerFactory.getLogger(EntitiesTable::class.java)
 class EntitiesTable(private val entities: EntityPool, private val dragDropId: String? = null) : Widget {
 	private val aliases = mutableMapOf<Entity, String>()
 	private val selected = mutableSetOf<Entity>()
-
-	private var exportPath = ""
 
 	private val current = DebouncedValue<Entity, Widget> { EntityDetails(it) }
 
@@ -97,7 +98,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 	override fun invoke() {
 		// leave room for controls below
-		table("entities", 4, height = -(ImGui.getTextLineHeightWithSpacing() * 6), flags = ImGuiTableFlags.ScrollY) {
+		table("entities", 4, height = -(ImGui.getTextLineHeightWithSpacing() * 1.5f), flags = ImGuiTableFlags.ScrollY) {
 			ImGui.tableSetupColumn("ID")
 			ImGui.tableSetupColumn("Components")
 			ImGui.tableSetupColumn("Alias")
@@ -126,28 +127,32 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 		}
 
 		separator()
-		button("import") {
-			import()
-		}
+		group {
+			button("import") {
+				try {
+					import()
+				} catch (e: Exception) {
+					errorMsg.open(Widget { text(e.message ?: e) })
+					log.error("import error", e)
+				}
+			}
+			tooltip("import entities")
 
-		if (selected.isNotEmpty()) {
-			separator()
+			sameLine()
 
-			text("Export ${selected.joinToString { aliases[it] ?: it.id.toString() }}")
-
-			input("##exportPath", exportPath) { exportPath = it }
-			tooltip("export path")
-
-			disabledIf(exportPath.isEmpty()) {
-				button("YAML") {
+			disabledIf(selected.isEmpty()) {
+				button("export") {
 					try {
-						exportYaml()
-						exportPath = ""
+						export()
 					} catch (e: Exception) {
 						errorMsg.open(Widget { text(e.message ?: e) })
 						log.error("export error", e)
 					}
 				}
+				tooltip(
+					ImGuiHoveredFlags.AllowWhenDisabled,
+					"export ${if (selected.isEmpty()) "selected entities" else selected.joinToString { aliases[it] ?: it.id.toString() }}"
+				)
 			}
 		}
 
@@ -185,10 +190,22 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 		} ?: throw IllegalArgumentException("failed to open file [$path]")
 	}
 
-	private fun exportYaml() {
-		val data = selected.associate { (aliases[it] ?: it.id) to toStructEntity(it) }
-		Resources.outStream(exportPath)?.use {
-			Yaml(DumperOptions().apply { width = 1000 }).dump(data, OutputStreamWriter(it))
+	private fun export() {
+		FileAccess.pickSave(FileAccess.Filter("YAML", "yaml", "yml"))?.let {
+			if (it.endsWith(".yaml") || it.endsWith(".yml")) {
+				exportYaml(it)
+			} else {
+				throw IllegalArgumentException("unknown file type [$it]")
+			}
 		}
+	}
+
+	private fun exportYaml(path: String) {
+		Resources.outStream(path)?.use {
+			Yaml(DumperOptions().apply { width = 1000 }).dump(
+				selected.associate { entity -> (aliases[entity] ?: entity.id) to toStructEntity(entity) },
+				OutputStreamWriter(it)
+			)
+		} ?: throw IllegalArgumentException("failed to open file [$path]")
 	}
 }

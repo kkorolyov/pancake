@@ -116,13 +116,19 @@ fun text(value: Any) {
  * Draws [value] as text in a tooltip when the last set item is hovered.
  */
 fun tooltip(value: Any) {
-	if (ImGui.isItemHovered()) ImGui.setTooltip(value.toString())
+	tooltip(ImGuiHoveredFlags.None, value)
+}
+/**
+ * Draws [value] as text in a tooltip when the last set item is hovered.
+ */
+fun tooltip(flags: Int, value: Any) {
+	if (ImGui.isItemHovered(flags)) ImGui.setTooltip(value.toString())
 }
 /**
  * Runs [op] in a tooltip when the last set item is hovered.
  */
-inline fun tooltip(op: Op) {
-	if (ImGui.isItemHovered()) {
+inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, op: Op) {
+	if (ImGui.isItemHovered(flags)) {
 		ImGui.beginTooltip()
 		op()
 		ImGui.endTooltip()
