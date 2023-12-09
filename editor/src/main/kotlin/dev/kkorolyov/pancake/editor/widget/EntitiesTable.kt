@@ -22,6 +22,8 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.EntityTemplate
 import dev.kkorolyov.pancake.platform.io.BasicParsers
 import dev.kkorolyov.pancake.platform.io.Resources
+import dev.kkorolyov.pancake.platform.registry.Registry
+import dev.kkorolyov.pancake.platform.registry.ResourceConverters
 import imgui.ImGui
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
@@ -167,10 +169,14 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 	private fun importYaml(path: String) {
 		Resources.inStream(path)?.use {
-			BasicParsers.yaml()
-				.andThen { EntityTemplate.read(it as Map<String, Any>) }
-				.parse(it)
-				.forEach { (alias, template) ->
+			Registry<EntityTemplate>().apply {
+				putAll(
+					BasicParsers.yaml()
+						.andThen(ResourceConverters.get(EntityTemplate::class.java))
+						.parse(it)
+				)
+			}
+				.forEach { alias, template ->
 					val entity = entities.create()
 					template.apply(entity)
 					aliases[entity] = alias

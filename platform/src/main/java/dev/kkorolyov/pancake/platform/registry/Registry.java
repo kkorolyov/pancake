@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.platform.registry;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -31,6 +32,15 @@ public final class Registry<T> {
 	 */
 	public void putAll(Map<String, ? extends Resource<T>> resources) {
 		this.resources.putAll(resources);
+	}
+
+	/**
+	 * Runs {@code op} on each {@code (key, resource)} pair in this registry.
+	 */
+	public void forEach(BiConsumer<? super String, ? super T> op) {
+		for (String key : resources.keySet()) {
+			op.accept(key, get(key));
+		}
 	}
 
 	@Override
