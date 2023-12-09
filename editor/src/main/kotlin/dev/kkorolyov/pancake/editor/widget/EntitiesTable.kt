@@ -16,6 +16,7 @@ import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.setDragDropPayload
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.toStructEntity
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
@@ -185,7 +186,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 	}
 
 	private fun exportYaml() {
-		val data = selected.map { (aliases[it] ?: it.id) to EntityTemplate.write(it) }.toMap()
+		val data = selected.associate { (aliases[it] ?: it.id) to toStructEntity(it) }
 		Resources.outStream(exportPath)?.use {
 			Yaml(DumperOptions().apply { width = 1000 }).dump(data, OutputStreamWriter(it))
 		}

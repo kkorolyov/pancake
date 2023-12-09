@@ -12,9 +12,9 @@ import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.setDragDropPayload
+import dev.kkorolyov.pancake.editor.toStructEntity
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.entity.EntityTemplate
 import imgui.ImGui
 import io.github.classgraph.ClassGraph
 import org.yaml.snakeyaml.DumperOptions
@@ -71,7 +71,7 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 			inlineDetails()
 		}
 		button("copy yaml") {
-			ImGui.setClipboardText(Yaml(DumperOptions().apply { width = 1000 }).dump(EntityTemplate.write(entity)))
+			ImGui.setClipboardText(Yaml(DumperOptions().apply { width = 1000 }).dump(toStructEntity(entity)))
 		}
 
 		// augment elements only after done iterating
