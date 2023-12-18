@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.editor
 
-import dev.kkorolyov.pancake.editor.MemoizedContent
+import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
@@ -34,24 +34,24 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 	override val type = Component::class.java
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Model>(t) {
-		val allMeshes = MemoizedContent<List<Mesh>>({
+		val allMeshes = DebouncedValue<List<Mesh>, Widget> {
 			val texture = getSharedSnapshot(0, it.first()::class.java)(it)
 			Widget { image(texture, IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat()) }
-		})
-		val mesh = MemoizedContent<Mesh>({
+		}
+		val mesh = DebouncedValue<Mesh, Widget> {
 			val texture = getSharedSnapshot(1, it::class.java)(listOf(it))
 			Widget { image(texture, IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat()) }
-		})
+		}
 
-		var editProgram: Modal? = null
-		var editMeshes: Modal? = null
+		val editProgram = Modal("Set program")
+		val editMeshes = Modal("Set meshes")
 
 		Widget {
 			text("program: ${program.id}")
 			sameLine()
 			button("edit##program") {
-				editProgram = Modal("Set program", getWidget(Program::class.java, program::class.java) {
-					editProgram?.visible = false
+				editProgram.open(getWidget(Program::class.java, program::class.java) {
+					editProgram.close()
 					program = it
 				})
 			}
@@ -64,8 +64,8 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 			if (meshes.isNotEmpty()) {
 				sameLine()
 				button("edit##meshes") {
-					editMeshes = Modal("Set meshes", MeshesBuilder(meshes.first()::class.java) {
-						editMeshes?.visible = false
+					editMeshes.open(MeshesBuilder(meshes.first()::class.java) {
+						editMeshes.close()
 						setMeshes(*it.toTypedArray())
 					})
 				}
@@ -74,8 +74,7 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 			button("free") { meshes.forEach(Mesh::close) }
 
 			if (meshes.isNotEmpty()) {
-				allMeshes(meshes)
-				allMeshes.value()
+				allMeshes.set(meshes)()
 
 				sameLine()
 
@@ -83,8 +82,7 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 					meshes.forEach {
 						text(it.id)
 						tooltip {
-							mesh(it)
-							mesh.value()
+							mesh.set(it)()
 						}
 					}
 				}

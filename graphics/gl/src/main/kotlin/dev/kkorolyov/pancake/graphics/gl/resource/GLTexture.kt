@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.graphics.gl.resource
 
 import dev.kkorolyov.pancake.graphics.PixelBuffer
-import dev.kkorolyov.pancake.graphics.util.Cache
 import dev.kkorolyov.pancake.graphics.resource.Texture
+import dev.kkorolyov.pancake.graphics.util.Cache
 import org.lwjgl.opengl.GL46.*
 import kotlin.math.floor
 import kotlin.math.log2
@@ -48,8 +48,8 @@ class GLTexture(
 				}
 			}
 
-			// TODO ok to always assume mipmaps?
-			if (levels > 1) glGenerateTextureMipmap(id)
+			// Generate mipmaps when requested by filtering
+			if (levels > 1 && filterMin.value >= Filter.NEAREST_MIPMAP_NEAREST.value) glGenerateTextureMipmap(id)
 
 			id
 		}

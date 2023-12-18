@@ -1,55 +1,104 @@
 package dev.kkorolyov.pancake.editor.widget
 
+import dev.kkorolyov.pancake.editor.Clipper
+import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.FileAccess
-import dev.kkorolyov.pancake.editor.MemoizedContent
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.disabledIf
+import dev.kkorolyov.pancake.editor.group
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.menuItem
-import dev.kkorolyov.pancake.editor.onDoubleClick
+import dev.kkorolyov.pancake.editor.onDrag
+import dev.kkorolyov.pancake.editor.sameLine
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.separator
+import dev.kkorolyov.pancake.editor.setDragDropPayload
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.toStructEntity
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.EntityTemplate
 import dev.kkorolyov.pancake.platform.io.BasicParsers
 import dev.kkorolyov.pancake.platform.io.Resources
-import dev.kkorolyov.pancake.platform.math.Vector2
+import dev.kkorolyov.pancake.platform.registry.Registry
+import dev.kkorolyov.pancake.platform.registry.ResourceConverters
 import imgui.ImGui
+import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableColumnFlags
-import org.lwjgl.glfw.GLFW.*
+import imgui.flag.ImGuiTableFlags
 import org.slf4j.LoggerFactory
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
 import java.io.OutputStreamWriter
 
-private val entityMinSize = Vector2.of(200.0, 200.0)
-
 private val log = LoggerFactory.getLogger(EntitiesTable::class.java)
 
 /**
  * Renders entity listings from [entities].
+ * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [Entity].
  */
-class EntitiesTable(private val entities: EntityPool) : Widget {
+class EntitiesTable(private val entities: EntityPool, private val dragDropId: String? = null) : Widget {
 	private val aliases = mutableMapOf<Entity, String>()
 	private val selected = mutableSetOf<Entity>()
 
-	private var exportPath = ""
+	private val current = DebouncedValue<Entity, Widget> { EntityDetails(it) }
 
-	private val preview = MemoizedContent(::EntityDetails, Widget { text("Select an entity to preview") })
-	private val details = WindowManifest<Int>()
+	private val inlineDetails = Popup("inlineDetails")
+	private val errorMsg = Modal("ERROR")
 
-	private var error: Modal? = null
+	private var focusedEntity: Int? = null
+	private var toAdd = false
+	private var toRemove: Entity? = null
+
+	private val rowRenderer = Clipper<Entity> {
+		column {
+			selectable(it.id) {
+				inlineDetails.open(current.set(it))
+			}
+			contextMenu {
+				drawAddMenu { toAdd = true }
+				menuItem("destroy") { toRemove = it }
+			}
+
+			dragDropId?.let { id ->
+				onDrag {
+					setDragDropPayload(it, id)
+					current.set(it)()
+				}
+			}
+
+			focusedEntity?.let { focusedId ->
+				if (focusedId == it.id) {
+					ImGui.setScrollHereY()
+					focusedEntity = null
+				}
+			}
+		}
+
+		column {
+			text(it.size())
+		}
+
+		column {
+			input("##alias${it.id}", aliases[it] ?: "") { value -> aliases[it] = value }
+		}
+
+		column {
+			input("##select${it.id}", it in selected) { value ->
+				if (value) selected.add(it) else selected.remove(it)
+			}
+		}
+	}
 
 	override fun invoke() {
-		table("entities", 4) {
+		// leave room for controls below
+		table("entities", 4, height = -(ImGui.getTextLineHeightWithSpacing() * 1.5f), flags = ImGuiTableFlags.ScrollY) {
 			ImGui.tableSetupColumn("ID")
 			ImGui.tableSetupColumn("Components")
 			ImGui.tableSetupColumn("Alias")
@@ -57,94 +106,57 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 			ImGui.tableSetupScrollFreeze(1, 1)
 			ImGui.tableHeadersRow()
 
-			var empty = true
-			var toAdd = false
-			var toRemove: Entity? = null
+			rowRenderer(entities.toList())
 
-			entities.forEach {
-				empty = false
-
-				column {
-					selectable(it.id.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
-						preview(it)
-
-						onDoubleClick(GLFW_MOUSE_BUTTON_1) {
-							details[it.id] = { Window("Entity ${it.id}", preview.value, minSize = entityMinSize) }
-							preview.reset()
-						}
-					}
-					contextMenu {
-						drawAddMenu { toAdd = true }
-						menuItem("destroy") { toRemove = it }
-					}
-				}
-
-				column {
-					text(it.size())
-				}
-
-				column {
-					input("##alias${it.id}", aliases[it] ?: "") { value -> aliases[it] = value }
-				}
-
-				column {
-					input("##select${it.id}", it in selected) { value ->
-						if (value) selected.add(it) else selected.remove(it)
-					}
+			column {
+				selectable("##empty", ImGuiSelectableFlags.SpanAllColumns) {}
+				contextMenu {
+					drawAddMenu { toAdd = true }
 				}
 			}
 
-			if (empty) {
-				// draw a dummy row for contextual actions on empty tables
-				column {
-					selectable("##empty", ImGuiSelectableFlags.SpanAllColumns) {}
-					contextMenu {
-						drawAddMenu { toAdd = true }
-					}
-				}
-			}
+			inlineDetails()
 
 			// augment elements only after done iterating
-			if (toAdd) preview(entities.create())
+			if (toAdd) focusedEntity = entities.create().id
 			toRemove?.let {
 				selected.remove(it)
 				entities.destroy(it.id)
-				preview.reset()
+				toRemove = null
 			}
 		}
 
 		separator()
-		button("import") {
-			import()
-		}
+		group {
+			button("import") {
+				try {
+					import()
+				} catch (e: Exception) {
+					errorMsg.open(Widget { text(e.message ?: e) })
+					log.error("import error", e)
+				}
+			}
+			tooltip("import entities")
 
-		if (!selected.isEmpty()) {
-			separator()
+			sameLine()
 
-			text("Export ${selected.joinToString { aliases[it] ?: it.id.toString() }}")
-
-			input("##exportPath", exportPath) { exportPath = it }
-			tooltip("export path")
-
-			disabledIf(exportPath.isEmpty()) {
-				button("YAML") {
+			disabledIf(selected.isEmpty()) {
+				button("export") {
 					try {
-						exportYaml()
-						exportPath = ""
+						export()
 					} catch (e: Exception) {
-						error = Modal("ERROR", Widget { text(e.message ?: e) })
+						errorMsg.open(Widget { text(e.message ?: e) })
 						log.error("export error", e)
 					}
 				}
+				tooltip(
+					ImGuiHoveredFlags.AllowWhenDisabled,
+					"export ${if (selected.isEmpty()) "selected entities" else selected.joinToString { aliases[it] ?: it.id.toString() }}"
+				)
 			}
 		}
 
-		separator()
-		preview.value()
-
-		details()
-
-		error?.invoke()
+		errorMsg()
 	}
 
 	private inline fun drawAddMenu(onAdd: () -> Unit) {
@@ -163,10 +175,14 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 
 	private fun importYaml(path: String) {
 		Resources.inStream(path)?.use {
-			BasicParsers.yaml()
-				.andThen { EntityTemplate.read(it as Map<String, Any>) }
-				.parse(it)
-				.forEach { (alias, template) ->
+			Registry<EntityTemplate>().apply {
+				putAll(
+					BasicParsers.yaml()
+						.andThen(ResourceConverters.get(EntityTemplate::class.java))
+						.parse(it)
+				)
+			}
+				.forEach { alias, template ->
 					val entity = entities.create()
 					template.apply(entity)
 					aliases[entity] = alias
@@ -174,10 +190,22 @@ class EntitiesTable(private val entities: EntityPool) : Widget {
 		} ?: throw IllegalArgumentException("failed to open file [$path]")
 	}
 
-	private fun exportYaml() {
-		val data = selected.map { (aliases[it] ?: it.id) to EntityTemplate.write(it) }.toMap()
-		Resources.outStream(exportPath)?.use {
-			Yaml(DumperOptions().apply { width = 1000 }).dump(data, OutputStreamWriter(it))
+	private fun export() {
+		FileAccess.pickSave(FileAccess.Filter("YAML", "yaml", "yml"))?.let {
+			if (it.endsWith(".yaml") || it.endsWith(".yml")) {
+				exportYaml(it)
+			} else {
+				throw IllegalArgumentException("unknown file type [$it]")
+			}
 		}
+	}
+
+	private fun exportYaml(path: String) {
+		Resources.outStream(path)?.use {
+			Yaml(DumperOptions().apply { width = 1000 }).dump(
+				selected.associate { entity -> (aliases[entity] ?: entity.id) to toStructEntity(entity) },
+				OutputStreamWriter(it)
+			)
+		} ?: throw IllegalArgumentException("failed to open file [$path]")
 	}
 }

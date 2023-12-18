@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.editor
 
 import dev.kkorolyov.pancake.editor.widget.Window
+import dev.kkorolyov.pancake.editor.widget.WindowManifest
 import imgui.ImGui
 import imgui.flag.ImGuiConfigFlags
 import imgui.gl3.ImGuiImplGl3
@@ -64,13 +65,23 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	}
 
 	/**
-	 * Renders widget [Window] in this container's window.
+	 * Renders [window] in this container's window.
 	 */
 	operator fun invoke(window: Window) {
+		render(window)
+	}
+	/**
+	 * Renders [manifest] in this container's window.
+	 */
+	operator fun invoke(manifest: WindowManifest<*>) {
+		render(manifest)
+	}
+
+	private fun render(widget: Widget) {
 		imguiGlfw.newFrame()
 		ImGui.newFrame()
 
-		window()
+		widget()
 
 		ImGui.render()
 		imguiGl.renderDrawData(ImGui.getDrawData())

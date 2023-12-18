@@ -11,6 +11,12 @@ interface Widget {
 
 	companion object {
 		/**
+		 * An empty widget.
+		 * Can be used as a placeholder.
+		 */
+		val NOOP = Widget {}
+
+		/**
 		 * Returns a widget running [op] when drawn.
 		 */
 		inline operator fun invoke(crossinline op: () -> Unit): Widget = object : Widget {

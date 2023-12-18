@@ -56,7 +56,7 @@ class GLDetails : Widget {
 	private var wireframe = false
 
 	override fun invoke() {
-		table("details", 2, ImGuiTableFlags.SizingStretchProp) {
+		table("details", 2, flags = ImGuiTableFlags.SizingStretchProp) {
 			column { text("Vendor") }
 			column { text(vendor) }
 

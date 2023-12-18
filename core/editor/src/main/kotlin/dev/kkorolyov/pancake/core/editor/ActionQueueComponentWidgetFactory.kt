@@ -39,12 +39,13 @@ class ActionQueueComponentWidgetFactory : WidgetFactory<Component> {
 							menuItem(type.simpleName) {
 								create = Modal(
 									"New ${type.simpleName}",
-									getWidget(Action::class.java, type) {
-										create?.visible = false
-										add(it)
-									},
 									minSize = actionMinSize
-								)
+								).apply {
+									open(getWidget(Action::class.java, type) {
+										close()
+										add(it)
+									})
+								}
 							}
 						}
 					}

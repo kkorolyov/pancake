@@ -1,4 +1,5 @@
-import dev.kkorolyov.pancake.platform.entity.ComponentConverter;
+import dev.kkorolyov.pancake.platform.io.Structizer;
+import dev.kkorolyov.pancake.platform.io.internal.MathStructizer;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.ActionResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.internal.EntityTemplateResourceConverterFactory;
@@ -12,6 +13,8 @@ module dev.kkorolyov.pancake.platform {
 
 	// resource parsing
 	requires org.yaml.snakeyaml;
+	// component conversions
+	requires io.github.classgraph;
 	// expose for resource mapping API
 	requires transitive dev.kkorolyov.flub;
 
@@ -23,9 +26,11 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.registry;
 	exports dev.kkorolyov.pancake.platform.utility;
 
-	uses ComponentConverter;
+	uses Structizer;
 	uses ResourceConverterFactory;
 
+	provides Structizer with
+			MathStructizer;
 	provides ResourceConverterFactory with
 			ActionResourceConverterFactory,
 			EntityTemplateResourceConverterFactory;

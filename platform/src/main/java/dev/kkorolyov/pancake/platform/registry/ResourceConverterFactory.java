@@ -18,7 +18,9 @@ public interface ResourceConverterFactory<T> {
 	Converter<Object, Optional<Resource<T>>> get();
 
 	/**
-	 * Returns the class of resource this factory provides converters for.
+	 * Returns the generic class of resource this factory provides converters for.
+	 * Used to pre-filter / group providers into distinct sets of concerns.
+	 * e.g. {@code Action}, {@code EntityTemplate}
 	 */
 	Class<T> getType();
 }

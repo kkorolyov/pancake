@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 private val log = LoggerFactory.getLogger(WindowManifest::class.java)
 
 /**
- * Renders a persistent collection of windows bound to unique keys.
+ * Renders a persistent collection of windows bound to unique keys of type [T].
  */
 class WindowManifest<T> : Widget {
 	private val windows = mutableMapOf<T, Window>()

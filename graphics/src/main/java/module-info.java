@@ -1,3 +1,6 @@
+import dev.kkorolyov.pancake.graphics.io.ComponentStructizer;
+import dev.kkorolyov.pancake.platform.io.Structizer;
+
 module dev.kkorolyov.pancake.graphics {
 	requires kotlin.stdlib;
 
@@ -9,4 +12,7 @@ module dev.kkorolyov.pancake.graphics {
 	exports dev.kkorolyov.pancake.graphics.resource;
 	exports dev.kkorolyov.pancake.graphics.component;
 	exports dev.kkorolyov.pancake.graphics.system;
+
+	provides Structizer with
+			ComponentStructizer;
 }

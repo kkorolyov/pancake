@@ -1,26 +1,24 @@
 package dev.kkorolyov.pancake.editor.widget
 
-import dev.kkorolyov.pancake.editor.MemoizedContent
+import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
+import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
 import dev.kkorolyov.pancake.editor.menuItem
-import dev.kkorolyov.pancake.editor.onDoubleClick
+import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
-import dev.kkorolyov.pancake.editor.separator
-import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.setDragDropPayload
+import dev.kkorolyov.pancake.editor.toStructEntity
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.platform.math.Vector2
-import imgui.flag.ImGuiSelectableFlags
+import imgui.ImGui
 import io.github.classgraph.ClassGraph
-import org.lwjgl.glfw.GLFW
-import kotlin.reflect.KClass
-
-private val componentMinSize = Vector2.of(200.0, 100.0)
+import org.yaml.snakeyaml.DumperOptions
+import org.yaml.snakeyaml.Yaml
 
 private val componentTypes by ThreadLocal.withInitial {
 	ClassGraph().enableClassInfo().scan().use { result ->
@@ -32,12 +30,15 @@ private val componentTypes by ThreadLocal.withInitial {
 
 /**
  * Displays and provides for modification of [entity] properties.
+ * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [Component].
  */
-class EntityDetails(private val entity: Entity) : Widget {
-	private val preview = MemoizedContent<Component>({ getWidget(Component::class.java, it) }, Widget { text("Select a component to preview") })
-	private val details = WindowManifest<KClass<out Component>>()
+class EntityDetails(private val entity: Entity, private val dragDropId: String? = null) : Widget {
+	private val current = DebouncedValue<Component, Widget> { getWidget(Component::class.java, it) }
+
+	private val inlineDetails = Popup("inlineDetails")
 
 	private var create: Modal? = null
+	private var createContent: Widget? = null
 
 	private var toAdd: Component? = null
 	private var toRemove: Class<out Component>? = null
@@ -45,15 +46,8 @@ class EntityDetails(private val entity: Entity) : Widget {
 	override fun invoke() {
 		list("##components") {
 			entity.forEach {
-				selectable(it::class.simpleName.toString(), ImGuiSelectableFlags.AllowDoubleClick) {
-					// display inline on single click
-					preview(it)
-
-					onDoubleClick(GLFW.GLFW_MOUSE_BUTTON_1) {
-						// in window on double click
-						details[it::class] = { Window("Entity ${entity.id}: ${it::class.simpleName}", preview.value, minSize = componentMinSize) }
-						preview.reset()
-					}
+				selectable(it::class.simpleName ?: it::class) {
+					inlineDetails.open(current.set(it))
 				}
 				contextMenu {
 					drawAddMenu()
@@ -61,16 +55,25 @@ class EntityDetails(private val entity: Entity) : Widget {
 						toRemove = it::class.java
 					}
 				}
-			}
 
-			if (entity.size() <= 0) {
-				// draw a dummy row for contextual actions on empty lists
-				selectable("##empty") {}
-				contextMenu {
-					drawAddMenu()
+				dragDropId?.let { id ->
+					onDrag {
+						setDragDropPayload(it, id)
+						current.set(it)()
+					}
 				}
 			}
+
+			selectable("##empty") {}
+			contextMenu {
+				drawAddMenu()
+			}
+			inlineDetails()
 		}
+		button("copy yaml") {
+			ImGui.setClipboardText(Yaml(DumperOptions().apply { width = 1000 }).dump(toStructEntity(entity)))
+		}
+
 		// augment elements only after done iterating
 		toAdd?.let {
 			entity.put(it)
@@ -78,16 +81,15 @@ class EntityDetails(private val entity: Entity) : Widget {
 		}
 		toRemove?.let {
 			entity.remove(it)
-			preview.reset()
 			toRemove = null
 		}
 
-		separator()
-		preview.value()
-
+		// open outside the menu creating the modal because ID stack
+		createContent?.let {
+			create?.open(it)
+			createContent = null
+		}
 		create?.invoke()
-
-		details()
 	}
 
 	private fun drawAddMenu() {
@@ -95,14 +97,11 @@ class EntityDetails(private val entity: Entity) : Widget {
 			componentTypes.forEach { type ->
 				if (entity[type] == null) {
 					menuItem(type.simpleName) {
-						create = Modal(
-							"New ${type.simpleName}",
-							getWidget(Component::class.java, type) {
-								create?.visible = false
-								toAdd = it
-							},
-							minSize = componentMinSize
-						)
+						create = Modal("New ${type.simpleName}")
+						createContent = getWidget(Component::class.java, type) {
+							create?.close()
+							toAdd = it
+						}
 					}
 				}
 			}

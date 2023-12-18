@@ -1,8 +1,18 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.header
+import dev.kkorolyov.pancake.editor.child
+import dev.kkorolyov.pancake.editor.dock
+import dev.kkorolyov.pancake.editor.dockSpace
+import dev.kkorolyov.pancake.editor.factory.getWidget
+import dev.kkorolyov.pancake.editor.onDrop
+import dev.kkorolyov.pancake.editor.useDragDropPayload
 import dev.kkorolyov.pancake.platform.GameEngine
+import dev.kkorolyov.pancake.platform.GameSystem
+import dev.kkorolyov.pancake.platform.entity.Component
+import dev.kkorolyov.pancake.platform.entity.Entity
+import imgui.flag.ImGuiDir
+import imgui.type.ImBoolean
 
 /**
  * Renders the overall editor view for a [GameEngine].
@@ -13,21 +23,65 @@ class Editor(
 	 */
 	engine: GameEngine,
 ) : Widget {
-	private val loopDetails by lazy { LoopDetails(engine) }
-	private val pipelines by lazy { PipelinesTree(engine.toList()) }
-	private val entities by lazy { EntitiesTable(engine.entities) }
-	private val gl by lazy { GLDetails() }
+	private val subVisible = ImBoolean(true)
+
+	private val systemDragDropId = "selectedSystem"
+	private val entityDragDropId = "selectedEntity"
+	private val componentDragDropId = "selectedComponent"
+
+	private val systemManifest = WindowManifest<GameSystem>()
+	private val entityManifest = WindowManifest<Entity>()
+	private val componentManifest = WindowManifest<Component>()
+
+	private val loop = Window("GameLoop", withDropHandlers(LoopDetails(engine)), subVisible)
+	private val pipelines = Window("Pipelines", withDropHandlers(PipelinesTree(engine.toList(), systemDragDropId)), subVisible)
+	private val entities = Window("Entities", withDropHandlers(EntitiesTable(engine.entities, entityDragDropId)), subVisible)
+	private val gl = Window("OpenGL", withDropHandlers(GLDetails()), subVisible)
 
 	override fun invoke() {
-		loopDetails()
-		header("Pipelines") {
-			pipelines()
+		if (!subVisible.get()) subVisible.set(true)
+
+		withDropHandlers {
+			dockSpace("dock") {
+				dock("dock", entities)
+				dock(entities, loop, ImGuiDir.Up, 0.2f)
+				dock(entities, pipelines, ImGuiDir.Left, 0.2f)
+				dock(loop, gl, ImGuiDir.Right, 0.5f)
+			}
 		}
-		header("Entities") {
-			entities()
+
+		loop()
+		pipelines()
+		entities()
+		gl()
+
+		systemManifest()
+		entityManifest()
+		componentManifest()
+	}
+
+	private fun withDropHandlers(widget: Widget): Widget = Widget {
+		withDropHandlers { widget() }
+	}
+
+	private inline fun withDropHandlers(op: () -> Unit) {
+		child("dropSpace") {
+			op()
 		}
-		header("OpenGL") {
-			gl()
+		drawDropHandlers()
+	}
+
+	private fun drawDropHandlers() {
+		onDrop {
+			useDragDropPayload<GameSystem>(systemDragDropId) {
+				systemManifest[it] = { Window(it::class.simpleName ?: "GameSystem", withDropHandlers(getWidget(GameSystem::class.java, it)), openAt = OpenAt.Cursor) }
+			}
+			useDragDropPayload<Entity>(entityDragDropId) {
+				entityManifest[it] = { Window("Entity ${it.id}", withDropHandlers(EntityDetails(it, componentDragDropId)), openAt = OpenAt.Cursor) }
+			}
+			useDragDropPayload<Component>(componentDragDropId) {
+				componentManifest[it] = { Window("Component: ${it::class.simpleName}", withDropHandlers(getWidget(Component::class.java, it)), openAt = OpenAt.Cursor) }
+			}
 		}
 	}
 }

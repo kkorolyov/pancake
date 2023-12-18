@@ -23,7 +23,7 @@ class MeshesBuilder(private val c: Class<out Mesh>, private val onConfirm: (List
 	private val snapshot = getSnapshot(c)
 	private val meshes = mutableListOf<Mesh>()
 
-	private var create: Modal? = null
+	private val create = Modal("New mesh")
 
 	override fun invoke() {
 		text("IMPLEMENT ME")
@@ -39,8 +39,8 @@ class MeshesBuilder(private val c: Class<out Mesh>, private val onConfirm: (List
 
 			disabledIf(true) {
 				button("+") {
-					create = Modal("New mesh", getWidget(Mesh::class.java, c) {
-						create?.visible = false
+					create.open(getWidget(Mesh::class.java, c) {
+						create.close()
 						meshes += it
 					})
 				}
@@ -54,6 +54,6 @@ class MeshesBuilder(private val c: Class<out Mesh>, private val onConfirm: (List
 			}
 		}
 
-		create?.invoke()
+		create()
 	}
 }

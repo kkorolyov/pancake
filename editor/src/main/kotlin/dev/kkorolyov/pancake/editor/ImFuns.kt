@@ -1,18 +1,27 @@
 package dev.kkorolyov.pancake.editor
 
+import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
-import imgui.ImGui
+import imgui.ImVec2
 import imgui.flag.ImGuiComboFlags
+import imgui.flag.ImGuiCond
+import imgui.flag.ImGuiDir
+import imgui.flag.ImGuiDragDropFlags
+import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiInputTextFlags
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
+import imgui.flag.ImGuiWindowFlags
+import imgui.internal.ImGui
+import imgui.internal.flag.ImGuiDockNodeFlags
 import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import imgui.type.ImInt
 import imgui.type.ImString
+import kotlin.math.pow
 
 // reuse the same carrier to all imgui input functions
 // public only to allow inline functions
@@ -23,11 +32,78 @@ val tBoolean by ThreadLocal.withInitial(::ImBoolean)
 /** NO TOUCHY */
 val tInt by ThreadLocal.withInitial(::ImInt)
 /** NO TOUCHY */
+val tFloat2 by ThreadLocal.withInitial { FloatArray(2) }
+/** NO TOUCHY */
+val tFloat3 by ThreadLocal.withInitial { FloatArray(3) }
+/** NO TOUCHY */
 val tDouble by ThreadLocal.withInitial(::ImDouble)
 /** NO TOUCHY */
-val tDouble2 by ThreadLocal.withInitial(Vector2::of)
+val tVector2 by ThreadLocal.withInitial(Vector2::of)
 /** NO TOUCHY */
-val tDouble3 by ThreadLocal.withInitial(Vector3::of)
+val tVector3 by ThreadLocal.withInitial(Vector3::of)
+/** NO TOUCHY */
+val tVec2 by ThreadLocal.withInitial(::ImVec2)
+
+/**
+ * Initializes [id] dock space with [setup], if it does not yet exist.
+ * Otherwise, simply draws the current [id] dock space.
+ */
+inline fun dockSpace(id: String, setup: Op) {
+	val nodeId = ImGui.getID(id)
+
+	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) {
+		ImGui.dockBuilderAddNode(nodeId, ImGuiDockNodeFlags.DockSpace)
+		ImGui.dockBuilderSetNodeSize(nodeId, ImGui.getContentRegionAvailX(), ImGui.getContentRegionAvailY())
+
+		setup()
+	}
+
+	ImGui.dockSpace(nodeId)
+}
+/**
+ * Adds [window] to [id] dock space.
+ * Throws [IllegalArgumentException] if [id] dock space does not exist.
+ */
+fun dock(id: String, window: Window) {
+	val nodeId = ImGui.getID(id)
+	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
+
+	ImGui.dockBuilderDockWindow(window.label, nodeId)
+	ImGui.dockBuilderFinish(nodeId)
+}
+/**
+ * Adds [other] to the same dock node as [window].
+ * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+ */
+fun dock(window: Window, other: Window) {
+	ImGui.begin(window.label)
+	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+	ImGui.end()
+
+	val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
+	if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
+	ImGui.dockBuilderDockWindow(other.label, nodeId)
+
+	ImGui.dockBuilderFinish(nodeId)
+}
+/**
+ * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
+ * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+ */
+fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
+	ImGui.begin(window.label)
+	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+	ImGui.end()
+
+	val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
+
+	val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
+
+	ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
+	ImGui.dockBuilderDockWindow(other.label, otherId)
+
+	ImGui.dockBuilderFinish(nodeIdPtr.get())
+}
 
 /**
  * Draws [value] as text.
@@ -40,13 +116,19 @@ fun text(value: Any) {
  * Draws [value] as text in a tooltip when the last set item is hovered.
  */
 fun tooltip(value: Any) {
-	if (ImGui.isItemHovered()) ImGui.setTooltip(value.toString())
+	tooltip(ImGuiHoveredFlags.None, value)
+}
+/**
+ * Draws [value] as text in a tooltip when the last set item is hovered.
+ */
+fun tooltip(flags: Int, value: Any) {
+	if (ImGui.isItemHovered(flags)) ImGui.setTooltip(value.toString())
 }
 /**
  * Runs [op] in a tooltip when the last set item is hovered.
  */
-inline fun tooltip(op: Op) {
-	if (ImGui.isItemHovered()) {
+inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, op: Op) {
+	if (ImGui.isItemHovered(flags)) {
 		ImGui.beginTooltip()
 		op()
 		ImGui.endTooltip()
@@ -70,6 +152,55 @@ inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseBut
 inline fun onClick(op: Op) {
 	if (ImGui.isItemClicked()) op()
 }
+/**
+ * Runs [op] when the last set item is hovered.
+ */
+inline fun onHover(flags: Int = ImGuiHoveredFlags.None, op: Op) {
+	if (ImGui.isItemHovered(flags)) op()
+}
+/**
+ * Runs [op] while the last set item is active (e.g. held down, being edited).
+ */
+inline fun onActive(op: Op) {
+	if (ImGui.isItemActive()) op()
+}
+
+/**
+ * Runs [op] when the last set item is dragged.
+ * [op] should include a call to [setDragDropPayload] and any calls to draw in the drag-drop preview tooltip.
+ * See also: [onDrop]
+ */
+inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Op) {
+	if (ImGui.beginDragDropSource(flags)) {
+		op()
+		ImGui.endDragDropSource()
+	}
+}
+/**
+ * Runs [op] when a dragged payload is dropped on the last set item.
+ * See also: [onDrag]
+ */
+inline fun onDrop(op: Op) {
+	if (ImGui.beginDragDropTarget()) {
+		op()
+		ImGui.endDragDropTarget()
+	}
+}
+/**
+ * Should be invoked from within an [onDrag].
+ * Sets the dragged [payload], with optional unique [id] and [condition].
+ */
+fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
+	id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
+}
+/**
+ * Should be invoked from within an [onDrop].
+ * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
+ */
+inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
+	val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
+	payload?.let(op)
+}
 
 /**
  * Runs [op] within a group.
@@ -83,8 +214,8 @@ inline fun group(op: Op) {
 /**
  * Runs [op] within an embedded region named [id].
  */
-inline fun child(id: String, op: Op) {
-	if (ImGui.beginChild(id)) op()
+inline fun child(id: String, width: Float = 0f, height: Float = 0f, border: Boolean = false, flags: Int = ImGuiWindowFlags.None, op: Op) {
+	if (ImGui.beginChild(id, width, height, border, flags)) op()
 	ImGui.endChild()
 }
 
@@ -127,8 +258,8 @@ inline fun tabItem(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, flags: Int = ImGuiTableFlags.None, op: Op) {
-	if (ImGui.beginTable(id, columns, flags)) {
+inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: Op) {
+	if (ImGui.beginTable(id, columns, flags, width, height)) {
 		op()
 		ImGui.endTable()
 	}
@@ -143,8 +274,8 @@ inline fun column(op: Op) {
 /**
  * Runs [op] in a list box labeled [label].
  */
-inline fun list(label: String, stretch: Boolean = false, op: Op) {
-	if (ImGui.beginListBox(label, if (label.startsWith("##")) -1.0f else 0.0f, if (stretch) -1.0f else 0.0f)) {
+inline fun list(label: String, width: Float = 0f, height: Float = 0f, op: Op) {
+	if (ImGui.beginListBox(label, width, height)) {
 		op()
 		ImGui.endListBox()
 	}
@@ -194,9 +325,11 @@ fun separator() {
 
 /**
  * Draws [texture] with [width] and [height].
+ * Optionally [flip]s the image vertically when rendering.
  */
-fun image(texture: Texture, width: Float, height: Float) {
-	ImGui.image(texture.id, width, height)
+fun image(texture: Texture, width: Float, height: Float, flip: Boolean = false) {
+	if (flip) ImGui.image(texture.id, width, height, 0f, 1f, 1f, 0f)
+	else ImGui.image(texture.id, width, height)
 }
 
 /**
@@ -278,91 +411,93 @@ inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Bo
 }
 /**
  * Draws an input field with [label], for [value], [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits without overflow.
  * Returns `true` when changed.
  */
-inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Int> = {}): Boolean {
+inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Int> = {}): Boolean {
 	val ptr = tInt
 	ptr.set(value)
 
-	val result = stretch(label) { ImGui.inputInt(label, ptr, step, stepFast, flags) }
+	val width = if (label.startsWith("##")) calcWidth("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
+
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputInt(label, ptr, step, stepFast, flags)
+	width?.let { ImGui.popItemWidth() }
+
 	if (result) onChange(ptr.get())
 	return result
 }
 /**
  * Draws an input field with [label], for [value] with [format] specifier, [step] and [stepFast] step amounts, and input [flags], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits (while considering [format]) without overflow.
  * Returns `true` when changed.
  */
-inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}): Boolean {
+inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}): Boolean {
 	val ptr = tDouble
 	ptr.set(value)
 
-	val result = stretch(label) { ImGui.inputDouble(label, ptr, step, stepFast, format, flags) }
+	val width = if (label.startsWith("##")) calcWidth("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
+
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputDouble(label, ptr, step, stepFast, format, flags)
+	width?.let { ImGui.popItemWidth() }
+
 	if (result) onChange(ptr.get())
 	return result
 }
 /**
  * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits (while considering [format]) without overflow.
  * Returns `true` when changed.
  * @see input
  */
-inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
-	var changed = false
-	val ptr = tDouble2
-	ptr.set(value)
+inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
+	// TODO replace with calls to fixed ImGui.inputScalarN bindings
+	val ptr = tFloat2
+	ptr[0] = value.x.toFloat()
+	ptr[1] = value.y.toFloat()
 
-	table(label, 2, ImGuiTableFlags.SizingStretchSame) {
-		column {
-			input("${label}.x", ptr.x, format, step, stepFast, flags) {
-				ptr.x = it
-				changed = true
-			}
-		}
-		column {
-			input("${label}.y", ptr.y, format, step, stepFast, flags) {
-				ptr.y = it
-				changed = true
-			}
-		}
+	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 2 else null
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputFloat2(label, ptr, format, flags)
+	width?.let { ImGui.popItemWidth() }
+
+	if (result) {
+		val returnPtr = tVector2
+		returnPtr.x = ptr[0].toDouble()
+		returnPtr.y = ptr[1].toDouble()
+
+		onChange(returnPtr)
 	}
-
-	if (changed) onChange(ptr)
-	return changed
+	return result
 }
 /**
  * Draws a multi-segment input field for [value], invoking [onChange] with the updated value if changed.
+ * Can also be provided [digitWidth] to auto size unlabeled inputs enough to fit [digitWidth] digits (while considering [format]) without overflow.
  * Returns `true` when changed.
  * @see input
  */
-inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
-	var changed = false
-	val ptr = tDouble3
-	ptr.set(value)
+inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
+	// TODO replace with calls to fixed ImGui.inputScalarN bindings
+	val ptr = tFloat3
+	ptr[0] = value.x.toFloat()
+	ptr[1] = value.y.toFloat()
+	ptr[2] = value.z.toFloat()
 
-	group {
-		table(label, 3, ImGuiTableFlags.SizingStretchSame) {
-			column {
-				input("${label}.x", ptr.x, format, step, stepFast, flags) {
-					ptr.x = it
-					changed = true
-				}
-			}
-			column {
-				input("${label}.y", ptr.y, format, step, stepFast, flags) {
-					ptr.y = it
-					changed = true
-				}
-			}
-			column {
-				input("${label}.z", ptr.z, format, step, stepFast, flags) {
-					ptr.z = it
-					changed = true
-				}
-			}
-		}
+	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 3 else null
+	width?.let(ImGui::pushItemWidth)
+	val result = ImGui.inputFloat3(label, ptr, format, flags)
+	width?.let { ImGui.popItemWidth() }
+
+	if (result) {
+		val returnPtr = tVector3
+		returnPtr.x = ptr[0].toDouble()
+		returnPtr.y = ptr[1].toDouble()
+		returnPtr.z = ptr[2].toDouble()
+
+		onChange(returnPtr)
 	}
-
-	if (changed) onChange(ptr)
-	return changed
+	return result
 }
 
 /**
@@ -396,20 +531,13 @@ inline fun onDoubleClick(button: Int, op: Op): Boolean {
 }
 
 /**
- * Runs [op] within a width region calculated from its [label] and returns its result.
+ * Returns the width of [text].
+ * Ignores hidden areas of labels (i.e ##).
  */
-inline fun <T> stretch(label: String, op: () -> T): T {
-	val result: T
-
-	if (label.startsWith("##")) {
-		ImGui.pushItemWidth(-1.0f)
-		result = op()
-		ImGui.popItemWidth()
-	} else {
-		result = op()
-	}
-
-	return result
+fun calcWidth(text: String): Float {
+	val ptr = tVec2
+	ImGui.calcTextSize(ptr, text)
+	return ptr.x
 }
 
 /**
