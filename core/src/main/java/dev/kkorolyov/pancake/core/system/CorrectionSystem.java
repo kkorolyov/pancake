@@ -12,7 +12,7 @@ import java.util.HashSet;
 /**
  * Repositions {@link Correctable} {@link Intersected} entities just enough to remove the immediate intersection.
  * <p>
- * In any intersection, repositions that entity with the lesser non-{@code null} {@link Correctable} component.
+ * In any intersection where both entities are {@link Correctable}, repositions that entity with the lesser {@link Correctable} component.
  * If both {@link Correctable} components are equal, repositions both entities by half the repositioning distance.
  */
 public final class CorrectionSystem extends GameSystem {
