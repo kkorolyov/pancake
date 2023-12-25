@@ -58,7 +58,7 @@ public final class IntersectionSystem extends GameSystem {
 
 			if (!(FloatOps.equals(mtv.getX(), 0) && FloatOps.equals(mtv.getY(), 0))) {
 				mtv.scale(minOverlap);
-				Intersected.create(a, b, mtv);
+				Intersected.assign(a, b, mtv);
 			}
 			minOverlap = 0;
 			mtv.setX(0);

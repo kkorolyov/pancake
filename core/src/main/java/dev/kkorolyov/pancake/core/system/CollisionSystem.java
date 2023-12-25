@@ -24,7 +24,7 @@ public final class CollisionSystem extends GameSystem {
 	private final Vector3 vDiff = Vector3.of(0, 0, 0);
 	private final Vector3 sDiff = Vector3.of(0, 0, 0);
 
-	private final Collection<Intersected> events = new HashSet<>();
+	private final Collection<Intersected.Event> events = new HashSet<>();
 
 	/**
 	 * Constructs a new collision system.
@@ -35,27 +35,28 @@ public final class CollisionSystem extends GameSystem {
 
 	@Override
 	protected void update(Entity entity, long dt) {
-		Intersected event = entity.get(Intersected.class);
-		if (events.add(event) && event.getA().get(Collidable.class) != null && event.getB().get(Collidable.class) != null) {
-			int priority = event.getA().get(Collidable.class).compareTo(event.getB().get(Collidable.class));
+		for (Intersected.Event event : entity.get(Intersected.class)) {
+			if (events.add(event) && event.getA().get(Collidable.class) != null && event.getB().get(Collidable.class) != null) {
+				int priority = event.getA().get(Collidable.class).compareTo(event.getB().get(Collidable.class));
 
-			Position aPosition = event.getA().get(Position.class);
-			Position bPosition = event.getB().get(Position.class);
+				Position aPosition = event.getA().get(Position.class);
+				Position bPosition = event.getB().get(Position.class);
 
-			Velocity aVelocity = event.getA().get(Velocity.class);
-			Velocity bVelocity = event.getB().get(Velocity.class);
+				Velocity aVelocity = event.getA().get(Velocity.class);
+				Velocity bVelocity = event.getB().get(Velocity.class);
 
-			Mass aMass = event.getA().get(Mass.class);
-			Mass bMass = event.getB().get(Mass.class);
+				Mass aMass = event.getA().get(Mass.class);
+				Mass bMass = event.getB().get(Mass.class);
 
-			if (priority <= 0 && aVelocity != null) {
-				if (aMass != null && priority == 0 && bVelocity != null && bMass != null) {
-					collide(aPosition.getValue(), bPosition.getValue(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
+				if (priority <= 0 && aVelocity != null) {
+					if (aMass != null && priority == 0 && bVelocity != null && bMass != null) {
+						collide(aPosition.getValue(), bPosition.getValue(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
+					} else {
+						reflect(aVelocity.getValue(), event.getMtvA());
+					}
 				} else {
-					reflect(aVelocity.getValue(), event.getMtvA());
+					reflect(bVelocity.getValue(), event.getMtvB());
 				}
-			} else {
-				reflect(bVelocity.getValue(), event.getMtvB());
 			}
 		}
 	}
