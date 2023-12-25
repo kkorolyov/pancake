@@ -5,10 +5,10 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 /**
  * Maintains positional constraints to other entities.
@@ -38,41 +38,94 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 	@FunctionalInterface
 	public interface Constraint {
 		/**
-		 * Repositions joints to be within {@code min} and {@code max} (inclusive) Euclidean distance of each other.
-		 * Repositions those joints selected by {@code targeter}.
+		 * Repositions joints selected by {@code targeter} to be within {@code min} and {@code max} (inclusive) Euclidean distance of each other.
+		 * If {@code targeter} returns {@code < 0}, modifies the first joint; if {@code > 0}, modifies the second joint; if {@code 0}, modifies both joints equally in opposite directions.
 		 * Assumes both joints have a {@link Position}.
 		 */
-		static Constraint reposition(double min, double max, BiFunction<? super Entity, ? super Entity, Target> targeter) {
+		static Constraint reposition(double min, double max, Comparator<Entity> targeter) {
 			ArgVerify.greaterThanEqual("min", 0.0, min);
 			ArgVerify.greaterThanEqual("max", min, max);
 
 			ThreadLocal<Vector3> tMtv = ThreadLocal.withInitial(Vector3::of);
 
 			return (a, b) -> {
-				Vector3 aPosition = a.get(Position.class).getValue();
-				Vector3 bPosition = b.get(Position.class).getValue();
-
 				var mtv = tMtv.get();
-				mtv.set(aPosition);
-				mtv.add(bPosition, -1);
+				if (calculateMtv(mtv, a, b, min, max)) {
+					var priority = targeter.compare(a, b);
 
-				var distance = Vector3.magnitude(mtv);
-
-				if (distance < min || distance > max) {
-					var offset = (distance - (distance < min ? min : max)) / distance;
-					// mtv to apply to B to remediate
-					mtv.scale(offset);
-
-					switch (targeter.apply(a, b)) {
-						case A -> aPosition.add(mtv, -1);
-						case B -> bPosition.add(mtv);
-						case BOTH -> {
-							aPosition.add(mtv, -0.5);
-							bPosition.add(mtv, 0.5);
-						}
+					if (priority < 0) a.get(Position.class).getValue().add(mtv, -1);
+					else if (priority > 0) b.get(Position.class).getValue().add(mtv);
+					else {
+						a.get(Position.class).getValue().add(mtv, -0.5);
+						b.get(Position.class).getValue().add(mtv, 0.5);
 					}
 				}
 			};
+		}
+
+		/**
+		 * Adds temporary forces to joints selected by {@code targeter} to be within {@code min} and {@code max} (inclusive) Euclidean distance of each other.
+		 * If {@code targeter} returns {@code < 0}, modifies the first joint; if {@code > 0}, modifies the second joint; if {@code 0}, modifies both joints equally in opposite directions.
+		 * Force is calculated by scaling the found MTV by {@code strength} - e.g. if the joints are {@code 2} units further apart past the {@code max}, force added is {@code 2 * strength}.
+		 * Assumes both joints have a {@link Position}, {@link Force}, and {@link ActionQueue}.
+		 */
+		static Constraint force(double min, double max, double strength, Comparator<Entity> targeter) {
+			ArgVerify.greaterThanEqual("min", 0.0, min);
+			ArgVerify.greaterThanEqual("max", min, max);
+
+			ThreadLocal<Vector3> tMtv = ThreadLocal.withInitial(Vector3::of);
+
+			return (a, b) -> {
+				var mtv = tMtv.get();
+				if (calculateMtv(mtv, a, b, min, max)) {
+					mtv.scale(strength);
+					var force = Vector3.of(mtv);
+					var priority = targeter.compare(a, b);
+
+					if (priority < 0) {
+						a.get(ActionQueue.class).add(entity -> {
+							entity.get(Force.class).getValue().add(force, -1);
+							entity.get(ActionQueue.class).add(entity1 -> entity1.get(Force.class).getValue().add(force));
+						});
+					} else if (priority > 0) {
+						b.get(ActionQueue.class).add(entity -> {
+							entity.get(Force.class).getValue().add(force);
+							entity.get(ActionQueue.class).add(entity1 -> entity1.get(Force.class).getValue().add(force, -1));
+						});
+					} else {
+						a.get(ActionQueue.class).add(entity -> {
+							entity.get(Force.class).getValue().add(force, -0.5);
+							entity.get(ActionQueue.class).add(entity1 -> entity1.get(Force.class).getValue().add(force, 0.5));
+						});
+						b.get(ActionQueue.class).add(entity -> {
+							entity.get(Force.class).getValue().add(force, 0.5);
+							entity.get(ActionQueue.class).add(entity1 -> entity1.get(Force.class).getValue().add(force, -0.5));
+						});
+					}
+				}
+			};
+		}
+
+		/**
+		 * If joints {@code a} and {@code b} are not between {@code min} and {@code max} Euclidean distance of each other, sets {@code mtv} to the MTV to apply to {@code b} to remediate the positions and returns {@code true}.
+		 * Else, returns {@code false}.
+		 * Assumes both joints have a {@link Position}.
+		 */
+		private static boolean calculateMtv(Vector3 mtv, Entity a, Entity b, double min, double max) {
+			mtv.set(a.get(Position.class).getValue());
+			mtv.add(b.get(Position.class).getValue(), -1);
+
+			var distance = Vector3.magnitude(mtv);
+
+			if (distance < min || distance > max) {
+				var offset = (distance - (distance < min ? min : max)) / distance;
+				// mtv to apply to B to remediate
+				mtv.scale(offset);
+
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		/**
@@ -81,23 +134,5 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 		 * {@code a} is the entity owning the invoked {@link Joint} component, and {@code b} is the constrained joint.
 		 */
 		void apply(Entity a, Entity b);
-
-		/**
-		 * The target joint to modify in a remediation operation.
-		 */
-		enum Target {
-			/**
-			 * Modify only joint A.
-			 */
-			A,
-			/**
-			 * Modify only joint B.
-			 */
-			B,
-			/**
-			 * Modify both joints equally.
-			 */
-			BOTH
-		}
 	}
 }
