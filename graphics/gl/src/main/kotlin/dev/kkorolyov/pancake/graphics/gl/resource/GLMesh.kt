@@ -75,8 +75,8 @@ class GLMesh(
 		activate()
 
 		indexBuffer?.let { buffer ->
-			glDrawElements(mode.value, count ?: buffer.size, GL_UNSIGNED_INT, offset * Int.SIZE_BYTES.toLong())
-		} ?: glDrawArrays(mode.value, offset, count ?: vertexBuffer.size)
+			glDrawElements(mode.value, count ?: (buffer.size - offset), GL_UNSIGNED_INT, offset * Int.SIZE_BYTES.toLong())
+		} ?: glDrawArrays(mode.value, offset, count ?: (vertexBuffer.size - offset))
 	}
 
 	override fun activate() {
