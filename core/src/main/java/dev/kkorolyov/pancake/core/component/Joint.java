@@ -14,6 +14,8 @@ import java.util.Map;
  * Maintains positional constraints to other entities.
  */
 public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.Constraint>> {
+	private static final ThreadLocal<Vector3> tMtv = ThreadLocal.withInitial(Vector3::of);
+
 	private final Map<Entity, Constraint> connections = new HashMap<>();
 
 	/**
@@ -46,8 +48,6 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 			ArgVerify.greaterThanEqual("min", 0.0, min);
 			ArgVerify.greaterThanEqual("max", min, max);
 
-			ThreadLocal<Vector3> tMtv = ThreadLocal.withInitial(Vector3::of);
-
 			return (a, b) -> {
 				var mtv = tMtv.get();
 				if (calculateMtv(mtv, a, b, min, max)) {
@@ -72,8 +72,6 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 		static Constraint force(double min, double max, double strength, Comparator<Entity> targeter) {
 			ArgVerify.greaterThanEqual("min", 0.0, min);
 			ArgVerify.greaterThanEqual("max", min, max);
-
-			ThreadLocal<Vector3> tMtv = ThreadLocal.withInitial(Vector3::of);
 
 			return (a, b) -> {
 				var mtv = tMtv.get();
