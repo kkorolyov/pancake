@@ -20,7 +20,7 @@ class DrawSystem(
 	private val queue: CameraQueue
 ) : GameSystem(Position::class.java, Model::class.java) {
 	private val pending: MutableMap<Program, MutableList<Entity>> = mutableMapOf()
-	private val transform: Matrix4 = Matrix4.identity()
+	private val clipTransform: Matrix4 = Matrix4.identity()
 
 	override fun update(entity: Entity, dt: Long) {
 		pending.getOrPut(entity[Model::class.java].program) { mutableListOf() }.add((entity))
@@ -40,15 +40,15 @@ class DrawSystem(
 						val cameraPosition = camera.position.globalValue
 
 						camera.lens.let {
-							transform.xx = it.scale.x / it.size.x * 2
-							transform.yy = it.scale.y / it.size.y * 2
+							clipTransform.xx = it.scale.x / it.size.x * 2
+							clipTransform.yy = it.scale.y / it.size.y * 2
 						}
 
-						transform.xw = (position.x - cameraPosition.x) * transform.xx
-						transform.yw = (position.y - cameraPosition.y) * transform.yy
-						transform.zw = position.z - cameraPosition.z
+						clipTransform.xw = (position.x - cameraPosition.x) * clipTransform.xx
+						clipTransform.yw = (position.y - cameraPosition.y) * clipTransform.yy
+						clipTransform.zw = position.z - cameraPosition.z
 
-						program[0] = transform
+						program[0] = clipTransform
 
 						meshes.forEach(Mesh::draw)
 					}

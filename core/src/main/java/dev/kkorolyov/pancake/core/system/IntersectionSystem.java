@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Position;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
-import dev.kkorolyov.pancake.core.component.tag.Correctable;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.FloatOps;
@@ -52,15 +51,14 @@ public final class IntersectionSystem extends GameSystem {
 		Bounds aBounds = a.get(Bounds.class);
 		Bounds bBounds = b.get(Bounds.class);
 
-		// only consider when either can be corrected
 		// polygons can be far enough apart to not need a more precise check
-		if ((a.get(Correctable.class) != null || b.get(Correctable.class) != null) && isClose(aPosition, bPosition, aBounds, bBounds)) {
+		if (isClose(aPosition, bPosition, aBounds, bBounds)) {
 			if (aBounds.isRound() && bBounds.isRound()) processRound(aPosition, bPosition, aBounds, bBounds);
 			else processPoly(aPosition, bPosition, aBounds, bBounds);
 
 			if (!(FloatOps.equals(mtv.getX(), 0) && FloatOps.equals(mtv.getY(), 0))) {
 				mtv.scale(minOverlap);
-				Intersected.create(a, b, mtv);
+				Intersected.assign(a, b, mtv);
 			}
 			minOverlap = 0;
 			mtv.setX(0);
