@@ -141,6 +141,19 @@ public final class Vector3 extends Vector2 {
 		this.z = FloatOps.sanitize(z);
 	}
 
+	/**
+	 * Transforms the head of this vector according to {@code transform}.
+	 */
+	public void transform(Matrix4 transform) {
+		var newX = getX() * transform.getXx() + getY() * transform.getXy() + z * transform.getXz() + transform.getXw();
+		var newY = getX() * transform.getYx() + getY() * transform.getYy() + z * transform.getYz() + transform.getYw();
+		var newZ = getX() * transform.getZx() + getY() * transform.getZy() + z * transform.getZz() + transform.getZw();
+
+		setX(newX);
+		setY(newY);
+		z = newZ;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;

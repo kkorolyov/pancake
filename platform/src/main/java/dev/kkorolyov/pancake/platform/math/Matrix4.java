@@ -24,6 +24,18 @@ public final class Matrix4 extends Matrix3 {
 	}
 
 	/**
+	 * Returns a new 4x4 matrix initialized to {@code other}.
+	 */
+	public static Matrix4 of(Matrix4 other) {
+		return of(
+				other.getXx(), other.getXy(), other.getXz(), other.xw,
+				other.getYx(), other.getYy(), other.getYz(), other.yw,
+				other.getZx(), other.getZy(), other.getZz(), other.zw,
+				other.wx, other.wy, other.wz, other.ww
+		);
+	}
+
+	/**
 	 * Returns a new 4x4 matrix for the given configuration.
 	 */
 	public static Matrix4 of(
@@ -162,6 +174,7 @@ public final class Matrix4 extends Matrix3 {
 	 * @see #scale(Vector3)
 	 * @see #translate(Vector3)
 	 */
+	// FIXME this has to be called in reverse order for multiple rotations, right?
 	public void rotate(double radians, Vector3 axis) {
 		double cosTheta = Math.cos(radians);
 		double sinTheta = Math.sin(radians);
@@ -218,6 +231,28 @@ public final class Matrix4 extends Matrix3 {
 		setWy(0);
 		setWz(0);
 		setWw(1);
+	}
+
+	/**
+	 * Sets this matrix to match {@code other}.
+	 */
+	public void set(Matrix4 other) {
+		setXx(other.getXx());
+		setXy(other.getXy());
+		setXz(other.getXz());
+		setXw(other.xw);
+		setYx(other.getYx());
+		setYy(other.getYy());
+		setYz(other.getYz());
+		setYw(other.yw);
+		setZx(other.getZx());
+		setZy(other.getZy());
+		setZz(other.getZz());
+		setZw(other.zw);
+		setWx(other.wx);
+		setWy(other.wy);
+		setWz(other.wz);
+		setWw(other.ww);
 	}
 
 	public double getXw() {
