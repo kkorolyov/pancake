@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.graphics.system
 
-import dev.kkorolyov.pancake.core.component.Position
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.graphics.CameraQueue
 import dev.kkorolyov.pancake.graphics.component.Lens
 import dev.kkorolyov.pancake.platform.GameSystem
@@ -10,7 +10,7 @@ import java.util.BitSet
 /**
  * Adds and removes camera entities from a shared queue.
  */
-class CameraSystem(private val queue: CameraQueue) : GameSystem(Lens::class.java, Position::class.java) {
+class CameraSystem(private val queue: CameraQueue) : GameSystem(Lens::class.java, Transform::class.java) {
 	private val seen = BitSet()
 
 	override fun update(entity: Entity, dt: Long) {
