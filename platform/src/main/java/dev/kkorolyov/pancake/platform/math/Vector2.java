@@ -5,7 +5,8 @@ import java.util.Objects;
 /**
  * A head at some point in 2 dimensions and tail at {@code (0, 0)}.
  */
-public sealed class Vector2 extends Vector1 permits Vector3 {
+public sealed class Vector2 permits Vector3 {
+	private double x;
 	private double y;
 
 	/**
@@ -35,12 +36,6 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	/**
 	 * Returns a 2-dimensional vector initialized to {@code other}.
 	 */
-	public static Vector2 of(Vector1 other) {
-		return of(other.getX());
-	}
-	/**
-	 * Returns a 2-dimensional vector initialized to {@code other}.
-	 */
 	public static Vector2 of(Vector2 other) {
 		return of(other.getX(), other.y);
 	}
@@ -65,7 +60,7 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	}
 
 	Vector2(double x, double y) {
-		super(x);
+		setX(x);
 		setY(y);
 	}
 
@@ -99,9 +94,11 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 		add(other, -2 * dot(this, other) / dot(other, other));
 	}
 
-	@Override
+	/**
+	 * Scales this vector by {@code value}.
+	 */
 	public void scale(double value) {
-		super.scale(value);
+		setX(x * value);
 		setY(y * value);
 	}
 
@@ -110,21 +107,21 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	 * @param other vector to match
 	 */
 	public final void set(Vector2 other) {
-		set((Vector1) other);
+		setX(other.x);
 		setY(other.y);
 	}
 	/**
 	 * Translates the head of this vector by {@code other}.
 	 */
 	public final void add(Vector2 other) {
-		add((Vector1) other);
+		setX(x + other.x);
 		setY(y + other.y);
 	}
 	/**
 	 * Translates the head of this vector by {@code scale} proportion of {@code other}.
 	 */
 	public final void add(Vector2 other, double scale) {
-		add((Vector1) other, scale);
+		setX(x + other.x * scale);
 		setY(y + other.y * scale);
 	}
 
@@ -134,6 +131,13 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	public void reset() {
 		setX(0);
 		setY(0);
+	}
+
+	public final double getX() {
+		return x;
+	}
+	public final void setX(double x) {
+		this.x = FloatOps.sanitize(x);
 	}
 
 	public final double getY() {
@@ -147,17 +151,16 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
-		if (!super.equals(obj)) return false;
 		Vector2 o = (Vector2) obj;
-		return FloatOps.equals(o.y, y);
+		return FloatOps.equals(x, o.x) && FloatOps.equals(y, o.y);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), y);
+		return Objects.hash(x, y);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("(%.9f,%.9f)", getX(), y);
+		return String.format("(%.9f,%.9f)", x, y);
 	}
 }

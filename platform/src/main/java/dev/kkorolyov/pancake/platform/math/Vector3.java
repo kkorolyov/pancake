@@ -36,12 +36,6 @@ public final class Vector3 extends Vector2 {
 	/**
 	 * Returns a 3-dimensional vector initialized to {@code other}.
 	 */
-	public static Vector3 of(Vector1 other) {
-		return of(other.getX());
-	}
-	/**
-	 * Returns a 3-dimensional vector initialized to {@code other}.
-	 */
 	public static Vector3 of(Vector2 other) {
 		return of(other.getX(), other.getY());
 	}
