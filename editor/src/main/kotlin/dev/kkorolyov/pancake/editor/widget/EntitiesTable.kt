@@ -118,7 +118,10 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 			inlineDetails()
 
 			// augment elements only after done iterating
-			if (toAdd) focusedEntity = entities.create().id
+			if (toAdd) {
+				focusedEntity = entities.create().id
+				toAdd = false
+			}
 			toRemove?.let {
 				selected.remove(it)
 				entities.destroy(it.id)

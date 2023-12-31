@@ -3,13 +3,13 @@ package dev.kkorolyov.pancake.core.io
 import dev.kkorolyov.pancake.core.component.Damping
 import dev.kkorolyov.pancake.core.component.Force
 import dev.kkorolyov.pancake.core.component.Mass
-import dev.kkorolyov.pancake.core.component.Orientation
 import dev.kkorolyov.pancake.core.component.Path
-import dev.kkorolyov.pancake.core.component.Position
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
 import dev.kkorolyov.pancake.core.component.tag.Collidable
 import dev.kkorolyov.pancake.core.component.tag.Correctable
+import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector3
 
 import spock.lang.Ignore
@@ -289,65 +289,58 @@ class ComponentStructizerSpec extends Specification {
 		z << (5..8)
 	}
 
-	def "toStructs Orientation"() {
+	def "toStructs Transform"() {
 		expect:
-		structizer.toStruct(new Orientation(Vector3.of(x, y, z))) == Optional.of(Vector3.of(x, y, z).with {
-			it.normalize()
-			[it.x, it.y, it.z]
-		})
-
-		where:
-		x << (1..4)
-		y << (4..1)
-		z << (5..8)
-	}
-	def "fromStructs Orientation"() {
-		expect:
-		structizer.fromStruct(Orientation, [x, y, z]).map { it.value } == Optional.of(Vector3.of(x, y, z).with {
-			it.normalize()
+		structizer.toStruct(new Transform().with {
+			it.translation.set(Vector3.of(x, y, z))
+			it.scale.set(Vector3.of(z, y, x))
 			it
-		})
+		}) == Optional.of([
+				translation: [x.doubleValue(), y.doubleValue(), z.doubleValue()],
+				rotation: [
+						1, 0, 0, 0,
+						0, 1, 0, 0,
+						0, 0, 1, 0,
+						0, 0, 0, 1
+				].collect { it.doubleValue() },
+				scale: [z.doubleValue(), y.doubleValue(), x.doubleValue()]
+		])
 
 		where:
 		x << (1..4)
 		y << (4..1)
 		z << (5..8)
 	}
-	def "full-circles Orientation"() {
-		def value = new Orientation(Vector3.of(x, y, z))
+	def "fromStructs Transform"() {
+		when:
+		def result = structizer.fromStruct(Transform, [
+				translation: [x, y, z],
+				scale: [z, y, x]
+		]).get()
 
-		expect:
-		structizer.toStruct(value).flatMap { structizer.fromStruct(Orientation, it) }.map { it.value } == Optional.of(value.value)
-
-		where:
-		x << (1..4)
-		y << (4..1)
-		z << (5..8)
-	}
-
-	def "toStructs Position"() {
-		expect:
-		structizer.toStruct(new Position(Vector3.of(x, y, z))) == Optional.of([x.doubleValue(), y.doubleValue(), z.doubleValue()])
+		then:
+		result.translation == Vector3.of(x, y, z)
+		result.rotation == Matrix4.identity()
+		result.scale == Vector3.of(z, y, x)
 
 		where:
 		x << (1..4)
 		y << (4..1)
 		z << (5..8)
 	}
-	def "fromStructs Position"() {
-		expect:
-		structizer.fromStruct(Position, [x, y, z]).map { it.value } == Optional.of(Vector3.of(x, y, z))
+	def "full-circles Transform"() {
+		when:
+		def result = structizer.toStruct(new Transform().with {
+			it.translation.set(Vector3.of(x, y, z))
+			it.scale.set(Vector3.of(z, y, x))
+			it
+		}).flatMap { structizer.fromStruct(Transform, it) }
+				.get()
 
-		where:
-		x << (1..4)
-		y << (4..1)
-		z << (5..8)
-	}
-	def "full-circles Position"() {
-		def value = new Position(Vector3.of(x, y, z))
-
-		expect:
-		structizer.toStruct(value).flatMap { structizer.fromStruct(Position, it) }.map { it.value } == Optional.of(value.value)
+		then:
+		result.translation == Vector3.of(x, y, z)
+		result.rotation == Matrix4.identity()
+		result.scale == Vector3.of(z, y, x)
 
 		where:
 		x << (1..4)

@@ -134,11 +134,11 @@ public final class Vector3 extends Vector2 {
 		setZ(z + other.z * scale);
 	}
 
-	public double getZ() {
-		return z;
-	}
-	public void setZ(double z) {
-		this.z = FloatOps.sanitize(z);
+	@Override
+	public void reset() {
+		setX(0);
+		setY(0);
+		setZ(0);
 	}
 
 	/**
@@ -151,7 +151,14 @@ public final class Vector3 extends Vector2 {
 
 		setX(newX);
 		setY(newY);
-		z = newZ;
+		setZ(newZ);
+	}
+
+	public double getZ() {
+		return z;
+	}
+	public void setZ(double z) {
+		this.z = FloatOps.sanitize(z);
 	}
 
 	@Override

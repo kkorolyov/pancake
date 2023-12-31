@@ -128,6 +128,14 @@ public sealed class Vector2 extends Vector1 permits Vector3 {
 		setY(y + other.y * scale);
 	}
 
+	/**
+	 * Sets this vector to all {@code 0}.
+	 */
+	public void reset() {
+		setX(0);
+		setY(0);
+	}
+
 	public final double getY() {
 		return y;
 	}
