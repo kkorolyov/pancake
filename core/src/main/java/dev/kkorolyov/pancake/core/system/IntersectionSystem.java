@@ -12,6 +12,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Queue;
 
 /**
@@ -52,12 +53,18 @@ public final class IntersectionSystem extends GameSystem {
 		Transform bTransform = b.get(Transform.class);
 
 		Vector3 aPosition = tPositionA.get();
-		aPosition.reset();
-		aPosition.transform(aTransform.getMatrix());
-
 		Vector3 bPosition = tPositionB.get();
-		bPosition.reset();
-		bPosition.transform(bTransform.getMatrix());
+
+		if (Objects.equals(aTransform.getParent(), bTransform.getParent())) {
+			aPosition.set(aTransform.getTranslation());
+			bPosition.set(bTransform.getTranslation());
+		} else {
+			aPosition.reset();
+			aPosition.transform(aTransform.getMatrix());
+
+			bPosition.reset();
+			bPosition.transform(bTransform.getMatrix());
+		}
 
 		Bounds aBounds = a.get(Bounds.class);
 		Bounds bBounds = b.get(Bounds.class);

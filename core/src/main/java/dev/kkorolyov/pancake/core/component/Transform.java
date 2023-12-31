@@ -69,23 +69,16 @@ public class Transform implements Component {
 	 */
 	public Matrix4 getMatrix() {
 		if (parent != null) {
-			var parentMatrix = tCalcMatrix.get();
-			parentMatrix.reset();
-			parentMatrix.set(parent.getMatrix());
-
-			var fullMatrix = tReturnMatrix.get();
-			fullMatrix.reset();
-
-			fullMatrix.multiply(parentMatrix);
-			fullMatrix.multiply(buildLocalMatrix());
+			// build up the shared tReturnMatrix from top of hierarchy, using tCalcMatrix for subsequent child transforms
+			var fullMatrix = parent.getMatrix();
+			fullMatrix.multiply(buildLocalMatrix(tCalcMatrix.get()));
 
 			return fullMatrix;
 		} else {
-			return buildLocalMatrix();
+			return buildLocalMatrix(tReturnMatrix.get());
 		}
 	}
-	private Matrix4 buildLocalMatrix() {
-		var matrix = tCalcMatrix.get();
+	private Matrix4 buildLocalMatrix(Matrix4 matrix) {
 		matrix.reset();
 
 		matrix.translate(translation);
