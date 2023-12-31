@@ -9,14 +9,22 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 	private double xz, yz, zx, zy, zz;
 
 	/**
+	 * Returns the determinant of {@code matrix}.
+	 */
+	public static double determinant(Matrix3 matrix) {
+		return matrix.getXx() * matrix.getYy() * matrix.zz
+				- matrix.getXx() * matrix.yz * matrix.zy
+				- matrix.getXy() * matrix.getYx() * matrix.zz
+				+ matrix.getXy() * matrix.yz * matrix.zx
+				+ matrix.xz * matrix.getYx() * matrix.zy
+				- matrix.xz * matrix.getYy() * matrix.zx;
+	}
+
+	/**
 	 * Returns a new 3x3 identity matrix.
 	 */
 	public static Matrix3 identity() {
-		return new Matrix3(
-				1, 0, 0,
-				0, 1, 0,
-				0, 0, 1
-		);
+		return new Matrix3();
 	}
 
 	/**
@@ -30,6 +38,13 @@ public sealed class Matrix3 extends Matrix2 permits Matrix4 {
 		return new Matrix3(xx, xy, xz, yx, yy, yz, zx, zy, zz);
 	}
 
+	Matrix3() {
+		this(
+				1, 0, 0,
+				0, 1, 0,
+				0, 0, 1
+		);
+	}
 	Matrix3(
 			double xx, double xy, double xz,
 			double yx, double yy, double yz,

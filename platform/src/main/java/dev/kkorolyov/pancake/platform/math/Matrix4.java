@@ -12,15 +12,40 @@ public final class Matrix4 extends Matrix3 {
 	private double xw, yw, zw, wx, wy, wz, ww;
 
 	/**
+	 * Returns the determinant of {@code matrix}.
+	 */
+	public static double determinant(Matrix4 matrix) {
+		return matrix.xw * matrix.getYz() * matrix.getZy() * matrix.wx
+				- matrix.getXz() * matrix.yw * matrix.getZy() * matrix.wx
+				- matrix.xw * matrix.getYy() * matrix.getZz() * matrix.wx
+				+ matrix.getXy() * matrix.yw * matrix.getZz() * matrix.wx
+				+ matrix.xw * matrix.getYy() * matrix.zw * matrix.wx
+				- matrix.getXy() * matrix.getYz() * matrix.zw * matrix.wx
+				- matrix.xw * matrix.getYz() * matrix.zw * matrix.wy
+				+ matrix.getXz() * matrix.yw * matrix.getZx() * matrix.wy
+				+ matrix.xw * matrix.getYx() * matrix.getZz() * matrix.wy
+				- matrix.getXx() * matrix.yw * matrix.getZz() * matrix.wy
+				- matrix.getXz() * matrix.getYx() * matrix.zw * matrix.wy
+				+ matrix.getXx() * matrix.getYz() * matrix.zw * matrix.wy
+				+ matrix.xw * matrix.getYy() * matrix.getZx() * matrix.wz
+				- matrix.getXy() * matrix.yw * matrix.getZx() * matrix.wz
+				- matrix.xw * matrix.getYx() * matrix.getZy() * matrix.wz
+				+ matrix.getXx() * matrix.yw * matrix.getZy() * matrix.wz
+				+ matrix.getXy() * matrix.getYx() * matrix.zw * matrix.wz
+				- matrix.getXx() * matrix.getYy() * matrix.zw * matrix.wz
+				- matrix.getXz() * matrix.getYy() * matrix.getZx() * matrix.ww
+				+ matrix.getXy() * matrix.getYz() * matrix.getZx() * matrix.ww
+				+ matrix.getXz() * matrix.getYx() * matrix.getZy() * matrix.ww
+				- matrix.getXx() * matrix.getYz() * matrix.getZy() * matrix.ww
+				- matrix.getXy() * matrix.getYx() * matrix.getZz() * matrix.ww
+				+ matrix.getXx() * matrix.getYy() * matrix.getZz() * matrix.ww;
+	}
+
+	/**
 	 * Returns a new 4x4 identity matrix.
 	 */
 	public static Matrix4 identity() {
-		return new Matrix4(
-				1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1
-		);
+		return new Matrix4();
 	}
 
 	/**
@@ -53,6 +78,14 @@ public final class Matrix4 extends Matrix3 {
 		return op;
 	}
 
+	Matrix4() {
+		this(
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+		);
+	}
 	Matrix4(
 			double xx, double xy, double xz, double xw,
 			double yx, double yy, double yz, double yw,

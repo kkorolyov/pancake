@@ -9,13 +9,17 @@ public sealed class Matrix2 permits Matrix3 {
 	private double xx, xy, yx, yy;
 
 	/**
+	 * Returns the determinant of {@code matrix}.
+	 */
+	public static double determinant(Matrix2 matrix) {
+		return matrix.xx * matrix.yy - matrix.xy * matrix.yx;
+	}
+
+	/**
 	 * Returns a new 2x2 identity matrix.
 	 */
 	public static Matrix2 identity() {
-		return new Matrix2(
-				1, 0,
-				0, 1
-		);
+		return new Matrix2();
 	}
 
 	/**
@@ -28,6 +32,12 @@ public sealed class Matrix2 permits Matrix3 {
 		return new Matrix2(xx, xy, yx, yy);
 	}
 
+	Matrix2() {
+		this(
+				1, 0,
+				0, 1
+		);
+	}
 	Matrix2(
 			double xx, double xy,
 			double yx, double yy
@@ -36,6 +46,20 @@ public sealed class Matrix2 permits Matrix3 {
 		setXy(xy);
 		setYx(yx);
 		setYy(yy);
+	}
+
+	/**
+	 * Sets this matrix to its inverse.
+	 */
+	public void invert() {
+		var determinant = determinant(this);
+
+		setXx(yy);
+		setXy(-xy);
+		setYx(-yx);
+		setYy(xx);
+
+		scale(1 / determinant);
 	}
 
 	/**

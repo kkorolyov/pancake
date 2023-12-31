@@ -3,6 +3,23 @@ package dev.kkorolyov.pancake.platform.math
 import spock.lang.Specification
 
 class Matrix4Spec extends Specification {
+	def "computes determinant"() {
+		expect:
+		Matrix4.determinant(matrix) == determinant
+
+		where:
+		matrix << [
+				Matrix4.identity(),
+				Matrix4.of(
+						1, 0, 0, 0,
+						4, 5, 3, 2,
+						8, 0, 6, 4,
+						0, 0, 3, 4
+				)
+		]
+		determinant << [1, 60]
+	}
+
 	def "scales by scalar"() {
 		when:
 		matrix.scale(value)
