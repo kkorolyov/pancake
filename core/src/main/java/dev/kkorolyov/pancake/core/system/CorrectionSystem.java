@@ -1,10 +1,11 @@
 package dev.kkorolyov.pancake.core.system;
 
-import dev.kkorolyov.pancake.core.component.Position;
+import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.tag.Correctable;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public final class CorrectionSystem extends GameSystem {
 	private final Collection<Intersected.Event> events = new HashSet<>();
 
 	public CorrectionSystem() {
-		super(Intersected.class, Correctable.class, Position.class);
+		super(Intersected.class, Correctable.class, Transform.class);
 	}
 
 	@Override
@@ -28,17 +29,17 @@ public final class CorrectionSystem extends GameSystem {
 			if (events.add(event) && event.getA().get(Correctable.class) != null && event.getB().get(Correctable.class) != null) {
 				int priority = event.getA().get(Correctable.class).compareTo(event.getB().get(Correctable.class));
 
-				Position aPosition = event.getA().get(Position.class);
-				Position bPosition = event.getB().get(Position.class);
+				Vector3 aPosition = event.getA().get(Transform.class).getTranslation();
+				Vector3 bPosition = event.getB().get(Transform.class).getTranslation();
 
 				if (priority == 0) {
 					// split the correction
-					aPosition.getValue().add(event.getMtvA(), 0.5);
-					bPosition.getValue().add(event.getMtvB(), 0.5);
+					aPosition.add(event.getMtvA(), 0.5);
+					bPosition.add(event.getMtvB(), 0.5);
 				} else if (priority < 0) {
-					aPosition.getValue().add(event.getMtvA());
+					aPosition.add(event.getMtvA());
 				} else {
-					bPosition.getValue().add(event.getMtvB());
+					bPosition.add(event.getMtvB());
 				}
 			}
 		}

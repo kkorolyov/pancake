@@ -42,7 +42,7 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 		/**
 		 * Repositions joints selected by {@code targeter} to be within {@code min} and {@code max} (inclusive) Euclidean distance of each other.
 		 * If {@code targeter} returns {@code < 0}, modifies the first joint; if {@code > 0}, modifies the second joint; if {@code 0}, modifies both joints equally in opposite directions.
-		 * Assumes both joints have a {@link Position}.
+		 * Assumes both joints have a {@link Transform}.
 		 */
 		static Constraint reposition(double min, double max, Comparator<Entity> targeter) {
 			ArgVerify.greaterThanEqual("min", 0.0, min);
@@ -53,11 +53,11 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 				if (calculateMtv(mtv, a, b, min, max)) {
 					var priority = targeter.compare(a, b);
 
-					if (priority < 0) a.get(Position.class).getValue().add(mtv, -1);
-					else if (priority > 0) b.get(Position.class).getValue().add(mtv);
+					if (priority < 0) a.get(Transform.class).getTranslation().add(mtv, -1);
+					else if (priority > 0) b.get(Transform.class).getTranslation().add(mtv);
 					else {
-						a.get(Position.class).getValue().add(mtv, -0.5);
-						b.get(Position.class).getValue().add(mtv, 0.5);
+						a.get(Transform.class).getTranslation().add(mtv, -0.5);
+						b.get(Transform.class).getTranslation().add(mtv, 0.5);
 					}
 				}
 			};
@@ -67,7 +67,7 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 		 * Adds temporary forces to joints selected by {@code targeter} to be within {@code min} and {@code max} (inclusive) Euclidean distance of each other.
 		 * If {@code targeter} returns {@code < 0}, modifies the first joint; if {@code > 0}, modifies the second joint; if {@code 0}, modifies both joints equally in opposite directions.
 		 * Force is calculated by scaling the found MTV by {@code strength} - e.g. if the joints are {@code 2} units further apart past the {@code max}, force added is {@code 2 * strength}.
-		 * Assumes both joints have a {@link Position}, {@link Force}, and {@link ActionQueue}.
+		 * Assumes both joints have a {@link Transform}, {@link Force}, and {@link ActionQueue}.
 		 */
 		static Constraint force(double min, double max, double strength, Comparator<Entity> targeter) {
 			ArgVerify.greaterThanEqual("min", 0.0, min);
@@ -107,11 +107,11 @@ public final class Joint implements Component, Iterable<Map.Entry<Entity, Joint.
 		/**
 		 * If joints {@code a} and {@code b} are not between {@code min} and {@code max} Euclidean distance of each other, sets {@code mtv} to the MTV to apply to {@code b} to remediate the positions and returns {@code true}.
 		 * Else, returns {@code false}.
-		 * Assumes both joints have a {@link Position}.
+		 * Assumes both joints have a {@link Transform}.
 		 */
 		private static boolean calculateMtv(Vector3 mtv, Entity a, Entity b, double min, double max) {
-			mtv.set(a.get(Position.class).getValue());
-			mtv.add(b.get(Position.class).getValue(), -1);
+			mtv.set(a.get(Transform.class).getTranslation());
+			mtv.add(b.get(Transform.class).getTranslation(), -1);
 
 			var distance = Vector3.magnitude(mtv);
 

@@ -2,7 +2,7 @@ package dev.kkorolyov.pancake.core.system
 
 import dev.kkorolyov.pancake.core.component.Go
 import dev.kkorolyov.pancake.core.component.Path
-import dev.kkorolyov.pancake.core.component.Position
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -22,11 +22,14 @@ class PathSystemSpec extends Specification {
 	PathSystem system = new PathSystem()
 
 	def "moves towards next step if entity has no Go component"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Path path = new Path(strength, buffer, snapStrategy)
 		path.add(next)
 		Entity entity = entities.create()
-		entity.put(position, path)
+		entity.put(transform, path)
 
 		when:
 		system.update(entity, dt)
@@ -43,12 +46,15 @@ class PathSystemSpec extends Specification {
 	}
 
 	def "does not set next if entity has Go component"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Go go = new Go(targetV, 1, 0, false)
 		Path path = new Path(strength, buffer, snapStrategy)
 		path.add(next)
 		Entity entity = entities.create()
-		entity.put(position, go, path)
+		entity.put(transform, go, path)
 
 		when:
 		system.update(entity, dt)
@@ -64,10 +70,13 @@ class PathSystemSpec extends Specification {
 	}
 
 	def "does not set next if no more steps"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Path path = new Path(strength, buffer, snapStrategy)
 		Entity entity = entities.create()
-		entity.put(position, path)
+		entity.put(transform, path)
 
 		when:
 		system.update(entity, dt)
@@ -82,12 +91,15 @@ class PathSystemSpec extends Specification {
 	}
 
 	def "sets snap for all if all strategy"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Path path = new Path(strength, buffer, Path.SnapStrategy.ALL)
 		path.add(next)
 		path.add(next)
 		Entity entity = entities.create()
-		entity.put(position, path)
+		entity.put(transform, path)
 
 		when:
 		system.update(entity, dt)
@@ -101,12 +113,15 @@ class PathSystemSpec extends Specification {
 		next << [Vector3.of(1), Vector3.of(17, 14, 5)]
 	}
 	def "sets snap for last if last strategy"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Path path = new Path(strength, buffer, Path.SnapStrategy.LAST)
 		path.add(next)
 		path.add(next)
 		Entity entity = entities.create()
-		entity.put(position, path)
+		entity.put(transform, path)
 
 		when:
 		system.update(entity, dt)

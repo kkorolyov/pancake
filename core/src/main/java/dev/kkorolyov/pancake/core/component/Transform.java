@@ -7,7 +7,6 @@ import dev.kkorolyov.pancake.platform.math.Vector3;
 /**
  * Translation, rotation, and scale of an entity in space.
  * All operations are relative to the transform's parent.
- * To perform calculations using this transform (e.g. physics-based collisions), take a vector relative to this transform (likely {@code (0, 0, 0)}) and apply this transform's matrix to it.
  */
 public class Transform implements Component {
 	private static final ThreadLocal<Matrix4> tCalcMatrix = ThreadLocal.withInitial(Matrix4::identity);
@@ -38,7 +37,7 @@ public class Transform implements Component {
 	}
 
 	/**
-	 * Returns the mutable translation vector relative to .
+	 * Returns the mutable translation vector.
 	 */
 	public Vector3 getTranslation() {
 		return translation;
@@ -65,7 +64,8 @@ public class Transform implements Component {
 	}
 
 	/**
-	 * Returns the matrix for transforming local, transform-relative vectors to this transform's coordinates in root space.
+	 * Returns the matrix for transforming coordinates from this transform's local space to root space.
+	 * The returned instance is thread-local and shared between calls to this method.
 	 */
 	public Matrix4 getMatrix() {
 		if (parent != null) {

@@ -1,6 +1,6 @@
 package dev.kkorolyov.pancake.core.system
 
-import dev.kkorolyov.pancake.core.component.Position
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
@@ -13,15 +13,18 @@ class MovementSystemSpec extends Specification {
 	MovementSystem system = new MovementSystem()
 
 	def "moves"() {
-		Position position = new Position(Vector3.of(1, 1, 1))
+		Transform transform = new Transform().with {
+			it.translation.set(Vector3.of(1, 1, 1))
+			it
+		}
 		Velocity velocity = new Velocity(Vector3.of(2, 2, 2))
 		Entity entity = entities.create()
-		entity.put(position, velocity)
+		entity.put(transform, velocity)
 
 		when:
 		system.update(entity, 3e9 as long)
 
 		then:
-		position.value == Vector3.of(7, 7, 7)
+		transform.translation == Vector3.of(7, 7, 7)
 	}
 }
