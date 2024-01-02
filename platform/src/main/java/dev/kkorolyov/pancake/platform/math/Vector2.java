@@ -124,6 +124,7 @@ public interface Vector2 {
 		setX(other.getX());
 		setY(other.getY());
 	}
+
 	/**
 	 * Translates the head of this vector by {@code other}.
 	 */
@@ -165,17 +166,17 @@ public interface Vector2 {
 			setY(y);
 		}
 
-		public double getX() {
+		public final double getX() {
 			return x;
 		}
-		public void setX(double x) {
+		public final void setX(double x) {
 			this.x = FloatOps.sanitize(x);
 		}
 
-		public double getY() {
+		public final double getY() {
 			return y;
 		}
-		public void setY(double y) {
+		public final void setY(double y) {
 			this.y = FloatOps.sanitize(y);
 		}
 

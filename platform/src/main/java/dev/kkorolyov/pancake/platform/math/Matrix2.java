@@ -5,59 +5,76 @@ import java.util.Objects;
 /**
  * A 2x2 matrix.
  */
-public sealed class Matrix2 permits Matrix3 {
-	private double xx, xy, yx, yy;
-
+public interface Matrix2 {
 	/**
 	 * Returns the determinant of {@code matrix}.
 	 */
-	public static double determinant(Matrix2 matrix) {
-		return matrix.xx * matrix.yy - matrix.xy * matrix.yx;
+	static double determinant(Matrix2 matrix) {
+		return matrix.getXx() * matrix.getYy() - matrix.getXy() * matrix.getYx();
 	}
 
 	/**
 	 * Returns a new 2x2 identity matrix.
 	 */
-	public static Matrix2 identity() {
-		return new Matrix2();
-	}
-
-	/**
-	 * Returns a new 2x2 matrix for the given configuration.
-	 */
-	public static Matrix2 of(
-			double xx, double xy,
-			double yx, double yy
-	) {
-		return new Matrix2(xx, xy, yx, yy);
-	}
-
-	Matrix2() {
-		this(
+	static Matrix2 identity() {
+		return of(
 				1, 0,
 				0, 1
 		);
 	}
-	Matrix2(
+	/**
+	 * Returns a new 2x2 matrix for the given configuration.
+	 */
+	static Matrix2 of(
 			double xx, double xy,
 			double yx, double yy
 	) {
-		setXx(xx);
-		setXy(xy);
-		setYx(yx);
-		setYy(yy);
+		return new Value(
+				xx, xy,
+				yx, yy
+		);
+	}
+
+	/**
+	 * Generic {@link Object#equals(Object)} implementation for {@code Matrix2} instances.
+	 * Uses {@code instanceof}, rather than a class equality check.
+	 */
+	static boolean equals(Matrix2 matrix, Object obj) {
+		if (matrix == obj) return true;
+		if (!(obj instanceof Matrix2 o)) return false;
+		return FloatOps.equals(matrix.getXx(), o.getXx()) && FloatOps.equals(matrix.getXy(), o.getXy())
+				&& FloatOps.equals(matrix.getYx(), o.getYx()) && FloatOps.equals(matrix.getYy(), o.getYy());
+	}
+	/**
+	 * Generic {@link Object#hashCode()} implementation for {@code Matrix2} instances.
+	 */
+	static int hashCode(Matrix2 matrix) {
+		return Objects.hash(
+				matrix.getXx(), matrix.getXy(),
+				matrix.getYx(), matrix.getYy()
+		);
+	}
+	/**
+	 * Generic {@link Object#toString()} implementation for {@code Matrix2} instances.
+	 */
+	static String toString(Matrix2 matrix) {
+		return String.format(
+				"((%.9f,%.9f),(%.9f,%.9f))",
+				matrix.getXx(), matrix.getXy(),
+				matrix.getYx(), matrix.getYy()
+		);
 	}
 
 	/**
 	 * Sets this matrix to its inverse.
 	 */
-	public void invert() {
+	default void invert() {
 		var determinant = determinant(this);
 
-		setXx(yy);
-		setXy(-xy);
-		setYx(-yx);
-		setYy(xx);
+		setXx(getYy());
+		setXy(-getXy());
+		setYx(-getYx());
+		setYy(getXx());
 
 		scale(1 / determinant);
 	}
@@ -65,74 +82,104 @@ public sealed class Matrix2 permits Matrix3 {
 	/**
 	 * Scales this matrix by {@code value}.
 	 */
-	public void scale(double value) {
-		setXx(xx * value);
-		setXy(xy * value);
-		setYx(yx * value);
-		setYy(yy * value);
+	default void scale(double value) {
+		setXx(getXx() * value);
+		setXy(getXy() * value);
+		setYx(getYx() * value);
+		setYy(getYy() * value);
 	}
 
 	/**
 	 * Adds {@code other}'s components to this matrix.
 	 */
-	public final void add(Matrix2 other) {
-		setXx(xx + other.xx);
-		setXy(xy + other.xy);
-		setYx(yx + other.yx);
-		setYy(yy + other.yy);
+	default void add(Matrix2 other) {
+		setXx(getXx() + other.getXx());
+		setXy(getXy() + other.getXy());
+		setYx(getYx() + other.getYx());
+		setYy(getYy() + other.getYy());
 	}
 	/**
 	 * Adds {@code scale} proportion of {@code other}'s components to this matrix.
 	 */
-	public final void add(Matrix2 other, double scale) {
-		setXx(xx + other.xx * scale);
-		setXy(xy + other.xy * scale);
-		setYx(yx + other.yx * scale);
-		setYy(yy + other.yy * scale);
+	default void add(Matrix2 other, double scale) {
+		setXx(getXx() + other.getXx() * scale);
+		setXy(getXy() + other.getXy() * scale);
+		setYx(getYx() + other.getYx() * scale);
+		setYy(getYy() + other.getYy() * scale);
 	}
 
-	public final double getXx() {
-		return xx;
-	}
-	public final void setXx(double xx) {
-		this.xx = FloatOps.sanitize(xx);
-	}
+	double getXx();
+	void setXx(double xx);
 
-	public final double getXy() {
-		return xy;
-	}
-	public final void setXy(double xy) {
-		this.xy = FloatOps.sanitize(xy);
-	}
+	double getXy();
+	void setXy(double xy);
 
-	public final double getYx() {
-		return yx;
-	}
-	public final void setYx(double yx) {
-		this.yx = FloatOps.sanitize(yx);
-	}
+	double getYx();
+	void setYx(double yx);
 
-	public final double getYy() {
-		return yy;
-	}
-	public final void setYy(double yy) {
-		this.yy = FloatOps.sanitize(yy);
-	}
+	double getYy();
+	void setYy(double yy);
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Matrix2 matrix2 = (Matrix2) o;
-		return FloatOps.equals(matrix2.xx, xx) && FloatOps.equals(matrix2.xy, xy) && FloatOps.equals(matrix2.yx, yx) && FloatOps.equals(matrix2.yy, yy);
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(xx, xy, yx, yy);
-	}
+	sealed class Value implements Matrix2 permits Matrix3.Value {
+		private double xx, xy, yx, yy;
 
-	@Override
-	public String toString() {
-		return String.format("((%.9f,%.9f),(%.9f,%.9f))", xx, xy, yx, yy);
+		Value(
+				double xx, double xy,
+				double yx, double yy
+		) {
+			setXx(xx);
+			setXy(xy);
+			setYx(yx);
+			setYy(yy);
+		}
+
+		@Override
+		public final double getXx() {
+			return xx;
+		}
+		@Override
+		public final void setXx(double xx) {
+			this.xx = FloatOps.sanitize(xx);
+		}
+
+		@Override
+		public final double getXy() {
+			return xy;
+		}
+		@Override
+		public final void setXy(double xy) {
+			this.xy = FloatOps.sanitize(xy);
+		}
+
+		@Override
+		public final double getYx() {
+			return yx;
+		}
+		@Override
+		public final void setYx(double yx) {
+			this.yx = FloatOps.sanitize(yx);
+		}
+
+		@Override
+		public final double getYy() {
+			return yy;
+		}
+		@Override
+		public final void setYy(double yy) {
+			this.yy = FloatOps.sanitize(yy);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return Matrix2.equals(this, obj);
+		}
+		@Override
+		public int hashCode() {
+			return Matrix2.hashCode(this);
+		}
+		@Override
+		public String toString() {
+			return Matrix2.toString(this);
+		}
 	}
 }

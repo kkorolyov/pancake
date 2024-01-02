@@ -129,6 +129,7 @@ public interface Vector3 extends Vector2 {
 		set((Vector2) other);
 		setZ(other.getZ());
 	}
+
 	/**
 	 * Translates the head of this vector by {@code other}.
 	 */

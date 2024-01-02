@@ -5,165 +5,206 @@ import java.util.Objects;
 /**
  * A 4x4 matrix.
  */
-public final class Matrix4 extends Matrix3 {
-	// reusable 2nd matrix for transformations
-	private static final ThreadLocal<Matrix4> tOp = ThreadLocal.withInitial(Matrix4::identity);
-
-	private double xw, yw, zw, wx, wy, wz, ww;
-
+public interface Matrix4 extends Matrix3 {
 	/**
 	 * Returns the determinant of {@code matrix}.
 	 */
-	public static double determinant(Matrix4 matrix) {
-		return matrix.xw * matrix.getYz() * matrix.getZy() * matrix.wx
-				- matrix.getXz() * matrix.yw * matrix.getZy() * matrix.wx
-				- matrix.xw * matrix.getYy() * matrix.getZz() * matrix.wx
-				+ matrix.getXy() * matrix.yw * matrix.getZz() * matrix.wx
-				+ matrix.xw * matrix.getYy() * matrix.zw * matrix.wx
-				- matrix.getXy() * matrix.getYz() * matrix.zw * matrix.wx
-				- matrix.xw * matrix.getYz() * matrix.zw * matrix.wy
-				+ matrix.getXz() * matrix.yw * matrix.getZx() * matrix.wy
-				+ matrix.xw * matrix.getYx() * matrix.getZz() * matrix.wy
-				- matrix.getXx() * matrix.yw * matrix.getZz() * matrix.wy
-				- matrix.getXz() * matrix.getYx() * matrix.zw * matrix.wy
-				+ matrix.getXx() * matrix.getYz() * matrix.zw * matrix.wy
-				+ matrix.xw * matrix.getYy() * matrix.getZx() * matrix.wz
-				- matrix.getXy() * matrix.yw * matrix.getZx() * matrix.wz
-				- matrix.xw * matrix.getYx() * matrix.getZy() * matrix.wz
-				+ matrix.getXx() * matrix.yw * matrix.getZy() * matrix.wz
-				+ matrix.getXy() * matrix.getYx() * matrix.zw * matrix.wz
-				- matrix.getXx() * matrix.getYy() * matrix.zw * matrix.wz
-				- matrix.getXz() * matrix.getYy() * matrix.getZx() * matrix.ww
-				+ matrix.getXy() * matrix.getYz() * matrix.getZx() * matrix.ww
-				+ matrix.getXz() * matrix.getYx() * matrix.getZy() * matrix.ww
-				- matrix.getXx() * matrix.getYz() * matrix.getZy() * matrix.ww
-				- matrix.getXy() * matrix.getYx() * matrix.getZz() * matrix.ww
-				+ matrix.getXx() * matrix.getYy() * matrix.getZz() * matrix.ww;
+	static double determinant(Matrix4 matrix) {
+		return matrix.getXw() * matrix.getYz() * matrix.getZy() * matrix.getWx()
+				- matrix.getXz() * matrix.getYw() * matrix.getZy() * matrix.getWx()
+				- matrix.getXw() * matrix.getYy() * matrix.getZz() * matrix.getWx()
+				+ matrix.getXy() * matrix.getYw() * matrix.getZz() * matrix.getWx()
+				+ matrix.getXw() * matrix.getYy() * matrix.getZw() * matrix.getWx()
+				- matrix.getXy() * matrix.getYz() * matrix.getZw() * matrix.getWx()
+				- matrix.getXw() * matrix.getYz() * matrix.getZw() * matrix.getWy()
+				+ matrix.getXz() * matrix.getYw() * matrix.getZx() * matrix.getWy()
+				+ matrix.getXw() * matrix.getYx() * matrix.getZz() * matrix.getWy()
+				- matrix.getXx() * matrix.getYw() * matrix.getZz() * matrix.getWy()
+				- matrix.getXz() * matrix.getYx() * matrix.getZw() * matrix.getWy()
+				+ matrix.getXx() * matrix.getYz() * matrix.getZw() * matrix.getWy()
+				+ matrix.getXw() * matrix.getYy() * matrix.getZx() * matrix.getWz()
+				- matrix.getXy() * matrix.getYw() * matrix.getZx() * matrix.getWz()
+				- matrix.getXw() * matrix.getYx() * matrix.getZy() * matrix.getWz()
+				+ matrix.getXx() * matrix.getYw() * matrix.getZy() * matrix.getWz()
+				+ matrix.getXy() * matrix.getYx() * matrix.getZw() * matrix.getWz()
+				- matrix.getXx() * matrix.getYy() * matrix.getZw() * matrix.getWz()
+				- matrix.getXz() * matrix.getYy() * matrix.getZx() * matrix.getWw()
+				+ matrix.getXy() * matrix.getYz() * matrix.getZx() * matrix.getWw()
+				+ matrix.getXz() * matrix.getYx() * matrix.getZy() * matrix.getWw()
+				- matrix.getXx() * matrix.getYz() * matrix.getZy() * matrix.getWw()
+				- matrix.getXy() * matrix.getYx() * matrix.getZz() * matrix.getWw()
+				+ matrix.getXx() * matrix.getYy() * matrix.getZz() * matrix.getWw();
 	}
 
 	/**
 	 * Returns a new 4x4 identity matrix.
 	 */
-	public static Matrix4 identity() {
-		return new Matrix4();
-	}
-
-	/**
-	 * Returns a new 4x4 matrix initialized to {@code other}.
-	 */
-	public static Matrix4 of(Matrix4 other) {
+	static Matrix4 identity() {
 		return of(
-				other.getXx(), other.getXy(), other.getXz(), other.xw,
-				other.getYx(), other.getYy(), other.getYz(), other.yw,
-				other.getZx(), other.getZy(), other.getZz(), other.zw,
-				other.wx, other.wy, other.wz, other.ww
-		);
-	}
-
-	/**
-	 * Returns a new 4x4 matrix for the given configuration.
-	 */
-	public static Matrix4 of(
-			double xx, double xy, double xz, double xw,
-			double yx, double yy, double yz, double yw,
-			double zx, double zy, double zz, double zw,
-			double wx, double wy, double wz, double ww
-	) {
-		return new Matrix4(xx, xy, xz, xw, yx, yy, yz, yw, zx, zy, zz, zw, wx, wy, wz, ww);
-	}
-
-	private static Matrix4 initOp() {
-		Matrix4 op = tOp.get();
-		op.reset();
-		return op;
-	}
-
-	Matrix4() {
-		this(
 				1, 0, 0, 0,
 				0, 1, 0, 0,
 				0, 0, 1, 0,
 				0, 0, 0, 1
 		);
 	}
-	Matrix4(
+
+	/**
+	 * Returns a new 4x4 matrix initialized to {@code other}.
+	 */
+	static Matrix4 of(Matrix4 other) {
+		return of(
+				other.getXx(), other.getXy(), other.getXz(), other.getXw(),
+				other.getYx(), other.getYy(), other.getYz(), other.getYw(),
+				other.getZx(), other.getZy(), other.getZz(), other.getZw(),
+				other.getWx(), other.getWy(), other.getWz(), other.getWw()
+		);
+	}
+
+	/**
+	 * Returns a new 4x4 matrix for the given configuration.
+	 */
+	static Matrix4 of(
 			double xx, double xy, double xz, double xw,
 			double yx, double yy, double yz, double yw,
 			double zx, double zy, double zz, double zw,
 			double wx, double wy, double wz, double ww
 	) {
-		super(xx, xy, xz, yx, yy, yz, zx, zy, zz);
-		setXw(xw);
-		setYw(yw);
-		setZw(zw);
-		setWx(wx);
-		setWy(wy);
-		setWz(wz);
-		setWw(ww);
+		return new Value(
+				xx, xy, xz, xw,
+				yx, yy, yz, yw,
+				zx, zy, zz, zw,
+				wx, wy, wz, ww
+		);
+	}
+
+	/**
+	 * Generic {@link Object#equals(Object)} implementation for {@code Matrix4} instances.
+	 * Uses {@code instanceof}, rather than a class equality check.
+	 */
+	static boolean equals(Matrix4 matrix, Object obj) {
+		if (matrix == obj) return true;
+		if (!(obj instanceof Matrix4 o)) return false;
+		return FloatOps.equals(matrix.getXx(), o.getXx()) && FloatOps.equals(matrix.getXy(), o.getXy()) && FloatOps.equals(matrix.getXz(), o.getXz()) && FloatOps.equals(matrix.getXw(), o.getXw())
+				&& FloatOps.equals(matrix.getYx(), o.getYx()) && FloatOps.equals(matrix.getYy(), o.getYy()) && FloatOps.equals(matrix.getYz(), o.getYz()) && FloatOps.equals(matrix.getYw(), o.getYw())
+				&& FloatOps.equals(matrix.getZx(), o.getZx()) && FloatOps.equals(matrix.getZy(), o.getZy()) && FloatOps.equals(matrix.getZz(), o.getZz()) && FloatOps.equals(matrix.getZw(), o.getZw())
+				&& FloatOps.equals(matrix.getWx(), o.getWx()) && FloatOps.equals(matrix.getWy(), o.getWy()) && FloatOps.equals(matrix.getWz(), o.getWz()) && FloatOps.equals(matrix.getWw(), o.getWw());
+	}
+	/**
+	 * Generic {@link Object#hashCode()} implementation for {@code Matrix4} instances.
+	 */
+	static int hashCode(Matrix4 matrix) {
+		return Objects.hash(
+				matrix.getXx(), matrix.getXy(), matrix.getXz(), matrix.getXw(),
+				matrix.getYx(), matrix.getYy(), matrix.getYz(), matrix.getYw(),
+				matrix.getZx(), matrix.getZy(), matrix.getZz(), matrix.getZw(),
+				matrix.getWx(), matrix.getWy(), matrix.getWz(), matrix.getWw()
+		);
+	}
+	/**
+	 * Generic {@link Object#toString()} implementation for {@code Matrix4} instances.
+	 */
+	static String toString(Matrix4 matrix) {
+		return String.format(
+				"((%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f)),(%.9f,%.9f,%.9f,%.9f))",
+				matrix.getXx(), matrix.getXy(), matrix.getXz(), matrix.getXw(),
+				matrix.getYx(), matrix.getYy(), matrix.getYz(), matrix.getYw(),
+				matrix.getZx(), matrix.getZy(), matrix.getZz(), matrix.getZw(),
+				matrix.getWx(), matrix.getWy(), matrix.getWz(), matrix.getWw()
+		);
 	}
 
 	@Override
-	public void scale(double value) {
-		super.scale(value);
-		setXw(xw * value);
-		setYw(yw * value);
-		setZw(zw * value);
-		setWx(wx * value);
-		setWy(wy * value);
-		setWz(wz * value);
-		setWw(ww * value);
+	default void scale(double value) {
+		setXx(getXx() * value);
+		setXy(getXy() * value);
+		setYx(getYx() * value);
+		setYy(getYy() * value);
+		setXz(getXz() * value);
+		setYz(getYz() * value);
+		setZx(getZx() * value);
+		setZy(getZy() * value);
+		setZz(getZz() * value);
+		setXw(getXw() * value);
+		setYw(getYw() * value);
+		setZw(getZw() * value);
+		setWx(getWx() * value);
+		setWy(getWy() * value);
+		setWz(getWz() * value);
+		setWw(getWw() * value);
+	}
+
+	/**
+	 * Sets this matrix to match {@code other}.
+	 */
+	default void set(Matrix4 other) {
+		setXx(other.getXx());
+		setXy(other.getXy());
+		setXz(other.getXz());
+		setXw(other.getXw());
+		setYx(other.getYx());
+		setYy(other.getYy());
+		setYz(other.getYz());
+		setYw(other.getYw());
+		setZx(other.getZx());
+		setZy(other.getZy());
+		setZz(other.getZz());
+		setZw(other.getZw());
+		setWx(other.getWx());
+		setWy(other.getWy());
+		setWz(other.getWz());
+		setWw(other.getWw());
 	}
 
 	/**
 	 * Adds {@code other}'s components to this matrix.
 	 */
-	public void add(Matrix4 other) {
+	default void add(Matrix4 other) {
 		add((Matrix3) other);
-		setXw(xw + other.xw);
-		setYw(yw + other.yw);
-		setZw(zw + other.zw);
-		setWx(wx + other.wx);
-		setWy(wy + other.wy);
-		setWz(wz + other.wz);
-		setWw(ww + other.ww);
+		setXw(getXw() + other.getXw());
+		setYw(getYw() + other.getYw());
+		setZw(getZw() + other.getZw());
+		setWx(getWx() + other.getWx());
+		setWy(getWy() + other.getWy());
+		setWz(getWz() + other.getWz());
+		setWw(getWw() + other.getWw());
 	}
 	/**
 	 * Adds {@code scale} proportion of {@code other}'s components to this matrix.
 	 */
-	public void add(Matrix4 other, double scale) {
+	default void add(Matrix4 other, double scale) {
 		add((Matrix3) other, scale);
-		setXw(xw + other.xw * scale);
-		setYw(yw + other.yw * scale);
-		setZw(zw + other.zw * scale);
-		setWx(wx + other.wx * scale);
-		setWy(wy + other.wy * scale);
-		setWz(wz + other.wz * scale);
-		setWw(ww + other.ww * scale);
+		setXw(getXw() + other.getXw() * scale);
+		setYw(getYw() + other.getYw() * scale);
+		setZw(getZw() + other.getZw() * scale);
+		setWx(getWx() + other.getWx() * scale);
+		setWy(getWy() + other.getWy() * scale);
+		setWz(getWz() + other.getWz() * scale);
+		setWw(getWw() + other.getWw() * scale);
 	}
 
 	/**
 	 * Matrix-multiplies this matrix with {@code other} and sets the result on this matrix.
 	 */
-	public void multiply(Matrix4 other) {
-		double newXx = getXx() * other.getXx() + getXy() * other.getYx() + getXz() * other.getZx() + xw * other.wx;
-		double newXy = getXx() * other.getXy() + getXy() * other.getYy() + getXz() * other.getZy() + xw * other.wy;
-		double newXz = getXx() * other.getXz() + getXy() * other.getYz() + getXz() * other.getZz() + xw * other.wz;
-		double newXw = getXx() * other.xw + getXy() * other.yw + getXz() * other.zw + xw * other.ww;
+	default void multiply(Matrix4 other) {
+		double newXx = getXx() * other.getXx() + getXy() * other.getYx() + getXz() * other.getZx() + getXw() * other.getWx();
+		double newXy = getXx() * other.getXy() + getXy() * other.getYy() + getXz() * other.getZy() + getXw() * other.getWy();
+		double newXz = getXx() * other.getXz() + getXy() * other.getYz() + getXz() * other.getZz() + getXw() * other.getWz();
+		double newXw = getXx() * other.getXw() + getXy() * other.getYw() + getXz() * other.getZw() + getXw() * other.getWw();
 
-		double newYx = getYx() * other.getXx() + getYy() * other.getYx() + getYz() * other.getZx() + yw * other.wx;
-		double newYy = getYx() * other.getXy() + getYy() * other.getYy() + getYz() * other.getZy() + yw * other.wy;
-		double newYz = getYx() * other.getXz() + getYy() * other.getYz() + getYz() * other.getZz() + yw * other.wz;
-		double newYw = getYx() * other.xw + getYy() * other.yw + getYz() * other.zw + yw * other.ww;
+		double newYx = getYx() * other.getXx() + getYy() * other.getYx() + getYz() * other.getZx() + getYw() * other.getWx();
+		double newYy = getYx() * other.getXy() + getYy() * other.getYy() + getYz() * other.getZy() + getYw() * other.getWy();
+		double newYz = getYx() * other.getXz() + getYy() * other.getYz() + getYz() * other.getZz() + getYw() * other.getWz();
+		double newYw = getYx() * other.getXw() + getYy() * other.getYw() + getYz() * other.getZw() + getYw() * other.getWw();
 
-		double newZx = getZx() * other.getXx() + getZy() * other.getYx() + getZz() * other.getZx() + zw * other.wx;
-		double newZy = getZx() * other.getXy() + getZy() * other.getYy() + getZz() * other.getZy() + zw * other.wy;
-		double newZz = getZx() * other.getXz() + getZy() * other.getYz() + getZz() * other.getZz() + zw * other.wz;
-		double newZw = getZx() * other.xw + getZy() * other.yw + getZz() * other.zw + zw * other.ww;
+		double newZx = getZx() * other.getXx() + getZy() * other.getYx() + getZz() * other.getZx() + getZw() * other.getWx();
+		double newZy = getZx() * other.getXy() + getZy() * other.getYy() + getZz() * other.getZy() + getZw() * other.getWy();
+		double newZz = getZx() * other.getXz() + getZy() * other.getYz() + getZz() * other.getZz() + getZw() * other.getWz();
+		double newZw = getZx() * other.getXw() + getZy() * other.getYw() + getZz() * other.getZw() + getZw() * other.getWw();
 
-		double newWx = getWx() * other.getXx() + getWy() * other.getYx() + getWz() * other.getZx() + ww * other.wx;
-		double newWy = getWx() * other.getXy() + getWy() * other.getYy() + getWz() * other.getZy() + ww * other.wy;
-		double newWz = getWx() * other.getXz() + getWy() * other.getYz() + getWz() * other.getZz() + ww * other.wz;
-		double newWw = getWx() * other.xw + getWy() * other.yw + getWz() * other.zw + ww * other.ww;
+		double newWx = getWx() * other.getXx() + getWy() * other.getYx() + getWz() * other.getZx() + getWw() * other.getWx();
+		double newWy = getWx() * other.getXy() + getWy() * other.getYy() + getWz() * other.getZy() + getWw() * other.getWy();
+		double newWz = getWx() * other.getXz() + getWy() * other.getYz() + getWz() * other.getZz() + getWw() * other.getWz();
+		double newWw = getWx() * other.getXw() + getWy() * other.getYw() + getWz() * other.getZw() + getWw() * other.getWw();
 
 		setXx(newXx);
 		setXy(newXy);
@@ -190,12 +231,12 @@ public final class Matrix4 extends Matrix3 {
 	 * @see #rotate(double, Vector3)
 	 * @see #scale(Vector3)
 	 */
-	public void translate(Vector3 translation) {
-		Matrix4 op = initOp();
+	default void translate(Vector3 translation) {
+		Matrix4 op = Matrix4.identity();
 
-		op.setXw(xw + translation.getX());
-		op.setYw(yw + translation.getY());
-		op.setZw(zw + translation.getZ());
+		op.setXw(getXw() + translation.getX());
+		op.setYw(getYw() + translation.getY());
+		op.setZw(getZw() + translation.getZ());
 
 		multiply(op);
 	}
@@ -208,12 +249,12 @@ public final class Matrix4 extends Matrix3 {
 	 * @see #translate(Vector3)
 	 */
 	// FIXME this has to be called in reverse order for multiple rotations, right?
-	public void rotate(double radians, Vector3 axis) {
+	default void rotate(double radians, Vector3 axis) {
 		double cosTheta = Math.cos(radians);
 		double sinTheta = Math.sin(radians);
 		double iCosTheta = 1 - cosTheta;
 
-		Matrix4 op = initOp();
+		Matrix4 op = Matrix4.identity();
 
 		op.setXx(cosTheta + axis.getX() * axis.getX() * iCosTheta);
 		op.setXy(axis.getX() * axis.getY() * iCosTheta - axis.getZ() * sinTheta);
@@ -234,8 +275,8 @@ public final class Matrix4 extends Matrix3 {
 	 * @see #translate(Vector3)
 	 * @see #rotate(double, Vector3)
 	 */
-	public void scale(Vector3 scale) {
-		Matrix4 op = initOp();
+	default void scale(Vector3 scale) {
+		Matrix4 op = Matrix4.identity();
 
 		op.setXx(scale.getX());
 		op.setYy(scale.getY());
@@ -247,7 +288,7 @@ public final class Matrix4 extends Matrix3 {
 	/**
 	 * Sets this matrix to the {@link #identity()} matrix.
 	 */
-	public void reset() {
+	default void reset() {
 		setXx(1);
 		setXy(0);
 		setXz(0);
@@ -266,92 +307,124 @@ public final class Matrix4 extends Matrix3 {
 		setWw(1);
 	}
 
-	/**
-	 * Sets this matrix to match {@code other}.
-	 */
-	public void set(Matrix4 other) {
-		setXx(other.getXx());
-		setXy(other.getXy());
-		setXz(other.getXz());
-		setXw(other.xw);
-		setYx(other.getYx());
-		setYy(other.getYy());
-		setYz(other.getYz());
-		setYw(other.yw);
-		setZx(other.getZx());
-		setZy(other.getZy());
-		setZz(other.getZz());
-		setZw(other.zw);
-		setWx(other.wx);
-		setWy(other.wy);
-		setWz(other.wz);
-		setWw(other.ww);
-	}
+	double getXw();
+	void setXw(double xw);
 
-	public double getXw() {
-		return xw;
-	}
-	public void setXw(double xw) {
-		this.xw = FloatOps.sanitize(xw);
-	}
+	double getYw();
+	void setYw(double yw);
 
-	public double getYw() {
-		return yw;
-	}
-	public void setYw(double yw) {
-		this.yw = FloatOps.sanitize(yw);
-	}
+	double getZw();
+	void setZw(double zw);
 
-	public double getZw() {
-		return zw;
-	}
-	public void setZw(double zw) {
-		this.zw = FloatOps.sanitize(zw);
-	}
+	double getWx();
+	void setWx(double wx);
 
-	public double getWx() {
-		return wx;
-	}
-	public void setWx(double wx) {
-		this.wx = FloatOps.sanitize(wx);
-	}
+	double getWy();
+	void setWy(double wy);
 
-	public double getWy() {
-		return wy;
-	}
-	public void setWy(double wy) {
-		this.wy = FloatOps.sanitize(wy);
-	}
+	double getWz();
+	void setWz(double wz);
 
-	public double getWz() {
-		return wz;
-	}
-	public void setWz(double wz) {
-		this.wz = FloatOps.sanitize(wz);
-	}
+	double getWw();
+	void setWw(double ww);
 
-	public double getWw() {
-		return ww;
-	}
-	public void setWw(double ww) {
-		this.ww = FloatOps.sanitize(ww);
-	}
+	final class Value extends Matrix3.Value implements Matrix4 {
+		private double xw, yw, zw, wx, wy, wz, ww;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		if (!super.equals(o)) return false;
-		Matrix4 matrix4 = (Matrix4) o;
-		return FloatOps.equals(matrix4.xw, xw) && FloatOps.equals(matrix4.yw, yw) && FloatOps.equals(matrix4.zw, zw) && FloatOps.equals(matrix4.wx, wx) && FloatOps.equals(matrix4.wy, wy) && FloatOps.equals(matrix4.wz, wz) && FloatOps.equals(matrix4.ww, ww);
-	}
-	@Override
-	public int hashCode() {
-		return Objects.hash(super.hashCode(), xw, yw, zw, wx, wy, wz, ww);
-	}
+		Value(
+				double xx, double xy, double xz, double xw,
+				double yx, double yy, double yz, double yw,
+				double zx, double zy, double zz, double zw,
+				double wx, double wy, double wz, double ww
+		) {
+			super(
+					xx, xy, xz,
+					yx, yy, yz,
+					zx, zy, zz
+			);
+			setXw(xw);
+			setYw(yw);
+			setZw(zw);
+			setWx(wx);
+			setWy(wy);
+			setWz(wz);
+			setWw(ww);
+		}
 
-	@Override
-	public String toString() {
-		return String.format("((%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f),(%.9f,%.9f,%.9f,%.9f))", getXx(), getXy(), getXz(), xw, getYx(), getYy(), getYz(), yw, getZx(), getZy(), getZz(), zw, wx, wy, wz, ww);
+		@Override
+		public double getXw() {
+			return xw;
+		}
+		@Override
+		public void setXw(double xw) {
+			this.xw = FloatOps.sanitize(xw);
+		}
+
+		@Override
+		public double getYw() {
+			return yw;
+		}
+		@Override
+		public void setYw(double yw) {
+			this.yw = FloatOps.sanitize(yw);
+		}
+
+		@Override
+		public double getZw() {
+			return zw;
+		}
+		@Override
+		public void setZw(double zw) {
+			this.zw = FloatOps.sanitize(zw);
+		}
+
+		@Override
+		public double getWx() {
+			return wx;
+		}
+		@Override
+		public void setWx(double wx) {
+			this.wx = FloatOps.sanitize(wx);
+		}
+
+		@Override
+		public double getWy() {
+			return wy;
+		}
+		@Override
+		public void setWy(double wy) {
+			this.wy = FloatOps.sanitize(wy);
+		}
+
+		@Override
+		public double getWz() {
+			return wz;
+		}
+		@Override
+		public void setWz(double wz) {
+			this.wz = FloatOps.sanitize(wz);
+		}
+
+		@Override
+		public double getWw() {
+			return ww;
+		}
+		@Override
+		public void setWw(double ww) {
+			this.ww = FloatOps.sanitize(ww);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return Matrix4.equals(this, obj);
+		}
+		@Override
+		public int hashCode() {
+			return Matrix4.hashCode(this);
+		}
+		@Override
+		public String toString() {
+			return Matrix4.toString(this);
+		}
 	}
 }
