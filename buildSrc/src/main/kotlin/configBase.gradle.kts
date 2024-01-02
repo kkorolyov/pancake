@@ -1,6 +1,7 @@
 plugins {
 	java
 	groovy
+	id("me.champeau.jmh")
 }
 
 fun bundles(name: String) = the<VersionCatalogsExtension>().named("libs").findBundle(name).get()
