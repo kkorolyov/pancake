@@ -232,14 +232,12 @@ public interface Matrix4 extends Matrix3 {
 	 * @see #scale(Vector3)
 	 */
 	default void translate(Vector3 translation) {
-		Matrix4 op = Matrix4.identity();
-
-		op.setXw(getXw() + translation.getX());
-		op.setYw(getYw() + translation.getY());
-		op.setZw(getZw() + translation.getZ());
-
-		multiply(op);
+		setXw(getXx() * translation.getX() + getXy() * translation.getY() + getXz() * translation.getZ() + getXw());
+		setYw(getYx() * translation.getX() + getYy() * translation.getY() + getYz() * translation.getZ() + getYw());
+		setZw(getZx() * translation.getX() + getZy() * translation.getY() + getZz() * translation.getZ() + getZw());
+		setWw(getWx() * translation.getX() + getWy() * translation.getY() + getWz() * translation.getZ() + getWw());
 	}
+
 	/**
 	 * Applies a rotation of {@code radians} about {@code axis} on this matrix.
 	 * Intended for building a transformation matrix from an {@link #identity()} matrix.
@@ -254,20 +252,36 @@ public interface Matrix4 extends Matrix3 {
 		double sinTheta = Math.sin(radians);
 		double iCosTheta = 1 - cosTheta;
 
-		Matrix4 op = Matrix4.identity();
+		double newXx = getXx() * (cosTheta + axis.getX() * axis.getX() * iCosTheta) + getXy() * (axis.getY() * axis.getX() * iCosTheta + axis.getZ() * sinTheta) + getXz() * (axis.getZ() * axis.getX() * iCosTheta - axis.getY() * sinTheta);
+		double newXy = getXx() * (axis.getX() * axis.getY() * iCosTheta - axis.getZ() * sinTheta) + getXy() * (cosTheta + axis.getY() * axis.getY() * iCosTheta) + getXz() * (axis.getZ() * axis.getY() * iCosTheta + axis.getX() * sinTheta);
+		double newXz = getXx() * (axis.getX() * axis.getZ() * iCosTheta + axis.getY() * sinTheta) + getXy() * (axis.getY() * axis.getZ() * iCosTheta - axis.getX() * sinTheta) + getXz() * (cosTheta + axis.getZ() * axis.getZ() * iCosTheta);
 
-		op.setXx(cosTheta + axis.getX() * axis.getX() * iCosTheta);
-		op.setXy(axis.getX() * axis.getY() * iCosTheta - axis.getZ() * sinTheta);
-		op.setXz(axis.getX() * axis.getZ() * iCosTheta + axis.getY() * sinTheta);
-		op.setYx(axis.getY() * axis.getX() * iCosTheta + axis.getZ() * sinTheta);
-		op.setYy(cosTheta + axis.getY() * axis.getY() * iCosTheta);
-		op.setYz(axis.getY() * axis.getZ() * iCosTheta - axis.getX() * sinTheta);
-		op.setZx(axis.getZ() * axis.getX() * iCosTheta - axis.getY() * sinTheta);
-		op.setZy(axis.getZ() * axis.getY() * iCosTheta + axis.getX() * sinTheta);
-		op.setZz(cosTheta + axis.getZ() * axis.getZ() * iCosTheta);
+		double newYx = getYx() * (cosTheta + axis.getX() * axis.getX() * iCosTheta) + getYy() * (axis.getY() * axis.getX() * iCosTheta + axis.getZ() * sinTheta) + getYz() * (axis.getZ() * axis.getX() * iCosTheta - axis.getY() * sinTheta);
+		double newYy = getYx() * (axis.getX() * axis.getY() * iCosTheta - axis.getZ() * sinTheta) + getYy() * (cosTheta + axis.getY() * axis.getY() * iCosTheta) + getYz() * (axis.getZ() * axis.getY() * iCosTheta + axis.getX() * sinTheta);
+		double newYz = getYx() * (axis.getX() * axis.getZ() * iCosTheta + axis.getY() * sinTheta) + getYy() * (axis.getY() * axis.getZ() * iCosTheta - axis.getX() * sinTheta) + getYz() * (cosTheta + axis.getZ() * axis.getZ() * iCosTheta);
 
-		multiply(op);
+		double newZx = getZx() * (cosTheta + axis.getX() * axis.getX() * iCosTheta) + getZy() * (axis.getY() * axis.getX() * iCosTheta + axis.getZ() * sinTheta) + getZz() * (axis.getZ() * axis.getX() * iCosTheta - axis.getY() * sinTheta);
+		double newZy = getZx() * (axis.getX() * axis.getY() * iCosTheta - axis.getZ() * sinTheta) + getZy() * (cosTheta + axis.getY() * axis.getY() * iCosTheta) + getZz() * (axis.getZ() * axis.getY() * iCosTheta + axis.getX() * sinTheta);
+		double newZz = getZx() * (axis.getX() * axis.getZ() * iCosTheta + axis.getY() * sinTheta) + getZy() * (axis.getY() * axis.getZ() * iCosTheta - axis.getX() * sinTheta) + getZz() * (cosTheta + axis.getZ() * axis.getZ() * iCosTheta);
+
+		double newWx = getWx() * (cosTheta + axis.getX() * axis.getX() * iCosTheta) + getWy() * (axis.getY() * axis.getX() * iCosTheta + axis.getZ() * sinTheta) + getWz() * (axis.getZ() * axis.getX() * iCosTheta - axis.getY() * sinTheta);
+		double newWy = getWx() * (axis.getX() * axis.getY() * iCosTheta - axis.getZ() * sinTheta) + getWy() * (cosTheta + axis.getY() * axis.getY() * iCosTheta) + getWz() * (axis.getZ() * axis.getY() * iCosTheta + axis.getX() * sinTheta);
+		double newWz = getWx() * (axis.getX() * axis.getZ() * iCosTheta + axis.getY() * sinTheta) + getWy() * (axis.getY() * axis.getZ() * iCosTheta - axis.getX() * sinTheta) + getWz() * (cosTheta + axis.getZ() * axis.getZ() * iCosTheta);
+
+		setXx(newXx);
+		setXy(newXy);
+		setXz(newXz);
+		setYx(newYx);
+		setYy(newYy);
+		setYz(newYz);
+		setZx(newZx);
+		setZy(newZy);
+		setZz(newZz);
+		setWx(newWx);
+		setWy(newWy);
+		setWz(newWz);
 	}
+
 	/**
 	 * Applies {@code scale} to this matrix.
 	 * Intended for building a transformation matrix from an {@link #identity()} matrix.
@@ -276,13 +290,18 @@ public interface Matrix4 extends Matrix3 {
 	 * @see #rotate(double, Vector3)
 	 */
 	default void scale(Vector3 scale) {
-		Matrix4 op = Matrix4.identity();
-
-		op.setXx(scale.getX());
-		op.setYy(scale.getY());
-		op.setZz(scale.getZ());
-
-		multiply(op);
+		setXx(getXx() * scale.getX());
+		setXy(getXy() * scale.getY());
+		setXz(getXz() * scale.getZ());
+		setYx(getYx() * scale.getX());
+		setYy(getYy() * scale.getY());
+		setYz(getYz() * scale.getZ());
+		setZx(getZx() * scale.getX());
+		setZy(getZy() * scale.getY());
+		setZz(getZz() * scale.getZ());
+		setWx(getWx() * scale.getX());
+		setWx(getWy() * scale.getY());
+		setWx(getWz() * scale.getZ());
 	}
 
 	/**
