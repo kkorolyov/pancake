@@ -18,9 +18,8 @@ public class Transform implements Component {
 	private Transform parent;
 	private final ArrayList<Transform> children = new ArrayList<>();
 
-	private final Matrix4 localMatrix = Matrix4.identity();
-	private final Matrix4 fullMatrix = Matrix4.identity();
-	private final Matrix4 matrix = new ReadOnlyMatrix4(fullMatrix);
+	private final Matrix4 matrix = Matrix4.identity();
+	private final Matrix4 resultMatrix = new ReadOnlyMatrix4(matrix);
 	private boolean cached;
 
 	/**
@@ -64,29 +63,21 @@ public class Transform implements Component {
 	 */
 	public Matrix4 getMatrix() {
 		if (!cached) {
-			if (parent != null) {
-				localMatrix.reset();
-				localMatrix.translate(translation);
-				localMatrix.multiply(rotation);
-				localMatrix.scale(scale);
+			matrix.reset();
+			matrix.translate(translation);
+			matrix.multiply(rotation);
+			matrix.scale(scale);
 
-				fullMatrix.set(parent.getMatrix());
-				fullMatrix.multiply(localMatrix);
-			} else {
-				// apply local operations directly to full matrix
-				fullMatrix.reset();
-				fullMatrix.translate(translation);
-				fullMatrix.multiply(rotation);
-				fullMatrix.scale(scale);
-			}
+			if (parent != null) matrix.multiplyTo(parent.getMatrix());
+
 			cached = true;
 		}
-		return matrix;
+		return resultMatrix;
 	}
 
 	private void invalidate() {
 		cached = false;
-		for (int i = 0; i < children.size(); i++) children.get(i).cached = false;
+		for (int i = 0; i < children.size(); i++) children.get(i).invalidate();
 	}
 
 	private final class BoundVector3 implements Vector3 {

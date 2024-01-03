@@ -184,6 +184,7 @@ public interface Matrix4 extends Matrix3 {
 
 	/**
 	 * Matrix-multiplies this matrix with {@code other} and sets the result on this matrix.
+	 * i.e. {@code A.multiply(B)} sets the result {@code AB} on {@code A}.
 	 */
 	default void multiply(Matrix4 other) {
 		double newXx = getXx() * other.getXx() + getXy() * other.getYx() + getXz() * other.getZx() + getXw() * other.getWx();
@@ -205,6 +206,48 @@ public interface Matrix4 extends Matrix3 {
 		double newWy = getWx() * other.getXy() + getWy() * other.getYy() + getWz() * other.getZy() + getWw() * other.getWy();
 		double newWz = getWx() * other.getXz() + getWy() * other.getYz() + getWz() * other.getZz() + getWw() * other.getWz();
 		double newWw = getWx() * other.getXw() + getWy() * other.getYw() + getWz() * other.getZw() + getWw() * other.getWw();
+
+		setXx(newXx);
+		setXy(newXy);
+		setXz(newXz);
+		setXw(newXw);
+		setYx(newYx);
+		setYy(newYy);
+		setYz(newYz);
+		setYw(newYw);
+		setZx(newZx);
+		setZy(newZy);
+		setZz(newZz);
+		setZw(newZw);
+		setWx(newWx);
+		setWy(newWy);
+		setWz(newWz);
+		setWw(newWw);
+	}
+	/**
+	 * Matrix-multiplies {@code other} with this matrix and sets the result on this matrix.
+	 * i.e. {@code A.multiplyTo(B)} sets the result {@code BA} on {@code A}.
+	 */
+	default void multiplyTo(Matrix4 other) {
+		double newXx = other.getXx() * getXx() + other.getXy() * getYx() + other.getXz() * getZx() + other.getXw() * getWx();
+		double newXy = other.getXx() * getXy() + other.getXy() * getYy() + other.getXz() * getZy() + other.getXw() * getWy();
+		double newXz = other.getXx() * getXz() + other.getXy() * getYz() + other.getXz() * getZz() + other.getXw() * getWz();
+		double newXw = other.getXx() * getXw() + other.getXy() * getYw() + other.getXz() * getZw() + other.getXw() * getWw();
+
+		double newYx = other.getYx() * getXx() + other.getYy() * getYx() + other.getYz() * getZx() + other.getYw() * getWx();
+		double newYy = other.getYx() * getXy() + other.getYy() * getYy() + other.getYz() * getZy() + other.getYw() * getWy();
+		double newYz = other.getYx() * getXz() + other.getYy() * getYz() + other.getYz() * getZz() + other.getYw() * getWz();
+		double newYw = other.getYx() * getXw() + other.getYy() * getYw() + other.getYz() * getZw() + other.getYw() * getWw();
+
+		double newZx = other.getZx() * getXx() + other.getZy() * getYx() + other.getZz() * getZx() + other.getZw() * getWx();
+		double newZy = other.getZx() * getXy() + other.getZy() * getYy() + other.getZz() * getZy() + other.getZw() * getWy();
+		double newZz = other.getZx() * getXz() + other.getZy() * getYz() + other.getZz() * getZz() + other.getZw() * getWz();
+		double newZw = other.getZx() * getXw() + other.getZy() * getYw() + other.getZz() * getZw() + other.getZw() * getWw();
+
+		double newWx = other.getWx() * getXx() + other.getWy() * getYx() + other.getWz() * getZx() + other.getWw() * getWx();
+		double newWy = other.getWx() * getXy() + other.getWy() * getYy() + other.getWz() * getZy() + other.getWw() * getWy();
+		double newWz = other.getWx() * getXz() + other.getWy() * getYz() + other.getWz() * getZz() + other.getWw() * getWz();
+		double newWw = other.getWx() * getXw() + other.getWy() * getYw() + other.getWz() * getZw() + other.getWw() * getWw();
 
 		setXx(newXx);
 		setXy(newXy);

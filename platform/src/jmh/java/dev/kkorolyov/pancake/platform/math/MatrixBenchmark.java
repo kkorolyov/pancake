@@ -31,6 +31,20 @@ public class MatrixBenchmark {
 		return result;
 	}
 
+	@Benchmark
+	public Matrix4 multiplyABThroughTemp(MultiplyState state) {
+		state.temp.set(state.a);
+		state.temp.multiply(state.b);
+
+		return state.temp;
+	}
+	@Benchmark
+	public Matrix4 multiplyToAB(MultiplyState state) {
+		state.b.multiplyTo(state.a);
+
+		return state.b;
+	}
+
 	@State(Scope.Thread)
 	public static class TrsState {
 		Matrix4 matrix = Matrix4.identity();
@@ -54,6 +68,30 @@ public class MatrixBenchmark {
 		@TearDown(Level.Iteration)
 		public void check() {
 			assert expected.equals(matrix);
+		}
+	}
+
+	@State(Scope.Thread)
+	public static class MultiplyState {
+		Matrix4 a;
+		Matrix4 b;
+		Matrix4 temp;
+
+		@Setup(Level.Iteration)
+		public void setup() {
+			a = Matrix4.of(
+					1, 2, 3, 4,
+					4, 3, 2, 1,
+					1, 3, 5, 7,
+					2, 4, 6, 8
+			);
+			b = Matrix4.of(
+					4, 3, 2, 1,
+					1, 3, 5, 7,
+					2, 4, 6, 8,
+					1, 2, 3, 4
+			);
+			temp = Matrix4.identity();
 		}
 	}
 }
