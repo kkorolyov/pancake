@@ -116,6 +116,20 @@ public class Transform implements Component {
 			data.setZ(z);
 			invalidate();
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return Vector3.equals(this, obj);
+		}
+		@Override
+		public int hashCode() {
+			return Vector3.hashCode(this);
+		}
+
+		@Override
+		public String toString() {
+			return Vector3.toString(this);
+		}
 	}
 
 	private final class BoundMatrix4 implements Matrix4 {
@@ -284,6 +298,20 @@ public class Transform implements Component {
 			data.setWw(ww);
 			invalidate();
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return Matrix4.equals(this, obj);
+		}
+		@Override
+		public int hashCode() {
+			return Matrix4.hashCode(this);
+		}
+
+		@Override
+		public String toString() {
+			return Matrix4.toString(this);
+		}
 	}
 
 	private static final class ReadOnlyMatrix4 implements Matrix4 {
@@ -405,5 +433,19 @@ public class Transform implements Component {
 		}
 		@Override
 		public void setWw(double ww) {}
+
+		@Override
+		public boolean equals(Object obj) {
+			return Matrix4.equals(this, obj);
+		}
+		@Override
+		public int hashCode() {
+			return Matrix4.hashCode(this);
+		}
+
+		@Override
+		public String toString() {
+			return Matrix4.toString(this);
+		}
 	}
 }
