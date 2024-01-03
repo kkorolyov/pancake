@@ -151,6 +151,42 @@ class Matrix4Spec extends Specification {
 				)
 		]
 	}
+	def "multiplies to"() {
+		when:
+		other.multiplyTo(matrix)
+
+		then:
+		other == expected
+
+		where:
+		matrix << [
+				Matrix4.of(),
+				Matrix4.of(
+						1, 2, 3, 4,
+						4, 3, 2, 1,
+						1, 3, 5, 7,
+						7, 5, 3, 1
+				)
+		]
+		other << [
+				Matrix4.of(),
+				Matrix4.of(
+						1, 1, 1, 1,
+						2, 2, 2, 2,
+						1, 1, 1, 1,
+						3, 3, 3, 3
+				)
+		]
+		expected << [
+				Matrix4.of(),
+				Matrix4.of(
+						20, 20, 20, 20,
+						15, 15, 15, 15,
+						33, 33, 33, 33,
+						23, 23, 23, 23
+				)
+		]
+	}
 
 	def "translates"() {
 		when:
