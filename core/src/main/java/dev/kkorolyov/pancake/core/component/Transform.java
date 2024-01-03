@@ -19,7 +19,8 @@ public class Transform implements Component {
 	private final ArrayList<Transform> children = new ArrayList<>();
 
 	private final Matrix4 localMatrix = Matrix4.identity();
-	private final Matrix4 matrix = Matrix4.identity();
+	private final Matrix4 fullMatrix = Matrix4.identity();
+	private final Matrix4 matrix = new ReadOnlyMatrix4(fullMatrix);
 	private boolean cached;
 
 	/**
@@ -59,6 +60,7 @@ public class Transform implements Component {
 
 	/**
 	 * Returns the matrix for transforming coordinates from this transform's local space to root space.
+	 * The returned instance cannot be modified.
 	 */
 	public Matrix4 getMatrix() {
 		if (!cached) {
@@ -68,14 +70,14 @@ public class Transform implements Component {
 				localMatrix.multiply(rotation);
 				localMatrix.scale(scale);
 
-				matrix.set(parent.getMatrix());
-				matrix.multiply(localMatrix);
+				fullMatrix.set(parent.getMatrix());
+				fullMatrix.multiply(localMatrix);
 			} else {
 				// apply local operations directly to full matrix
-				matrix.reset();
-				matrix.translate(translation);
-				matrix.multiply(rotation);
-				matrix.scale(scale);
+				fullMatrix.reset();
+				fullMatrix.translate(translation);
+				fullMatrix.multiply(rotation);
+				fullMatrix.scale(scale);
 			}
 			cached = true;
 		}
@@ -291,5 +293,126 @@ public class Transform implements Component {
 			data.setWw(ww);
 			invalidate();
 		}
+	}
+
+	private static final class ReadOnlyMatrix4 implements Matrix4 {
+		private final Matrix4 data;
+
+		private ReadOnlyMatrix4(Matrix4 data) {
+			this.data = data;
+		}
+
+		@Override
+		public double getXx() {
+			return data.getXx();
+		}
+		@Override
+		public void setXx(double xx) {}
+
+		@Override
+		public double getXy() {
+			return data.getXy();
+		}
+		@Override
+		public void setXy(double xy) {}
+
+		@Override
+		public double getYx() {
+			return data.getYx();
+		}
+		@Override
+		public void setYx(double yx) {}
+
+		@Override
+		public double getYy() {
+			return data.getYy();
+		}
+		@Override
+		public void setYy(double yy) {}
+
+		@Override
+		public double getXz() {
+			return data.getXz();
+		}
+		@Override
+		public void setXz(double xz) {}
+
+		@Override
+		public double getYz() {
+			return data.getYz();
+		}
+		@Override
+		public void setYz(double yz) {
+		}
+
+		@Override
+		public double getZx() {
+			return data.getZx();
+		}
+		@Override
+		public void setZx(double zx) {}
+
+		@Override
+		public double getZy() {
+			return data.getZy();
+		}
+		@Override
+		public void setZy(double zy) {}
+
+		@Override
+		public double getZz() {
+			return data.getZz();
+		}
+		@Override
+		public void setZz(double zz) {}
+
+		@Override
+		public double getXw() {
+			return data.getXw();
+		}
+		@Override
+		public void setXw(double xw) {}
+
+		@Override
+		public double getYw() {
+			return data.getYw();
+		}
+		@Override
+		public void setYw(double yw) {}
+
+		@Override
+		public double getZw() {
+			return data.getZw();
+		}
+		@Override
+		public void setZw(double zw) {}
+
+		@Override
+		public double getWx() {
+			return data.getWx();
+		}
+		@Override
+		public void setWx(double wx) {}
+
+		@Override
+		public double getWy() {
+			return data.getWy();
+		}
+		@Override
+		public void setWy(double wy) {}
+
+		@Override
+		public double getWz() {
+			return data.getWz();
+		}
+		@Override
+		public void setWz(double wz) {}
+
+		@Override
+		public double getWw() {
+			return data.getWw();
+		}
+		@Override
+		public void setWw(double ww) {}
 	}
 }
