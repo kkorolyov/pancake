@@ -9,7 +9,7 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						1, 0, 0, 0,
 						4, 5, 3, 2,
@@ -124,7 +124,7 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						1, 2, 3, 4,
 						4, 3, 2, 1,
@@ -133,7 +133,7 @@ class Matrix4Spec extends Specification {
 				)
 		]
 		other << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						1, 1, 1, 1,
 						2, 2, 2, 2,
@@ -142,7 +142,7 @@ class Matrix4Spec extends Specification {
 				)
 		]
 		expected << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						20, 20, 20, 20,
 						15, 15, 15, 15,
@@ -161,7 +161,7 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity()
+				Matrix4.of()
 		]
 		translation << [
 				Vector3.of(4, 5, 10)
@@ -184,10 +184,10 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity(),
-				Matrix4.identity(),
-				Matrix4.identity(),
-				Matrix4.identity()
+				Matrix4.of(),
+				Matrix4.of(),
+				Matrix4.of(),
+				Matrix4.of()
 		]
 		radians << [
 				Math.PI * 2,
@@ -202,7 +202,7 @@ class Matrix4Spec extends Specification {
 				Vector3.of(0, 0, 1)
 		]
 		expected << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						1, 0, 0, 0,
 						0, Math.cos(Math.PI / 2), -Math.sin(Math.PI / 2), 0,
@@ -232,7 +232,7 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity()
+				Matrix4.of()
 		]
 		scale << [
 				Vector3.of(4, 5, 10)

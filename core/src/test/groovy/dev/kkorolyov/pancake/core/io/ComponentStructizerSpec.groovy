@@ -320,7 +320,7 @@ class ComponentStructizerSpec extends Specification {
 
 		then:
 		result.translation == Vector3.of(x, y, z)
-		result.rotation == Matrix4.identity()
+		result.rotation == Matrix4.of()
 		result.scale == Vector3.of(z, y, x)
 
 		where:
@@ -339,7 +339,7 @@ class ComponentStructizerSpec extends Specification {
 
 		then:
 		result.translation == Vector3.of(x, y, z)
-		result.rotation == Matrix4.identity()
+		result.rotation == Matrix4.of()
 		result.scale == Vector3.of(z, y, x)
 
 		where:

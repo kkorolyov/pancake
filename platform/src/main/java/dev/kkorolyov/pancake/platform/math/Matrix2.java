@@ -16,7 +16,7 @@ public interface Matrix2 {
 	/**
 	 * Returns a new 2x2 identity matrix.
 	 */
-	static Matrix2 identity() {
+	static Matrix2 of() {
 		return of(
 				1, 0,
 				0, 1

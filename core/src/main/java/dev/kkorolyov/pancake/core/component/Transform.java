@@ -12,13 +12,13 @@ import java.util.ArrayList;
  */
 public class Transform implements Component {
 	private final Vector3 translation = new BoundVector3(Vector3.of());
-	private final Matrix4 rotation = new BoundMatrix4(Matrix4.identity());
+	private final Matrix4 rotation = new BoundMatrix4(Matrix4.of());
 	private final Vector3 scale = new BoundVector3(Vector3.of(1, 1, 1));
 
 	private Transform parent;
 	private final ArrayList<Transform> children = new ArrayList<>();
 
-	private final Matrix4 matrix = Matrix4.identity();
+	private final Matrix4 matrix = Matrix4.of();
 	private final Matrix4 resultMatrix = new ReadOnlyMatrix4(matrix);
 	private boolean cached;
 

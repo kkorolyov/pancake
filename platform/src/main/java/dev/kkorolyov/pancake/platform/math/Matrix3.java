@@ -21,7 +21,7 @@ public interface Matrix3 extends Matrix2 {
 	/**
 	 * Returns a new 3x3 identity matrix.
 	 */
-	static Matrix3 identity() {
+	static Matrix3 of() {
 		return of(
 				1, 0, 0,
 				0, 1, 0,

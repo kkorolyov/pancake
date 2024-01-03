@@ -23,9 +23,9 @@ class DrawSystem(
 	private val pending: MutableMap<Program, MutableList<Entity>> = mutableMapOf()
 
 	// build camera-specific projection only once
-	private val clipViewMatrix: Matrix4 = Matrix4.identity()
+	private val clipViewMatrix: Matrix4 = Matrix4.of()
 	// full transformation matrix
-	private val fullMatrix: Matrix4 = Matrix4.identity()
+	private val fullMatrix: Matrix4 = Matrix4.of()
 	private val vec3 = Vector3.of()
 
 	override fun update(entity: Entity, dt: Long) {

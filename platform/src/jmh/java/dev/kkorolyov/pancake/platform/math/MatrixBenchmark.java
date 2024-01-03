@@ -47,7 +47,7 @@ public class MatrixBenchmark {
 
 	@State(Scope.Thread)
 	public static class TrsState {
-		Matrix4 matrix = Matrix4.identity();
+		Matrix4 matrix = Matrix4.of();
 		Vector3 translation = Vector3.of(1, 3, 5);
 		Vector3 rotAxis = Vector3.of(0, 0, 1);
 		double rotRads = Math.PI;
@@ -91,7 +91,7 @@ public class MatrixBenchmark {
 					2, 4, 6, 8,
 					1, 2, 3, 4
 			);
-			temp = Matrix4.identity();
+			temp = Matrix4.of();
 		}
 	}
 }

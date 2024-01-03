@@ -19,7 +19,7 @@ import kotlin.math.max
 // width and height of the snapshot viewport
 private const val RESOLUTION = 512
 
-private val transform = Matrix4.identity()
+private val transform = Matrix4.of()
 private val program by lazy {
 	GLProgram(
 		Resources.inStream("dev/kkorolyov/pancake/graphics/gl/editor/shaders/image.vert").use { GLShader(GLShader.Type.VERTEX, it) },

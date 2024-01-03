@@ -39,7 +39,7 @@ public interface Matrix4 extends Matrix3 {
 	/**
 	 * Returns a new 4x4 identity matrix.
 	 */
-	static Matrix4 identity() {
+	static Matrix4 of() {
 		return of(
 				1, 0, 0, 0,
 				0, 1, 0, 0,
@@ -269,7 +269,7 @@ public interface Matrix4 extends Matrix3 {
 
 	/**
 	 * Applies {@code translation} to this matrix.
-	 * Intended for building a transformation matrix from an {@link #identity()} matrix.
+	 * Intended for building a transformation matrix from an {@link #of()} matrix.
 	 * Should be applied before rotation and scaling.
 	 * @see #rotate(double, Vector3)
 	 * @see #scale(Vector3)
@@ -283,7 +283,7 @@ public interface Matrix4 extends Matrix3 {
 
 	/**
 	 * Applies a rotation of {@code radians} about {@code axis} on this matrix.
-	 * Intended for building a transformation matrix from an {@link #identity()} matrix.
+	 * Intended for building a transformation matrix from an {@link #of()} matrix.
 	 * Should be applied after translation but before scaling.
 	 * Assumes that {@code axis} is a unit vector.
 	 * @see #scale(Vector3)
@@ -327,7 +327,7 @@ public interface Matrix4 extends Matrix3 {
 
 	/**
 	 * Applies {@code scale} to this matrix.
-	 * Intended for building a transformation matrix from an {@link #identity()} matrix.
+	 * Intended for building a transformation matrix from an {@link #of()} matrix.
 	 * Should be applied after translation and rotation.
 	 * @see #translate(Vector3)
 	 * @see #rotate(double, Vector3)
@@ -348,7 +348,7 @@ public interface Matrix4 extends Matrix3 {
 	}
 
 	/**
-	 * Sets this matrix to the {@link #identity()} matrix.
+	 * Sets this matrix to the {@link #of()} matrix.
 	 */
 	default void reset() {
 		setXx(1);

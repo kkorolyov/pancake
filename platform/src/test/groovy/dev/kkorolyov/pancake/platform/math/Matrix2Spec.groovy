@@ -9,7 +9,7 @@ class Matrix2Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix2.identity(),
+				Matrix2.of(),
 				Matrix2.of(
 						1, 5,
 						8, 2
