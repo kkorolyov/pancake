@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.core.editor.test.e2e
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
-import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.Force
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.action.Action
@@ -13,7 +13,7 @@ import kotlin.random.Random
 private val actions = listOf(
 	Action { it[Force::class.java]?.value?.add(randVector()) },
 	Action { it[Velocity::class.java]?.value?.set(randVector()) },
-	Action { it[Position::class.java]?.value?.set(randVector()) }
+	Action { it[Transform::class.java]?.translation?.set(randVector()) }
 )
 
 /**

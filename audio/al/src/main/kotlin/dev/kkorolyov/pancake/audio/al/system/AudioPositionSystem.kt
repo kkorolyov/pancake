@@ -1,15 +1,21 @@
 package dev.kkorolyov.pancake.audio.al.system
 
 import dev.kkorolyov.pancake.audio.al.component.AudioEmitter
-import dev.kkorolyov.pancake.core.component.Position
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.math.Vector3
+
+private val tPos = ThreadLocal.withInitial(Vector3::of)
 
 /**
  * Positions entity [AudioEmitter]s according to the entity's position.
  */
-class AudioPositionSystem : GameSystem(AudioEmitter::class.java, Position::class.java) {
+class AudioPositionSystem : GameSystem(AudioEmitter::class.java, Transform::class.java) {
 	override fun update(entity: Entity, dt: Long) {
-		entity[AudioEmitter::class.java].setPosition(entity[Position::class.java].globalValue)
+		entity[AudioEmitter::class.java].setPosition(tPos.get().apply {
+			scale(0.0)
+			transform(entity[Transform::class.java].matrix)
+		})
 	}
 }

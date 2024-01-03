@@ -6,9 +6,8 @@ import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Damping;
 import dev.kkorolyov.pancake.core.component.Force;
 import dev.kkorolyov.pancake.core.component.Mass;
-import dev.kkorolyov.pancake.core.component.Orientation;
 import dev.kkorolyov.pancake.core.component.Path;
-import dev.kkorolyov.pancake.core.component.Position;
+import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit;
 import dev.kkorolyov.pancake.core.component.tag.Collidable;
@@ -16,6 +15,7 @@ import dev.kkorolyov.pancake.core.component.tag.Correctable;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.io.Structizer;
 import dev.kkorolyov.pancake.platform.io.Structizers;
+import dev.kkorolyov.pancake.platform.math.Matrix4;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.Collection;
@@ -50,8 +50,12 @@ public class ComponentStructizer implements Structizer {
 						Structizer.select(VelocityLimit.class, t -> t.getValue()),
 						Structizer.select(Damping.class, t -> Structizers.toStruct(t.getValue())),
 						Structizer.select(Force.class, t -> Structizers.toStruct(t.getValue())),
-						Structizer.select(Orientation.class, t -> Structizers.toStruct(t.getValue())),
-						Structizer.select(Position.class, t -> Structizers.toStruct(t.getValue())),
+						Structizer.select(Transform.class, t -> Map.of(
+								"translation", Structizers.toStruct(t.getTranslation()),
+								"rotation", Structizers.toStruct(t.getRotation()),
+								"scale", Structizers.toStruct(t.getScale())
+								// TODO support parent - once component memoization is in
+						)),
 						Structizer.select(Velocity.class, t -> Structizers.toStruct(t.getValue()))
 				));
 	}
@@ -78,6 +82,19 @@ public class ComponentStructizer implements Structizer {
 											}
 
 											return result;
+										}),
+										Structizer.select(c, Transform.class, t -> {
+											var result = new Transform();
+											var translation = t.get("translation");
+											var rotation = t.get("rotation");
+											var scale = t.get("scale");
+
+											if (translation != null) result.getTranslation().set(Structizers.fromStruct(Vector3.class, translation));
+											if (rotation != null) result.getRotation().multiply(Structizers.fromStruct(Matrix4.class, rotation));
+											if (scale != null) result.getScale().set(Structizers.fromStruct(Vector3.class, scale));
+
+											return result;
+											// TODO support parent - once component memoization is in
 										})
 								)),
 						Optional.of(o)
@@ -96,8 +113,6 @@ public class ComponentStructizer implements Structizer {
 								.map(Structizer.first(
 										Structizer.select(c, Damping.class, t -> new Damping(Structizers.fromStruct(Vector3.class, t))),
 										Structizer.select(c, Force.class, t -> new Force(Structizers.fromStruct(Vector3.class, t))),
-										Structizer.select(c, Orientation.class, t -> new Orientation(Structizers.fromStruct(Vector3.class, t))),
-										Structizer.select(c, Position.class, t -> new Position(Structizers.fromStruct(Vector3.class, t))),
 										Structizer.select(c, Velocity.class, t -> new Velocity(Structizers.fromStruct(Vector3.class, t)))
 								))
 				)

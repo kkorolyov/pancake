@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.core.system
 
-import dev.kkorolyov.pancake.core.component.Go
-import dev.kkorolyov.pancake.core.component.Position
 import dev.kkorolyov.pancake.core.component.Force
+import dev.kkorolyov.pancake.core.component.Go
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
@@ -27,10 +27,13 @@ class GoSystemSpec extends Specification {
 	GoSystem system = new GoSystem()
 
 	def "pushes towards target when far away"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Force force = new Force(Vector3.of())
 		Entity entity = entities.create()
-		entity.put(go, position, force)
+		entity.put(go, transform, force)
 
 		when:
 		system.update(entity, dt)
@@ -47,10 +50,13 @@ class GoSystemSpec extends Specification {
 	}
 
 	def "resets force when within target proximity"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Force force = new Force(forceV)
 		Entity entity = entities.create()
-		entity.put(go, position, force)
+		entity.put(go, transform, force)
 
 		when:
 		system.update(entity, dt)
@@ -64,35 +70,41 @@ class GoSystemSpec extends Specification {
 	}
 
 	def "does not snap position nor zero velocity when within target proximity if not snap set"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Force force = new Force(Vector3.of())
 		Velocity velocity = new Velocity(Vector3.of(1.0, 1.0))
 		Entity entity = entities.create()
-		entity.put(go, position, force, velocity)
+		entity.put(go, transform, force, velocity)
 
 		when:
 		system.update(entity, dt)
 
 		then:
-		position.value != go.target
+		transform.translation != go.target
 		velocity.value == Vector3.of(1.0, 1.0)
 
 		where:
 		positionV << [Vector3.of(1, 0), Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of(0.5, 0.5)]
 	}
 	def "snaps position and zeroes velocity when within target proximity if snap set"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Force force = new Force(Vector3.of())
 		Velocity velocity = new Velocity(Vector3.of(1.0, 1.0))
 		go.snap = true
 		Entity entity = entities.create()
-		entity.put(go, position, force, velocity)
+		entity.put(go, transform, force, velocity)
 
 		when:
 		system.update(entity, dt)
 
 		then:
-		position.value == go.target
+		transform.translation == go.target
 		velocity.value == Vector3.of()
 
 		where:
@@ -100,10 +112,13 @@ class GoSystemSpec extends Specification {
 	}
 
 	def "removes go when within target proximity"() {
-		Position position = new Position(positionV)
+		Transform transform = new Transform().with {
+			it.translation.set(positionV)
+			it
+		}
 		Force force = new Force(Vector3.of())
 		Entity entity = entities.create()
-		entity.put(go, position, force)
+		entity.put(go, transform, force)
 
 		when:
 		system.update(entity, dt)

@@ -8,6 +8,7 @@ import java.util.BitSet
 /**
  * A view on some set of drawn layers at some pixel:unit scaling factor.
  */
+// TODO implement view frustum for 3D support - way down the line
 class Lens(
 	/**
 	 * Maps drawn units to pixel lengths.

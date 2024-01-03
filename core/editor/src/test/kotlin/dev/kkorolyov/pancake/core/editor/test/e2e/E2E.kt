@@ -2,17 +2,15 @@ package dev.kkorolyov.pancake.core.editor.test.e2e
 
 import dev.kkorolyov.pancake.core.component.ActionQueue
 import dev.kkorolyov.pancake.core.component.Bounds
-import dev.kkorolyov.pancake.core.component.Chain
 import dev.kkorolyov.pancake.core.component.Damping
 import dev.kkorolyov.pancake.core.component.Force
 import dev.kkorolyov.pancake.core.component.Mass
 import dev.kkorolyov.pancake.core.component.Path
-import dev.kkorolyov.pancake.core.component.Position
+import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
 import dev.kkorolyov.pancake.core.system.AccelerationSystem
 import dev.kkorolyov.pancake.core.system.ActionSystem
-import dev.kkorolyov.pancake.core.system.ChainSystem
 import dev.kkorolyov.pancake.core.system.CollisionSystem
 import dev.kkorolyov.pancake.core.system.DampingSystem
 import dev.kkorolyov.pancake.core.system.GoSystem
@@ -40,7 +38,6 @@ fun main() {
 				AccelerationSystem(),
 				ActionSystem(),
 				LimitSystem(Velocity::class.java, VelocityLimit::class.java),
-				ChainSystem(),
 				CollisionSystem(),
 				DampingSystem(),
 				IntersectionSystem(),
@@ -64,8 +61,10 @@ fun main() {
 				create().put(
 					ActionQueue(),
 					if (Random.nextBoolean()) Bounds.box(randVector()) else Bounds.round(Random.nextDouble()),
-					Chain(randVector(), Random.nextDouble(), if (Random.nextBoolean()) listOf(randVector()) else listOf()),
-					Position(randVector()).apply { parent = Position(randVector()) },
+					Transform().apply {
+						parent = Transform().apply { translation.set(randVector()) }
+						translation.set(randVector())
+					},
 					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
 					Force(randVector()),
 					Mass(Random.nextDouble()),

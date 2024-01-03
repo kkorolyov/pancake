@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.system;
 
 import dev.kkorolyov.pancake.core.component.Mass;
-import dev.kkorolyov.pancake.core.component.Position;
+import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.tag.Collidable;
@@ -30,7 +30,7 @@ public final class CollisionSystem extends GameSystem {
 	 * Constructs a new collision system.
 	 */
 	public CollisionSystem() {
-		super(Intersected.class, Collidable.class, Position.class, Velocity.class);
+		super(Intersected.class, Collidable.class, Transform.class, Velocity.class);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public final class CollisionSystem extends GameSystem {
 			if (events.add(event) && event.getA().get(Collidable.class) != null && event.getB().get(Collidable.class) != null) {
 				int priority = event.getA().get(Collidable.class).compareTo(event.getB().get(Collidable.class));
 
-				Position aPosition = event.getA().get(Position.class);
-				Position bPosition = event.getB().get(Position.class);
+				Vector3 aPosition = event.getA().get(Transform.class).getTranslation();
+				Vector3 bPosition = event.getB().get(Transform.class).getTranslation();
 
 				Velocity aVelocity = event.getA().get(Velocity.class);
 				Velocity bVelocity = event.getB().get(Velocity.class);
@@ -50,7 +50,7 @@ public final class CollisionSystem extends GameSystem {
 
 				if (priority <= 0 && aVelocity != null) {
 					if (aMass != null && priority == 0 && bVelocity != null && bMass != null) {
-						collide(aPosition.getValue(), bPosition.getValue(), aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
+						collide(aPosition, bPosition, aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
 					} else {
 						reflect(aVelocity.getValue(), event.getMtvA());
 					}

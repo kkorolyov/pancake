@@ -3,6 +3,23 @@ package dev.kkorolyov.pancake.platform.math
 import spock.lang.Specification
 
 class Matrix4Spec extends Specification {
+	def "computes determinant"() {
+		expect:
+		Matrix4.determinant(matrix) == determinant
+
+		where:
+		matrix << [
+				Matrix4.of(),
+				Matrix4.of(
+						1, 0, 0, 0,
+						4, 5, 3, 2,
+						8, 0, 6, 4,
+						0, 0, 3, 4
+				)
+		]
+		determinant << [1, 60]
+	}
+
 	def "scales by scalar"() {
 		when:
 		matrix.scale(value)
@@ -107,7 +124,7 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						1, 2, 3, 4,
 						4, 3, 2, 1,
@@ -116,7 +133,7 @@ class Matrix4Spec extends Specification {
 				)
 		]
 		other << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						1, 1, 1, 1,
 						2, 2, 2, 2,
@@ -125,7 +142,43 @@ class Matrix4Spec extends Specification {
 				)
 		]
 		expected << [
-				Matrix4.identity(),
+				Matrix4.of(),
+				Matrix4.of(
+						20, 20, 20, 20,
+						15, 15, 15, 15,
+						33, 33, 33, 33,
+						23, 23, 23, 23
+				)
+		]
+	}
+	def "multiplies to"() {
+		when:
+		other.multiplyTo(matrix)
+
+		then:
+		other == expected
+
+		where:
+		matrix << [
+				Matrix4.of(),
+				Matrix4.of(
+						1, 2, 3, 4,
+						4, 3, 2, 1,
+						1, 3, 5, 7,
+						7, 5, 3, 1
+				)
+		]
+		other << [
+				Matrix4.of(),
+				Matrix4.of(
+						1, 1, 1, 1,
+						2, 2, 2, 2,
+						1, 1, 1, 1,
+						3, 3, 3, 3
+				)
+		]
+		expected << [
+				Matrix4.of(),
 				Matrix4.of(
 						20, 20, 20, 20,
 						15, 15, 15, 15,
@@ -144,7 +197,7 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity()
+				Matrix4.of()
 		]
 		translation << [
 				Vector3.of(4, 5, 10)
@@ -167,10 +220,10 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity(),
-				Matrix4.identity(),
-				Matrix4.identity(),
-				Matrix4.identity()
+				Matrix4.of(),
+				Matrix4.of(),
+				Matrix4.of(),
+				Matrix4.of()
 		]
 		radians << [
 				Math.PI * 2,
@@ -185,7 +238,7 @@ class Matrix4Spec extends Specification {
 				Vector3.of(0, 0, 1)
 		]
 		expected << [
-				Matrix4.identity(),
+				Matrix4.of(),
 				Matrix4.of(
 						1, 0, 0, 0,
 						0, Math.cos(Math.PI / 2), -Math.sin(Math.PI / 2), 0,
@@ -215,7 +268,7 @@ class Matrix4Spec extends Specification {
 
 		where:
 		matrix << [
-				Matrix4.identity()
+				Matrix4.of()
 		]
 		scale << [
 				Vector3.of(4, 5, 10)

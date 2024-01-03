@@ -57,25 +57,25 @@ private val colorProgram = GLProgram(
 	Resources.inStream("color.vert").use { GLShader(GLShader.Type.VERTEX, it) },
 	Resources.inStream("color.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
-	set(0, Matrix4.identity())
+	set(0, Matrix4.of())
 }
 private val textureProgram = GLProgram(
 	Resources.inStream("texture.vert").use { GLShader(GLShader.Type.VERTEX, it) },
 	Resources.inStream("texture.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
-	set(0, Matrix4.identity())
+	set(0, Matrix4.of())
 }
 private val coTexProgram = GLProgram(
 	Resources.inStream("coTex.vert").use { GLShader(GLShader.Type.VERTEX, it) },
 	Resources.inStream("coTex.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
-	set(0, Matrix4.identity())
+	set(0, Matrix4.of())
 }
 private val fontProgram = GLProgram(
 	Resources.inStream("texture.vert").use { GLShader(GLShader.Type.VERTEX, it) },
 	Resources.inStream("font.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
 ) {
-	set(0, Matrix4.identity())
+	set(0, Matrix4.of())
 }
 
 private val texture = GLTexture {
@@ -249,7 +249,7 @@ private fun transform(dScale: Double = 0.0, dX: Double = 0.0, dY: Double = 0.0) 
 	currentY += dY
 
 	scenes.forEach { (program, _) ->
-		program[0] = Matrix4.identity().apply {
+		program[0] = Matrix4.of().apply {
 			scale(currentScale)
 			ww = 1.0
 			xw = currentX * 2
