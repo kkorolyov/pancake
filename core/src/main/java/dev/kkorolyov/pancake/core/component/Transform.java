@@ -4,37 +4,23 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Matrix4;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
+import java.util.ArrayList;
+
 /**
  * Translation, rotation, and scale of an entity in space.
  * All operations are relative to the transform's parent.
  */
 public class Transform implements Component {
-	private static final ThreadLocal<Matrix4> tCalcMatrix = ThreadLocal.withInitial(Matrix4::identity);
-	private static final ThreadLocal<Matrix4> tReturnMatrix = ThreadLocal.withInitial(Matrix4::identity);
+	private final Vector3 translation = new BoundVector3(Vector3.of());
+	private final Matrix4 rotation = new BoundMatrix4(Matrix4.identity());
+	private final Vector3 scale = new BoundVector3(Vector3.of(1, 1, 1));
 
-	private final Vector3 translation;
-	private final Matrix4 rotation;
-	private final Vector3 scale;
+	private Transform parent;
+	private final ArrayList<Transform> children = new ArrayList<>();
 
-	private final Transform parent;
-
-	/**
-	 * Constructs a new transform with no parent.
-	 * @see #Transform(Transform)
-	 */
-	public Transform() {
-		this(null);
-	}
-	/**
-	 * Constructs a new transform initialized to no translation, no rotation, a scale of {@code 1}, relative to {@code parent} transform.
-	 */
-	public Transform(Transform parent) {
-		translation = Vector3.of();
-		rotation = Matrix4.identity();
-		scale = Vector3.of(1, 1, 1);
-
-		this.parent = parent;
-	}
+	private final Matrix4 localMatrix = Matrix4.identity();
+	private final Matrix4 matrix = Matrix4.identity();
+	private boolean cached;
 
 	/**
 	 * Returns the mutable translation vector.
@@ -62,29 +48,248 @@ public class Transform implements Component {
 	public Transform getParent() {
 		return parent;
 	}
+	/**
+	 * Sets direct transform {@code parent}.
+	 */
+	public void setParent(Transform parent) {
+		if (this.parent != null) this.parent.children.remove(this);
+		this.parent = parent;
+		this.parent.children.add(this);
+	}
 
 	/**
 	 * Returns the matrix for transforming coordinates from this transform's local space to root space.
-	 * The returned instance is thread-local and shared between calls to this method.
 	 */
 	public Matrix4 getMatrix() {
-		if (parent != null) {
-			// build up the shared tReturnMatrix from top of hierarchy, using tCalcMatrix for subsequent child transforms
-			var fullMatrix = parent.getMatrix();
-			fullMatrix.multiply(buildLocalMatrix(tCalcMatrix.get()));
+		if (!cached) {
+			if (parent != null) {
+				localMatrix.reset();
+				localMatrix.translate(translation);
+				localMatrix.multiply(rotation);
+				localMatrix.scale(scale);
 
-			return fullMatrix;
-		} else {
-			return buildLocalMatrix(tReturnMatrix.get());
+				matrix.set(parent.getMatrix());
+				matrix.multiply(localMatrix);
+			} else {
+				// apply local operations directly to full matrix
+				matrix.reset();
+				matrix.translate(translation);
+				matrix.multiply(rotation);
+				matrix.scale(scale);
+			}
+			cached = true;
+		}
+		return matrix;
+	}
+
+	private void invalidate() {
+		cached = false;
+		for (int i = 0; i < children.size(); i++) children.get(i).cached = false;
+	}
+
+	private final class BoundVector3 implements Vector3 {
+		private final Vector3 data;
+
+		BoundVector3(Vector3 data) {
+			this.data = data;
+		}
+
+		@Override
+		public double getX() {
+			return data.getX();
+		}
+		@Override
+		public void setX(double x) {
+			data.setX(x);
+			invalidate();
+		}
+
+		@Override
+		public double getY() {
+			return data.getY();
+		}
+		@Override
+		public void setY(double y) {
+			data.setY(y);
+			invalidate();
+		}
+
+		@Override
+		public double getZ() {
+			return data.getZ();
+		}
+		@Override
+		public void setZ(double z) {
+			data.setZ(z);
+			invalidate();
 		}
 	}
-	private Matrix4 buildLocalMatrix(Matrix4 matrix) {
-		matrix.reset();
 
-		matrix.translate(translation);
-		matrix.multiply(rotation);
-		matrix.scale(scale);
+	private final class BoundMatrix4 implements Matrix4 {
+		private final Matrix4 data;
 
-		return matrix;
+		BoundMatrix4(Matrix4 data) {
+			this.data = data;
+		}
+
+		@Override
+		public double getXx() {
+			return data.getXx();
+		}
+		@Override
+		public void setXx(double xx) {
+			data.setXx(xx);
+			invalidate();
+		}
+
+		@Override
+		public double getXy() {
+			return data.getXy();
+		}
+		@Override
+		public void setXy(double xy) {
+			data.setXy(xy);
+			invalidate();
+		}
+
+		@Override
+		public double getYx() {
+			return data.getYx();
+		}
+		@Override
+		public void setYx(double yx) {
+			data.setYx(yx);
+			invalidate();
+		}
+
+		@Override
+		public double getYy() {
+			return data.getYy();
+		}
+		@Override
+		public void setYy(double yy) {
+			data.setYy(yy);
+			invalidate();
+		}
+
+		@Override
+		public double getXz() {
+			return data.getXz();
+		}
+		@Override
+		public void setXz(double xz) {
+			data.setXz(xz);
+			invalidate();
+		}
+
+		@Override
+		public double getYz() {
+			return data.getYz();
+		}
+		@Override
+		public void setYz(double yz) {
+			data.setYz(yz);
+			invalidate();
+		}
+
+		@Override
+		public double getZx() {
+			return data.getZx();
+		}
+		@Override
+		public void setZx(double zx) {
+			data.setZx(zx);
+			invalidate();
+		}
+
+		@Override
+		public double getZy() {
+			return data.getZy();
+		}
+		@Override
+		public void setZy(double zy) {
+			data.setZy(zy);
+			invalidate();
+		}
+
+		@Override
+		public double getZz() {
+			return data.getZz();
+		}
+		@Override
+		public void setZz(double zz) {
+			data.setZz(zz);
+			invalidate();
+		}
+
+		@Override
+		public double getXw() {
+			return data.getXw();
+		}
+		@Override
+		public void setXw(double xw) {
+			data.setXw(xw);
+			invalidate();
+		}
+
+		@Override
+		public double getYw() {
+			return data.getYw();
+		}
+		@Override
+		public void setYw(double yw) {
+			data.setYw(yw);
+			invalidate();
+		}
+
+		@Override
+		public double getZw() {
+			return data.getZw();
+		}
+		@Override
+		public void setZw(double zw) {
+			data.setZw(zw);
+			invalidate();
+		}
+
+		@Override
+		public double getWx() {
+			return data.getWx();
+		}
+		@Override
+		public void setWx(double wx) {
+			data.setWx(wx);
+			invalidate();
+		}
+
+		@Override
+		public double getWy() {
+			return data.getWy();
+		}
+		@Override
+		public void setWy(double wy) {
+			data.setWy(wy);
+			invalidate();
+		}
+
+		@Override
+		public double getWz() {
+			return data.getWz();
+		}
+		@Override
+		public void setWz(double wz) {
+			data.setWz(wz);
+			invalidate();
+		}
+
+		@Override
+		public double getWw() {
+			return data.getWw();
+		}
+		@Override
+		public void setWw(double ww) {
+			data.setWw(ww);
+			invalidate();
+		}
 	}
 }

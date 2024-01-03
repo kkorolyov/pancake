@@ -61,7 +61,10 @@ fun main() {
 				create().put(
 					ActionQueue(),
 					if (Random.nextBoolean()) Bounds.box(randVector()) else Bounds.round(Random.nextDouble()),
-					Transform(Transform().apply { translation.set(randVector()) }).apply { translation.set(randVector()) },
+					Transform().apply {
+						parent = Transform().apply { translation.set(randVector()) }
+						translation.set(randVector())
+					},
 					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
 					Force(randVector()),
 					Mass(Random.nextDouble()),

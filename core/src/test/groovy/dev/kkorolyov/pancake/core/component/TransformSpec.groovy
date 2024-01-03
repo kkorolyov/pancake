@@ -69,10 +69,13 @@ class TransformSpec extends Specification {
 
 	def "transforms with relative translation"() {
 		Vector3 vector = Vector3.of()
-		transform = new Transform(new Transform().with {
-			it.translation.set(parentTranslation)
+		transform = new Transform().with {
+			it.parent = new Transform().with {
+				it.translation.set(parentTranslation)
+				it
+			}
 			it
-		})
+		}
 
 		when:
 		transform.translation.set(translation)
@@ -87,12 +90,16 @@ class TransformSpec extends Specification {
 		Vector3.of(1, 1, 1)  | Vector3.of()        | Vector3.of(1, 1, 1)
 		Vector3.of(-4, 1, 6) | Vector3.of(8, 4, 0) | Vector3.of(4, 5, 6)
 	}
+
 	def "transforms with relative rotation"() {
 		Vector3 vector = Vector3.of(1, 0, 0)
-		transform = new Transform(new Transform().with {
-			it.rotation.rotate(parentRads, axis)
+		transform = new Transform().with {
+			it.parent = new Transform().with {
+				it.rotation.rotate(parentRads, axis)
+				it
+			}
 			it
-		})
+		}
 
 		when:
 		transform.rotation.rotate(rads, axis)
@@ -109,10 +116,13 @@ class TransformSpec extends Specification {
 	}
 	def "transforms with relative scaling"() {
 		Vector3 vector = Vector3.of(1, 1, 1)
-		transform = new Transform(new Transform().with {
-			it.scale.set(parentScale)
+		transform = new Transform().with {
+			it.parent = new Transform().with {
+				it.scale.set(parentScale)
+				it
+			}
 			it
-		})
+		}
 
 		when:
 		transform.scale.set(scale)
@@ -129,12 +139,15 @@ class TransformSpec extends Specification {
 	}
 	def "transforms with relative translation, rotation, scaling"() {
 		Vector3 vector = Vector3.of()
-		transform = new Transform(new Transform().with {
-			it.translation.set(parentTranslation)
-			it.rotation.rotate(parentRads, axis)
-			it.scale.set(parentScale)
+		transform = new Transform().with {
+			it.parent = new Transform().with {
+				it.translation.set(parentTranslation)
+				it.rotation.rotate(parentRads, axis)
+				it.scale.set(parentScale)
+				it
+			}
 			it
-		})
+		}
 
 		when:
 		transform.translation.add(translation)
