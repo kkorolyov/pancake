@@ -22,9 +22,9 @@ class DrawSystem(
 ) : GameSystem(Transform::class.java, Model::class.java) {
 	private val pending: MutableMap<Program, MutableList<Entity>> = mutableMapOf()
 
-	// build camera-specific projection only once
+	// build camera-specific projection only once per tick
 	private val clipViewMatrix: Matrix4 = Matrix4.of()
-	// full transformation matrix
+	// full transformation matrix per entity
 	private val fullMatrix: Matrix4 = Matrix4.of()
 	private val vec3 = Vector3.of()
 
@@ -41,26 +41,32 @@ class DrawSystem(
 
 				// projection matrix
 				// *2 because range is [-1, 1], not [0, 1]
-				vec3.reset()
-				vec3.x = scale.x / size.x * 2
-				vec3.y = scale.y / size.y * 2
-				vec3.z = 1.0
-				clipViewMatrix.scale(vec3)
+				clipViewMatrix.scale(vec3.apply {
+					reset()
+					x = scale.x / size.x * 2
+					y = scale.y / size.y * 2
+					z = 1.0
+				})
 			}
 
-			// and add view matrix
+			// with view matrix
 			clipViewMatrix.multiply(camera.transform.matrix)
 
 			pending.forEach { (program, entities) ->
 				program.scoped {
 					entities.forEach {
-						fullMatrix.set(clipViewMatrix)
-						// and add model matrix
-						fullMatrix.multiply(it[Transform::class.java].matrix)
+						val transform = it[Transform::class.java]
+						val model = it[Model::class.java]
 
-						program[0] = fullMatrix
+						program[0] = fullMatrix.apply {
+							set(clipViewMatrix)
+							// with model matrix
+							multiply(transform.matrix)
+							// with model offset - if any
+							model.offset?.let(::multiply)
+						}
 
-						it[Model::class.java].meshes.forEach(Mesh::draw)
+						model.meshes.forEach(Mesh::draw)
 					}
 				}
 
