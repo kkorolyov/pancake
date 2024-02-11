@@ -29,6 +29,20 @@ class Vector3Spec extends Specification {
 		other << [Vector3.of(0, 0, 0), Vector3.of(0, 0, 1), Vector3.of(0, 1, 0), Vector3.of(1, 0, 0), Vector3.of(2, 2, 2)]
 		distance << [0, 1, 1, 1, Math.sqrt(3)]
 	}
+	def "computes angle"() {
+		expect:
+		FloatOps.equals(Vector3.angle(a, b), angle)
+
+		where:
+		a                    | b                    | angle
+		Vector3.of(0, 0, 0)  | Vector3.of(0, 0, 0)  | 0
+		Vector3.of(0, 0, 0)  | Vector3.of(1, 0, 0)  | 0
+		Vector3.of(1, 0, 0)  | Vector3.of(0, 1, 0)  | Math.PI / 2
+		Vector3.of(1, 0, 0)  | Vector3.of(0, 0, 1)  | Math.PI / 2
+		Vector3.of(1, 0, 0)  | Vector3.of(0, -1, 0) | Math.PI / 2
+		Vector3.of(3, 0, 0)  | Vector3.of(0, 2, 0)  | Math.PI / 2
+		Vector3.of(-1, 0, 0) | Vector3.of(1, 0, 0)  | Math.PI
+	}
 
 	def "normalizes"() {
 		when:

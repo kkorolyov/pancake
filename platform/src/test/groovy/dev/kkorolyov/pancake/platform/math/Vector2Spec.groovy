@@ -29,6 +29,20 @@ class Vector2Spec extends Specification {
 		other << [Vector2.of(0, 0), Vector2.of(0, 1), Vector2.of(1, 0), Vector2.of(2, 2)]
 		distance << [0, 1, 1, Math.sqrt(2)]
 	}
+	def "computes angle"() {
+		expect:
+		FloatOps.equals(Vector2.angle(a, b), angle)
+
+		where:
+		a                 | b                 | angle
+		Vector2.of(0, 0)  | Vector2.of(0, 0)  | 0
+		Vector2.of(0, 0)  | Vector2.of(1, 0)  | 0
+		Vector2.of(1, 0)  | Vector2.of(0, 1)  | Math.PI / 2
+		Vector2.of(1, 0)  | Vector2.of(0, -1) | Math.PI / 2
+		Vector2.of(3, 0)  | Vector2.of(0, 2)  | Math.PI / 2
+		Vector2.of(-1, 0) | Vector2.of(1, 0)  | Math.PI
+		Vector2.of(1, 0)  | Vector2.of(1, 1)  | Math.PI / 4
+	}
 
 	def "normalizes"() {
 		when:

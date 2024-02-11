@@ -30,6 +30,17 @@ public interface Vector3 extends Vector2 {
 				)
 		);
 	}
+	/**
+	 * Returns the angle in radians between {@code c} and {@code b}.
+	 */
+	static double angle(Vector3 a, Vector3 b) {
+		double mag = magnitude(a) * magnitude(b);
+		return FloatOps.equals(0, mag) ? 0 : FloatOps.sanitize(
+				Math.acos(
+						dot(a, b) / mag
+				)
+		);
+	}
 
 	/**
 	 * Returns a 3-dimensional vector initialized to {@code other}.
