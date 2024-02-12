@@ -76,6 +76,15 @@ public class ComponentStructizer implements Structizer {
 
 											return result;
 										}),
+										Structizer.select(c, Force.class, t -> {
+											var result = new Force();
+
+											var it = t.iterator();
+											if (it.hasNext()) result.getValue().set(Structizers.fromStruct(Vector3.class, it.next()));
+											if (it.hasNext()) result.getOffset().set(Structizers.fromStruct(Vector3.class, it.next()));
+
+											return result;
+										}),
 										Structizer.select(c, VelocityLimit.class, t -> {
 											var it = t.iterator();
 											var linear = it.hasNext() ? ((Number) it.next()).doubleValue() : 0.0;
@@ -127,8 +136,7 @@ public class ComponentStructizer implements Structizer {
 								)),
 						Optional.of(o)
 								.map(Structizer.first(
-										Structizer.select(c, Damping.class, t -> new Damping(Structizers.fromStruct(Vector3.class, t))),
-										Structizer.select(c, Force.class, t -> new Force(Structizers.fromStruct(Vector3.class, t)))
+										Structizer.select(c, Damping.class, t -> new Damping(Structizers.fromStruct(Vector3.class, t)))
 								))
 				)
 				.filter(Optional::isPresent)

@@ -32,13 +32,13 @@ public final class Velocity implements Component {
 	}
 
 	/**
-	 * The linear velocity in {@code m/s}.
+	 * Returns the linear velocity in {@code m/s}.
 	 */
 	public Vector3 getLinear() {
 		return linear;
 	}
 	/**
-	 * The angular velocity in {@code rad/s}.
+	 * Returns the angular velocity in {@code rad/s}.
 	 */
 	public Vector3 getAngular() {
 		return angular;
