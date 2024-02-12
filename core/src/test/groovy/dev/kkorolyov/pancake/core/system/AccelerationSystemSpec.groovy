@@ -14,8 +14,14 @@ class AccelerationSystemSpec extends Specification {
 	AccelerationSystem system = new AccelerationSystem()
 
 	def "accelerates"() {
-		Velocity velocity = new Velocity(Vector3.of(1, 1, 1))
-		Force force = new Force(Vector3.of(2, 2, 2))
+		Velocity velocity = new Velocity().with {
+			it.linear.set(Vector3.of(1, 1, 1))
+			it
+		}
+		Force force = new Force().with {
+			it.value.set(Vector3.of(2, 2, 2))
+			it
+		}
 		Mass mass = new Mass(2)
 		Entity entity = entities.create()
 		entity.put(velocity, force, mass)
