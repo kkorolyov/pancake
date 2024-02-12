@@ -35,7 +35,7 @@ class DampingSystemSpec extends Specification {
 		system.update(entity, dt)
 
 		then:
-		velocity.value == value
+		velocity.linear == value
 	}
 	def "damps where force opposite sign of velocity"() {
 		Velocity velocity = new Velocity(velocityV)
@@ -47,7 +47,7 @@ class DampingSystemSpec extends Specification {
 		system.update(entity, dt)
 
 		then:
-		velocity.value == Vector3.of((forceV.x < 0) ? value.x * mini : mini, (forceV.y < 0) ? value.y * mini : mini, (forceV.z < 0) ? value.z * mini : mini)
+		velocity.linear == Vector3.of((forceV.x < 0) ? value.x * mini : mini, (forceV.y < 0) ? value.y * mini : mini, (forceV.z < 0) ? value.z * mini : mini)
 
 		where:
 		velocityV << (1..3).collect { it -> Vector3.of(mini, mini, mini) }
@@ -63,7 +63,7 @@ class DampingSystemSpec extends Specification {
 		system.update(entity, dt)
 
 		then:
-		velocity.value == Vector3.of((forceV.x > 0) ? mini : value.x * mini, (forceV.y > 0) ? mini : value.y * mini, (forceV.z > 0) ? mini : value.z * mini)
+		velocity.linear == Vector3.of((forceV.x > 0) ? mini : value.x * mini, (forceV.y > 0) ? mini : value.y * mini, (forceV.z > 0) ? mini : value.z * mini)
 
 		where:
 		velocityV << (1..3).collect { it -> Vector3.of(mini, mini, mini) }

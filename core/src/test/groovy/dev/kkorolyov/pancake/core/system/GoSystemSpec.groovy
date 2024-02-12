@@ -84,7 +84,7 @@ class GoSystemSpec extends Specification {
 
 		then:
 		transform.translation != go.target
-		velocity.value == Vector3.of(1.0, 1.0)
+		velocity.linear == Vector3.of(1.0, 1.0)
 
 		where:
 		positionV << [Vector3.of(1, 0), Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of(0.5, 0.5)]
@@ -105,7 +105,7 @@ class GoSystemSpec extends Specification {
 
 		then:
 		transform.translation == go.target
-		velocity.value == Vector3.of()
+		velocity.linear == Vector3.of()
 
 		where:
 		positionV << [Vector3.of(1, 0), Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of(0.5, 0.5)]

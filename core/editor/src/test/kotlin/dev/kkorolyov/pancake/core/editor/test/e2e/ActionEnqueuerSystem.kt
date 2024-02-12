@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 private val actions = listOf(
 	Action { it[Force::class.java]?.value?.add(randVector()) },
-	Action { it[Velocity::class.java]?.value?.set(randVector()) },
+	Action { it[Velocity::class.java]?.linear?.set(randVector()) },
 	Action { it[Transform::class.java]?.translation?.set(randVector()) }
 )
 

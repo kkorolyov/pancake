@@ -24,6 +24,6 @@ class AccelerationSystemSpec extends Specification {
 		system.update(entity, 4e9 as long)
 
 		then:
-		velocity.value == Vector3.of(5, 5, 5)
+		velocity.linear == Vector3.of(5, 5, 5)
 	}
 }

@@ -90,6 +90,7 @@ class ComponentStructizerSpec extends Specification {
 		result.strength == strength
 		result.proximity == proximity
 		result.snapStrategy == snapStrategy
+		!result.hasNext()
 
 		where:
 		strength << [0.0d, 0.5d, 45.2d]
@@ -209,24 +210,27 @@ class ComponentStructizerSpec extends Specification {
 
 	def "toStructs VelocityLimit"() {
 		expect:
-		structizer.toStruct(new VelocityLimit(value)) == Optional.of(value)
+		structizer.toStruct(new VelocityLimit(linear, angular)) == Optional.of([linear, angular])
 
 		where:
-		value << (0..5).collect { it.doubleValue() }
+		linear << (0..5).collect { it.doubleValue() }
+		angular << (5..0).collect { it.doubleValue() }
 	}
 	def "fromStructs VelocityLimit"() {
 		expect:
-		structizer.fromStruct(VelocityLimit, value).map { it.value } == Optional.of(value)
+		structizer.fromStruct(VelocityLimit, [linear, angular]).map { [it.linear, it.angular] } == Optional.of([linear, angular])
 
 		where:
-		value << (0..5).collect { it.doubleValue() }
+		linear << (0..5).collect { it.doubleValue() }
+		angular << (5..0).collect { it.doubleValue() }
 	}
 	def "full-circles VelocityLimit"() {
 		expect:
-		structizer.toStruct(new VelocityLimit(value)).flatMap { structizer.fromStruct(VelocityLimit, it) }.map { it.value } == Optional.of(value)
+		structizer.toStruct(new VelocityLimit(linear, angular)).flatMap { structizer.fromStruct(VelocityLimit, it) }.map { [it.linear, it.angular] } == Optional.of([linear, angular])
 
 		where:
-		value << (0..5).collect { it.doubleValue() }
+		linear << (0..5).collect { it.doubleValue() }
+		angular << (5..0).collect { it.doubleValue() }
 	}
 
 	def "toStructs Damping"() {
@@ -350,7 +354,11 @@ class ComponentStructizerSpec extends Specification {
 
 	def "toStructs Velocity"() {
 		expect:
-		structizer.toStruct(new Velocity(Vector3.of(x, y, z))) == Optional.of([x.doubleValue(), y.doubleValue(), z.doubleValue()])
+		structizer.toStruct(new Velocity().with {
+			it.linear.set(Vector3.of(x, y, z))
+			it.angular.set(Vector3.of(z, y, x))
+			it
+		}) == Optional.of([[x.doubleValue(), y.doubleValue(), z.doubleValue()], [z.doubleValue(), y.doubleValue(), x.doubleValue()]])
 
 		where:
 		x << (1..4)
@@ -359,7 +367,7 @@ class ComponentStructizerSpec extends Specification {
 	}
 	def "fromStructs Velocity"() {
 		expect:
-		structizer.fromStruct(Velocity, [x, y, z]).map { it.value } == Optional.of(Vector3.of(x, y, z))
+		structizer.fromStruct(Velocity, [[x, y, z], [z, y, x]]).map { [it.linear, it.angular] } == Optional.of([Vector3.of(x, y, z), Vector3.of(z, y, x)])
 
 		where:
 		x << (1..4)
@@ -367,10 +375,14 @@ class ComponentStructizerSpec extends Specification {
 		z << (5..8)
 	}
 	def "full-circles Velocity"() {
-		def value = new Velocity(Vector3.of(x, y, z))
+		def value = new Velocity().with {
+			it.linear.set(Vector3.of(x, y, z))
+			it.angular.set(Vector3.of(z, y, x))
+			it
+		}
 
 		expect:
-		structizer.toStruct(value).flatMap { structizer.fromStruct(Velocity, it) }.map { it.value } == Optional.of(value.value)
+		structizer.toStruct(value).flatMap { structizer.fromStruct(Velocity, it) }.map { [it.linear, it.angular] } == Optional.of([value.linear, value.angular])
 
 		where:
 		x << (1..4)

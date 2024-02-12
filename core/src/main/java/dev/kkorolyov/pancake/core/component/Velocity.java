@@ -1,33 +1,46 @@
 package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
+import dev.kkorolyov.pancake.platform.math.Matrix4;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
 /**
  * Velocity of a moving entity.
+ * Maintains a linear velocity in {@code m/s} and an angular velocity in {@code rad/s}.
  */
 public final class Velocity implements Component {
-	private final Vector3 value;
+	private static final Vector3 xAxis = Vector3.of(1);
+	private static final Vector3 yAxis = Vector3.of(0, 1);
+	private static final Vector3 zAxis = Vector3.of(0, 0, 1);
+
+	private final Vector3 linear = Vector3.of();
+	private final Vector3 angular = Vector3.of();
 
 	/**
-	 * Constructs a new velocity.
-	 * @param value initial value in {@code m/s}
-	 */
-	public Velocity(Vector3 value) {
-		this.value = Vector3.of(value);
-	}
-
-	/**
-	 * Applies a positional change calculated from velocity and duration to a point.
-	 * @param position position to move
-	 * @param seconds seconds used in movement calculation
+	 * Applies a positional change to {@code position} given the current linear velocity and {@code seconds} interval.
 	 */
 	public void move(Vector3 position, double seconds) {
-		position.add(value, seconds);
+		position.add(linear, seconds);
+	}
+	/**
+	 * Applies a rotational change to {@code rotation} given the current angular velocity and {@code seconds} interval.
+	 */
+	public void rotate(Matrix4 rotation, double seconds) {
+		rotation.rotate(angular.getX() * seconds, xAxis);
+		rotation.rotate(angular.getY() * seconds, yAxis);
+		rotation.rotate(angular.getZ() * seconds, zAxis);
 	}
 
-	/** @return velocity in {@code m/s} */
-	public Vector3 getValue() {
-		return value;
+	/**
+	 * The linear velocity in {@code m/s}.
+	 */
+	public Vector3 getLinear() {
+		return linear;
+	}
+	/**
+	 * The angular velocity in {@code rad/s}.
+	 */
+	public Vector3 getAngular() {
+		return angular;
 	}
 }

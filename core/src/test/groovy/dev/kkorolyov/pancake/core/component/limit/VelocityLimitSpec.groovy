@@ -7,33 +7,40 @@ import spock.lang.Specification
 
 class VelocityLimitSpec extends Specification {
 	def "constrains greater values"() {
-		Velocity velocity = new Velocity(velocityV)
-		VelocityLimit limit = new VelocityLimit(limitV)
+		Velocity velocity = new Velocity(linearV, angularV)
+		VelocityLimit limit = new VelocityLimit(limitLinearV, limitAngularV)
 
 		when:
 		limit.limit(velocity)
 
 		then:
-		velocity.value == expected
+		velocity.linear == expectedLinear
+		velocity.angular == expectedLinear
 
 		where:
-		velocityV << [Vector3.of(1, 1, 1), Vector3.of(5)]
-		expected << [Vector3.of(1 / Math.sqrt(3), 1 / Math.sqrt(3), 1 / Math.sqrt(3)), Vector3.of(4)]
-		limitV << [1, 4]
+		linearV << [Vector3.of(1, 1, 1), Vector3.of(5)]
+		angularV << [Vector3.of(1, 1, 1), Vector3.of(5)]
+		expectedLinear << [Vector3.of(1 / Math.sqrt(3), 1 / Math.sqrt(3), 1 / Math.sqrt(3)), Vector3.of(4)]
+		expectedAngular << [Vector3.of(1 / Math.sqrt(3), 1 / Math.sqrt(3), 1 / Math.sqrt(3)), Vector3.of(4)]
+		limitLinearV << [1, 4]
+		limitAngularV << [1, 4]
 	}
 
 	def "leaves lesser values"() {
-		Velocity velocity = new Velocity(velocityV)
-		VelocityLimit limit = new VelocityLimit(limitV)
+		Velocity velocity = new Velocity(linearV, angularV)
+		VelocityLimit limit = new VelocityLimit(limitLinearV, limitAngularV)
 
 		when:
 		limit.limit(velocity)
 
 		then:
-		velocity.value == velocityV
+		velocity.linear == linearV
+		velocity.angular == angularV
 
 		where:
-		velocityV << [Vector3.of(1, 1, 1), Vector3.of(10, 1, 1)]
-		limitV << [2, 15]
+		linearV << [Vector3.of(1, 1, 1), Vector3.of(10, 1, 1)]
+		angularV << [Vector3.of(1, 1, 1), Vector3.of(10, 1, 1)]
+		limitLinearV << [2, 15]
+		limitAngularV << [2, 15]
 	}
 }

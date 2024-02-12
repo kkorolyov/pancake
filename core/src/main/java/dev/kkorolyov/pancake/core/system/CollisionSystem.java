@@ -50,12 +50,12 @@ public final class CollisionSystem extends GameSystem {
 
 				if (priority <= 0 && aVelocity != null) {
 					if (aMass != null && priority == 0 && bVelocity != null && bMass != null) {
-						collide(aPosition, bPosition, aVelocity.getValue(), bVelocity.getValue(), aMass.getValue(), bMass.getValue());
+						collide(aPosition, bPosition, aVelocity.getLinear(), bVelocity.getLinear(), aMass.getValue(), bMass.getValue());
 					} else {
-						reflect(aVelocity.getValue(), event.getMtvA());
+						reflect(aVelocity.getLinear(), event.getMtvA());
 					}
 				} else {
-					reflect(bVelocity.getValue(), event.getMtvB());
+					reflect(bVelocity.getLinear(), event.getMtvB());
 				}
 			}
 		}
