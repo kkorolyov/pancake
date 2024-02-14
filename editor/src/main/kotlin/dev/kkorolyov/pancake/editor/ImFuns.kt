@@ -5,12 +5,16 @@ import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImVec2
+import imgui.extension.implot.ImPlot
+import imgui.extension.implot.flag.ImPlotAxisFlags
+import imgui.extension.implot.flag.ImPlotFlags
 import imgui.flag.ImGuiComboFlags
 import imgui.flag.ImGuiCond
 import imgui.flag.ImGuiDir
 import imgui.flag.ImGuiDragDropFlags
 import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiInputTextFlags
+import imgui.flag.ImGuiMouseButton
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
@@ -21,6 +25,8 @@ import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import imgui.type.ImInt
 import imgui.type.ImString
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 // reuse the same carrier to all imgui input functions
@@ -43,6 +49,12 @@ val tVector2 by ThreadLocal.withInitial(Vector2::of)
 val tVector3 by ThreadLocal.withInitial(Vector3::of)
 /** NO TOUCHY */
 val tVec2 by ThreadLocal.withInitial(::ImVec2)
+/** NO TOUCHY */
+val ctxTable = CtxTable()
+/** NO TOUCHY */
+val ctxMenu = CtxMenu()
+/** NO TOUCHY */
+val ctxPlot = CtxPlot()
 
 /**
  * Initializes [id] dock space with [setup], if it does not yet exist.
@@ -139,9 +151,9 @@ inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, op: Op) {
  * Runs [op] in a context menu popup over the last clicked item.
  * Accepts a manual item [id] to bind to.
  */
-inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
+inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: CtxMenu.() -> Unit) {
 	if (id?.let { ImGui.beginPopupContextItem(it, flags) } ?: ImGui.beginPopupContextItem(flags)) {
-		op()
+		ctxMenu.op()
 		ImGui.endPopup()
 	}
 }
@@ -258,17 +270,11 @@ inline fun tabItem(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: Op) {
+inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: CtxTable.() -> Unit) {
 	if (ImGui.beginTable(id, columns, flags, width, height)) {
-		op()
+		ctxTable.op()
 		ImGui.endTable()
 	}
-}
-/**
- * Runs [op] in a new table column.
- */
-inline fun column(op: Op) {
-	if (ImGui.tableNextColumn()) op()
 }
 
 /**
@@ -293,20 +299,77 @@ inline fun indented(op: Op) {
 /**
  * Invokes [op] within a menu of [label].
  */
-inline fun menu(label: String, op: Op) {
+inline fun menu(label: String, op: CtxMenu.() -> Unit) {
 	if (ImGui.beginMenu(label)) {
-		op()
+		ctxMenu.op()
 		ImGui.endMenu()
 	}
 }
+
 /**
- * Draws a menu item of [label], invoking [onClick] when it is selected.
- * Returns `true` when selected.
+ * Invokes [op] within a plot of [label].
  */
-inline fun menuItem(label: String, onClick: Op): Boolean {
-	val result = ImGui.menuItem(label)
-	if (result) onClick()
-	return result
+inline fun plot(
+	label: String,
+	xLabel: String? = null,
+	yLabel: String? = null,
+	width: Float = 0f,
+	height: Float = 0f,
+	flags: Int = ImPlotFlags.None,
+	xFlags: Int = ImPlotAxisFlags.None,
+	yFlags: Int = ImPlotAxisFlags.None,
+	xMin: Double? = null,
+	xMax: Double? = null,
+	xLimitCond: Int = ImGuiCond.None,
+	yMin: Double? = null,
+	yMax: Double? = null,
+	yLimitCond: Int = ImGuiCond.None,
+	xFormat: String? = null,
+	yFormat: String? = null,
+	op: CtxPlot.() -> Unit
+) {
+	val fullXFlags = xFlags or if (xLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
+	val fullYFlags = yFlags or if (yLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
+
+	val noPaddingFlags = ImPlotAxisFlags.NoLabel or ImPlotAxisFlags.NoTickLabels
+	val noXPadding = fullYFlags and noPaddingFlags == noPaddingFlags
+	val noYPadding = fullXFlags and noPaddingFlags == noPaddingFlags
+
+	if (noXPadding || noYPadding) {
+		// manual idx because java bindings wrong
+		ImPlot.pushStyleVar(17, tVec2.apply {
+			x = if (noXPadding) 0f else ImPlot.getStyle().plotPadding.x
+			y = if (noYPadding) 0f else ImPlot.getStyle().plotPadding.y
+		})
+	}
+
+	if (xMin != null && xMax != null) ImPlot.setNextPlotLimitsX(xMin, xMax, xLimitCond)
+	if (yMin != null && yMax != null) ImPlot.setNextPlotLimitsY(yMin, yMax, yLimitCond)
+
+	xFormat?.let(ImPlot::setNextPlotFormatX)
+	yFormat?.let(ImPlot::setNextPlotFormatY)
+
+	if (
+		ImPlot.beginPlot(
+			label,
+			xLabel ?: "",
+			yLabel ?: "",
+			tVec2.apply {
+				x = width
+				y = height
+			},
+			flags,
+			fullXFlags,
+			fullYFlags
+		)
+	) {
+		ctxPlot.op()
+		ImPlot.endPlot()
+	}
+
+	if (noXPadding || noYPadding) {
+		ImPlot.popStyleVar()
+	}
 }
 
 /**
@@ -501,6 +564,40 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 }
 
 /**
+ * Draws a drag input for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange<Int> = { }): Boolean {
+	val ptr = intArrayOf(value)
+
+	val result = ImGui.dragInt(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	if (result) onChange(max(min, min(max, ptr[0])))
+	return result
+}
+/**
+ * Draws a drag input for [value] and [value1], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Int, value1: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange2<Int> = { _, _ -> }): Boolean {
+	val ptr = intArrayOf(value, value1)
+
+	val result = ImGui.dragInt2(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])))
+	return result
+}
+/**
+ * Draws a drag input for [value], [value1], and [value2], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Int, value1: Int, value2: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange3<Int> = { _, _, _ -> }): Boolean {
+	val ptr = intArrayOf(value, value1, value2)
+
+	val result = ImGui.dragInt3(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])), max(min, min(max, ptr[2])))
+	return result
+}
+
+/**
  * Runs [op] whenever the last item is focused.
  * Returns `true` when focused.
  */
@@ -521,10 +618,19 @@ inline fun onKey(key: Int, op: Op): Boolean {
 }
 
 /**
- * Runs [op] when mouse [button] is double-click.
+ * Runs [op] when mouse [button] is clicked.
  * Returns `true` when double-clicked.
  */
-inline fun onDoubleClick(button: Int, op: Op): Boolean {
+inline fun onClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
+	val result = ImGui.isMouseClicked(button)
+	if (result) op()
+	return result
+}
+/**
+ * Runs [op] when mouse [button] is double-clicked.
+ * Returns `true` when double-clicked.
+ */
+inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
 	val result = ImGui.isMouseDoubleClicked(button)
 	if (result) op()
 	return result
@@ -548,3 +654,42 @@ typealias Op = () -> Unit
  * Invoked with a changed `T` value.
  */
 typealias OnChange<T> = (T) -> Unit
+/**
+ * Invoked with 2 changed `T` values.
+ */
+typealias OnChange2<T> = (T, T) -> Unit
+/**
+ * Invoked with 3 changed `T` values.
+ */
+typealias OnChange3<T> = (T, T, T) -> Unit
+
+class CtxTable internal constructor() {
+	/**
+	 * Runs [op] in a new table column.
+	 */
+	inline fun column(op: Op) {
+		if (ImGui.tableNextColumn()) op()
+	}
+}
+
+class CtxMenu internal constructor() {
+	/**
+	 * Draws a menu item of [label], invoking [onClick] when it is selected.
+	 * Returns `true` when selected.
+	 */
+	inline fun menuItem(label: String, onClick: Op): Boolean {
+		val result = ImGui.menuItem(label)
+		if (result) onClick()
+		return result
+	}
+}
+
+class CtxPlot internal constructor() {
+	fun lines(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
+		ImPlot.plotLine(label, xs, ys, xs.size, offset)
+	}
+
+	fun text(text: Any, x: Double, y: Double, vertical: Boolean = false) {
+		ImPlot.plotText(text.toString(), x, y, vertical)
+	}
+}

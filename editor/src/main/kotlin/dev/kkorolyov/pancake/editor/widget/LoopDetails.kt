@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text

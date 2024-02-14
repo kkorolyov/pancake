@@ -8,7 +8,6 @@ import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
-import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.setDragDropPayload

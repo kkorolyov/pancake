@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.editor
 import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.editor.widget.WindowManifest
 import imgui.ImGui
+import imgui.extension.implot.ImPlot
 import imgui.flag.ImGuiConfigFlags
 import imgui.gl3.ImGuiImplGl3
 import imgui.glfw.ImGuiImplGlfw
@@ -25,6 +26,7 @@ private val log = LoggerFactory.getLogger(Container::class.java)
 class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	private val imguiGlfw by lazy {
 		ImGui.createContext()
+		ImPlot.createContext()
 		ImGui.getIO().apply {
 			iniFilename = null
 			addConfigFlags(flags)
@@ -102,6 +104,7 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	override fun close() {
 		imguiGl.dispose()
 		imguiGlfw.dispose()
+		ImPlot.destroyContext(ImPlot.getCurrentContext())
 		ImGui.destroyContext()
 	}
 }

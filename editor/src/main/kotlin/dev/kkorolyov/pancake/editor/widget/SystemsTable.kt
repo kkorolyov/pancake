@@ -2,7 +2,6 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.onDrag

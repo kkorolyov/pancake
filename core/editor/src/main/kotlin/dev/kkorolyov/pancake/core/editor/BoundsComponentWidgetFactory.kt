@@ -15,7 +15,6 @@ import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
-import imgui.ImGui
 import imgui.flag.ImGuiInputTextFlags
 
 class BoundsComponentWidgetFactory : WidgetFactory<Component> {
