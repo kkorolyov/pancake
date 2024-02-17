@@ -645,6 +645,14 @@ fun calcWidth(text: String): Float {
 	ImGui.calcTextSize(ptr, text)
 	return ptr.x
 }
+/**
+ * Returns the total height of [n] lines of text.
+ */
+fun lineHeight(n: Int): Float = ImGui.getTextLineHeightWithSpacing() * n
+/**
+ * Returns the total height of [n] lines of text.
+ */
+fun lineHeight(n: Double): Float = ImGui.getTextLineHeightWithSpacing() * n.toFloat()
 
 /**
  * Arbitrary operation.
@@ -685,7 +693,7 @@ class CtxMenu internal constructor() {
 }
 
 class CtxPlot internal constructor() {
-	fun lines(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
+	fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
 		ImPlot.plotLine(label, xs, ys, xs.size, offset)
 	}
 
