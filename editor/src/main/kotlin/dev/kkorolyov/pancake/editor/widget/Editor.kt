@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.child
+import dev.kkorolyov.pancake.editor.data.OwnedComponent
 import dev.kkorolyov.pancake.editor.dockSpace
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.onDrop
@@ -29,7 +30,7 @@ class Editor(
 
 	private val systemManifest = WindowManifest<GameSystem>()
 	private val entityManifest = WindowManifest<Entity>()
-	private val componentManifest = WindowManifest<Component>()
+	private val componentManifest = WindowManifest<OwnedComponent>()
 
 	private val loop = Window("GameLoop", withDropHandlers(LoopDetails(engine)), subVisible)
 	private val pipelines = Window("Pipelines", withDropHandlers(PipelinesTree(engine, systemDragDropId)), subVisible)
@@ -77,8 +78,9 @@ class Editor(
 			useDragDropPayload<Entity>(entityDragDropId) {
 				entityManifest[it] = { Window("Entity ${it.id}", withDropHandlers(EntityDetails(it, componentDragDropId)), openAt = OpenAt.Cursor) }
 			}
-			useDragDropPayload<Component>(componentDragDropId) {
-				componentManifest[it] = { Window("Component: ${it::class.simpleName}", withDropHandlers(getWidget(Component::class.java, it)), openAt = OpenAt.Cursor) }
+			useDragDropPayload<OwnedComponent>(componentDragDropId) {
+				val (entity, component) = it
+				componentManifest[it] = { Window("${entity.id}.${component::class.simpleName}", withDropHandlers(getWidget(Component::class.java, component)), openAt = OpenAt.Cursor) }
 			}
 		}
 	}

@@ -636,7 +636,7 @@ object Ctx {
 
 	object Drop {
 		/**
-		 * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
+		 * If the current [Drag.setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
 		 */
 		inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
 			val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
