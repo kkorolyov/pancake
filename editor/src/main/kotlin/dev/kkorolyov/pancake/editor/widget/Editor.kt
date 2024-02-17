@@ -2,11 +2,9 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.child
-import dev.kkorolyov.pancake.editor.dock
 import dev.kkorolyov.pancake.editor.dockSpace
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.onDrop
-import dev.kkorolyov.pancake.editor.useDragDropPayload
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Component

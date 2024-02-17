@@ -10,7 +10,6 @@ import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
-import dev.kkorolyov.pancake.editor.setDragDropPayload
 import dev.kkorolyov.pancake.editor.toStructEntity
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity

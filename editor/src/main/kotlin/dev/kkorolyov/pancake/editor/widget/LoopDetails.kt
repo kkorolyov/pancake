@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.History
+import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.MagFormat
 import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
@@ -12,6 +13,7 @@ import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.ImGui
 import imgui.flag.ImGuiTableFlags
+import kotlin.math.max
 
 private val suspendLock = object {}
 
@@ -34,8 +36,10 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 	}
 
 	private fun graphs() {
-		// height buffer of 4 for title + legend menu entries
-		history("TPS", historyWidth, Style.height(4)) {
+		val minY = Layout.lineHeight(4)
+		val yFree = Layout.free.y
+
+		history("TPS", historyWidth, max(minY, yFree / 5)) {
 			line("##main", 1e9 / engine.sampler.value)
 
 			legendTooltip("*stats") {
@@ -45,7 +49,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 
 		var slowestPipeline = "none"
 		var slowestPipelineTPS = 0L
-		history("Pipelines", historyWidth, Style.height(4 + engine.count())) {
+		history("Pipelines", historyWidth, max(minY, yFree / 2)) {
 			engine.forEachIndexed { i, pipeline ->
 				val id = "Pipeline $i"
 				val tps = pipeline.sampler.value

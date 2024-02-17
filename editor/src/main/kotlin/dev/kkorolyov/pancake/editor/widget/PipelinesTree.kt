@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.History
+import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.MagFormat
 import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
@@ -10,6 +11,7 @@ import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.Pipeline
 import imgui.flag.ImGuiTableFlags
+import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
@@ -22,11 +24,12 @@ class PipelinesTree(private val pipelines: Iterable<Pipeline>, private val dragD
 	private val historyWidth by lazy { -Style.spacing.x }
 
 	override fun invoke() {
+		val historyHeight = max(Layout.lineHeight(4), Layout.free.y / 5)
+
 		pipelines.forEachIndexed { pipelineI, pipeline ->
 			var slowestSystem = "none"
 			var slowestSystemTPS = 0L
-			// height buffer of 4 for title + legend menu entries
-			history("Pipeline $pipelineI", historyWidth, Style.height(4 + pipeline.count())) {
+			history("Pipeline $pipelineI", historyWidth, historyHeight) {
 				pipeline.forEachIndexed { systemI, system ->
 					val id = system::class.simpleName ?: "hook$systemI"
 					val tps = system.sampler.value

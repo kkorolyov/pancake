@@ -52,6 +52,12 @@ val tVec2 by ThreadLocal.withInitial(::ImVec2)
 /** NO TOUCHY */
 val ctxTable = CtxTable()
 /** NO TOUCHY */
+val ctxDockSpace = CtxDockSpace()
+/** NO TOUCHY */
+val ctxDrag = CtxDrag()
+/** NO TOUCHY */
+val ctxDrop = CtxDrop()
+/** NO TOUCHY */
 val ctxMenu = CtxMenu()
 /** NO TOUCHY */
 val ctxPlot = CtxPlot()
@@ -60,61 +66,17 @@ val ctxPlot = CtxPlot()
  * Initializes [id] dock space with [setup], if it does not yet exist.
  * Otherwise, simply draws the current [id] dock space.
  */
-inline fun dockSpace(id: String, setup: Op) {
+inline fun dockSpace(id: String, setup: CtxDockSpace.() -> Unit) {
 	val nodeId = ImGui.getID(id)
 
 	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) {
 		ImGui.dockBuilderAddNode(nodeId, ImGuiDockNodeFlags.DockSpace)
 		ImGui.dockBuilderSetNodeSize(nodeId, ImGui.getContentRegionAvailX(), ImGui.getContentRegionAvailY())
 
-		setup()
+		ctxDockSpace.setup()
 	}
 
 	ImGui.dockSpace(nodeId)
-}
-/**
- * Adds [window] to [id] dock space.
- * Throws [IllegalArgumentException] if [id] dock space does not exist.
- */
-fun dock(id: String, window: Window) {
-	val nodeId = ImGui.getID(id)
-	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
-
-	ImGui.dockBuilderDockWindow(window.label, nodeId)
-	ImGui.dockBuilderFinish(nodeId)
-}
-/**
- * Adds [other] to the same dock node as [window].
- * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
- */
-fun dock(window: Window, other: Window) {
-	ImGui.begin(window.label)
-	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
-	ImGui.end()
-
-	val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
-	if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
-	ImGui.dockBuilderDockWindow(other.label, nodeId)
-
-	ImGui.dockBuilderFinish(nodeId)
-}
-/**
- * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
- * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
- */
-fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
-	ImGui.begin(window.label)
-	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
-	ImGui.end()
-
-	val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
-
-	val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
-
-	ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
-	ImGui.dockBuilderDockWindow(other.label, otherId)
-
-	ImGui.dockBuilderFinish(nodeIdPtr.get())
 }
 
 /**
@@ -182,9 +144,9 @@ inline fun onActive(op: Op) {
  * [op] should include a call to [setDragDropPayload] and any calls to draw in the drag-drop preview tooltip.
  * See also: [onDrop]
  */
-inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Op) {
+inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: CtxDrag.() -> Unit) {
 	if (ImGui.beginDragDropSource(flags)) {
-		op()
+		ctxDrag.op()
 		ImGui.endDragDropSource()
 	}
 }
@@ -192,26 +154,11 @@ inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Op) {
  * Runs [op] when a dragged payload is dropped on the last set item.
  * See also: [onDrag]
  */
-inline fun onDrop(op: Op) {
+inline fun onDrop(op: CtxDrop.() -> Unit) {
 	if (ImGui.beginDragDropTarget()) {
-		op()
+		ctxDrop.op()
 		ImGui.endDragDropTarget()
 	}
-}
-/**
- * Should be invoked from within an [onDrag].
- * Sets the dragged [payload], with optional unique [id] and [condition].
- */
-fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
-	id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
-}
-/**
- * Should be invoked from within an [onDrop].
- * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
- */
-inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
-	val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
-	payload?.let(op)
 }
 
 /**
@@ -481,7 +428,7 @@ inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, di
 	val ptr = tInt
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) Style.width("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
+	val width = if (label.startsWith("##")) Layout.textWidth("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputInt(label, ptr, step, stepFast, flags)
@@ -499,7 +446,7 @@ inline fun input(label: String, value: Double, format: String = "%.3f", step: Do
 	val ptr = tDouble
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) Style.width("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
+	val width = if (label.startsWith("##")) Layout.textWidth("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputDouble(label, ptr, step, stepFast, format, flags)
@@ -520,7 +467,7 @@ inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: 
 	ptr[0] = value.x.toFloat()
 	ptr[1] = value.y.toFloat()
 
-	val width = if (label.startsWith("##")) Style.width(format.format(10.0.pow(digitWidth))) * 2 else null
+	val width = if (label.startsWith("##")) Layout.textWidth(format.format(10.0.pow(digitWidth))) * 2 else null
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputFloat2(label, ptr, format, flags)
 	width?.let { ImGui.popItemWidth() }
@@ -547,7 +494,7 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 	ptr[1] = value.y.toFloat()
 	ptr[2] = value.z.toFloat()
 
-	val width = if (label.startsWith("##")) Style.width(format.format(10.0.pow(digitWidth))) * 3 else null
+	val width = if (label.startsWith("##")) Layout.textWidth(format.format(10.0.pow(digitWidth))) * 3 else null
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputFloat3(label, ptr, format, flags)
 	width?.let { ImGui.popItemWidth() }
@@ -637,35 +584,121 @@ inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
 }
 
 /**
- * Dynamic access to ImGUI style.
+ * Layout options and helpers
  */
-object Style {
-	private val style = ImGui.getStyle()
+object Layout {
+	/**
+	 * Remaining available content space starting from the current cursor.
+	 */
+	val free: Free = Free()
 
-	val spacing: Spacing = Spacing()
+	/**
+	 * Returns the total height (including spacing) of [n] lines of text.
+	 */
+	fun lineHeight(n: Int): Float = ImGui.getTextLineHeightWithSpacing() * n
+	/**
+	 * Returns the total height (including spacing) of [n] lines of text.
+	 */
+	fun lineHeight(n: Double): Float = ImGui.getTextLineHeightWithSpacing() * n.toFloat()
 
 	/**
 	 * Returns the width of [text].
 	 * Ignores hidden areas of labels (i.e ##).
 	 */
-	fun width(text: String): Float {
+	fun textWidth(text: String): Float {
 		val ptr = tVec2
 		ImGui.calcTextSize(ptr, text)
 		return ptr.x
 	}
 
+	class Free internal constructor() {
+		val x: Float
+			get() = ImGui.getContentRegionAvailX()
+		val y: Float
+			get() = ImGui.getContentRegionAvailY()
+	}
+}
+
+/**
+ * Current style configuration.
+ */
+object Style {
+	private val style = ImGui.getStyle()
+
 	/**
-	 * Returns the total height (including spacing) of [n] lines of text.
+	 * Spacing style configuration.
 	 */
-	fun height(n: Int): Float = ImGui.getTextLineHeightWithSpacing() * n
-	/**
-	 * Returns the total height (including spacing) of [n] lines of text.
-	 */
-	fun height(n: Double): Float = ImGui.getTextLineHeightWithSpacing() * n.toFloat()
+	val spacing: Spacing = Spacing()
 
 	class Spacing internal constructor() {
-		val x = style.itemSpacingX
-		val y = style.itemSpacingY
+		val x by style::itemSpacingX
+		val y by style::itemSpacingY
+	}
+}
+
+class CtxDockSpace internal constructor() {
+	/**
+	 * Adds [window] to [id] dock space.
+	 * Throws [IllegalArgumentException] if [id] dock space does not exist.
+	 */
+	fun dock(id: String, window: Window) {
+		val nodeId = ImGui.getID(id)
+		if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
+
+		ImGui.dockBuilderDockWindow(window.label, nodeId)
+		ImGui.dockBuilderFinish(nodeId)
+	}
+	/**
+	 * Adds [other] to the same dock node as [window].
+	 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+	 */
+	fun dock(window: Window, other: Window) {
+		ImGui.begin(window.label)
+		val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+		ImGui.end()
+
+		val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
+		if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
+		ImGui.dockBuilderDockWindow(other.label, nodeId)
+
+		ImGui.dockBuilderFinish(nodeId)
+	}
+	/**
+	 * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
+	 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+	 */
+	fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
+		ImGui.begin(window.label)
+		val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+		ImGui.end()
+
+		val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
+
+		val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
+
+		ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
+		ImGui.dockBuilderDockWindow(other.label, otherId)
+
+		ImGui.dockBuilderFinish(nodeIdPtr.get())
+	}
+}
+
+class CtxDrag internal constructor() {
+	/**
+	 * Sets the dragged [payload], with optional unique [id] and [condition].
+	 */
+	fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
+		id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
+	}
+}
+
+class CtxDrop internal constructor() {
+	/**
+	 * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
+	 */
+	inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
+		val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
+		payload?.let(op)
 	}
 }
 
