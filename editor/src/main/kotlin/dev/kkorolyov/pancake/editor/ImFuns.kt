@@ -49,31 +49,19 @@ val tVector2 by ThreadLocal.withInitial(Vector2::of)
 val tVector3 by ThreadLocal.withInitial(Vector3::of)
 /** NO TOUCHY */
 val tVec2 by ThreadLocal.withInitial(::ImVec2)
-/** NO TOUCHY */
-val ctxTable = CtxTable()
-/** NO TOUCHY */
-val ctxDockSpace = CtxDockSpace()
-/** NO TOUCHY */
-val ctxDrag = CtxDrag()
-/** NO TOUCHY */
-val ctxDrop = CtxDrop()
-/** NO TOUCHY */
-val ctxMenu = CtxMenu()
-/** NO TOUCHY */
-val ctxPlot = CtxPlot()
 
 /**
  * Initializes [id] dock space with [setup], if it does not yet exist.
  * Otherwise, simply draws the current [id] dock space.
  */
-inline fun dockSpace(id: String, setup: CtxDockSpace.() -> Unit) {
+inline fun dockSpace(id: String, setup: Ctx.DockSpace.() -> Unit) {
 	val nodeId = ImGui.getID(id)
 
 	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) {
 		ImGui.dockBuilderAddNode(nodeId, ImGuiDockNodeFlags.DockSpace)
 		ImGui.dockBuilderSetNodeSize(nodeId, ImGui.getContentRegionAvailX(), ImGui.getContentRegionAvailY())
 
-		ctxDockSpace.setup()
+		Ctx.DockSpace.setup()
 	}
 
 	ImGui.dockSpace(nodeId)
@@ -113,9 +101,9 @@ inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, op: Op) {
  * Runs [op] in a context menu popup over the last clicked item.
  * Accepts a manual item [id] to bind to.
  */
-inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: CtxMenu.() -> Unit) {
+inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Ctx.Menu.() -> Unit) {
 	if (id?.let { ImGui.beginPopupContextItem(it, flags) } ?: ImGui.beginPopupContextItem(flags)) {
-		ctxMenu.op()
+		Ctx.Menu.op()
 		ImGui.endPopup()
 	}
 }
@@ -144,9 +132,9 @@ inline fun onActive(op: Op) {
  * [op] should include a call to [setDragDropPayload] and any calls to draw in the drag-drop preview tooltip.
  * See also: [onDrop]
  */
-inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: CtxDrag.() -> Unit) {
+inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Ctx.Drag.() -> Unit) {
 	if (ImGui.beginDragDropSource(flags)) {
-		ctxDrag.op()
+		Ctx.Drag.op()
 		ImGui.endDragDropSource()
 	}
 }
@@ -154,9 +142,9 @@ inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: CtxDrag.() -> Unit) 
  * Runs [op] when a dragged payload is dropped on the last set item.
  * See also: [onDrag]
  */
-inline fun onDrop(op: CtxDrop.() -> Unit) {
+inline fun onDrop(op: Ctx.Drop.() -> Unit) {
 	if (ImGui.beginDragDropTarget()) {
-		ctxDrop.op()
+		Ctx.Drop.op()
 		ImGui.endDragDropTarget()
 	}
 }
@@ -217,9 +205,9 @@ inline fun tabItem(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: CtxTable.() -> Unit) {
+inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: Ctx.Table.() -> Unit) {
 	if (ImGui.beginTable(id, columns, flags, width, height)) {
-		ctxTable.op()
+		Ctx.Table.op()
 		ImGui.endTable()
 	}
 }
@@ -246,9 +234,9 @@ inline fun indented(op: Op) {
 /**
  * Invokes [op] within a menu of [label].
  */
-inline fun menu(label: String, op: CtxMenu.() -> Unit) {
+inline fun menu(label: String, op: Ctx.Menu.() -> Unit) {
 	if (ImGui.beginMenu(label)) {
-		ctxMenu.op()
+		Ctx.Menu.op()
 		ImGui.endMenu()
 	}
 }
@@ -273,7 +261,7 @@ inline fun plot(
 	yLimitCond: Int = ImGuiCond.None,
 	xFormat: String? = null,
 	yFormat: String? = null,
-	op: CtxPlot.() -> Unit
+	op: Ctx.Plot.() -> Unit
 ) {
 	val fullXFlags = xFlags or if (xLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
 	val fullYFlags = yFlags or if (yLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
@@ -310,7 +298,7 @@ inline fun plot(
 			fullYFlags
 		)
 	) {
-		ctxPlot.op()
+		Ctx.Plot.op()
 		ImPlot.endPlot()
 	}
 
@@ -636,134 +624,136 @@ object Style {
 	}
 }
 
-class CtxDockSpace internal constructor() {
-	/**
-	 * Adds [window] to [id] dock space.
-	 * Throws [IllegalArgumentException] if [id] dock space does not exist.
-	 */
-	fun dock(id: String, window: Window) {
-		val nodeId = ImGui.getID(id)
-		if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
-
-		ImGui.dockBuilderDockWindow(window.label, nodeId)
-		ImGui.dockBuilderFinish(nodeId)
-	}
-	/**
-	 * Adds [other] to the same dock node as [window].
-	 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
-	 */
-	fun dock(window: Window, other: Window) {
-		ImGui.begin(window.label)
-		val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
-		ImGui.end()
-
-		val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
-		if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
-		ImGui.dockBuilderDockWindow(other.label, nodeId)
-
-		ImGui.dockBuilderFinish(nodeId)
-	}
-	/**
-	 * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
-	 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
-	 */
-	fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
-		ImGui.begin(window.label)
-		val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
-		ImGui.end()
-
-		val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
-
-		val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
-
-		ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
-		ImGui.dockBuilderDockWindow(other.label, otherId)
-
-		ImGui.dockBuilderFinish(nodeIdPtr.get())
-	}
-}
-
-class CtxDrag internal constructor() {
-	/**
-	 * Sets the dragged [payload], with optional unique [id] and [condition].
-	 */
-	fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
-		id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
-	}
-}
-
-class CtxDrop internal constructor() {
-	/**
-	 * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
-	 */
-	inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
-		val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
-		payload?.let(op)
-	}
-}
-
-class CtxTable internal constructor() {
-	/**
-	 * Runs [op] in a new table column.
-	 */
-	inline fun column(op: Op) {
-		if (ImGui.tableNextColumn()) op()
-	}
-}
-
-class CtxMenu internal constructor() {
-	/**
-	 * Draws a menu item of [label], invoking [onClick] when it is selected.
-	 * Returns `true` when selected.
-	 */
-	inline fun menuItem(label: String, onClick: Op): Boolean {
-		val result = ImGui.menuItem(label)
-		if (result) onClick()
-		return result
-	}
-}
-
-class CtxPlot internal constructor() {
-	/**
-	 * Runs [op] in a tooltip when [label] legend entry is hovered.
-	 */
-	inline fun legendTooltip(label: String, op: Op) {
-		if (ImPlot.isLegendEntryHovered(label)) {
-			ImGui.beginTooltip()
-			op()
-			ImGui.endTooltip()
-		}
-	}
-	/**
-	 * Runs [op] in a popup over [label] legend entry.
-	 */
-	inline fun legendPopup(label: String, button: Int = ImGuiMouseButton.Right, op: Op) {
-		if (ImPlot.beginLegendPopup(label, button)) {
-			op()
-			ImPlot.endLegendPopup()
+object Ctx {
+	object Drag {
+		/**
+		 * Sets the dragged [payload], with optional unique [id] and [condition].
+		 */
+		fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
+			id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
 		}
 	}
 
-	/**
-	 * Adds a legend entry [label] without values.
-	 */
-	fun dummy(label: String) {
-		ImPlot.plotDummy(label)
+	object Drop {
+		/**
+		 * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
+		 */
+		inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
+			val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
+			payload?.let(op)
+		}
 	}
 
-	/**
-	 * Plots data for [label] consisting of [xs] to [ys], starting at [offset].
-	 */
-	fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
-		ImPlot.plotLine(label, xs, ys, xs.size, offset)
+	object DockSpace {
+		/**
+		 * Adds [window] to [id] dock space.
+		 * Throws [IllegalArgumentException] if [id] dock space does not exist.
+		 */
+		fun dock(id: String, window: Window) {
+			val nodeId = ImGui.getID(id)
+			if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
+
+			ImGui.dockBuilderDockWindow(window.label, nodeId)
+			ImGui.dockBuilderFinish(nodeId)
+		}
+		/**
+		 * Adds [other] to the same dock node as [window].
+		 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+		 */
+		fun dock(window: Window, other: Window) {
+			ImGui.begin(window.label)
+			val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+			ImGui.end()
+
+			val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
+			if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
+			ImGui.dockBuilderDockWindow(other.label, nodeId)
+
+			ImGui.dockBuilderFinish(nodeId)
+		}
+		/**
+		 * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
+		 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+		 */
+		fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
+			ImGui.begin(window.label)
+			val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+			ImGui.end()
+
+			val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
+
+			val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
+
+			ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
+			ImGui.dockBuilderDockWindow(other.label, otherId)
+
+			ImGui.dockBuilderFinish(nodeIdPtr.get())
+		}
 	}
 
-	/**
-	 * Plots [text] at ([x], [y]) point.
-	 * Can optionally render [vertical].
-	 */
-	fun text(text: Any, x: Double, y: Double, vertical: Boolean = false) {
-		ImPlot.plotText(text.toString(), x, y, vertical)
+	object Table {
+		/**
+		 * Runs [op] in a new table column.
+		 */
+		inline fun column(op: Op) {
+			if (ImGui.tableNextColumn()) op()
+		}
+	}
+
+	object Menu {
+		/**
+		 * Draws a menu item of [label], invoking [onClick] when it is selected.
+		 * Returns `true` when selected.
+		 */
+		inline fun menuItem(label: String, onClick: Op): Boolean {
+			val result = ImGui.menuItem(label)
+			if (result) onClick()
+			return result
+		}
+	}
+
+	object Plot {
+		/**
+		 * Runs [op] in a tooltip when [label] legend entry is hovered.
+		 */
+		inline fun legendTooltip(label: String, op: Op) {
+			if (ImPlot.isLegendEntryHovered(label)) {
+				ImGui.beginTooltip()
+				op()
+				ImGui.endTooltip()
+			}
+		}
+		/**
+		 * Runs [op] in a popup over [label] legend entry.
+		 */
+		inline fun legendPopup(label: String, button: Int = ImGuiMouseButton.Right, op: Op) {
+			if (ImPlot.beginLegendPopup(label, button)) {
+				op()
+				ImPlot.endLegendPopup()
+			}
+		}
+
+		/**
+		 * Adds a legend entry [label] without values.
+		 */
+		fun dummy(label: String) {
+			ImPlot.plotDummy(label)
+		}
+
+		/**
+		 * Plots data for [label] consisting of [xs] to [ys], starting at [offset].
+		 */
+		fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
+			ImPlot.plotLine(label, xs, ys, xs.size, offset)
+		}
+
+		/**
+		 * Plots [text] at ([x], [y]) point.
+		 * Can optionally render [vertical].
+		 */
+		fun text(text: Any, x: Double, y: Double, vertical: Boolean = false) {
+			ImPlot.plotText(text.toString(), x, y, vertical)
+		}
 	}
 }
 

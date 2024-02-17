@@ -94,7 +94,7 @@ class History(
 		tick()
 
 		plot(label, flags = ImPlotFlags.NoMenus, xFlags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time, yFlags = ImPlotAxisFlags.NoDecorations, xMin = max(0.0, current - interval), xMax = max(interval.toDouble(), current), xLimitCond = ImGuiCond.Always, width = width, height = height) {
-			ctx(this, op)
+			ctx.op()
 
 			dummy("*opts")
 			legendPopup("*opts") {
@@ -152,17 +152,6 @@ class History(
 	}
 
 	inner class CtxHistory internal constructor() {
-		lateinit var ctx: CtxPlot
-
-		/**
-		 * Opens a history context with underlying [ctx] and invokes [op].
-		 * Internal helper for [History.invoke] and should not be called manually.
-		 */
-		inline operator fun invoke(ctx: CtxPlot, op: CtxHistory.() -> Unit) {
-			this.ctx = ctx
-			op()
-		}
-
 		/**
 		 * Updates [label] with [value] at the current latest entry.
 		 * Plots a line graph of its historical values.
@@ -172,15 +161,15 @@ class History(
 
 			if (active) lineData[cursor] = value
 
-			ctx.line(label, dataX, lineData, nextCursor)
+			Ctx.Plot.line(label, dataX, lineData, nextCursor)
 		}
 
 		/**
 		 * Adds [label] legend entry, and runs [op] in a tooltip when it is hovered.
 		 */
 		inline fun legendTooltip(label: String, op: Op) {
-			ctx.dummy(label)
-			ctx.legendTooltip(label, op)
+			Ctx.Plot.dummy(label)
+			Ctx.Plot.legendTooltip(label, op)
 		}
 	}
 }
