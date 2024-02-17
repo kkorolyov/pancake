@@ -93,7 +93,7 @@ class History(
 	inline operator fun invoke(label: String, width: Float = 0f, height: Float = 0f, op: History.CtxHistory.() -> Unit) {
 		tick()
 
-		plot(label, flags = ImPlotFlags.NoMenus, xFlags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time, yFlags = ImPlotAxisFlags.NoDecorations, xMin = max(0.0, current - interval), xMax = max(interval.toDouble(), current), xLimitCond = ImGuiCond.Always, width = width, height = height) {
+		plot(label, flags = ImPlotFlags.NoMenus, xFlags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time, yFlags = ImPlotAxisFlags.NoDecorations, xMin = max(0.0, current - interval + interval / samples), xMax = max(interval.toDouble(), current), xLimitCond = ImGuiCond.Always, width = width, height = height) {
 			ctx.op()
 
 			dummy("*opts")

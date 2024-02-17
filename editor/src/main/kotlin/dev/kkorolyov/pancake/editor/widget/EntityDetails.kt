@@ -46,7 +46,7 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 	override fun invoke() {
 		list("##components") {
 			entity.forEach {
-				selectable(it::class.simpleName ?: it::class) {
+				selectable(it.debugName ?: it::class) {
 					inlineDetails.open(currentDetails.set(it))
 				}
 				contextMenu {

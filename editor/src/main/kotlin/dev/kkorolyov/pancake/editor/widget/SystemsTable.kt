@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.editor.widget
 import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.factory.getWidget
-import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.table
@@ -19,8 +18,6 @@ import kotlin.math.roundToInt
  * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [GameSystem].
  */
 class SystemsTable(private val systems: Collection<GameSystem>, private val dragDropId: String? = null) : Widget {
-	private var showHooks = false
-
 	private val current = DebouncedValue<GameSystem, Widget> { getWidget(GameSystem::class.java, it) }
 
 	private val inlineDetails = Popup("inlineDetails")
@@ -35,25 +32,23 @@ class SystemsTable(private val systems: Collection<GameSystem>, private val drag
 			ImGui.tableHeadersRow()
 
 			systems.forEach { system ->
-				val name = system::class.simpleName
+				val name = system.debugName
 
-				if (name != null || showHooks) {
+				if (name != null) {
 					column {
 						// hook systems (abstract classes most likely) have no details to show
-						name?.let {
-							selectable(it, ImGuiSelectableFlags.SpanAllColumns) {
-								inlineDetails.open(current.set(system))
+						selectable(name, ImGuiSelectableFlags.SpanAllColumns) {
+							inlineDetails.open(current.set(system))
+						}
+						dragDropId?.let { id ->
+							onDrag {
+								setDragDropPayload(system, id)
+								current.set(system)()
 							}
-							dragDropId?.let { id ->
-								onDrag {
-									setDragDropPayload(system, id)
-									current.set(system)()
-								}
-							}
-						} ?: text("hook")
+						}
 					}
 					column {
-						text(name?.let { system.joinToString { it.simpleName } } ?: "")
+						text(system.joinToString { it.simpleName })
 					}
 					column {
 						text(system.sampler.value)
@@ -66,6 +61,5 @@ class SystemsTable(private val systems: Collection<GameSystem>, private val drag
 
 			inlineDetails()
 		}
-		if (systems.any { it::class.simpleName == null }) input("show hooks", showHooks) { showHooks = it }
 	}
 }

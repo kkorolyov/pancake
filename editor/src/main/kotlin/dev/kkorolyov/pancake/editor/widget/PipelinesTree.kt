@@ -30,9 +30,9 @@ class PipelinesTree(private val pipelines: Iterable<Pipeline>, private val dragD
 			var slowestSystem = "none"
 			var slowestSystemTPS = 0L
 			history("Pipeline $pipelineI", historyWidth, historyHeight) {
-				pipeline.forEachIndexed { systemI, system ->
-					val id = system::class.simpleName ?: "hook$systemI"
-					val tps = system.sampler.value
+				pipeline.forEach {
+					val id = it.debugName
+					val tps = it.sampler.value
 
 					if (tps > slowestSystemTPS) {
 						slowestSystemTPS = tps
@@ -49,9 +49,9 @@ class PipelinesTree(private val pipelines: Iterable<Pipeline>, private val dragD
 		}
 
 		// TODO rejigger
-		pipelines.forEachIndexed { pipelineI, pipeline ->
-			tree("Pipeline $pipelineI") {
-				table("pipeline.${pipelineI}", 2, flags = ImGuiTableFlags.SizingFixedSame) {
+		pipelines.forEachIndexed { i, pipeline ->
+			tree("Pipeline $i") {
+				table("pipeline.${i}", 2, flags = ImGuiTableFlags.SizingFixedSame) {
 					column { text("Tick time (ns)") }
 					column { text(pipeline.sampler.value) }
 
@@ -59,7 +59,7 @@ class PipelinesTree(private val pipelines: Iterable<Pipeline>, private val dragD
 					column { text((1e9 / pipeline.sampler.value).roundToInt()) }
 
 					column { text("Slowest system") }
-					column { text(pipeline.maxBy { it.sampler.value }::class.simpleName ?: "some hook") }
+					column { text(pipeline.maxBy { it.sampler.value }.debugName) }
 				}
 
 				details.getOrPut(pipeline) { SystemsTable(pipeline.toList(), dragDropId) }()
