@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.editor.widget
 import dev.kkorolyov.pancake.editor.Clipper
 import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.FileAccess
+import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.contextMenu
@@ -58,7 +59,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 	override fun invoke() {
 		// leave room for controls below
-		table("entities", 4, height = -(ImGui.getTextLineHeightWithSpacing() * 1.5f), flags = ImGuiTableFlags.ScrollY) {
+		table("entities", 4, height = -Style.height(1.5), flags = ImGuiTableFlags.ScrollY) {
 			ImGui.tableSetupColumn("ID")
 			ImGui.tableSetupColumn("Components")
 			ImGui.tableSetupColumn("Alias")

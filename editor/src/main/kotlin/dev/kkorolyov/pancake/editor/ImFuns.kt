@@ -481,7 +481,7 @@ inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, di
 	val ptr = tInt
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) calcWidth("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
+	val width = if (label.startsWith("##")) Style.width("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputInt(label, ptr, step, stepFast, flags)
@@ -499,7 +499,7 @@ inline fun input(label: String, value: Double, format: String = "%.3f", step: Do
 	val ptr = tDouble
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) calcWidth("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
+	val width = if (label.startsWith("##")) Style.width("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputDouble(label, ptr, step, stepFast, format, flags)
@@ -520,7 +520,7 @@ inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: 
 	ptr[0] = value.x.toFloat()
 	ptr[1] = value.y.toFloat()
 
-	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 2 else null
+	val width = if (label.startsWith("##")) Style.width(format.format(10.0.pow(digitWidth))) * 2 else null
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputFloat2(label, ptr, format, flags)
 	width?.let { ImGui.popItemWidth() }
@@ -547,7 +547,7 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 	ptr[1] = value.y.toFloat()
 	ptr[2] = value.z.toFloat()
 
-	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 3 else null
+	val width = if (label.startsWith("##")) Style.width(format.format(10.0.pow(digitWidth))) * 3 else null
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputFloat3(label, ptr, format, flags)
 	width?.let { ImGui.popItemWidth() }
@@ -637,39 +637,37 @@ inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
 }
 
 /**
- * Returns the width of [text].
- * Ignores hidden areas of labels (i.e ##).
+ * Dynamic access to ImGUI style.
  */
-fun calcWidth(text: String): Float {
-	val ptr = tVec2
-	ImGui.calcTextSize(ptr, text)
-	return ptr.x
-}
-/**
- * Returns the total height of [n] lines of text.
- */
-fun lineHeight(n: Int): Float = ImGui.getTextLineHeightWithSpacing() * n
-/**
- * Returns the total height of [n] lines of text.
- */
-fun lineHeight(n: Double): Float = ImGui.getTextLineHeightWithSpacing() * n.toFloat()
+object Style {
+	private val style = ImGui.getStyle()
 
-/**
- * Arbitrary operation.
- */
-typealias Op = () -> Unit
-/**
- * Invoked with a changed `T` value.
- */
-typealias OnChange<T> = (T) -> Unit
-/**
- * Invoked with 2 changed `T` values.
- */
-typealias OnChange2<T> = (T, T) -> Unit
-/**
- * Invoked with 3 changed `T` values.
- */
-typealias OnChange3<T> = (T, T, T) -> Unit
+	val spacing: Spacing = Spacing()
+
+	/**
+	 * Returns the width of [text].
+	 * Ignores hidden areas of labels (i.e ##).
+	 */
+	fun width(text: String): Float {
+		val ptr = tVec2
+		ImGui.calcTextSize(ptr, text)
+		return ptr.x
+	}
+
+	/**
+	 * Returns the total height (including spacing) of [n] lines of text.
+	 */
+	fun height(n: Int): Float = ImGui.getTextLineHeightWithSpacing() * n
+	/**
+	 * Returns the total height (including spacing) of [n] lines of text.
+	 */
+	fun height(n: Double): Float = ImGui.getTextLineHeightWithSpacing() * n.toFloat()
+
+	class Spacing internal constructor() {
+		val x = style.itemSpacingX
+		val y = style.itemSpacingY
+	}
+}
 
 class CtxTable internal constructor() {
 	/**
@@ -701,3 +699,20 @@ class CtxPlot internal constructor() {
 		ImPlot.plotText(text.toString(), x, y, vertical)
 	}
 }
+
+/**
+ * Arbitrary operation.
+ */
+typealias Op = () -> Unit
+/**
+ * Invoked with a changed `T` value.
+ */
+typealias OnChange<T> = (T) -> Unit
+/**
+ * Invoked with 2 changed `T` values.
+ */
+typealias OnChange2<T> = (T, T) -> Unit
+/**
+ * Invoked with 3 changed `T` values.
+ */
+typealias OnChange3<T> = (T, T, T) -> Unit

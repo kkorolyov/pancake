@@ -1,10 +1,9 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.History
+import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.calcWidth
 import dev.kkorolyov.pancake.editor.input
-import dev.kkorolyov.pancake.editor.lineHeight
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
@@ -21,7 +20,7 @@ private val suspendLock = object {}
 class LoopDetails(private val engine: GameEngine) : Widget {
 	private val summaryTemplate = "TPS: %.2f [%.2f, %.2f]"
 	private val history = History(10, 1000)
-	private val historyWidth by lazy { calcWidth(summaryTemplate.format(100f, 100f, 100f)) }
+	private val historyWidth by lazy { -Style.spacing.x }
 	private val summary = history.summary("##main")
 
 	override fun invoke() {
@@ -35,7 +34,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 	}
 
 	private fun tps() {
-		history("##main", historyWidth, lineHeight(2)) {
+		history("##main", historyWidth, Style.height(2)) {
 			line("##main", 1e9 / engine.sampler.value)
 		}
 		text(summaryTemplate.format(summary.avg, summary.min, summary.max))

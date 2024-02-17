@@ -1,9 +1,9 @@
 package dev.kkorolyov.pancake.core.editor
 
 import dev.kkorolyov.pancake.core.component.Bounds
+import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
-import dev.kkorolyov.pancake.editor.calcWidth
 import dev.kkorolyov.pancake.editor.disabledIf
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
@@ -21,7 +21,7 @@ class BoundsComponentWidgetFactory : WidgetFactory<Component> {
 	override val type: Class<Component> = Component::class.java
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Bounds>(t) {
-		val width = calcWidth("1000.000") * 3
+		val width = Style.width("1000.000") * 3
 
 		Widget {
 			propertiesTable("bounds") {

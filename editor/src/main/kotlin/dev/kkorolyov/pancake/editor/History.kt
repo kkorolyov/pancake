@@ -95,14 +95,14 @@ class History(
 
 		plot(label, flags = ImPlotFlags.NoMenus, xFlags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time, yFlags = ImPlotAxisFlags.NoDecorations, xMin = max(0.0, current - interval), xMax = max(interval.toDouble(), current), xLimitCond = ImGuiCond.Always, width = width, height = height) {
 			ctx(this, op)
-		}
-		contextMenu("configuration") {
-			input("active", active) { active = it }
+			contextMenu("configuration") {
+				input("active", active) { active = it }
 
-			text("interval | samples")
-			dragInput("##intervalSamples", interval, samples, min = 1, max = 10000) { interval, samples ->
-				this@History.interval = interval
-				this@History.samples = samples
+				text("interval | samples")
+				dragInput("##intervalSamples", interval, samples, min = 1, max = 10000) { interval, samples ->
+					this@History.interval = interval
+					this@History.samples = samples
+				}
 			}
 		}
 	}
