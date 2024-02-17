@@ -95,7 +95,9 @@ class History(
 
 		plot(label, flags = ImPlotFlags.NoMenus, xFlags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time, yFlags = ImPlotAxisFlags.NoDecorations, xMin = max(0.0, current - interval), xMax = max(interval.toDouble(), current), xLimitCond = ImGuiCond.Always, width = width, height = height) {
 			ctx(this, op)
-			contextMenu("configuration") {
+
+			dummy("*opts")
+			legendPopup("*opts") {
 				input("active", active) { active = it }
 
 				text("interval | samples")
@@ -168,9 +170,17 @@ class History(
 		fun line(label: String, value: Double) {
 			val lineData = data.getOrPut(label) { DoubleArray(_samples) }
 
-			lineData[cursor] = value
+			if (active) lineData[cursor] = value
 
 			ctx.line(label, dataX, lineData, nextCursor)
+		}
+
+		/**
+		 * Adds [label] legend entry, and runs [op] in a tooltip when it is hovered.
+		 */
+		inline fun legendTooltip(label: String, op: Op) {
+			ctx.dummy(label)
+			ctx.legendTooltip(label, op)
 		}
 	}
 }

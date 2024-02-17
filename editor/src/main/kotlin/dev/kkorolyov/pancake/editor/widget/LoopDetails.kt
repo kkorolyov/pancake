@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.History
+import dev.kkorolyov.pancake.editor.MagFormat
 import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.input
@@ -18,13 +19,12 @@ private val suspendLock = object {}
  * Renders information about [engine]'s loop state.
  */
 class LoopDetails(private val engine: GameEngine) : Widget {
-	private val summaryTemplate = "TPS: %.2f [%.2f, %.2f]"
 	private val history = History(10, 1000)
 	private val historyWidth by lazy { -Style.spacing.x }
 	private val summary = history.summary("##main")
 
 	override fun invoke() {
-		tps()
+		graphs()
 
 		activeToggle()
 		ImGui.sameLine()
@@ -33,11 +33,35 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 		summary()
 	}
 
-	private fun tps() {
-		history("##main", historyWidth, Style.height(2)) {
+	private fun graphs() {
+		// height buffer of 4 for title + legend menu entries
+		history("TPS", historyWidth, Style.height(4)) {
 			line("##main", 1e9 / engine.sampler.value)
+
+			legendTooltip("*stats") {
+				text("%.2f [%.2f, %.2f]".format(summary.avg, summary.min, summary.max))
+			}
 		}
-		text(summaryTemplate.format(summary.avg, summary.min, summary.max))
+
+		var slowestPipeline = "none"
+		var slowestPipelineTPS = 0L
+		history("Pipelines", historyWidth, Style.height(4 + engine.count())) {
+			engine.forEachIndexed { i, pipeline ->
+				val id = "Pipeline $i"
+				val tps = pipeline.sampler.value
+
+				if (tps > slowestPipelineTPS) {
+					slowestPipelineTPS = tps
+					slowestPipeline = id
+				}
+
+				line(id, tps.toDouble())
+			}
+
+			legendTooltip("*slowest") {
+				text("%s (%s)".format(slowestPipeline, MagFormat.seconds(slowestPipelineTPS)))
+			}
+		}
 	}
 
 	private fun activeToggle() {

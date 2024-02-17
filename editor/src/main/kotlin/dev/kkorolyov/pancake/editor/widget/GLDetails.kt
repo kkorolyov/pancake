@@ -14,12 +14,6 @@ import org.lwjgl.opengl.NVXGPUMemoryInfo
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 
-private val bytesFormat = MagFormat(
-	1L shl 10 to "KiB",
-	1L shl 10 shl 10 to "MiB",
-	1L shl 10 shl 10 shl 10 to "GiB"
-)
-
 /**
  * Renders information about the current OpenGL implementation.
  */
@@ -33,9 +27,9 @@ class GLDetails : Widget {
 	private val maxUniforms = glGetInteger(GL_MAX_UNIFORM_LOCATIONS)
 
 	private val memTotal
-		get() = bytesFormat(glGetInteger(NVXGPUMemoryInfo.GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX))
+		get() = MagFormat.bytes(glGetInteger(NVXGPUMemoryInfo.GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX))
 	private val memFree
-		get() = bytesFormat(glGetInteger(NVXGPUMemoryInfo.GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX))
+		get() = MagFormat.bytes(glGetInteger(NVXGPUMemoryInfo.GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX))
 
 	private val debugLog by lazy {
 		val out = object : ByteArrayOutputStream() {

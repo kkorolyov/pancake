@@ -691,10 +691,44 @@ class CtxMenu internal constructor() {
 }
 
 class CtxPlot internal constructor() {
+	/**
+	 * Runs [op] in a tooltip when [label] legend entry is hovered.
+	 */
+	inline fun legendTooltip(label: String, op: Op) {
+		if (ImPlot.isLegendEntryHovered(label)) {
+			ImGui.beginTooltip()
+			op()
+			ImGui.endTooltip()
+		}
+	}
+	/**
+	 * Runs [op] in a popup over [label] legend entry.
+	 */
+	inline fun legendPopup(label: String, button: Int = ImGuiMouseButton.Right, op: Op) {
+		if (ImPlot.beginLegendPopup(label, button)) {
+			op()
+			ImPlot.endLegendPopup()
+		}
+	}
+
+	/**
+	 * Adds a legend entry [label] without values.
+	 */
+	fun dummy(label: String) {
+		ImPlot.plotDummy(label)
+	}
+
+	/**
+	 * Plots data for [label] consisting of [xs] to [ys], starting at [offset].
+	 */
 	fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
 		ImPlot.plotLine(label, xs, ys, xs.size, offset)
 	}
 
+	/**
+	 * Plots [text] at ([x], [y]) point.
+	 * Can optionally render [vertical].
+	 */
 	fun text(text: Any, x: Double, y: Double, vertical: Boolean = false) {
 		ImPlot.plotText(text.toString(), x, y, vertical)
 	}

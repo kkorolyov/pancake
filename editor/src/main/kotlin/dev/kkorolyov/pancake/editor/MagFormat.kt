@@ -15,4 +15,29 @@ class MagFormat(vararg val units: Pair<Long, String>) {
 		val (minVal, unit) = (units.lastOrNull { (minVal, _) -> value > minVal } ?: units.first())
 		return "%.${precision}f%s".format(value.toDouble() / minVal, unit)
 	}
+
+	companion object {
+		/**
+		 * Formatter for seconds from `ns` to `s`.
+		 */
+		val seconds by lazy {
+			MagFormat(
+				1L to "ns",
+				1e3.toLong() to "us",
+				1e6.toLong() to "ms",
+				1e9.toLong() to "s"
+			)
+		}
+
+		/**
+		 * Formatter for bytes from `B` to `GiB`.
+		 */
+		val bytes by lazy {
+			MagFormat(
+				1L shl 10 to "KiB",
+				1L shl 10 shl 10 to "MiB",
+				1L shl 10 shl 10 shl 10 to "GiB"
+			)
+		}
+	}
 }
