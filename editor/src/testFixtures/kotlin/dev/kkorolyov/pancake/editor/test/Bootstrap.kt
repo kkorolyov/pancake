@@ -35,7 +35,7 @@ private lateinit var editor: Window
 /**
  * Returns a system setting up GL context to draw frame.
  */
-fun drawStart(): GameSystem = GameSystem.hook {
+fun drawStart(): GameSystem = GameSystem.hook("drawStart") {
 	GLFW.glfwMakeContextCurrent(window)
 	glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 }
@@ -43,7 +43,7 @@ fun drawStart(): GameSystem = GameSystem.hook {
 /**
  * Returns a system swapping frame buffers and polling input events.
  */
-fun drawEnd(): GameSystem = GameSystem.hook {
+fun drawEnd(): GameSystem = GameSystem.hook("drawEnd") {
 	GLFW.glfwSwapBuffers(window)
 	GLFW.glfwPollEvents()
 }
@@ -53,7 +53,7 @@ fun drawEnd(): GameSystem = GameSystem.hook {
  */
 fun editor(engine: GameEngine): GameSystem {
 	editor = Window("Editor", Editor(engine), fullscreen = true)
-	return GameSystem.hook {
+	return GameSystem.hook("editor") {
 		container(editor)
 	}
 }

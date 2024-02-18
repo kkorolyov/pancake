@@ -12,7 +12,7 @@ import java.util.Iterator;
 /**
  * Performs work on entities matching a certain component signature.
  */
-public abstract class GameSystem implements Iterable<Class<? extends Component>> {
+public abstract class GameSystem implements Iterable<Class<? extends Component>>, Debuggable {
 	private final Collection<Class<? extends Component>> signature;
 
 	// shared resources
@@ -29,10 +29,10 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	}
 
 	/**
-	 * Returns a system that runs {@code op} once per update.
+	 * Returns a system of {@code name} that runs {@code op} once per update.
 	 * Useful for simple, pipeline-spanning hooks like setting up rendering, swapping buffers, or polling events.
 	 */
-	public static GameSystem hook(Runnable op) {
+	public static GameSystem hook(String name, Runnable op) {
 		// dummy component to avoid iterating over all entities
 		return new GameSystem(DummyComponent.class) {
 			@Override
@@ -41,6 +41,11 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 			@Override
 			protected void after(long dt) {
 				op.run();
+			}
+
+			@Override
+			public String getDebugName() {
+				return name;
 			}
 		};
 	}

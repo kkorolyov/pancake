@@ -3,19 +3,17 @@ package dev.kkorolyov.pancake.editor.widget
 import dev.kkorolyov.pancake.editor.Clipper
 import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.FileAccess
+import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
-import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.disabledIf
 import dev.kkorolyov.pancake.editor.group
 import dev.kkorolyov.pancake.editor.input
-import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.sameLine
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.separator
-import dev.kkorolyov.pancake.editor.setDragDropPayload
 import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.toStructEntity
@@ -56,49 +54,11 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 	private var toAdd = false
 	private var toRemove: Entity? = null
 
-	private val rowRenderer = Clipper<Entity> {
-		column {
-			selectable(it.id) {
-				inlineDetails.open(current.set(it))
-			}
-			contextMenu {
-				drawAddMenu { toAdd = true }
-				menuItem("destroy") { toRemove = it }
-			}
-
-			dragDropId?.let { id ->
-				onDrag {
-					setDragDropPayload(it, id)
-					current.set(it)()
-				}
-			}
-
-			focusedEntity?.let { focusedId ->
-				if (focusedId == it.id) {
-					ImGui.setScrollHereY()
-					focusedEntity = null
-				}
-			}
-		}
-
-		column {
-			text(it.size())
-		}
-
-		column {
-			input("##alias${it.id}", aliases[it] ?: "") { value -> aliases[it] = value }
-		}
-
-		column {
-			input("##select${it.id}", it in selected) { value ->
-				if (value) selected.add(it) else selected.remove(it)
-			}
-		}
-	}
+	private lateinit var rowRenderer: Clipper<Entity>
 
 	override fun invoke() {
 		// leave room for controls below
-		table("entities", 4, height = -(ImGui.getTextLineHeightWithSpacing() * 1.5f), flags = ImGuiTableFlags.ScrollY) {
+		table("entities", 4, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY) {
 			ImGui.tableSetupColumn("ID")
 			ImGui.tableSetupColumn("Components")
 			ImGui.tableSetupColumn("Alias")
@@ -106,12 +66,55 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 			ImGui.tableSetupScrollFreeze(1, 1)
 			ImGui.tableHeadersRow()
 
+			// initialize here to have a reference to the Table receiver
+			if (!::rowRenderer.isInitialized) {
+				rowRenderer = Clipper {
+					column {
+						selectable(it.id) {
+							inlineDetails.open(current.set(it))
+						}
+						contextMenu {
+							menuItem("new") { toAdd = true }
+							menuItem("destroy") { toRemove = it }
+						}
+
+						dragDropId?.let { id ->
+							onDrag {
+								setDragDropPayload(it, id)
+								current.set(it)()
+							}
+						}
+
+						focusedEntity?.let { focusedId ->
+							if (focusedId == it.id) {
+								ImGui.setScrollHereY()
+								focusedEntity = null
+							}
+						}
+					}
+
+					column {
+						text(it.size())
+					}
+
+					column {
+						input("##alias${it.id}", aliases[it] ?: "") { value -> aliases[it] = value }
+					}
+
+					column {
+						input("##select${it.id}", it in selected) { value ->
+							if (value) selected.add(it) else selected.remove(it)
+						}
+					}
+				}
+			}
+
 			rowRenderer(entities.toList())
 
 			column {
 				selectable("##empty", ImGuiSelectableFlags.SpanAllColumns) {}
 				contextMenu {
-					drawAddMenu { toAdd = true }
+					menuItem("new") { toAdd = true }
 				}
 			}
 
@@ -160,10 +163,6 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 		}
 
 		errorMsg()
-	}
-
-	private inline fun drawAddMenu(onAdd: () -> Unit) {
-		menuItem("new", onAdd)
 	}
 
 	private fun import() {

@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.graphics.gl.editor
 import dev.kkorolyov.pancake.editor.FileAccess
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
-import dev.kkorolyov.pancake.editor.column
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.sameLine

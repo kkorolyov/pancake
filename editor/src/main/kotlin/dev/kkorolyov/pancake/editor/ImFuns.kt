@@ -5,12 +5,17 @@ import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImVec2
+import imgui.extension.implot.ImPlot
+import imgui.extension.implot.flag.ImPlotAxisFlags
+import imgui.extension.implot.flag.ImPlotFlags
 import imgui.flag.ImGuiComboFlags
 import imgui.flag.ImGuiCond
 import imgui.flag.ImGuiDir
 import imgui.flag.ImGuiDragDropFlags
 import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiInputTextFlags
+import imgui.flag.ImGuiKeyModFlags
+import imgui.flag.ImGuiMouseButton
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
@@ -21,6 +26,8 @@ import imgui.type.ImBoolean
 import imgui.type.ImDouble
 import imgui.type.ImInt
 import imgui.type.ImString
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 
 // reuse the same carrier to all imgui input functions
@@ -48,61 +55,17 @@ val tVec2 by ThreadLocal.withInitial(::ImVec2)
  * Initializes [id] dock space with [setup], if it does not yet exist.
  * Otherwise, simply draws the current [id] dock space.
  */
-inline fun dockSpace(id: String, setup: Op) {
+inline fun dockSpace(id: String, setup: Ctx.DockSpace.() -> Unit) {
 	val nodeId = ImGui.getID(id)
 
 	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) {
 		ImGui.dockBuilderAddNode(nodeId, ImGuiDockNodeFlags.DockSpace)
 		ImGui.dockBuilderSetNodeSize(nodeId, ImGui.getContentRegionAvailX(), ImGui.getContentRegionAvailY())
 
-		setup()
+		Ctx.DockSpace.setup()
 	}
 
 	ImGui.dockSpace(nodeId)
-}
-/**
- * Adds [window] to [id] dock space.
- * Throws [IllegalArgumentException] if [id] dock space does not exist.
- */
-fun dock(id: String, window: Window) {
-	val nodeId = ImGui.getID(id)
-	if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
-
-	ImGui.dockBuilderDockWindow(window.label, nodeId)
-	ImGui.dockBuilderFinish(nodeId)
-}
-/**
- * Adds [other] to the same dock node as [window].
- * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
- */
-fun dock(window: Window, other: Window) {
-	ImGui.begin(window.label)
-	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
-	ImGui.end()
-
-	val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
-	if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
-	ImGui.dockBuilderDockWindow(other.label, nodeId)
-
-	ImGui.dockBuilderFinish(nodeId)
-}
-/**
- * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
- * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
- */
-fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
-	ImGui.begin(window.label)
-	val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
-	ImGui.end()
-
-	val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
-
-	val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
-
-	ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
-	ImGui.dockBuilderDockWindow(other.label, otherId)
-
-	ImGui.dockBuilderFinish(nodeIdPtr.get())
 }
 
 /**
@@ -125,10 +88,10 @@ fun tooltip(flags: Int, value: Any) {
 	if (ImGui.isItemHovered(flags)) ImGui.setTooltip(value.toString())
 }
 /**
- * Runs [op] in a tooltip when the last set item is hovered.
+ * Runs [op] in a tooltip when the last set item is hovered or [force] is `true`.
  */
-inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, op: Op) {
-	if (ImGui.isItemHovered(flags)) {
+inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, force: Boolean = false, op: Op) {
+	if (ImGui.isItemHovered(flags) || force) {
 		ImGui.beginTooltip()
 		op()
 		ImGui.endTooltip()
@@ -139,9 +102,9 @@ inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, op: Op) {
  * Runs [op] in a context menu popup over the last clicked item.
  * Accepts a manual item [id] to bind to.
  */
-inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Op) {
+inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseButtonRight, op: Ctx.Menu.() -> Unit) {
 	if (id?.let { ImGui.beginPopupContextItem(it, flags) } ?: ImGui.beginPopupContextItem(flags)) {
-		op()
+		Ctx.Menu.op()
 		ImGui.endPopup()
 	}
 }
@@ -167,12 +130,11 @@ inline fun onActive(op: Op) {
 
 /**
  * Runs [op] when the last set item is dragged.
- * [op] should include a call to [setDragDropPayload] and any calls to draw in the drag-drop preview tooltip.
  * See also: [onDrop]
  */
-inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Op) {
+inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Ctx.Drag.() -> Unit) {
 	if (ImGui.beginDragDropSource(flags)) {
-		op()
+		Ctx.Drag.op()
 		ImGui.endDragDropSource()
 	}
 }
@@ -180,26 +142,11 @@ inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Op) {
  * Runs [op] when a dragged payload is dropped on the last set item.
  * See also: [onDrag]
  */
-inline fun onDrop(op: Op) {
+inline fun onDrop(op: Ctx.Drop.() -> Unit) {
 	if (ImGui.beginDragDropTarget()) {
-		op()
+		Ctx.Drop.op()
 		ImGui.endDragDropTarget()
 	}
-}
-/**
- * Should be invoked from within an [onDrag].
- * Sets the dragged [payload], with optional unique [id] and [condition].
- */
-fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
-	id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
-}
-/**
- * Should be invoked from within an [onDrop].
- * If the current [setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
- */
-inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
-	val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
-	payload?.let(op)
 }
 
 /**
@@ -258,17 +205,11 @@ inline fun tabItem(label: String, op: Op) {
 /**
  * Runs [op] in a table with [id], [flags] and [columns].
  */
-inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: Op) {
+inline fun table(id: String, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImGuiTableFlags.None, op: Ctx.Table.() -> Unit) {
 	if (ImGui.beginTable(id, columns, flags, width, height)) {
-		op()
+		Ctx.Table.op()
 		ImGui.endTable()
 	}
-}
-/**
- * Runs [op] in a new table column.
- */
-inline fun column(op: Op) {
-	if (ImGui.tableNextColumn()) op()
 }
 
 /**
@@ -293,20 +234,77 @@ inline fun indented(op: Op) {
 /**
  * Invokes [op] within a menu of [label].
  */
-inline fun menu(label: String, op: Op) {
+inline fun menu(label: String, op: Ctx.Menu.() -> Unit) {
 	if (ImGui.beginMenu(label)) {
-		op()
+		Ctx.Menu.op()
 		ImGui.endMenu()
 	}
 }
+
 /**
- * Draws a menu item of [label], invoking [onClick] when it is selected.
- * Returns `true` when selected.
+ * Invokes [op] within a plot of [label].
  */
-inline fun menuItem(label: String, onClick: Op): Boolean {
-	val result = ImGui.menuItem(label)
-	if (result) onClick()
-	return result
+inline fun plot(
+	label: String,
+	xLabel: String? = null,
+	yLabel: String? = null,
+	width: Float = 0f,
+	height: Float = 0f,
+	flags: Int = ImPlotFlags.None,
+	xFlags: Int = ImPlotAxisFlags.None,
+	yFlags: Int = ImPlotAxisFlags.None,
+	xMin: Double? = null,
+	xMax: Double? = null,
+	xLimitCond: Int = ImGuiCond.None,
+	yMin: Double? = null,
+	yMax: Double? = null,
+	yLimitCond: Int = ImGuiCond.None,
+	xFormat: String? = null,
+	yFormat: String? = null,
+	op: Ctx.Plot.() -> Unit
+) {
+	val fullXFlags = xFlags or if (xLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
+	val fullYFlags = yFlags or if (yLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
+
+	val noPaddingFlags = ImPlotAxisFlags.NoLabel or ImPlotAxisFlags.NoTickLabels
+	val noXPadding = fullYFlags and noPaddingFlags == noPaddingFlags
+	val noYPadding = fullXFlags and noPaddingFlags == noPaddingFlags
+
+	if (noXPadding || noYPadding) {
+		// manual idx because java bindings wrong
+		ImPlot.pushStyleVar(17, tVec2.apply {
+			x = if (noXPadding) 0f else ImPlot.getStyle().plotPadding.x
+			y = if (noYPadding) 0f else ImPlot.getStyle().plotPadding.y
+		})
+	}
+
+	if (xMin != null && xMax != null) ImPlot.setNextPlotLimitsX(xMin, xMax, xLimitCond)
+	if (yMin != null && yMax != null) ImPlot.setNextPlotLimitsY(yMin, yMax, yLimitCond)
+
+	xFormat?.let(ImPlot::setNextPlotFormatX)
+	yFormat?.let(ImPlot::setNextPlotFormatY)
+
+	if (
+		ImPlot.beginPlot(
+			label,
+			xLabel ?: "",
+			yLabel ?: "",
+			tVec2.apply {
+				x = width
+				y = height
+			},
+			flags,
+			fullXFlags,
+			fullYFlags
+		)
+	) {
+		Ctx.Plot.op()
+		ImPlot.endPlot()
+	}
+
+	if (noXPadding || noYPadding) {
+		ImPlot.popStyleVar()
+	}
 }
 
 /**
@@ -418,7 +416,7 @@ inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, di
 	val ptr = tInt
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) calcWidth("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
+	val width = if (label.startsWith("##")) Layout.textWidth("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputInt(label, ptr, step, stepFast, flags)
@@ -436,7 +434,7 @@ inline fun input(label: String, value: Double, format: String = "%.3f", step: Do
 	val ptr = tDouble
 	ptr.set(value)
 
-	val width = if (label.startsWith("##")) calcWidth("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
+	val width = if (label.startsWith("##")) Layout.textWidth("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
 
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputDouble(label, ptr, step, stepFast, format, flags)
@@ -457,7 +455,7 @@ inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: 
 	ptr[0] = value.x.toFloat()
 	ptr[1] = value.y.toFloat()
 
-	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 2 else null
+	val width = if (label.startsWith("##")) Layout.textWidth(format.format(10.0.pow(digitWidth))) * 2 else null
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputFloat2(label, ptr, format, flags)
 	width?.let { ImGui.popItemWidth() }
@@ -484,7 +482,7 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 	ptr[1] = value.y.toFloat()
 	ptr[2] = value.z.toFloat()
 
-	val width = if (label.startsWith("##")) calcWidth(format.format(10.0.pow(digitWidth))) * 3 else null
+	val width = if (label.startsWith("##")) Layout.textWidth(format.format(10.0.pow(digitWidth))) * 3 else null
 	width?.let(ImGui::pushItemWidth)
 	val result = ImGui.inputFloat3(label, ptr, format, flags)
 	width?.let { ImGui.popItemWidth() }
@@ -497,6 +495,40 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 
 		onChange(returnPtr)
 	}
+	return result
+}
+
+/**
+ * Draws a drag input for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange<Int> = { }): Boolean {
+	val ptr = intArrayOf(value)
+
+	val result = ImGui.dragInt(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	if (result) onChange(max(min, min(max, ptr[0])))
+	return result
+}
+/**
+ * Draws a drag input for [value] and [value1], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Int, value1: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange2<Int> = { _, _ -> }): Boolean {
+	val ptr = intArrayOf(value, value1)
+
+	val result = ImGui.dragInt2(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])))
+	return result
+}
+/**
+ * Draws a drag input for [value], [value1], and [value2], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Int, value1: Int, value2: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange3<Int> = { _, _, _ -> }): Boolean {
+	val ptr = intArrayOf(value, value1, value2)
+
+	val result = ImGui.dragInt3(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])), max(min, min(max, ptr[2])))
 	return result
 }
 
@@ -521,23 +553,284 @@ inline fun onKey(key: Int, op: Op): Boolean {
 }
 
 /**
- * Runs [op] when mouse [button] is double-click.
+ * Runs [op] when mouse [button] is clicked.
  * Returns `true` when double-clicked.
  */
-inline fun onDoubleClick(button: Int, op: Op): Boolean {
+inline fun onClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
+	val result = ImGui.isMouseClicked(button)
+	if (result) op()
+	return result
+}
+/**
+ * Runs [op] when mouse [button] is double-clicked.
+ * Returns `true` when double-clicked.
+ */
+inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
 	val result = ImGui.isMouseDoubleClicked(button)
 	if (result) op()
 	return result
 }
 
 /**
- * Returns the width of [text].
- * Ignores hidden areas of labels (i.e ##).
+ * Layout options and helpers
  */
-fun calcWidth(text: String): Float {
-	val ptr = tVec2
-	ImGui.calcTextSize(ptr, text)
-	return ptr.x
+object Layout {
+	/**
+	 * Remaining available content space starting from the current cursor.
+	 */
+	val free: Free = Free()
+
+	/**
+	 * Returns the total height (including spacing) of [n] lines of text.
+	 */
+	fun lineHeight(n: Int): Float = ImGui.getTextLineHeightWithSpacing() * n
+	/**
+	 * Returns the total height (including spacing) of [n] lines of text.
+	 */
+	fun lineHeight(n: Double): Float = ImGui.getTextLineHeightWithSpacing() * n.toFloat()
+
+	/**
+	 * Returns the width of [text].
+	 * Ignores hidden areas of labels (i.e ##).
+	 */
+	fun textWidth(text: String): Float {
+		val ptr = tVec2
+		ImGui.calcTextSize(ptr, text)
+		return ptr.x
+	}
+
+	class Free internal constructor() {
+		val x: Float
+			get() = ImGui.getContentRegionAvailX()
+		val y: Float
+			get() = ImGui.getContentRegionAvailY()
+	}
+}
+
+/**
+ * Current style configuration.
+ */
+object Style {
+	private val style = ImGui.getStyle()
+
+	/**
+	 * Spacing style configuration.
+	 */
+	val spacing: Spacing = Spacing()
+
+	class Spacing internal constructor() {
+		val x by style::itemSpacingX
+		val y by style::itemSpacingY
+	}
+}
+
+object Ctx {
+	object Drag {
+		/**
+		 * Sets the dragged [payload], with optional unique [id] and [condition].
+		 */
+		fun setDragDropPayload(payload: Any, id: String? = null, condition: Int = ImGuiCond.None) {
+			id?.let { ImGui.setDragDropPayload(it, payload, condition) } ?: ImGui.setDragDropPayload(payload, condition)
+		}
+	}
+
+	object Drop {
+		/**
+		 * If the current [Drag.setDragDropPayload] payload is a [T] (and optionally also matches unique [id]), invokes [op] with it.
+		 */
+		inline fun <reified T> useDragDropPayload(id: String? = null, flags: Int = ImGuiCond.None, op: (T) -> Unit) {
+			val payload = id?.let { ImGui.acceptDragDropPayload(it, flags) } ?: ImGui.acceptDragDropPayload(T::class.java, flags)
+			payload?.let(op)
+		}
+	}
+
+	object DockSpace {
+		/**
+		 * Adds [window] to [id] dock space.
+		 * Throws [IllegalArgumentException] if [id] dock space does not exist.
+		 */
+		fun dock(id: String, window: Window) {
+			val nodeId = ImGui.getID(id)
+			if (ImGui.dockBuilderGetNode(nodeId).isNotValidPtr) throw IllegalArgumentException("no such dock space [$id]")
+
+			ImGui.dockBuilderDockWindow(window.label, nodeId)
+			ImGui.dockBuilderFinish(nodeId)
+		}
+		/**
+		 * Adds [other] to the same dock node as [window].
+		 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+		 */
+		fun dock(window: Window, other: Window) {
+			ImGui.begin(window.label)
+			val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+			ImGui.end()
+
+			val nodeId = if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode()
+			if (nodePtr.isNotValidPtr) ImGui.dockBuilderDockWindow(window.label, nodeId)
+			ImGui.dockBuilderDockWindow(other.label, nodeId)
+
+			ImGui.dockBuilderFinish(nodeId)
+		}
+		/**
+		 * Splits [window] dock node to accommodate [other] in [direction] with [ratio] of original space.
+		 * If [window] is not currently docked, creates a new floating dock space encompassing both [window] and [other].
+		 */
+		fun dock(window: Window, other: Window, direction: Int = ImGuiDir.None, ratio: Float) {
+			ImGui.begin(window.label)
+			val nodePtr = ImGui.dockBuilderGetNode(ImGui.getWindowDockID())
+			ImGui.end()
+
+			val nodeIdPtr = ImInt(if (nodePtr.isValidPtr) nodePtr.id else ImGui.dockBuilderAddNode())
+
+			val otherId = ImGui.dockBuilderSplitNode(nodeIdPtr.get(), direction, ratio, null, nodeIdPtr)
+
+			ImGui.dockBuilderDockWindow(window.label, nodeIdPtr.get())
+			ImGui.dockBuilderDockWindow(other.label, otherId)
+
+			ImGui.dockBuilderFinish(nodeIdPtr.get())
+		}
+	}
+
+	object Table {
+		/**
+		 * Runs [op] in a new table column.
+		 */
+		inline fun column(op: Op) {
+			if (ImGui.tableNextColumn()) op()
+		}
+	}
+
+	object Menu {
+		/**
+		 * Draws a menu item of [label], invoking [onClick] when it is selected.
+		 * Returns `true` when selected.
+		 */
+		inline fun menuItem(label: String, onClick: Op): Boolean {
+			val result = ImGui.menuItem(label)
+			if (result) onClick()
+			return result
+		}
+	}
+
+	open class PlotModifier {
+		/**
+		 * Runs [op] in a tooltip when [label] legend entry is hovered.
+		 */
+		inline fun legendTooltip(label: String, op: Op) {
+			if (ImPlot.isLegendEntryHovered(label) && !ImGui.isAnyMouseDown()) {
+				ImGui.beginTooltip()
+				op()
+				ImGui.endTooltip()
+			}
+		}
+		/**
+		 * Runs [op] in a popup over [label] legend entry.
+		 */
+		inline fun legendPopup(label: String, button: Int = ImGuiMouseButton.Right, op: Op) {
+			if (ImPlot.beginLegendPopup(label, button)) {
+				op()
+				ImPlot.endLegendPopup()
+			}
+		}
+
+		/**
+		 * Runs [op] when the plot area is dragged while holding [keyMods].
+		 */
+		inline fun onDragPlot(keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSource(keyMods, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+		/**
+		 * Runs [op] when the x-axis is dragged while holding [keyMods].
+		 */
+		inline fun onDragX(keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourceX(keyMods, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+		/**
+		 * Runs [op] when the [n]th y-axis is dragged while holding [keyMods].
+		 */
+		inline fun onDragY(n: Int = 0, keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourceY(n, keyMods, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+		/**
+		 * Runs [op] when [label] legend entry is dragged.
+		 */
+		inline fun onDragLegend(label: String, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourceItem(label, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+
+		/**
+		 * Runs [op] when a dragged payload is dropped on the plot area.
+		 */
+		inline fun onDropPlot(op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTarget()) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+		/**
+		 * Runs [op] when a dragged payload is dropped on the x-axis.
+		 */
+		inline fun onDropX(op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTargetX()) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+		/**
+		 * Runs [op] when a dragged payload is dropped on the [n]th y-axis.
+		 */
+		inline fun onDropY(n: Int = 0, op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTargetY(n)) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+		/**
+		 * Runs [op] when a dragged payload is dropped on the legend.
+		 */
+		inline fun onDropLegend(op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTargetLegend()) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+
+		/**
+		 * Adds a legend entry [label] without values.
+		 */
+		fun dummy(label: String) {
+			ImPlot.plotDummy(label)
+		}
+	}
+
+	object Plot : PlotModifier() {
+		/**
+		 * Plots data for [label] consisting of [xs] to [ys], starting at [offset].
+		 */
+		fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
+			ImPlot.plotLine(label, xs, ys, xs.size, offset)
+		}
+
+		/**
+		 * Plots [text] at ([x], [y]) point.
+		 * Can optionally render [vertical].
+		 */
+		fun text(text: Any, x: Double, y: Double, vertical: Boolean = false) {
+			ImPlot.plotText(text.toString(), x, y, vertical)
+		}
+	}
 }
 
 /**
@@ -548,3 +841,11 @@ typealias Op = () -> Unit
  * Invoked with a changed `T` value.
  */
 typealias OnChange<T> = (T) -> Unit
+/**
+ * Invoked with 2 changed `T` values.
+ */
+typealias OnChange2<T> = (T, T) -> Unit
+/**
+ * Invoked with 3 changed `T` values.
+ */
+typealias OnChange3<T> = (T, T, T) -> Unit

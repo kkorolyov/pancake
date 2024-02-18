@@ -8,7 +8,6 @@ import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
-import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.widget.Modal
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Component

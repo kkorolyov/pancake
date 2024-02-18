@@ -4,14 +4,13 @@ import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.contextMenu
+import dev.kkorolyov.pancake.editor.data.OwnedComponent
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.menu
-import dev.kkorolyov.pancake.editor.menuItem
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
-import dev.kkorolyov.pancake.editor.setDragDropPayload
 import dev.kkorolyov.pancake.editor.toStructEntity
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
@@ -30,10 +29,11 @@ private val componentTypes by ThreadLocal.withInitial {
 
 /**
  * Displays and provides for modification of [entity] properties.
- * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [Component].
+ * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [OwnedComponent].
  */
 class EntityDetails(private val entity: Entity, private val dragDropId: String? = null) : Widget {
-	private val current = DebouncedValue<Component, Widget> { getWidget(Component::class.java, it) }
+	private val currentDetails = DebouncedValue<Component, Widget> { getWidget(Component::class.java, it) }
+	private val currentDragPayload = DebouncedValue<Component, OwnedComponent> { OwnedComponent(entity, it) }
 
 	private val inlineDetails = Popup("inlineDetails")
 
@@ -46,8 +46,8 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 	override fun invoke() {
 		list("##components") {
 			entity.forEach {
-				selectable(it::class.simpleName ?: it::class) {
-					inlineDetails.open(current.set(it))
+				selectable(it.debugName ?: it::class) {
+					inlineDetails.open(currentDetails.set(it))
 				}
 				contextMenu {
 					drawAddMenu()
@@ -58,8 +58,8 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 
 				dragDropId?.let { id ->
 					onDrag {
-						setDragDropPayload(it, id)
-						current.set(it)()
+						setDragDropPayload(currentDragPayload.set(it), id)
+						currentDetails.set(it)()
 					}
 				}
 			}

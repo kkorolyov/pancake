@@ -2,17 +2,19 @@ package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.child
-import dev.kkorolyov.pancake.editor.dock
+import dev.kkorolyov.pancake.editor.data.OwnedComponent
 import dev.kkorolyov.pancake.editor.dockSpace
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.onDrop
-import dev.kkorolyov.pancake.editor.useDragDropPayload
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
+import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.flag.ImGuiDir
 import imgui.type.ImBoolean
+
+private val windowMin = Vector2.of(128.0, 128.0)
 
 /**
  * Renders the overall editor view for a [GameEngine].
@@ -31,10 +33,10 @@ class Editor(
 
 	private val systemManifest = WindowManifest<GameSystem>()
 	private val entityManifest = WindowManifest<Entity>()
-	private val componentManifest = WindowManifest<Component>()
+	private val componentManifest = WindowManifest<OwnedComponent>()
 
 	private val loop = Window("GameLoop", withDropHandlers(LoopDetails(engine)), subVisible)
-	private val pipelines = Window("Pipelines", withDropHandlers(PipelinesTree(engine.toList(), systemDragDropId)), subVisible)
+	private val pipelines = Window("Pipelines", withDropHandlers(PipelinesList(engine, systemDragDropId)), subVisible)
 	private val entities = Window("Entities", withDropHandlers(EntitiesTable(engine.entities, entityDragDropId)), subVisible)
 	private val gl = Window("OpenGL", withDropHandlers(GLDetails()), subVisible)
 
@@ -74,13 +76,14 @@ class Editor(
 	private fun drawDropHandlers() {
 		onDrop {
 			useDragDropPayload<GameSystem>(systemDragDropId) {
-				systemManifest[it] = { Window(it::class.simpleName ?: "GameSystem", withDropHandlers(getWidget(GameSystem::class.java, it)), openAt = OpenAt.Cursor) }
+				systemManifest[it] = { Window(it.debugName, withDropHandlers(getWidget(GameSystem::class.java, it)), size = windowMin, openAt = OpenAt.Cursor) }
 			}
 			useDragDropPayload<Entity>(entityDragDropId) {
-				entityManifest[it] = { Window("Entity ${it.id}", withDropHandlers(EntityDetails(it, componentDragDropId)), openAt = OpenAt.Cursor) }
+				entityManifest[it] = { Window("Entity ${it.id}", withDropHandlers(EntityDetails(it, componentDragDropId)), size = windowMin, openAt = OpenAt.Cursor) }
 			}
-			useDragDropPayload<Component>(componentDragDropId) {
-				componentManifest[it] = { Window("Component: ${it::class.simpleName}", withDropHandlers(getWidget(Component::class.java, it)), openAt = OpenAt.Cursor) }
+			useDragDropPayload<OwnedComponent>(componentDragDropId) {
+				val (entity, component) = it
+				componentManifest[it] = { Window("${entity.id}.${component.debugName}", withDropHandlers(getWidget(Component::class.java, component)), size = windowMin, openAt = OpenAt.Cursor) }
 			}
 		}
 	}
