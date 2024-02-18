@@ -1,14 +1,16 @@
 package dev.kkorolyov.pancake.editor.factory
 
+import dev.kkorolyov.pancake.editor.History
+import dev.kkorolyov.pancake.editor.Layout
+import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
-import dev.kkorolyov.pancake.editor.table
+import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.platform.GameSystem
-import imgui.flag.ImGuiTableFlags
 import java.util.ServiceLoader
-import kotlin.math.roundToInt
+import kotlin.math.max
 
 private val factories by ThreadLocal.withInitial { ServiceLoader.load(WidgetFactory::class.java).groupBy(WidgetFactory<*>::type) }
 private val noop by lazy { Widget {} }
@@ -16,20 +18,22 @@ private val noop by lazy { Widget {} }
 /**
  * Returns a widget displaying basic data (data common to all systems) of [system].
  */
-fun basicGameSystemWidget(system: GameSystem): Widget = Widget {
-	table("gameSystem", 2, flags = ImGuiTableFlags.SizingStretchProp) {
-		column { text("Tick time (ns)") }
-		column { text(system.sampler.value) }
+fun basicGameSystemWidget(system: GameSystem): Widget {
+	val history = History(10, 1000)
+	val summary = history.summary("##main")
 
-		column { text("TPS") }
-		column { text((1e9 / system.sampler.value).roundToInt()) }
+	return Widget {
+		history("Tick time", max(128f, Layout.free.x - Style.spacing.x), Layout.free.y / 2) {
+			line("##main", system.sampler.value.toDouble())
 
-		column { text("Signature") }
-		column {
-			list("##signature") {
-				system.forEach {
-					text(it.simpleName)
-				}
+			dummy("*stats")
+			legendTooltip("*stats") {
+				text("%.2f [%.2f, %.2f]".format(summary.avg, summary.min, summary.max))
+			}
+		}
+		list("##signature", -Style.spacing.x, Layout.free.y) {
+			system.forEach {
+				selectable(it.simpleName) {}
 			}
 		}
 	}

@@ -49,23 +49,23 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 		}
 
 		var slowestPipeline = "none"
-		var slowestPipelineTPS = 0L
+		var slowestPipelineTime = 0L
 		history("Pipelines", historyWidth, max(minY, yFree / 2)) {
 			engine.forEachIndexed { i, pipeline ->
 				val id = "Pipeline $i"
-				val tps = pipeline.sampler.value
+				val tickTime = pipeline.sampler.value
 
-				if (tps > slowestPipelineTPS) {
-					slowestPipelineTPS = tps
+				if (tickTime > slowestPipelineTime) {
+					slowestPipelineTime = tickTime
 					slowestPipeline = id
 				}
 
-				line(id, tps.toDouble())
+				line(id, tickTime.toDouble())
 			}
 
 			dummy("*slowest")
 			legendTooltip("*slowest") {
-				text("%s (%s)".format(slowestPipeline, MagFormat.seconds(slowestPipelineTPS)))
+				text("%s (%s)".format(slowestPipeline, MagFormat.seconds(slowestPipelineTime)))
 			}
 		}
 	}

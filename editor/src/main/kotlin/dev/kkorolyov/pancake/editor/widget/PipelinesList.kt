@@ -8,6 +8,7 @@ import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.text
+import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.Pipeline
 import kotlin.math.max
@@ -20,29 +21,33 @@ class PipelinesList(private val pipelines: Iterable<Pipeline>, private val dragD
 	private val history = History(10, 1000)
 	private val historyWidth by lazy { -Style.spacing.x }
 
-	private val currentSystem = DebouncedValue<GameSystem, Widget> { getWidget(GameSystem::class.java, it) }
+	private val draggingSystem = DebouncedValue<GameSystem, Widget> { getWidget(GameSystem::class.java, it) }
 
 	override fun invoke() {
+		var dragging = false
+
 		val historyHeight = max(Layout.lineHeight(4), Layout.free.y / 5)
 		pipelines.forEachIndexed { i, pipeline ->
 			var slowestSystem = "none"
-			var slowestSystemTPS = 0L
+			var slowestSystemTime = 0L
 			history("Pipeline $i", historyWidth, historyHeight) {
 				pipeline.forEach { system ->
 					val id = system.debugName
-					val tps = system.sampler.value
+					val tickTime = system.sampler.value
 
-					if (tps > slowestSystemTPS) {
-						slowestSystemTPS = tps
+					if (tickTime > slowestSystemTime) {
+						slowestSystemTime = tickTime
 						slowestSystem = id
 					}
 
-					line(id, tps.toDouble())
+					line(id, tickTime.toDouble())
 
 					dragDropId?.let { ddId ->
 						onDragLegend(id) {
 							setDragDropPayload(system, ddId)
-							currentSystem.set(system)()
+							// set here, but render later
+							draggingSystem.set(system)
+							dragging = true
 						}
 					}
 
@@ -53,10 +58,18 @@ class PipelinesList(private val pipelines: Iterable<Pipeline>, private val dragD
 
 				dummy("*slowest")
 				legendTooltip("*slowest") {
-					text("%s (%s)".format(slowestSystem, MagFormat.seconds(slowestSystemTPS)))
+					text("%s (%s)".format(slowestSystem, MagFormat.seconds(slowestSystemTime)))
+				}
+			}
+		}
+
+		// manually render drag source after everything - to avoid issues with nesting calls inside a plot context
+		if (dragging) {
+			draggingSystem.get()?.let {
+				tooltip(force = true) {
+					it()
 				}
 			}
 		}
 	}
 }
-

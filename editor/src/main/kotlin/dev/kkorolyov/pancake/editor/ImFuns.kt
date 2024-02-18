@@ -88,10 +88,10 @@ fun tooltip(flags: Int, value: Any) {
 	if (ImGui.isItemHovered(flags)) ImGui.setTooltip(value.toString())
 }
 /**
- * Runs [op] in a tooltip when the last set item is hovered.
+ * Runs [op] in a tooltip when the last set item is hovered or [force] is `true`.
  */
-inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, op: Op) {
-	if (ImGui.isItemHovered(flags)) {
+inline fun tooltip(flags: Int = ImGuiHoveredFlags.None, force: Boolean = false, op: Op) {
+	if (ImGui.isItemHovered(flags) || force) {
 		ImGui.beginTooltip()
 		op()
 		ImGui.endTooltip()
@@ -717,7 +717,7 @@ object Ctx {
 		 * Runs [op] in a tooltip when [label] legend entry is hovered.
 		 */
 		inline fun legendTooltip(label: String, op: Op) {
-			if (ImPlot.isLegendEntryHovered(label)) {
+			if (ImPlot.isLegendEntryHovered(label) && !ImGui.isAnyMouseDown()) {
 				ImGui.beginTooltip()
 				op()
 				ImGui.endTooltip()
