@@ -33,7 +33,7 @@ class Editor(
 	private val componentManifest = WindowManifest<OwnedComponent>()
 
 	private val loop = Window("GameLoop", withDropHandlers(LoopDetails(engine)), subVisible)
-	private val pipelines = Window("Pipelines", withDropHandlers(PipelinesTree(engine, systemDragDropId)), subVisible)
+	private val pipelines = Window("Pipelines", withDropHandlers(PipelinesList(engine, systemDragDropId)), subVisible)
 	private val entities = Window("Entities", withDropHandlers(EntitiesTable(engine.entities, entityDragDropId)), subVisible)
 	private val gl = Window("OpenGL", withDropHandlers(GLDetails()), subVisible)
 

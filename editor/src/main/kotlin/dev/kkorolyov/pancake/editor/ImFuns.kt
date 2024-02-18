@@ -14,6 +14,7 @@ import imgui.flag.ImGuiDir
 import imgui.flag.ImGuiDragDropFlags
 import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiInputTextFlags
+import imgui.flag.ImGuiKeyModFlags
 import imgui.flag.ImGuiMouseButton
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
@@ -129,7 +130,6 @@ inline fun onActive(op: Op) {
 
 /**
  * Runs [op] when the last set item is dragged.
- * [op] should include a call to [setDragDropPayload] and any calls to draw in the drag-drop preview tooltip.
  * See also: [onDrop]
  */
 inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Ctx.Drag.() -> Unit) {
@@ -712,7 +712,7 @@ object Ctx {
 		}
 	}
 
-	object Plot {
+	open class PlotModifier {
 		/**
 		 * Runs [op] in a tooltip when [label] legend entry is hovered.
 		 */
@@ -734,12 +734,88 @@ object Ctx {
 		}
 
 		/**
+		 * Runs [op] when the plot area is dragged while holding [keyMods].
+		 */
+		inline fun onDragPlot(keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSource(keyMods, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+		/**
+		 * Runs [op] when the x-axis is dragged while holding [keyMods].
+		 */
+		inline fun onDragX(keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourceX(keyMods, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+		/**
+		 * Runs [op] when the [n]th y-axis is dragged while holding [keyMods].
+		 */
+		inline fun onDragY(n: Int = 0, keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourceY(n, keyMods, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+		/**
+		 * Runs [op] when [label] legend entry is dragged.
+		 */
+		inline fun onDragLegend(label: String, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourceItem(label, flags)) {
+				Drag.op()
+				ImPlot.endDragDropSource()
+			}
+		}
+
+		/**
+		 * Runs [op] when a dragged payload is dropped on the plot area.
+		 */
+		inline fun onDropPlot(op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTarget()) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+		/**
+		 * Runs [op] when a dragged payload is dropped on the x-axis.
+		 */
+		inline fun onDropX(op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTargetX()) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+		/**
+		 * Runs [op] when a dragged payload is dropped on the [n]th y-axis.
+		 */
+		inline fun onDropY(n: Int = 0, op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTargetY(n)) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+		/**
+		 * Runs [op] when a dragged payload is dropped on the legend.
+		 */
+		inline fun onDropLegend(op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTargetLegend()) {
+				Drop.op()
+				ImPlot.endDragDropTarget()
+			}
+		}
+
+		/**
 		 * Adds a legend entry [label] without values.
 		 */
 		fun dummy(label: String) {
 			ImPlot.plotDummy(label)
 		}
+	}
 
+	object Plot : PlotModifier() {
 		/**
 		 * Plots data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */

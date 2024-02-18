@@ -29,7 +29,7 @@ private val componentTypes by ThreadLocal.withInitial {
 
 /**
  * Displays and provides for modification of [entity] properties.
- * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [Component].
+ * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [OwnedComponent].
  */
 class EntityDetails(private val entity: Entity, private val dragDropId: String? = null) : Widget {
 	private val currentDetails = DebouncedValue<Component, Widget> { getWidget(Component::class.java, it) }

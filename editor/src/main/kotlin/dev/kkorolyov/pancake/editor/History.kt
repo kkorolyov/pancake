@@ -151,7 +151,7 @@ class History(
 			get() = data[id]?.average() ?: 0.0
 	}
 
-	inner class CtxHistory internal constructor() {
+	inner class CtxHistory internal constructor() : Ctx.PlotModifier() {
 		/**
 		 * Updates [label] with [value] at the current latest entry.
 		 * Plots a line graph of its historical values.
@@ -162,14 +162,6 @@ class History(
 			if (active) lineData[cursor] = value
 
 			Ctx.Plot.line(label, dataX, lineData, nextCursor)
-		}
-
-		/**
-		 * Adds [label] legend entry, and runs [op] in a tooltip when it is hovered.
-		 */
-		inline fun legendTooltip(label: String, op: Op) {
-			Ctx.Plot.dummy(label)
-			Ctx.Plot.legendTooltip(label, op)
 		}
 	}
 }

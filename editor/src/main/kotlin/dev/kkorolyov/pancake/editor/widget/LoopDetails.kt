@@ -42,6 +42,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 		history("TPS", historyWidth, max(minY, yFree / 5)) {
 			line("##main", 1e9 / engine.sampler.value)
 
+			dummy("*stats")
 			legendTooltip("*stats") {
 				text("%.2f [%.2f, %.2f]".format(summary.avg, summary.min, summary.max))
 			}
@@ -62,6 +63,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 				line(id, tps.toDouble())
 			}
 
+			dummy("*slowest")
 			legendTooltip("*slowest") {
 				text("%s (%s)".format(slowestPipeline, MagFormat.seconds(slowestPipelineTPS)))
 			}
