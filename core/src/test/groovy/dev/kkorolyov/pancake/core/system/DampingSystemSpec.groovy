@@ -22,12 +22,15 @@ class DampingSystemSpec extends Specification {
 	long dt = 1
 
 	EntityPool entities = new EntityPool()
-	Damping damping = new Damping(value)
+	Damping damping = new Damping(value, value)
 	DampingSystem system = new DampingSystem()
 
 	def "damps when force zero"() {
-		Velocity velocity = new Velocity(Vector3.of(1, 1, 1))
-		Force force = new Force(Vector3.of(0, 0, 0))
+		Velocity velocity = new Velocity().with {
+			it.linear.set(Vector3.of(1, 1, 1))
+			it
+		}
+		Force force = new Force()
 		Entity entity = entities.create()
 		entity.put(damping, velocity, force)
 
@@ -38,8 +41,14 @@ class DampingSystemSpec extends Specification {
 		velocity.linear == value
 	}
 	def "damps where force opposite sign of velocity"() {
-		Velocity velocity = new Velocity(velocityV)
-		Force force = new Force(forceV)
+		Velocity velocity = new Velocity().with {
+			it.linear.set(velocityV)
+			it
+		}
+		Force force = new Force().with {
+			it.value.set(forceV)
+			it
+		}
 		Entity entity = entities.create()
 		entity.put(damping, velocity, force)
 
@@ -54,8 +63,14 @@ class DampingSystemSpec extends Specification {
 		forceV << [Vector3.of(-micro, micro, micro), Vector3.of(micro, -micro, micro), Vector3.of(micro, micro, -micro)]
 	}
 	def "does not damp where force non-zero and same sign as velocity"() {
-		Velocity velocity = new Velocity(velocityV)
-		Force force = new Force(forceV)
+		Velocity velocity = new Velocity().with {
+			it.linear.set(velocityV)
+			it
+		}
+		Force force = new Force().with {
+			it.value.set(forceV)
+			it
+		}
 		Entity entity = entities.create()
 		entity.put(damping, velocity, force)
 

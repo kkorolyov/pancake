@@ -49,7 +49,7 @@ public class ComponentStructizer implements Structizer {
 						Structizer.select(Correctable.class, t -> t.getPriority()),
 						Structizer.select(Mass.class, t -> t.getValue()),
 						Structizer.select(VelocityLimit.class, t -> Arrays.asList(t.getLinear(), t.getAngular())),
-						Structizer.select(Damping.class, t -> Structizers.toStruct(t.getLinear())),
+						Structizer.select(Damping.class, t -> Arrays.asList(Structizers.toStruct(t.getLinear()), Structizers.toStruct(t.getAngular()))),
 						Structizer.select(Force.class, t -> Arrays.asList(Structizers.toStruct(t.getValue()), Structizers.toStruct(t.getOffset()))),
 						Structizer.select(Transform.class, t -> Map.of(
 								"translation", Structizers.toStruct(t.getTranslation()),

@@ -235,7 +235,7 @@ class ComponentStructizerSpec extends Specification {
 
 	def "toStructs Damping"() {
 		expect:
-		structizer.toStruct(new Damping(Vector3.of(x, y, z))) == Optional.of([x.doubleValue(), y.doubleValue(), z.doubleValue()])
+		structizer.toStruct(new Damping(Vector3.of(x, y, z), Vector3.of(z, y, x))) == Optional.of([[x.doubleValue(), y.doubleValue(), z.doubleValue()], [z.doubleValue(), y.doubleValue(), x.doubleValue()]])
 
 		where:
 		x << (0..1)
@@ -244,7 +244,7 @@ class ComponentStructizerSpec extends Specification {
 	}
 	def "fromStructs Damping"() {
 		expect:
-		structizer.fromStruct(Damping, [x, y, z]).map { it.linear } == Optional.of(Vector3.of(x, y, z))
+		structizer.fromStruct(Damping, [[x, y, z], [z, y, x]]).map { [it.linear, it.angular] } == Optional.of([Vector3.of(x, y, z), Vector3.of(z, y, x)])
 
 		where:
 		x << (0..1)
@@ -252,10 +252,10 @@ class ComponentStructizerSpec extends Specification {
 		z << (0..1)
 	}
 	def "full-circles Damping"() {
-		def value = new Damping(Vector3.of(x, y, z))
+		def value = new Damping(Vector3.of(x, y, z), Vector3.of(z, y, x))
 
 		expect:
-		structizer.toStruct(value).flatMap { structizer.fromStruct(Damping, it) }.map { it.linear } == Optional.of(value.linear)
+		structizer.toStruct(value).flatMap { structizer.fromStruct(Damping, it) }.map { [it.linear, it.angular] } == Optional.of([value.linear, value.angular])
 
 		where:
 		x << (0..1)
@@ -265,7 +265,11 @@ class ComponentStructizerSpec extends Specification {
 
 	def "toStructs Force"() {
 		expect:
-		structizer.toStruct(new Force(Vector3.of(x, y, z))) == Optional.of([x.doubleValue(), y.doubleValue(), z.doubleValue()])
+		structizer.toStruct(new Force().with {
+			it.value.set(Vector3.of(x, y, z))
+			it.offset.set(Vector3.of(z, y, x))
+			it
+		}) == Optional.of([[x.doubleValue(), y.doubleValue(), z.doubleValue()], [z.doubleValue(), y.doubleValue(), x.doubleValue()]])
 
 		where:
 		x << (1..4)
@@ -274,7 +278,7 @@ class ComponentStructizerSpec extends Specification {
 	}
 	def "fromStructs Force"() {
 		expect:
-		structizer.fromStruct(Force, [x, y, z]).map { it.value } == Optional.of(Vector3.of(x, y, z))
+		structizer.fromStruct(Force, [[x, y, z], [z, y, x]]).map { [it.value, it.offset] } == Optional.of([Vector3.of(x, y, z), Vector3.of(z, y, x)])
 
 		where:
 		x << (1..4)
@@ -282,10 +286,14 @@ class ComponentStructizerSpec extends Specification {
 		z << (5..8)
 	}
 	def "full-circles Force"() {
-		def value = new Force(Vector3.of(x, y, z))
+		def value = new Force().with {
+			it.value.set(Vector3.of(x, y, z))
+			it.offset.set(Vector3.of(z, y, x))
+			it
+		}
 
 		expect:
-		structizer.toStruct(value).flatMap { structizer.fromStruct(Force, it) }.map { it.value } == Optional.of(value.value)
+		structizer.toStruct(value).flatMap { structizer.fromStruct(Force, it) }.map { [it.value, it.offset] } == Optional.of([value.value, value.offset])
 
 		where:
 		x << (1..4)
