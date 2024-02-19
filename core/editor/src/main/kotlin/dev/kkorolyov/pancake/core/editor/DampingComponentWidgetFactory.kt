@@ -16,18 +16,27 @@ class DampingComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Damping>(t) {
 		Widget {
-			input3("##value", value) { value.set(it) }
+			input3("##linear", linear) { linear.set(it) }
+			tooltip("linear value")
+
+			input3("##angular", angular) { angular.set(it) }
+			tooltip("angular value")
 		}
 	}
 
 	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Damping>(c, onNew) {
-		var value = 0.0
+		var linear = 0.0
+		var angular = 0.0
 
 		Widget {
-			input("##value", value) { value = it }
-			tooltip("value")
-			disabledIf(value < 0.0 || value > 1.0) {
-				button("apply") { it(Damping(Vector3.of(value, value, value))) }
+			input("##linear", linear) { linear = it }
+			tooltip("linear value")
+
+			input("##angular", angular) { angular = it }
+			tooltip("linear value")
+
+			disabledIf(linear < 0.0 || linear > 1.0 || angular < 0.0 || angular > 1.0) {
+				button("apply") { it(Damping(Vector3.of(linear, linear, linear), Vector3.of(angular, angular, angular))) }
 			}
 		}
 	}

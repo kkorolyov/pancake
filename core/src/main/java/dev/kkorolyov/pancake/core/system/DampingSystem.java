@@ -23,6 +23,6 @@ public final class DampingSystem extends GameSystem {
 		Velocity velocity = entity.get(Velocity.class);
 		Force force = entity.get(Force.class);
 
-		damping.damp(velocity.getLinear(), force.getValue());
+		damping.damp(velocity.getLinear(), velocity.getAngular(), force.getValue(), force.getTorque());
 	}
 }

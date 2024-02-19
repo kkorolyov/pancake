@@ -4,11 +4,11 @@ import dev.kkorolyov.pancake.core.component.Force
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
-import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
+import imgui.flag.ImGuiInputTextFlags
 
 class ForceComponentWidgetFactory : WidgetFactory<Component> {
 	override val type: Class<Component> = Component::class.java
@@ -20,6 +20,9 @@ class ForceComponentWidgetFactory : WidgetFactory<Component> {
 
 			input3("##offset", offset) { offset.set(it) }
 			tooltip("offset (m)")
+
+			input3("##torque", torque, flags = ImGuiInputTextFlags.ReadOnly)
+			tooltip("torque (N m)")
 		}
 	}
 

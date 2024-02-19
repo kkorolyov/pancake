@@ -49,8 +49,8 @@ public class ComponentStructizer implements Structizer {
 						Structizer.select(Correctable.class, t -> t.getPriority()),
 						Structizer.select(Mass.class, t -> t.getValue()),
 						Structizer.select(VelocityLimit.class, t -> Arrays.asList(t.getLinear(), t.getAngular())),
-						Structizer.select(Damping.class, t -> Structizers.toStruct(t.getValue())),
-						Structizer.select(Force.class, t -> Structizers.toStruct(t.getValue())),
+						Structizer.select(Damping.class, t -> Structizers.toStruct(t.getLinear())),
+						Structizer.select(Force.class, t -> Arrays.asList(Structizers.toStruct(t.getValue()), Structizers.toStruct(t.getOffset()))),
 						Structizer.select(Transform.class, t -> Map.of(
 								"translation", Structizers.toStruct(t.getTranslation()),
 								"rotation", Structizers.toStruct(t.getRotation()),
@@ -91,6 +91,13 @@ public class ComponentStructizer implements Structizer {
 											var angular = it.hasNext() ? ((Number) it.next()).doubleValue() : 0.0;
 
 											return new VelocityLimit(linear, angular);
+										}),
+										Structizer.select(c, Damping.class, t -> {
+											var it = t.iterator();
+											var linear = it.hasNext() ? Structizers.fromStruct(Vector3.class, it.next()) : Vector3.of();
+											var angular = it.hasNext() ? Structizers.fromStruct(Vector3.class, it.next()) : Vector3.of();
+
+											return new Damping(linear, angular);
 										}),
 										// TODO
 										Structizer.select(c, ActionQueue.class, t -> new ActionQueue()),
@@ -133,10 +140,6 @@ public class ComponentStructizer implements Structizer {
 								.map(t -> t instanceof Number ? (Number) t : null)
 								.map(Structizer.first(
 										Structizer.select(c, Mass.class, t -> new Mass(t.doubleValue()))
-								)),
-						Optional.of(o)
-								.map(Structizer.first(
-										Structizer.select(c, Damping.class, t -> new Damping(Structizers.fromStruct(Vector3.class, t)))
 								))
 				)
 				.filter(Optional::isPresent)

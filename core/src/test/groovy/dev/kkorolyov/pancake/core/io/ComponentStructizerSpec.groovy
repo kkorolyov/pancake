@@ -244,7 +244,7 @@ class ComponentStructizerSpec extends Specification {
 	}
 	def "fromStructs Damping"() {
 		expect:
-		structizer.fromStruct(Damping, [x, y, z]).map { it.value } == Optional.of(Vector3.of(x, y, z))
+		structizer.fromStruct(Damping, [x, y, z]).map { it.linear } == Optional.of(Vector3.of(x, y, z))
 
 		where:
 		x << (0..1)
@@ -255,7 +255,7 @@ class ComponentStructizerSpec extends Specification {
 		def value = new Damping(Vector3.of(x, y, z))
 
 		expect:
-		structizer.toStruct(value).flatMap { structizer.fromStruct(Damping, it) }.map { it.value } == Optional.of(value.value)
+		structizer.toStruct(value).flatMap { structizer.fromStruct(Damping, it) }.map { it.linear } == Optional.of(value.linear)
 
 		where:
 		x << (0..1)
