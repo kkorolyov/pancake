@@ -58,8 +58,9 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 	override fun invoke() {
 		// leave room for controls below
-		table("entities", 4, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY) {
+		table("entities", 5, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY) {
 			ImGui.tableSetupColumn("ID")
+			ImGui.tableSetupColumn("Name")
 			ImGui.tableSetupColumn("Components")
 			ImGui.tableSetupColumn("Alias")
 			ImGui.tableSetupColumn("Select", ImGuiTableColumnFlags.WidthFixed)
@@ -91,6 +92,10 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 								focusedEntity = null
 							}
 						}
+					}
+
+					column {
+						text(it.debugName)
 					}
 
 					column {
@@ -185,7 +190,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 				)
 			}
 				.forEach { alias, template ->
-					val entity = entities.create()
+					val entity = entities.create(alias)
 					template.apply(entity)
 					aliases[entity] = alias
 				}

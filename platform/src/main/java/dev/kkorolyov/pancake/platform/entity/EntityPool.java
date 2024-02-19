@@ -26,12 +26,18 @@ public final class EntityPool implements Iterable<Entity> {
 	}
 
 	/**
-	 * Creates a new, empty entity attached to this pool.
-	 * @return created entity
+	 * Creates a new, empty entity attached to this pool and returns it.
 	 */
 	public Entity create() {
-		return new Entity(pool);
+		return create(null);
 	}
+	/**
+	 * Creates a new, empty entity with custom {@code debugName} attached to this pool and returns it.
+	 */
+	public Entity create(String debugName) {
+		return new Entity(pool, debugName);
+	}
+
 	/**
 	 * Removes an entity from this pool.
 	 * @param id ID of entity to remove

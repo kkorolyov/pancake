@@ -79,11 +79,11 @@ class Editor(
 				systemManifest[it] = { Window(it.debugName, withDropHandlers(getWidget(GameSystem::class.java, it)), size = windowMin, openAt = OpenAt.Cursor) }
 			}
 			useDragDropPayload<Entity>(entityDragDropId) {
-				entityManifest[it] = { Window("Entity ${it.id}", withDropHandlers(EntityDetails(it, componentDragDropId)), size = windowMin, openAt = OpenAt.Cursor) }
+				entityManifest[it] = { Window("${it.debugName} (${it.id})", withDropHandlers(EntityDetails(it, componentDragDropId)), size = windowMin, openAt = OpenAt.Cursor) }
 			}
 			useDragDropPayload<OwnedComponent>(componentDragDropId) {
 				val (entity, component) = it
-				componentManifest[it] = { Window("${entity.id}.${component.debugName}", withDropHandlers(getWidget(Component::class.java, component)), size = windowMin, openAt = OpenAt.Cursor) }
+				componentManifest[it] = { Window("${entity.debugName} - ${component.debugName}", withDropHandlers(getWidget(Component::class.java, component)), size = windowMin, openAt = OpenAt.Cursor) }
 			}
 		}
 	}
