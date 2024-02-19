@@ -65,7 +65,7 @@ fun main() {
 						parent = Transform().apply { translation.set(randVector()) }
 						translation.set(randVector())
 					},
-					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
+					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0)), Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
 					Force().apply {
 						value.set(randVector())
 						offset.set(randVector())
