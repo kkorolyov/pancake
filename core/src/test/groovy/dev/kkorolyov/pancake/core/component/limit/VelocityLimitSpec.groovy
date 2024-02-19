@@ -7,7 +7,11 @@ import spock.lang.Specification
 
 class VelocityLimitSpec extends Specification {
 	def "constrains greater values"() {
-		Velocity velocity = new Velocity(linearV, angularV)
+		Velocity velocity = new Velocity().with {
+			it.linear.set(linearV)
+			it.angular.set(angularV)
+			it
+		}
 		VelocityLimit limit = new VelocityLimit(limitLinearV, limitAngularV)
 
 		when:
@@ -27,7 +31,11 @@ class VelocityLimitSpec extends Specification {
 	}
 
 	def "leaves lesser values"() {
-		Velocity velocity = new Velocity(linearV, angularV)
+		Velocity velocity = new Velocity().with {
+			it.linear.set(linearV)
+			it.angular.set(angularV)
+			it
+		}
 		VelocityLimit limit = new VelocityLimit(limitLinearV, limitAngularV)
 
 		when:
