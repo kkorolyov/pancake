@@ -65,11 +65,17 @@ fun main() {
 						parent = Transform().apply { translation.set(randVector()) }
 						translation.set(randVector())
 					},
-					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
-					Force(randVector()),
+					Damping(Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0)), Vector3.of(Random.nextDouble(1.0), Random.nextDouble(1.0), Random.nextDouble(1.0))),
+					Force().apply {
+						value.set(randVector())
+						offset.set(randVector())
+					},
 					Mass(Random.nextDouble()),
-					Velocity(randVector()),
-					VelocityLimit(Random.nextDouble(100.0)),
+					Velocity().apply {
+						linear.set(randVector())
+						angular.set(randVector())
+					},
+					VelocityLimit(Random.nextDouble(100.0), Random.nextDouble(100.0)),
 					Path(Random.nextDouble(10.0), Random.nextDouble(10.0), Path.SnapStrategy.values()[Random.nextInt(Path.SnapStrategy.values().size)])
 				)
 			}

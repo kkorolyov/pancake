@@ -20,7 +20,9 @@ public final class MovementSystem extends GameSystem {
 	protected void update(Entity entity, long dt) {
 		Transform transform = entity.get(Transform.class);
 		Velocity velocity = entity.get(Velocity.class);
+		double interval = dt / 1e9f;
 
-		velocity.move(transform.getTranslation(), dt / 1e9f);
+		velocity.move(transform.getTranslation(), interval);
+		velocity.rotate(transform.getRotation(), interval);
 	}
 }

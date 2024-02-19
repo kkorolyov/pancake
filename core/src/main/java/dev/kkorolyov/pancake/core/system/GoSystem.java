@@ -44,7 +44,7 @@ public final class GoSystem extends GameSystem {
 				transform.getTranslation().set(go.getTarget());
 				// FIXME weird mucking with Velocity here
 				var velocity = entity.get(Velocity.class);
-				if (velocity != null) velocity.getValue().scale(0);
+				if (velocity != null) velocity.getLinear().scale(0);
 			}
 		}
 	}

@@ -8,31 +8,49 @@ import dev.kkorolyov.pancake.platform.utility.ArgVerify;
  * Constrains the maximum attainable speed of an entity.
  */
 public final class VelocityLimit implements Limit<Velocity> {
-	private double value;
+	private double linear;
+	private double angular;
 
 	/**
-	 * Constructs a new velocity magnitude limit of {@code value} {@code m/s}.
+	 * Constructs a new velocity magnitude limit of {@code linear} {@code m/s} and {@code angular} {@code rad/s}.
 	 */
-	public VelocityLimit(double value) {
-		setValue(value);
+	public VelocityLimit(double linear, double angular) {
+		setLinear(linear);
+		setAngular(angular);
 	}
 
 	/**
-	 * Returns current limit in {@code m/s}.
+	 * Returns current linear limit in {@code m/s}.
 	 */
-	public double getValue() {
-		return value;
+	public double getLinear() {
+		return linear;
 	}
 	/**
-	 * Sets limit to {@code value} {@code m/s}.
+	 * Sets linear limit to {@code linear} {@code m/s}.
 	 */
-	public void setValue(double value) {
-		this.value = ArgVerify.greaterThanEqual("value", 0.0, value);
+	public void setLinear(double linear) {
+		this.linear = ArgVerify.greaterThanEqual("linear", 0.0, linear);
+	}
+
+	/**
+	 * Returns current angular limit in {@code rad/s}
+	 */
+	public double getAngular() {
+		return angular;
+	}
+	/**
+	 * Sets angular limit to {@code angular} {@code rad/s}.
+	 */
+	public void setAngular(double angular) {
+		this.angular = ArgVerify.greaterThanEqual("angular", 0.0, angular);
 	}
 
 	@Override
 	public void limit(Velocity component) {
-		double current = Vector3.magnitude(component.getValue());
-		if (current > value) component.getValue().scale(value / current);
+		double currentLinear = Vector3.magnitude(component.getLinear());
+		if (currentLinear > linear) component.getLinear().scale(linear / currentLinear);
+
+		double currentAngular = Vector3.magnitude(component.getAngular());
+		if (currentAngular > angular) component.getAngular().scale(angular / currentAngular);
 	}
 }

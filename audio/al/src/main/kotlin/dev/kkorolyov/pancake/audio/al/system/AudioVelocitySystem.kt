@@ -10,6 +10,6 @@ import dev.kkorolyov.pancake.platform.entity.Entity
  */
 class AudioVelocitySystem : GameSystem(AudioEmitter::class.java, Velocity::class.java) {
 	override fun update(entity: Entity, dt: Long) {
-		entity[AudioEmitter::class.java].setVelocity(entity[Velocity::class.java].value)
+		entity[AudioEmitter::class.java].setVelocity(entity[Velocity::class.java].linear)
 	}
 }

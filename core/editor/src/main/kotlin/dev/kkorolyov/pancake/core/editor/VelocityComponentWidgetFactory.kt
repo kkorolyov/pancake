@@ -14,17 +14,31 @@ class VelocityComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Velocity>(t) {
 		Widget {
-			input3("##value", value) { value.set(it) }
+			input3("##linear", linear) { linear.set(it) }
+			tooltip("linear velocity (m/s)")
+
+			input3("##angular", angular) { angular.set(it) }
+			tooltip("angular velocity (rad/s)")
 		}
 	}
 
 	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Velocity>(c, onNew) {
-		val value = Vector3.of()
+		val linear = Vector3.of()
+		val angular = Vector3.of()
 
 		Widget {
-			input3("##value", value) { value.set(it) }
-			tooltip("value")
-			button("apply") { it(Velocity(value)) }
+			input3("##linear", linear) { linear.set(it) }
+			tooltip("linear velocity (m/s)")
+
+			input3("##angular", angular) { angular.set(it) }
+			tooltip("angular velocity (rad/s)")
+
+			button("apply") {
+				it(Velocity().apply {
+					this.linear.set(linear)
+					this.angular.set(angular)
+				})
+			}
 		}
 	}
 }

@@ -40,7 +40,7 @@ public final class ActionResourceConverterFactory implements ResourceConverterFa
 				t -> t instanceof Map && ((Map<?, ?>) t).containsKey("velocity"),
 				t -> {
 					Vector3 velocity = fromStruct(Vector3.class, ((Map<?, ?>) t).get("velocity"));
-					return Resource.constant(entity -> entity.get(Velocity.class).getValue().set(velocity));
+					return Resource.constant(entity -> entity.get(Velocity.class).getLinear().set(velocity));
 				}
 		);
 	}

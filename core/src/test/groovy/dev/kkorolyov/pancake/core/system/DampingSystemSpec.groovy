@@ -22,12 +22,15 @@ class DampingSystemSpec extends Specification {
 	long dt = 1
 
 	EntityPool entities = new EntityPool()
-	Damping damping = new Damping(value)
+	Damping damping = new Damping(value, value)
 	DampingSystem system = new DampingSystem()
 
 	def "damps when force zero"() {
-		Velocity velocity = new Velocity(Vector3.of(1, 1, 1))
-		Force force = new Force(Vector3.of(0, 0, 0))
+		Velocity velocity = new Velocity().with {
+			it.linear.set(Vector3.of(1, 1, 1))
+			it
+		}
+		Force force = new Force()
 		Entity entity = entities.create()
 		entity.put(damping, velocity, force)
 
@@ -35,11 +38,17 @@ class DampingSystemSpec extends Specification {
 		system.update(entity, dt)
 
 		then:
-		velocity.value == value
+		velocity.linear == value
 	}
 	def "damps where force opposite sign of velocity"() {
-		Velocity velocity = new Velocity(velocityV)
-		Force force = new Force(forceV)
+		Velocity velocity = new Velocity().with {
+			it.linear.set(velocityV)
+			it
+		}
+		Force force = new Force().with {
+			it.value.set(forceV)
+			it
+		}
 		Entity entity = entities.create()
 		entity.put(damping, velocity, force)
 
@@ -47,15 +56,21 @@ class DampingSystemSpec extends Specification {
 		system.update(entity, dt)
 
 		then:
-		velocity.value == Vector3.of((forceV.x < 0) ? value.x * mini : mini, (forceV.y < 0) ? value.y * mini : mini, (forceV.z < 0) ? value.z * mini : mini)
+		velocity.linear == Vector3.of((forceV.x < 0) ? value.x * mini : mini, (forceV.y < 0) ? value.y * mini : mini, (forceV.z < 0) ? value.z * mini : mini)
 
 		where:
 		velocityV << (1..3).collect { it -> Vector3.of(mini, mini, mini) }
 		forceV << [Vector3.of(-micro, micro, micro), Vector3.of(micro, -micro, micro), Vector3.of(micro, micro, -micro)]
 	}
 	def "does not damp where force non-zero and same sign as velocity"() {
-		Velocity velocity = new Velocity(velocityV)
-		Force force = new Force(forceV)
+		Velocity velocity = new Velocity().with {
+			it.linear.set(velocityV)
+			it
+		}
+		Force force = new Force().with {
+			it.value.set(forceV)
+			it
+		}
 		Entity entity = entities.create()
 		entity.put(damping, velocity, force)
 
@@ -63,7 +78,7 @@ class DampingSystemSpec extends Specification {
 		system.update(entity, dt)
 
 		then:
-		velocity.value == Vector3.of((forceV.x > 0) ? mini : value.x * mini, (forceV.y > 0) ? mini : value.y * mini, (forceV.z > 0) ? mini : value.z * mini)
+		velocity.linear == Vector3.of((forceV.x > 0) ? mini : value.x * mini, (forceV.y > 0) ? mini : value.y * mini, (forceV.z > 0) ? mini : value.z * mini)
 
 		where:
 		velocityV << (1..3).collect { it -> Vector3.of(mini, mini, mini) }

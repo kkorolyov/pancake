@@ -31,7 +31,7 @@ class GoSystemSpec extends Specification {
 			it.translation.set(positionV)
 			it
 		}
-		Force force = new Force(Vector3.of())
+		Force force = new Force()
 		Entity entity = entities.create()
 		entity.put(go, transform, force)
 
@@ -54,7 +54,10 @@ class GoSystemSpec extends Specification {
 			it.translation.set(positionV)
 			it
 		}
-		Force force = new Force(forceV)
+		Force force = new Force().with {
+			it.value.set(forceV)
+			it
+		}
 		Entity entity = entities.create()
 		entity.put(go, transform, force)
 
@@ -74,8 +77,11 @@ class GoSystemSpec extends Specification {
 			it.translation.set(positionV)
 			it
 		}
-		Force force = new Force(Vector3.of())
-		Velocity velocity = new Velocity(Vector3.of(1.0, 1.0))
+		Force force = new Force()
+		Velocity velocity = new Velocity().with {
+			it.linear.set(Vector3.of(1.0, 1.0))
+			it
+		}
 		Entity entity = entities.create()
 		entity.put(go, transform, force, velocity)
 
@@ -84,7 +90,7 @@ class GoSystemSpec extends Specification {
 
 		then:
 		transform.translation != go.target
-		velocity.value == Vector3.of(1.0, 1.0)
+		velocity.linear == Vector3.of(1.0, 1.0)
 
 		where:
 		positionV << [Vector3.of(1, 0), Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of(0.5, 0.5)]
@@ -94,8 +100,11 @@ class GoSystemSpec extends Specification {
 			it.translation.set(positionV)
 			it
 		}
-		Force force = new Force(Vector3.of())
-		Velocity velocity = new Velocity(Vector3.of(1.0, 1.0))
+		Force force = new Force()
+		Velocity velocity = new Velocity().with {
+			it.linear.set(Vector3.of(1.0, 1.0))
+			it
+		}
 		go.snap = true
 		Entity entity = entities.create()
 		entity.put(go, transform, force, velocity)
@@ -105,7 +114,7 @@ class GoSystemSpec extends Specification {
 
 		then:
 		transform.translation == go.target
-		velocity.value == Vector3.of()
+		velocity.linear == Vector3.of()
 
 		where:
 		positionV << [Vector3.of(1, 0), Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of(0.5, 0.5)]
@@ -116,7 +125,7 @@ class GoSystemSpec extends Specification {
 			it.translation.set(positionV)
 			it
 		}
-		Force force = new Force(Vector3.of())
+		Force force = new Force()
 		Entity entity = entities.create()
 		entity.put(go, transform, force)
 

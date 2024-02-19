@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * All operations are relative to the transform's parent.
  */
 public class Transform implements Component {
-	private final Vector3 translation = new BoundVector3(Vector3.of());
+	private final Vector3 translation = Vector3.observable(Vector3.of(), this::invalidate);
 	private final Matrix4 rotation = new BoundMatrix4(Matrix4.of());
-	private final Vector3 scale = new BoundVector3(Vector3.of(1, 1, 1));
+	private final Vector3 scale = Vector3.observable(Vector3.of(1, 1, 1), this::invalidate);
 
 	private Transform parent;
 	private final ArrayList<Transform> children = new ArrayList<>();
@@ -78,58 +78,6 @@ public class Transform implements Component {
 	private void invalidate() {
 		cached = false;
 		for (int i = 0; i < children.size(); i++) children.get(i).invalidate();
-	}
-
-	private final class BoundVector3 implements Vector3 {
-		private final Vector3 data;
-
-		BoundVector3(Vector3 data) {
-			this.data = data;
-		}
-
-		@Override
-		public double getX() {
-			return data.getX();
-		}
-		@Override
-		public void setX(double x) {
-			data.setX(x);
-			invalidate();
-		}
-
-		@Override
-		public double getY() {
-			return data.getY();
-		}
-		@Override
-		public void setY(double y) {
-			data.setY(y);
-			invalidate();
-		}
-
-		@Override
-		public double getZ() {
-			return data.getZ();
-		}
-		@Override
-		public void setZ(double z) {
-			data.setZ(z);
-			invalidate();
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return Vector3.equals(this, obj);
-		}
-		@Override
-		public int hashCode() {
-			return Vector3.hashCode(this);
-		}
-
-		@Override
-		public String toString() {
-			return Vector3.toString(this);
-		}
 	}
 
 	private final class BoundMatrix4 implements Matrix4 {
