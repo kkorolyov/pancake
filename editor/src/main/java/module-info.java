@@ -21,6 +21,7 @@ module dev.kkorolyov.pancake.editor {
 	requires org.yaml.snakeyaml;
 
 	exports dev.kkorolyov.pancake.editor;
+	exports dev.kkorolyov.pancake.editor.data;
 	exports dev.kkorolyov.pancake.editor.factory;
 	exports dev.kkorolyov.pancake.editor.widget;
 

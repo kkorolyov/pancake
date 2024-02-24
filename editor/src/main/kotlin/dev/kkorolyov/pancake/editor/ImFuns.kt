@@ -4,6 +4,9 @@ import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
+import imgui.ImFont
+import imgui.ImGuiStyle
+import imgui.ImGuiViewport
 import imgui.ImVec2
 import imgui.extension.implot.ImPlot
 import imgui.extension.implot.flag.ImPlotAxisFlags
@@ -127,6 +130,15 @@ inline fun onHover(flags: Int = ImGuiHoveredFlags.None, op: Op) {
  */
 inline fun onActive(op: Op) {
 	if (ImGui.isItemActive()) op()
+}
+/**
+ * Runs [op] whenever the last item is focused.
+ * Returns `true` when focused.
+ */
+inline fun onFocus(op: Op): Boolean {
+	val result = ImGui.isItemFocused()
+	if (result) op()
+	return result
 }
 
 /**
@@ -581,42 +593,80 @@ inline fun dragInput3(label: String, value: Vector3, format: String = "%.3f", mi
 	dragInput(label, value.x, value.y, value.z, format, min, max, speed, flags, width) { x, y, z -> onChange(Vector3.of(x, y, z)) }
 
 /**
- * Runs [op] whenever the last item is focused.
- * Returns `true` when focused.
+ * Mouse-specific configuration and actions.
+ * Supported buttons defined by [ImGuiMouseButton] and the backend - like `glfw`.
  */
-inline fun onFocus(op: Op): Boolean {
-	val result = ImGui.isItemFocused()
-	if (result) op()
-	return result
+object Mouse {
+	var cursor: Int
+		get() = ImGui.getMouseCursor()
+		set(value) = ImGui.setMouseCursor(value)
+
+	/**
+	 * Runs [op] when mouse [button] is clicked.
+	 * Returns `true` when double-clicked.
+	 */
+	inline fun onClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
+		val result = ImGui.isMouseClicked(button)
+		if (result) op()
+		return result
+	}
+	/**
+	 * Runs [op] when mouse [button] is double-clicked.
+	 * Returns `true` when double-clicked.
+	 */
+	inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
+		val result = ImGui.isMouseDoubleClicked(button)
+		if (result) op()
+		return result
+	}
+}
+/**
+ * Key(board)-specific configuration and actions.
+ * Supported keys defined by the backend - like `glfw`.
+ */
+object Key {
+	/**
+	 * Runs [op] when [key] is pressed.
+	 * Returns `true` when pressed.
+	 */
+	inline fun onPress(key: Int, op: Op): Boolean {
+		val result = ImGui.isKeyPressed(key, false)
+		if (result) op()
+		return result
+	}
+	/**
+	 * Runs [op] when [key] is held down.
+	 * Returns `true` if currently down.
+	 */
+	inline fun onDown(key: Int, op: Op): Boolean {
+		val result = ImGui.isKeyDown(key)
+		if (result) op()
+		return result
+	}
 }
 
 /**
- * Runs [op] when [key] is pressed.
- * Returns `true` when pressed.
+ * Custom draw list operations.
  */
-inline fun onKey(key: Int, op: Op): Boolean {
-	val result = ImGui.isKeyPressed(key, false)
-	if (result) op()
-	return result
+object Draw {
+	/**
+	 * Returns the foreground draw list for [viewport].
+	 */
+	fun fg(viewport: ImGuiViewport) = ImGui.getForegroundDrawList(viewport)
+	/**
+	 * Returns the background draw list for [viewport].
+	 */
+	fun bg(viewport: ImGuiViewport) = ImGui.getBackgroundDrawList(viewport)
 }
 
 /**
- * Runs [op] when mouse [button] is clicked.
- * Returns `true` when double-clicked.
+ * Quick access to viewports.
  */
-inline fun onClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
-	val result = ImGui.isMouseClicked(button)
-	if (result) op()
-	return result
-}
-/**
- * Runs [op] when mouse [button] is double-clicked.
- * Returns `true` when double-clicked.
- */
-inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
-	val result = ImGui.isMouseDoubleClicked(button)
-	if (result) op()
-	return result
+object Viewport {
+	val main: ImGuiViewport
+		get() = ImGui.getMainViewport()
+	val window: ImGuiViewport
+		get() = ImGui.getWindowViewport()
 }
 
 /**
@@ -665,21 +715,34 @@ object Layout {
 			get() = ImGui.getContentRegionAvailY()
 	}
 }
-
 /**
  * Current style configuration.
  */
 object Style {
-	private val style = ImGui.getStyle()
+	private val style: ImGuiStyle
+		get() = ImGui.getStyle()
 
 	/**
 	 * Spacing style configuration.
 	 */
 	val spacing: Spacing = Spacing()
+	/**
+	 * Font configuration.
+	 */
+	val font: Font = Font()
 
 	class Spacing internal constructor() {
-		val x by style::itemSpacingX
-		val y by style::itemSpacingY
+		val x: Float
+			get() = style.itemSpacingX
+		val y: Float
+			get() = style.itemSpacingY
+	}
+
+	class Font internal constructor() {
+		val current: ImFont
+			get() = ImGui.getFont()
+		val size: Int
+			get() = ImGui.getFontSize()
 	}
 }
 

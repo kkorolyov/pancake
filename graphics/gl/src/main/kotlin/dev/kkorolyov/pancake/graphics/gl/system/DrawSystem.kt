@@ -22,10 +22,11 @@ class DrawSystem(
 ) : GameSystem(Transform::class.java, Model::class.java) {
 	private val pending: MutableMap<Program, MutableList<Entity>> = mutableMapOf()
 
-	// build camera-specific projection only once per tick
-	private val clipViewMatrix: Matrix4 = Matrix4.of()
+	// build camera-specific projections only once per tick
+	private val viewWorldMatrix: Matrix4 = Matrix4.of()
+	private val clipWorldMatrix: Matrix4 = Matrix4.of()
 	// full transformation matrix per entity
-	private val fullMatrix: Matrix4 = Matrix4.of()
+	private val clipLocalMatrix: Matrix4 = Matrix4.of()
 	private val vec3 = Vector3.of()
 
 	override fun update(entity: Entity, dt: Long) {
@@ -34,23 +35,29 @@ class DrawSystem(
 
 	override fun after(dt: Long) {
 		queue.cameras.forEach { camera ->
-			clipViewMatrix.reset()
-
-			camera.lens.apply {
-				glViewport(offset.x.toInt(), offset.y.toInt(), size.x.toInt(), size.y.toInt())
-
-				// projection matrix
-				// *2 because range is [-1, 1], not [0, 1]
-				clipViewMatrix.scale(vec3.apply {
-					reset()
-					x = scale.x / size.x * 2
-					y = scale.y / size.y * 2
-					z = 1.0
-				})
+			// setup viewport
+			camera.lens.let { lens ->
+				glViewport(lens.offset.x.toInt(), lens.offset.y.toInt(), lens.size.x.toInt(), lens.size.y.toInt())
 			}
 
-			// with view matrix
-			clipViewMatrix.multiply(camera.transform.matrix)
+			// build the camera-specific clip <- world projection matrix
+			clipWorldMatrix.apply {
+				reset()
+				camera.lens.let { lens ->
+					clipWorldMatrix.scale(vec3.apply {
+						// *2 to expand a [0, 1] range to [-1, 1]
+						x = lens.scale.x / lens.size.x * 2
+						y = lens.scale.y / lens.size.y * 2
+						z = 1.0
+					})
+				}
+			}.multiply(viewWorldMatrix.apply {
+				set(camera.transform.matrix)
+				// camera offset is the negation of view offset
+				xw *= -1
+				yw *= -1
+				zw *= -1
+			})
 
 			pending.forEach { (program, entities) ->
 				program.scoped {
@@ -58,8 +65,9 @@ class DrawSystem(
 						val transform = it[Transform::class.java]
 						val model = it[Model::class.java]
 
-						program[0] = fullMatrix.apply {
-							set(clipViewMatrix)
+						// build the entity-specific clip <- local projection matrix
+						program[0] = clipLocalMatrix.apply {
+							set(clipWorldMatrix)
 							// with model matrix
 							multiply(transform.matrix)
 							// with model offset - if any
