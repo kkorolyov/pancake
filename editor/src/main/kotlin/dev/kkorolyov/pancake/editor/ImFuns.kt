@@ -18,6 +18,7 @@ import imgui.flag.ImGuiKeyModFlags
 import imgui.flag.ImGuiMouseButton
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
+import imgui.flag.ImGuiSliderFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.internal.ImGui
@@ -502,10 +503,10 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
  * Draws a drag input for [value], invoking [onChange] with the updated value if changed.
  * Returns `true` when changed.
  */
-inline fun dragInput(label: String, value: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange<Int> = { }): Boolean {
+inline fun dragInput(label: String, value: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, width: Float = 0f, onChange: OnChange<Int> = { }): Boolean {
 	val ptr = intArrayOf(value)
 
-	val result = ImGui.dragInt(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	val result = Layout.width(width) { ImGui.dragInt(label, ptr, speed, min.toFloat(), max.toFloat(), format) }
 	if (result) onChange(max(min, min(max, ptr[0])))
 	return result
 }
@@ -513,10 +514,10 @@ inline fun dragInput(label: String, value: Int, format: String = "%d", min: Int 
  * Draws a drag input for [value] and [value1], invoking [onChange] with the updated values if changed.
  * Returns `true` when changed.
  */
-inline fun dragInput(label: String, value: Int, value1: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange2<Int> = { _, _ -> }): Boolean {
+inline fun dragInput(label: String, value: Int, value1: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, width: Float = 0f, onChange: OnChange2<Int> = { _, _ -> }): Boolean {
 	val ptr = intArrayOf(value, value1)
 
-	val result = ImGui.dragInt2(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	val result = Layout.width(width) { ImGui.dragInt2(label, ptr, speed, min.toFloat(), max.toFloat(), format) }
 	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])))
 	return result
 }
@@ -524,13 +525,60 @@ inline fun dragInput(label: String, value: Int, value1: Int, format: String = "%
  * Draws a drag input for [value], [value1], and [value2], invoking [onChange] with the updated values if changed.
  * Returns `true` when changed.
  */
-inline fun dragInput(label: String, value: Int, value1: Int, value2: Int, format: String = "%d", min: Int = Float.MIN_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange3<Int> = { _, _, _ -> }): Boolean {
+inline fun dragInput(label: String, value: Int, value1: Int, value2: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, width: Float = 0f, onChange: OnChange3<Int> = { _, _, _ -> }): Boolean {
 	val ptr = intArrayOf(value, value1, value2)
 
-	val result = ImGui.dragInt3(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	val result = Layout.width(width) { ImGui.dragInt3(label, ptr, speed, min.toFloat(), max.toFloat(), format) }
 	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])), max(min, min(max, ptr[2])))
 	return result
 }
+
+/**
+ * Draws a drag input for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Double, format: String = "%.3f", min: Double = -Float.MAX_VALUE.toDouble(), max: Double = Float.MAX_VALUE.toDouble(), speed: Float = 0.1f, flags: Int = ImGuiSliderFlags.None, width: Float = 0f, onChange: OnChange<Double> = { }): Boolean {
+	val ptr = floatArrayOf(value.toFloat())
+
+	val result = Layout.width(width) { ImGui.dragFloat(label, ptr, speed, min.toFloat(), max.toFloat(), format, flags) }
+	if (result) onChange(max(min, min(max, ptr[0].toDouble())))
+	return result
+}
+/**
+ * Draws a drag input for [value] and [value1], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Double, value1: Double, format: String = "%.3f", min: Double = -Float.MAX_VALUE.toDouble(), max: Double = Float.MAX_VALUE.toDouble(), speed: Float = 0.1f, flags: Int = ImGuiSliderFlags.None, width: Float = 0f, onChange: OnChange2<Double> = { _, _ -> }): Boolean {
+	val ptr = floatArrayOf(value.toFloat(), value1.toFloat())
+
+	val result = Layout.width(width) { ImGui.dragFloat2(label, ptr, speed, min.toFloat(), max.toFloat(), format, flags) }
+	if (result) onChange(max(min, min(max, ptr[0].toDouble())), max(min, min(max, ptr[1].toDouble())))
+	return result
+}
+/**
+ * Draws a drag input for [value], [value1], and [value2], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput(label: String, value: Double, value1: Double, value2: Double, format: String = "%.3f", min: Double = -Float.MAX_VALUE.toDouble(), max: Double = Float.MAX_VALUE.toDouble(), speed: Float = 0.1f, flags: Int = ImGuiSliderFlags.None, width: Float = 0f, onChange: OnChange3<Double> = { _, _, _ -> }): Boolean {
+	val ptr = floatArrayOf(value.toFloat(), value1.toFloat(), value2.toFloat())
+
+	val result = Layout.width(width) { ImGui.dragFloat3(label, ptr, speed, min.toFloat(), max.toFloat(), format, flags) }
+	if (result) onChange(max(min, min(max, ptr[0].toDouble())), max(min, min(max, ptr[1].toDouble())), max(min, min(max, ptr[2].toDouble())))
+	return result
+}
+
+/**
+ * Draws a drag input for [value]'s components, invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput2(label: String, value: Vector2, format: String = "%.3f", min: Double = -Float.MAX_VALUE.toDouble(), max: Double = Float.MAX_VALUE.toDouble(), speed: Float = 0.1f, flags: Int = ImGuiSliderFlags.None, width: Float = 0f, onChange: OnChange<Vector2> = { }): Boolean =
+	dragInput(label, value.x, value.y, format, min, max, speed, flags, width) { x, y -> onChange(Vector2.of(x, y)) }
+/**
+ * Draws a drag input for [value]'s components, invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun dragInput3(label: String, value: Vector3, format: String = "%.3f", min: Double = -Float.MAX_VALUE.toDouble(), max: Double = Float.MAX_VALUE.toDouble(), speed: Float = 0.1f, flags: Int = ImGuiSliderFlags.None, width: Float = 0f, onChange: OnChange<Vector3> = { }): Boolean =
+	dragInput(label, value.x, value.y, value.z, format, min, max, speed, flags, width) { x, y, z -> onChange(Vector3.of(x, y, z)) }
 
 /**
  * Runs [op] whenever the last item is focused.
@@ -572,7 +620,7 @@ inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
 }
 
 /**
- * Layout options and helpers
+ * Layout options and helpers.
  */
 object Layout {
 	/**
@@ -597,6 +645,17 @@ object Layout {
 		val ptr = tVec2
 		ImGui.calcTextSize(ptr, text)
 		return ptr.x
+	}
+
+	/**
+	 * Runs [op] within a context setting [width] item width and returns its result.
+	 */
+	inline fun <T> width(width: Float, op: () -> T): T {
+		ImGui.pushItemWidth(width)
+		val result = op()
+		ImGui.popItemWidth()
+
+		return result
 	}
 
 	class Free internal constructor() {

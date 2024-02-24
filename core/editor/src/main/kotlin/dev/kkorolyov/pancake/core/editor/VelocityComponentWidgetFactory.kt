@@ -3,8 +3,8 @@ package dev.kkorolyov.pancake.core.editor
 import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
+import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
-import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -14,10 +14,10 @@ class VelocityComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Velocity>(t) {
 		Widget {
-			input3("##linear", linear) { linear.set(it) }
+			dragInput3("##linear", linear) { linear.set(it) }
 			tooltip("linear velocity (m/s)")
 
-			input3("##angular", angular) { angular.set(it) }
+			dragInput3("##angular", angular) { angular.set(it) }
 			tooltip("angular velocity (rad/s)")
 		}
 	}
@@ -27,10 +27,10 @@ class VelocityComponentWidgetFactory : WidgetFactory<Component> {
 		val angular = Vector3.of()
 
 		Widget {
-			input3("##linear", linear) { linear.set(it) }
+			dragInput3("##linear", linear) { linear.set(it) }
 			tooltip("linear velocity (m/s)")
 
-			input3("##angular", angular) { angular.set(it) }
+			dragInput3("##angular", angular) { angular.set(it) }
 			tooltip("angular velocity (rad/s)")
 
 			button("apply") {

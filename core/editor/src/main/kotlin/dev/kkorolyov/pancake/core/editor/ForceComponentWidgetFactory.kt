@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.core.editor
 import dev.kkorolyov.pancake.core.component.Force
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
+import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.tooltip
@@ -15,10 +16,10 @@ class ForceComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Force>(t) {
 		Widget {
-			input3("##value", value) { value.set(it) }
+			dragInput3("##value", value) { value.set(it) }
 			tooltip("value (N)")
 
-			input3("##offset", offset) { offset.set(it) }
+			dragInput3("##offset", offset) { offset.set(it) }
 			tooltip("offset (m)")
 
 			input3("##torque", torque, flags = ImGuiInputTextFlags.ReadOnly)
@@ -31,15 +32,16 @@ class ForceComponentWidgetFactory : WidgetFactory<Component> {
 		val offset = Vector3.of()
 
 		Widget {
-			input3("##value", value) { value.set(it) }
+			dragInput3("##value", value) { value.set(it) }
 			tooltip("value (N)")
 
-			input3("##offset", offset) { offset.set(it) }
+			dragInput3("##offset", offset) { offset.set(it) }
 			tooltip("offset (m)")
 
 			button("apply") {
 				it(Force().apply {
 					this.value.set(value)
+					this.offset.set(offset)
 				})
 			}
 		}

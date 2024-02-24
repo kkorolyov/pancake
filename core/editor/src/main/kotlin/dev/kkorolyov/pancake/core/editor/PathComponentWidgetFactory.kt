@@ -5,20 +5,19 @@ import dev.kkorolyov.pancake.core.component.Path.SnapStrategy
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
+import dev.kkorolyov.pancake.editor.dragInput
+import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.list
-import dev.kkorolyov.pancake.editor.onFocus
-import dev.kkorolyov.pancake.editor.onKey
 import dev.kkorolyov.pancake.editor.propertiesTable
 import dev.kkorolyov.pancake.editor.propertyRow
-import dev.kkorolyov.pancake.editor.tooltip
+import dev.kkorolyov.pancake.editor.sameLine
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.flag.ImGuiInputTextFlags
-import org.lwjgl.glfw.GLFW
 
 class PathComponentWidgetFactory : WidgetFactory<Component> {
 	override val type: Class<Component> = Component::class.java
@@ -29,10 +28,10 @@ class PathComponentWidgetFactory : WidgetFactory<Component> {
 		Widget {
 			propertiesTable("path") {
 				propertyRow("Strength") {
-					input("##strength", strength) { strength = it }
+					dragInput("##strength", strength, min = 0.0) { strength = it }
 				}
 				propertyRow("Proximity") {
-					input("##proximity", proximity) { proximity = it }
+					dragInput("##proximity", proximity, min = 0.0) { proximity = it }
 				}
 				propertyRow("Snap Strategy") {
 					input("##snapStrategy", snapStrategy) { snapStrategy = it }
@@ -43,11 +42,10 @@ class PathComponentWidgetFactory : WidgetFactory<Component> {
 					}
 
 					val newStep = tNewStep
-					input3("##newStep", newStep) { newStep.set(it) }
-					tooltip("<ENTER> to add step")
-					onFocus {
-						onKey(GLFW.GLFW_KEY_ENTER) { add(Vector3.of(newStep)) }
-						onKey(GLFW.GLFW_KEY_KP_ENTER) { add(Vector3.of(newStep)) }
+					dragInput3("##newStep", newStep) { newStep.set(it) }
+					sameLine()
+					button("add") {
+						add(Vector3.of(newStep))
 					}
 				}
 			}
@@ -62,10 +60,10 @@ class PathComponentWidgetFactory : WidgetFactory<Component> {
 		Widget {
 			propertiesTable("path") {
 				propertyRow("Strength") {
-					input("##strength", strength) { strength = it }
+					dragInput("##strength", strength, min = 0.0) { strength = it }
 				}
 				propertyRow("Proximity") {
-					input("##proximity", proximity) { proximity = it }
+					dragInput("##proximity", proximity, min = 0.0) { proximity = it }
 				}
 				propertyRow("Snap Strategy") {
 					input("##snapStrategy", snapStrategy) { snapStrategy = it }

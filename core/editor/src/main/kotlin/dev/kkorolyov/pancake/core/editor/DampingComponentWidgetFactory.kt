@@ -4,9 +4,9 @@ import dev.kkorolyov.pancake.core.component.Damping
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
+import dev.kkorolyov.pancake.editor.dragInput
+import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
-import dev.kkorolyov.pancake.editor.input
-import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -16,10 +16,10 @@ class DampingComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Damping>(t) {
 		Widget {
-			input3("##linear", linear) { linear.set(it) }
+			dragInput3("##linear", linear, min = 0.0, max = 1.0, speed = 0.001f) { linear.set(it) }
 			tooltip("linear value")
 
-			input3("##angular", angular) { angular.set(it) }
+			dragInput3("##angular", angular, min = 0.0, max = 1.0, speed = 0.001f) { angular.set(it) }
 			tooltip("angular value")
 		}
 	}
@@ -29,10 +29,10 @@ class DampingComponentWidgetFactory : WidgetFactory<Component> {
 		var angular = 0.0
 
 		Widget {
-			input("##linear", linear) { linear = it }
+			dragInput("##linear", linear, min = 0.0, max = 1.0, speed = 0.001f) { linear = it }
 			tooltip("linear value")
 
-			input("##angular", angular) { angular = it }
+			dragInput("##angular", angular, min = 0.0, max = 1.0, speed = 0.001f) { angular = it }
 			tooltip("linear value")
 
 			disabledIf(linear < 0.0 || linear > 1.0 || angular < 0.0 || angular > 1.0) {
