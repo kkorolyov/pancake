@@ -5,11 +5,7 @@ package dev.kkorolyov.pancake.platform;
  */
 public interface Debuggable {
 	/**
-	 * Returns a string uniquely identifying this construct.
-	 * Defaults to the class simple name, or class full name if no simple name.
+	 * Returns a string uniquely identifying this construct in a debug context.
 	 */
-	default String getDebugName() {
-		String simpleName = getClass().getSimpleName();
-		return simpleName.isEmpty() ? getClass().getName() : simpleName;
-	}
+	String getDebugName();
 }

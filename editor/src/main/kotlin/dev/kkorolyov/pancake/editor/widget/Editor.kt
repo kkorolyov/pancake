@@ -14,8 +14,6 @@ import dev.kkorolyov.pancake.platform.math.Vector2
 import imgui.flag.ImGuiDir
 import imgui.type.ImBoolean
 
-private val windowMin = Vector2.of(128.0, 128.0)
-
 /**
  * Renders the overall editor view for a [GameEngine].
  */
@@ -39,6 +37,26 @@ class Editor(
 	private val pipelines = Window("Pipelines", withDropHandlers(PipelinesList(engine, systemDragDropId)), subVisible)
 	private val entities = Window("Entities", withDropHandlers(EntitiesTable(engine.entities, entityDragDropId)), subVisible)
 	private val gl = Window("OpenGL", withDropHandlers(GLDetails()), subVisible)
+
+	/**
+	 * Focuses (creating if needed) the window for [system].
+	 */
+	fun focus(system: GameSystem, openAt: OpenAt? = OpenAt.CurrentWindow) {
+		systemManifest[system] = { Window(system.debugName, withDropHandlers(getWidget(GameSystem::class.java, system)), size = windowMin(3.0), openAt = openAt) }
+	}
+	/**
+	 * Focuses (creating if needed) the window for [entity].
+	 */
+	fun focus(entity: Entity, openAt: OpenAt? = OpenAt.CurrentWindow) {
+		entityManifest[entity] = { Window("${entity.debugName} (${entity.id})", withDropHandlers(EntityDetails(entity, componentDragDropId)), size = windowMin(2.0), openAt = openAt) }
+	}
+	/**
+	 * Focuses (creating if needed) the window for [ownedComponent].
+	 */
+	fun focus(ownedComponent: OwnedComponent, openAt: OpenAt? = OpenAt.CurrentWindow) {
+		val (entity, component) = ownedComponent
+		componentManifest[ownedComponent] = { Window("${entity.debugName} - ${component.debugName}", withDropHandlers(getWidget(Component::class.java, component)), size = windowMin(), openAt = openAt) }
+	}
 
 	override fun invoke() {
 		if (!subVisible.get()) subVisible.set(true)
@@ -75,17 +93,12 @@ class Editor(
 
 	private fun drawDropHandlers() {
 		onDrop {
-			useDragDropPayload<GameSystem>(systemDragDropId) {
-				systemManifest[it] = { Window(it.debugName, withDropHandlers(getWidget(GameSystem::class.java, it)), size = windowMin, openAt = OpenAt.Cursor) }
-			}
-			useDragDropPayload<Entity>(entityDragDropId) {
-				entityManifest[it] = { Window("Entity ${it.id}", withDropHandlers(EntityDetails(it, componentDragDropId)), size = windowMin, openAt = OpenAt.Cursor) }
-			}
-			useDragDropPayload<OwnedComponent>(componentDragDropId) {
-				val (entity, component) = it
-				componentManifest[it] = { Window("${entity.id}.${component.debugName}", withDropHandlers(getWidget(Component::class.java, component)), size = windowMin, openAt = OpenAt.Cursor) }
-			}
+			useDragDropPayload<GameSystem>(systemDragDropId) { focus(it, OpenAt.Cursor) }
+			useDragDropPayload<Entity>(entityDragDropId) { focus(it, OpenAt.Cursor) }
+			useDragDropPayload<OwnedComponent>(componentDragDropId) { focus(it, OpenAt.Cursor) }
 		}
 	}
+
+	private fun windowMin(scale: Double = 1.0) = Vector2.of(128 * scale, 128 * scale)
 }
 

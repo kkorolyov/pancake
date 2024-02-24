@@ -5,6 +5,8 @@ import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
+import dev.kkorolyov.pancake.editor.dragInput
+import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.input3
@@ -46,7 +48,7 @@ class BoundsComponentWidgetFactory : WidgetFactory<Component> {
 
 		Widget {
 			tree("round") {
-				input("##radius", radius) { radius = it }
+				dragInput("##radius", radius, min = 0.0) { radius = it }
 				tooltip("radius")
 
 				disabledIf(radius <= 0.0) {
@@ -54,7 +56,7 @@ class BoundsComponentWidgetFactory : WidgetFactory<Component> {
 				}
 			}
 			tree("box") {
-				input3("##dimensions", dimensions) { dimensions.set(it) }
+				dragInput3("##dimensions", dimensions, min = 0.0) { dimensions.set(it) }
 				tooltip("dimensions")
 
 				disabledIf(dimensions.x < 0.0 || dimensions.y < 0.0 || dimensions.z < 0.0) {

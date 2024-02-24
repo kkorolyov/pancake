@@ -3,9 +3,9 @@ package dev.kkorolyov.pancake.graphics.editor
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
+import dev.kkorolyov.pancake.editor.dragInput2
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
-import dev.kkorolyov.pancake.editor.input2
 import dev.kkorolyov.pancake.editor.propertiesTable
 import dev.kkorolyov.pancake.editor.propertyRow
 import dev.kkorolyov.pancake.graphics.component.Lens
@@ -20,13 +20,13 @@ class LensComponentWidgetFactory : WidgetFactory<Component> {
 		Widget {
 			propertiesTable("lens") {
 				propertyRow("Scale") {
-					input2("##scale", scale, onChange = scale::set)
+					dragInput2("##scale", scale, onChange = scale::set)
 				}
 				propertyRow("Size") {
-					input2("##size", size, onChange = size::set)
+					dragInput2("##size", size, onChange = size::set)
 				}
 				propertyRow("Offset") {
-					input2("##offset", offset, onChange = offset::set)
+					dragInput2("##offset", offset, onChange = offset::set)
 				}
 				propertyRow("Mask") {
 					input("##mask", mask.toLongArray().contentToString(), flags = ImGuiInputTextFlags.ReadOnly) {}
@@ -47,13 +47,13 @@ class LensComponentWidgetFactory : WidgetFactory<Component> {
 		Widget {
 			propertiesTable("lens") {
 				propertyRow("Scale") {
-					input2("##scale", scale, onChange = scale::set)
+					dragInput2("##scale", scale, onChange = scale::set)
 				}
 				propertyRow("Size") {
-					input2("##size", size, onChange = size::set)
+					dragInput2("##size", size, onChange = size::set)
 				}
 				propertyRow("Offset") {
-					input2("##offset", offset, onChange = offset::set)
+					dragInput2("##offset", offset, onChange = offset::set)
 				}
 				propertyRow("Active") {
 					input("##active", active) { active = it }

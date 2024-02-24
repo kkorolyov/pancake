@@ -4,8 +4,8 @@ import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.disabledIf
+import dev.kkorolyov.pancake.editor.dragInput
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
-import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 
@@ -14,10 +14,10 @@ class VelocityLimitComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<VelocityLimit>(t) {
 		Widget {
-			input("##linear", linear) { linear = it }
+			dragInput("##linear", linear, min = 0.0) { linear = it }
 			tooltip("linear velocity limit (m/s)")
 
-			input("##angular", angular) { angular = it }
+			dragInput("##angular", angular, min = 0.0) { angular = it }
 			tooltip("angular velocity limit (rad/s)")
 		}
 	}
@@ -27,10 +27,10 @@ class VelocityLimitComponentWidgetFactory : WidgetFactory<Component> {
 		var angular = 0.0
 
 		Widget {
-			input("##linear", linear) { linear = it }
+			dragInput("##linear", linear, min = 0.0) { linear = it }
 			tooltip("linear velocity limit (m/s)")
 
-			input("##angular", angular) { angular = it }
+			dragInput("##angular", angular, min = 0.0) { angular = it }
 			tooltip("angular velocity limit (rad/s)")
 
 			disabledIf(linear < 0.0 || angular < 0.0) {

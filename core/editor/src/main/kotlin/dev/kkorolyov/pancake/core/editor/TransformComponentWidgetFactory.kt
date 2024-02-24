@@ -3,8 +3,8 @@ package dev.kkorolyov.pancake.core.editor
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
+import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
-import dev.kkorolyov.pancake.editor.input3
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.math.Vector3
@@ -14,10 +14,10 @@ class TransformComponentWidgetFactory : WidgetFactory<Component> {
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Transform>(t) {
 		Widget {
-			input3("##translation", translation) { translation.set(it) }
+			dragInput3("##translation", translation) { translation.set(it) }
 			tooltip("translation")
 
-			input3("##scale", scale) { scale.set(it) }
+			dragInput3("##scale", scale) { scale.set(it) }
 			tooltip("scale")
 		}
 	}
@@ -27,10 +27,10 @@ class TransformComponentWidgetFactory : WidgetFactory<Component> {
 		val scale = Vector3.of(1.0, 1.0, 1.0)
 
 		Widget {
-			input3("##translation", translation) { translation.set(it) }
+			dragInput3("##translation", translation) { translation.set(it) }
 			tooltip("translation")
 
-			input3("##scale", scale) { scale.set(it) }
+			dragInput3("##scale", scale) { scale.set(it) }
 			tooltip("scale")
 
 			button("apply") {

@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.entity;
 
 import dev.kkorolyov.flub.data.SparseMultiset;
+import dev.kkorolyov.pancake.platform.Debuggable;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,17 +11,21 @@ import java.util.Objects;
 /**
  * A container of {@link Component}s of distinct implementation types.
  */
-public final class Entity implements Iterable<Component> {
+public final class Entity implements Iterable<Component>, Debuggable {
 	private final int id;
 	private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 	private final SparseMultiset<Entity, ? super Class<? extends Component>> pool;
 
+	private final String debugName;
+
 	/**
-	 * Constructs a new entity attached to {@code pool}.
+	 * Constructs a new entity attached to {@code pool} with custom {@code debugName}.
+	 * {@code debugName} may be {@code null}.
 	 */
-	Entity(SparseMultiset<Entity, ? super Class<? extends Component>> pool) {
+	Entity(SparseMultiset<Entity, ? super Class<? extends Component>> pool, String debugName) {
 		this.pool = pool;
 		id = this.pool.add(this);
+		this.debugName = debugName != null ? debugName : "Entity " + id;
 	}
 
 	/**
@@ -75,6 +80,11 @@ public final class Entity implements Iterable<Component> {
 	}
 
 	@Override
+	public String getDebugName() {
+		return debugName;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
@@ -90,6 +100,7 @@ public final class Entity implements Iterable<Component> {
 	public String toString() {
 		return "Entity{" +
 				"id=" + id +
+				"debugName=" + debugName +
 				", components=" + components +
 				'}';
 	}

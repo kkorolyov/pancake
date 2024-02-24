@@ -130,6 +130,16 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 		return signature.iterator();
 	}
 
+	/**
+	 * Returns the simple name of this object's class.
+	 * If it has no simple name - e.g. anonymous class - returns the class full name.
+	 */
+	@Override
+	public String getDebugName() {
+		String simpleName = getClass().getSimpleName();
+		return simpleName.isEmpty() ? getClass().getName() : simpleName;
+	}
+
 	@Override
 	public String toString() {
 		return "GameSystem{" +
