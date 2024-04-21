@@ -1,5 +1,6 @@
 [versions]
-kotlin = "1.8.10"
+kotlin = "1.9.+"
+dokka = "1.9.+"
 
 flub = "0.+"
 
@@ -22,7 +23,7 @@ jmh = "0.+"
 [libraries]
 # actually plugins, but applied through buildSrc
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "kotlin" }
+gradle-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 gradle-jmh = { module = "me.champeau.jmh:jmh-gradle-plugin", version.ref = "jmh" }
 
 flub = { module = "dev.kkorolyov:flub", version.ref = "flub" }
