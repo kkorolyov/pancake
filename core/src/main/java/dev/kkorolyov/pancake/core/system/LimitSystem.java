@@ -9,13 +9,13 @@ import dev.kkorolyov.pancake.platform.entity.Entity;
  * Applies {@link Limit} constraints to components.
  */
 public final class LimitSystem<T extends Component, L extends Limit<T>> extends GameSystem {
-	private final Class<T> componentC;
-	private final Class<L> limitC;
+	private final Class<? extends T> componentC;
+	private final Class<? extends L> limitC;
 
 	/**
-	 * Constructs a new limit system
+	 * Constructs a new limit system applying {@code limitC} component to {@code componentC} component.
 	 */
-	public LimitSystem(Class<T> componentC, Class<L> limitC) {
+	public LimitSystem(Class<? extends T> componentC, Class<? extends L> limitC) {
 		super(componentC, limitC);
 
 		this.componentC = componentC;
