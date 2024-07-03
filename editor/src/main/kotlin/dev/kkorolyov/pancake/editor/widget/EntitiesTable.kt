@@ -59,13 +59,13 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 	override fun invoke() {
 		// leave room for controls below
 		table("entities", 5, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY) {
-			ImGui.tableSetupColumn("ID")
-			ImGui.tableSetupColumn("Name")
-			ImGui.tableSetupColumn("Components")
-			ImGui.tableSetupColumn("Alias")
-			ImGui.tableSetupColumn("Select", ImGuiTableColumnFlags.WidthFixed)
-			ImGui.tableSetupScrollFreeze(1, 1)
-			ImGui.tableHeadersRow()
+			configColumn("ID")
+			configColumn("Name")
+			configColumn("Components")
+			configColumn("Alias")
+			configColumn("Select", ImGuiTableColumnFlags.WidthFixed)
+			scrollFreeze(1, 1)
+			headersRow()
 
 			// initialize here to have a reference to the Table receiver
 			if (!::rowRenderer.isInitialized) {
@@ -75,7 +75,6 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 							inlineDetails.open(current.set(it))
 						}
 						contextMenu {
-							menuItem("new") { toAdd = true }
 							menuItem("destroy") { toRemove = it }
 						}
 
@@ -117,10 +116,8 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 			rowRenderer(entities.toList())
 
 			column {
-				selectable("##empty", ImGuiSelectableFlags.SpanAllColumns) {}
-				contextMenu {
-					menuItem("new") { toAdd = true }
-				}
+				selectable("##empty", flags = ImGuiSelectableFlags.SpanAllColumns) { toAdd = true }
+				tooltip("add entity")
 			}
 
 			inlineDetails()

@@ -22,6 +22,7 @@ import imgui.flag.ImGuiMouseButton
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiSliderFlags
+import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.internal.ImGui
@@ -354,11 +355,11 @@ inline fun disabledIf(disabled: Boolean, op: Op) {
 }
 
 /**
- * Draws a selectable area for [value] as text, using [flags], invoking [onClick] when it is selected.
+ * Draws a selectable area for [value] as text, using [selected] and [flags], invoking [onClick] when it is selected.
  * Returns `true` when selected.
  */
-inline fun selectable(value: Any, flags: Int = ImGuiSelectableFlags.None, onClick: Op): Boolean {
-	val result = ImGui.selectable(value.toString(), false, flags)
+inline fun selectable(value: Any, selected: Boolean = false, flags: Int = ImGuiSelectableFlags.None, onClick: Op = {}): Boolean {
+	val result = ImGui.selectable(value.toString(), selected, flags)
 	if (result) onClick()
 	return result
 }
@@ -591,6 +592,40 @@ inline fun dragInput2(label: String, value: Vector2, format: String = "%.3f", mi
  */
 inline fun dragInput3(label: String, value: Vector3, format: String = "%.3f", min: Double = -Float.MAX_VALUE.toDouble(), max: Double = Float.MAX_VALUE.toDouble(), speed: Float = 0.1f, flags: Int = ImGuiSliderFlags.None, onChange: OnChange<Vector3> = { }): Boolean =
 	dragInput(label, value.x, value.y, value.z, format, min, max, speed, flags) { x, y, z -> onChange(Vector3.of(x, y, z)) }
+
+/**
+ * Draws a slider input for [value], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun sliderInput(label: String, value: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), onChange: OnChange<Int> = { }): Boolean {
+	val ptr = intArrayOf(value)
+
+	val result = ImGui.sliderInt(label, ptr, min, max, format)
+	if (result) onChange(ptr[0])
+	return result
+}
+/**
+ * Draws a slider input for [value] and [value1], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun sliderInput(label: String, value: Int, value1: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), onChange: OnChange2<Int> = { _, _ -> }): Boolean {
+	val ptr = intArrayOf(value, value1)
+
+	val result = ImGui.sliderInt(label, ptr, min, max, format)
+	if (result) onChange(ptr[0], ptr[1])
+	return result
+}
+/**
+ * Draws a slider input for [value], [value1], and [value2], invoking [onChange] with the updated values if changed.
+ * Returns `true` when changed.
+ */
+inline fun sliderInput(label: String, value: Int, value1: Int, value2: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), onChange: OnChange3<Int> = { _, _, _ -> }): Boolean {
+	val ptr = intArrayOf(value, value1, value2)
+
+	val result = ImGui.sliderInt(label, ptr, min, max, format)
+	if (result) onChange(ptr[0], ptr[1], ptr[2])
+	return result
+}
 
 /**
  * Mouse-specific configuration and actions.
@@ -845,6 +880,27 @@ object Ctx {
 	}
 
 	object Table {
+		/**
+		 * Configures column with header `label` and `flags`.
+		 * Subsequent calls to this configure the subsequent column.
+		 * Submit config with [headersRow].
+		 */
+		fun configColumn(label: String, flags: Int = ImGuiTableColumnFlags.None) {
+			ImGui.tableSetupColumn(label, flags)
+		}
+		/**
+		 * Configures a block of `numCol x numRow` from the top-left edge to stay visible when scrolled.
+		 */
+		fun scrollFreeze(numCol: Int, numRow: Int) {
+			ImGui.tableSetupScrollFreeze(numCol, numRow)
+		}
+		/**
+		 * Writes a table headers row according to prior [configColumn]s.
+		 */
+		fun headersRow() {
+			ImGui.tableHeadersRow()
+		}
+
 		/**
 		 * Runs [op] in a new table column.
 		 */
