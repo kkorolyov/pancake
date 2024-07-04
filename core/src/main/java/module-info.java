@@ -8,6 +8,7 @@ module dev.kkorolyov.pancake.core {
 
 	requires dev.kkorolyov.pancake.platform;
 
+	exports dev.kkorolyov.pancake.core.animation;
 	exports dev.kkorolyov.pancake.core.component;
 	exports dev.kkorolyov.pancake.core.component.event;
 	exports dev.kkorolyov.pancake.core.component.limit;

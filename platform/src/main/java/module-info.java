@@ -20,6 +20,7 @@ module dev.kkorolyov.pancake.platform {
 
 	exports dev.kkorolyov.pancake.platform;
 	exports dev.kkorolyov.pancake.platform.action;
+	exports dev.kkorolyov.pancake.platform.animation;
 	exports dev.kkorolyov.pancake.platform.entity;
 	exports dev.kkorolyov.pancake.platform.io;
 	exports dev.kkorolyov.pancake.platform.math;

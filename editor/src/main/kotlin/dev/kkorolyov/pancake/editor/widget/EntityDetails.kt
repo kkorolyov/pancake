@@ -8,13 +8,14 @@ import dev.kkorolyov.pancake.editor.data.OwnedComponent
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
-import dev.kkorolyov.pancake.editor.menu
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.toStructEntity
+import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
 import imgui.ImGui
+import imgui.flag.ImGuiPopupFlags
 import io.github.classgraph.ClassGraph
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
@@ -50,7 +51,6 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 					inlineDetails.open(currentDetails.set(it))
 				}
 				contextMenu {
-					drawAddMenu()
 					menuItem("remove") {
 						toRemove = it::class.java
 					}
@@ -65,9 +65,20 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 			}
 
 			selectable("##empty") {}
-			contextMenu {
-				drawAddMenu()
+			contextMenu(flags = ImGuiPopupFlags.MouseButtonLeft) {
+				componentTypes.forEach { type ->
+					if (entity[type] == null) {
+						menuItem(type.simpleName) {
+							create = Modal("New ${type.simpleName}")
+							createContent = getWidget(Component::class.java, type) {
+								create?.close()
+								toAdd = it
+							}
+						}
+					}
+				}
 			}
+			tooltip("add component")
 			inlineDetails()
 		}
 		button("copy yaml") {
@@ -90,21 +101,5 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 			createContent = null
 		}
 		create?.invoke()
-	}
-
-	private fun drawAddMenu() {
-		menu("add") {
-			componentTypes.forEach { type ->
-				if (entity[type] == null) {
-					menuItem(type.simpleName) {
-						create = Modal("New ${type.simpleName}")
-						createContent = getWidget(Component::class.java, type) {
-							create?.close()
-							toAdd = it
-						}
-					}
-				}
-			}
-		}
 	}
 }
