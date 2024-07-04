@@ -1,6 +1,7 @@
 module:dev.kkorolyov.pancake.platform
 dev.kkorolyov.pancake.platform
 dev.kkorolyov.pancake.platform.action
+dev.kkorolyov.pancake.platform.animation
 dev.kkorolyov.pancake.platform.entity
 dev.kkorolyov.pancake.platform.io
 dev.kkorolyov.pancake.platform.io.internal

@@ -1,4 +1,5 @@
 module:dev.kkorolyov.pancake.core
+dev.kkorolyov.pancake.core.animation
 dev.kkorolyov.pancake.core.component
 dev.kkorolyov.pancake.core.component.event
 dev.kkorolyov.pancake.core.component.limit
