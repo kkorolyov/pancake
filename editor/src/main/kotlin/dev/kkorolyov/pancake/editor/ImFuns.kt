@@ -24,6 +24,7 @@ import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiSliderFlags
 import imgui.flag.ImGuiTableColumnFlags
 import imgui.flag.ImGuiTableFlags
+import imgui.flag.ImGuiTreeNodeFlags
 import imgui.flag.ImGuiWindowFlags
 import imgui.internal.ImGui
 import imgui.internal.flag.ImGuiDockNodeFlags
@@ -121,11 +122,12 @@ inline fun onClick(op: Op) {
 	if (ImGui.isItemClicked()) op()
 }
 /**
- * Runs [op] when the last set item is hovered.
+ * Runs [op] while the last set item is hovered.
  */
 inline fun onHover(flags: Int = ImGuiHoveredFlags.None, op: Op) {
 	if (ImGui.isItemHovered(flags)) op()
 }
+
 /**
  * Runs [op] while the last set item is active (e.g. held down, being edited).
  */
@@ -133,17 +135,22 @@ inline fun onActive(op: Op) {
 	if (ImGui.isItemActive()) op()
 }
 /**
- * Runs [op] whenever the last item is focused.
- * Returns `true` when focused.
+ * Runs [onStart] when the last set item is activated, and [onEnd] when it is deactivated.
  */
-inline fun onFocus(op: Op): Boolean {
-	val result = ImGui.isItemFocused()
-	if (result) op()
-	return result
+inline fun onActive(onStart: Op, onEnd: Op) {
+	if (ImGui.isItemActivated()) onStart()
+	if (ImGui.isItemDeactivated()) onEnd()
 }
 
 /**
- * Runs [op] when the last set item is dragged.
+ * Runs [op] while the last item is focused.
+ */
+inline fun onFocus(op: Op) {
+	if (ImGui.isItemFocused()) op()
+}
+
+/**
+ * Runs [op] while the last set item is dragged.
  * See also: [onDrop]
  */
 inline fun onDrag(flags: Int = ImGuiDragDropFlags.None, op: Ctx.Drag.() -> Unit) {
@@ -183,8 +190,8 @@ inline fun child(id: String, width: Float = 0f, height: Float = 0f, border: Bool
 /**
  * Runs [op] in a tree node labeled [label].
  */
-inline fun tree(label: String, op: Op) {
-	if (ImGui.treeNode(label)) {
+inline fun tree(label: String, flags: Int = ImGuiTreeNodeFlags.None, op: Op) {
+	if (ImGui.treeNodeEx(label, flags)) {
 		op()
 		ImGui.treePop()
 	}

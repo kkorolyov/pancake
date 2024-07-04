@@ -65,6 +65,26 @@ public final class Playback<T extends Frame<T>> {
 		}
 	}
 
+	/**
+	 * Returns the backing timeline.
+	 */
+	public Timeline<T> getTimeline() {
+		return timeline;
+	}
+	/**
+	 * Returns the current offset into the backing timeline.
+	 */
+	public int getOffset() {
+		return cursor;
+	}
+
+	/**
+	 * Returns the maximum supported offset of this playback.
+	 */
+	public int size() {
+		return timeline.size();
+	}
+
 	private enum State {
 		/**
 		 * Cursor is at {@code 0}.

@@ -51,6 +51,16 @@ public final class TransformFrame implements Frame<TransformFrame> {
 		transform.getScale().add(scale);
 	}
 
+	public Vector3 getTranslation() {
+		return translation;
+	}
+	public Vector3 getRotation() {
+		return rotation;
+	}
+	public Vector3 getScale() {
+		return scale;
+	}
+
 	@Override
 	public TransformFrame lerp(TransformFrame other, double mix) {
 		return new TransformFrame(

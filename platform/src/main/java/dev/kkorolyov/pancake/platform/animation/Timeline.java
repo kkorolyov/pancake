@@ -2,13 +2,15 @@ package dev.kkorolyov.pancake.platform.animation;
 
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
 /**
  * A collection of key {@link Frame}s at specific offsets, returning interpolated frames at any offsets between {@code 0} and {@link #size()}.
  */
-public final class Timeline<T extends Frame<T>> {
+public final class Timeline<T extends Frame<T>> implements Iterable<Map.Entry<Integer, T>> {
 	private final NavigableMap<Integer, T> keyframes = new TreeMap<>();
 
 	/**
@@ -49,5 +51,10 @@ public final class Timeline<T extends Frame<T>> {
 	 */
 	public int size() {
 		return keyframes.isEmpty() ? -1 : keyframes.lastKey();
+	}
+
+	@Override
+	public Iterator<Map.Entry<Integer, T>> iterator() {
+		return keyframes.entrySet().iterator();
 	}
 }
