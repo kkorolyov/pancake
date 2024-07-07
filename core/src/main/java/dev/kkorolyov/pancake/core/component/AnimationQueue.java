@@ -53,12 +53,14 @@ public final class AnimationQueue implements Component, Iterable<AnimationQueue.
 							it.remove();
 						}
 						case RESET -> {
-							partial = config.playback().reset();
+							config.playback().setOffset(0);
+							partial = config.playback().update(0);
 
 							it.remove();
 						}
 						case LOOP -> {
-							partial = config.playback().reset();
+							config.playback().setOffset(0);
+							partial = config.playback().update(0);
 						}
 					}
 				}
@@ -75,11 +77,14 @@ public final class AnimationQueue implements Component, Iterable<AnimationQueue.
 	 * Resets all playbacks to their respective starts, and returns the sum of each playback's frame difference.
 	 * Returns {@code null} if all playbacks return {@code null}.
 	 */
+	// TODO does this have a use-case?
+	// TODO perhaps provide a setOffset API
 	public TransformFrame reset() {
 		TransformFrame result = null;
 
 		for (var config : timelines) {
-			var partial = config.playback().reset();
+			config.playback().setOffset(0);
+			var partial = config.playback().update(0);
 
 			result = (result == null) ? partial : (partial == null) ? result : result.sum(partial);
 		}

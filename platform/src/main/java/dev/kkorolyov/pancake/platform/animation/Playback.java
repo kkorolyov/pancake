@@ -1,11 +1,13 @@
 package dev.kkorolyov.pancake.platform.animation;
 
+import dev.kkorolyov.pancake.platform.utility.ArgVerify;
+
 /**
  * Scrolls through a timeline using an incrementing cursor, each time returning the difference between the current timeline value and the last-accessed value.
  */
 public final class Playback<T extends Frame<T>> {
 	private final Timeline<T> timeline;
-	private int cursor;
+	private int offset;
 	private T last;
 	private State state = State.INITIAL;
 
@@ -21,47 +23,51 @@ public final class Playback<T extends Frame<T>> {
 	 * If done iterating through the timeline, returns {@code null}.
 	 */
 	public T update(int amount) {
-		return switch (state) {
-			case INITIAL -> {
-				last = timeline.get(0);
-				state = State.PLAYING;
-
-				yield last;
-			}
-			case PLAYING -> {
-				cursor += amount;
-				if (cursor >= timeline.size()) {
-					cursor = timeline.size();
-					state = State.DONE;
-				}
-
-				T current = timeline.get(cursor);
-				T difference = current.diff(last);
-
-				last = current;
-
-				yield difference;
-			}
-			case DONE -> null;
-		};
-	}
-
-	/**
-	 * Returns the difference between the last-accessed timeline value and the timeline {@code 0} value, and resets the playback cursor to {@code 0}.
-	 * If {@link #update(int)} has not yet been called to start playback, simply returns {@code null}.
-	 */
-	public T reset() {
-		if (state == State.INITIAL) {
+		if (timeline.size() < 0) {
+			state = State.INITIAL;
 			return null;
 		} else {
-			T first = timeline.get(0);
-			T difference = first.diff(last);
+			return switch (state) {
+				case INITIAL -> {
+					last = timeline.get(0);
+					state = State.PLAYING;
 
-			cursor = 0;
-			last = first;
-			state = State.PLAYING;
+					yield last;
+				}
+				case PLAYING -> {
+					offset += amount;
+					if (offset >= timeline.size()) {
+						offset = timeline.size();
+						state = State.DONE;
+					}
 
-			return difference;
+					T current = timeline.get(offset);
+					T difference = current.diff(last);
+
+					last = current;
+
+					yield difference;
+				}
+				case SCRUBBING -> {
+					if (offset >= timeline.size()) {
+						offset = timeline.size();
+						state = State.DONE;
+					} else {
+						state = State.PLAYING;
+					}
+					if (last == null) {
+						last = timeline.get(0);
+					}
+
+					T current = timeline.get(offset);
+					T difference = current.diff(last);
+
+					last = current;
+
+					yield difference;
+				}
+				case DONE -> null;
+			};
 		}
 	}
 
@@ -71,11 +77,19 @@ public final class Playback<T extends Frame<T>> {
 	public Timeline<T> getTimeline() {
 		return timeline;
 	}
+
 	/**
 	 * Returns the current offset into the backing timeline.
 	 */
 	public int getOffset() {
-		return cursor;
+		return offset;
+	}
+	/**
+	 * Sets the offset to use on the next call to {@link #update(int)}.
+	 */
+	public void setOffset(int offset) {
+		this.offset = ArgVerify.betweenInclusive("offset", 0, size(), offset);
+		state = State.SCRUBBING;
 	}
 
 	/**
@@ -87,7 +101,7 @@ public final class Playback<T extends Frame<T>> {
 
 	private enum State {
 		/**
-		 * Cursor is at {@code 0}.
+		 * Offset is at {@code 0}.
 		 * The next {@link #update(int)} will return the timeline {@code 0} value and start playback.
 		 */
 		INITIAL,
@@ -100,6 +114,11 @@ public final class Playback<T extends Frame<T>> {
 		 * Finished scrolling through the timeline.
 		 * Further {@link #update(int)} calls will return {@code null}.
 		 */
-		DONE
+		DONE,
+		/**
+		 * Manual offset provided since the last {@link #update(int)}.
+		 * The next {@link #update(int)} will return the delta to that value.
+		 */
+		SCRUBBING
 	}
 }

@@ -35,7 +35,7 @@ class AnimationQueueSpec extends Specification {
 		expect:
 		animationQueue.reset() == null
 	}
-	def "reset returns null if no prior updates"() {
+	def "reset returns no change if no prior updates"() {
 		when:
 		animationQueue.add(new Timeline<TransformFrame>().with {
 			put(0, new TransformFrame())
@@ -44,7 +44,7 @@ class AnimationQueueSpec extends Specification {
 		}, AnimationQueue.Type.ONCE)
 
 		then:
-		animationQueue.reset() == null
+		animationQueue.reset() == new TransformFrame()
 	}
 	def "reset returns cumulative delta to first keyframe"() {
 		when:
