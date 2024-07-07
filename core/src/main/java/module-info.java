@@ -1,3 +1,4 @@
+import dev.kkorolyov.pancake.core.io.AnimationStructizer;
 import dev.kkorolyov.pancake.core.io.ComponentStructizer;
 import dev.kkorolyov.pancake.core.registry.ActionResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.io.Structizer;
@@ -16,6 +17,8 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.system;
 	exports dev.kkorolyov.pancake.core.system.cleanup;
 
-	provides Structizer with ComponentStructizer;
+	provides Structizer with
+			AnimationStructizer,
+			ComponentStructizer;
 	provides ResourceConverterFactory with ActionResourceConverterFactory;
 }
