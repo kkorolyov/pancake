@@ -10,7 +10,6 @@ import dev.kkorolyov.pancake.editor.disabledIf
 import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
-import dev.kkorolyov.pancake.editor.onActive
 import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.sliderInput
 import dev.kkorolyov.pancake.editor.tooltip
@@ -22,26 +21,19 @@ class AnimationQueueComponentWidgetFactory : WidgetFactory<Component> {
 	override val type: Class<Component> = Component::class.java
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<AnimationQueue>(t) {
-		var lastActive = false
-
 		var newOffset = 0
 		val newKeyframe = TransformFrame()
 
 		Widget {
-			val driverPlayback = maxByOrNull { it.playback.size() }?.playback
-			driverPlayback?.let {
+			maxByOrNull { it.playback.size() }?.playback?.let { driverPlayback ->
 				Layout.width(Layout.stretchWidth) {
-					sliderInput("##offset", it.offset, min = 0, max = it.size())
+					sliderInput("##offset", driverPlayback.offset, min = 0, max = driverPlayback.size()) { newOffset ->
+						forEach { playbackConfig ->
+							playbackConfig.playback.offset = newOffset
+						}
+					}
 				}
 				tooltip("offset")
-
-				onActive(
-					{
-						lastActive = isActive
-						isActive = false
-					},
-					{ isActive = lastActive }
-				)
 			}
 
 			forEachIndexed { playbackConfigI, playbackConfig ->

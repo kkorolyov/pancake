@@ -14,6 +14,11 @@ class PlaybackSpec extends Specification {
 
 	Playback<IntFrame> playback = new Playback<>(timeline)
 
+	def "update returns null when empty timeline"() {
+		expect:
+		new Playback<>(new Timeline<IntFrame>()).update(0) == null
+	}
+
 	def "1st update returns initial value"() {
 		expect:
 		playback.update(15) == new IntFrame(0)
@@ -51,9 +56,10 @@ class PlaybackSpec extends Specification {
 		playback.update(1) == null
 	}
 
-	def "reset when initial returns null"() {
+	def "reset when initial returns no change"() {
 		expect:
-		playback.reset() == null
+		playback.setOffset(0)
+		playback.update(0) == new IntFrame(0)
 	}
 	def "reset returns diff to previous"() {
 		when:
@@ -61,13 +67,15 @@ class PlaybackSpec extends Specification {
 		playback.update(4)
 
 		then:
-		playback.reset() == new IntFrame(-4)
+		playback.setOffset(0)
+		playback.update(0) == new IntFrame(-4)
 	}
 	def "reset restarts playback"() {
 		when:
 		playback.update(0)
 		playback.update(20)
-		playback.reset()
+		playback.setOffset(0)
+		playback.update(0)
 
 		then:
 		playback.update(3) == new IntFrame(3)

@@ -1,5 +1,7 @@
 package dev.kkorolyov.pancake.core.io
 
+import dev.kkorolyov.pancake.core.animation.TransformFrame
+import dev.kkorolyov.pancake.core.component.AnimationQueue
 import dev.kkorolyov.pancake.core.component.Damping
 import dev.kkorolyov.pancake.core.component.Force
 import dev.kkorolyov.pancake.core.component.Mass
@@ -9,6 +11,7 @@ import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
 import dev.kkorolyov.pancake.core.component.tag.Collidable
 import dev.kkorolyov.pancake.core.component.tag.Correctable
+import dev.kkorolyov.pancake.platform.animation.Timeline
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector3
 
@@ -29,6 +32,244 @@ class ComponentStructizerSpec extends Specification {
 	@Ignore
 	def "full-circles ActionQueue"() {
 		// TODO
+	}
+
+	def "toStructs AnimationQueue"() {
+		expect:
+		structizer.toStruct(new AnimationQueue().with {
+			it.add(
+					new Timeline<TransformFrame>().with {
+						it.put(0, new TransformFrame())
+						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
+						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it
+					},
+					AnimationQueue.Type.ONCE
+			)
+			it.add(
+					new Timeline<TransformFrame>().with {
+						it.put(0, new TransformFrame())
+						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
+						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it
+					},
+					AnimationQueue.Type.LOOP
+			)
+			it.add(
+					new Timeline<TransformFrame>().with {
+						it.put(0, new TransformFrame())
+						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
+						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it
+					},
+					AnimationQueue.Type.RESET
+			)
+			it
+		}).get() == [
+				[
+						timeline: [
+								0: [
+										translation: [0, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								4: [
+										translation: [1, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								34: [
+										translation: [0, 0, 0],
+										rotation: [1, 0, 0],
+										scale: [0, 0, 0]
+								]
+						],
+						type: "ONCE"
+				],
+				[
+						timeline: [
+								0: [
+										translation: [0, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								4: [
+										translation: [1, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								34: [
+										translation: [0, 0, 0],
+										rotation: [1, 0, 0],
+										scale: [0, 0, 0]
+								]
+						],
+						type: "LOOP"
+				],
+				[
+						timeline: [
+								0: [
+										translation: [0, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								4: [
+										translation: [1, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								34: [
+										translation: [0, 0, 0],
+										rotation: [1, 0, 0],
+										scale: [0, 0, 0]
+								]
+						],
+						type: "RESET"
+				]
+		]
+	}
+	def "fromStructs AnimationQueue"() {
+		when:
+		def result = structizer.fromStruct(AnimationQueue, [
+				[
+						timeline: [
+								0: [
+										translation: [0, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								4: [
+										translation: [1, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								34: [
+										translation: [0, 0, 0],
+										rotation: [1, 0, 0],
+										scale: [0, 0, 0]
+								]
+						],
+						type: "ONCE"
+				],
+				[
+						timeline: [
+								0: [
+										translation: [0, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								4: [
+										translation: [1, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								34: [
+										translation: [0, 0, 0],
+										rotation: [1, 0, 0],
+										scale: [0, 0, 0]
+								]
+						],
+						type: "LOOP"
+				],
+				[
+						timeline: [
+								0: [
+										translation: [0, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								4: [
+										translation: [1, 0, 0],
+										rotation: [0, 0, 0],
+										scale: [0, 0, 0]
+								],
+								34: [
+										translation: [0, 0, 0],
+										rotation: [1, 0, 0],
+										scale: [0, 0, 0]
+								]
+						],
+						type: "RESET"
+				]
+		]).get().toList()
+
+		then:
+		result[0].playback().timeline.toList() == [
+				0: new TransformFrame(),
+				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
+				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+		].entrySet().toList()
+		result[0].type() == AnimationQueue.Type.ONCE
+
+		result[1].playback().timeline.toList() == [
+				0: new TransformFrame(),
+				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
+				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+		].entrySet().toList()
+		result[1].type() == AnimationQueue.Type.LOOP
+
+		result[2].playback().timeline.toList() == [
+				0: new TransformFrame(),
+				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
+				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+		].entrySet().toList()
+		result[2].type() == AnimationQueue.Type.RESET
+	}
+	def "full-circles AnimationQueue"() {
+		when:
+		def result = structizer.toStruct(new AnimationQueue().with {
+			it.add(
+					new Timeline<TransformFrame>().with {
+						it.put(0, new TransformFrame())
+						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
+						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it
+					},
+					AnimationQueue.Type.ONCE
+			)
+			it.add(
+					new Timeline<TransformFrame>().with {
+						it.put(0, new TransformFrame())
+						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
+						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it
+					},
+					AnimationQueue.Type.LOOP
+			)
+			it.add(
+					new Timeline<TransformFrame>().with {
+						it.put(0, new TransformFrame())
+						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
+						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it
+					},
+					AnimationQueue.Type.RESET
+			)
+			it
+		}).flatMap { structizer.fromStruct(AnimationQueue, it) }
+				.get().toList()
+
+		then:
+		result[0].playback().timeline.toList() == [
+				0: new TransformFrame(),
+				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
+				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+		].entrySet().toList()
+		result[0].type() == AnimationQueue.Type.ONCE
+
+		result[1].playback().timeline.toList() == [
+				0: new TransformFrame(),
+				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
+				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+		].entrySet().toList()
+		result[1].type() == AnimationQueue.Type.LOOP
+
+		result[2].playback().timeline.toList() == [
+				0: new TransformFrame(),
+				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
+				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+		].entrySet().toList()
+		result[2].type() == AnimationQueue.Type.RESET
 	}
 
 	@Ignore
