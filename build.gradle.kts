@@ -23,7 +23,7 @@ tasks.register("allDocs") {
 	group = "documentation"
 	description = "Bundles all project documentation together"
 
-	val destination = "${project.buildDir}/docs"
+	val destination = "${project.layout.buildDirectory}/docs"
 	val subDocs = subprojects.map {
 		it.tasks.withType<DokkaTask>().filter { it.name == "dokkaHtml" }.ifEmpty { it.tasks.withType<Javadoc>() }
 	}.flatten()

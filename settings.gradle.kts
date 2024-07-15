@@ -16,7 +16,6 @@ includeIn("graphics-gl-editor", "graphics/gl/editor")
 
 include("input")
 includeIn("input-glfw", "input/glfw")
-includeIn("input-editor", "input/editor")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
