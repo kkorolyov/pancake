@@ -14,20 +14,20 @@ jobs:
       - id: checkout
         uses: actions/checkout@v4
       - id: check
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/wrapper-validation@v3
 
   build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        version: [ 17 ]
+        version: [ 21 ]
 
     steps:
       - id: checkout
         uses: actions/checkout@v4
       - id: publish-gradle
-        uses: kkorolyov/publish-gradle@0.4.0
+        uses: kkorolyov/publish-gradle@0.4.1
         with:
           java-version: ${{ matrix.version }}
           publish-branch: master
