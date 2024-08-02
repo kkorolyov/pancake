@@ -29,7 +29,7 @@ interface StateEvent : InputEvent {
 			/**
 			 * Returns the state represented by the `GLFW` [value].
 			 */
-			fun forValue(value: Int): State = values()[value]
+			fun forValue(value: Int): State = entries[value]
 		}
 	}
 }
