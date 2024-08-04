@@ -1,0 +1,49 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input////PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/CursorPosEvent///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-cursor-pos-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/CursorPosEvent/CursorPosEvent/#kotlin.Long#kotlin.Double#kotlin.Double/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-cursor-pos-event/-cursor-pos-event.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/CursorPosEvent/window/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-cursor-pos-event/window.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/CursorPosEvent/x/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-cursor-pos-event/x.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/CursorPosEvent/y/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-cursor-pos-event/y.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/InputEvent///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-input-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/InputEvent/window/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-input-event/window.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/KeyEvent///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-key-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/KeyEvent/KeyEvent/#kotlin.Long#kotlin.Int#kotlin.Int#dev.kkorolyov.pancake.input.glfw.input.StateEvent.State#kotlin.Int/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-key-event/-key-event.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/KeyEvent/key/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-key-event/key.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/KeyEvent/mods/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-key-event/mods.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/KeyEvent/scanCode/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-key-event/scan-code.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/KeyEvent/state/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-key-event/state.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/KeyEvent/window/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-key-event/window.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/MouseButtonEvent///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-mouse-button-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/MouseButtonEvent/MouseButtonEvent/#kotlin.Long#kotlin.Int#dev.kkorolyov.pancake.input.glfw.input.StateEvent.State#kotlin.Int/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-mouse-button-event/-mouse-button-event.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/MouseButtonEvent/button/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-mouse-button-event/button.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/MouseButtonEvent/mods/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-mouse-button-event/mods.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/MouseButtonEvent/state/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-mouse-button-event/state.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/MouseButtonEvent/window/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-mouse-button-event/window.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State.Companion///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/-companion/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State.Companion/forValue/#kotlin.Int/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/-companion/for-value.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State.PRESS///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/-p-r-e-s-s/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State.RELEASE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/-r-e-l-e-a-s-e/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State.REPEAT///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/-r-e-p-e-a-t/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State/entries/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/entries.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State/value/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/value.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State/valueOf/#kotlin.String/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/value-of.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent.State/values/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/-state/values.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.input/StateEvent/state/#/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.input/-state-event/state.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.system////PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.system/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.system/InputSystem///PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.system/-input-system/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw.system/InputSystem/InputSystem/#kotlin.LongArray/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw.system/-input-system/-input-system.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw////PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/index.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//press/#dev.kkorolyov.pancake.platform.action.Action/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/press.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//release/#dev.kkorolyov.pancake.platform.action.Action/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/release.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//repeat/#dev.kkorolyov.pancake.platform.action.Action/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/repeat.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//toggle/#dev.kkorolyov.pancake.input.Compensated[dev.kkorolyov.pancake.platform.action.Action]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/toggle.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//whenKey/#kotlin.Array[kotlin.Pair[kotlin.Int,dev.kkorolyov.pancake.input.Reaction[dev.kkorolyov.pancake.input.glfw.input.KeyEvent]]]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/when-key.html
+$dokka.location:dev.kkorolyov.pancake.input.glfw//whenMouseButton/#kotlin.Array[kotlin.Pair[kotlin.Int,dev.kkorolyov.pancake.input.Reaction[dev.kkorolyov.pancake.input.glfw.input.MouseButtonEvent]]]/PointingToDeclaration/input-glfw/dev.kkorolyov.pancake.input.glfw/when-mouse-button.html
+dev.kkorolyov.pancake.input.glfw
+dev.kkorolyov.pancake.input.glfw.input
+dev.kkorolyov.pancake.input.glfw.system
+

@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>dev.kkorolyov.pancake.editor</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../index.html">
+                            editor
+                    </a>
+            </div>
+            <div class="library-version">
+0.0.1-rc.0.1+b7c11ab            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":editor:dokkaHtml/main">jvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="editor::dev.kkorolyov.pancake.editor////PointingToDeclaration//741329428">
+  <div class="breadcrumbs"><a href="../../index.html">editor</a><span class="delimiter">/</span><span class="current">dev.kkorolyov.pancake.editor</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-810000346%2FClasslikes%2F741329428" anchor-label="Clipper" id="-810000346%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-clipper/index.html"><span><span>Clipper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-810000346%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-clipper/index.html">Clipper</a><span class="token operator">&lt;</span><a href="-clipper/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">op<span class="token operator">: </span><span class="token punctuation">(</span><a href="-clipper/index.html">T</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Processes a clipped view of items using a given operation. Useful for efficiently rendering a large list of items where only a small subset is visible at a time.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1377390962%2FClasslikes%2F741329428" anchor-label="Container" id="1377390962%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-container/index.html"><span><span>Container</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1377390962%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-container/index.html">Container</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">window<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>FLAGS</span></span><span class="token punctuation">)</span> : <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html">AutoCloseable</a></div><div class="brief "><p class="paragraph">Maintains an <code class="lang-kotlin">ImGui</code> context and renders widget windows in the given <code class="lang-kotlin">GLFW</code> <code class="lang-kotlin">window</code>. <code class="lang-kotlin">flags</code> defaults to <span data-unresolved-link="imgui.flag/ImGuiConfigFlags/ViewportsEnable/#/PointingToDeclaration/">ImGuiConfigFlags.ViewportsEnable</span> | <span data-unresolved-link="imgui.flag/ImGuiConfigFlags/DockingEnable/#/PointingToDeclaration/">ImGuiConfigFlags.DockingEnable</span> | <span data-unresolved-link="imgui.flag/ImGuiConfigFlags/NavEnableKeyboard/#/PointingToDeclaration/">ImGuiConfigFlags.NavEnableKeyboard</span>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-417119220%2FClasslikes%2F741329428" anchor-label="Ctx" id="-417119220%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-ctx/index.html"><span><span>Ctx</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-417119220%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-ctx/index.html">Ctx</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1673091943%2FClasslikes%2F741329428" anchor-label="DebouncedValue" id="-1673091943%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-debounced-value/index.html"><span>Debounced</span><wbr></wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1673091943%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-debounced-value/index.html">DebouncedValue</a><span class="token operator">&lt;</span><a href="-debounced-value/index.html">K</a><span class="token punctuation">, </span><a href="-debounced-value/index.html">V</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mapper<span class="token operator">: </span><span class="token punctuation">(</span><a href="-debounced-value/index.html">K</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-debounced-value/index.html">V</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Stores and returns the last <a href="-debounced-value/index.html">V</a> value generated from a new <a href="-debounced-value/index.html">K</a> key using <span data-unresolved-link="dev.kkorolyov.pancake.editor/DebouncedValue/mapper/#/PointingToDeclaration/">mapper</span>. For reducing redundant identical-input calls to some function (in this case, <span data-unresolved-link="dev.kkorolyov.pancake.editor/DebouncedValue/mapper/#/PointingToDeclaration/">mapper</span>).</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="557456267%2FClasslikes%2F741329428" anchor-label="Draw" id="557456267%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-draw/index.html"><span><span>Draw</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="557456267%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-draw/index.html">Draw</a></div><div class="brief "><p class="paragraph">Custom draw list operations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1925137457%2FClasslikes%2F741329428" anchor-label="FileAccess" id="-1925137457%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-file-access/index.html"><span>File</span><wbr></wbr><span><span>Access</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1925137457%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-file-access/index.html">FileAccess</a></div><div class="brief "><p class="paragraph">Provides for user selection of paths and files on the filesystem.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-349461185%2FClasslikes%2F741329428" anchor-label="History" id="-349461185%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-history/index.html"><span><span>History</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-349461185%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-history/index.html">History</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">_interval<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">_samples<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Plots historical values within the last <span data-unresolved-link="dev.kkorolyov.pancake.editor/History/_interval/#/PointingToDeclaration/">_interval</span> seconds, split into <code class="lang-kotlin">samples</code> even samples.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="331667156%2FClasslikes%2F741329428" anchor-label="Key" id="331667156%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-key/index.html"><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="331667156%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-key/index.html">Key</a></div><div class="brief "><p class="paragraph">Key(board)-specific configuration and actions. Supported keys defined by the backend - like <code class="lang-kotlin">glfw</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1985442587%2FClasslikes%2F741329428" anchor-label="Layout" id="-1985442587%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-layout/index.html"><span><span>Layout</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1985442587%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-layout/index.html">Layout</a></div><div class="brief "><p class="paragraph">Layout options and helpers.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="54705897%2FClasslikes%2F741329428" anchor-label="MagFormat" id="54705897%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mag-format/index.html"><span>Mag</span><wbr></wbr><span><span>Format</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="54705897%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-mag-format/index.html">MagFormat</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>units<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Formats a value using the broadest matching order of magnitude from an ascending list of magnitudes of the form <code class="lang-kotlin">(minValue, unit)</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1552134862%2FClasslikes%2F741329428" anchor-label="Mouse" id="1552134862%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mouse/index.html"><span><span>Mouse</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1552134862%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-mouse/index.html">Mouse</a></div><div class="brief "><p class="paragraph">Mouse-specific configuration and actions. Supported buttons defined by <span data-unresolved-link="imgui.flag/ImGuiMouseButton///PointingToDeclaration/">ImGuiMouseButton</span> and the backend - like <code class="lang-kotlin">glfw</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1951708608%2FClasslikes%2F741329428" anchor-label="OnChange" id="1951708608%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-on-change/index.html"><span>On</span><wbr></wbr><span><span>Change</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1951708608%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="-on-change/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><span class="token punctuation">(</span><a href="-on-change/index.html">T</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></div><div class="brief "><p class="paragraph">Invoked with a changed <code class="lang-kotlin">T</code> value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1723980656%2FClasslikes%2F741329428" anchor-label="OnChange2" id="-1723980656%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-on-change2/index.html"><span>On</span><wbr></wbr><span><span>Change2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1723980656%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-on-change2/index.html">OnChange2</a><span class="token operator">&lt;</span><a href="-on-change2/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><span class="token punctuation">(</span><a href="-on-change2/index.html">T</a><span class="token punctuation">, </span><a href="-on-change2/index.html">T</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></div><div class="brief "><p class="paragraph">Invoked with 2 changed <code class="lang-kotlin">T</code> values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1692960849%2FClasslikes%2F741329428" anchor-label="OnChange3" id="-1692960849%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-on-change3/index.html"><span>On</span><wbr></wbr><span><span>Change3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1692960849%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-on-change3/index.html">OnChange3</a><span class="token operator">&lt;</span><a href="-on-change3/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><span class="token punctuation">(</span><a href="-on-change3/index.html">T</a><span class="token punctuation">, </span><a href="-on-change3/index.html">T</a><span class="token punctuation">, </span><a href="-on-change3/index.html">T</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></div><div class="brief "><p class="paragraph">Invoked with 3 changed <code class="lang-kotlin">T</code> values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-654170866%2FClasslikes%2F741329428" anchor-label="Op" id="-654170866%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-op/index.html"><span><span>Op</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-654170866%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-op/index.html">Op</a><span class="token operator"> = </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></div><div class="brief "><p class="paragraph">Arbitrary operation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1630263106%2FClasslikes%2F741329428" anchor-label="Style" id="1630263106%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-style/index.html"><span><span>Style</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1630263106%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-style/index.html">Style</a></div><div class="brief "><p class="paragraph">Current style configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-66501783%2FClasslikes%2F741329428" anchor-label="Viewport" id="-66501783%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-viewport/index.html"><span><span>Viewport</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-66501783%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-viewport/index.html">Viewport</a></div><div class="brief "><p class="paragraph">Quick access to viewports.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-169378037%2FClasslikes%2F741329428" anchor-label="Widget" id="-169378037%2FClasslikes%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-widget/index.html"><span><span>Widget</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-169378037%2FClasslikes%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-widget/index.html">Widget</a></div><div class="brief "><p class="paragraph">A drawable element.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-2125900964%2FProperties%2F741329428" anchor-label="tBoolean" id="-2125900964%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-boolean.html"><span>t</span><wbr></wbr><span><span>Boolean</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2125900964%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-boolean.html">tBoolean</a><span class="token operator">: </span><span data-unresolved-link="imgui.type/ImBoolean///PointingToDeclaration/">ImBoolean</span></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1125405029%2FProperties%2F741329428" anchor-label="tDouble" id="1125405029%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-double.html"><span>t</span><wbr></wbr><span><span>Double</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1125405029%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-double.html">tDouble</a><span class="token operator">: </span><span data-unresolved-link="imgui.type/ImDouble///PointingToDeclaration/">ImDouble</span></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-294882432%2FProperties%2F741329428" anchor-label="tFloat2" id="-294882432%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-float2.html"><span>t</span><wbr></wbr><span><span>Float2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-294882432%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-float2.html">tFloat2</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float-array/index.html">FloatArray</a></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-263862625%2FProperties%2F741329428" anchor-label="tFloat3" id="-263862625%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-float3.html"><span>t</span><wbr></wbr><span><span>Float3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-263862625%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-float3.html">tFloat3</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float-array/index.html">FloatArray</a></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-537026315%2FProperties%2F741329428" anchor-label="tInt" id="-537026315%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-int.html"><span>t</span><wbr></wbr><span><span>Int</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-537026315%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-int.html">tInt</a><span class="token operator">: </span><span data-unresolved-link="imgui.type/ImInt///PointingToDeclaration/">ImInt</span></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="271824165%2FProperties%2F741329428" anchor-label="tString" id="271824165%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-string.html"><span>t</span><wbr></wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="271824165%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-string.html">tString</a><span class="token operator">: </span><span data-unresolved-link="imgui.type/ImString///PointingToDeclaration/">ImString</span></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-667499272%2FProperties%2F741329428" anchor-label="tVec2" id="-667499272%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-vec2.html"><span>t</span><wbr></wbr><span><span>Vec2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-667499272%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-vec2.html">tVec2</a><span class="token operator">: </span><span data-unresolved-link="imgui/ImVec2///PointingToDeclaration/">ImVec2</span></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1576698389%2FProperties%2F741329428" anchor-label="tVector2" id="1576698389%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-vector2.html"><span>t</span><wbr></wbr><span><span>Vector2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1576698389%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-vector2.html">tVector2</a><span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector2///PointingToDeclaration/">Vector2</span></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1607718196%2FProperties%2F741329428" anchor-label="tVector3" id="1607718196%2FProperties%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="t-vector3.html"><span>t</span><wbr></wbr><span><span>Vector3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1607718196%2FProperties%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="t-vector3.html">tVector3</a><span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector3///PointingToDeclaration/">Vector3</span></div><div class="brief "><p class="paragraph">NO TOUCHY</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1308196141%2FFunctions%2F741329428" anchor-label="button" id="1308196141%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="button.html"><span><span>button</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1308196141%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="button.html"><span class="token function">button</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">onClick<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a button with <a href="button.html">label</a>, invoking <a href="button.html">onClick</a> when the button is pressed. Returns <code class="lang-kotlin">true</code> when pressed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1934339766%2FFunctions%2F741329428" anchor-label="child" id="1934339766%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="child.html"><span><span>child</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1934339766%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="child.html"><span class="token function">child</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">border<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiWindowFlags.None<span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="child.html">op</a> within an embedded region named <a href="child.html">id</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1368373285%2FFunctions%2F741329428" anchor-label="contextMenu" id="1368373285%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="context-menu.html"><span>context</span><wbr></wbr><span><span>Menu</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1368373285%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="context-menu.html"><span class="token function">contextMenu</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiPopupFlags.MouseButtonRight<span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-ctx/-menu/index.html">Ctx.Menu</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="context-menu.html">op</a> in a context menu popup over the last clicked item. Accepts a manual item <a href="context-menu.html">id</a> to bind to.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-269463997%2FFunctions%2F741329428" anchor-label="disabledIf" id="-269463997%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="disabled-if.html"><span>disabled</span><wbr></wbr><span><span>If</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-269463997%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="disabled-if.html"><span class="token function">disabledIf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">disabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="disabled-if.html">op</a> within an interaction-disabled scope if <a href="disabled-if.html">disabled</a> is <code class="lang-kotlin">true</code>. Otherwise, just runs <a href="disabled-if.html">op</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="245341108%2FFunctions%2F741329428" anchor-label="dockSpace" id="245341108%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dock-space.html"><span>dock</span><wbr></wbr><span><span>Space</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="245341108%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="dock-space.html"><span class="token function">dockSpace</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">setup<span class="token operator">: </span><a href="-ctx/-dock-space/index.html">Ctx.DockSpace</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Initializes <a href="dock-space.html">id</a> dock space with <a href="dock-space.html">setup</a>, if it does not yet exist. Otherwise, simply draws the current <a href="dock-space.html">id</a> dock space.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1116644011%2FFunctions%2F741329428" anchor-label="dragInput" id="-1116644011%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="drag-input.html"><span>drag</span><wbr></wbr><span><span>Input</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1116644011%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input.html"><span class="token function">dragInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%d&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>-Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.2f</span><span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input.html"><span class="token function">dragInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>-Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.1f</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiSliderFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a drag input for <a href="drag-input.html">value</a>, invoking <a href="drag-input.html">onChange</a> with the updated value if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input.html"><span class="token function">dragInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">value1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%d&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>-Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.2f</span><span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change2/index.html">OnChange2</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ _, _ -&gt; }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input.html"><span class="token function">dragInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">value1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>-Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.1f</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiSliderFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change2/index.html">OnChange2</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ _, _ -&gt; }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a drag input for <a href="drag-input.html">value</a> and <a href="drag-input.html">value1</a>, invoking <a href="drag-input.html">onChange</a> with the updated values if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input.html"><span class="token function">dragInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">value1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">value2<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%d&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>-Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.2f</span><span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change3/index.html">OnChange3</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ _, _, _ -&gt; }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input.html"><span class="token function">dragInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">value1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">value2<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>-Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.1f</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiSliderFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change3/index.html">OnChange3</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ _, _, _ -&gt; }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a drag input for <a href="drag-input.html">value</a>, <a href="drag-input.html">value1</a>, and <a href="drag-input.html">value2</a>, invoking <a href="drag-input.html">onChange</a> with the updated values if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-311714709%2FFunctions%2F741329428" anchor-label="dragInput2" id="-311714709%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="drag-input2.html"><span>drag</span><wbr></wbr><span><span>Input2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-311714709%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input2.html"><span class="token function">dragInput2</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector2///PointingToDeclaration/">Vector2</span><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>-Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.1f</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiSliderFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector2///PointingToDeclaration/">Vector2</span><span class="token operator">&gt;</span><span class="token operator"> = </span>{ }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a drag input for <a href="drag-input2.html">value</a>'s components, invoking <a href="drag-input2.html">onChange</a> with the updated value if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="628025484%2FFunctions%2F741329428" anchor-label="dragInput3" id="628025484%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="drag-input3.html"><span>drag</span><wbr></wbr><span><span>Input3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="628025484%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="drag-input3.html"><span class="token function">dragInput3</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector3///PointingToDeclaration/">Vector3</span><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>-Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span>Float.MAX_VALUE.toDouble()<span class="token punctuation">, </span></span><span class="parameter ">speed<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.1f</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiSliderFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector3///PointingToDeclaration/">Vector3</span><span class="token operator">&gt;</span><span class="token operator"> = </span>{ }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a drag input for <a href="drag-input3.html">value</a>'s components, invoking <a href="drag-input3.html">onChange</a> with the updated value if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-593908995%2FFunctions%2F741329428" anchor-label="getValue" id="-593908995%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-value.html"><span>get</span><wbr></wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-593908995%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="get-value.html">T</a><span class="token operator">&gt; </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html">ThreadLocal</a><span class="token operator">&lt;</span><a href="get-value.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="get-value.html"><span class="token function">getValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">thisRef<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">property<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-property/index.html">KProperty</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="get-value.html">T</a></div><div class="brief "><p class="paragraph">Adapts <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html">ThreadLocal</a> to use as a get delegate.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1029427493%2FFunctions%2F741329428" anchor-label="group" id="-1029427493%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="group.html"><span><span>group</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1029427493%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="group.html"><span class="token function">group</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="group.html">op</a> within a group.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="706525960%2FFunctions%2F741329428" anchor-label="header" id="706525960%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="header.html"><span><span>header</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="706525960%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="header.html"><span class="token function">header</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="header.html">op</a> in a header labeled <a href="header.html">label</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1749602129%2FFunctions%2F741329428" anchor-label="image" id="-1749602129%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="image.html"><span><span>image</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1749602129%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="image.html"><span class="token function">image</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">texture<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.graphics.resource/Texture///PointingToDeclaration/">Texture</span><span class="token punctuation">, </span></span><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">flip<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Draws <a href="image.html">texture</a> with <a href="image.html">width</a> and <a href="image.html">height</a>. Optionally <a href="image.html">flip</a>s the image vertically when rendering.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="773271521%2FFunctions%2F741329428" anchor-label="indented" id="773271521%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="indented.html"><span><span>indented</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="773271521%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="indented.html"><span class="token function">indented</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="indented.html">op</a> in an indented level.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2091326888%2FFunctions%2F741329428" anchor-label="input" id="-2091326888%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="input.html"><span><span>input</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2091326888%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="input.html"><span class="token function">input</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a checkbox with <a href="input.html">label</a>, for <a href="input.html">value</a>, invoking <a href="input.html">onChange</a> with the updated value if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="input.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="input.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="input.html"><span class="token function">input</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="input.html">T</a><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiComboFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="input.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws an input field with <a href="input.html">label</a>, for <a href="input.html">value</a> as a dropdown of all <a href="input.html">T</a> values, and input <a href="input.html">flags</a>, invoking <a href="input.html">onChange</a> with the updated value if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="input.html"><span class="token function">input</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiInputTextFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws an input field with <a href="input.html">label</a>, for <a href="input.html">value</a>, and input <a href="input.html">flags</a>, invoking <a href="input.html">onChange</a> with the updated value if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="input.html"><span class="token function">input</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">step<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">stepFast<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">digitWidth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiInputTextFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws an input field with <a href="input.html">label</a>, for <a href="input.html">value</a>, <a href="input.html">step</a> and <a href="input.html">stepFast</a> step amounts, and input <a href="input.html">flags</a>, invoking <a href="input.html">onChange</a> with the updated value if changed. Can also be provided <a href="input.html">digitWidth</a> to auto size unlabeled inputs enough to fit <a href="input.html">digitWidth</a> digits without overflow. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="input.html"><span class="token function">input</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">step<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">0.0</span><span class="token punctuation">, </span></span><span class="parameter ">stepFast<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">0.0</span><span class="token punctuation">, </span></span><span class="parameter ">digitWidth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiInputTextFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws an input field with <a href="input.html">label</a>, for <a href="input.html">value</a> with <a href="input.html">format</a> specifier, <a href="input.html">step</a> and <a href="input.html">stepFast</a> step amounts, and input <a href="input.html">flags</a>, invoking <a href="input.html">onChange</a> with the updated value if changed. Can also be provided <a href="input.html">digitWidth</a> to auto size unlabeled inputs enough to fit <a href="input.html">digitWidth</a> digits (while considering <a href="input.html">format</a>) without overflow. Returns <code class="lang-kotlin">true</code> when changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1285744746%2FFunctions%2F741329428" anchor-label="input2" id="1285744746%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="input2.html"><span><span>input2</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1285744746%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="input2.html"><span class="token function">input2</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector2///PointingToDeclaration/">Vector2</span><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">step<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">0.0</span><span class="token punctuation">, </span></span><span class="parameter ">stepFast<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">0.0</span><span class="token punctuation">, </span></span><span class="parameter ">digitWidth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiInputTextFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector2///PointingToDeclaration/">Vector2</span><span class="token operator">&gt;</span><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a multi-segment input field for <a href="input2.html">value</a>, invoking <a href="input2.html">onChange</a> with the updated value if changed. Can also be provided <a href="input2.html">digitWidth</a> to auto size unlabeled inputs enough to fit <a href="input2.html">digitWidth</a> digits (while considering <a href="input2.html">format</a>) without overflow. Returns <code class="lang-kotlin">true</code> when changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="141286539%2FFunctions%2F741329428" anchor-label="input3" id="141286539%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="input3.html"><span><span>input3</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="141286539%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="input3.html"><span class="token function">input3</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector3///PointingToDeclaration/">Vector3</span><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%.3f&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">step<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">0.0</span><span class="token punctuation">, </span></span><span class="parameter ">stepFast<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">0.0</span><span class="token punctuation">, </span></span><span class="parameter ">digitWidth<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">3</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiInputTextFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><span data-unresolved-link="dev.kkorolyov.pancake.platform.math/Vector3///PointingToDeclaration/">Vector3</span><span class="token operator">&gt;</span><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a multi-segment input field for <a href="input3.html">value</a>, invoking <a href="input3.html">onChange</a> with the updated value if changed. Can also be provided <a href="input3.html">digitWidth</a> to auto size unlabeled inputs enough to fit <a href="input3.html">digitWidth</a> digits (while considering <a href="input3.html">format</a>) without overflow. Returns <code class="lang-kotlin">true</code> when changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-277231783%2FFunctions%2F741329428" anchor-label="list" id="-277231783%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="list.html"><span><span>list</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-277231783%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="list.html"><span class="token function">list</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="list.html">op</a> in a list box labeled <a href="list.html">label</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2053002486%2FFunctions%2F741329428" anchor-label="menu" id="2053002486%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="menu.html"><span><span>menu</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2053002486%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="menu.html"><span class="token function">menu</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-ctx/-menu/index.html">Ctx.Menu</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Invokes <a href="menu.html">op</a> within a menu of <a href="menu.html">label</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-949583855%2FFunctions%2F741329428" anchor-label="onActive" id="-949583855%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-active.html"><span>on</span><wbr></wbr><span><span>Active</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-949583855%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-active.html"><span class="token function">onActive</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="on-active.html">op</a> while the last set item is active (e.g. held down, being edited).</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-active.html"><span class="token function">onActive</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">onStart<span class="token operator">: </span><a href="-op/index.html">Op</a><span class="token punctuation">, </span></span><span class="parameter ">onEnd<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="on-active.html">onStart</a> when the last set item is activated, and <a href="on-active.html">onEnd</a> when it is deactivated.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-798437627%2FFunctions%2F741329428" anchor-label="onClick" id="-798437627%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-click.html"><span>on</span><wbr></wbr><span><span>Click</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-798437627%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-click.html"><span class="token function">onClick</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="on-click.html">op</a> when the last set item is clicked.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-178158509%2FFunctions%2F741329428" anchor-label="onDrag" id="-178158509%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-drag.html"><span>on</span><wbr></wbr><span><span>Drag</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-178158509%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-drag.html"><span class="token function">onDrag</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiDragDropFlags.None<span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-ctx/-drag/index.html">Ctx.Drag</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="on-drag.html">op</a> while the last set item is dragged. See also: <a href="on-drop.html">onDrop</a></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="896737520%2FFunctions%2F741329428" anchor-label="onDrop" id="896737520%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-drop.html"><span>on</span><wbr></wbr><span><span>Drop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="896737520%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-drop.html"><span class="token function">onDrop</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">op<span class="token operator">: </span><a href="-ctx/-drop/index.html">Ctx.Drop</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="on-drop.html">op</a> when a dragged payload is dropped on the last set item. See also: <a href="on-drag.html">onDrag</a></p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="676184661%2FFunctions%2F741329428" anchor-label="onFocus" id="676184661%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-focus.html"><span>on</span><wbr></wbr><span><span>Focus</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="676184661%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-focus.html"><span class="token function">onFocus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="on-focus.html">op</a> while the last item is focused.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1320629006%2FFunctions%2F741329428" anchor-label="onHover" id="-1320629006%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-hover.html"><span>on</span><wbr></wbr><span><span>Hover</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1320629006%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="on-hover.html"><span class="token function">onHover</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiHoveredFlags.None<span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="on-hover.html">op</a> while the last set item is hovered.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2000702797%2FFunctions%2F741329428" anchor-label="plot" id="2000702797%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="plot.html"><span><span>plot</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2000702797%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="plot.html"><span class="token function">plot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">xLabel<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">yLabel<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImPlotFlags.None<span class="token punctuation">, </span></span><span class="parameter ">xFlags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImPlotAxisFlags.None<span class="token punctuation">, </span></span><span class="parameter ">yFlags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImPlotAxisFlags.None<span class="token punctuation">, </span></span><span class="parameter ">xMin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">xMax<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">xLimitCond<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiCond.None<span class="token punctuation">, </span></span><span class="parameter ">yMin<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">yMax<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html">Double</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">yLimitCond<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiCond.None<span class="token punctuation">, </span></span><span class="parameter ">xFormat<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">yFormat<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-ctx/-plot/index.html">Ctx.Plot</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Invokes <a href="plot.html">op</a> within a plot of <a href="plot.html">label</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1963835623%2FFunctions%2F741329428" anchor-label="propertiesTable" id="1963835623%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="properties-table.html"><span>properties</span><wbr></wbr><span><span>Table</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1963835623%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="properties-table.html"><span class="token function">propertiesTable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-ctx/-table/index.html">Ctx.Table</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Helper for drawing a 2-column table suited for displaying property <code class="lang-kotlin">(name, value)</code> pairs. Labels the table <a href="properties-table.html">id</a> and invokes <a href="properties-table.html">op</a> within the table.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1810237344%2FFunctions%2F741329428" anchor-label="propertyRow" id="-1810237344%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="property-row.html"><span>property</span><wbr></wbr><span><span>Row</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1810237344%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="-ctx/-table/index.html">Ctx.Table</a><span class="token punctuation">.</span><a href="property-row.html"><span class="token function">propertyRow</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Helper for drawing a 2-column row suited for displaying property <a href="property-row.html">label</a> with <a href="property-row.html">op</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1032156746%2FFunctions%2F741329428" anchor-label="sameLine" id="-1032156746%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="same-line.html"><span>same</span><wbr></wbr><span><span>Line</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1032156746%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="same-line.html"><span class="token function">sameLine</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Draws the next item on the same line as the previous one.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1279830619%2FFunctions%2F741329428" anchor-label="selectable" id="1279830619%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="selectable.html"><span><span>selectable</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1279830619%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="selectable.html"><span class="token function">selectable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span></span><span class="parameter ">selected<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiSelectableFlags.None<span class="token punctuation">, </span></span><span class="parameter ">onClick<span class="token operator">: </span><a href="-op/index.html">Op</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a selectable area for <a href="selectable.html">value</a> as text, using <a href="selectable.html">selected</a> and <a href="selectable.html">flags</a>, invoking <a href="selectable.html">onClick</a> when it is selected. Returns <code class="lang-kotlin">true</code> when selected.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-707250011%2FFunctions%2F741329428" anchor-label="separator" id="-707250011%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="separator.html"><span><span>separator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-707250011%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="separator.html"><span class="token function">separator</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Draws a separator line.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2071471600%2FFunctions%2F741329428" anchor-label="setValue" id="-2071471600%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set-value.html"><span>set</span><wbr></wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2071471600%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="set-value.html">T</a><span class="token operator">&gt; </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html">ThreadLocal</a><span class="token operator">&lt;</span><a href="set-value.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="set-value.html"><span class="token function">setValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">thisRef<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">property<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-property/index.html">KProperty</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="set-value.html">T</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Adapts <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html">ThreadLocal</a> to use as a set delegate.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="377026335%2FFunctions%2F741329428" anchor-label="sliderInput" id="377026335%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="slider-input.html"><span>slider</span><wbr></wbr><span><span>Input</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="377026335%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="slider-input.html"><span class="token function">sliderInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%d&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>-Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change/index.html">OnChange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a slider input for <a href="slider-input.html">value</a>, invoking <a href="slider-input.html">onChange</a> with the updated value if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="slider-input.html"><span class="token function">sliderInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">value1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%d&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>-Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change2/index.html">OnChange2</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ _, _ -&gt; }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a slider input for <a href="slider-input.html">value</a> and <a href="slider-input.html">value1</a>, invoking <a href="slider-input.html">onChange</a> with the updated values if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="slider-input.html"><span class="token function">sliderInput</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">value1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">value2<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">format<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;%d&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>-Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>Float.MAX_VALUE.toInt()<span class="token punctuation">, </span></span><span class="parameter ">onChange<span class="token operator">: </span><a href="-on-change3/index.html">OnChange3</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator"> = </span>{ _, _, _ -&gt; }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Draws a slider input for <a href="slider-input.html">value</a>, <a href="slider-input.html">value1</a>, and <a href="slider-input.html">value2</a>, invoking <a href="slider-input.html">onChange</a> with the updated values if changed. Returns <code class="lang-kotlin">true</code> when changed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1103876039%2FFunctions%2F741329428" anchor-label="tabBar" id="-1103876039%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="tab-bar.html"><span>tab</span><wbr></wbr><span><span>Bar</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1103876039%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="tab-bar.html"><span class="token function">tabBar</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="tab-bar.html">op</a> in a tab bar labeled <a href="tab-bar.html">label</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1814468233%2FFunctions%2F741329428" anchor-label="tabItem" id="1814468233%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="tab-item.html"><span>tab</span><wbr></wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1814468233%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="tab-item.html"><span class="token function">tabItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="tab-item.html">op</a> in a tab item labeled <a href="tab-item.html">label</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1325745588%2FFunctions%2F741329428" anchor-label="table" id="1325745588%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="table.html"><span><span>table</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1325745588%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="table.html"><span class="token function">table</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">id<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">columns<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">width<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">height<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="token operator"> = </span><span class="token constant">0.0f</span><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiTableFlags.None<span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-ctx/-table/index.html">Ctx.Table</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="table.html">op</a> in a table with <a href="table.html">id</a>, <a href="table.html">flags</a> and <a href="table.html">columns</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1011827236%2FFunctions%2F741329428" anchor-label="text" id="1011827236%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="text.html"><span><span>text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1011827236%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="text.html"><span class="token function">text</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Draws <a href="text.html">value</a> as text.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="661869715%2FFunctions%2F741329428" anchor-label="tooltip" id="661869715%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="tooltip.html"><span><span>tooltip</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="661869715%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="tooltip.html"><span class="token function">tooltip</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="tooltip.html"><span class="token function">tooltip</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Draws <a href="tooltip.html">value</a> as text in a tooltip when the last set item is hovered.</p></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="tooltip.html"><span class="token function">tooltip</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiHoveredFlags.None<span class="token punctuation">, </span></span><span class="parameter ">force<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="tooltip.html">op</a> in a tooltip when the last set item is hovered or <a href="tooltip.html">force</a> is <code class="lang-kotlin">true</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1418772458%2FFunctions%2F741329428" anchor-label="toStructEntity" id="1418772458%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-struct-entity.html"><span>to</span><wbr></wbr><span>Struct</span><wbr></wbr><span><span>Entity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1418772458%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="to-struct-entity.html"><span class="token function">toStructEntity</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">entity<span class="token operator">: </span><span data-unresolved-link="dev.kkorolyov.pancake.platform.entity/Entity///PointingToDeclaration/">Entity</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns <a href="to-struct-entity.html">entity</a> as a simple serializable structure. Any components without a registered <span data-unresolved-link="dev.kkorolyov.pancake.platform.io/Structizer///PointingToDeclaration/">dev.kkorolyov.pancake.platform.io.Structizer</span> are written as the string <code class="lang-kotlin">NOT SUPPORTED</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1901486546%2FFunctions%2F741329428" anchor-label="tree" id="1901486546%2FFunctions%2F741329428" data-filterable-set=":editor:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":editor:dokkaHtml/main" data-filterable-set=":editor:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="tree.html"><span><span>tree</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1901486546%2FFunctions%2F741329428"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":editor:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="tree.html"><span class="token function">tree</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">label<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">flags<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>ImGuiTreeNodeFlags.None<span class="token punctuation">, </span></span><span class="parameter ">op<span class="token operator">: </span><a href="-op/index.html">Op</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs <a href="tree.html">op</a> in a tree node labeled <a href="tree.html">label</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
