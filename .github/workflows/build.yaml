@@ -31,5 +31,4 @@ jobs:
         with:
           java-version: ${{ matrix.version }}
           publish-branch: master
-          publish-task: publish --debug
           token: ${{ secrets.GITHUB_TOKEN }}
