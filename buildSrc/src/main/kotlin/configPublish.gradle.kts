@@ -15,6 +15,11 @@ publishing {
 	publications {
 		create<MavenPublication>("main") {
 			from(components["java"])
+			versionMapping {
+				allVariants {
+					fromResolutionResult()
+				}
+			}
 		}
 	}
 
