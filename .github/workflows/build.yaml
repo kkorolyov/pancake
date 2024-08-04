@@ -7,15 +7,6 @@ on:
   pull_request:
 
 jobs:
-  validateWrapper:
-    runs-on: ubuntu-latest
-
-    steps:
-      - id: checkout
-        uses: actions/checkout@v4
-      - id: check
-        uses: gradle/actions/wrapper-validation@v3
-
   build:
     runs-on: ubuntu-latest
 
@@ -27,7 +18,7 @@ jobs:
       - id: checkout
         uses: actions/checkout@v4
       - id: publish-gradle
-        uses: kkorolyov/publish-gradle@0.4.1
+        uses: kkorolyov/publish-gradle@0.4.2
         with:
           java-version: ${{ matrix.version }}
           publish-branch: master
