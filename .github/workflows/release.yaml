@@ -1,0 +1,31 @@
+name: release
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    outputs:
+      bump: ${{ steps.bump.outputs.match }}
+
+    steps:
+      - id: bump
+        uses: zwaldowski/match-label-action@v5
+        with:
+          allowed: major, minor, patch
+          default_match: "none"
+      - id: version
+        if: ${{ steps.bump.outputs.match != 'none' }}
+        uses: zwaldowski/semver-release-action@v4
+        with:
+          bump: ${{ steps.bump.outputs.match }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+      - id: publish
+        if: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: ./gradlew publish -Pversion=${{ steps.version.outputs.version }}
