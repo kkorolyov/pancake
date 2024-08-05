@@ -49,3 +49,5 @@ jobs:
       - id: publish
         shell: bash
         run: ./gradlew publish -Pversion=${{ needs.version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
