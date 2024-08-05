@@ -1,15 +1,7 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
-plugins {
-	java
-}
-
 tasks.wrapper {
 	distributionType = Wrapper.DistributionType.ALL
-}
-
-tasks.reckonTagCreate {
-	dependsOn(tasks.check)
 }
 
 tasks.register("allDeps") {
