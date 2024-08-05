@@ -15,6 +15,8 @@ tasks.register("allDocs") {
 	group = "documentation"
 	description = "Bundles all project documentation together"
 
+	notCompatibleWithConfigurationCache("enumerates subproject task data")
+
 	val destination = "${project.layout.buildDirectory.get()}/docs"
 	val subDocs = subprojects.map {
 		it.tasks.withType<DokkaTask>().filter { it.name == "dokkaHtml" }.ifEmpty { it.tasks.withType<Javadoc>() }
