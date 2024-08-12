@@ -24,6 +24,22 @@ public final class Transform implements Component {
 	private boolean cached;
 
 	/**
+	 * Modifies this transform's translation and rotation to match rotating it around {@code origin} by {@code radians} about {@code axis}.
+	 */
+	public void rotateAround(Vector3 origin, double radians, Vector3 axis) {
+		var rotator = Matrix4.of();
+		rotator.rotate(radians, axis);
+
+		var translator = Vector3.of(origin);
+		translator.scale(-1);
+		translator.transform(rotator);
+		translator.add(origin);
+
+		rotation.rotate(radians, axis);
+		translation.add(translator);
+	}
+
+	/**
 	 * Returns the mutable translation vector.
 	 */
 	public Vector3 getTranslation() {
