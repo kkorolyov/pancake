@@ -24,7 +24,10 @@ private val log = LoggerFactory.getLogger(Container::class.java)
  * `flags` defaults to [ImGuiConfigFlags.ViewportsEnable] | [ImGuiConfigFlags.DockingEnable] | [ImGuiConfigFlags.NavEnableKeyboard].
  */
 class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
-	private val imguiGlfw by lazy {
+	private val imguiGlfw: ImGuiImplGlfw
+	private val imguiGl: ImGuiImplGl3
+
+	init {
 		ImGui.createContext()
 		ImPlot.createContext()
 		ImGui.getIO().apply {
@@ -32,12 +35,9 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 			addConfigFlags(flags)
 		}
 
-		ImGuiImplGlfw().apply {
-			init(window, true)
-			imguiGl = ImGuiImplGl3().apply { init() }
-		}
+		imguiGlfw = ImGuiImplGlfw().apply { init(window, true) }
+		imguiGl = ImGuiImplGl3().apply { init() }
 	}
-	private lateinit var imguiGl: ImGuiImplGl3
 
 	/**
 	 * Reads and applies GUI settings from `settings`.
