@@ -265,64 +265,10 @@ inline fun menu(label: String, op: Ctx.Menu.() -> Unit) {
 /**
  * Invokes [op] within a plot of [label].
  */
-inline fun plot(
-	label: String,
-	xLabel: String? = null,
-	yLabel: String? = null,
-	width: Float = 0f,
-	height: Float = 0f,
-	flags: Int = ImPlotFlags.None,
-	xFlags: Int = ImPlotAxisFlags.None,
-	yFlags: Int = ImPlotAxisFlags.None,
-	xMin: Double? = null,
-	xMax: Double? = null,
-	xLimitCond: Int = ImGuiCond.None,
-	yMin: Double? = null,
-	yMax: Double? = null,
-	yLimitCond: Int = ImGuiCond.None,
-	xFormat: String? = null,
-	yFormat: String? = null,
-	op: Ctx.Plot.() -> Unit
-) {
-	val fullXFlags = xFlags or if (xLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
-	val fullYFlags = yFlags or if (yLabel == null) ImPlotAxisFlags.NoLabel else ImPlotAxisFlags.None
-
-	val noPaddingFlags = ImPlotAxisFlags.NoLabel or ImPlotAxisFlags.NoTickLabels
-	val noXPadding = fullYFlags and noPaddingFlags == noPaddingFlags
-	val noYPadding = fullXFlags and noPaddingFlags == noPaddingFlags
-
-	if (noXPadding || noYPadding) {
-		// manual idx because java bindings wrong
-		ImPlot.pushStyleVar(17, tVec2.apply {
-			x = if (noXPadding) 0f else ImPlot.getStyle().plotPadding.x
-			y = if (noYPadding) 0f else ImPlot.getStyle().plotPadding.y
-		})
-	}
-
-	if (ImPlot.beginPlot(
-			label,
-			tVec2.apply {
-				x = width
-				y = height
-			},
-			flags
-		)
-	) {
-		ImPlot.setupAxis(ImPlotAxis.X1, xLabel ?: "", fullXFlags)
-		ImPlot.setupAxis(ImPlotAxis.Y1, yLabel ?: "", fullYFlags)
-
-		if (xMin != null && xMax != null) ImPlot.setupAxisLimits(ImPlotAxis.X1, xMin, xMax, xLimitCond)
-		if (yMin != null && yMax != null) ImPlot.setupAxisLimits(ImPlotAxis.Y1, yMin, yMax, yLimitCond)
-
-		if (xFormat != null) ImPlot.setupAxisFormat(ImPlotAxis.X1, xFormat)
-		if (yFormat != null) ImPlot.setupAxisFormat(ImPlotAxis.Y1, yFormat)
-
+inline fun plot(label: String, width: Float = 0f, height: Float = 0f, flags: Int = ImPlotFlags.None, op: Ctx.Plot.() -> Unit) {
+	if (ImPlot.beginPlot(label, width, height, flags)) {
 		Ctx.Plot.op()
 		ImPlot.endPlot()
-	}
-
-	if (noXPadding || noYPadding) {
-		ImPlot.popStyleVar()
 	}
 }
 
@@ -729,7 +675,7 @@ object Layout {
 	 * Remaining available content space starting from the current cursor.
 	 */
 	val free: Free = Free()
-	/**
+	/**n
 	 * Current cursor coordinates.
 	 */
 	val cursor: Cursor = Cursor()
@@ -927,6 +873,15 @@ object Ctx {
 	}
 
 	open class PlotModifier {
+		/**
+		 * Configures [axis].
+		 */
+		fun configAxis(axis: Int = ImPlotAxis.X1, label: String? = null, min: Double? = null, max: Double? = null, limitCond: Int = ImGuiCond.None, format: String? = null, flags: Int = ImPlotAxisFlags.None) {
+			ImPlot.setupAxis(axis, label, flags)
+			if (min != null && max != null) ImPlot.setupAxisLimits(axis, min, max, limitCond)
+			if (format != null) ImPlot.setupAxisFormat(axis, format)
+		}
+
 		/**
 		 * Runs [op] in a tooltip when [label] legend entry is hovered.
 		 */
