@@ -80,6 +80,7 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	}
 
 	private fun render(widget: Widget) {
+		imguiGl.newFrame()
 		imguiGlfw.newFrame()
 		ImGui.newFrame()
 
@@ -88,22 +89,22 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 		ImGui.render()
 		imguiGl.renderDrawData(ImGui.getDrawData())
 
-		val context = GLFW.glfwGetCurrentContext()
+		if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
+			val context = GLFW.glfwGetCurrentContext()
 
-		if (ImGui.getIO().configFlags and ImGuiConfigFlags.ViewportsEnable > 0) {
 			ImGui.updatePlatformWindows()
 			ImGui.renderPlatformWindowsDefault()
-		}
 
-		GLFW.glfwMakeContextCurrent(context)
+			GLFW.glfwMakeContextCurrent(context)
+		}
 	}
 
 	/**
 	 * Disposes of this container's GUI contexts.
 	 */
 	override fun close() {
-		imguiGl.dispose()
-		imguiGlfw.dispose()
+		imguiGl.shutdown()
+		imguiGlfw.shutdown()
 		ImPlot.destroyContext(ImPlot.getCurrentContext())
 		ImGui.destroyContext()
 	}

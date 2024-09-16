@@ -6,6 +6,7 @@ flub = "0.+"
 
 slf4j = "2.+"
 jackson = "2.+"
+jspecify = "1.+"
 
 snakeyaml = "2.+"
 
@@ -30,6 +31,7 @@ flub = { module = "dev.kkorolyov:flub", version.ref = "flub" }
 
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 jackson = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 

@@ -10,6 +10,8 @@ module dev.kkorolyov.pancake.platform {
 	// FIXME here so kotlin projects using this can use different format log configs
 	// FIXME kotlin compiler cannot find this on module path
 	requires com.fasterxml.jackson.dataformat.yaml;
+	// FIXME kotlin compiler cannot find this on module path
+	requires org.jspecify;
 
 	// resource parsing
 	requires org.yaml.snakeyaml;

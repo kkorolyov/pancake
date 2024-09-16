@@ -9,6 +9,7 @@ import imgui.ImGuiStyle
 import imgui.ImGuiViewport
 import imgui.ImVec2
 import imgui.extension.implot.ImPlot
+import imgui.extension.implot.flag.ImPlotAxis
 import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotFlags
 import imgui.flag.ImGuiComboFlags
@@ -17,7 +18,6 @@ import imgui.flag.ImGuiDir
 import imgui.flag.ImGuiDragDropFlags
 import imgui.flag.ImGuiHoveredFlags
 import imgui.flag.ImGuiInputTextFlags
-import imgui.flag.ImGuiKeyModFlags
 import imgui.flag.ImGuiMouseButton
 import imgui.flag.ImGuiPopupFlags
 import imgui.flag.ImGuiSelectableFlags
@@ -299,26 +299,24 @@ inline fun plot(
 		})
 	}
 
-	if (xMin != null && xMax != null) ImPlot.setNextPlotLimitsX(xMin, xMax, xLimitCond)
-	if (yMin != null && yMax != null) ImPlot.setNextPlotLimitsY(yMin, yMax, yLimitCond)
-
-	xFormat?.let(ImPlot::setNextPlotFormatX)
-	yFormat?.let(ImPlot::setNextPlotFormatY)
-
-	if (
-		ImPlot.beginPlot(
+	if (ImPlot.beginPlot(
 			label,
-			xLabel ?: "",
-			yLabel ?: "",
 			tVec2.apply {
 				x = width
 				y = height
 			},
-			flags,
-			fullXFlags,
-			fullYFlags
+			flags
 		)
 	) {
+		ImPlot.setupAxis(ImPlotAxis.X1, xLabel ?: "", fullXFlags)
+		ImPlot.setupAxis(ImPlotAxis.Y1, yLabel ?: "", fullYFlags)
+
+		if (xMin != null && xMax != null) ImPlot.setupAxisLimits(ImPlotAxis.X1, xMin, xMax, xLimitCond)
+		if (yMin != null && yMax != null) ImPlot.setupAxisLimits(ImPlotAxis.Y1, yMin, yMax, yLimitCond)
+
+		if (xFormat != null) ImPlot.setupAxisFormat(ImPlotAxis.X1, xFormat)
+		if (yFormat != null) ImPlot.setupAxisFormat(ImPlotAxis.Y1, yFormat)
+
 		Ctx.Plot.op()
 		ImPlot.endPlot()
 	}
@@ -526,7 +524,7 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 inline fun dragInput(label: String, value: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange<Int> = { }): Boolean {
 	val ptr = intArrayOf(value)
 
-	val result = ImGui.dragInt(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	val result = ImGui.dragInt(label, ptr, speed, min, max, format)
 	if (result) onChange(max(min, min(max, ptr[0])))
 	return result
 }
@@ -537,7 +535,7 @@ inline fun dragInput(label: String, value: Int, format: String = "%d", min: Int 
 inline fun dragInput(label: String, value: Int, value1: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange2<Int> = { _, _ -> }): Boolean {
 	val ptr = intArrayOf(value, value1)
 
-	val result = ImGui.dragInt2(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	val result = ImGui.dragInt2(label, ptr, speed, min, max, format)
 	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])))
 	return result
 }
@@ -548,7 +546,7 @@ inline fun dragInput(label: String, value: Int, value1: Int, format: String = "%
 inline fun dragInput(label: String, value: Int, value1: Int, value2: Int, format: String = "%d", min: Int = -Float.MAX_VALUE.toInt(), max: Int = Float.MAX_VALUE.toInt(), speed: Float = 0.2f, onChange: OnChange3<Int> = { _, _, _ -> }): Boolean {
 	val ptr = intArrayOf(value, value1, value2)
 
-	val result = ImGui.dragInt3(label, ptr, speed, min.toFloat(), max.toFloat(), format)
+	val result = ImGui.dragInt3(label, ptr, speed, min, max, format)
 	if (result) onChange(max(min, min(max, ptr[0])), max(min, min(max, ptr[1])), max(min, min(max, ptr[2])))
 	return result
 }
@@ -950,28 +948,19 @@ object Ctx {
 		}
 
 		/**
-		 * Runs [op] when the plot area is dragged while holding [keyMods].
+		 * Runs [op] when the plot area is dragged while holding `CTRL`.
 		 */
-		inline fun onDragPlot(keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
-			if (ImPlot.beginDragDropSource(keyMods, flags)) {
+		inline fun onDragPlot(flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourcePlot(flags)) {
 				Drag.op()
 				ImPlot.endDragDropSource()
 			}
 		}
 		/**
-		 * Runs [op] when the x-axis is dragged while holding [keyMods].
+		 * Runs [op] when [axis] is dragged while holding `CTRL`.
 		 */
-		inline fun onDragX(keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
-			if (ImPlot.beginDragDropSourceX(keyMods, flags)) {
-				Drag.op()
-				ImPlot.endDragDropSource()
-			}
-		}
-		/**
-		 * Runs [op] when the [n]th y-axis is dragged while holding [keyMods].
-		 */
-		inline fun onDragY(n: Int = 0, keyMods: Int = ImGuiKeyModFlags.None, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
-			if (ImPlot.beginDragDropSourceY(n, keyMods, flags)) {
+		inline fun onDragAxis(axis: Int = ImPlotAxis.X1, flags: Int = ImGuiDragDropFlags.None, op: Drag.() -> Unit) {
+			if (ImPlot.beginDragDropSourceAxis(axis, flags)) {
 				Drag.op()
 				ImPlot.endDragDropSource()
 			}
@@ -990,25 +979,16 @@ object Ctx {
 		 * Runs [op] when a dragged payload is dropped on the plot area.
 		 */
 		inline fun onDropPlot(op: Drop.() -> Unit) {
-			if (ImPlot.beginDragDropTarget()) {
+			if (ImPlot.beginDragDropTargetPlot()) {
 				Drop.op()
 				ImPlot.endDragDropTarget()
 			}
 		}
 		/**
-		 * Runs [op] when a dragged payload is dropped on the x-axis.
+		 * Runs [op] when a dragged payload is dropped on [axis].
 		 */
-		inline fun onDropX(op: Drop.() -> Unit) {
-			if (ImPlot.beginDragDropTargetX()) {
-				Drop.op()
-				ImPlot.endDragDropTarget()
-			}
-		}
-		/**
-		 * Runs [op] when a dragged payload is dropped on the [n]th y-axis.
-		 */
-		inline fun onDropY(n: Int = 0, op: Drop.() -> Unit) {
-			if (ImPlot.beginDragDropTargetY(n)) {
+		inline fun onDropAxis(axis: Int = ImPlotAxis.X1, op: Drop.() -> Unit) {
+			if (ImPlot.beginDragDropTargetAxis(axis)) {
 				Drop.op()
 				ImPlot.endDragDropTarget()
 			}
