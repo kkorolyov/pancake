@@ -20,11 +20,19 @@ class AnimationSystemSpec extends Specification {
 
 		def animationQueue = new AnimationQueue()
 		animationQueue.add(new Timeline<TransformFrame>().with {
-			put(0, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of(1)))
+			put(0, new TransformFrame().with {
+				it.translation.set(Vector3.of(1))
+				it.scale.set(Vector3.of(1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 		animationQueue.add(new Timeline<TransformFrame>().with {
-			put(0, new TransformFrame(Vector3.of(0, 1), Vector3.of(0, 0, 1), Vector3.of()))
+			put(0, new TransformFrame().with {
+				it.translation.set(Vector3.of(0, 1))
+				it.rotation.set(Vector3.of(0, 0, 1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 

@@ -40,8 +40,16 @@ class ComponentStructizerSpec extends Specification {
 			it.add(
 					new Timeline<TransformFrame>().with {
 						it.put(0, new TransformFrame())
-						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
-						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it.put(4, new TransformFrame().with {
+							it.translation.set(Vector3.of(1))
+							it.rotation.set(Vector3.of())
+							it
+						})
+						it.put(34, new TransformFrame().with {
+							it.translation.set(Vector3.of())
+							it.rotation.set(Vector3.of(1))
+							it
+						})
 						it
 					},
 					AnimationQueue.Type.ONCE
@@ -49,8 +57,16 @@ class ComponentStructizerSpec extends Specification {
 			it.add(
 					new Timeline<TransformFrame>().with {
 						it.put(0, new TransformFrame())
-						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
-						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it.put(4, new TransformFrame().with {
+							it.translation.set(Vector3.of(1))
+							it.rotation.set(Vector3.of())
+							it
+						})
+						it.put(34, new TransformFrame().with {
+							it.translation.set(Vector3.of())
+							it.rotation.set(Vector3.of(1))
+							it
+						})
 						it
 					},
 					AnimationQueue.Type.LOOP
@@ -58,8 +74,16 @@ class ComponentStructizerSpec extends Specification {
 			it.add(
 					new Timeline<TransformFrame>().with {
 						it.put(0, new TransformFrame())
-						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
-						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it.put(4, new TransformFrame().with {
+							it.translation.set(Vector3.of(1))
+							it.rotation.set(Vector3.of())
+							it
+						})
+						it.put(34, new TransformFrame().with {
+							it.translation.set(Vector3.of())
+							it.rotation.set(Vector3.of(1))
+							it
+						})
 						it
 					},
 					AnimationQueue.Type.RESET
@@ -196,22 +220,46 @@ class ComponentStructizerSpec extends Specification {
 		then:
 		result[0].playback().timeline.toList() == [
 				0: new TransformFrame(),
-				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
-				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+				4: new TransformFrame().with {
+					it.translation.set(Vector3.of(1))
+					it.rotation.set(Vector3.of())
+					it
+				},
+				34: new TransformFrame().with {
+					it.translation.set(Vector3.of())
+					it.rotation.set(Vector3.of(1))
+					it
+				}
 		].entrySet().toList()
 		result[0].type() == AnimationQueue.Type.ONCE
 
 		result[1].playback().timeline.toList() == [
 				0: new TransformFrame(),
-				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
-				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+				4: new TransformFrame().with {
+					it.translation.set(Vector3.of(1))
+					it.rotation.set(Vector3.of())
+					it
+				},
+				34: new TransformFrame().with {
+					it.translation.set(Vector3.of())
+					it.rotation.set(Vector3.of(1))
+					it
+				}
 		].entrySet().toList()
 		result[1].type() == AnimationQueue.Type.LOOP
 
 		result[2].playback().timeline.toList() == [
 				0: new TransformFrame(),
-				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
-				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+				4: new TransformFrame().with {
+					it.translation.set(Vector3.of(1))
+					it.rotation.set(Vector3.of())
+					it
+				},
+				34: new TransformFrame().with {
+					it.translation.set(Vector3.of())
+					it.rotation.set(Vector3.of(1))
+					it
+				}
 		].entrySet().toList()
 		result[2].type() == AnimationQueue.Type.RESET
 	}
@@ -221,8 +269,16 @@ class ComponentStructizerSpec extends Specification {
 			it.add(
 					new Timeline<TransformFrame>().with {
 						it.put(0, new TransformFrame())
-						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
-						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it.put(4, new TransformFrame().with {
+							it.translation.set(Vector3.of(1))
+							it.rotation.set(Vector3.of())
+							it
+						})
+						it.put(34, new TransformFrame().with {
+							it.translation.set(Vector3.of())
+							it.rotation.set(Vector3.of(1))
+							it
+						})
 						it
 					},
 					AnimationQueue.Type.ONCE
@@ -230,8 +286,16 @@ class ComponentStructizerSpec extends Specification {
 			it.add(
 					new Timeline<TransformFrame>().with {
 						it.put(0, new TransformFrame())
-						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
-						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it.put(4, new TransformFrame().with {
+							it.translation.set(Vector3.of(1))
+							it.rotation.set(Vector3.of())
+							it
+						})
+						it.put(34, new TransformFrame().with {
+							it.translation.set(Vector3.of())
+							it.rotation.set(Vector3.of(1))
+							it
+						})
 						it
 					},
 					AnimationQueue.Type.LOOP
@@ -239,8 +303,16 @@ class ComponentStructizerSpec extends Specification {
 			it.add(
 					new Timeline<TransformFrame>().with {
 						it.put(0, new TransformFrame())
-						it.put(4, new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()))
-						it.put(34, new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of()))
+						it.put(4, new TransformFrame().with {
+							it.translation.set(Vector3.of(1))
+							it.rotation.set(Vector3.of())
+							it
+						})
+						it.put(34, new TransformFrame().with {
+							it.translation.set(Vector3.of())
+							it.rotation.set(Vector3.of(1))
+							it
+						})
 						it
 					},
 					AnimationQueue.Type.RESET
@@ -252,22 +324,46 @@ class ComponentStructizerSpec extends Specification {
 		then:
 		result[0].playback().timeline.toList() == [
 				0: new TransformFrame(),
-				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
-				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+				4: new TransformFrame().with {
+					it.translation.set(Vector3.of(1))
+					it.rotation.set(Vector3.of())
+					it
+				},
+				34: new TransformFrame().with {
+					it.translation.set(Vector3.of())
+					it.rotation.set(Vector3.of(1))
+					it
+				}
 		].entrySet().toList()
 		result[0].type() == AnimationQueue.Type.ONCE
 
 		result[1].playback().timeline.toList() == [
 				0: new TransformFrame(),
-				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
-				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+				4: new TransformFrame().with {
+					it.translation.set(Vector3.of(1))
+					it.rotation.set(Vector3.of())
+					it
+				},
+				34: new TransformFrame().with {
+					it.translation.set(Vector3.of())
+					it.rotation.set(Vector3.of(1))
+					it
+				}
 		].entrySet().toList()
 		result[1].type() == AnimationQueue.Type.LOOP
 
 		result[2].playback().timeline.toList() == [
 				0: new TransformFrame(),
-				4: new TransformFrame(Vector3.of(1), Vector3.of(), Vector3.of()),
-				34: new TransformFrame(Vector3.of(), Vector3.of(1), Vector3.of())
+				4: new TransformFrame().with {
+					it.translation.set(Vector3.of(1))
+					it.rotation.set(Vector3.of())
+					it
+				},
+				34: new TransformFrame().with {
+					it.translation.set(Vector3.of())
+					it.rotation.set(Vector3.of(1))
+					it
+				}
 		].entrySet().toList()
 		result[2].type() == AnimationQueue.Type.RESET
 	}

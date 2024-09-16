@@ -17,18 +17,28 @@ class AnimationQueueSpec extends Specification {
 		when:
 		animationQueue.add(new Timeline<TransformFrame>().with {
 			put(0, new TransformFrame())
-			put(1, new TransformFrame(Vector3.of(1, 1, 1), Vector3.of(), Vector3.of()))
+			put(1, new TransformFrame().with {
+				it.translation.set(Vector3.of(1, 1, 1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 		animationQueue.add(new Timeline<TransformFrame>().with {
 			put(0, new TransformFrame())
-			put(1, new TransformFrame(Vector3.of(), Vector3.of(1, 1, 1), Vector3.of()))
+			put(1, new TransformFrame().with {
+				it.rotation.set(Vector3.of(1, 1, 1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 
 		then:
 		animationQueue.update(0) == new TransformFrame()
-		animationQueue.update(1000000) == new TransformFrame(Vector3.of(1, 1, 1), Vector3.of(1, 1, 1), Vector3.of())
+		animationQueue.update(1000000) == new TransformFrame().with {
+			it.translation.set(Vector3.of(1, 1, 1))
+			it.rotation.set(Vector3.of(1, 1, 1))
+			it
+		}
 	}
 
 	def "reset returns null if no timelines"() {
@@ -39,7 +49,10 @@ class AnimationQueueSpec extends Specification {
 		when:
 		animationQueue.add(new Timeline<TransformFrame>().with {
 			put(0, new TransformFrame())
-			put(1, new TransformFrame(Vector3.of(1, 1, 1), Vector3.of(), Vector3.of()))
+			put(1, new TransformFrame().with {
+				it.translation.set(Vector3.of(1, 1, 1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 
@@ -50,26 +63,39 @@ class AnimationQueueSpec extends Specification {
 		when:
 		animationQueue.add(new Timeline<TransformFrame>().with {
 			put(0, new TransformFrame())
-			put(1, new TransformFrame(Vector3.of(1, 1, 1), Vector3.of(), Vector3.of()))
+			put(1, new TransformFrame().with {
+				it.translation.set(Vector3.of(1, 1, 1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 		animationQueue.add(new Timeline<TransformFrame>().with {
 			put(0, new TransformFrame())
-			put(1, new TransformFrame(Vector3.of(), Vector3.of(1, 1, 1), Vector3.of()))
+			put(1, new TransformFrame().with {
+				it.rotation.set(Vector3.of(1, 1, 1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 		animationQueue.update(0)
 		animationQueue.update(1000000)
 
 		then:
-		animationQueue.reset() == new TransformFrame(Vector3.of(-1, -1, -1), Vector3.of(-1, -1, -1), Vector3.of())
+		animationQueue.reset() == new TransformFrame().with {
+			it.translation.set(Vector3.of(-1, -1, -1))
+			it.rotation.set(Vector3.of(-1, -1, -1))
+			it
+		}
 	}
 
 	def "clear removes timelines"() {
 		when:
 		animationQueue.add(new Timeline<TransformFrame>().with {
 			put(0, new TransformFrame())
-			put(1, new TransformFrame(Vector3.of(1, 1, 1), Vector3.of(), Vector3.of()))
+			put(1, new TransformFrame().with {
+				it.translation.set(Vector3.of(1, 1, 1))
+				it
+			})
 			it
 		}, AnimationQueue.Type.ONCE)
 		animationQueue.clear()
