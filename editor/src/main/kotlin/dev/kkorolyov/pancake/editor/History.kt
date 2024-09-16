@@ -1,13 +1,16 @@
 package dev.kkorolyov.pancake.editor
 
+import imgui.extension.implot.ImPlot
+import imgui.extension.implot.flag.ImPlotAxis
 import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotFlags
+import imgui.extension.implot.flag.ImPlotStyleVar
 import imgui.flag.ImGuiCond
 import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Plots historical values within the last [_interval] seconds, split into `samples` even samples.
+ * Plots historical values within the last [_interval] seconds, split into [_samples] even samples.
  */
 class History(
 	private var _interval: Int,
@@ -93,7 +96,11 @@ class History(
 	inline operator fun invoke(label: String, width: Float = 0f, height: Float = 0f, op: History.CtxHistory.() -> Unit) {
 		tick()
 
-		plot(label, flags = ImPlotFlags.NoMenus, xFlags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time, yFlags = ImPlotAxisFlags.NoDecorations, xMin = max(0.0, current - interval + interval / samples), xMax = max(interval.toDouble(), current), xLimitCond = ImGuiCond.Always, width = width, height = height) {
+		plot(label, flags = ImPlotFlags.NoMenus, width = width, height = height) {
+			configAxis(ImPlotAxis.X1, min = max(0.0, current - interval + interval / samples), max = max(interval.toDouble(), current), limitCond = ImGuiCond.Always, flags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time)
+			configAxis(ImPlotAxis.Y1, flags = ImPlotAxisFlags.NoDecorations)
+			ImPlot.pushStyleVar(ImPlotStyleVar.PlotPadding, 0f, 0f)
+
 			ctx.op()
 
 			dummy("*opts")
@@ -101,11 +108,13 @@ class History(
 				input("active", active) { active = it }
 
 				text("interval | samples")
-				dragInput("##intervalSamples", interval, samples, min = 1, max = 10000) { interval, samples ->
-					this@History.interval = interval
-					this@History.samples = samples
+				dragInput("##intervalSamples", interval, samples, min = 1, max = 10000) { newInterval, newSamples ->
+					interval = newInterval
+					samples = newSamples
 				}
 			}
+
+			ImPlot.popStyleVar()
 		}
 	}
 	/**

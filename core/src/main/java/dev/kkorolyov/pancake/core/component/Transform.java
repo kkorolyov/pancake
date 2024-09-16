@@ -5,6 +5,7 @@ import dev.kkorolyov.pancake.platform.math.Matrix4;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Translation, rotation, and scale of an entity in space.
@@ -16,7 +17,7 @@ public final class Transform implements Component {
 	private final Vector3 scale = Vector3.observable(Vector3.of(1, 1, 1), this::invalidate);
 
 	private Transform parent;
-	private final ArrayList<Transform> children = new ArrayList<>();
+	private final List<Transform> children = new ArrayList<>();
 
 	private final Matrix4 matrix = Matrix4.of();
 	private final Matrix4 resultMatrix = new ReadOnlyMatrix4(matrix);
