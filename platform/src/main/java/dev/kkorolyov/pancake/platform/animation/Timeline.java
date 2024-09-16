@@ -42,7 +42,7 @@ public final class Timeline<T extends Frame<T>> implements Iterable<Map.Entry<In
 				? a.getValue()
 				: offset == b.getKey()
 				? b.getValue()
-				: a.getValue().lerp(b.getValue(), cursor / range);
+				: b.getValue().lerp(a.getValue(), cursor / range);
 	}
 
 	/**
