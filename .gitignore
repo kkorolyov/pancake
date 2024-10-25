@@ -1,6 +1,7 @@
 # Build
 build/
 .gradle/
+.kotlin/
 docs/
 !docs/pancake.png
 
