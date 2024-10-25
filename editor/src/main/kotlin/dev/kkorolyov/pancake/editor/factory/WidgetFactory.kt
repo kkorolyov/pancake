@@ -13,7 +13,6 @@ import java.util.ServiceLoader
 import kotlin.math.max
 
 private val factories by ThreadLocal.withInitial { ServiceLoader.load(WidgetFactory::class.java).groupBy(WidgetFactory<*>::type) }
-private val noop by lazy { Widget {} }
 
 /**
  * Returns a widget displaying basic data (data common to all systems) of [system].
@@ -51,7 +50,7 @@ fun <T> getWidget(c: Class<T>, t: T): Widget = factories[c]?.firstNotNullOfOrNul
  * Returns the most suitable widget for displaying an [sc]-type component creator invoking [onNew] from all [c]-type [WidgetFactory] providers on the classpath.
  * Falls back to a no-op widget if no suitable provider found.
  */
-fun <T, ST : Class<out T>> getWidget(c: Class<T>, sc: ST, onNew: (T) -> Unit): Widget = factories[c]?.firstNotNullOfOrNull { (it as WidgetFactory<T>).get(sc, onNew) } ?: noop
+fun <T, ST : Class<out T>> getWidget(c: Class<T>, sc: ST, onNew: (T) -> Unit): Widget = factories[c]?.firstNotNullOfOrNull { (it as WidgetFactory<T>).get(sc, onNew) } ?: Widget.NOOP
 
 /**
  * Returns widgets responsible for displaying, editing, or creating [T] instances.

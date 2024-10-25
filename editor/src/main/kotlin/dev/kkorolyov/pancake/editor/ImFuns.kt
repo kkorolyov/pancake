@@ -291,8 +291,8 @@ fun separator() {
  * Optionally [flip]s the image vertically when rendering.
  */
 fun image(texture: Texture, width: Float, height: Float, flip: Boolean = false) {
-	if (flip) ImGui.image(texture.id, width, height, 0f, 1f, 1f, 0f)
-	else ImGui.image(texture.id, width, height)
+	if (flip) ImGui.image(texture.id.toLong(), width, height, 0f, 1f, 1f, 0f)
+	else ImGui.image(texture.id.toLong(), width, height)
 }
 
 /**
