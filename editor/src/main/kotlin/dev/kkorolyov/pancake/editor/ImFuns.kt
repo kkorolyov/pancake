@@ -189,12 +189,15 @@ inline fun child(id: String, width: Float = 0f, height: Float = 0f, border: Bool
 
 /**
  * Runs [op] in a tree node labeled [label].
+ * Returns `true` when the node is open.
  */
-inline fun tree(label: String, flags: Int = ImGuiTreeNodeFlags.None, op: Op) {
-	if (ImGui.treeNodeEx(label, flags)) {
+inline fun tree(label: String, flags: Int = ImGuiTreeNodeFlags.None, op: Op): Boolean {
+	val result = ImGui.treeNodeEx(label, flags)
+	if (result) {
 		op()
 		ImGui.treePop()
 	}
+	return result
 }
 
 /**
@@ -968,10 +971,23 @@ object Ctx {
 
 	object Plot : PlotModifier() {
 		/**
-		 * Plots data for [label] consisting of [xs] to [ys], starting at [offset].
+		 * Plots line data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */
 		fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
 			ImPlot.plotLine(label, xs, ys, xs.size, offset)
+		}
+
+		/**
+		 * Plots scatter data for [label] consisting of [xs] to [ys], starting at [offset].
+		 */
+		fun scatter(label: String, xs: IntArray, ys: IntArray, offset: Int = 0) {
+			ImPlot.plotScatter(label, xs, ys, xs.size, offset)
+		}
+		/**
+		 * Plots scatter data for [label] consisting of [xs] to [ys], starting at [offset].
+		 */
+		fun scatter(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
+			ImPlot.plotScatter(label, xs, ys, xs.size, offset)
 		}
 
 		/**

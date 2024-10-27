@@ -1,33 +1,34 @@
 package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.core.animation.TransformFrame;
+import dev.kkorolyov.pancake.platform.animation.Choreography;
 import dev.kkorolyov.pancake.platform.animation.Frame;
 import dev.kkorolyov.pancake.platform.animation.Playback;
 import dev.kkorolyov.pancake.platform.animation.Timeline;
 import dev.kkorolyov.pancake.platform.entity.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Emits {@link TransformFrame} diffs according to the current state.
+ * Emits a cumulative {@link TransformFrame} delta between the previous and current frames of each assigned {@link Choreography.Role}.
+ * Expects an assigned role's timeline offset to be in {@code ms}.
  */
-public final class AnimationQueue implements Component, Iterable<AnimationQueue.PlaybackConfig<TransformFrame>> {
-	private final Collection<PlaybackConfig<TransformFrame>> timelines = new ArrayList<>();
+public final class Animator implements Component, Iterable<Map.Entry<Choreography.Role<TransformFrame>, Animator.PlaybackConfig<TransformFrame>>> {
+	private final Map<Choreography.Role<TransformFrame>, PlaybackConfig<TransformFrame>> configs = new HashMap<>();
 	private boolean active = true;
 	private long counter;
 
 	/**
-	 * Adds animation {@code timeline} to this component, and preps it for {@code type} playback.
-	 * {@code timeline} offsets are expected to be in {@code ms}.
+	 * Adds animation {@code role} to this component if it is not yet set, and preps it for {@code type} playback.
 	 */
-	public void add(Timeline<TransformFrame> timeline, Type type) {
-		timelines.add(new PlaybackConfig<>(new Playback<>(timeline), type));
+	public void put(Choreography.Role<TransformFrame> role, Type type) {
+		configs.putIfAbsent(role, new PlaybackConfig<>(new Playback<>(role.timeline()), type));
 	}
 
 	/**
-	 * Increments all playbacks by {@code dt} elapsed {@code ns} since the last call and returns the sum of each playback's frame difference.
+	 * Increments all playbacks by {@code dt} elapsed {@code ns} since the last call and returns the sum of each playback's frame delta.
 	 * Return {@code null} if all playbacks return {@code null}.
 	 * Does nothing and returns {@code null} if not {@link #isActive()}.
 	 */
@@ -41,13 +42,13 @@ public final class AnimationQueue implements Component, Iterable<AnimationQueue.
 
 			int ms = (int) (counter / nsMs);
 
-			var it = timelines.iterator();
+			var it = configs.values().iterator();
 
 			while (it.hasNext()) {
 				var config = it.next();
 				var partial = config.playback().update(ms);
 
-				if (partial == null) {
+				if (partial == null && config.playback().size() >= 0) {
 					switch (config.type()) {
 						case ONCE -> {
 							it.remove();
@@ -82,7 +83,7 @@ public final class AnimationQueue implements Component, Iterable<AnimationQueue.
 	public TransformFrame reset() {
 		TransformFrame result = null;
 
-		for (var config : timelines) {
+		for (var config : configs.values()) {
 			config.playback().setOffset(0);
 			var partial = config.playback().update(0);
 
@@ -95,7 +96,7 @@ public final class AnimationQueue implements Component, Iterable<AnimationQueue.
 	 * Removes all playbacks immediately without any additional termination / cleanup.
 	 */
 	public void clear() {
-		timelines.clear();
+		configs.clear();
 	}
 
 	/**
@@ -111,9 +112,12 @@ public final class AnimationQueue implements Component, Iterable<AnimationQueue.
 		this.active = active;
 	}
 
+	/**
+	 * Returns an iterator over assigned roles mapped to current playback states.
+	 */
 	@Override
-	public Iterator<PlaybackConfig<TransformFrame>> iterator() {
-		return timelines.iterator();
+	public Iterator<Map.Entry<Choreography.Role<TransformFrame>, Animator.PlaybackConfig<TransformFrame>>> iterator() {
+		return configs.entrySet().iterator();
 	}
 
 	/**
@@ -135,7 +139,7 @@ public final class AnimationQueue implements Component, Iterable<AnimationQueue.
 	}
 
 	/**
-	 * Higher-level playback state maintained by an animation queue.
+	 * Higher-level playback state maintained by an animator.
 	 */
 	public record PlaybackConfig<T extends Frame<T>>(Playback<T> playback, Type type) {}
 }

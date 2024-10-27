@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.platform.animation;
 
 /**
- * A distinct point in an animation.
- * Also supports usage as a delta or an additive combination of frames.
+ * A concrete point in a timeline.
+ * Supports addition, difference, and interpolation with other same-type frames.
  */
 public interface Frame<T> {
 	/**

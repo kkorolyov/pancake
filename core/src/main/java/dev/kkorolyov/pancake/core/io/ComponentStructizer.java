@@ -1,9 +1,8 @@
 package dev.kkorolyov.pancake.core.io;
 
 import dev.kkorolyov.flub.data.Graph;
-import dev.kkorolyov.pancake.core.animation.TransformFrame;
 import dev.kkorolyov.pancake.core.component.ActionQueue;
-import dev.kkorolyov.pancake.core.component.AnimationQueue;
+import dev.kkorolyov.pancake.core.component.Animator;
 import dev.kkorolyov.pancake.core.component.Bounds;
 import dev.kkorolyov.pancake.core.component.Damping;
 import dev.kkorolyov.pancake.core.component.Force;
@@ -14,7 +13,6 @@ import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit;
 import dev.kkorolyov.pancake.core.component.tag.Collidable;
 import dev.kkorolyov.pancake.core.component.tag.Correctable;
-import dev.kkorolyov.pancake.platform.animation.Timeline;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.io.Structizer;
 import dev.kkorolyov.pancake.platform.io.Structizers;
@@ -33,23 +31,30 @@ import java.util.stream.StreamSupport;
 /**
  * {@link Structizer} for {@code core} {@link Component}s.
  */
-public class ComponentStructizer implements Structizer {
+public final class ComponentStructizer implements Structizer {
 	@SuppressWarnings("Convert2MethodRef")
 	@Override
 	public Optional<Object> toStruct(Object o) {
 		return Optional.of(o)
 				.map(Structizer.first(
-						// TODO
+						// TODO implement
 						Structizer.select(ActionQueue.class, t -> List.of()),
-						Structizer.select(AnimationQueue.class, t -> StreamSupport.stream(t.spliterator(), false)
-								.map(playbackConfig -> Map.of(
-										"timeline", StreamSupport.stream(playbackConfig.playback().getTimeline().spliterator(), false)
-												.collect(Collectors.toMap(Map.Entry::getKey, entry -> Structizers.toStruct(entry.getValue()))),
-										"type", playbackConfig.type().name()
+						Structizer.select(Animator.class, t -> StreamSupport.stream(t.spliterator(), false)
+								// group by choreography
+								.collect(Collectors.groupingBy(
+										// TODO serialized pointer to shared instance
+										entry -> "TODO",
+										// group by role
+										Collectors.toMap(
+												entry -> entry.getKey().key(),
+												entry -> Map.of(
+														"offset", entry.getValue().playback().getOffset(),
+														"type", entry.getValue().type().name()
+												)
+										)
 								))
-								.toList()
 						),
-						// TODO
+						// TODO implement
 						Structizer.select(Bounds.class, t -> List.of()),
 						Structizer.select(Path.class, t -> Map.of(
 								"strength", t.getStrength(),
@@ -111,22 +116,9 @@ public class ComponentStructizer implements Structizer {
 
 											return new Damping(linear, angular);
 										}),
-										// TODO
+										// TODO implement
 										Structizer.select(c, ActionQueue.class, t -> new ActionQueue()),
-										Structizer.select(c, AnimationQueue.class, t -> {
-											var result = new AnimationQueue();
-
-											for (Map<String, Object> playbackConfig : (Iterable<? extends Map<String, Object>>) t) {
-												var timeline = new Timeline<TransformFrame>();
-												((Map<Integer, Object>) playbackConfig.get("timeline")).forEach((offset, keyframe) -> timeline.put(offset, Structizers.fromStruct(TransformFrame.class, keyframe)));
-												var type = AnimationQueue.Type.valueOf((String) playbackConfig.get("type"));
-
-												result.add(timeline, type);
-											}
-
-											return result;
-										}),
-										// TODO
+										// TODO implement
 										Structizer.select(c, Bounds.class, t -> new Bounds(new Graph<>()))
 								)),
 						Optional.of(o)
@@ -153,6 +145,15 @@ public class ComponentStructizer implements Structizer {
 
 											return result;
 											// TODO support parent - once component memoization is in
+										}),
+										Structizer.select(c, Animator.class, t -> {
+											var result = new Animator();
+
+											for (Map.Entry<String, Object> choreographies : t.entrySet()) {
+												// TODO assign role from shared Choreography instance
+											}
+
+											return result;
 										})
 								)),
 						Optional.of(o)

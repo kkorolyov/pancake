@@ -33,7 +33,8 @@ public final class Timeline<T extends Frame<T>> implements Iterable<Map.Entry<In
 
 		var a = keyframes.floorEntry(offset);
 		var b = keyframes.ceilingEntry(offset);
-		if (b == null) b = a;
+		if (a == null) a = b;
+		else if (b == null) b = a;
 
 		int range = b.getKey() - a.getKey();
 		double cursor = offset - a.getKey();

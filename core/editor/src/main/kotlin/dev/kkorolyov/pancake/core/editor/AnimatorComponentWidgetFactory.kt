@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.core.editor
 
 import dev.kkorolyov.pancake.core.animation.TransformFrame
-import dev.kkorolyov.pancake.core.component.AnimationQueue
+import dev.kkorolyov.pancake.core.component.Animator
 import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
@@ -17,43 +17,57 @@ import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.entity.Component
 import imgui.flag.ImGuiTreeNodeFlags
 
-class AnimationQueueComponentWidgetFactory : WidgetFactory<Component> {
+class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 	override val type: Class<Component> = Component::class.java
 
-	override fun get(t: Component): Widget? = WidgetFactory.get<AnimationQueue>(t) {
+	override fun get(t: Component): Widget? = WidgetFactory.get<Animator>(t) {
 		var newOffset = 0
 		val newKeyframe = TransformFrame()
 
 		Widget {
-			maxByOrNull { it.playback.size() }?.playback?.let { driverPlayback ->
-				Layout.width(Layout.stretchWidth) {
-					sliderInput("##offset", driverPlayback.offset, min = 0, max = driverPlayback.size()) { newOffset ->
-						forEach { playbackConfig ->
-							playbackConfig.playback.offset = newOffset
+			input("active", isActive) { isActive = it }
+			maxByOrNull { it.value.playback.size() }?.value?.playback?.let { driverPlayback ->
+				if (driverPlayback.size() >= 0) {
+					Layout.width(Layout.stretchWidth) {
+						sliderInput("##offset", driverPlayback.offset, min = 0, max = driverPlayback.size()) { newOffset ->
+							forEach { (_, playbackConfig) ->
+								playbackConfig.playback.offset = newOffset
+							}
 						}
 					}
+					tooltip("offset")
 				}
-				tooltip("offset")
 			}
 
-			forEachIndexed { playbackConfigI, playbackConfig ->
+			forEach { (role, playbackConfig) ->
 				val playback = playbackConfig.playback
 				val type = playbackConfig.type
 
-				tree("$playbackConfigI (${type.name})", ImGuiTreeNodeFlags.SpanFullWidth) {
-					disabledIf(true) { sliderInput("##offset-$playbackConfigI", playback.offset, min = 0, max = playback.size()) }
+				tree("$role (${type.name})", ImGuiTreeNodeFlags.SpanFullWidth) {
+					disabledIf(true) { sliderInput("##offset-$role", playback.offset, min = 0, max = playback.size()) }
 
-					// FIXME adding/removing frames during playback crops up problematic behavior - for obvious reasons
+//					playback.timeline.map {  }
+//
+//					plot("timeline") {
+//						scatter("keyframes", )
+//					}
 
 					val frameIt = playback.timeline.iterator()
 					while (frameIt.hasNext()) {
 						val (offset, keyframe) = frameIt.next()
 
-						tree(offset.toString(), ImGuiTreeNodeFlags.SpanFullWidth) {
+						// draw context menu EITHER in open treenode or in closed state
+						if (
+							!tree(offset.toString(), ImGuiTreeNodeFlags.SpanFullWidth) {
+								contextMenu {
+									menuItem("remove") { frameIt.remove() }
+								}
+								drawTransformFrame(keyframe)
+							}
+						) {
 							contextMenu {
 								menuItem("remove") { frameIt.remove() }
 							}
-							drawTransformFrame(keyframe)
 						}
 					}
 
@@ -66,7 +80,11 @@ class AnimationQueueComponentWidgetFactory : WidgetFactory<Component> {
 							drawTransformFrame(newKeyframe)
 
 							button("add") {
-								playback.timeline.put(newOffset, TransformFrame(newKeyframe.translation, newKeyframe.rotation, newKeyframe.scale))
+								playback.timeline.put(newOffset, TransformFrame().apply {
+									translation.set(newKeyframe.translation)
+									rotation.set(newKeyframe.rotation)
+									scale.set(newKeyframe.scale)
+								})
 							}
 						}
 					}
