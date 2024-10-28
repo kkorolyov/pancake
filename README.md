@@ -15,4 +15,4 @@ A modular, lightweight, and extensible entity-component system (ECS)-driven game
 
 ## Committing and Publishing
 
-Commits to `master` with `MAJOR`, `MINOR`, or `PATCH` keywords in the commit message will publish bumped artifact versions from the build of that commit.
+PRs tagged with the `major`, `minor`, or `patch` labels will publish a new release on merge to `master`.
