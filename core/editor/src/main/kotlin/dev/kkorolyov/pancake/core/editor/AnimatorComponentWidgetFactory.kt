@@ -43,7 +43,7 @@ class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 				val playback = playbackConfig.playback
 				val type = playbackConfig.type
 
-				tree("$role (${type.name})", ImGuiTreeNodeFlags.SpanFullWidth) {
+				tree("${role.key} (${type.name})", ImGuiTreeNodeFlags.SpanFullWidth) {
 					disabledIf(true) { sliderInput("##offset-$role", playback.offset, min = 0, max = playback.size()) }
 
 //					playback.timeline.map {  }
