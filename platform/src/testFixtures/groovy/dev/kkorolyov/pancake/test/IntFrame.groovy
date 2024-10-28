@@ -14,7 +14,7 @@ final class IntFrame implements Frame<IntFrame> {
 
 	@Override
 	IntFrame lerp(IntFrame other, double mix) {
-		return new IntFrame((value + (other.value - value) * mix) as int)
+		return new IntFrame((other.value + (value - other.value) * mix) as int)
 	}
 	@Override
 	IntFrame sum(IntFrame other) {

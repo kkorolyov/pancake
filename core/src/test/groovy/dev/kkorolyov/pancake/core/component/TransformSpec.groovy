@@ -1,5 +1,6 @@
 package dev.kkorolyov.pancake.core.component
 
+import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector3
 
 import spock.lang.Specification
@@ -163,5 +164,28 @@ class TransformSpec extends Specification {
 		parentTranslation   | translation         | parentRads | rads        | axis                | parentScale         | scale               | expected
 		Vector3.of(1, 1, 1) | Vector3.of(1, 2, 3) | Math.PI    | Math.PI / 2 | Vector3.of(0, 0, 1) | Vector3.of(2, 2, 2) | Vector3.of()        | Vector3.of(-1, -3, 7)
 		Vector3.of(1, 1, 1) | Vector3.of(1, 1, 1) | Math.PI    | Math.PI / 2 | Vector3.of(0, 0, 1) | Vector3.of(2, 2, 2) | Vector3.of(2, 2, 2) | Vector3.of(-1, -1, 3)
+	}
+
+	def "rotates around origin"() {
+		Vector3 vector = Vector3.of()
+
+		when:
+		transform.rotateAround(origin, radians, axis)
+		vector.transform(transform.matrix)
+
+		then:
+		vector == expected
+		transform.rotation == Matrix4.of().with {
+			it.rotate(radians, axis)
+			it
+		}
+
+		where:
+		origin            | radians     | axis                | expected
+		Vector3.of()      | Math.PI / 2 | Vector3.of(0, 0, 1) | Vector3.of()
+		Vector3.of(0, -1) | Math.PI / 2 | Vector3.of(0, 0, 1) | Vector3.of(-1, -1)
+		Vector3.of(0, 1)  | Math.PI / 2 | Vector3.of(0, 0, 1) | Vector3.of(1, 1)
+		Vector3.of(-1, 0) | Math.PI / 2 | Vector3.of(0, 0, 1) | Vector3.of(-1, 1)
+		Vector3.of(1, 0)  | Math.PI / 2 | Vector3.of(0, 0, 1) | Vector3.of(1, -1)
 	}
 }

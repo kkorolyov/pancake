@@ -1,13 +1,13 @@
 package dev.kkorolyov.pancake.platform.animation;
 
 /**
- * A distinct point in an animation.
- * Also supports usage as a delta or an additive combination of frames.
+ * A concrete point in a timeline.
+ * Supports addition, difference, and interpolation with other same-type frames.
  */
 public interface Frame<T> {
 	/**
-	 * Returns the {@code mix}ed linear interpolation between {@code this} and {@code other}.
-	 * i.e. returns a frame that is {@code 1 - mix} portion {@code this} and {@code mix} portion {@code other}.
+	 * Returns the {@code mix}ed linear interpolation from {@code other} to {@code this}.
+	 * i.e. returns a frame that is {@code mix} portion {@code this} and {@code 1 - mix} portion {@code other}.
 	 */
 	T lerp(T other, double mix);
 

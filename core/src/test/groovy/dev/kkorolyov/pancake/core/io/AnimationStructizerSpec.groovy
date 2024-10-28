@@ -10,11 +10,12 @@ class AnimationStructizerSpec extends Specification {
 
 	def "toStructs TransformFrame"() {
 		expect:
-		structizer.toStruct(new TransformFrame(
-				Vector3.of(x, y, z),
-				Vector3.of(z, y, x),
-				Vector3.of(x, z, y)
-		)) == Optional.of([
+		structizer.toStruct(new TransformFrame().with {
+			it.translation.set(Vector3.of(x, y, z))
+			it.rotation.set(Vector3.of(z, y, x))
+			it.scale.set(Vector3.of(x, z, y))
+			it
+		}) == Optional.of([
 				translation: [x.doubleValue(), y.doubleValue(), z.doubleValue()],
 				rotation: [z.doubleValue(), y.doubleValue(), x.doubleValue()],
 				scale: [x.doubleValue(), z.doubleValue(), y.doubleValue()]
@@ -31,11 +32,12 @@ class AnimationStructizerSpec extends Specification {
 				translation: [x, y, z],
 				rotation: [z, y, x],
 				scale: [x, z, y]
-		]).get() == new TransformFrame(
-				Vector3.of(x, y, z),
-				Vector3.of(z, y, x),
-				Vector3.of(x, z, y)
-		)
+		]).get() == new TransformFrame().with {
+			it.translation.set(Vector3.of(x, y, z))
+			it.rotation.set(Vector3.of(z, y, x))
+			it.scale.set(Vector3.of(x, z, y))
+			it
+		}
 
 		where:
 		x << (1..4)
@@ -44,16 +46,18 @@ class AnimationStructizerSpec extends Specification {
 	}
 	def "full-circles TransformFrame"() {
 		expect:
-		structizer.toStruct(new TransformFrame(
-				Vector3.of(x, y, z),
-				Vector3.of(z, y, x),
-				Vector3.of(x, z, y)
-		)).flatMap { structizer.fromStruct(TransformFrame, it) }
-				.get() == new TransformFrame(
-				Vector3.of(x, y, z),
-				Vector3.of(z, y, x),
-				Vector3.of(x, z, y)
-		)
+		structizer.toStruct(new TransformFrame().with {
+			it.translation.set(Vector3.of(x, y, z))
+			it.rotation.set(Vector3.of(z, y, x))
+			it.scale.set(Vector3.of(x, z, y))
+			it
+		}).flatMap { structizer.fromStruct(TransformFrame, it) }
+				.get() == new TransformFrame().with {
+			it.translation.set(Vector3.of(x, y, z))
+			it.rotation.set(Vector3.of(z, y, x))
+			it.scale.set(Vector3.of(x, z, y))
+			it
+		}
 
 		where:
 		x << (1..4)

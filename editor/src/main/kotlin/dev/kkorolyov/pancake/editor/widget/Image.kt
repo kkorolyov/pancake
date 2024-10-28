@@ -13,13 +13,13 @@ class Image(
 	private val height: Float = width
 ) : Widget {
 	override fun invoke() {
-		ImGui.image(texture.id, width, height)
+		ImGui.image(texture.id.toLong(), width, height)
 	}
 
 	/**
 	 * Renders an `ImGui` button from this image and returns its click state.
 	 */
 	fun clickable(): Boolean {
-		return ImGui.imageButton(texture.id, width, height)
+		return ImGui.imageButton(texture.id.toLong(), width, height)
 	}
 }

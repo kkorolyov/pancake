@@ -15,21 +15,9 @@ public final class TransformFrame implements Frame<TransformFrame> {
 	private static final Vector3 Y_AXIS = Vector3.of(0, 1);
 	private static final Vector3 Z_AXIS = Vector3.of(0, 0, 1);
 
-	private final Vector3 translation, rotation, scale;
-
-	/**
-	 * Shortcut constructor for a frame with all {@code 0} vectors.
-	 */
-	public TransformFrame() {
-		translation = Vector3.of();
-		rotation = Vector3.of();
-		scale = Vector3.of();
-	}
-	public TransformFrame(Vector3 translation, Vector3 rotation, Vector3 scale) {
-		this.translation = Vector3.of(translation);
-		this.rotation = Vector3.of(rotation);
-		this.scale = Vector3.of(scale);
-	}
+	private final Vector3 translation = Vector3.of();
+	private final Vector3 rotation = Vector3.of();
+	private final Vector3 scale = Vector3.of();
 
 	private static Vector3 lerpVector(Vector3 a, Vector3 b, double mix) {
 		return Vector3.of(lerpDouble(a.getX(), b.getX(), mix), lerpDouble(a.getY(), b.getY(), mix), lerpDouble(a.getZ(), b.getZ(), mix));
@@ -63,33 +51,36 @@ public final class TransformFrame implements Frame<TransformFrame> {
 
 	@Override
 	public TransformFrame lerp(TransformFrame other, double mix) {
-		return new TransformFrame(
-				lerpVector(translation, other.translation, mix),
-				lerpVector(rotation, other.rotation, mix),
-				lerpVector(scale, other.scale, mix)
-		);
+		var result = new TransformFrame();
+		result.translation.set(lerpVector(other.translation, translation, mix));
+		result.rotation.set(lerpVector(other.rotation, rotation, mix));
+		result.scale.set(lerpVector(other.scale, scale, mix));
+
+		return result;
 	}
 	@Override
 	public TransformFrame sum(TransformFrame other) {
-		var newTranslation = Vector3.of(translation);
-		newTranslation.add(other.translation);
-		var newRotation = Vector3.of(rotation);
-		newRotation.add(other.rotation);
-		var newScale = Vector3.of(scale);
-		newScale.add(other.scale);
+		var result = new TransformFrame();
+		result.translation.set(translation);
+		result.translation.add(other.translation);
+		result.rotation.set(rotation);
+		result.rotation.add(other.rotation);
+		result.scale.set(scale);
+		result.scale.add(other.scale);
 
-		return new TransformFrame(newTranslation, newRotation, newScale);
+		return result;
 	}
 	@Override
 	public TransformFrame diff(TransformFrame other) {
-		var newTranslation = Vector3.of(translation);
-		newTranslation.add(other.translation, -1);
-		var newRotation = Vector3.of(rotation);
-		newRotation.add(other.rotation, -1);
-		var newScale = Vector3.of(scale);
-		newScale.add(other.scale, -1);
+		var result = new TransformFrame();
+		result.translation.set(translation);
+		result.translation.add(other.translation, -1);
+		result.rotation.set(rotation);
+		result.rotation.add(other.rotation, -1);
+		result.scale.set(scale);
+		result.scale.add(other.scale, -1);
 
-		return new TransformFrame(newTranslation, newRotation, newScale);
+		return result;
 	}
 
 	@Override

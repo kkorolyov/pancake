@@ -1,5 +1,5 @@
 import dev.kkorolyov.pancake.core.editor.ActionQueueComponentWidgetFactory;
-import dev.kkorolyov.pancake.core.editor.AnimationQueueComponentWidgetFactory;
+import dev.kkorolyov.pancake.core.editor.AnimatorComponentWidgetFactory;
 import dev.kkorolyov.pancake.core.editor.BoundsComponentWidgetFactory;
 import dev.kkorolyov.pancake.core.editor.DampingComponentWidgetFactory;
 import dev.kkorolyov.pancake.core.editor.ForceComponentWidgetFactory;
@@ -32,7 +32,7 @@ module dev.kkorolyov.pancake.core.editor {
 	provides WidgetFactory with
 			// components
 			ActionQueueComponentWidgetFactory,
-			AnimationQueueComponentWidgetFactory,
+			AnimatorComponentWidgetFactory,
 			BoundsComponentWidgetFactory,
 			DampingComponentWidgetFactory,
 			ForceComponentWidgetFactory,

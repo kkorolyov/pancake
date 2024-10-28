@@ -24,6 +24,7 @@ public final class Playback<T extends Frame<T>> {
 	 */
 	public T update(int amount) {
 		if (timeline.size() < 0) {
+			offset = 0;
 			state = State.INITIAL;
 			return null;
 		} else {
