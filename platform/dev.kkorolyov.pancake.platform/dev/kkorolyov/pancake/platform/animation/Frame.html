@@ -88,8 +88,8 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Frame&lt;T&gt;</span></div>
-<div class="block">A distinct point in an animation.
- Also supports usage as a delta or an additive combination of frames.</div>
+<div class="block">A concrete point in a timeline.
+ Supports addition, difference, and interpolation with other same-type frames.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,7 +113,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#lerp(T,double)" class="member-name-link">lerp</a><wbr>(<a href="Frame.html" title="type parameter in Frame">T</a>&nbsp;other,
  double&nbsp;mix)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Returns the <code>mix</code>ed linear interpolation between <code>this</code> and <code>other</code>.</div>
+<div class="block">Returns the <code>mix</code>ed linear interpolation from <code>other</code> to <code>this</code>.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Frame.html" title="type parameter in Frame">T</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#sum(T)" class="member-name-link">sum</a><wbr>(<a href="Frame.html" title="type parameter in Frame">T</a>&nbsp;other)</code></div>
@@ -139,8 +139,8 @@ loadScripts(document, 'script');</script>
 <h3 id="lerp(java.lang.Object,double)">lerp</h3>
 <div class="member-signature"><span class="return-type"><a href="Frame.html" title="type parameter in Frame">T</a></span>&nbsp;<span class="element-name">lerp</span><wbr><span class="parameters">(<a href="Frame.html" title="type parameter in Frame">T</a>&nbsp;other,
  double&nbsp;mix)</span></div>
-<div class="block">Returns the <code>mix</code>ed linear interpolation between <code>this</code> and <code>other</code>.
- i.e. returns a frame that is <code>1 - mix</code> portion <code>this</code> and <code>mix</code> portion <code>other</code>.</div>
+<div class="block">Returns the <code>mix</code>ed linear interpolation from <code>other</code> to <code>this</code>.
+ i.e. returns a frame that is <code>mix</code> portion <code>this</code> and <code>1 - mix</code> portion <code>other</code>.</div>
 </section>
 </li>
 <li>

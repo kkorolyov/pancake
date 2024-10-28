@@ -152,8 +152,15 @@ implements dev.kkorolyov.pancake.platform.entity.Component</span></div>
 <div class="block">Returns the mutable translation vector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParent(dev.kkorolyov.pancake.core.component.Transform)" class="member-name-link">setParent</a><wbr>(<a href="Transform.html" title="class in dev.kkorolyov.pancake.core.component">Transform</a>&nbsp;parent)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#rotateAround(dev.kkorolyov.pancake.platform.math.Vector3,double,dev.kkorolyov.pancake.platform.math.Vector3)" class="member-name-link">rotateAround</a><wbr>(dev.kkorolyov.pancake.platform.math.Vector3&nbsp;origin,
+ double&nbsp;radians,
+ dev.kkorolyov.pancake.platform.math.Vector3&nbsp;axis)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Modifies this transform's translation and rotation to match rotating it around <code>origin</code> by <code>radians</code> about <code>axis</code>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setParent(dev.kkorolyov.pancake.core.component.Transform)" class="member-name-link">setParent</a><wbr>(<a href="Transform.html" title="class in dev.kkorolyov.pancake.core.component">Transform</a>&nbsp;parent)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets direct transform <code>parent</code>.</div>
 </div>
 </div>
@@ -190,6 +197,15 @@ implements dev.kkorolyov.pancake.platform.entity.Component</span></div>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="rotateAround(dev.kkorolyov.pancake.platform.math.Vector3,double,dev.kkorolyov.pancake.platform.math.Vector3)">
+<h3>rotateAround</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">rotateAround</span><wbr><span class="parameters">(dev.kkorolyov.pancake.platform.math.Vector3&nbsp;origin,
+ double&nbsp;radians,
+ dev.kkorolyov.pancake.platform.math.Vector3&nbsp;axis)</span></div>
+<div class="block">Modifies this transform's translation and rotation to match rotating it around <code>origin</code> by <code>radians</code> about <code>axis</code>.</div>
+</section>
+</li>
 <li>
 <section class="detail" id="getTranslation()">
 <h3>getTranslation</h3>

@@ -162,6 +162,8 @@ $dokka.location:dev.kkorolyov.pancake.editor/Ctx.Menu///PointingToDeclaration/e
 $dokka.location:dev.kkorolyov.pancake.editor/Ctx.Menu/menuItem/#kotlin.String#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-menu/menu-item.html
 $dokka.location:dev.kkorolyov.pancake.editor/Ctx.Plot///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-plot/index.html
 $dokka.location:dev.kkorolyov.pancake.editor/Ctx.Plot/line/#kotlin.String#kotlin.DoubleArray#kotlin.DoubleArray#kotlin.Int/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-plot/line.html
+$dokka.location:dev.kkorolyov.pancake.editor/Ctx.Plot/scatter/#kotlin.String#kotlin.DoubleArray#kotlin.DoubleArray#kotlin.Int/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-plot/scatter.html
+$dokka.location:dev.kkorolyov.pancake.editor/Ctx.Plot/scatter/#kotlin.String#kotlin.IntArray#kotlin.IntArray#kotlin.Int/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-plot/scatter.html
 $dokka.location:dev.kkorolyov.pancake.editor/Ctx.Plot/text/#kotlin.Any#kotlin.Double#kotlin.Double#kotlin.Boolean/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-plot/text.html
 $dokka.location:dev.kkorolyov.pancake.editor/Ctx.PlotModifier///PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-plot-modifier/index.html
 $dokka.location:dev.kkorolyov.pancake.editor/Ctx.PlotModifier/PlotModifier/#/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/-ctx/-plot-modifier/-plot-modifier.html
