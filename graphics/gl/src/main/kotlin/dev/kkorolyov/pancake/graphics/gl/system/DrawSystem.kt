@@ -42,15 +42,14 @@ class DrawSystem(
 
 			// build the camera-specific clip <- world projection matrix
 			clipWorldMatrix.apply {
+				// init clip <- view projection matrix
 				reset()
-				camera.lens.let { lens ->
-					clipWorldMatrix.scale(vec3.apply {
-						// *2 to expand a [0, 1] range to [-1, 1]
-						x = lens.scale.x / lens.size.x * 2
-						y = lens.scale.y / lens.size.y * 2
-						z = 1.0
-					})
-				}
+				scale(vec3.apply {
+					// *2 to expand a [0, 1] range to [-1, 1]
+					x = camera.lens.scale.x / camera.lens.size.x * 2
+					y = camera.lens.scale.y / camera.lens.size.y * 2
+					z = 1.0
+				})
 			}.multiply(viewWorldMatrix.apply {
 				set(camera.transform.matrix)
 				// camera offset is the negation of view offset
@@ -77,10 +76,9 @@ class DrawSystem(
 						model.meshes.forEach(Mesh::draw)
 					}
 				}
-
-				// clear for next update
-				entities.clear()
 			}
 		}
+
+		pending.clear()
 	}
 }
