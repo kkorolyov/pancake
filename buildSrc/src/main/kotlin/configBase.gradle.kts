@@ -29,3 +29,7 @@ dependencies {
 tasks.test {
 	useJUnitPlatform()
 }
+
+tasks.jmhJar {
+	notCompatibleWithConfigurationCache("serializes project")
+}

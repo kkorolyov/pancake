@@ -8,6 +8,7 @@ import dev.kkorolyov.pancake.platform.utility.ArgVerify;
  * Constrains the maximum attainable speed of an entity.
  */
 public final class VelocityLimit implements Limit<Velocity> {
+	// TODO split min and max
 	private double linear;
 	private double angular;
 
