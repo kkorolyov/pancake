@@ -242,8 +242,10 @@ public interface Vector3 extends Vector2 {
 		}
 		@Override
 		public void setX(double x) {
-			delegate.setX(x);
-			onChange.run();
+			if (!FloatOps.equals(x, delegate.getX())) {
+				delegate.setX(x);
+				onChange.run();
+			}
 		}
 
 		@Override
@@ -252,8 +254,10 @@ public interface Vector3 extends Vector2 {
 		}
 		@Override
 		public void setY(double y) {
-			delegate.setY(y);
-			onChange.run();
+			if (!FloatOps.equals(y, delegate.getY())) {
+				delegate.setY(y);
+				onChange.run();
+			}
 		}
 
 		@Override
@@ -262,8 +266,10 @@ public interface Vector3 extends Vector2 {
 		}
 		@Override
 		public void setZ(double z) {
-			delegate.setZ(z);
-			onChange.run();
+			if (!FloatOps.equals(z, delegate.getZ())) {
+				delegate.setZ(z);
+				onChange.run();
+			}
 		}
 
 		@Override
