@@ -1,0 +1,46 @@
+name: bump
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        version:
+          - 21
+
+    steps:
+      - id: checkout
+        uses: actions/checkout@v4
+      - id: java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.version }}
+          distribution: temurin
+      - id: gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - id: bump
+        shell: bash
+        run: |
+          ./gradlew allDeps --write-locks
+          echo "::set-output name=changed::$(git diff --quiet)"
+
+      - id: test
+        shell: bash
+        run: echo ${{ steps.bump.outputs.changed }}
+
+      - id: pr
+        if: ${{ ! steps.bump.outputs.changed }}
+        uses: peter-evans/create-pull-request@v7
+        with:
+          # TODO change to custom PAT to support downstream workflows
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: bump
+          title: Bump gradle lockfile
+          branch: bump
