@@ -1,6 +1,7 @@
 [versions]
-kotlin = "2.0.0"
+kotlin = "2.0.21"
 dokka = "1.9.+"
+jmh = "0.+"
 
 flub = "0.+"
 
@@ -17,8 +18,6 @@ classgraph = "4.+"
 spock = "2.+"
 byteBuddy = "1.+"
 log4j = "2.+"
-
-jmh = "0.+"
 
 [libraries]
 # actually plugins, but applied through buildSrc
