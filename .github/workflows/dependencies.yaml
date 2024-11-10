@@ -12,13 +12,18 @@ jobs:
   submitDependencies:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        version:
+          - 21
+
     steps:
       - id: checkout
         uses: actions/checkout@v4
       - id: java
         uses: actions/setup-java@v4
         with:
-          java-version: 21
+          java-version: ${{ matrix.version }}
           distribution: temurin
 
       - id: dependencies
