@@ -36,11 +36,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - id: token
+        if: ${{ ! steps.bump.outputs.unchanged }}
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BUMPBOT_ID }}
+          private-key: ${{ secrets.BUMPBOT_KEY }}
+
       - id: pr
         if: ${{ ! steps.bump.outputs.unchanged }}
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.PR_PAT }}
+          token: ${{ steps.token.outputs.token }}
+          sign-commits: true
           commit-message: bump
           title: Bump gradle lockfile
           base: master
