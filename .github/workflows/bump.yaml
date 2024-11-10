@@ -31,7 +31,8 @@ jobs:
         shell: bash
         run: |
           ./gradlew allDeps --write-locks
-          echo "changed=$(git diff --quiet)" >> $GITHUB_OUTPUT
+          git diff --quiet
+          echo "changed=$?" >> $GITHUB_OUTPUT
 
       - id: test
         shell: bash
