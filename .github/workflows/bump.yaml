@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-  # TODO remove
-  pull_request:
 
 jobs:
   bump:
@@ -31,21 +29,14 @@ jobs:
         shell: bash
         run: |
           ./gradlew allDeps --write-locks
-          git diff
-          echo $?
           git diff --quiet
-          echo "changed=$?" >> $GITHUB_OUTPUT
-
-      - id: test
-        shell: bash
-        run: echo ${{ steps.bump.outputs.changed }}
+          echo "unchanged=$?" >> $GITHUB_OUTPUT
 
       - id: pr
-        if: ${{ ! steps.bump.outputs.changed }}
+        if: ${{ ! steps.bump.outputs.unchanged }}
         uses: peter-evans/create-pull-request@v7
         with:
-          # TODO change to custom PAT to support downstream workflows
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PR_PAT }}
           commit-message: bump
           title: Bump gradle lockfile
           base: master
