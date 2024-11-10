@@ -31,6 +31,8 @@ jobs:
           ./gradlew allDeps --write-locks
           git diff --quiet
           echo "unchanged=$?" >> $GITHUB_OUTPUT
+        # diff may return exit code 1
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
