@@ -5,6 +5,7 @@ import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Objects;
 import java.util.TreeMap;
 
 /**
@@ -57,5 +58,15 @@ public final class Timeline<T extends Frame<T>> implements Iterable<Map.Entry<In
 	@Override
 	public Iterator<Map.Entry<Integer, T>> iterator() {
 		return keyframes.entrySet().iterator();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Timeline<?> other)) return false;
+		return Objects.equals(keyframes, other.keyframes);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(keyframes);
 	}
 }

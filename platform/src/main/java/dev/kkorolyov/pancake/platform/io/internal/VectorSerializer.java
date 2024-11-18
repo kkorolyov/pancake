@@ -17,16 +17,16 @@ public final class VectorSerializer implements Serializer<Vector2> {
 
 		context.putDouble(value.getX());
 		context.putDouble(value.getY());
-		if (value instanceof Vector3) context.putDouble(((Vector3) value).getZ());
+		if (value instanceof Vector3 v) context.putDouble(v.getZ());
 	}
 	@Override
 	public Vector2 read(ReadContext context) {
-		var length = context.getByte();
-		var result = length == 3 ? Vector3.of() : Vector2.of();
+		var size = context.getByte();
+		var result = size == 3 ? Vector3.of() : Vector2.of();
 
 		result.setX(context.getDouble());
 		result.setY(context.getDouble());
-		if (result instanceof Vector3) ((Vector3) result).setZ(context.getDouble());
+		if (result instanceof Vector3 v) v.setZ(context.getDouble());
 
 		return result;
 	}

@@ -42,6 +42,12 @@ public final class ReadContext {
 		return buffer.getDouble();
 	}
 	/**
+	 * Returns the boolean at the current position in the backing buffer and increments the position.
+	 */
+	public boolean getBoolean() {
+		return buffer.get() == 1;
+	}
+	/**
 	 * Returns the string at the current position in the backing buffer and increments the position.
 	 */
 	public String getString() {

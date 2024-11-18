@@ -44,6 +44,12 @@ public final class WriteContext {
 	/**
 	 * Writes {@code value} to the current position in the backing buffer and increments the position.
 	 */
+	public void putBoolean(boolean value) {
+		buffer.put((byte) (value ? 1 : 0));
+	}
+	/**
+	 * Writes {@code value} to the current position in the backing buffer and increments the position.
+	 */
 	public void putString(String value) {
 		var bytes = value.getBytes(StandardCharsets.UTF_8);
 		putInt(bytes.length);
@@ -59,9 +65,9 @@ public final class WriteContext {
 		if (id != null) {
 			putInt(id);
 		} else {
-			objects.put(value, idCounter++);
 			putInt(0);
 			Serializers.get((Class<T>) value.getClass()).write(value, this);
+			objects.put(value, idCounter++);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.platform.io.internal
 
 import dev.kkorolyov.pancake.platform.io.ReadContext
+import dev.kkorolyov.pancake.platform.io.Serializer
 import dev.kkorolyov.pancake.platform.io.WriteContext
 import dev.kkorolyov.pancake.platform.math.Matrix2
 import dev.kkorolyov.pancake.platform.math.Matrix3
@@ -11,8 +12,8 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 
 class MatrixSerializerSpec extends Specification {
-	def buffer = ByteBuffer.allocate(256)
-	def serializer = new MatrixSerializer()
+	ByteBuffer buffer = ByteBuffer.allocate(256)
+	Serializer<Matrix2> serializer = new MatrixSerializer()
 
 	def "serializes matrix2"() {
 		Matrix2 value = Matrix2.of(xx, xy, yx, yy)
