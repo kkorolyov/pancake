@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.core.io;
 
 import dev.kkorolyov.pancake.core.animation.TransformFrame;
+import dev.kkorolyov.pancake.core.animation.io.TransformFrameSerializer;
 import dev.kkorolyov.pancake.platform.io.Structizer;
 import dev.kkorolyov.pancake.platform.io.Structizers;
 import dev.kkorolyov.pancake.platform.math.Vector3;

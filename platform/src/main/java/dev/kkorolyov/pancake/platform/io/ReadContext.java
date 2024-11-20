@@ -66,7 +66,7 @@ public final class ReadContext {
 			// -1 sentinel for null value
 			return id == -1 ? null : (T) objects.get(id);
 		} else {
-			var object = Serializers.get(c).read(this);
+			var object = SerializerLoader.get(c).read(this);
 			objects.add(object);
 			return object;
 		}

@@ -1,6 +1,6 @@
 import dev.kkorolyov.pancake.platform.io.Serializer;
-import dev.kkorolyov.pancake.platform.io.internal.MatrixSerializer;
-import dev.kkorolyov.pancake.platform.io.internal.VectorSerializer;
+import dev.kkorolyov.pancake.platform.math.io.MatrixSerializer;
+import dev.kkorolyov.pancake.platform.math.io.VectorSerializer;
 import dev.kkorolyov.pancake.platform.io.Structizer;
 import dev.kkorolyov.pancake.platform.io.internal.MathStructizer;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;

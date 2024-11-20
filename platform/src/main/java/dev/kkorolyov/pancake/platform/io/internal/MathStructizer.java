@@ -4,6 +4,8 @@ import dev.kkorolyov.pancake.platform.io.Structizer;
 import dev.kkorolyov.pancake.platform.math.Matrix4;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.io.MatrixSerializer;
+import dev.kkorolyov.pancake.platform.math.io.VectorSerializer;
 
 import java.util.Arrays;
 import java.util.Collection;

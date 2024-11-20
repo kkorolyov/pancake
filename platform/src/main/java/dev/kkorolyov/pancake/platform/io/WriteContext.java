@@ -70,7 +70,7 @@ public final class WriteContext {
 				putInt(id);
 			} else {
 				putInt(0);
-				Serializers.get((Class<T>) value.getClass()).write(value, this);
+				SerializerLoader.get((Class<T>) value.getClass()).write(value, this);
 				objects.put(value, idCounter++);
 			}
 		}
