@@ -4,6 +4,8 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
+import java.util.Objects;
+
 /**
  * Damping applied on an entity.
  * Damping values are in the interval {@code [0, 1]}, essentially translating to {@code [immediate stop, no damping]}.
@@ -52,5 +54,15 @@ public final class Damping implements Component {
 	 */
 	public Vector3 getAngular() {
 		return angular;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Damping other)) return false;
+		return Objects.equals(linear, other.linear) && Objects.equals(angular, other.angular);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(linear, angular);
 	}
 }

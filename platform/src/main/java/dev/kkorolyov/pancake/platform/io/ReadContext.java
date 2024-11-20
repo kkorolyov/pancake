@@ -63,7 +63,8 @@ public final class ReadContext {
 	public <T> T getObject(Class<T> c) {
 		var id = getInt();
 		if (id != 0) {
-			return (T) objects.get(id);
+			// -1 sentinel for null value
+			return id == -1 ? null : (T) objects.get(id);
 		} else {
 			var object = Serializers.get(c).read(this);
 			objects.add(object);

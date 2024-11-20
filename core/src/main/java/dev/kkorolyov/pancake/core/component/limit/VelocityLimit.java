@@ -4,6 +4,8 @@ import dev.kkorolyov.pancake.core.component.Velocity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
+import java.util.Objects;
+
 /**
  * Constrains the maximum attainable speed of an entity.
  */
@@ -53,5 +55,15 @@ public final class VelocityLimit implements Limit<Velocity> {
 
 		double currentAngular = Vector3.magnitude(component.getAngular());
 		if (currentAngular > angular) component.getAngular().scale(angular / currentAngular);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof VelocityLimit other)) return false;
+		return Double.compare(linear, other.linear) == 0 && Double.compare(angular, other.angular) == 0;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(linear, angular);
 	}
 }

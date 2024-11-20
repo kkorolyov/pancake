@@ -61,13 +61,18 @@ public final class WriteContext {
 	 * If this has previously been invoked with {@code value}, writes a reference ID, instead.
 	 */
 	public <T> void putObject(T value) {
-		var id = objects.get(value);
-		if (id != null) {
-			putInt(id);
+		if (value == null) {
+			// -1 sentinel for null value
+			putInt(-1);
 		} else {
-			putInt(0);
-			Serializers.get((Class<T>) value.getClass()).write(value, this);
-			objects.put(value, idCounter++);
+			var id = objects.get(value);
+			if (id != null) {
+				putInt(id);
+			} else {
+				putInt(0);
+				Serializers.get((Class<T>) value.getClass()).write(value, this);
+				objects.put(value, idCounter++);
+			}
 		}
 	}
 }

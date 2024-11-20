@@ -4,6 +4,8 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.FloatOps;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
+import java.util.Objects;
+
 /**
  * Net force acting on an entity.
  * Maintains a value of {@code N} and offset from the center of an affected point mass in {@code m}.
@@ -70,5 +72,15 @@ public final class Force implements Component {
 	private double getAxisAcceleration(double aForce, double bForce, double aOffset, double bOffset) {
 		double magnitude = !(FloatOps.equals(aForce, 0) || FloatOps.equals(bOffset, 0)) || !(FloatOps.equals(bForce, 0) || FloatOps.equals(aOffset, 0)) ? Math.sqrt(aForce * aForce + bForce * bForce) : 0;
 		return aOffset * bForce - aForce * bOffset < 0 ? -magnitude : magnitude;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Force other)) return false;
+		return Objects.equals(value, other.value) && Objects.equals(offset, other.offset) && Objects.equals(torque, other.torque) && Objects.equals(resultTorque, other.resultTorque);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(value, offset, torque, resultTorque);
 	}
 }

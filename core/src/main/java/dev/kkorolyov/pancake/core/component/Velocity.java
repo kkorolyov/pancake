@@ -4,6 +4,8 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.math.Matrix4;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
+import java.util.Objects;
+
 /**
  * Velocity of a moving entity.
  * Maintains a linear velocity in {@code m/s} and an angular velocity in {@code rad/s}.
@@ -42,5 +44,15 @@ public final class Velocity implements Component {
 	 */
 	public Vector3 getAngular() {
 		return angular;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Velocity other)) return false;
+		return Objects.equals(linear, other.linear) && Objects.equals(angular, other.angular);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(linear, angular);
 	}
 }
