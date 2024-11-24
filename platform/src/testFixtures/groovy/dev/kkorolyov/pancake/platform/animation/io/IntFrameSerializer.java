@@ -1,9 +1,9 @@
-package dev.kkorolyov.pancake.test.io;
+package dev.kkorolyov.pancake.platform.animation.io;
 
+import dev.kkorolyov.pancake.platform.animation.IntFrame;
 import dev.kkorolyov.pancake.platform.io.ReadContext;
 import dev.kkorolyov.pancake.platform.io.Serializer;
 import dev.kkorolyov.pancake.platform.io.WriteContext;
-import dev.kkorolyov.pancake.test.IntFrame;
 
 /**
  * Serializes {@link IntFrame}s.

@@ -38,6 +38,12 @@ public final class WriteContext {
 	/**
 	 * Writes {@code value} to the current position in the backing buffer and increments the position.
 	 */
+	public void putLong(long value) {
+		buffer.putLong(value);
+	}
+	/**
+	 * Writes {@code value} to the current position in the backing buffer and increments the position.
+	 */
 	public void putDouble(double value) {
 		buffer.putDouble(value);
 	}

@@ -36,6 +36,12 @@ public final class ReadContext {
 		return buffer.getInt();
 	}
 	/**
+	 * Returns the long at the current position in the backing buffer and increments the position.
+	 */
+	public long getLong() {
+		return buffer.getLong();
+	}
+	/**
 	 * Returns the double at the current position in the backing buffer and increments the position.
 	 */
 	public double getDouble() {

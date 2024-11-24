@@ -1,4 +1,4 @@
-package dev.kkorolyov.pancake.test
+package dev.kkorolyov.pancake.platform
 
 import dev.kkorolyov.pancake.platform.math.Vector3
 

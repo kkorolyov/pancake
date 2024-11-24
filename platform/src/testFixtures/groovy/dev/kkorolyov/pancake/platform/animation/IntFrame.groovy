@@ -1,7 +1,4 @@
-package dev.kkorolyov.pancake.test
-
-import dev.kkorolyov.pancake.platform.animation.Frame
-
+package dev.kkorolyov.pancake.platform.animation
 /**
  * {@link Frame} wrapper for {@link Integer}.
  */

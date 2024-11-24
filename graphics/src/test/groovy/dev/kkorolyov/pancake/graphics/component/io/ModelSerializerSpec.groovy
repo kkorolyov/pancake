@@ -1,20 +1,26 @@
-package dev.kkorolyov.pancake.platform.animation.io
+package dev.kkorolyov.pancake.graphics.component.io
 
-import dev.kkorolyov.pancake.platform.animation.Timeline
+import dev.kkorolyov.pancake.graphics.component.Model
+import dev.kkorolyov.pancake.graphics.component.NoopMesh
+import dev.kkorolyov.pancake.graphics.component.NoopProgram
 import dev.kkorolyov.pancake.platform.io.ReadContext
 import dev.kkorolyov.pancake.platform.io.WriteContext
-import dev.kkorolyov.pancake.platform.animation.IntFrame
+import dev.kkorolyov.pancake.platform.math.Matrix4
 
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
 
-class TimelineSerializerSpec extends Specification {
+class ModelSerializerSpec extends Specification {
 	def buffer = ByteBuffer.allocate(256)
-	def serializer = new TimelineSerializer()
+	def serializer = new ModelSerializer()
 
 	def "serializes empty"() {
-		def value = new Timeline<>()
+		def value = new Model(
+				new NoopProgram(),
+				[],
+				null
+		)
 
 		when:
 		serializer.write(value, new WriteContext(buffer))
@@ -24,20 +30,16 @@ class TimelineSerializerSpec extends Specification {
 	}
 
 	def "serializes"() {
-		def value = new Timeline<IntFrame>().with {
-			it.put(offset, new IntFrame(offset * 2))
-			it.put(offset + 10, new IntFrame(offset * 4))
-			it.put(offset + 100, new IntFrame(offset * 8))
-			it
-		}
+		def value = new Model(
+				new NoopProgram(),
+				[new NoopMesh()],
+				Matrix4.of()
+		)
 
 		when:
 		serializer.write(value, new WriteContext(buffer))
 
 		then:
 		serializer.read(new ReadContext(buffer.flip())) == value
-
-		where:
-		offset << (0..4)
 	}
 }

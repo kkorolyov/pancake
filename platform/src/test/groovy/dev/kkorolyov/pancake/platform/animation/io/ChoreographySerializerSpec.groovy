@@ -3,20 +3,19 @@ package dev.kkorolyov.pancake.platform.animation.io
 import dev.kkorolyov.pancake.platform.animation.Choreography
 import dev.kkorolyov.pancake.platform.animation.Timeline
 import dev.kkorolyov.pancake.platform.io.ReadContext
-import dev.kkorolyov.pancake.platform.io.Serializer
 import dev.kkorolyov.pancake.platform.io.WriteContext
-import dev.kkorolyov.pancake.test.IntFrame
+import dev.kkorolyov.pancake.platform.animation.IntFrame
 
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
 
 class ChoreographySerializerSpec extends Specification {
-	ByteBuffer buffer = ByteBuffer.allocate(512)
-	Serializer<Choreography<?>> serializer = new ChoreographySerializer()
+	def buffer = ByteBuffer.allocate(512)
+	def serializer = new ChoreographySerializer()
 
 	def "serializes empty"() {
-		Choreography<IntFrame> value = new Choreography<>()
+		def value = new Choreography<>()
 
 		when:
 		serializer.write(value, new WriteContext(buffer))
@@ -26,7 +25,7 @@ class ChoreographySerializerSpec extends Specification {
 	}
 
 	def "serializes"() {
-		Choreography<IntFrame> value = new Choreography<IntFrame>().with {
+		def value = new Choreography<IntFrame>().with {
 			it.put("main", new Timeline<IntFrame>().with {
 				it.put(offset, new IntFrame(offset * 2))
 				it.put(offset + 10, new IntFrame(offset * 4))

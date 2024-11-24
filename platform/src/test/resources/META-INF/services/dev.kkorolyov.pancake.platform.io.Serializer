@@ -2,4 +2,4 @@ dev.kkorolyov.pancake.platform.math.io.VectorSerializer
 dev.kkorolyov.pancake.platform.math.io.MatrixSerializer
 dev.kkorolyov.pancake.platform.animation.io.ChoreographySerializer
 dev.kkorolyov.pancake.platform.animation.io.TimelineSerializer
-dev.kkorolyov.pancake.test.io.IntFrameSerializer
+dev.kkorolyov.pancake.platform.animation.io.IntFrameSerializer
