@@ -6,8 +6,10 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 /**
- * Writes content to a {@link ByteBuffer}.
- * Each call to a {@code get} method writes the value to the current position in the backing buffer and increments the position.
+ * A write-only view of a {@link ByteBuffer} that serializes object references on the fly.
+ * On object write, serializes the data using the nearest {@link Class}-matched {@link Serializer} provider on the classpath, and stores an incrementing ID reference to the serialized instance.
+ * Subsequent writes of this instance will instead write that single ID to the backing buffer.
+ * To maintain this order-reliant encounter guarantee, it is critical that a provider {@link Serializer#write(Object, WriteContext)} data in the same order that it will {@link Serializer#read(ReadContext)}.
  */
 public final class WriteContext {
 	private final ByteBuffer buffer;

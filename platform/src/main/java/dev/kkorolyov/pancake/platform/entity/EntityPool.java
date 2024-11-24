@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.platform.entity;
 import dev.kkorolyov.flub.data.SparseMultiset;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 /**
  * A set of uniquely-identified "component-bag" entities.
@@ -54,5 +55,15 @@ public final class EntityPool implements Iterable<Entity> {
 	@Override
 	public String toString() {
 		return pool.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof EntityPool other)) return false;
+		return Objects.equals(pool, other.pool);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(pool);
 	}
 }

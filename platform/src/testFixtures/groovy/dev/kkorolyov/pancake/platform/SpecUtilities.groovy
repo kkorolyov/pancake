@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom
 /**
  * Provides utility methods for Specs.
  */
-class SpecUtilities {
+final class SpecUtilities {
 	/** @return vector with randomized component values */
 	static Vector3 randVector() {
 		return Vector3.of(randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE), randDouble(Integer.MAX_VALUE))

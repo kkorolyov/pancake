@@ -30,7 +30,7 @@ public final class TimelineSerializer implements Serializer<Timeline<?>> {
 		var size = context.getInt();
 		for (int i = 0; i < size; i++) {
 			try {
-				result.put(context.getInt(), (Frame) context.getObject(Class.forName(context.getString())));
+				result.put(context.getInt(), context.getObject((Class<Frame>) Class.forName(context.getString())));
 			} catch (ClassNotFoundException e) {
 				throw new IllegalArgumentException("cannot read serialized timeline frame", e);
 			}

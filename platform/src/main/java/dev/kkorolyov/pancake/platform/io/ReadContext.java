@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Reads content from a {@link ByteBuffer}.
- * Each call to a {@code get} method reads the value from the current position in the backing buffer and increments the position.
+ * A read-only view of a {@link ByteBuffer} that hydrates object references on the fly.
+ * On object read, deserializes the data using the nearest {@link Class}-matched {@link Serializer} provider on the classpath, and stores an incrementing ID reference to the deserialized instance.
+ * Subsequent reads of this ID from the backing buffer will return that same instance.
+ * To maintain this order-reliant encounter guarantee, it is critical that a provider {@link Serializer#write(Object, WriteContext)} data in the same order that it will {@link Serializer#read(ReadContext)}.
  */
 public final class ReadContext {
 	private final ByteBuffer buffer;

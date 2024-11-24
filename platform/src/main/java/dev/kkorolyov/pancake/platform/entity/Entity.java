@@ -17,6 +17,7 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	private final SparseMultiset<Entity, ? super Class<? extends Component>> pool;
 
 	private final String debugName;
+	private final boolean overridesDebugName;
 
 	/**
 	 * Constructs a new entity attached to {@code pool} with custom {@code debugName}.
@@ -26,6 +27,7 @@ public final class Entity implements Iterable<Component>, Debuggable {
 		this.pool = pool;
 		id = this.pool.add(this);
 		this.debugName = debugName != null ? debugName : "Entity " + id;
+		overridesDebugName = debugName != null;
 	}
 
 	/**
@@ -82,6 +84,12 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	@Override
 	public String getDebugName() {
 		return debugName;
+	}
+	/**
+	 * Returns {@code true} if this has an explicit debug name.
+	 */
+	public boolean overridesDebugName() {
+		return overridesDebugName;
 	}
 
 	@Override
