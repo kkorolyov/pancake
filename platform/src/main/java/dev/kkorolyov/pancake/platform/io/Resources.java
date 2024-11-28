@@ -12,7 +12,7 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 /**
@@ -34,7 +34,7 @@ public final class Resources {
 		InputStream result;
 
 		try {
-			result = Files.newInputStream(Paths.get(path));
+			result = Files.newInputStream(Path.of(path));
 			LOG.info("Got stream from path [{}]", path);
 		} catch (IOException e) {
 			LOG.warn("Failed to get stream from path [{}] - {}", path, e);
@@ -59,7 +59,7 @@ public final class Resources {
 	 */
 	public static OutputStream outStream(String path) {
 		try {
-			OutputStream result = Files.newOutputStream(Paths.get(path));
+			OutputStream result = Files.newOutputStream(Path.of(path));
 			LOG.info("Got handle [{}]", path);
 			return result;
 		} catch (IOException e) {
@@ -76,7 +76,7 @@ public final class Resources {
 		ReadableByteChannel result = null;
 
 		try {
-			result = Files.newByteChannel(Paths.get(path), StandardOpenOption.READ);
+			result = Files.newByteChannel(Path.of(path), StandardOpenOption.READ);
 			LOG.info("Got read handle to path [{}]", path);
 		} catch (IOException e) {
 			LOG.warn("Failed to get read handle to path [{}] - {}", path, e);
@@ -99,7 +99,7 @@ public final class Resources {
 	 */
 	public static WritableByteChannel write(String path) {
 		try {
-			WritableByteChannel result = Files.newByteChannel(Paths.get(path), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+			WritableByteChannel result = Files.newByteChannel(Path.of(path), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 			LOG.info("Got write handle to path [{}]", path);
 			return result;
 		} catch (IOException e) {
