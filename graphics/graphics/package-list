@@ -1,15 +1,31 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/LensSerializer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-lens-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/LensSerializer/LensSerializer/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-lens-serializer/-lens-serializer.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/LensSerializer/getType/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-lens-serializer/get-type.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/LensSerializer/read/#dev.kkorolyov.pancake.platform.io.ReadContext/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-lens-serializer/read.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/LensSerializer/write/#dev.kkorolyov.pancake.graphics.component.Lens#dev.kkorolyov.pancake.platform.io.WriteContext/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-lens-serializer/write.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/ModelSerializer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-model-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/ModelSerializer/ModelSerializer/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-model-serializer/-model-serializer.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/ModelSerializer/getType/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-model-serializer/get-type.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/ModelSerializer/read/#dev.kkorolyov.pancake.platform.io.ReadContext/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-model-serializer/read.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component.io/ModelSerializer/write/#dev.kkorolyov.pancake.graphics.component.Model#dev.kkorolyov.pancake.platform.io.WriteContext/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component.io/-model-serializer/write.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Lens///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/Lens/#dev.kkorolyov.pancake.platform.math.Vector2#dev.kkorolyov.pancake.platform.math.Vector2#dev.kkorolyov.pancake.platform.math.Vector2#java.util.BitSet#kotlin.Boolean/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/-lens.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/active/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/active.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/equals/#kotlin.Any?/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/equals.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/hashCode/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/hash-code.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/mask/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/mask.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/offset/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/offset.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/scale/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/scale.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Lens/size/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-lens/size.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/Model/#dev.kkorolyov.pancake.graphics.resource.Program#kotlin.Array[dev.kkorolyov.pancake.graphics.resource.Mesh]#dev.kkorolyov.pancake.platform.math.Matrix4?/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/-model.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Model/Model/#dev.kkorolyov.pancake.graphics.resource.Program#kotlin.collections.List[dev.kkorolyov.pancake.graphics.resource.Mesh]#dev.kkorolyov.pancake.platform.math.Matrix4?/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/-model.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Model/equals/#kotlin.Any?/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/equals.html
+$dokka.location:dev.kkorolyov.pancake.graphics.component/Model/hashCode/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/hash-code.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/meshes/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/meshes.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/offset/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/offset.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/program/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/program.html
@@ -46,7 +62,7 @@ $dokka.location:dev.kkorolyov.pancake.graphics.system/CameraSystem/CameraSystem/
 $dokka.location:dev.kkorolyov.pancake.graphics.util////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.util/Cache///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/-cache/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.util/Cache/Cache/#kotlin.Function0[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/-cache/-cache.html
-$dokka.location:dev.kkorolyov.pancake.graphics.util/Cache/getValue/#kotlin.Any?#kotlin.reflect.KProperty[*]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/-cache/get-value.html
+$dokka.location:dev.kkorolyov.pancake.graphics.util/Cache/getValue/#kotlin.Any#kotlin.reflect.KProperty[*]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/-cache/get-value.html
 $dokka.location:dev.kkorolyov.pancake.graphics.util/Cache/invalidate/#kotlin.Function1[TypeParam(bounds=[kotlin.Any?]),kotlin.Unit]?/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/-cache/invalidate.html
 $dokka.location:dev.kkorolyov.pancake.graphics////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics//ellipse/#dev.kkorolyov.pancake.platform.math.Vector2#kotlin.Int#kotlin.Function2[dev.kkorolyov.pancake.platform.math.Vector2,dev.kkorolyov.pancake.platform.math.Vector2,kotlin.Unit]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/ellipse.html
@@ -92,6 +108,7 @@ $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/height/#/PointingToDe
 $dokka.location:dev.kkorolyov.pancake.graphics/PixelBuffer/width/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics/-pixel-buffer/width.html
 dev.kkorolyov.pancake.graphics
 dev.kkorolyov.pancake.graphics.component
+dev.kkorolyov.pancake.graphics.component.io
 dev.kkorolyov.pancake.graphics.io
 dev.kkorolyov.pancake.graphics.resource
 dev.kkorolyov.pancake.graphics.system

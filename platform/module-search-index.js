@@ -1,1 +1,1 @@
-moduleSearchIndex = [{"l":"dev.kkorolyov.pancake.platform"}];updateSearchResults();
+moduleSearchIndex = [];updateSearchResults();

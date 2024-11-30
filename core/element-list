@@ -1,9 +1,13 @@
 module:dev.kkorolyov.pancake.core
 dev.kkorolyov.pancake.core.animation
+dev.kkorolyov.pancake.core.animation.io
 dev.kkorolyov.pancake.core.component
 dev.kkorolyov.pancake.core.component.event
+dev.kkorolyov.pancake.core.component.io
 dev.kkorolyov.pancake.core.component.limit
+dev.kkorolyov.pancake.core.component.limit.io
 dev.kkorolyov.pancake.core.component.tag
+dev.kkorolyov.pancake.core.component.tag.io
 dev.kkorolyov.pancake.core.io
 dev.kkorolyov.pancake.core.registry
 dev.kkorolyov.pancake.core.system

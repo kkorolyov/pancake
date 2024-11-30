@@ -30,6 +30,7 @@ loadScripts(document, 'script');</script>
 <li><a href="package-summary.html">Package</a></li>
 <li class="nav-bar-cell1-rev">Class</li>
 <li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../../../../index-all.html">Index</a></li>
 <li><a href="../../../../../../help-doc.html#class">Help</a></li>
 </ul>
@@ -83,11 +84,11 @@ loadScripts(document, 'script');</script>
 <div class="header">
 <div class="sub-title"><span class="module-label-in-type">Module</span>&nbsp;<a href="../../../../../module-summary.html">dev.kkorolyov.pancake.platform</a></div>
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">dev.kkorolyov.pancake.platform.animation</a></div>
-<h1 title="Interface Frame" class="title">Interface Frame&lt;T&gt;</h1>
+<h1 title="Interface Frame" class="title">Interface Frame&lt;T extends Frame&lt;T&gt;&gt;</h1>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Frame&lt;T&gt;</span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Frame&lt;T extends Frame&lt;T&gt;&gt;</span></div>
 <div class="block">A concrete point in a timeline.
  Supports addition, difference, and interpolation with other same-type frames.</div>
 </section>
@@ -136,7 +137,7 @@ loadScripts(document, 'script');</script>
 <ul class="member-list">
 <li>
 <section class="detail" id="lerp(T,double)">
-<h3 id="lerp(java.lang.Object,double)">lerp</h3>
+<h3 id="lerp(dev.kkorolyov.pancake.platform.animation.Frame,double)">lerp</h3>
 <div class="member-signature"><span class="return-type"><a href="Frame.html" title="type parameter in Frame">T</a></span>&nbsp;<span class="element-name">lerp</span><wbr><span class="parameters">(<a href="Frame.html" title="type parameter in Frame">T</a>&nbsp;other,
  double&nbsp;mix)</span></div>
 <div class="block">Returns the <code>mix</code>ed linear interpolation from <code>other</code> to <code>this</code>.
@@ -145,7 +146,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="detail" id="sum(T)">
-<h3 id="sum(java.lang.Object)">sum</h3>
+<h3 id="sum(dev.kkorolyov.pancake.platform.animation.Frame)">sum</h3>
 <div class="member-signature"><span class="return-type"><a href="Frame.html" title="type parameter in Frame">T</a></span>&nbsp;<span class="element-name">sum</span><wbr><span class="parameters">(<a href="Frame.html" title="type parameter in Frame">T</a>&nbsp;other)</span></div>
 <div class="block">Returns the summation of <code>this</code> and <code>other</code>.
  i.e. returns a frame that is <code>this + other</code></div>
@@ -153,7 +154,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="detail" id="diff(T)">
-<h3 id="diff(java.lang.Object)">diff</h3>
+<h3 id="diff(dev.kkorolyov.pancake.platform.animation.Frame)">diff</h3>
 <div class="member-signature"><span class="return-type"><a href="Frame.html" title="type parameter in Frame">T</a></span>&nbsp;<span class="element-name">diff</span><wbr><span class="parameters">(<a href="Frame.html" title="type parameter in Frame">T</a>&nbsp;other)</span></div>
 <div class="block">Returns the difference of <code>this</code> and <code>other</code>.
  i.e. returns a frame that is <code>this - other</code></div>

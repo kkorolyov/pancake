@@ -1,5 +1,11 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.resource.io////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource.io/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.resource.io/GLProgramSerializer///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource.io/-g-l-program-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.resource.io/GLProgramSerializer/GLProgramSerializer/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource.io/-g-l-program-serializer/-g-l-program-serializer.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.resource.io/GLProgramSerializer/getType/#/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource.io/-g-l-program-serializer/get-type.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.resource.io/GLProgramSerializer/read/#dev.kkorolyov.pancake.platform.io.ReadContext/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource.io/-g-l-program-serializer/read.html
+$dokka.location:dev.kkorolyov.pancake.graphics.gl.resource.io/GLProgramSerializer/write/#dev.kkorolyov.pancake.graphics.gl.resource.GLProgram#dev.kkorolyov.pancake.platform.io.WriteContext/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource.io/-g-l-program-serializer/write.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.resource////PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.resource/GLFrameBuffer///PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource/-g-l-frame-buffer/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.gl.resource/GLFrameBuffer/GLFrameBuffer/#dev.kkorolyov.pancake.graphics.resource.Texture/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl.resource/-g-l-frame-buffer/-g-l-frame-buffer.html
@@ -101,5 +107,6 @@ $dokka.location:dev.kkorolyov.pancake.graphics.gl/Font/close/#/PointingToDeclara
 $dokka.location:dev.kkorolyov.pancake.graphics.gl/Font/invoke/#kotlin.String/PointingToDeclaration/graphics-gl/dev.kkorolyov.pancake.graphics.gl/-font/invoke.html
 dev.kkorolyov.pancake.graphics.gl
 dev.kkorolyov.pancake.graphics.gl.resource
+dev.kkorolyov.pancake.graphics.gl.resource.io
 dev.kkorolyov.pancake.graphics.gl.system
 
