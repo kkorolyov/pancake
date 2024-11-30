@@ -27,7 +27,10 @@ class EntityPoolSerializerSpec extends Specification {
 	def "serializes"() {
 		def value = new EntityPool().with {
 			it.create()
-			it.create("debuggeroo").put(new DummyComponent(SpecUtilities.randInt()))
+			it.create().with {
+				it.put(new DummyComponent(SpecUtilities.randInt()))
+				it.debugNameOverride = "debuggeroo"
+			}
 			it.create()
 			it
 		}

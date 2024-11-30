@@ -19,10 +19,7 @@ public final class EntityPoolSerializer implements Serializer<EntityPool> {
 
 		context.putInt(entities.size());
 		for (Entity entity : entities) {
-			context.putBoolean(entity.overridesDebugName());
-			if (entity.overridesDebugName()) {
-				context.putString(entity.getDebugName());
-			}
+			context.putString(entity.getDebugNameOverride());
 
 			context.putInt(entity.size());
 			for (Component component : entity) {
@@ -37,7 +34,8 @@ public final class EntityPoolSerializer implements Serializer<EntityPool> {
 
 		var poolSize = context.getInt();
 		for (int i = 0; i < poolSize; i++) {
-			var entity = context.getBoolean() ? result.create(context.getString()) : result.create();
+			var entity = result.create();
+			entity.setDebugNameOverride(context.getString());
 
 			var entitySize = context.getInt();
 			for (int j = 0; j < entitySize; j++) {

@@ -97,10 +97,15 @@ public final class ReadContext {
 	 * Returns the string at the current position in the backing buffer and increments the position.
 	 */
 	public String getString() {
-		var bytes = new byte[getInt()];
-		ensureRemaining(bytes.length);
-		buffer.get(bytes);
-		return new String(bytes, StandardCharsets.UTF_8);
+		var size = getInt();
+		if (size < 0) {
+			return null;
+		} else {
+			var bytes = new byte[size];
+			ensureRemaining(bytes.length);
+			buffer.get(bytes);
+			return new String(bytes, StandardCharsets.UTF_8);
+		}
 	}
 
 	/**

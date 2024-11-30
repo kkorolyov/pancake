@@ -30,13 +30,19 @@ public final class EntityPool implements Iterable<Entity> {
 	 * Creates a new, empty entity attached to this pool and returns it.
 	 */
 	public Entity create() {
-		return create(null);
+		return new Entity(pool);
 	}
+
 	/**
-	 * Creates a new, empty entity with custom {@code debugName} attached to this pool and returns it.
+	 * Creates new entities in this pool from {@code entities}.
+	 * The created entities use the exact component instances from {@code entities}.
 	 */
-	public Entity create(String debugName) {
-		return new Entity(pool, debugName);
+	public void create(Iterable<Entity> entities) {
+		for (Entity entity : entities) {
+			var newEntity = create();
+			newEntity.setDebugNameOverride(entity.getDebugNameOverride());
+			newEntity.put(entity);
+		}
 	}
 
 	/**

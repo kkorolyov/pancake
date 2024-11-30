@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.platform.entity;
 import dev.kkorolyov.flub.data.SparseMultiset;
 import dev.kkorolyov.pancake.platform.Debuggable;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,30 +17,33 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 	private final SparseMultiset<Entity, ? super Class<? extends Component>> pool;
 
-	private final String debugName;
-	private final boolean overridesDebugName;
+	private String debugNameOverride;
 
 	/**
-	 * Constructs a new entity attached to {@code pool} with custom {@code debugName}.
-	 * {@code debugName} may be {@code null}.
+	 * Constructs a new entity attached to {@code pool}.
 	 */
-	Entity(SparseMultiset<Entity, ? super Class<? extends Component>> pool, String debugName) {
+	Entity(SparseMultiset<Entity, ? super Class<? extends Component>> pool) {
 		this.pool = pool;
 		id = this.pool.add(this);
-		this.debugName = debugName != null ? debugName : "Entity " + id;
-		overridesDebugName = debugName != null;
 	}
 
+	/**
+	 * @see #put(Iterable)
+	 */
+	public void put(Component... components) {
+		put(Arrays.asList(components));
+	}
 	/**
 	 * Adds {@code components} to this entity.
 	 * For each component, replaces any existing component of the same type.
 	 */
-	public void put(Component... components) {
+	public void put(Iterable<? extends Component> components) {
 		for (Component component : components) {
 			this.components.put(component.getClass(), component);
 		}
 		pool.put(id, this.components.keySet());
 	}
+
 	/**
 	 * Removes all components from this entity matching {@code types}.
 	 */
@@ -81,15 +85,29 @@ public final class Entity implements Iterable<Component>, Debuggable {
 		return components.values().iterator();
 	}
 
+	/**
+	 * Returns this entity's debug name.
+	 * If it has been explicitly set with {@link #setDebugNameOverride(String)}, returns the current value - which is the same as {@link #getDebugNameOverride()}.
+	 * Else returns a name generated from the entity's ID.
+	 */
 	@Override
 	public String getDebugName() {
-		return debugName;
+		return debugNameOverride != null ? debugNameOverride : "Entity " + id;
+	}
+
+	/**
+	 * Returns the explicitly set debug name, if any.
+	 * If this is non-{@code null}, this is the same value as {@link #getDebugName()}.
+	 */
+	public String getDebugNameOverride() {
+		return debugNameOverride;
 	}
 	/**
-	 * Returns {@code true} if this has an explicit debug name.
+	 * Explicitly sets debug name to {@code debugNameOverride}.
+	 * A {@code null} value clears the override.
 	 */
-	public boolean overridesDebugName() {
-		return overridesDebugName;
+	public void setDebugNameOverride(String debugNameOverride) {
+		this.debugNameOverride = debugNameOverride;
 	}
 
 	@Override
@@ -108,7 +126,7 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	public String toString() {
 		return "Entity{" +
 				"id=" + id +
-				"debugName=" + debugName +
+				"debugName=" + debugNameOverride +
 				", components=" + components +
 				'}';
 	}

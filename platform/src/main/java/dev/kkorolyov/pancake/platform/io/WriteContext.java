@@ -95,10 +95,14 @@ public final class WriteContext implements AutoCloseable {
 	 * Writes {@code value} to the current position in the backing buffer and increments the position.
 	 */
 	public void putString(String value) {
-		var bytes = value.getBytes(StandardCharsets.UTF_8);
-		putInt(bytes.length);
-		ensureRemaining(bytes.length);
-		buffer.put(bytes);
+		if (value == null) {
+			putInt(-1);
+		} else {
+			var bytes = value.getBytes(StandardCharsets.UTF_8);
+			putInt(bytes.length);
+			ensureRemaining(bytes.length);
+			buffer.put(bytes);
+		}
 	}
 
 	/**
