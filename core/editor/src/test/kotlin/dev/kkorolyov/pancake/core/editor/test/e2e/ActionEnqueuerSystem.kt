@@ -7,7 +7,7 @@ import dev.kkorolyov.pancake.core.component.Velocity
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Entity
-import dev.kkorolyov.pancake.test.SpecUtilities.randVector
+import dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 import kotlin.random.Random
 
 private val actions = listOf(

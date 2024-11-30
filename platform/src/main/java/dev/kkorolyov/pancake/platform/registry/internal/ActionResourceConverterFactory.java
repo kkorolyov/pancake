@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.platform.registry.internal;
 import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.action.Action;
 import dev.kkorolyov.pancake.platform.entity.Entity;
+import dev.kkorolyov.pancake.platform.io.Serializer;
 import dev.kkorolyov.pancake.platform.registry.Resource;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverters;
@@ -14,7 +15,9 @@ import java.util.stream.StreamSupport;
 
 /**
  * {@link ResourceConverterFactory} for basic actions.
+ * @deprecated to be replaced with a {@link Serializer}
  */
+@Deprecated
 public final class ActionResourceConverterFactory implements ResourceConverterFactory<Action> {
 	private final Supplier<? extends Converter<Object, Resource<Action>>> autoConverter;
 

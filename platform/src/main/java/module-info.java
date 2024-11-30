@@ -1,3 +1,6 @@
+import dev.kkorolyov.pancake.platform.io.Serializer;
+import dev.kkorolyov.pancake.platform.math.io.MatrixSerializer;
+import dev.kkorolyov.pancake.platform.math.io.VectorSerializer;
 import dev.kkorolyov.pancake.platform.io.Structizer;
 import dev.kkorolyov.pancake.platform.io.internal.MathStructizer;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
@@ -22,14 +25,19 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.action;
 	exports dev.kkorolyov.pancake.platform.animation;
 	exports dev.kkorolyov.pancake.platform.entity;
+	exports dev.kkorolyov.pancake.platform.entity.io;
 	exports dev.kkorolyov.pancake.platform.io;
 	exports dev.kkorolyov.pancake.platform.math;
 	exports dev.kkorolyov.pancake.platform.registry;
 	exports dev.kkorolyov.pancake.platform.utility;
 
+	uses Serializer;
 	uses Structizer;
 	uses ResourceConverterFactory;
 
+	provides Serializer with
+			VectorSerializer,
+			MatrixSerializer;
 	provides Structizer with
 			MathStructizer;
 	provides ResourceConverterFactory with

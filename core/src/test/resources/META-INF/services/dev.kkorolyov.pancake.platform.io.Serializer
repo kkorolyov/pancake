@@ -1,0 +1,6 @@
+dev.kkorolyov.pancake.platform.math.io.VectorSerializer
+dev.kkorolyov.pancake.platform.math.io.MatrixSerializer
+dev.kkorolyov.pancake.platform.animation.io.ChoreographySerializer
+dev.kkorolyov.pancake.platform.animation.io.TimelineSerializer
+dev.kkorolyov.pancake.core.animation.io.TransformFrameSerializer
+dev.kkorolyov.pancake.core.component.io.TransformSerializer

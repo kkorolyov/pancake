@@ -4,6 +4,8 @@ import dev.kkorolyov.pancake.platform.io.Structizer;
 import dev.kkorolyov.pancake.platform.math.Matrix4;
 import dev.kkorolyov.pancake.platform.math.Vector2;
 import dev.kkorolyov.pancake.platform.math.Vector3;
+import dev.kkorolyov.pancake.platform.math.io.MatrixSerializer;
+import dev.kkorolyov.pancake.platform.math.io.VectorSerializer;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,7 +13,9 @@ import java.util.Optional;
 
 /**
  * {@link Structizer} for math objects, such as vectors.
+ * @deprecated prefer {@link VectorSerializer}, {@link MatrixSerializer}
  */
+@Deprecated
 public final class MathStructizer implements Structizer {
 	private static Vector2 asVector2(double[] components) {
 		return Vector2.of(
@@ -43,12 +47,14 @@ public final class MathStructizer implements Structizer {
 						Structizer.select(Vector3.class, t -> Arrays.asList(t.getX(), t.getY(), t.getZ())),
 						Structizer.select(Vector2.class, t -> Arrays.asList(t.getX(), t.getY())),
 
-						Structizer.select(Matrix4.class, t -> Arrays.asList(
-								t.getXx(), t.getXy(), t.getXz(), t.getXw(),
-								t.getYx(), t.getYy(), t.getYz(), t.getYw(),
-								t.getZx(), t.getZy(), t.getZz(), t.getZw(),
-								t.getWx(), t.getWy(), t.getWz(), t.getWw()
-						))
+						Structizer.select(
+								Matrix4.class, t -> Arrays.asList(
+										t.getXx(), t.getXy(), t.getXz(), t.getXw(),
+										t.getYx(), t.getYy(), t.getYz(), t.getYw(),
+										t.getZx(), t.getZy(), t.getZz(), t.getZw(),
+										t.getWx(), t.getWy(), t.getWz(), t.getWw()
+								)
+						)
 				));
 	}
 

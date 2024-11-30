@@ -327,5 +327,19 @@ public interface Vector3 extends Vector2 {
 		public void setZ(double z) {
 			throwE();
 		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return Vector3.equals(this, obj);
+		}
+		@Override
+		public int hashCode() {
+			return Vector3.hashCode(this);
+		}
+
+		@Override
+		public String toString() {
+			return Vector3.toString(this);
+		}
 	}
 }

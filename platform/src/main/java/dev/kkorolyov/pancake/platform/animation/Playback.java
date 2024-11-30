@@ -2,6 +2,8 @@ package dev.kkorolyov.pancake.platform.animation;
 
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
+import java.util.Objects;
+
 /**
  * Scrolls through a timeline using an incrementing cursor, each time returning the difference between the current timeline value and the last-accessed value.
  */
@@ -98,6 +100,16 @@ public final class Playback<T extends Frame<T>> {
 	 */
 	public int size() {
 		return timeline.size();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Playback<?> other)) return false;
+		return offset == other.offset && Objects.equals(timeline, other.timeline) && Objects.equals(last, other.last) && state == other.state;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(timeline, offset, last, state);
 	}
 
 	private enum State {

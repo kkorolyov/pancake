@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.platform.registry.internal;
 import dev.kkorolyov.flub.function.convert.Converter;
 import dev.kkorolyov.pancake.platform.entity.Component;
 import dev.kkorolyov.pancake.platform.entity.EntityTemplate;
+import dev.kkorolyov.pancake.platform.io.Serializer;
 import dev.kkorolyov.pancake.platform.io.Structizers;
 import dev.kkorolyov.pancake.platform.registry.Resource;
 import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
@@ -19,7 +20,9 @@ import java.util.function.Supplier;
 
 /**
  * {@link ResourceConverterFactory} for basic entity templates.
+ * @deprecated to be replaced with a {@link Serializer}
  */
+@Deprecated
 public final class EntityTemplateResourceConverterFactory implements ResourceConverterFactory<EntityTemplate> {
 	private static final ThreadLocal<Map<String, List<Class<Component>>>> NAMED_COMPONENTS = ThreadLocal.withInitial(() -> {
 		try (var graph = new ClassGraph().enableClassInfo().scan()) {

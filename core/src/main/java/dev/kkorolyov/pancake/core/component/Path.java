@@ -1,11 +1,13 @@
 package dev.kkorolyov.pancake.core.component;
 
 import dev.kkorolyov.pancake.platform.entity.Component;
+import dev.kkorolyov.pancake.platform.math.FloatOps;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.function.Predicate;
 
@@ -89,6 +91,13 @@ public final class Path implements Component, Iterable<Vector3>, Iterator<Vector
 	}
 
 	/**
+	 * Returns the number of steps.
+	 */
+	public int size() {
+		return steps.size();
+	}
+
+	/**
 	 * Dequeues and returns the next step.
 	 * Throws {@link java.util.NoSuchElementException} if no more steps.
 	 */
@@ -111,6 +120,16 @@ public final class Path implements Component, Iterable<Vector3>, Iterator<Vector
 	@Override
 	public Iterator<Vector3> iterator() {
 		return steps.iterator();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Path other)) return false;
+		return FloatOps.equals(strength, other.strength) && FloatOps.equals(proximity, other.proximity) && snapStrategy == other.snapStrategy && Objects.equals(steps.stream().toList(), other.steps.stream().toList());
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(strength, proximity, snapStrategy, steps);
 	}
 
 	/**

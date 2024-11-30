@@ -26,7 +26,7 @@ import dev.kkorolyov.pancake.editor.test.start
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.Pipeline
 import dev.kkorolyov.pancake.platform.math.Vector3
-import dev.kkorolyov.pancake.test.SpecUtilities.randVector
+import dev.kkorolyov.pancake.platform.SpecUtilities.randVector
 import kotlin.random.Random
 
 fun main() {

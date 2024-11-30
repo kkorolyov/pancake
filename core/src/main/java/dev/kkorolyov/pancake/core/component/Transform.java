@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Translation, rotation, and scale of an entity in space.
@@ -71,7 +72,7 @@ public final class Transform implements Component {
 	public void setParent(Transform parent) {
 		if (this.parent != null) this.parent.children.remove(this);
 		this.parent = parent;
-		this.parent.children.add(this);
+		if (this.parent != null) this.parent.children.add(this);
 	}
 
 	/**
@@ -95,6 +96,16 @@ public final class Transform implements Component {
 	private void invalidate() {
 		cached = false;
 		for (int i = 0; i < children.size(); i++) children.get(i).invalidate();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Transform other)) return false;
+		return Objects.equals(translation, other.translation) && Objects.equals(rotation, other.rotation) && Objects.equals(scale, other.scale) && Objects.equals(parent, other.parent);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(translation, rotation, scale, parent);
 	}
 
 	private final class BoundMatrix4 implements Matrix4 {

@@ -6,15 +6,15 @@ import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 /**
  * Applies {@link Animator} animations to {@link Transform}s.
  */
 public final class AnimationSystem extends GameSystem {
-	private final Map<Animator, Collection<Transform>> animators = new HashMap<>();
+	private final Map<Animator, Collection<Transform>> animators = new IdentityHashMap<>();
 
 	public AnimationSystem() {
 		super(Transform.class, Animator.class);
@@ -35,5 +35,7 @@ public final class AnimationSystem extends GameSystem {
 				}
 			}
 		});
+
+		animators.clear();
 	}
 }

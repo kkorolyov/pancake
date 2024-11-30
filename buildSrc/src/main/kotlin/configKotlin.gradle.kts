@@ -9,10 +9,8 @@ tasks.compileJava {
 
 	if (file.exists()) {
 		val moduleName = """(?<=module\s)[\w.]+""".toRegex().find(file("$projectDir/src/main/java/module-info.java").readText())!!.value
-
-		inputs.property("moduleName", moduleName)
 		options.compilerArgs = listOf(
-			"--patch-module", "$moduleName=${sourceSets.main.get().output.asPath}"
+			"--patch-module", "$moduleName=${sourceSets["main"].output.asPath}"
 		)
 	}
 }

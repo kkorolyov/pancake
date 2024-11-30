@@ -10,6 +10,7 @@ import dev.kkorolyov.pancake.platform.entity.Component;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Emits a cumulative {@link TransformFrame} delta between the previous and current frames of each assigned {@link Choreography.Role}.
@@ -21,10 +22,24 @@ public final class Animator implements Component, Iterable<Map.Entry<Choreograph
 	private long counter;
 
 	/**
-	 * Adds animation {@code role} to this component if it is not yet set, and preps it for {@code type} playback.
+	 * {@link #put(Choreography.Role, Type, int)} without setting initial offset.
 	 */
 	public void put(Choreography.Role<TransformFrame> role, Type type) {
-		configs.putIfAbsent(role, new PlaybackConfig<>(new Playback<>(role.timeline()), type));
+		put(role, type, 0);
+	}
+	/**
+	 * Adds animation {@code role} to this component if it is not yet set, and preps it for {@code type} playback starting at {@code offset}.
+	 */
+	public void put(Choreography.Role<TransformFrame> role, Type type, int offset) {
+		configs.computeIfAbsent(
+				role,
+				k -> {
+					var playback = new Playback<>(k.timeline());
+					if (offset > 0) playback.setOffset(offset);
+
+					return new PlaybackConfig<>(playback, type);
+				}
+		);
 	}
 
 	/**
@@ -110,6 +125,23 @@ public final class Animator implements Component, Iterable<Map.Entry<Choreograph
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	/**
+	 * Returns the number of assigned roles.
+	 */
+	public int size() {
+		return configs.size();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Animator other)) return false;
+		return active == other.active && counter == other.counter && Objects.equals(configs, other.configs);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(configs, active, counter);
 	}
 
 	/**

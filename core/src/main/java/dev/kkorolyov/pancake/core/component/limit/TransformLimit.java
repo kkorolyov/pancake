@@ -3,10 +3,12 @@ package dev.kkorolyov.pancake.core.component.limit;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.platform.math.Vector3;
 
+import java.util.Objects;
+
 /**
  * Constrains minimum and maximum transform offsets.
  */
-public class TransformLimit implements Limit<Transform> {
+public final class TransformLimit implements Limit<Transform> {
 	private final Vector3 translationMin = Vector3.observable(Vector3.of(), this::computeTransformMax);
 	private final Vector3 translationMax = Vector3.observable(Vector3.of(), this::computeTransformMin);
 	private final Vector3 scaleMin = Vector3.observable(Vector3.of(1, 1, 1), this::computeScaleMax);
@@ -74,5 +76,15 @@ public class TransformLimit implements Limit<Transform> {
 		scaleMax.setX(Math.max(scaleMin.getX(), scaleMax.getX()));
 		scaleMax.setY(Math.max(scaleMin.getY(), scaleMax.getY()));
 		scaleMax.setZ(Math.max(scaleMin.getZ(), scaleMax.getZ()));
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof TransformLimit other)) return false;
+		return Objects.equals(translationMin, other.translationMin) && Objects.equals(translationMax, other.translationMax) && Objects.equals(scaleMin, other.scaleMin) && Objects.equals(scaleMax, other.scaleMax);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(translationMin, translationMax, scaleMin, scaleMax);
 	}
 }

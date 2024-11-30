@@ -57,4 +57,26 @@ class Lens(
 	 * Offset of the target render medium in `px`.
 	 */
 	val offset: Vector2 = Vector2.of(offset)
+
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other !is Lens) return false
+
+		if (active != other.active) return false
+		if (mask != other.mask) return false
+		if (scale != other.scale) return false
+		if (size != other.size) return false
+		if (offset != other.offset) return false
+
+		return true
+	}
+
+	override fun hashCode(): Int {
+		var result = active.hashCode()
+		result = 31 * result + mask.hashCode()
+		result = 31 * result + scale.hashCode()
+		result = 31 * result + size.hashCode()
+		result = 31 * result + offset.hashCode()
+		return result
+	}
 }

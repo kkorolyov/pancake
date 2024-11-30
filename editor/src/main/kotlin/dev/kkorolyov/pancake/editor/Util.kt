@@ -18,6 +18,7 @@ operator fun <T> ThreadLocal<T>.setValue(thisRef: Any?, property: KProperty<*>, 
  * Returns [entity] as a simple serializable structure.
  * Any components without a registered [dev.kkorolyov.pancake.platform.io.Structizer] are written as the string `NOT SUPPORTED`.
  */
+@Deprecated("prefer serializer")
 fun toStructEntity(entity: Entity): Map<String, Any> = entity.associate { it::class.java.name to structizeComponent(it) }
 
 private fun structizeComponent(component: Component) =

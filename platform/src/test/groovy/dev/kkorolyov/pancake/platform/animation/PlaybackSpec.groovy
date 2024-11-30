@@ -1,7 +1,5 @@
 package dev.kkorolyov.pancake.platform.animation
 
-import dev.kkorolyov.pancake.test.IntFrame
-
 import spock.lang.Specification
 
 class PlaybackSpec extends Specification {
