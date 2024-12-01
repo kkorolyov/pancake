@@ -4,6 +4,7 @@ import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
+import imgui.ImDrawList
 import imgui.ImFont
 import imgui.ImGuiStyle
 import imgui.ImGuiViewport
@@ -653,11 +654,11 @@ object Draw {
 	/**
 	 * Returns the foreground draw list for [viewport].
 	 */
-	fun fg(viewport: ImGuiViewport) = ImGui.getForegroundDrawList(viewport)
+	fun fg(viewport: ImGuiViewport): ImDrawList = ImGui.getForegroundDrawList(viewport)
 	/**
 	 * Returns the background draw list for [viewport].
 	 */
-	fun bg(viewport: ImGuiViewport) = ImGui.getBackgroundDrawList(viewport)
+	fun bg(viewport: ImGuiViewport): ImDrawList = ImGui.getBackgroundDrawList(viewport)
 }
 
 /**

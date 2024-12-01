@@ -43,9 +43,6 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	 * Reads and applies GUI settings from `settings`.
 	 */
 	fun load(settings: InputStream) {
-		// force initialize if needed
-		imguiGlfw
-
 		log.info("loading settings")
 		settings.bufferedReader().use {
 			ImGui.loadIniSettingsFromMemory(it.readLines().joinToString("\n"))
@@ -55,9 +52,6 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	 * Writes current GUI settings to `settings`.
 	 */
 	fun save(settings: OutputStream) {
-		// force initialize if needed
-		imguiGlfw
-
 		log.info("saving settings")
 		settings.bufferedWriter().apply {
 			write(ImGui.saveIniSettingsToMemory())
@@ -67,13 +61,13 @@ class Container(window: Long, flags: Int = FLAGS) : AutoCloseable {
 	}
 
 	/**
-	 * Renders [window] in this container's window.
+	 * Renders [window] in this container's `GLFW` window.
 	 */
 	operator fun invoke(window: Window) {
 		render(window)
 	}
 	/**
-	 * Renders [manifest] in this container's window.
+	 * Renders [manifest] in this container's `GLFW` window.
 	 */
 	operator fun invoke(manifest: WindowManifest<*>) {
 		render(manifest)

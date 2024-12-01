@@ -1,6 +1,7 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.DebouncedValue
+import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.contextMenu
@@ -19,6 +20,7 @@ import imgui.flag.ImGuiPopupFlags
 import io.github.classgraph.ClassGraph
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
+import kotlin.math.max
 
 private val componentTypes by ThreadLocal.withInitial {
 	ClassGraph().enableClassInfo().scan().use { result ->
@@ -45,9 +47,9 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 	private var toRemove: Class<out Component>? = null
 
 	override fun invoke() {
-		list("##components") {
+		list("##components", width = Layout.stretchWidth, height = max(Layout.lineHeight(entity.size() + 1.2), Layout.free.y - Layout.lineHeight(1.5))) {
 			entity.forEach {
-				selectable(it.debugName ?: it::class) {
+				selectable(it.debugName) {
 					inlineDetails.open(currentDetails.set(it))
 				}
 				contextMenu {
