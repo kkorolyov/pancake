@@ -1,10 +1,9 @@
 package dev.kkorolyov.pancake.editor.widget
 
 import dev.kkorolyov.pancake.editor.DebouncedValue
-import dev.kkorolyov.pancake.editor.History
 import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.MagFormat
-import dev.kkorolyov.pancake.editor.Style
+import dev.kkorolyov.pancake.editor.RealtimePlot
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.text
@@ -18,19 +17,18 @@ import kotlin.math.max
  * If [dragDropId] is provided, emits drag-drop payloads to it containing the selected [GameSystem].
  */
 class PipelinesList(private val pipelines: Iterable<Pipeline>, private val dragDropId: String? = null) : Widget {
-	private val history = History(10, 1000)
-	private val historyWidth by lazy { -Style.spacing.x }
+	private val perfGraph = RealtimePlot(10, 1000)
 
 	private val draggingSystem = DebouncedValue<GameSystem, Widget> { getWidget(GameSystem::class.java, it) }
 
 	override fun invoke() {
 		var dragging = false
 
-		val historyHeight = max(Layout.lineHeight(4), Layout.free.y / 5)
+		val historyHeight = max(Layout.lineHeight(4), (Layout.free.y - Layout.lineHeight(1)) / 5)
 		pipelines.forEachIndexed { i, pipeline ->
 			var slowestSystem = "none"
 			var slowestSystemTime = 0L
-			history("Pipeline $i", historyWidth, historyHeight) {
+			perfGraph("Pipeline $i", Layout.stretchWidth, historyHeight) {
 				pipeline.forEach { system ->
 					val id = system.debugName
 					val tickTime = system.sampler.value

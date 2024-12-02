@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.editor.factory
 
-import dev.kkorolyov.pancake.editor.History
 import dev.kkorolyov.pancake.editor.Layout
+import dev.kkorolyov.pancake.editor.RealtimePlot
 import dev.kkorolyov.pancake.editor.Style
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.getValue
@@ -18,11 +18,11 @@ private val factories by ThreadLocal.withInitial { ServiceLoader.load(WidgetFact
  * Returns a widget displaying basic data (data common to all systems) of [system].
  */
 fun basicGameSystemWidget(system: GameSystem): Widget {
-	val history = History(10, 1000)
-	val summary = history.summary("##main")
+	val perfGraph = RealtimePlot(10, 1000)
+	val summary = perfGraph.summary("##main")
 
 	return Widget {
-		history("Tick time", max(128f, Layout.free.x - Style.spacing.x), Layout.free.y / 2) {
+		perfGraph("Tick time", max(128f, Layout.free.x - Style.spacing.x), Layout.free.y / 2) {
 			line("##main", system.sampler.value.toDouble())
 
 			dummy("*stats")

@@ -4,14 +4,18 @@ import dev.kkorolyov.pancake.editor.widget.Window
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
+import imgui.ImColor
 import imgui.ImDrawList
 import imgui.ImFont
 import imgui.ImGuiStyle
 import imgui.ImGuiViewport
 import imgui.ImVec2
+import imgui.ImVec4
 import imgui.extension.implot.ImPlot
 import imgui.extension.implot.flag.ImPlotAxis
 import imgui.extension.implot.flag.ImPlotAxisFlags
+import imgui.extension.implot.flag.ImPlotCond
+import imgui.extension.implot.flag.ImPlotDragToolFlags
 import imgui.extension.implot.flag.ImPlotFlags
 import imgui.flag.ImGuiComboFlags
 import imgui.flag.ImGuiCond
@@ -52,11 +56,15 @@ val tFloat3 by ThreadLocal.withInitial { FloatArray(3) }
 /** NO TOUCHY */
 val tDouble by ThreadLocal.withInitial(::ImDouble)
 /** NO TOUCHY */
+val tDouble1 by ThreadLocal.withInitial(::ImDouble)
+/** NO TOUCHY */
 val tVector2 by ThreadLocal.withInitial(Vector2::of)
 /** NO TOUCHY */
 val tVector3 by ThreadLocal.withInitial(Vector3::of)
 /** NO TOUCHY */
 val tVec2 by ThreadLocal.withInitial(::ImVec2)
+/** NO TOUCHY */
+val tVec4 by ThreadLocal.withInitial(::ImVec4)
 
 /**
  * Initializes [id] dock space with [setup], if it does not yet exist.
@@ -273,6 +281,16 @@ inline fun plot(label: String, width: Float = 0f, height: Float = 0f, flags: Int
 	if (ImPlot.beginPlot(label, width, height, flags)) {
 		Ctx.Plot.op()
 		ImPlot.endPlot()
+	}
+}
+/**
+ * Invokes [op] within a [rows] x [columns] subplots in a plot space of [label].
+ * Each [plot] call configures the next subplot in row-major order.
+ */
+inline fun subplots(label: String, rows: Int, columns: Int, width: Float = 0f, height: Float = 0f, flags: Int = ImPlotFlags.None, op: () -> Unit) {
+	if (ImPlot.beginSubplots(label, rows, columns, width, height, flags)) {
+		op()
+		ImPlot.endSubplots()
 	}
 }
 
@@ -877,13 +895,48 @@ object Ctx {
 	}
 
 	open class PlotModifier {
+		val x1: Axis = Axis(ImPlotAxis.X1)
+		val x2: Axis = Axis(ImPlotAxis.X2)
+		val x3: Axis = Axis(ImPlotAxis.X3)
+		val y1: Axis = Axis(ImPlotAxis.Y1)
+		val y2: Axis = Axis(ImPlotAxis.Y2)
+		val y3: Axis = Axis(ImPlotAxis.Y3)
+
 		/**
-		 * Configures [axis].
+		 * Runs [op] against the 1st X-axis.
 		 */
-		fun configAxis(axis: Int = ImPlotAxis.X1, label: String? = null, min: Double? = null, max: Double? = null, limitCond: Int = ImGuiCond.None, format: String? = null, flags: Int = ImPlotAxisFlags.None) {
-			ImPlot.setupAxis(axis, label, flags)
-			if (min != null && max != null) ImPlot.setupAxisLimits(axis, min, max, limitCond)
-			if (format != null) ImPlot.setupAxisFormat(axis, format)
+		inline fun axisX1(op: Axis.() -> Unit) {
+			x1.op()
+		}
+		/**
+		 * Runs [op] against the 2nd X-axis.
+		 */
+		inline fun axisX2(op: Axis.() -> Unit) {
+			x2.op()
+		}
+		/**
+		 * Runs [op] against the 3rd X-axis.
+		 */
+		inline fun axisX3(op: Axis.() -> Unit) {
+			x3.op()
+		}
+		/**
+		 * Runs [op] against the 1st Y-axis.
+		 */
+		inline fun axisY1(op: Axis.() -> Unit) {
+			y1.op()
+		}
+		/**
+		 * Runs [op] against the 2nd Y-axis.
+		 */
+		inline fun axisY2(op: Axis.() -> Unit) {
+			y2.op()
+		}
+		/**
+		 * Runs [op] against the 3rd Y-axis.
+		 */
+		inline fun axisY3(op: Axis.() -> Unit) {
+			y3.op()
 		}
 
 		/**
@@ -997,6 +1050,63 @@ object Ctx {
 		 */
 		fun text(text: Any, x: Double, y: Double, vertical: Boolean = false) {
 			ImPlot.plotText(text.toString(), x, y, vertical)
+		}
+
+		/**
+		 * Renders a draggable [id]'d point at ([x], [y]).
+		 * Returns `true` when dragged.
+		 */
+		fun dragPoint(id: Int, x: Double, y: Double, color: Int = ImColor.rgba(255, 255, 255, 255), size: Float = 4f, flags: Int = ImPlotDragToolFlags.None, onChange: OnChange2<Double> = { _, _ -> }): Boolean {
+			val xPtr = tDouble.apply { set(x) }
+			val yPtr = tDouble1.apply { set(y) }
+			val colorPtr = tVec4.apply { set((color and 255) / 255f, (color ushr 8 and 255) / 255f, (color ushr 16 and 255) / 255f, (color ushr 24 and 255) / 255f) }
+
+			val result = ImPlot.dragPoint(id, xPtr, yPtr, colorPtr, size, flags)
+			if (result) onChange(xPtr.get(), yPtr.get())
+			return result
+		}
+	}
+
+	class Axis internal constructor(private val id: Int) {
+		private val horizontal = id >= ImPlotAxis.X1 && id <= ImPlotAxis.X3
+
+		/**
+		 * Configures this axis with [label] and [flags].
+		 * Calling this without any arguments will simply enable the axis with default setup.
+		 */
+		fun setup(label: String? = null, flags: Int = ImPlotAxisFlags.None) {
+			ImPlot.setupAxis(id, label, flags)
+		}
+		/**
+		 * Sets [min] and [max] limits with [condition].
+		 */
+		fun limit(min: Double, max: Double, condition: Int = ImPlotCond.None) {
+			ImPlot.setupAxisLimits(id, min, max, condition)
+		}
+		/**
+		 * Sets the [format] of axis labels.
+		 */
+		fun format(format: String) {
+			ImPlot.setupAxisFormat(id, format)
+		}
+		/**
+		 * Sets tick [labels] from [min] to [max].
+		 */
+		fun ticks(min: Double, max: Double, labels: Array<String>) {
+			ImPlot.setupAxisTicks(id, min, max, labels.size, labels, false)
+		}
+
+		/**
+		 * Renders a draggable [id]'d guide line at [value].
+		 * Returns `true` when dragged.
+		 */
+		fun dragLine(id: Int, value: Double, color: Int = ImColor.rgba(255, 255, 255, 255), size: Float = 1f, flags: Int = ImPlotDragToolFlags.None, onChange: OnChange<Double> = {}): Boolean {
+			val ptr = tDouble.apply { set(value) }
+			val colorPtr = tVec4.apply { set((color and 255) / 255f, (color ushr 8 and 255) / 255f, (color ushr 16 and 255) / 255f, (color ushr 24 and 255) / 255f) }
+
+			val result = if (horizontal) ImPlot.dragLineX(id, ptr, colorPtr, size, flags) else ImPlot.dragLineY(id, ptr, colorPtr, size, flags)
+			if (result) onChange(ptr.get())
+			return result
 		}
 	}
 }
