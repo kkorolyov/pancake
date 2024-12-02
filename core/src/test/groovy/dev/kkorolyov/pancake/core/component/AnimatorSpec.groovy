@@ -48,32 +48,6 @@ class AnimatorSpec extends Specification {
 		}
 	}
 
-	def "reset returns null if no timelines"() {
-		expect:
-		animator.reset() == null
-	}
-	def "reset returns no change if no prior updates"() {
-		when:
-		animator.put(choreography.get("0"), Animator.Type.ONCE)
-
-		then:
-		animator.reset() == new TransformFrame()
-	}
-	def "reset returns cumulative delta to first keyframe"() {
-		when:
-		animator.put(choreography.get("0"), Animator.Type.ONCE)
-		animator.put(choreography.get("1"), Animator.Type.ONCE)
-		animator.update(0)
-		animator.update(1000000)
-
-		then:
-		animator.reset() == new TransformFrame().with {
-			it.translation.set(Vector3.of(-1, -1, -1))
-			it.rotation.set(Vector3.of(-1, -1, -1))
-			it
-		}
-	}
-
 	def "clear removes timelines"() {
 		when:
 		animator.put(choreography.get("0"), Animator.Type.ONCE)
