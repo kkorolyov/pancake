@@ -56,7 +56,7 @@ class PipelinesList(private val pipelines: Iterable<Pipeline>, private val dragD
 
 				dummy("*slowest")
 				legendTooltip("*slowest") {
-					text("%s (%s)".format(slowestSystem, MagFormat.seconds(slowestSystemTime)))
+					text("%s (%s)".format(slowestSystem, MagFormat.nanos(slowestSystemTime)))
 				}
 			}
 		}

@@ -63,7 +63,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 
 			dummy("*slowest")
 			legendTooltip("*slowest") {
-				text("%s (%s)".format(slowestPipeline, MagFormat.seconds(slowestPipelineTime)))
+				text("%s (%s)".format(slowestPipeline, MagFormat.nanos(slowestPipelineTime)))
 			}
 		}
 	}
