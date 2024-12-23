@@ -42,29 +42,69 @@ import kotlin.math.min
 import kotlin.math.pow
 
 // reuse the same carrier to all imgui input functions
-// public only to allow inline functions
-/** NO TOUCHY */
-val tString by ThreadLocal.withInitial(::ImString)
-/** NO TOUCHY */
-val tBoolean by ThreadLocal.withInitial(::ImBoolean)
-/** NO TOUCHY */
-val tInt by ThreadLocal.withInitial(::ImInt)
-/** NO TOUCHY */
-val tFloat2 by ThreadLocal.withInitial { FloatArray(2) }
-/** NO TOUCHY */
-val tFloat3 by ThreadLocal.withInitial { FloatArray(3) }
-/** NO TOUCHY */
-val tDouble by ThreadLocal.withInitial(::ImDouble)
-/** NO TOUCHY */
-val tDouble1 by ThreadLocal.withInitial(::ImDouble)
-/** NO TOUCHY */
-val tVector2 by ThreadLocal.withInitial(Vector2::of)
-/** NO TOUCHY */
-val tVector3 by ThreadLocal.withInitial(Vector3::of)
-/** NO TOUCHY */
-val tVec2 by ThreadLocal.withInitial(::ImVec2)
-/** NO TOUCHY */
-val tVec4 by ThreadLocal.withInitial(::ImVec4)
+private val tString by ThreadLocal.withInitial(::ImString)
+private val tBoolean by ThreadLocal.withInitial(::ImBoolean)
+private val tInt by ThreadLocal.withInitial(::ImInt)
+private val tFloat2 by ThreadLocal.withInitial { FloatArray(2) }
+private val tFloat3 by ThreadLocal.withInitial { FloatArray(3) }
+private val tDouble by ThreadLocal.withInitial(::ImDouble)
+private val tDouble1 by ThreadLocal.withInitial(::ImDouble)
+private val tVector2 by ThreadLocal.withInitial(Vector2::of)
+private val tVector3 by ThreadLocal.withInitial(Vector3::of)
+private val tVec2 by ThreadLocal.withInitial(::ImVec2)
+private val tVec4 by ThreadLocal.withInitial(::ImVec4)
+
+/**
+ * Returns a shared thread-local pointer instance for [value].
+ */
+fun pointer(value: String): ImString = tString.apply { set(value) }
+/**
+ * Returns a shared thread-local pointer instance for [value].
+ */
+fun pointer(value: Boolean): ImBoolean = tBoolean.apply { set(value) }
+/**
+ * Returns a shared thread-local pointer instance for [value].
+ */
+fun pointer(value: Int): ImInt = tInt.apply { set(value) }
+/**
+ * Returns a shared thread-local pointer instance for [value].
+ */
+fun pointer(value: Double): ImDouble = tDouble.apply { set(value) }
+/**
+ * Returns a shared thread-local pointer instance for [value].
+ */
+fun pointer1(value: Double): ImDouble = tDouble1.apply { set(value) }
+/**
+ * Returns a shared thread-local pointer instance for the ([value0], [value1]) vector.
+ */
+fun pointer(value0: Float, value1: Float): ImVec2 = tVec2.apply { set(value0, value1) }
+/**
+ * Returns a shared thread-local pointer instance for the ([value0], [value1], [value2], [value3]) vector.
+ */
+fun pointer(value0: Float, value1: Float, value2: Float, value3: Float): ImVec4 = tVec4.apply { set(value0, value1, value2, value3) }
+@Deprecated("replace usages with vec2")
+fun pointerArr(value0: Float, value1: Float): FloatArray = tFloat2.apply {
+	set(0, value0)
+	set(1, value1)
+}
+@Deprecated("replace usages with vec3")
+fun pointerArr(value0: Float, value1: Float, value2: Float): FloatArray = tFloat3.apply {
+	set(0, value0)
+	set(1, value1)
+	set(2, value2)
+}
+
+@Deprecated("these are weird - replace with primitives")
+fun pointerVec(x: Double, y: Double): Vector2 = tVector2.apply {
+	this.x = x
+	this.y = y
+}
+@Deprecated("these are weird - replace with primitives")
+fun pointerVec(x: Double, y: Double, z: Double): Vector3 = tVector3.apply {
+	this.x = x
+	this.y = y
+	this.z = z
+}
 
 /**
  * Initializes [id] dock space with [setup], if it does not yet exist.
@@ -131,10 +171,12 @@ inline fun onClick(op: Op) {
 	if (ImGui.isItemClicked()) op()
 }
 /**
- * Runs [op] while the last set item is hovered.
+ * Runs [op] and returns `true` while the last set item is hovered.
  */
-inline fun onHover(flags: Int = ImGuiHoveredFlags.None, op: Op) {
-	if (ImGui.isItemHovered(flags)) op()
+inline fun onHover(flags: Int = ImGuiHoveredFlags.None, op: Op = {}): Boolean {
+	val result = ImGui.isItemHovered(flags)
+	if (result) op()
+	return result
 }
 
 /**
@@ -352,8 +394,7 @@ inline fun button(label: String, onClick: Op): Boolean {
  * Returns `true` when changed.
  */
 inline fun input(label: String, value: String, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<String>): Boolean {
-	val ptr = tString
-	ptr.set(value)
+	val ptr = pointer(value)
 
 	val result = ImGui.inputText(label, ptr, flags)
 	if (result) onChange(ptr.get())
@@ -387,8 +428,7 @@ inline fun <reified T : Enum<T>> input(label: String, value: T, flags: Int = ImG
  * Returns `true` when changed.
  */
 inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Boolean {
-	val ptr = tBoolean
-	ptr.set(value)
+	val ptr = pointer(value)
 
 	val result = ImGui.checkbox(label, ptr)
 	if (result) onChange(ptr.get())
@@ -400,8 +440,7 @@ inline fun input(label: String, value: Boolean, onChange: OnChange<Boolean>): Bo
  * Returns `true` when changed.
  */
 inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Int> = {}): Boolean {
-	val ptr = tInt
-	ptr.set(value)
+	val ptr = pointer(value)
 
 	val width = if (label.startsWith("##")) Layout.textWidth("${10.0.pow(digitWidth)}${if (step != 0 || stepFast != 0) "+++++" else ""}") else null
 
@@ -418,8 +457,7 @@ inline fun input(label: String, value: Int, step: Int = 0, stepFast: Int = 0, di
  * Returns `true` when changed.
  */
 inline fun input(label: String, value: Double, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Double> = {}): Boolean {
-	val ptr = tDouble
-	ptr.set(value)
+	val ptr = pointer(value)
 
 	val width = if (label.startsWith("##")) Layout.textWidth("${format.format(10.0.pow(digitWidth))}${if (step != 0.0 || stepFast != 0.0) "+++++" else ""}") else null
 
@@ -438,9 +476,7 @@ inline fun input(label: String, value: Double, format: String = "%.3f", step: Do
  */
 inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector2> = {}): Boolean {
 	// TODO replace with calls to fixed ImGui.inputScalarN bindings
-	val ptr = tFloat2
-	ptr[0] = value.x.toFloat()
-	ptr[1] = value.y.toFloat()
+	val ptr = pointerArr(value.x.toFloat(), value.y.toFloat())
 
 	val width = if (label.startsWith("##")) Layout.textWidth(format.format(10.0.pow(digitWidth))) * 2 else null
 	width?.let(ImGui::pushItemWidth)
@@ -448,10 +484,7 @@ inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: 
 	width?.let { ImGui.popItemWidth() }
 
 	if (result) {
-		val returnPtr = tVector2
-		returnPtr.x = ptr[0].toDouble()
-		returnPtr.y = ptr[1].toDouble()
-
+		val returnPtr = pointerVec(ptr[0].toDouble(), ptr[1].toDouble())
 		onChange(returnPtr)
 	}
 	return result
@@ -464,10 +497,7 @@ inline fun input2(label: String, value: Vector2, format: String = "%.3f", step: 
  */
 inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: Double = 0.0, stepFast: Double = 0.0, digitWidth: Int = 3, flags: Int = ImGuiInputTextFlags.None, onChange: OnChange<Vector3> = {}): Boolean {
 	// TODO replace with calls to fixed ImGui.inputScalarN bindings
-	val ptr = tFloat3
-	ptr[0] = value.x.toFloat()
-	ptr[1] = value.y.toFloat()
-	ptr[2] = value.z.toFloat()
+	val ptr = pointerArr(value.x.toFloat(), value.y.toFloat(), value.z.toFloat())
 
 	val width = if (label.startsWith("##")) Layout.textWidth(format.format(10.0.pow(digitWidth))) * 3 else null
 	width?.let(ImGui::pushItemWidth)
@@ -475,11 +505,7 @@ inline fun input3(label: String, value: Vector3, format: String = "%.3f", step: 
 	width?.let { ImGui.popItemWidth() }
 
 	if (result) {
-		val returnPtr = tVector3
-		returnPtr.x = ptr[0].toDouble()
-		returnPtr.y = ptr[1].toDouble()
-		returnPtr.z = ptr[2].toDouble()
-
+		val returnPtr = pointerVec(ptr[0].toDouble(), ptr[1].toDouble(), ptr[2].toDouble())
 		onChange(returnPtr)
 	}
 	return result
