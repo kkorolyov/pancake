@@ -10,11 +10,16 @@ import dev.kkorolyov.pancake.editor.disabledIf
 import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
+import dev.kkorolyov.pancake.editor.plot
 import dev.kkorolyov.pancake.editor.separator
+import dev.kkorolyov.pancake.editor.sequencer
 import dev.kkorolyov.pancake.editor.sliderInput
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.editor.tree
 import dev.kkorolyov.pancake.platform.entity.Component
+import imgui.extension.implot.flag.ImPlotAxisFlags
+import imgui.extension.implot.flag.ImPlotCond
+import imgui.extension.implot.flag.ImPlotDragToolFlags
 import imgui.flag.ImGuiTreeNodeFlags
 
 class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
@@ -26,16 +31,57 @@ class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 
 		Widget {
 			input("active", isActive) { isActive = it }
-			maxByOrNull { it.value.playback.size() }?.value?.playback?.let { driverPlayback ->
-				if (driverPlayback.size() >= 0) {
-					Layout.width(Layout.stretchWidth) {
-						sliderInput("##offset", driverPlayback.offset, min = 0, max = driverPlayback.size()) { newOffset ->
-							forEach { (_, playbackConfig) ->
-								playbackConfig.playback.offset = newOffset
+
+			sequencer("seq", 0, duration(), 100, offset) {
+				onChange { offset = it }
+
+				forEach { (role, playbackConfig) ->
+					track(role.key) {
+						val timeline = playbackConfig.playback.timeline
+						var moveFrame: Pair<Int, Int>? = null
+
+						timeline.forEachIndexed { frameI, (frameOffset) ->
+							keyframe(frameI.toString(), frameOffset) {
+								if (it >= 0 && it !in timeline) {
+									moveFrame = frameOffset to it
+								}
 							}
+							tooltip(frameOffset)
+						}
+
+						moveFrame?.let { (from, to) ->
+							timeline.put(to, timeline.remove(from))
 						}
 					}
-					tooltip("offset")
+				}
+			}
+
+			plot("roles") {
+				axisX1 {
+					setup("ms", ImPlotAxisFlags.Opposite)
+					limit(0.0, duration().toDouble(), ImPlotCond.Always)
+				}
+				axisY1 {
+					setup("##y", ImPlotAxisFlags.Invert)
+					limit(-1.0, size().toDouble(), ImPlotCond.Always)
+
+					val tickLabels = Array(size() + 2) { "" }
+					forEachIndexed { i, (role) -> tickLabels[i + 1] = role.key }
+					ticks(-1.0, size().toDouble(), tickLabels)
+				}
+
+				axisX1 {
+					dragLine(0, offset.toDouble(), flags = ImPlotDragToolFlags.NoInputs)
+				}
+
+				var frameI = 0
+				forEachIndexed { roleI, (role, playbackConfig) ->
+					val playback = playbackConfig.playback
+					val type = playbackConfig.type
+
+					playback.timeline.forEach { (offset, keyframe) ->
+						dragPoint(frameI++, offset.toDouble(), roleI.toDouble(), size = 8f)
+					}
 				}
 			}
 
@@ -45,12 +91,6 @@ class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 
 				tree("${role.key} (${type.name})", ImGuiTreeNodeFlags.SpanFullWidth) {
 					disabledIf(true) { sliderInput("##offset-$role", playback.offset, min = 0, max = playback.size()) }
-
-//					playback.timeline.map {  }
-//
-//					plot("timeline") {
-//						scatter("keyframes", )
-//					}
 
 					val frameIt = playback.timeline.iterator()
 					while (frameIt.hasNext()) {
