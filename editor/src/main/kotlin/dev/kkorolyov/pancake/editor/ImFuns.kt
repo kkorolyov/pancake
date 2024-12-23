@@ -17,6 +17,7 @@ import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotCond
 import imgui.extension.implot.flag.ImPlotDragToolFlags
 import imgui.extension.implot.flag.ImPlotFlags
+import imgui.flag.ImGuiCol
 import imgui.flag.ImGuiComboFlags
 import imgui.flag.ImGuiCond
 import imgui.flag.ImGuiDir
@@ -337,10 +338,26 @@ inline fun subplots(label: String, rows: Int, columns: Int, width: Float = 0f, h
 }
 
 /**
+ * Reserves a [width] x [height] space at the current cursor position.
+ * Optionally binds the area to [id], capturing mouse interactions.
+ * Intended for use with [Draw] API.
+ */
+fun dummy(width: Float, height: Float, id: String? = null) {
+	val ptr = pointer(width, height)
+	id?.let { ImGui.invisibleButton(id, ptr) } ?: ImGui.dummy(ptr)
+}
+
+/**
  * Draws the next item on the same line as the previous one.
  */
 fun sameLine() {
 	ImGui.sameLine()
+}
+/**
+ * Undoes a [sameLine].
+ */
+fun newLine() {
+	ImGui.newLine()
 }
 
 /**
@@ -627,6 +644,78 @@ inline fun sliderInput(label: String, value: Int, value1: Int, value2: Int, form
 }
 
 /**
+ * Current window storage access.
+ */
+object Storage {
+	/**
+	 * Returns a hash for [id] within the current ID stack for use in [get] and [set].
+	 */
+	fun key(id: String): Int = ImGui.getID(id)
+
+	/**
+	 * Returns the current value for [key], or [defaultValue] if it is not set.
+	 */
+	operator fun get(key: Int, defaultValue: Byte): Byte = ImGui.getStateStorage().getInt(key, defaultValue.toInt()).toByte()
+	/**
+	 * Returns the current value for [key], or [defaultValue] if it is not set.
+	 */
+	operator fun get(key: Int, defaultValue: Short): Short = ImGui.getStateStorage().getInt(key, defaultValue.toInt()).toShort()
+	/**
+	 * Returns the current value for [key], or [defaultValue] if it is not set.
+	 */
+	operator fun get(key: Int, defaultValue: Int): Int = ImGui.getStateStorage().getInt(key, defaultValue)
+	/**
+	 * Returns the current value for [key], or [defaultValue] if it is not set.
+	 */
+	operator fun get(key: Int, defaultValue: Float): Float = ImGui.getStateStorage().getFloat(key, defaultValue)
+	/**
+	 * Returns the current value for [key], or [defaultValue] if it is not set.
+	 */
+	operator fun get(key: Int, defaultValue: Double): Double = ImGui.getStateStorage().getFloat(key, defaultValue.toFloat()).toDouble()
+	/**
+	 * Returns the current value for [key], or [defaultValue] if it is not set.
+	 */
+	operator fun get(key: Int, defaultValue: Boolean): Boolean = ImGui.getStateStorage().getBool(key, defaultValue)
+
+	/**
+	 * Assigns [key] to [value].
+	 */
+	operator fun set(key: Int, value: Byte) {
+		ImGui.getStateStorage().setInt(key, value.toInt())
+	}
+	/**
+	 * Assigns [key] to [value].
+	 */
+	operator fun set(key: Int, value: Short) {
+		ImGui.getStateStorage().setInt(key, value.toInt())
+	}
+	/**
+	 * Assigns [key] to [value].
+	 */
+	operator fun set(key: Int, value: Int) {
+		ImGui.getStateStorage().setInt(key, value)
+	}
+	/**
+	 * Assigns [key] to [value].
+	 */
+	operator fun set(key: Int, value: Float) {
+		ImGui.getStateStorage().setFloat(key, value)
+	}
+	/**
+	 * Assigns [key] to [value].
+	 */
+	operator fun set(key: Int, value: Double) {
+		ImGui.getStateStorage().setFloat(key, value.toFloat())
+	}
+	/**
+	 * Assigns [key] to [value].
+	 */
+	operator fun set(key: Int, value: Boolean) {
+		ImGui.getStateStorage().setBool(key, value)
+	}
+}
+
+/**
  * Mouse-specific configuration and actions.
  * Supported buttons defined by [ImGuiMouseButton] and the backend - like `glfw`.
  */
@@ -634,6 +723,11 @@ object Mouse {
 	var cursor: Int
 		get() = ImGui.getMouseCursor()
 		set(value) = ImGui.setMouseCursor(value)
+
+	val x: Int
+		get() = ImGui.getMousePosX().toInt()
+	val y: Int
+		get() = ImGui.getMousePosY().toInt()
 
 	/**
 	 * Runs [op] and returns `true` when mouse [button] is clicked.
@@ -648,6 +742,15 @@ object Mouse {
 	 */
 	inline fun onDoubleClick(button: Int = ImGuiMouseButton.Left, op: Op = {}): Boolean {
 		val result = ImGui.isMouseDoubleClicked(button)
+		if (result) op()
+		return result
+	}
+
+	/**
+	 * Runs [op] and returns `true` when mouse [button] is held down.
+	 */
+	inline fun onDown(button: Int = ImGuiMouseButton.Left, op: Op = {}): Boolean {
+		val result = ImGui.isMouseDown(button)
 		if (result) op()
 		return result
 	}
@@ -696,13 +799,36 @@ object Key {
  */
 object Draw {
 	/**
-	 * Returns the foreground draw list for [viewport].
+	 * Current screen cursor coordinates.
 	 */
-	fun fg(viewport: ImGuiViewport): ImDrawList = ImGui.getForegroundDrawList(viewport)
+	val cursor: Cursor = Cursor()
+
 	/**
-	 * Returns the background draw list for [viewport].
+	 * Invokes [op] using [viewport]'s foreground draw list.
 	 */
-	fun bg(viewport: ImGuiViewport): ImDrawList = ImGui.getBackgroundDrawList(viewport)
+	inline fun fg(viewport: ImGuiViewport, op: ImDrawList.() -> Unit) {
+		ImGui.getForegroundDrawList(viewport).op()
+	}
+	/**
+	 * Invokes [op] using [viewport]'s background draw list.
+	 */
+	inline fun bg(viewport: ImGuiViewport, op: ImDrawList.() -> Unit) {
+		ImGui.getBackgroundDrawList(viewport).op()
+	}
+
+	/**
+	 * Invokes [op] using the current window's draw list.
+	 */
+	inline fun window(op: ImDrawList.() -> Unit) {
+		ImGui.getWindowDrawList().op()
+	}
+
+	class Cursor internal constructor() {
+		val x: Float
+			get() = ImGui.getCursorScreenPosX()
+		val y: Float
+			get() = ImGui.getCursorScreenPosY()
+	}
 }
 
 /**
@@ -723,8 +849,8 @@ object Layout {
 	 * Remaining available content space starting from the current cursor.
 	 */
 	val free: Free = Free()
-	/**n
-	 * Current cursor coordinates.
+	/**
+	 * Current window cursor coordinates.
 	 */
 	val cursor: Cursor = Cursor()
 
@@ -795,6 +921,11 @@ object Style {
 	 * Font configuration.
 	 */
 	val font: Font = Font()
+
+	/**
+	 * Returns the color set for styling [idx] elements.
+	 */
+	fun color(idx: Int = ImGuiCol.Text): Int = ImGui.getColorU32(idx)
 
 	class Spacing internal constructor() {
 		val x: Float
@@ -1082,10 +1213,10 @@ object Ctx {
 		 * Renders a draggable [id]'d point at ([x], [y]).
 		 * Returns `true` when dragged.
 		 */
-		fun dragPoint(id: Int, x: Double, y: Double, color: Int = ImColor.rgba(255, 255, 255, 255), size: Float = 4f, flags: Int = ImPlotDragToolFlags.None, onChange: OnChange2<Double> = { _, _ -> }): Boolean {
-			val xPtr = tDouble.apply { set(x) }
-			val yPtr = tDouble1.apply { set(y) }
-			val colorPtr = tVec4.apply { set((color and 255) / 255f, (color ushr 8 and 255) / 255f, (color ushr 16 and 255) / 255f, (color ushr 24 and 255) / 255f) }
+		inline fun dragPoint(id: Int, x: Double, y: Double, color: Int = ImColor.rgba(255, 255, 255, 255), size: Float = 4f, flags: Int = ImPlotDragToolFlags.None, onChange: OnChange2<Double> = { _, _ -> }): Boolean {
+			val xPtr = pointer(x)
+			val yPtr = pointer1(y)
+			val colorPtr = pointer((color and 255) / 255f, (color ushr 8 and 255) / 255f, (color ushr 16 and 255) / 255f, (color ushr 24 and 255) / 255f)
 
 			val result = ImPlot.dragPoint(id, xPtr, yPtr, colorPtr, size, flags)
 			if (result) onChange(xPtr.get(), yPtr.get())
