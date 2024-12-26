@@ -13,6 +13,14 @@ inline fun propertiesTable(id: String, op: Ctx.Table.() -> Unit) {
  * Helper for drawing a 2-column row suited for displaying property [label] with [op].
  */
 inline fun Ctx.Table.propertyRow(label: String, op: () -> Unit) {
-	column { text(label) }
-	column(op)
+	column {
+		Layout.width(Layout.stretchWidth) {
+			text(label)
+		}
+	}
+	column {
+		Layout.width(Layout.stretchWidth) {
+			op()
+		}
+	}
 }

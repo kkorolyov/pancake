@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.editor
 
 import imgui.extension.implot.ImPlot
-import imgui.extension.implot.flag.ImPlotAxis
 import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotFlags
 import imgui.extension.implot.flag.ImPlotStyleVar
@@ -10,13 +9,13 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Plots historical values within the last [_interval] seconds, split into [_samples] even samples.
+ * Plots values over the last [_interval] seconds, split into [_samples] even buckets.
  */
-class History(
+class RealtimePlot(
 	private var _interval: Int,
 	private var _samples: Int,
 ) {
-	val ctx = CtxHistory()
+	val ctx: CtxHistory = CtxHistory()
 
 	private var lastMs = 0L
 	private var rateMs = (_interval * 1e3).toLong() / _samples
@@ -91,14 +90,19 @@ class History(
 	}
 
 	/**
-	 * Invokes [op] within the scope of this history plot under [label].
+	 * Invokes [op] within the scope of this plot under [label].
 	 */
-	inline operator fun invoke(label: String, width: Float = 0f, height: Float = 0f, op: History.CtxHistory.() -> Unit) {
+	inline operator fun invoke(label: String, width: Float = 0f, height: Float = 0f, op: RealtimePlot.CtxHistory.() -> Unit) {
 		tick()
 
 		plot(label, flags = ImPlotFlags.NoMenus, width = width, height = height) {
-			configAxis(ImPlotAxis.X1, min = max(0.0, current - interval + interval / samples), max = max(interval.toDouble(), current), limitCond = ImGuiCond.Always, flags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time)
-			configAxis(ImPlotAxis.Y1, flags = ImPlotAxisFlags.NoDecorations)
+			axisX1 {
+				setup(flags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time)
+				limit(max(0.0, current - interval + interval / samples), max(interval.toDouble(), current), ImGuiCond.Always)
+			}
+			axisY1 {
+				setup(flags = ImPlotAxisFlags.NoDecorations)
+			}
 			ImPlot.pushStyleVar(ImPlotStyleVar.PlotPadding, 0f, 0f)
 
 			ctx.op()
@@ -147,12 +151,12 @@ class History(
 		 * Current minimum value in the interval.
 		 */
 		val min: Double
-			get() = data[id]?.min() ?: 0.0
+			get() = data[id]?.minOrNull() ?: 0.0
 		/**
 		 * Current maximum value in the interval.
 		 */
 		val max: Double
-			get() = data[id]?.max() ?: 0.0
+			get() = data[id]?.maxOrNull() ?: 0.0
 		/**
 		 * Current average value in the interval.
 		 */
@@ -162,8 +166,7 @@ class History(
 
 	inner class CtxHistory internal constructor() : Ctx.PlotModifier() {
 		/**
-		 * Updates [label] with [value] at the current latest entry.
-		 * Plots a line graph of its historical values.
+		 * Updates [label] with [value] at the current latest entry and plots a line graph of its recent values.
 		 */
 		fun line(label: String, value: Double) {
 			val lineData = data.getOrPut(label) { DoubleArray(_samples) }

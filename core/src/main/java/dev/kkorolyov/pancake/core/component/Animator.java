@@ -19,7 +19,7 @@ import java.util.Objects;
 public final class Animator implements Component, Iterable<Map.Entry<Choreography.Role<TransformFrame>, Animator.PlaybackConfig<TransformFrame>>> {
 	private final Map<Choreography.Role<TransformFrame>, PlaybackConfig<TransformFrame>> configs = new HashMap<>();
 	private boolean active = true;
-	private long counter;
+	private long offset;
 
 	/**
 	 * {@link #put(Choreography.Role, Type, int)} without setting initial offset.
@@ -44,7 +44,7 @@ public final class Animator implements Component, Iterable<Map.Entry<Choreograph
 
 	/**
 	 * Increments all playbacks by {@code dt} elapsed {@code ns} since the last call and returns the sum of each playback's frame delta.
-	 * Return {@code null} if all playbacks return {@code null}.
+	 * Returns {@code null} if all playbacks return {@code null}.
 	 * Does nothing and returns {@code null} if not {@link #isActive()}.
 	 */
 	public TransformFrame update(long dt) {
@@ -53,15 +53,15 @@ public final class Animator implements Component, Iterable<Map.Entry<Choreograph
 		if (active) {
 			long nsMs = (long) 1e6;
 
-			counter += dt;
+			offset += dt;
 
-			int ms = (int) (counter / nsMs);
+			int offsetMs = (int) (offset / nsMs);
 
 			var it = configs.values().iterator();
 
 			while (it.hasNext()) {
 				var config = it.next();
-				var partial = config.playback().update(ms);
+				var partial = config.playback().setOffset(offsetMs);
 
 				if (partial == null && config.playback().size() >= 0) {
 					switch (config.type()) {
@@ -70,13 +70,13 @@ public final class Animator implements Component, Iterable<Map.Entry<Choreograph
 						}
 						case RESET -> {
 							config.playback().setOffset(0);
-							partial = config.playback().update(0);
+							partial = config.playback().setOffset(0);
 
 							it.remove();
 						}
 						case LOOP -> {
 							config.playback().setOffset(0);
-							partial = config.playback().update(0);
+							partial = config.playback().setOffset(0);
 						}
 					}
 				}
@@ -84,29 +84,13 @@ public final class Animator implements Component, Iterable<Map.Entry<Choreograph
 				result = (result == null) ? partial : (partial == null) ? result : result.sum(partial);
 			}
 
-			counter %= nsMs;
+			var modulus = duration() * nsMs;
+			if (modulus > 0) offset %= modulus;
 		}
 
 		return result;
 	}
-	/**
-	 * Resets all playbacks to their respective starts, and returns the sum of each playback's frame difference.
-	 * Returns {@code null} if all playbacks return {@code null}.
-	 */
-	// TODO does this have a use-case?
-	// TODO perhaps provide a setOffset API
-	public TransformFrame reset() {
-		TransformFrame result = null;
 
-		for (var config : configs.values()) {
-			config.playback().setOffset(0);
-			var partial = config.playback().update(0);
-
-			result = (result == null) ? partial : (partial == null) ? result : result.sum(partial);
-		}
-
-		return result;
-	}
 	/**
 	 * Removes all playbacks immediately without any additional termination / cleanup.
 	 */
@@ -127,21 +111,38 @@ public final class Animator implements Component, Iterable<Map.Entry<Choreograph
 		this.active = active;
 	}
 
+	public int getOffset() {
+		return (int) (offset / 1e6);
+	}
+	public void setOffset(int offset) {
+		this.offset = (long) (offset * 1e6);
+	}
+
 	/**
 	 * Returns the number of assigned roles.
 	 */
 	public int size() {
 		return configs.size();
 	}
+	/**
+	 * Returns the duration of the longest assigned role.
+	 */
+	public int duration() {
+		var result = 0;
+		for (PlaybackConfig<TransformFrame> playbackConfig : configs.values()) {
+			result = Math.max(result, playbackConfig.playback.size());
+		}
+		return result;
+	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Animator other)) return false;
-		return active == other.active && counter == other.counter && Objects.equals(configs, other.configs);
+		return active == other.active && offset == other.offset && Objects.equals(configs, other.configs);
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(configs, active, counter);
+		return Objects.hash(configs, active, offset);
 	}
 
 	/**

@@ -1,9 +1,8 @@
 package dev.kkorolyov.pancake.editor.widget
 
-import dev.kkorolyov.pancake.editor.History
 import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.MagFormat
-import dev.kkorolyov.pancake.editor.Style
+import dev.kkorolyov.pancake.editor.RealtimePlot
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.table
@@ -21,9 +20,8 @@ private val suspendLock = object {}
  * Renders information about [engine]'s loop state.
  */
 class LoopDetails(private val engine: GameEngine) : Widget {
-	private val history = History(10, 1000)
-	private val historyWidth by lazy { -Style.spacing.x }
-	private val summary = history.summary("##main")
+	private val perfGraph = RealtimePlot(10, 1000)
+	private val summary = perfGraph.summary("##main")
 
 	override fun invoke() {
 		graphs()
@@ -39,7 +37,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 		val minY = Layout.lineHeight(4)
 		val yFree = Layout.free.y
 
-		history("TPS", historyWidth, max(minY, yFree / 5)) {
+		perfGraph("TPS", Layout.stretchWidth, max(minY, yFree / 5)) {
 			line("##main", 1e9 / engine.sampler.value)
 
 			dummy("*stats")
@@ -50,7 +48,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 
 		var slowestPipeline = "none"
 		var slowestPipelineTime = 0L
-		history("Pipelines", historyWidth, max(minY, yFree / 2)) {
+		perfGraph("Pipelines", Layout.stretchWidth, max(minY, yFree / 2)) {
 			engine.forEachIndexed { i, pipeline ->
 				val id = "Pipeline $i"
 				val tickTime = pipeline.sampler.value
@@ -65,7 +63,7 @@ class LoopDetails(private val engine: GameEngine) : Widget {
 
 			dummy("*slowest")
 			legendTooltip("*slowest") {
-				text("%s (%s)".format(slowestPipeline, MagFormat.seconds(slowestPipelineTime)))
+				text("%s (%s)".format(slowestPipeline, MagFormat.nanos(slowestPipelineTime)))
 			}
 		}
 	}

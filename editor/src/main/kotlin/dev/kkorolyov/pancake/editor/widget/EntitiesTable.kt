@@ -21,9 +21,9 @@ import dev.kkorolyov.pancake.platform.io.Resources
 import dev.kkorolyov.pancake.platform.io.Resources.read
 import dev.kkorolyov.pancake.platform.io.WriteContext
 import imgui.ImGui
+import imgui.flag.ImGuiKey
 import imgui.flag.ImGuiSelectableFlags
 import imgui.flag.ImGuiTableFlags
-import org.lwjgl.glfw.GLFW
 import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
 
@@ -51,7 +51,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 	override fun invoke() {
 		// leave room for controls below
-		table("entities", 3, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY) {
+		table("entities", 3, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY or ImGuiTableFlags.SizingStretchProp or ImGuiTableFlags.Resizable) {
 			configColumn("ID")
 			configColumn("Name")
 			configColumn("Components")
@@ -62,12 +62,14 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 			if (!::rowRenderer.isInitialized) {
 				rowRenderer = Clipper {
 					column {
-						selectable(it.id, it in selected) {
-							if ((Key.onDown(GLFW.GLFW_KEY_LEFT_CONTROL) || Key.onDown(GLFW.GLFW_KEY_RIGHT_CONTROL))) {
-								selected.add(it)
-							} else {
-								selected.clear()
-								inlineDetails.open(current.set(it))
+						Layout.width(Layout.stretchWidth) {
+							selectable(it.id, it in selected) {
+								if ((Key.onDown(ImGuiKey.ModCtrl))) {
+									if (it !in selected) selected += it else selected -= it
+								} else {
+									selected.clear()
+									inlineDetails.open(current.set(it))
+								}
 							}
 						}
 						contextMenu {
@@ -95,8 +97,10 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 					}
 
 					column {
-						input("##debugName${it.id}", it.debugName) { value ->
-							it.debugNameOverride = if (value.isEmpty()) null else value
+						Layout.width(Layout.stretchWidth) {
+							input("##debugName${it.id}", it.debugName) { value ->
+								it.debugNameOverride = if (value.isEmpty()) null else value
+							}
 						}
 					}
 
