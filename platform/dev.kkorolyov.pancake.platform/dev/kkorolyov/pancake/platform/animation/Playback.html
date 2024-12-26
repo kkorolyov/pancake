@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">Playback&lt;T extends <a href="Frame.html" title="interface in dev.kkorolyov.pancake.platform.animation">Frame</a>&lt;T&gt;&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Scrolls through a timeline using an incrementing cursor, each time returning the difference between the current timeline value and the last-accessed value.</div>
+<div class="block">Seeks through a timeline, returning the difference between the current timeline value and the last-accessed value.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -139,20 +139,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Playback.html" title="type parameter in Playback">T</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOffset(int)" class="member-name-link">setOffset</a><wbr>(int&nbsp;offset)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the offset to use on the next call to <a href="#update(int)"><code>update(int)</code></a>.</div>
+<div class="block">Sets the <code>offset</code>, clamped to <code>[0, max(0, this.size())]</code>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the maximum supported offset of this playback.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Playback.html" title="type parameter in Playback">T</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update(int)" class="member-name-link">update</a><wbr>(int&nbsp;amount)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Increments the current timeline cursor by <code>amount</code> and returns the difference between the last-accessed timeline value and the current value.</div>
 </div>
 </div>
 </div>
@@ -187,14 +182,6 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="update(int)">
-<h3>update</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Playback.html" title="type parameter in Playback">T</a></span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(int&nbsp;amount)</span></div>
-<div class="block">Increments the current timeline cursor by <code>amount</code> and returns the difference between the last-accessed timeline value and the current value.
- If done iterating through the timeline, returns <code>null</code>.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="getTimeline()">
 <h3>getTimeline</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Timeline.html" title="class in dev.kkorolyov.pancake.platform.animation">Timeline</a>&lt;<a href="Playback.html" title="type parameter in Playback">T</a>&gt;</span>&nbsp;<span class="element-name">getTimeline</span>()</div>
@@ -211,8 +198,10 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setOffset(int)">
 <h3>setOffset</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOffset</span><wbr><span class="parameters">(int&nbsp;offset)</span></div>
-<div class="block">Sets the offset to use on the next call to <a href="#update(int)"><code>update(int)</code></a>.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Playback.html" title="type parameter in Playback">T</a></span>&nbsp;<span class="element-name">setOffset</span><wbr><span class="parameters">(int&nbsp;offset)</span></div>
+<div class="block">Sets the <code>offset</code>, clamped to <code>[0, max(0, this.size())]</code>.
+ Returns the difference between the last-accessed timeline value and the value at the clamped <code>offset</code>.
+ If the backing timeline is empty, returns <code>null</code>.</div>
 </section>
 </li>
 <li>

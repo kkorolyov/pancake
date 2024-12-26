@@ -154,8 +154,16 @@ implements dev.kkorolyov.pancake.platform.entity.Component, <a href="https://doc
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Removes all playbacks immediately without any additional termination / cleanup.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#duration()" class="member-name-link">duration</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the duration of the longest assigned role.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOffset()" class="member-name-link">getOffset</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -183,16 +191,14 @@ implements dev.kkorolyov.pancake.platform.entity.Component, <a href="https://doc
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds animation <code>role</code> to this component if it is not yet set, and preps it for <code>type</code> playback starting at <code>offset</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../animation/TransformFrame.html" title="class in dev.kkorolyov.pancake.core.animation">TransformFrame</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActive(boolean)" class="member-name-link">setActive</a><wbr>(boolean&nbsp;active)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Resets all playbacks to their respective starts, and returns the sum of each playback's frame difference.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setActive(boolean)" class="member-name-link">setActive</a><wbr>(boolean&nbsp;active)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the current `active` state.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOffset(int)" class="member-name-link">setOffset</a><wbr>(int&nbsp;offset)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#size()" class="member-name-link">size</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -262,16 +268,8 @@ implements dev.kkorolyov.pancake.platform.entity.Component, <a href="https://doc
 <h3>update</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../animation/TransformFrame.html" title="class in dev.kkorolyov.pancake.core.animation">TransformFrame</a></span>&nbsp;<span class="element-name">update</span><wbr><span class="parameters">(long&nbsp;dt)</span></div>
 <div class="block">Increments all playbacks by <code>dt</code> elapsed <code>ns</code> since the last call and returns the sum of each playback's frame delta.
- Return <code>null</code> if all playbacks return <code>null</code>.
+ Returns <code>null</code> if all playbacks return <code>null</code>.
  Does nothing and returns <code>null</code> if not <a href="#isActive()"><code>isActive()</code></a>.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="reset()">
-<h3>reset</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../animation/TransformFrame.html" title="class in dev.kkorolyov.pancake.core.animation">TransformFrame</a></span>&nbsp;<span class="element-name">reset</span>()</div>
-<div class="block">Resets all playbacks to their respective starts, and returns the sum of each playback's frame difference.
- Returns <code>null</code> if all playbacks return <code>null</code>.</div>
 </section>
 </li>
 <li>
@@ -296,10 +294,29 @@ implements dev.kkorolyov.pancake.platform.entity.Component, <a href="https://doc
 </section>
 </li>
 <li>
+<section class="detail" id="getOffset()">
+<h3>getOffset</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOffset</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setOffset(int)">
+<h3>setOffset</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOffset</span><wbr><span class="parameters">(int&nbsp;offset)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="size()">
 <h3>size</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">size</span>()</div>
 <div class="block">Returns the number of assigned roles.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="duration()">
+<h3>duration</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">duration</span>()</div>
+<div class="block">Returns the duration of the longest assigned role.</div>
 </section>
 </li>
 <li>
