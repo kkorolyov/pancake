@@ -1,8 +1,6 @@
 package dev.kkorolyov.pancake.editor
 
-import dev.kkorolyov.pancake.platform.utility.ArgVerify
 import imgui.flag.ImGuiCol
-import imgui.flag.ImGuiMouseButton
 import imgui.internal.ImGui
 import imgui.type.ImBoolean
 import imgui.type.ImInt
@@ -18,127 +16,53 @@ private const val scrubberWidth = 16.0
 
 // input params
 private const val subDivision = 2
-private const val zoomStepScale = 0.1
 private const val snapThreshold = 5.0
 
-// shared state
-private val tlSequencerState = ThreadLocal.withInitial { SequencerState() }
-
 /**
- * Opens a sequencer context for [id].
- * The sequencer region is clamped between ([min], [max]), with tick marks at [interval] offsets.
+ * Opens a sequencer context for [id], between [min] and [max], and with tick marks at [interval] offsets.
  */
-fun beginSequencer(id: String, min: Int, max: Int, interval: Int, offset: Int): Boolean {
-	val state = tlSequencerState.get()
-	if (state.active) throw IllegalStateException("started a new sequencer before closing the current one")
-	state.active = true
-
-	ArgVerify.betweenInclusive("interval", min, max, interval)
-	ArgVerify.betweenInclusive("offset", min, max, offset)
+fun beginSequencer(id: String, min: Int, max: Int, interval: Int): Boolean {
+	val state = SequencerState.open()
 
 	ImGui.pushID(id)
 
-	// persistent state per ID
-	val minKey = Storage.key("min")
-	val maxKey = Storage.key("max")
-	var currentMin: Int = Storage[minKey, min]
-	var currentMax: Int = Storage[maxKey, max]
-
-	// shared state per frame
-	var dragging: Boolean = state.dragging
-	var currentOffset = if (dragging) state.offset else offset
-
 	val width = Layout.stretchWidth
 	val height = Layout.lineHeight(1)
-	val scale = width / (currentMax - currentMin)
+	val scale = width / (max - min)
 	val subInterval = interval / subDivision
+
+	state.startX = Draw.cursor.x
+	state.startY = Draw.cursor.y
+	state.width = width
+
 	Draw.window {
 		// header area
 		addRectFilled(Draw.cursor.x, Draw.cursor.y, Draw.cursor.x + width, Draw.cursor.y + height, Style.color(ImGuiCol.TableHeaderBg))
-		addText(Draw.cursor.x + (width - Layout.textWidth(currentOffset.toString())) / 2, Draw.cursor.y, Style.color(ImGuiCol.Text), currentOffset.toString())
 
 		// ticks
-		for (tick in (ceil(currentMin.toDouble() / interval).toInt() * interval)..currentMax step interval) {
+		for (tick in (ceil(min.toDouble() / interval).toInt() * interval)..max step interval) {
 			if (tick != min && tick != max) {
-				val x0 = (tick - currentMin) * scale + Draw.cursor.x
+				val x0 = (tick - min) * scale + Draw.cursor.x
 				val y0 = Draw.cursor.y + (height / 4)
 
 				addLine(x0, y0, x0, Draw.cursor.y + height, Style.color(ImGuiCol.TextDisabled), tickWidth.toFloat())
 			}
 		}
-		for (subtick in (ceil(currentMin.toDouble() / subInterval).toInt() * subInterval)..currentMax step subInterval) {
+		for (subtick in (ceil(min.toDouble() / subInterval).toInt() * subInterval)..max step subInterval) {
 			if (subtick % interval != 0 && subtick != min && subtick != max) {
-				val x0 = (subtick - currentMin) * scale + Draw.cursor.x
+				val x0 = (subtick - min) * scale + Draw.cursor.x
 				val y0 = Draw.cursor.y + (height / 2)
 
 				addLine(x0, y0, x0, Draw.cursor.y + height, Style.color(ImGuiCol.TextDisabled), tickWidth.toFloat())
 			}
 		}
-		// anchors
-		for (anchor in min..max step (max - min)) {
-			val x0 = (anchor - currentMin) * scale + Draw.cursor.x
-			val y0 = Draw.cursor.y
-
-			addLine(x0, y0, x0, Draw.cursor.y + height, Style.color(ImGuiCol.Text), tickWidth.toFloat())
-		}
-
-		// offset is within current viewport
-		if (currentOffset in currentMin..currentMax) {
-			val x0 = (currentOffset - currentMin) * scale + Draw.cursor.x
-			val y0 = Draw.cursor.y
-			val halfWidth = (scrubberWidth / 2).toFloat()
-
-			// scrubber element
-			addTriangleFilled(x0 - halfWidth, y0, x0 + halfWidth, y0, x0, y0 + halfWidth, Style.color(ImGuiCol.Text))
-			addLine(x0, y0, x0, y0 + Layout.lineHeight(1), Style.color(ImGuiCol.Text), tickWidth.toFloat())
-		}
 	}
 	dummy(width, height, "header")
 
-	// change zoom on hover and scroll
-	onHover {
-		val zoomStep = zoomStepScale * (max - min)
-
-		if (ImGui.getIO().mouseWheel > 0) {
-			val cursorRatio = (Mouse.x - Draw.cursor.x) / width
-			val minDelta = cursorRatio * zoomStep
-			val maxDelta = (1 - cursorRatio) * zoomStep
-
-			currentMin = (currentMin + minDelta).roundToInt()
-			currentMax = (currentMax - maxDelta).roundToInt()
-		} else if (ImGui.getIO().mouseWheel < 0) {
-			val cursorRatio = (Mouse.x - Draw.cursor.x) / width
-			val minDelta = cursorRatio * zoomStep
-			val maxDelta = (1 - cursorRatio) * zoomStep
-
-			currentMin = (currentMin - minDelta).roundToInt()
-			currentMax = (currentMax + maxDelta).roundToInt()
-		}
-
-		// reset zoom on middle click
-		Mouse.onClick(ImGuiMouseButton.Middle) {
-			currentMin = min
-			currentMax = max
-		}
-	}
-
-	// change offset on hover or dragging
-	val offsetPtr = pointer(currentOffset)
-	val draggingPtr = pointer(dragging)
-	dragValue(offsetPtr, draggingPtr, width)
-	currentOffset = min(max, max(min, offsetPtr.get()))
-	dragging = draggingPtr.get()
-
-	// update persistent state
-	Storage[minKey] = currentMin
-	Storage[maxKey] = currentMax
 	// setup per frame state
-	state.offset = currentOffset
-	state.min = currentMin
-	state.max = currentMax
+	state.min = min
+	state.max = max
 	state.interval = interval
-	state.dragging = dragging
-	state.width = width
 
 	return true
 }
@@ -146,29 +70,95 @@ fun beginSequencer(id: String, min: Int, max: Int, interval: Int, offset: Int): 
  * Closes the current sequencer context.
  */
 fun endSequencer() {
-	val state = tlSequencerState.get()
-	if (!state.active) throw IllegalStateException("not in a sequencer context")
-	state.active = false
+	SequencerState.get().active = false
 
 	ImGui.popID()
 }
-/**
- * If the last sequencer's offset is modified, returns `true` and updates [offset] with the current value.
- */
-fun sequencerOffset(offset: ImInt): Boolean {
-	val state = tlSequencerState.get()
-	if (!state.active) throw IllegalStateException("not in a sequencer context")
 
-	if (state.dragging) offset.set(state.offset)
-	return state.dragging
+/**
+ * Draws a scrubber for the current open sequencer at [offset].
+ * Returns `true` if the offset was modified and sets [offset] to the new value.
+ */
+fun scrubber(offset: ImInt): Boolean {
+	val state = SequencerState.get()
+
+	val startOffset = offset.get()
+
+	var dragging = state.dragging
+	var currentOffset = startOffset
+
+	// change offset on hover or dragging
+	val offsetPtr = pointer(currentOffset)
+	val draggingPtr = pointer(dragging)
+	dragValue(offsetPtr, draggingPtr)
+	currentOffset = offsetPtr.get()
+	dragging = draggingPtr.get()
+
+	// always draw value
+	Draw.window {
+		addText(state.startX + (state.width - Layout.textWidth(currentOffset.toString())) / 2, state.startY, Style.color(ImGuiCol.Text), currentOffset.toString())
+	}
+
+	// draw scrubber element if offset is within current viewport
+	if (currentOffset in state.min..state.max) {
+		val scale = state.width / (state.max - state.min)
+		val x0 = (currentOffset - state.min) * scale + state.startX
+		val y0 = state.startY
+		val halfWidth = (scrubberWidth / 2).toFloat()
+
+		// scrubber element
+		Draw.window {
+			addTriangleFilled(x0 - halfWidth, y0, x0 + halfWidth, y0, x0, y0 + halfWidth, Style.color(ImGuiCol.Text))
+			addLine(x0, y0, x0, y0 + Layout.lineHeight(1), Style.color(ImGuiCol.Text), tickWidth.toFloat())
+		}
+	}
+
+	state.offset = currentOffset
+	state.dragging = dragging
+
+	val result = currentOffset != startOffset
+	if (result) offset.set(currentOffset)
+	return result
+}
+
+/**
+ * Draws a marker for the current open sequencer at [offset].
+ */
+fun drawMarker(offset: Int) {
+	val state = SequencerState.get()
+
+	val scale = state.width / (state.max - state.min)
+	val x0 = (offset - state.min) * scale + state.startX
+	val y0 = state.startY
+
+	Draw.window {
+		addLine(x0, y0, x0, state.startY + Layout.lineHeight(1), Style.color(ImGuiCol.Text), tickWidth.toFloat())
+	}
+}
+
+/**
+ * Returns the location of the mouse cursor's position on the current open sequencer as the nearest whole offset value.
+ */
+fun getMouseOffset(): Int {
+	val state = SequencerState.get()
+	val scale = (state.max - state.min) / state.width
+
+	return (max(0f, min(state.width, (Mouse.x - state.startX))) * scale + state.min).roundToInt()
+}
+/**
+ * Returns the location of the mouse cursor's position on the current open sequencer as a `[0, 1]` ratio.
+ */
+fun getMouseRatio(): Float {
+	val state = SequencerState.get()
+
+	return max(0f, min(1f, (Mouse.x - state.startX) / state.width))
 }
 
 /**
  * Opens a sequencer track context for [label].
  */
 fun beginTrack(label: String): Boolean {
-	val state = tlSequencerState.get()
-	if (!state.active) throw IllegalStateException("not in a sequencer context")
+	val state = SequencerState.get()
 
 	ImGui.pushID(label)
 
@@ -200,8 +190,7 @@ fun beginTrack(label: String): Boolean {
  * Closes the current track context.
  */
 fun endTrack() {
-	val state = tlSequencerState.get()
-	if (!state.active) throw IllegalStateException("not in a sequencer context")
+	val state = SequencerState.get()
 
 	Mouse.onRelease {
 		// ensure no situation where an undrawn phantom keyframe stealing focus
@@ -213,24 +202,13 @@ fun endTrack() {
 
 	ImGui.popID()
 }
-/**
- * Returns the current mouse cursor `x` coordinate as an offset into the last sequencer track.
- */
-fun trackOffset(): Int {
-	val state = tlSequencerState.get()
-	if (!state.active) throw IllegalStateException("not in a sequencer context")
-
-	val scale = state.width / (state.max - state.min)
-	return (max(0f, min(state.width, (Mouse.x - Draw.cursor.x))) / scale + state.min).roundToInt()
-}
 
 /**
  * Draws a keyframe for [id] with [offset].
- * Returns `true` if the offset was modified.
+ * Returns `true` if the offset was modified and sets [offset] to the new value.
  */
 fun keyframe(id: String, offset: ImInt): Boolean {
-	val state = tlSequencerState.get()
-	if (!state.active) throw IllegalStateException("not in a sequencer context")
+	val state = SequencerState.get()
 
 	var changed = false
 
@@ -270,7 +248,7 @@ fun keyframe(id: String, offset: ImInt): Boolean {
 		if (active || state.activeKeyframe == null) {
 			val offsetPtr = pointer(currentOffset)
 			val draggingPtr = pointer(active)
-			dragValue(offsetPtr, draggingPtr, width)
+			dragValue(offsetPtr, draggingPtr)
 			// compare against local currentOffset instead of offset, as it may be the same shared instance as offsetPtr
 			if (currentOffset != offsetPtr.get()) {
 				changed = true
@@ -282,16 +260,15 @@ fun keyframe(id: String, offset: ImInt): Boolean {
 	return changed
 }
 
-private fun dragValue(value: ImInt, dragging: ImBoolean, width: Float) {
+private fun dragValue(value: ImInt, dragging: ImBoolean) {
 	if (onHover() || dragging.get()) {
-		val state = tlSequencerState.get()
-		if (!state.active) throw IllegalStateException("not in a sequencer context")
-		val scale = width / (state.max - state.min)
-
 		Mouse.onDown() {
-			var result = (max(0f, min(width, (Mouse.x - Draw.cursor.x))) / scale + state.min).roundToInt()
-			val scaledSnapThreshold = snapThreshold / scale
+			val state = SequencerState.get()
+			val scale = (state.max - state.min) / state.width
+			val scaledSnapThreshold = snapThreshold * scale
 			val subInterval = state.interval / subDivision
+
+			var result = getMouseOffset()
 
 			if (result.mod(subInterval) <= scaledSnapThreshold || result.mod(-subInterval) >= -scaledSnapThreshold) {
 				result = (round(result.toDouble() / subInterval) * subInterval).toInt()
@@ -305,27 +282,53 @@ private fun dragValue(value: ImInt, dragging: ImBoolean, width: Float) {
 	}
 }
 
+private data class SequencerState(var offset: Int = 0, var min: Int = 0, var max: Int = 0, var interval: Int = 0, var dragging: Boolean = false, var activeKeyframe: Int? = null, var width: Float = 0f, var startX: Float = 0f, var startY: Float = 0f, var active: Boolean = false) {
+	companion object {
+		// shared state
+		private val tl = ThreadLocal.withInitial { SequencerState() }
+
+		fun open(): SequencerState {
+			val state = tl.get()
+			if (state.active) throw IllegalStateException("started a new sequencer before closing the current one")
+			state.active = true
+			return state
+		}
+
+		fun get(): SequencerState {
+			val state = tl.get()
+			if (!state.active) throw IllegalStateException("not in a sequencer context")
+			return state
+		}
+	}
+}
+
 /**
  * Runs [op] within a sequencer named [id].
  */
-inline fun sequencer(id: String, min: Int, max: Int, interval: Int, offset: Int, op: Sequencer.() -> Unit) {
-	if (beginSequencer(id, min, max, interval, offset)) {
+inline fun sequencer(id: String, min: Int, max: Int, interval: Int, op: Sequencer.() -> Unit) {
+	if (beginSequencer(id, min, max, interval)) {
 		Sequencer.op()
 		endSequencer()
 	}
 }
 
-private data class SequencerState(var offset: Int = 0, var min: Int = 0, var max: Int = 0, var interval: Int = 0, var dragging: Boolean = false, var activeKeyframe: Int? = null, var width: Float = 0f, var active: Boolean = false)
-
 object Sequencer {
 	/**
-	 * Invokes [onChange] with the changed offset of the current sequencer, if it is currently changed.
+	 * Draws a scrubber for the current open sequencer at [offset].
+	 * If offset is modified, invokes [onChange] with the new value and returns `true`.
 	 */
-	inline fun onChange(onChange: OnChange<Int>): Boolean {
-		val ptr = pointer(0)
-		val result = sequencerOffset(ptr)
+	inline fun scrubber(offset: Int, onChange: OnChange<Int>): Boolean {
+		val ptr = pointer(offset)
+		val result = scrubber(ptr)
 		if (result) onChange(ptr.get())
 		return result
+	}
+
+	/**
+	 * [drawMarker]
+	 */
+	fun marker(offset: Int) {
+		drawMarker(offset)
 	}
 
 	/**
@@ -338,10 +341,21 @@ object Sequencer {
 		}
 	}
 
+	/**
+	 * [getMouseOffset]
+	 */
+	val mouseOffset: Int
+		get() = getMouseOffset()
+	/**
+	 * [getMouseRatio]
+	 */
+	val mouseRatio: Float
+		get() = getMouseRatio()
+
 	object Track {
 		/**
-		 * Draws a keyframe for [id] with [offset] value.
-		 * If offset is modified, invokes [onChange] with the modified value and returns `true`.
+		 * Draws a keyframe for [id] at [offset].
+		 * If offset is modified, invokes [onChange] with the new value and returns `true`.
 		 */
 		fun keyframe(id: String, offset: Int, onChange: OnChange<Int> = {}): Boolean {
 			val ptr = pointer(offset)

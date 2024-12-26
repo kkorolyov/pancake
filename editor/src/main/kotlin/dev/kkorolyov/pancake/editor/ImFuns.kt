@@ -764,6 +764,16 @@ object Mouse {
 		if (result) op()
 		return result
 	}
+
+	/**
+	 * Invokes [onChange] with the number of scrolled units when mouse wheel is scrolled vertically.
+	 */
+	inline fun onScroll(onChange: OnChange<Float> = { _ -> }): Boolean {
+		val value = ImGui.getIO().mouseWheel
+		val result = value != 0f
+		if (result) onChange(value)
+		return result
+	}
 }
 /**
  * Key(board)-specific configuration and actions.
