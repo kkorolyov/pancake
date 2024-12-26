@@ -40,10 +40,14 @@ public final class Playback<T extends Frame<T>> {
 			this.offset = 0;
 			last = null;
 			return last;
+		} else if (last == null) {
+			this.offset = Math.max(0, Math.min(timeline.size(), offset));
+
+			last = timeline.get(this.offset);
+			return last;
 		} else {
 			this.offset = Math.max(0, Math.min(timeline.size(), offset));
 
-			if (last == null) last = timeline.get(0);
 			T current = timeline.get(this.offset);
 			T difference = current.diff(last);
 
