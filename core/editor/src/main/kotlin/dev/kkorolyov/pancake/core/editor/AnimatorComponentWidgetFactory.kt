@@ -2,6 +2,7 @@ package dev.kkorolyov.pancake.core.editor
 
 import dev.kkorolyov.pancake.core.animation.TransformFrame
 import dev.kkorolyov.pancake.core.component.Animator
+import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
@@ -10,12 +11,15 @@ import dev.kkorolyov.pancake.editor.disabledIf
 import dev.kkorolyov.pancake.editor.dragInput3
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
 import dev.kkorolyov.pancake.editor.input
+import dev.kkorolyov.pancake.editor.onClick
 import dev.kkorolyov.pancake.editor.plot
 import dev.kkorolyov.pancake.editor.separator
 import dev.kkorolyov.pancake.editor.sequencer
 import dev.kkorolyov.pancake.editor.sliderInput
 import dev.kkorolyov.pancake.editor.tooltip
+import dev.kkorolyov.pancake.editor.trackOffset
 import dev.kkorolyov.pancake.editor.tree
+import dev.kkorolyov.pancake.editor.widget.Popup
 import dev.kkorolyov.pancake.platform.entity.Component
 import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotCond
@@ -29,6 +33,9 @@ class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 		var newOffset = 0
 		val newKeyframe = TransformFrame()
 
+		val currentKeyframe = DebouncedValue<TransformFrame, Widget> { Widget { drawTransformFrame(it) } }
+		val inlineDetails = Popup("keyframeDetails")
+
 		Widget {
 			input("active", isActive) { isActive = it }
 
@@ -36,21 +43,45 @@ class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 				onChange { offset = it }
 
 				forEach { (role, playbackConfig) ->
+					val timeline = playbackConfig.playback.timeline
+
 					track(role.key) {
-						val timeline = playbackConfig.playback.timeline
+						var clickedOffset: Int? = null
+						onClick {
+							clickedOffset = trackOffset()
+							if (clickedOffset!! < 0) clickedOffset = null
+						}
+
 						var moveFrame: Pair<Int, Int>? = null
 
-						timeline.forEachIndexed { frameI, (frameOffset) ->
-							keyframe(frameI.toString(), frameOffset) {
+						var frameI = 0
+						val timelineIt = timeline.iterator()
+						timelineIt.forEachRemaining { (frameOffset, frame) ->
+							keyframe(frameI++.toString(), frameOffset) {
 								if (it >= 0 && it !in timeline) {
 									moveFrame = frameOffset to it
 								}
 							}
 							tooltip(frameOffset)
+							onClick {
+								inlineDetails.open(currentKeyframe.set(frame))
+								// preempt any track click
+								clickedOffset = null
+							}
+							contextMenu {
+								menuItem("remove") {
+									timelineIt.remove()
+								}
+							}
 						}
 
+						// while moving, don't draw popup
 						moveFrame?.let { (from, to) ->
 							timeline.put(to, timeline.remove(from))
+						} ?: inlineDetails()
+
+						clickedOffset?.let {
+							timeline.put(it, TransformFrame())
 						}
 					}
 				}

@@ -153,7 +153,7 @@ fun endSequencer() {
 	ImGui.popID()
 }
 /**
- * If the current sequencer offset is modified, returns `true` and updates [offset] with the current value.
+ * If the last sequencer's offset is modified, returns `true` and updates [offset] with the current value.
  */
 fun sequencerOffset(offset: ImInt): Boolean {
 	val state = tlSequencerState.get()
@@ -212,6 +212,16 @@ fun endTrack() {
 	newLine()
 
 	ImGui.popID()
+}
+/**
+ * Returns the current mouse cursor `x` coordinate as an offset into the last sequencer track.
+ */
+fun trackOffset(): Int {
+	val state = tlSequencerState.get()
+	if (!state.active) throw IllegalStateException("not in a sequencer context")
+
+	val scale = state.width / (state.max - state.min)
+	return (max(0f, min(state.width, (Mouse.x - Draw.cursor.x))) / scale + state.min).roundToInt()
 }
 
 /**

@@ -166,10 +166,12 @@ inline fun contextMenu(id: String? = null, flags: Int = ImGuiPopupFlags.MouseBut
 }
 
 /**
- * Runs [op] when the last set item is clicked.
+ * Runs [op] and returns `true` when the last set item is clicked.
  */
-inline fun onClick(op: Op) {
-	if (ImGui.isItemClicked()) op()
+inline fun onClick(button: Int = ImGuiMouseButton.Left, op: Op): Boolean {
+	val result = ImGui.isItemClicked(button)
+	if (result) op()
+	return result
 }
 /**
  * Runs [op] and returns `true` while the last set item is hovered.
