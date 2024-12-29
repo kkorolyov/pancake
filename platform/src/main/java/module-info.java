@@ -1,4 +1,5 @@
 import dev.kkorolyov.pancake.platform.io.Serializer;
+import dev.kkorolyov.pancake.platform.action.io.ActionSerializer;
 import dev.kkorolyov.pancake.platform.animation.io.ChoreographySerializer;
 import dev.kkorolyov.pancake.platform.animation.io.TimelineSerializer;
 import dev.kkorolyov.pancake.platform.io.internal.MathStructizer;
@@ -42,7 +43,8 @@ module dev.kkorolyov.pancake.platform {
 			VectorSerializer,
 			MatrixSerializer,
 			ChoreographySerializer,
-			TimelineSerializer;
+			TimelineSerializer,
+			ActionSerializer;
 	provides Structizer with
 			MathStructizer;
 	provides ResourceConverterFactory with

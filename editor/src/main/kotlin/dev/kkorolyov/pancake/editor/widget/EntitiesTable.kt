@@ -163,7 +163,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 			op()
 		} catch (e: Exception) {
 			errorMsg.open(Widget { text(e.message ?: e) })
-			log.error(logErr)
+			log.error(logErr, e)
 		}
 	}
 }
