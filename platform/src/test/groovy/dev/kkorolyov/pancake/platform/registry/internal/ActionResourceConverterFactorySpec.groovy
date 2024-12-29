@@ -4,7 +4,7 @@ import dev.kkorolyov.flub.function.convert.Converter
 import dev.kkorolyov.pancake.platform.action.Action
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.entity.EntityPool
-import dev.kkorolyov.pancake.platform.registry.Registry
+import dev.kkorolyov.pancake.platform.Registry
 import dev.kkorolyov.pancake.platform.registry.Resource
 
 import spock.lang.Specification
