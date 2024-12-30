@@ -1,20 +1,21 @@
 package dev.kkorolyov.pancake.graphics.component.io
 
 import dev.kkorolyov.pancake.graphics.component.NoopProgram
+import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.platform.io.ReadContext
 import dev.kkorolyov.pancake.platform.io.Serializer
 import dev.kkorolyov.pancake.platform.io.WriteContext
 
-class NoopProgramSerializer implements Serializer<NoopProgram> {
+class NoopProgramSerializer implements Serializer<Program> {
 	@Override
-	void write(NoopProgram value, WriteContext context) {}
+	void write(Program value, WriteContext context) {}
 	@Override
-	NoopProgram read(ReadContext context) {
+	Program read(ReadContext context) {
 		return new NoopProgram()
 	}
 
 	@Override
-	Class<NoopProgram> getType() {
-		return NoopProgram.class
+	Class<Program> getType() {
+		return Program.class
 	}
 }

@@ -11,13 +11,13 @@ import spock.lang.Specification
 
 class ActionResourceConverterFactorySpec extends Specification {
 	Action ref = Mock()
-	Registry<Action> registry = new Registry<Action>()
+	Registry<Action> registry = Registry.get(Action)
 
 	ActionResourceConverterFactory factory = new ActionResourceConverterFactory({ Converter.enforcing(factory.get()) })
 	Converter<Object, Resource<Action>> converter = Converter.enforcing(factory.get())
 
 	def setup() {
-		registry.put("ref", Resource.constant(ref))
+		registry.put("ref", ref)
 	}
 
 	def "reads reference"() {
