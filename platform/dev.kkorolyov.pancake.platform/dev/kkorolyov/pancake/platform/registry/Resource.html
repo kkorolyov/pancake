@@ -93,8 +93,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/FunctionalInterface.html" title="class or interface in java.lang" class="external-link">@FunctionalInterface</a>
+<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
 </span><span class="modifiers">public interface </span><span class="element-name type-name-label">Resource&lt;T&gt;</span></div>
-<div class="block">Returns a <code>T</code> given a <a href="Registry.html" title="class in dev.kkorolyov.pancake.platform.registry"><code>Registry</code></a>.</div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
+<div class="block">Returns a <code>T</code> given a <a href="../Registry.html" title="class in dev.kkorolyov.pancake.platform"><code>Registry</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -103,20 +105,22 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="Resource.html" title="interface in dev.kkorolyov.pancake.platform.registry">Resource</a><wbr>&lt;T&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#constant(T)" class="member-name-link">constant</a><wbr>(T&nbsp;value)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab6"><code>static &lt;T&gt;&nbsp;<a href="Resource.html" title="interface in dev.kkorolyov.pancake.platform.registry">Resource</a><wbr>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab6"><code><a href="#constant(T)" class="member-name-link">constant</a><wbr>(T&nbsp;value)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns a constant <code>value</code> irrespective of provided registry.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Resource.html" title="type parameter in Resource">T</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#get(dev.kkorolyov.pancake.platform.registry.Registry)" class="member-name-link">get</a><wbr>(<a href="Registry.html" title="class in dev.kkorolyov.pancake.platform.registry">Registry</a>&lt;<a href="Resource.html" title="type parameter in Resource">T</a>&gt;&nbsp;registry)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="Resource.html" title="type parameter in Resource">T</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6"><code><a href="#get(dev.kkorolyov.pancake.platform.Registry)" class="member-name-link">get</a><wbr>(<a href="../Registry.html" title="class in dev.kkorolyov.pancake.platform">Registry</a>&lt;<a href="Resource.html" title="type parameter in Resource">T</a>&gt;&nbsp;registry)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3 method-summary-table-tab6">
+<div class="block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns a <a href="Resource.html" title="interface in dev.kkorolyov.pancake.platform.registry"><code>Resource</code></a> bound to <code>registry</code>.</div>
 </div>
 </div>
@@ -137,13 +141,15 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="constant(T)">
 <h3 id="constant(java.lang.Object)">constant</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Resource.html" title="interface in dev.kkorolyov.pancake.platform.registry">Resource</a>&lt;T&gt;</span>&nbsp;<span class="element-name">constant</span><wbr><span class="parameters">(T&nbsp;value)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns a constant <code>value</code> irrespective of provided registry.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="get(dev.kkorolyov.pancake.platform.registry.Registry)">
+<section class="detail" id="get(dev.kkorolyov.pancake.platform.Registry)">
 <h3>get</h3>
-<div class="member-signature"><span class="return-type"><a href="Resource.html" title="type parameter in Resource">T</a></span>&nbsp;<span class="element-name">get</span><wbr><span class="parameters">(<a href="Registry.html" title="class in dev.kkorolyov.pancake.platform.registry">Registry</a>&lt;<a href="Resource.html" title="type parameter in Resource">T</a>&gt;&nbsp;registry)</span></div>
+<div class="member-signature"><span class="return-type"><a href="Resource.html" title="type parameter in Resource">T</a></span>&nbsp;<span class="element-name">get</span><wbr><span class="parameters">(<a href="../Registry.html" title="class in dev.kkorolyov.pancake.platform">Registry</a>&lt;<a href="Resource.html" title="type parameter in Resource">T</a>&gt;&nbsp;registry)</span></div>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 <div class="block">Returns a <a href="Resource.html" title="interface in dev.kkorolyov.pancake.platform.registry"><code>Resource</code></a> bound to <code>registry</code>.</div>
 </section>
 </li>

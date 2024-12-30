@@ -35,6 +35,13 @@ $dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer///Pointing
 $dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer/ComponentStructizer/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/-component-structizer/-component-structizer.html
 $dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer/fromStruct/#java.lang.Class[TypeParam(bounds=[kotlin.Any?])]#kotlin.Any/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/-component-structizer/from-struct.html
 $dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer/toStruct/#kotlin.Any/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/-component-structizer/to-struct.html
+$dokka.location:dev.kkorolyov.pancake.graphics.resource.io////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.resource.io/MeshSerializer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-mesh-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.resource.io/MeshSerializer/MeshSerializer/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-mesh-serializer/-mesh-serializer.html
+$dokka.location:dev.kkorolyov.pancake.graphics.resource.io/MeshSerializer/getType/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-mesh-serializer/get-type.html
+$dokka.location:dev.kkorolyov.pancake.graphics.resource.io/ProgramSerializer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-program-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.graphics.resource.io/ProgramSerializer/ProgramSerializer/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-program-serializer/-program-serializer.html
+$dokka.location:dev.kkorolyov.pancake.graphics.resource.io/ProgramSerializer/getType/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-program-serializer/get-type.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource/FrameBuffer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/-frame-buffer/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource/IndexBuffer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/-index-buffer/index.html
@@ -111,6 +118,7 @@ dev.kkorolyov.pancake.graphics.component
 dev.kkorolyov.pancake.graphics.component.io
 dev.kkorolyov.pancake.graphics.io
 dev.kkorolyov.pancake.graphics.resource
+dev.kkorolyov.pancake.graphics.resource.io
 dev.kkorolyov.pancake.graphics.system
 dev.kkorolyov.pancake.graphics.util
 
