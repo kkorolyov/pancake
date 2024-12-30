@@ -1,3 +1,4 @@
+import dev.kkorolyov.pancake.core.animation.io.TransformFrameSerializer;
 import dev.kkorolyov.pancake.core.component.io.AnimatorSerializer;
 import dev.kkorolyov.pancake.core.component.io.BoundsSerializer;
 import dev.kkorolyov.pancake.core.component.io.DampingSerializer;
@@ -6,6 +7,8 @@ import dev.kkorolyov.pancake.core.component.io.MassSerializer;
 import dev.kkorolyov.pancake.core.component.io.PathSerializer;
 import dev.kkorolyov.pancake.core.component.io.TransformSerializer;
 import dev.kkorolyov.pancake.core.component.io.VelocitySerializer;
+import dev.kkorolyov.pancake.core.component.limit.io.TransformLimitSerializer;
+import dev.kkorolyov.pancake.core.component.limit.io.VelocityLimitSerializer;
 import dev.kkorolyov.pancake.core.component.tag.io.CollidableSerializer;
 import dev.kkorolyov.pancake.core.component.tag.io.CorrectableSerializer;
 import dev.kkorolyov.pancake.core.io.AnimationStructizer;
@@ -38,7 +41,10 @@ module dev.kkorolyov.pancake.core {
 			TransformSerializer,
 			VelocitySerializer,
 			CollidableSerializer,
-			CorrectableSerializer;
+			CorrectableSerializer,
+			TransformLimitSerializer,
+			VelocityLimitSerializer,
+			TransformFrameSerializer;
 	provides Structizer with
 			AnimationStructizer,
 			ComponentStructizer;

@@ -13,12 +13,10 @@ import dev.kkorolyov.pancake.platform.math.Matrix4
  */
 class ModelSerializer : Serializer<Model> {
 	override fun write(value: Model, context: WriteContext) {
-		context.putString(value.program::class.qualifiedName)
 		context.putObject(value.program)
 
 		context.putInt(value.meshes.size)
 		value.meshes.forEach {
-			context.putString(it::class.qualifiedName)
 			context.putObject(it)
 		}
 
@@ -26,9 +24,9 @@ class ModelSerializer : Serializer<Model> {
 	}
 
 	override fun read(context: ReadContext): Model = Model(
-		context.getObject(Class.forName(context.string) as Class<Program>),
+		context.getObject(Program::class.java),
 		*(1..context.int).map {
-			context.getObject(Class.forName(context.string) as Class<Mesh>)
+			context.getObject(Mesh::class.java)
 		}.toTypedArray(),
 		offset = context.getObject(Matrix4::class.java)
 	)
