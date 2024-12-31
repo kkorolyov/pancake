@@ -2,44 +2,6 @@
 
 Collection of common, reusable components and systems.
 
----
-
-# Usage
-
-## Gradle
-
-### Inline
-
-`build.gradle(.kts)`
-
-```kotlin
-dependencies {
-	implementation("dev.kkorolyov.pancake:core:<pancake-version>")
-}
-```
-
-### Version catalog
-
-`gradle/libs.versions.toml`
-
-```toml
-[versions]
-pancake = "<pancake-version>"
-
-[libraries]
-pancake-core = { module = "dev.kkorolyov.pancake:core", version.ref = "pancake" }
-```
-
-`build.gradle(.kts)`
-
-```kotlin
-dependencies {
-	implementation(libs.pancake.core)
-}
-```
-
-# Components and Systems
-
 ## Movement
 
 [`AccelerationSystem`](src/main/java/dev/kkorolyov/pancake/core/system/AccelerationSystem.java) accelerates an entity's [`Velocity`](src/main/java/dev/kkorolyov/pancake/core/component/movement/Velocity.java) according to its [`Force`](src/main/java/dev/kkorolyov/pancake/core/component/movement/Force.java) and [`Mass`](src/main/java/dev/kkorolyov/pancake/core/component/movement/Mass.java).
@@ -72,3 +34,10 @@ The suggested ordering of these systems is `Intersection -> Correction -> Collis
 [`ChainSystem`](src/main/java/dev/kkorolyov/pancake/core/system/ChainSystem.java) repositions an entity's [`Position`](src/main/java/dev/kkorolyov/pancake/core/component/Position.java) in accordance to its [`Chain`](src/main/java/dev/kkorolyov/pancake/core/component/Chain.java) to another entity.
 
 [`SpawnSystem`](src/main/java/dev/kkorolyov/pancake/core/system/SpawnSystem.java) creates new entities originating at a given entity's [`Position`](src/main/java/dev/kkorolyov/pancake/core/component/Position.java) and according to its [`Spawner`](src/main/java/dev/kkorolyov/pancake/core/component/Spawner.java).
+
+---
+
+# See also
+
+- How to
+	- [Use with Gradle](howto-gradle.md)

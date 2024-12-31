@@ -2,7 +2,7 @@
 
 # ![Pancake](docs/pancake.png)
 
-A modular, lightweight, and extensible entity-component system (ECS)-driven game engine for the JVM.
+A modular, lightweight, and extensible entity-component system (ECS) game engine for the JVM.
 
 ## Modules
 

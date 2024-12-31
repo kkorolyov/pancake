@@ -4,38 +4,7 @@ Adds [editor](../../editor/README.md) widgets for components provided by [graphi
 
 ---
 
-# Usage
+# See also
 
-This module depends on [editor](../../editor/README.md) and provides implementations for `Component`-type [`WidgetFactory`](../../editor/src/main/kotlin/dev/kkorolyov/pancake/editor/factory/WidgetFactory.kt) following the `ServiceLoader` pattern.
-
-## Gradle
-
-### Inline
-
-`build.gradle(.kts)`
-
-```kotlin
-dependencies {
-	implementation("dev.kkorolyov.pancake:graphics-editor:<pancake-version>")
-}
-```
-
-### Version catalog
-
-`gradle/libs.versions.toml`
-
-```toml
-[versions]
-pancake = "<pancake-version>"
-
-[libraries]
-pancake-core-editor = { module = "dev.kkorolyov.pancake:graphics-editor", version.ref = "pancake" }
-```
-
-`build.gradle(.kts)`
-
-```kotlin
-dependencies {
-	implementation(libs.pancake.graphics.editor)
-}
-```
+- How to
+	- [Use with Gradle](howto-gradle.md)
