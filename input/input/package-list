@@ -1,20 +1,76 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.input.component.io////PointingToDeclaration/input/dev.kkorolyov.pancake.input.component.io/index.html
+$dokka.location:dev.kkorolyov.pancake.input.component.io/InputMapperSerializer///PointingToDeclaration/input/dev.kkorolyov.pancake.input.component.io/-input-mapper-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.input.component.io/InputMapperSerializer/InputMapperSerializer/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component.io/-input-mapper-serializer/-input-mapper-serializer.html
+$dokka.location:dev.kkorolyov.pancake.input.component.io/InputMapperSerializer/getType/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component.io/-input-mapper-serializer/get-type.html
+$dokka.location:dev.kkorolyov.pancake.input.component.io/InputMapperSerializer/read/#dev.kkorolyov.pancake.platform.io.ReadContext/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component.io/-input-mapper-serializer/read.html
+$dokka.location:dev.kkorolyov.pancake.input.component.io/InputMapperSerializer/write/#dev.kkorolyov.pancake.input.component.InputMapper#dev.kkorolyov.pancake.platform.io.WriteContext/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component.io/-input-mapper-serializer/write.html
 $dokka.location:dev.kkorolyov.pancake.input.component////PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/index.html
-$dokka.location:dev.kkorolyov.pancake.input.component/Input///PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input/index.html
-$dokka.location:dev.kkorolyov.pancake.input.component/Input/Input/#dev.kkorolyov.pancake.input.Reaction[kotlin.Any]/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input/-input.html
-$dokka.location:dev.kkorolyov.pancake.input////PointingToDeclaration/input/dev.kkorolyov.pancake.input/index.html
-$dokka.location:dev.kkorolyov.pancake.input/Compensated///PointingToDeclaration/input/dev.kkorolyov.pancake.input/-compensated/index.html
-$dokka.location:dev.kkorolyov.pancake.input/Compensated/Compensated/#TypeParam(bounds=[kotlin.Any?])#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-compensated/-compensated.html
-$dokka.location:dev.kkorolyov.pancake.input/Compensated/compensate/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-compensated/compensate.html
-$dokka.location:dev.kkorolyov.pancake.input/Compensated/get/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-compensated/get.html
-$dokka.location:dev.kkorolyov.pancake.input/Reaction.Companion///PointingToDeclaration/input/dev.kkorolyov.pancake.input/-reaction/-companion/index.html
-$dokka.location:dev.kkorolyov.pancake.input/Reaction.Companion/filter/#kotlin.Function1[TypeParam(bounds=[kotlin.Any?]),kotlin.Boolean]#dev.kkorolyov.pancake.input.Reaction[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-reaction/-companion/filter.html
-$dokka.location:dev.kkorolyov.pancake.input/Reaction.Companion/first/#kotlin.Array[dev.kkorolyov.pancake.input.Reaction[TypeParam(bounds=[kotlin.Any?])]]/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-reaction/-companion/first.html
-$dokka.location:dev.kkorolyov.pancake.input/Reaction.Companion/invoke/#kotlin.Function1[TypeParam(bounds=[kotlin.Any?]),dev.kkorolyov.pancake.platform.action.Action?]/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-reaction/-companion/invoke.html
-$dokka.location:dev.kkorolyov.pancake.input/Reaction.Companion/matchType/#dev.kkorolyov.pancake.input.Reaction[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-reaction/-companion/match-type.html
-$dokka.location:dev.kkorolyov.pancake.input/Reaction///PointingToDeclaration/input/dev.kkorolyov.pancake.input/-reaction/index.html
-$dokka.location:dev.kkorolyov.pancake.input/Reaction/invoke/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/input/dev.kkorolyov.pancake.input/-reaction/invoke.html
-dev.kkorolyov.pancake.input
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper///PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/index.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/InputMapper/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/-input-mapper.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/equals/#kotlin.Any?/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/equals.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/hashCode/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/hash-code.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/invoke/#dev.kkorolyov.pancake.input.event.InputEvent/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/invoke.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/iterator/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/iterator.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/minusAssign/#dev.kkorolyov.pancake.input.control.Control/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/minus-assign.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/plusAssign/#dev.kkorolyov.pancake.input.control.Control/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/plus-assign.html
+$dokka.location:dev.kkorolyov.pancake.input.component/InputMapper/size/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.component/-input-mapper/size.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io////PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/index.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/KeyControlSerializer///PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-key-control-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/KeyControlSerializer/KeyControlSerializer/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-key-control-serializer/-key-control-serializer.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/KeyControlSerializer/getType/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-key-control-serializer/get-type.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/KeyControlSerializer/read/#dev.kkorolyov.pancake.platform.io.ReadContext/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-key-control-serializer/read.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/KeyControlSerializer/write/#dev.kkorolyov.pancake.input.control.KeyControl#dev.kkorolyov.pancake.platform.io.WriteContext/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-key-control-serializer/write.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/MouseButtonControlSerializer///PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-mouse-button-control-serializer/index.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/MouseButtonControlSerializer/MouseButtonControlSerializer/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-mouse-button-control-serializer/-mouse-button-control-serializer.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/MouseButtonControlSerializer/getType/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-mouse-button-control-serializer/get-type.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/MouseButtonControlSerializer/read/#dev.kkorolyov.pancake.platform.io.ReadContext/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-mouse-button-control-serializer/read.html
+$dokka.location:dev.kkorolyov.pancake.input.control.io/MouseButtonControlSerializer/write/#dev.kkorolyov.pancake.input.control.MouseButtonControl#dev.kkorolyov.pancake.platform.io.WriteContext/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control.io/-mouse-button-control-serializer/write.html
+$dokka.location:dev.kkorolyov.pancake.input.control////PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/index.html
+$dokka.location:dev.kkorolyov.pancake.input.control/Control///PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-control/index.html
+$dokka.location:dev.kkorolyov.pancake.input.control/Control/invoke/#dev.kkorolyov.pancake.input.event.InputEvent/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-control/invoke.html
+$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl///PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/index.html
+$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/KeyControl/#kotlin.Int#dev.kkorolyov.pancake.input.event.StateEvent.State#dev.kkorolyov.pancake.platform.action.Action/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/-key-control.html
+$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/action/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/action.html
+$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/invoke/#dev.kkorolyov.pancake.input.event.InputEvent/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/invoke.html
+$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/scanCode/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/scan-code.html
+$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/state/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/state.html
+$dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl///PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/index.html
+$dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl/MouseButtonControl/#kotlin.Int#dev.kkorolyov.pancake.input.event.StateEvent.State#dev.kkorolyov.pancake.platform.action.Action/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/-mouse-button-control.html
+$dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl/action/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/action.html
+$dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl/button/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/button.html
+$dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl/invoke/#dev.kkorolyov.pancake.input.event.InputEvent/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/invoke.html
+$dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl/state/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/state.html
+$dokka.location:dev.kkorolyov.pancake.input.event////PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/CursorPosEvent///PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-cursor-pos-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/CursorPosEvent/CursorPosEvent/#kotlin.Double#kotlin.Double/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-cursor-pos-event/-cursor-pos-event.html
+$dokka.location:dev.kkorolyov.pancake.input.event/CursorPosEvent/x/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-cursor-pos-event/x.html
+$dokka.location:dev.kkorolyov.pancake.input.event/CursorPosEvent/y/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-cursor-pos-event/y.html
+$dokka.location:dev.kkorolyov.pancake.input.event/InputEvent///PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-input-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/KeyEvent///PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-key-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/KeyEvent/KeyEvent/#kotlin.Int#kotlin.Int#dev.kkorolyov.pancake.input.event.StateEvent.State#kotlin.Int/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-key-event/-key-event.html
+$dokka.location:dev.kkorolyov.pancake.input.event/KeyEvent/key/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-key-event/key.html
+$dokka.location:dev.kkorolyov.pancake.input.event/KeyEvent/mods/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-key-event/mods.html
+$dokka.location:dev.kkorolyov.pancake.input.event/KeyEvent/scanCode/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-key-event/scan-code.html
+$dokka.location:dev.kkorolyov.pancake.input.event/KeyEvent/state/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-key-event/state.html
+$dokka.location:dev.kkorolyov.pancake.input.event/MouseButtonEvent///PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-mouse-button-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/MouseButtonEvent/MouseButtonEvent/#kotlin.Int#dev.kkorolyov.pancake.input.event.StateEvent.State#kotlin.Int/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-mouse-button-event/-mouse-button-event.html
+$dokka.location:dev.kkorolyov.pancake.input.event/MouseButtonEvent/button/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-mouse-button-event/button.html
+$dokka.location:dev.kkorolyov.pancake.input.event/MouseButtonEvent/mods/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-mouse-button-event/mods.html
+$dokka.location:dev.kkorolyov.pancake.input.event/MouseButtonEvent/state/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-mouse-button-event/state.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent.State.PRESS///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}input/dev.kkorolyov.pancake.input.event/-state-event/-state/-p-r-e-s-s/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent.State.RELEASE///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}input/dev.kkorolyov.pancake.input.event/-state-event/-state/-r-e-l-e-a-s-e/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent.State.REPEAT///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}input/dev.kkorolyov.pancake.input.event/-state-event/-state/-r-e-p-e-a-t/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent.State///PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-state-event/-state/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent.State/entries/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-state-event/-state/entries.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent.State/valueOf/#kotlin.String/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-state-event/-state/value-of.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent.State/values/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-state-event/-state/values.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent///PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-state-event/index.html
+$dokka.location:dev.kkorolyov.pancake.input.event/StateEvent/state/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.event/-state-event/state.html
 dev.kkorolyov.pancake.input.component
+dev.kkorolyov.pancake.input.component.io
+dev.kkorolyov.pancake.input.control
+dev.kkorolyov.pancake.input.control.io
+dev.kkorolyov.pancake.input.event
 
