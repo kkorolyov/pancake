@@ -9,7 +9,5 @@ module dev.kkorolyov.pancake.input.glfw {
 	requires transitive dev.kkorolyov.pancake.input;
 	requires dev.kkorolyov.pancake.core;
 
-	exports dev.kkorolyov.pancake.input.glfw;
-	exports dev.kkorolyov.pancake.input.glfw.input;
 	exports dev.kkorolyov.pancake.input.glfw.system;
 }

@@ -1,14 +1,11 @@
-package dev.kkorolyov.pancake.input.glfw.input
+package dev.kkorolyov.pancake.input.event
 
 /**
  * Indicates a state change in mouse buttons.
  */
 data class MouseButtonEvent(
-	override val window: Long,
-	/** `GLFW` button code. */
 	val button: Int,
-	/** Button action. */
 	override val state: StateEvent.State,
-	/** `GLFW` key modifier bits. */
+	/** Key modifiers as a bitset. */
 	val mods: Int
 ) : StateEvent
