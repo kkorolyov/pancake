@@ -15,6 +15,7 @@ includeIn("graphics-editor", "graphics/editor")
 includeIn("graphics-gl-editor", "graphics/gl/editor")
 
 include("input")
+includeIn("input-editor", "input/editor")
 includeIn("input-glfw", "input/glfw")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
