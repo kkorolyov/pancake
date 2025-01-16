@@ -37,14 +37,12 @@ public final class Collidable implements Component, Comparable<Collidable> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
-		Collidable o = (Collidable) obj;
-		return priority == o.priority;
+	public boolean equals(Object o) {
+		if (!(o instanceof Collidable other)) return false;
+		return priority == other.priority;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(priority);
+		return Objects.hashCode(priority);
 	}
 }
