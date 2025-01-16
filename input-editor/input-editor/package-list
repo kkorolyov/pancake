@@ -1,0 +1,10 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:dev.kkorolyov.pancake.input.editor////PointingToDeclaration/input-editor/dev.kkorolyov.pancake.input.editor/index.html
+$dokka.location:dev.kkorolyov.pancake.input.editor/InputMapperComponentWidgetFactory///PointingToDeclaration/input-editor/dev.kkorolyov.pancake.input.editor/-input-mapper-component-widget-factory/index.html
+$dokka.location:dev.kkorolyov.pancake.input.editor/InputMapperComponentWidgetFactory/InputMapperComponentWidgetFactory/#/PointingToDeclaration/input-editor/dev.kkorolyov.pancake.input.editor/-input-mapper-component-widget-factory/-input-mapper-component-widget-factory.html
+$dokka.location:dev.kkorolyov.pancake.input.editor/InputMapperComponentWidgetFactory/get/#dev.kkorolyov.pancake.platform.entity.Component/PointingToDeclaration/input-editor/dev.kkorolyov.pancake.input.editor/-input-mapper-component-widget-factory/get.html
+$dokka.location:dev.kkorolyov.pancake.input.editor/InputMapperComponentWidgetFactory/get/#java.lang.Class[dev.kkorolyov.pancake.platform.entity.Component]#kotlin.Function1[dev.kkorolyov.pancake.platform.entity.Component,kotlin.Unit]/PointingToDeclaration/input-editor/dev.kkorolyov.pancake.input.editor/-input-mapper-component-widget-factory/get.html
+$dokka.location:dev.kkorolyov.pancake.input.editor/InputMapperComponentWidgetFactory/type/#/PointingToDeclaration/input-editor/dev.kkorolyov.pancake.input.editor/-input-mapper-component-widget-factory/type.html
+dev.kkorolyov.pancake.input.editor
+
