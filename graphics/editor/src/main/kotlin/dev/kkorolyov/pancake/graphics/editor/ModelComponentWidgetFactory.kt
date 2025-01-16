@@ -93,7 +93,7 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 		}
 	}
 
-	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? {
-		TODO("Not yet implemented")
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Model>(c, onNew) {
+		TODO("Not implemented")
 	}
 }

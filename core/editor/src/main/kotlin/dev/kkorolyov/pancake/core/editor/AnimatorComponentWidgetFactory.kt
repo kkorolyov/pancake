@@ -120,7 +120,9 @@ class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 		tooltip("scale")
 	}
 
-	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? {
-		TODO("Not yet implemented")
+	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Animator>(c, onNew) {
+		Widget {
+			it(Animator())
+		}
 	}
 }
