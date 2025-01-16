@@ -37,14 +37,12 @@ public final class Correctable implements Component, Comparable<Correctable> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
-		Correctable o = (Correctable) obj;
-		return priority == o.priority;
+	public boolean equals(Object o) {
+		if (!(o instanceof Correctable other)) return false;
+		return priority == other.priority;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(priority);
+		return Objects.hashCode(priority);
 	}
 }

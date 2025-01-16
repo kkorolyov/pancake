@@ -111,15 +111,13 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null || getClass() != obj.getClass()) return false;
-		Entity o = (Entity) obj;
-		return id == o.id;
+	public boolean equals(Object o) {
+		if (!(o instanceof Entity other)) return false;
+		return id == other.id;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hashCode(id);
 	}
 
 	@Override

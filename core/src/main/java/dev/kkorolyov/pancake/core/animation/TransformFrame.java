@@ -85,11 +85,8 @@ public final class TransformFrame implements Frame<TransformFrame> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		TransformFrame obj = (TransformFrame) o;
-		return Objects.equals(translation, obj.translation) && Objects.equals(rotation, obj.rotation) && Objects.equals(scale, obj.scale);
+		if (!(o instanceof TransformFrame other)) return false;
+		return Objects.equals(translation, other.translation) && Objects.equals(rotation, other.rotation) && Objects.equals(scale, other.scale);
 	}
 	@Override
 	public int hashCode() {
