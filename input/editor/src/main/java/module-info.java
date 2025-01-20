@@ -5,6 +5,7 @@ module dev.kkorolyov.pancake.input.editor {
 
 	requires org.slf4j;
 
+	requires org.lwjgl.glfw;
 	requires imgui.binding;
 
 	requires dev.kkorolyov.pancake.platform;

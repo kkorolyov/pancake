@@ -50,4 +50,11 @@ public final class Registry<T> {
 		if (result == null) throw new NoSuchElementException("no such value: %s".formatted(value));
 		return result;
 	}
+
+	/**
+	 * Returns the keys set in this registry.
+	 */
+	public Iterable<String> keys() {
+		return data.keySet();
+	}
 }

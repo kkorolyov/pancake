@@ -399,6 +399,30 @@ inline fun selectable(value: Any, selected: Boolean = false, flags: Int = ImGuiS
 }
 
 /**
+ * Draws a combo box with [label], supported [options], current [value], and [flags], invoking [onChange] with the updated value if changed.
+ * Returns `true` when changed.
+ */
+inline fun <T> combo(label: String, options: Iterable<T>, value: T, flags: Int = ImGuiComboFlags.None, onChange: OnChange<T>): Boolean {
+	var result: T? = null
+
+	if (ImGui.beginCombo(label, value.toString(), flags)) {
+		options.forEach {
+			if (it == value) {
+				selectable(it.toString()) { }
+				ImGui.setItemDefaultFocus()
+			} else {
+				selectable(it.toString()) { result = it }
+			}
+		}
+
+		ImGui.endCombo()
+	}
+
+	result?.let(onChange)
+	return result != null
+}
+
+/**
  * Draws a button with [label], invoking [onClick] when the button is pressed.
  * Returns `true` when pressed.
  */
