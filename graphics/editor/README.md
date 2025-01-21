@@ -1,4 +1,4 @@
-# core-editor
+# graphics-editor
 
 Adds [editor](../../editor/README.md) widgets for components provided by [graphics](../README.md).
 

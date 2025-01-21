@@ -7,8 +7,8 @@ plugins {
 description = "GLFW input system and control implementations"
 
 dependencies {
-	api(projects.platform)
-	api(projects.input)
+	implementation(projects.platform)
+	implementation(projects.input)
 	implementation(projects.core)
 }
 

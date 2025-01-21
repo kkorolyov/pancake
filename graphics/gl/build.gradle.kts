@@ -7,8 +7,8 @@ plugins {
 description = "OpenGL rendering system and renderable implementations"
 
 dependencies {
-	api(projects.platform)
-	api(projects.graphics)
+	implementation(projects.platform)
+	implementation(projects.graphics)
 	implementation(projects.core)
 
 	testImplementation(libs.lwjgl.glfw)

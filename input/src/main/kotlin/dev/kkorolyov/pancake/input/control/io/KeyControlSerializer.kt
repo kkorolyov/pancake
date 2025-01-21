@@ -12,7 +12,7 @@ import dev.kkorolyov.pancake.platform.io.WriteContext
  */
 class KeyControlSerializer : Serializer<KeyControl> {
 	override fun write(value: KeyControl, context: WriteContext) {
-		context.putInt(value.scanCode)
+		context.putInt(value.key)
 		context.putInt(value.state.ordinal)
 		context.putString(value.action.javaClass.name)
 		context.putObject(value.action)

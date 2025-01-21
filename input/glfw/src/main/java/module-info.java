@@ -5,8 +5,8 @@ module dev.kkorolyov.pancake.input.glfw {
 	requires transitive org.lwjgl;
 	requires transitive org.lwjgl.glfw;
 
-	requires transitive dev.kkorolyov.pancake.platform;
-	requires transitive dev.kkorolyov.pancake.input;
+	requires dev.kkorolyov.pancake.platform;
+	requires dev.kkorolyov.pancake.input;
 	requires dev.kkorolyov.pancake.core;
 
 	exports dev.kkorolyov.pancake.input.glfw.system;

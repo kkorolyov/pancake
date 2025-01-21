@@ -2,16 +2,46 @@
 
 # ![Pancake](docs/pancake.png)
 
-A modular, lightweight, and extensible entity-component system (ECS) game engine for the JVM.
+An ECS game engine on the JVM.
+Designed as a lightweight platform providing core concepts, and an assortment of modules implementing services and components - or otherwise extending functionality.
 
 ## Modules
 
-* [platform](platform/README.md) - base constructs for crafting and running a Pancake application
-* [core](core/README.md) - common, reusable system + component implementations
-* [editor](editor/README.md) - realtime Pancake application editor
-* [audio](audio/README.md) - audio-oriented system + component implementations
-* [graphics](graphics/README.md) - graphics rendering system + component implementations
-* [input](input/README.md) - input and control system + component implementations
+* [platform](platform/README.md)
+* [core](core/README.md)
+* [audio](audio/README.md)
+* [audio-al](audio/al/README.md)
+* [graphics](graphics/README.md)
+* [graphics-gl](graphics/gl/README.md)
+* [input](input/README.md)
+* [input-glfw](input/glfw/README.md)
+* [editor](editor/README.md)
+* [core-editor](core/editor/README.md)
+* [graphics-editor](graphics/editor/README.md)
+* [graphics-gl-editor](graphics/gl/editor/README.md)
+* [input-editor](input/editor/README.md)
+
+```mermaid
+flowchart TB
+    platform --- core
+    platform --- audio
+    platform --- graphics
+    platform --- input
+    audio --- audio-al
+    graphics --- graphics-gl
+    input --- input-glfw
+    platform --- editor
+    editor --- core-editor
+%%    editor --- audio-al-editor
+    editor --- graphics-editor
+    editor --- input-editor
+    core ----- core-editor
+%%    audio-al ---- audio-al-editor
+    graphics --- graphics-editor
+    graphics-gl ----- graphics-gl-editor
+    input ----- input-editor
+    graphics-editor --- graphics-gl-editor
+```
 
 ## Committing and Publishing
 

@@ -1,5 +1,3 @@
-import dev.kkorolyov.pancake.editor.factory.WidgetFactory;
-
 module dev.kkorolyov.pancake.editor {
 	requires kotlin.stdlib;
 
@@ -14,8 +12,8 @@ module dev.kkorolyov.pancake.editor {
 	requires imgui.binding;
 	requires imgui.lwjgl3;
 
-	requires transitive dev.kkorolyov.pancake.platform;
-	requires transitive dev.kkorolyov.pancake.graphics;
+	requires dev.kkorolyov.pancake.platform;
+	requires dev.kkorolyov.pancake.graphics;
 
 	requires io.github.classgraph;
 	requires org.yaml.snakeyaml;
@@ -27,5 +25,5 @@ module dev.kkorolyov.pancake.editor {
 
 	opens icons;
 
-	uses WidgetFactory;
+	uses dev.kkorolyov.pancake.editor.factory.WidgetFactory;
 }

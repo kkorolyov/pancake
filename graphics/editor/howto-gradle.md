@@ -9,7 +9,7 @@ This module depends on [editor](../../editor/howto-gradle.md) and provides imple
 pancake = "<pancake-version>"
 
 [libraries]
-pancake-core-editor = { module = "dev.kkorolyov.pancake:graphics-editor", version.ref = "pancake" }
+pancake-graphics-editor = { module = "dev.kkorolyov.pancake:graphics-editor", version.ref = "pancake" }
 ```
 
 `build.gradle(.kts)`
