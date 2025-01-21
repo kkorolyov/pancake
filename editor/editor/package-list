@@ -82,6 +82,7 @@ $dokka.location:dev.kkorolyov.pancake.editor//beginSequencer/#kotlin.String#kotl
 $dokka.location:dev.kkorolyov.pancake.editor//beginTrack/#kotlin.String/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/begin-track.html
 $dokka.location:dev.kkorolyov.pancake.editor//button/#kotlin.String#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/button.html
 $dokka.location:dev.kkorolyov.pancake.editor//child/#kotlin.String#kotlin.Float#kotlin.Float#kotlin.Boolean#kotlin.Int#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/child.html
+$dokka.location:dev.kkorolyov.pancake.editor//combo/#kotlin.String#kotlin.collections.Iterable[TypeParam(bounds=[kotlin.Any?])]#TypeParam(bounds=[kotlin.Any?])#kotlin.Int#kotlin.Function1[TypeParam(bounds=[kotlin.Any?]),kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/combo.html
 $dokka.location:dev.kkorolyov.pancake.editor//contextMenu/#kotlin.String?#kotlin.Int#kotlin.Function1[dev.kkorolyov.pancake.editor.Ctx.Menu,kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/context-menu.html
 $dokka.location:dev.kkorolyov.pancake.editor//disabledIf/#kotlin.Boolean#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/disabled-if.html
 $dokka.location:dev.kkorolyov.pancake.editor//dockSpace/#kotlin.String#kotlin.Function1[dev.kkorolyov.pancake.editor.Ctx.DockSpace,kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/dock-space.html

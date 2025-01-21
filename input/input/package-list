@@ -34,7 +34,7 @@ $dokka.location:dev.kkorolyov.pancake.input.control/KeyControl///PointingToDecla
 $dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/KeyControl/#kotlin.Int#dev.kkorolyov.pancake.input.event.StateEvent.State#dev.kkorolyov.pancake.platform.action.Action/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/-key-control.html
 $dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/action/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/action.html
 $dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/invoke/#dev.kkorolyov.pancake.input.event.InputEvent/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/invoke.html
-$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/scanCode/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/scan-code.html
+$dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/key/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/key.html
 $dokka.location:dev.kkorolyov.pancake.input.control/KeyControl/state/#/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-key-control/state.html
 $dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl///PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/index.html
 $dokka.location:dev.kkorolyov.pancake.input.control/MouseButtonControl/MouseButtonControl/#kotlin.Int#dev.kkorolyov.pancake.input.event.StateEvent.State#dev.kkorolyov.pancake.platform.action.Action/PointingToDeclaration/input/dev.kkorolyov.pancake.input.control/-mouse-button-control/-mouse-button-control.html

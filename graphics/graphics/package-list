@@ -63,9 +63,6 @@ $dokka.location:dev.kkorolyov.pancake.graphics.resource/VertexBuffer/set/#kotlin
 $dokka.location:dev.kkorolyov.pancake.graphics.resource/VertexBuffer/set/#kotlin.Long#kotlin.Array[kotlin.Array[dev.kkorolyov.pancake.platform.math.Vector2]]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/-vertex-buffer/set.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource/VertexBuffer/size/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/-vertex-buffer/size.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource/VertexBuffer/structure/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource/-vertex-buffer/structure.html
-$dokka.location:dev.kkorolyov.pancake.graphics.system////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.system/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.system/CameraSystem///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.system/-camera-system/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.system/CameraSystem/CameraSystem/#dev.kkorolyov.pancake.graphics.CameraQueue/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.system/-camera-system/-camera-system.html
 $dokka.location:dev.kkorolyov.pancake.graphics.util////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.util/Cache///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/-cache/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.util/Cache/Cache/#kotlin.Function0[TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.util/-cache/-cache.html
@@ -119,6 +116,5 @@ dev.kkorolyov.pancake.graphics.component.io
 dev.kkorolyov.pancake.graphics.io
 dev.kkorolyov.pancake.graphics.resource
 dev.kkorolyov.pancake.graphics.resource.io
-dev.kkorolyov.pancake.graphics.system
 dev.kkorolyov.pancake.graphics.util
 
