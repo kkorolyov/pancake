@@ -6,7 +6,7 @@ module dev.kkorolyov.pancake.audio.al {
 	requires transitive org.lwjgl;
 	requires transitive org.lwjgl.openal;
 
-	requires transitive dev.kkorolyov.pancake.platform;
+	requires dev.kkorolyov.pancake.platform;
 	requires dev.kkorolyov.pancake.core;
 
 	exports dev.kkorolyov.pancake.audio.al;

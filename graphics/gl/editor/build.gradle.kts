@@ -7,6 +7,7 @@ description = "Provides editor fragments for OpenGL graphics components"
 
 dependencies {
 	implementation(projects.platform)
+	implementation(projects.graphics)
 	implementation(projects.graphicsGl)
 	implementation(projects.editor)
 	implementation(projects.graphicsEditor)

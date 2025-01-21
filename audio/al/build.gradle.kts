@@ -7,7 +7,7 @@ plugins {
 description = "OpenAL audio system and struct implementations"
 
 dependencies {
-	api(projects.platform)
+	implementation(projects.platform)
 	implementation(projects.core)
 }
 

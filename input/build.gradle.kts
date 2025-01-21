@@ -7,7 +7,8 @@ plugins {
 description = "Common input system utilities"
 
 dependencies {
-	api(projects.platform)
+	implementation(projects.platform)
 
 	testFixturesImplementation(libs.bundles.test)
+	testFixturesImplementation(projects.platform)
 }

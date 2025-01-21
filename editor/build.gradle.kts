@@ -14,7 +14,7 @@ dependencies {
 	implementation(libs.imgui.lwjgl)
 
 	implementation(projects.platform)
-	api(projects.graphics)
+	implementation(projects.graphics)
 
 	implementation(libs.classgraph)
 	implementation(libs.snakeyaml)
