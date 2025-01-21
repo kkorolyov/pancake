@@ -4,14 +4,14 @@ The bare-bones, most basic, foundational base of the engine.
 
 Provides a few specialized, fundamental constructs:
 
-| Construct    | Function                                                                |
-|--------------|-------------------------------------------------------------------------|
-| `GameEngine` | Runs the simulation loop                                                |
-| `Pipelin`    | Groups related systems into an atomically-updated unit                  |
-| `GameSystem` | Executes specialized logic given relevant entities and their components |
-| `EntityPool` | Creates, destroys, and returns entities                                 |
-| `Entity`     | Provides a uniquely identifiable, mutable collection of components      |
-| `Component`  | Contains specialized data                                               |
+| Construct    | Function                                                          |
+|--------------|-------------------------------------------------------------------|
+| `GameEngine` | Runs the simulation loop, updating pipelines in order             |
+| `Pipeline`   | Updates a group of systems atomically                             |
+| `GameSystem` | Executes specialized logic on entities with compatible components |
+| `EntityPool` | Creates, destroys, and returns entities by component type         |
+| `Entity`     | Contains an assortment of components                              |
+| `Component`  | Contains specialized data                                         |
 
 The [reference](reference.md#architecture) provides an architecture overview.
 
