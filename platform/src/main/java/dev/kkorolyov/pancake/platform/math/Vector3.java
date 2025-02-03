@@ -290,38 +290,14 @@ public interface Vector3 extends Vector2 {
 	/**
 	 * A read-only view of a vector.
 	 */
-	final class ReadOnly implements Vector3 {
-		private final Vector3 delegate;
-
+	final class ReadOnly extends Vector2.ReadOnly implements Vector3 {
 		ReadOnly(Vector3 delegate) {
-			this.delegate = delegate;
-		}
-
-		private static void throwE() {
-			throw new UnsupportedOperationException("cannot modify this vector");
-		}
-
-		@Override
-		public double getX() {
-			return delegate.getX();
-		}
-		@Override
-		public void setX(double x) {
-			throwE();
-		}
-
-		@Override
-		public double getY() {
-			return delegate.getY();
-		}
-		@Override
-		public void setY(double y) {
-			throwE();
+			super(delegate);
 		}
 
 		@Override
 		public double getZ() {
-			return delegate.getZ();
+			return ((Vector3) delegate).getZ();
 		}
 		@Override
 		public void setZ(double z) {

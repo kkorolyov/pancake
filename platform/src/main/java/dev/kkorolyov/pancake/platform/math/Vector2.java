@@ -42,6 +42,13 @@ public interface Vector2 {
 	}
 
 	/**
+	 * Returns a read-only view of {@code delegate}.
+	 */
+	static Vector2 readOnly(Vector2 delegate) {
+		return new ReadOnly(delegate);
+	}
+
+	/**
 	 * Returns a 2-dimensional vector initialized to {@code other}.
 	 */
 	static Vector2 of(Vector2 other) {
@@ -189,6 +196,53 @@ public interface Vector2 {
 		}
 		public final void setY(double y) {
 			this.y = FloatOps.sanitize(y);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return Vector2.equals(this, obj);
+		}
+		@Override
+		public int hashCode() {
+			return Vector2.hashCode(this);
+		}
+
+		@Override
+		public String toString() {
+			return Vector2.toString(this);
+		}
+	}
+
+	/**
+	 * A read-only view of a vector.
+	 */
+	sealed class ReadOnly implements Vector2 permits Vector3.ReadOnly {
+		protected final Vector2 delegate;
+
+		ReadOnly(Vector2 delegate) {
+			this.delegate = delegate;
+		}
+
+		protected static void throwE() {
+			throw new UnsupportedOperationException("cannot modify this vector");
+		}
+
+		@Override
+		public double getX() {
+			return delegate.getX();
+		}
+		@Override
+		public void setX(double x) {
+			throwE();
+		}
+
+		@Override
+		public double getY() {
+			return delegate.getY();
+		}
+		@Override
+		public void setY(double y) {
+			throwE();
 		}
 
 		@Override

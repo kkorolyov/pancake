@@ -2,16 +2,15 @@ package dev.kkorolyov.pancake.graphics.gl.test.e2e
 
 import dev.kkorolyov.pancake.graphics.ellipse
 import dev.kkorolyov.pancake.graphics.gl.Font
+import dev.kkorolyov.pancake.graphics.gl.GLRenderBackend
 import dev.kkorolyov.pancake.graphics.gl.image
-import dev.kkorolyov.pancake.graphics.gl.resource.GLMesh
-import dev.kkorolyov.pancake.graphics.gl.resource.GLProgram
-import dev.kkorolyov.pancake.graphics.gl.resource.GLShader
-import dev.kkorolyov.pancake.graphics.gl.resource.GLTexture
-import dev.kkorolyov.pancake.graphics.gl.resource.GLVertexBuffer
 import dev.kkorolyov.pancake.graphics.rectangle
+import dev.kkorolyov.pancake.graphics.resource.Buffer
 import dev.kkorolyov.pancake.graphics.resource.Mesh
 import dev.kkorolyov.pancake.graphics.resource.Program
-import dev.kkorolyov.pancake.graphics.resource.VertexBuffer
+import dev.kkorolyov.pancake.graphics.resource.Shader
+import dev.kkorolyov.pancake.graphics.resource.Texture
+import dev.kkorolyov.pancake.graphics.resource.Vertex
 import dev.kkorolyov.pancake.platform.io.Resources
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector2
@@ -53,85 +52,82 @@ private val window by lazy {
 	window
 }
 
-private val colorProgram = GLProgram(
-	Resources.inStream("color.vert").use { GLShader(GLShader.Type.VERTEX, it) },
-	Resources.inStream("color.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
-) {
-	set(0, Matrix4.of())
+private val renderBackend = GLRenderBackend()
+
+private val colorProgram = Program(
+	Resources.inStream("color.vert").use { Shader(Shader.Type.VERTEX, it) },
+	Resources.inStream("color.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+).apply {
+	uniforms[0] = Matrix4.of()
 }
-private val textureProgram = GLProgram(
-	Resources.inStream("texture.vert").use { GLShader(GLShader.Type.VERTEX, it) },
-	Resources.inStream("texture.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
-) {
-	set(0, Matrix4.of())
+private val textureProgram = Program(
+	Resources.inStream("texture.vert").use { Shader(Shader.Type.VERTEX, it) },
+	Resources.inStream("texture.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+).apply {
+	uniforms[0] = Matrix4.of()
 }
-private val coTexProgram = GLProgram(
-	Resources.inStream("coTex.vert").use { GLShader(GLShader.Type.VERTEX, it) },
-	Resources.inStream("coTex.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
-) {
-	set(0, Matrix4.of())
+private val coTexProgram = Program(
+	Resources.inStream("coTex.vert").use { Shader(Shader.Type.VERTEX, it) },
+	Resources.inStream("coTex.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+).apply {
+	uniforms[0] = Matrix4.of()
 }
-private val fontProgram = GLProgram(
-	Resources.inStream("texture.vert").use { GLShader(GLShader.Type.VERTEX, it) },
-	Resources.inStream("font.frag").use { GLShader(GLShader.Type.FRAGMENT, it) }
-) {
-	set(0, Matrix4.of())
+private val fontProgram = Program(
+	Resources.inStream("texture.vert").use { Shader(Shader.Type.VERTEX, it) },
+	Resources.inStream("font.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+).apply {
+	uniforms[0] = Matrix4.of()
 }
 
-private val texture = GLTexture {
+private val texture = Texture {
 	Resources.inStream("wall.jpg").use(::image)
 }
 
-private val solidVertices = Vector3.of(0.0, 0.5).let { color ->
+private val solidBuffer = Buffer.vertex(*Vector3.of(0.0, 0.5).let { color ->
 	arrayOf(
-		arrayOf(Vector2.of(-0.5, -0.5), color),
-		arrayOf(Vector2.of(0.5, -0.5), color),
-		arrayOf(Vector2.of(0.0, 0.5), color)
+		Vertex(Vector2.of(-0.5, -0.5), color),
+		Vertex(Vector2.of(0.5, -0.5), color),
+		Vertex(Vector2.of(0.0, 0.5), color)
 	)
-}
-private val rainbowVertices = arrayOf(
-	arrayOf(Vector2.of(-0.5, -0.5), Vector3.of(1.0)),
-	arrayOf(Vector2.of(0.5, -0.5), Vector3.of(0.0, 1.0)),
-	arrayOf(Vector2.of(0.0, 0.5), Vector3.of(0.0, 0.0, 1.0))
+})
+private val rainbowBuffer = Buffer.vertex(
+	Vertex(Vector2.of(-0.5, -0.5), Vector3.of(1.0)),
+	Vertex(Vector2.of(0.5, -0.5), Vector3.of(0.0, 1.0)),
+	Vertex(Vector2.of(0.0, 0.5), Vector3.of(0.0, 0.0, 1.0))
 )
-private val textureVertices = arrayOf(
-	arrayOf(Vector2.of(-0.5, -0.5), Vector2.of()),
-	arrayOf(Vector2.of(0.5, -0.5), Vector2.of(1.0)),
-	arrayOf(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0))
+private val textureBuffer = Buffer.vertex(
+	Vertex(Vector2.of(-0.5, -0.5), Vector2.of()),
+	Vertex(Vector2.of(0.5, -0.5), Vector2.of(1.0)),
+	Vertex(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0))
 )
-private val coTexVertices = arrayOf(
-	arrayOf(Vector2.of(-0.5, -0.5), Vector2.of(), Vector3.of(0.0, 0.0, 1.0)),
-	arrayOf(Vector2.of(0.5, -0.5), Vector2.of(1.0), Vector3.of(0.0, 1.0)),
-	arrayOf(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0), Vector3.of(1.0))
+private val coTexBuffer = Buffer.vertex(
+	Vertex(Vector2.of(-0.5, -0.5), Vector2.of(), Vector3.of(0.0, 0.0, 1.0)),
+	Vertex(Vector2.of(0.5, -0.5), Vector2.of(1.0), Vector3.of(0.0, 1.0)),
+	Vertex(Vector2.of(0.0, 0.5), Vector2.of(0.5, 1.0), Vector3.of(1.0))
 )
 
-private val solidBuffer: VertexBuffer = GLVertexBuffer(*solidVertices)
-private val rainbowBuffer: VertexBuffer = GLVertexBuffer(*rainbowVertices)
-private val textureBuffer: VertexBuffer = GLVertexBuffer(*textureVertices)
-private val coTexBuffer = GLVertexBuffer(*coTexVertices)
+private val solidMesh = Mesh(solidBuffer, mode = Mesh.Mode.TRIANGLES)
+private val rainbowMesh = Mesh(rainbowBuffer, mode = Mesh.Mode.TRIANGLES)
+private val textureMesh = Mesh(textureBuffer, textures = listOf(texture), mode = Mesh.Mode.TRIANGLES)
+private val coTexMesh = Mesh(coTexBuffer, textures = listOf(texture), mode = Mesh.Mode.TRIANGLES)
 
-private val solidMesh = GLMesh(solidBuffer, mode = GLMesh.Mode.TRIANGLES)
-private val rainbowMesh = GLMesh(rainbowBuffer, mode = GLMesh.Mode.TRIANGLES)
-private val textureMesh = GLMesh(textureBuffer, textures = listOf(texture), mode = GLMesh.Mode.TRIANGLES)
-private val coTexMesh = GLMesh(coTexBuffer, textures = listOf(texture), mode = GLMesh.Mode.TRIANGLES)
-
-private val rectangleMesh = GLMesh(
-	GLVertexBuffer {
+private val rectangleMesh = Mesh(
+	Buffer.vertex().apply {
 		rectangle(Vector2.of(1.0, 1.0)) { position, texCoord ->
-			add(position, texCoord)
+			add(Vertex(position, texCoord))
 		}
 	},
 	textures = listOf(texture),
-	mode = GLMesh.Mode.TRIANGLE_FAN
+	mode = Mesh.Mode.TRIANGLE_FAN
 )
-private val ellipseMesh = GLMesh(
-	GLVertexBuffer {
+private val ellipseMesh = Mesh(
+	Buffer.vertex().apply {
 		ellipse(Vector2.of(1.0, 1.0)) { position, texCoord ->
-			add(position, texCoord)
+			add(Vertex(position, texCoord))
 		}
 	},
 	textures = listOf(texture),
-	mode = GLMesh.Mode.TRIANGLE_FAN
+	mode = Mesh.Mode.TRIANGLE_FAN
 )
 
 private val font = Resources.inStream("roboto-mono.ttf").use { Font(it, 14) }
@@ -148,14 +144,17 @@ private val scenes = listOf(
 	Scene(textureProgram, ellipseMesh),
 	// speshul
 	Scene(coTexProgram, coTexMesh),
-	Scene(fontProgram, font(
-		(0 until 6).joinToString("\n") { row ->
-			val columns = 16
-			val offset = row * columns + 32
+	Scene(
+		fontProgram,
+		font(
+			(0 until 6).joinToString("\n") { row ->
+				val columns = 16
+				val offset = row * columns + 32
 
-			(offset until offset + columns).map(::Char).joinToString("") { it.toString() }
-		}
-	))
+				(offset until offset + columns).map(::Char).joinToString("") { it.toString() }
+			}
+		)
+	)
 )
 
 private var wireframe = false
@@ -169,14 +168,14 @@ private var dragX = 0.0
 private var dragY = 0.0
 
 fun main() {
-	val vertBuffers = mapOf(
-		solidVertices to solidBuffer,
-		rainbowVertices to rainbowBuffer,
-		textureVertices to textureBuffer
+	val vertBuffers = listOf(
+		solidBuffer,
+		rainbowBuffer,
+		textureBuffer
 	)
 
 	glfwSetKeyCallback(window) { _, key, _, action, _ ->
-		if (action == GLFW_PRESS) {
+		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
 			// test various meshes
 			val sceneI = key - GLFW_KEY_1
 			if (sceneI >= 0 && sceneI < scenes.size) {
@@ -185,22 +184,16 @@ fun main() {
 
 			// test ad-hoc vertex buffer changes
 			if (key == GLFW_KEY_W) {
-				vertBuffers.forEach { (vertices, buffer) ->
-					vertices.forEach {
-						it.forEach {
-							it.scale(1.1)
-						}
+				vertBuffers.forEach { buffer ->
+					buffer.forEachIndexed { i, vertex ->
+						buffer[i] = vertex.augment { it.scale(1.1) }
 					}
-					buffer.set(*vertices)
 				}
 			} else if (key == GLFW_KEY_S) {
-				vertBuffers.forEach { (vertices, buffer) ->
-					vertices.forEach {
-						it.forEach {
-							it.scale(0.9)
-						}
+				vertBuffers.forEach { buffer ->
+					buffer.forEachIndexed { i, vertex ->
+						buffer[i] = vertex.augment { it.scale(0.9) }
 					}
-					buffer.set(*vertices)
 				}
 			}
 
@@ -235,8 +228,7 @@ fun main() {
 		glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
 
 		val (program, mesh) = currentScene
-		program.activate()
-		mesh.draw()
+		renderBackend.draw(program, listOf(mesh))
 
 		glfwSwapBuffers(window)
 		glfwPollEvents()
@@ -249,7 +241,7 @@ private fun transform(dScale: Double = 0.0, dX: Double = 0.0, dY: Double = 0.0) 
 	currentY += dY
 
 	scenes.forEach { (program, _) ->
-		program[0] = Matrix4.of().apply {
+		program.uniforms[0] = Matrix4.of().apply {
 			scale(currentScale)
 			ww = 1.0
 			xw = currentX * 2
@@ -259,3 +251,10 @@ private fun transform(dScale: Double = 0.0, dX: Double = 0.0, dY: Double = 0.0) 
 }
 
 private data class Scene(val program: Program, val mesh: Mesh)
+
+inline fun Vertex.augment(op: (Vector2) -> Unit): Vertex = Vertex(*this.map {
+	(when (it) {
+		is Vector3 -> Vector3.of(it)
+		else -> Vector2.of(it)
+	}).apply { op(this) }
+}.toTypedArray())

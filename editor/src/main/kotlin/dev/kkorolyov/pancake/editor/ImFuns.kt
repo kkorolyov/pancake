@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.editor
 
 import dev.kkorolyov.pancake.editor.widget.Window
-import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImColor
@@ -370,12 +369,12 @@ fun separator() {
 }
 
 /**
- * Draws [texture] with [width] and [height].
+ * Draws the texture referenced by [id] with [width] and [height].
  * Optionally [flip]s the image vertically when rendering.
  */
-fun image(texture: Texture, width: Float, height: Float, flip: Boolean = false) {
-	if (flip) ImGui.image(texture.id.toLong(), width, height, 0f, 1f, 1f, 0f)
-	else ImGui.image(texture.id.toLong(), width, height)
+fun image(id: Long, width: Float, height: Float, flip: Boolean = false) {
+	if (flip) ImGui.image(id, width, height, 0f, 1f, 1f, 0f)
+	else ImGui.image(id, width, height)
 }
 
 /**
