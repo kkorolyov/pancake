@@ -1,5 +1,6 @@
 plugins {
 	configKotlin
+	configLwjgl
 	configPublish
 	`java-test-fixtures`
 }
@@ -13,3 +14,6 @@ dependencies {
 	testFixturesImplementation(libs.bundles.test)
 	testFixturesImplementation(projects.platform)
 }
+
+val setupLwjgl: (Any) -> Unit by extra
+setupLwjgl(listOf(libs.lwjgl.stb))

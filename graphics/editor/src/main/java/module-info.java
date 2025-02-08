@@ -1,7 +1,4 @@
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory;
-import dev.kkorolyov.pancake.graphics.editor.LensComponentWidgetFactory;
-import dev.kkorolyov.pancake.graphics.editor.ModelComponentWidgetFactory;
-import dev.kkorolyov.pancake.graphics.editor.factory.SnapshotFactory;
 
 module dev.kkorolyov.pancake.graphics.editor {
 	requires kotlin.stdlib;
@@ -15,11 +12,10 @@ module dev.kkorolyov.pancake.graphics.editor {
 	requires dev.kkorolyov.pancake.editor;
 
 	exports dev.kkorolyov.pancake.graphics.editor;
-	exports dev.kkorolyov.pancake.graphics.editor.factory;
 
-	uses SnapshotFactory;
+	opens dev.kkorolyov.pancake.graphics.editor.shaders;
 
 	provides WidgetFactory with
-			LensComponentWidgetFactory,
-			ModelComponentWidgetFactory;
+			dev.kkorolyov.pancake.graphics.editor.LensComponentWidgetFactory,
+			dev.kkorolyov.pancake.graphics.editor.ModelComponentWidgetFactory;
 }
