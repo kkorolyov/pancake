@@ -178,9 +178,9 @@ fun beginTrack(label: String): Boolean {
 	}
 
 	val startY = Layout.cursor.y
-	dummy(width, Layout.lineHeight(1), "track")
 	// allow for overlapping keyframes to accept interactions
-	ImGui.setItemAllowOverlap()
+	ImGui.setNextItemAllowOverlap()
+	dummy(width, Layout.lineHeight(1), "track")
 	// put cursor back on the track for any subsequent overlapping keyframes
 	Layout.cursor.y = startY
 
