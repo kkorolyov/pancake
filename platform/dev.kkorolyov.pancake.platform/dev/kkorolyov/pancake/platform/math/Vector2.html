@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="Vector2.Value.html" title="class in dev.kkorolyov.pancake.platform.math">Vector2.Value</a></code>, <code><a href="Vector3.Observable.html" title="class in dev.kkorolyov.pancake.platform.math">Vector3.Observable</a></code>, <code><a href="Vector3.ReadOnly.html" title="class in dev.kkorolyov.pancake.platform.math">Vector3.ReadOnly</a></code>, <code><a href="Vector3.Value.html" title="class in dev.kkorolyov.pancake.platform.math">Vector3.Value</a></code></dd>
+<dd><code><a href="Vector2.ReadOnly.html" title="class in dev.kkorolyov.pancake.platform.math">Vector2.ReadOnly</a></code>, <code><a href="Vector2.Value.html" title="class in dev.kkorolyov.pancake.platform.math">Vector2.Value</a></code>, <code><a href="Vector3.Observable.html" title="class in dev.kkorolyov.pancake.platform.math">Vector3.Observable</a></code>, <code><a href="Vector3.ReadOnly.html" title="class in dev.kkorolyov.pancake.platform.math">Vector3.ReadOnly</a></code>, <code><a href="Vector3.Value.html" title="class in dev.kkorolyov.pancake.platform.math">Vector3.Value</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Vector2</span></div>
@@ -111,8 +111,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Interface</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="Vector2.Value.html" class="type-name-link" title="class in dev.kkorolyov.pancake.platform.math">Vector2.Value</a></code></div>
+<div class="col-second even-row-color"><code><a href="Vector2.ReadOnly.html" class="type-name-link" title="class in dev.kkorolyov.pancake.platform.math">Vector2.ReadOnly</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A read-only view of a vector.</div>
+</div>
+<div class="col-first odd-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="Vector2.Value.html" class="type-name-link" title="class in dev.kkorolyov.pancake.platform.math">Vector2.Value</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Basic mutable value-based <code>Vector2</code> implementation.</div>
 </div>
 </div>
@@ -216,35 +221,40 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Projects this vector along <code>other</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#reflect(dev.kkorolyov.pancake.platform.math.Vector2)" class="member-name-link">reflect</a><wbr>(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;other)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#readOnly(dev.kkorolyov.pancake.platform.math.Vector2)" class="member-name-link">readOnly</a><wbr>(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;delegate)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Returns a read-only view of <code>delegate</code>.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#reflect(dev.kkorolyov.pancake.platform.math.Vector2)" class="member-name-link">reflect</a><wbr>(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;other)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Reflects this vector along <code>other</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#reset()" class="member-name-link">reset</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Sets this vector to all <code>0</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#scale(double)" class="member-name-link">scale</a><wbr>(double&nbsp;value)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#scale(double)" class="member-name-link">scale</a><wbr>(double&nbsp;value)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Scales this vector by <code>value</code>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#set(dev.kkorolyov.pancake.platform.math.Vector2)" class="member-name-link">set</a><wbr>(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;other)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#set(dev.kkorolyov.pancake.platform.math.Vector2)" class="member-name-link">set</a><wbr>(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;other)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Sets this vector equal to <code>other</code>.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setX(double)" class="member-name-link">setX</a><wbr>(double&nbsp;x)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setY(double)" class="member-name-link">setY</a><wbr>(double&nbsp;y)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setX(double)" class="member-name-link">setX</a><wbr>(double&nbsp;x)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#toString(dev.kkorolyov.pancake.platform.math.Vector2)" class="member-name-link">toString</a><wbr>(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;vector)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setY(double)" class="member-name-link">setY</a><wbr>(double&nbsp;y)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#toString(dev.kkorolyov.pancake.platform.math.Vector2)" class="member-name-link">toString</a><wbr>(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;vector)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Generic <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link"><code>Object.toString()</code></a> implementation for <code>Vector2</code> instances.</div>
 </div>
 </div>
@@ -290,6 +300,13 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">angle</span><wbr><span class="parameters">(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;a,
  <a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;b)</span></div>
 <div class="block">Returns the angle in radians between <code>c</code> and <code>b</code>.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="readOnly(dev.kkorolyov.pancake.platform.math.Vector2)">
+<h3>readOnly</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a></span>&nbsp;<span class="element-name">readOnly</span><wbr><span class="parameters">(<a href="Vector2.html" title="interface in dev.kkorolyov.pancake.platform.math">Vector2</a>&nbsp;delegate)</span></div>
+<div class="block">Returns a read-only view of <code>delegate</code>.</div>
 </section>
 </li>
 <li>

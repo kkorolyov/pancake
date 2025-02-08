@@ -65,24 +65,152 @@
   <div class="breadcrumbs"><a href="../../../index.html">graphics</a><span class="delimiter">/</span><a href="../index.html">dev.kkorolyov.pancake.graphics.resource</a><span class="delimiter">/</span><span class="current">Texture</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Texture</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">Texture</a> : <a href="../../dev.kkorolyov.pancake.graphics/-graphics-resource/index.html">GraphicsResource</a></div><p class="paragraph">A texture map.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">Texture</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wrapS<span class="token operator">: </span><a href="-wrap/index.html">Texture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">wrapT<span class="token operator">: </span><a href="-wrap/index.html">Texture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">filterMin<span class="token operator">: </span><a href="-filter/index.html">Texture.Filter</a><span class="token operator"> = </span>Filter.LINEAR_MIPMAP_LINEAR<span class="token punctuation">, </span></span><span class="parameter ">filterMag<span class="token operator">: </span><a href="-filter/index.html">Texture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter ">pixels<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="../../dev.kkorolyov.pancake.graphics/-pixel-buffer/index.html">PixelBuffer</a><span class="token operator"> = </span>{ PixelBuffer(0, 0, 0, 0, ByteBuffer.wrap(byteArrayOf())) {} }</span></span><span class="token punctuation">)</span> : <a href="../-render-resource/index.html">RenderResource</a></div><p class="paragraph">A texture map.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
-      <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="1559304048%2FProperties%2F-1103303822" anchor-label="id" id="1559304048%2FProperties%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
-          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1601472374%2FConstructors%2F-1103303822" anchor-label="Texture" id="-1601472374%2FConstructors%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="../../dev.kkorolyov.pancake.graphics/-graphics-resource/id.html"><span><span>id</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1559304048%2FProperties%2F-1103303822"></span>
+                  <div><a href="-texture.html"><span><span>Texture</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1601472374%2FConstructors%2F-1103303822"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">val </span><a href="../../dev.kkorolyov.pancake.graphics/-graphics-resource/id.html">id</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">ID of the backing representation.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">wrapS<span class="token operator">: </span><a href="-wrap/index.html">Texture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">wrapT<span class="token operator">: </span><a href="-wrap/index.html">Texture.Wrap</a><span class="token operator"> = </span>Wrap.CLAMP_TO_EDGE<span class="token punctuation">, </span></span><span class="parameter ">filterMin<span class="token operator">: </span><a href="-filter/index.html">Texture.Filter</a><span class="token operator"> = </span>Filter.LINEAR_MIPMAP_LINEAR<span class="token punctuation">, </span></span><span class="parameter ">filterMag<span class="token operator">: </span><a href="-filter/index.html">Texture.Filter</a><span class="token operator"> = </span>Filter.LINEAR<span class="token punctuation">, </span></span><span class="parameter ">pixels<span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="../../dev.kkorolyov.pancake.graphics/-pixel-buffer/index.html">PixelBuffer</a><span class="token operator"> = </span>{ PixelBuffer(0, 0, 0, 0, ByteBuffer.wrap(byteArrayOf())) {} }</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-696871608%2FClasslikes%2F-1103303822" anchor-label="Filter" id="-696871608%2FClasslikes%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-filter/index.html"><span><span>Filter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-696871608%2FClasslikes%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-filter/index.html">Filter</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-filter/index.html">Texture.Filter</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Texture filtering mode.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1843386486%2FClasslikes%2F-1103303822" anchor-label="Wrap" id="1843386486%2FClasslikes%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-wrap/index.html"><span><span>Wrap</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1843386486%2FClasslikes%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-wrap/index.html">Wrap</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-wrap/index.html">Texture.Wrap</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Texture wrapping mode.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-296632556%2FProperties%2F-1103303822" anchor-label="filterMag" id="-296632556%2FProperties%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="filter-mag.html"><span>filter</span><wbr></wbr><span><span>Mag</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-296632556%2FProperties%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="filter-mag.html">filterMag</a><span class="token operator">: </span><a href="-filter/index.html">Texture.Filter</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-976516363%2FProperties%2F-1103303822" anchor-label="filterMin" id="-976516363%2FProperties%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="filter-min.html"><span>filter</span><wbr></wbr><span><span>Min</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-976516363%2FProperties%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="filter-min.html">filterMin</a><span class="token operator">: </span><a href="-filter/index.html">Texture.Filter</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1666518334%2FProperties%2F-1103303822" anchor-label="pixels" id="1666518334%2FProperties%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="pixels.html"><span><span>pixels</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1666518334%2FProperties%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="pixels.html">pixels</a><span class="token operator">: </span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="../../dev.kkorolyov.pancake.graphics/-pixel-buffer/index.html">PixelBuffer</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1740785326%2FProperties%2F-1103303822" anchor-label="version" id="-1740785326%2FProperties%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-render-resource/version.html"><span><span>version</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1740785326%2FProperties%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../-render-resource/version.html">version</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">An opaque int representation of the current state. Only guarantee is that when the backing state changes, this changes as well.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1753651526%2FProperties%2F-1103303822" anchor-label="wrapS" id="1753651526%2FProperties%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="wrap-s.html"><span>wrap</span><wbr></wbr><span><span>S</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1753651526%2FProperties%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="wrap-s.html">wrapS</a><span class="token operator">: </span><a href="-wrap/index.html">Texture.Wrap</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1784671333%2FProperties%2F-1103303822" anchor-label="wrapT" id="1784671333%2FProperties%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="wrap-t.html"><span>wrap</span><wbr></wbr><span><span>T</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1784671333%2FProperties%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="wrap-t.html">wrapT</a><span class="token operator">: </span><a href="-wrap/index.html">Texture.Wrap</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -91,17 +219,32 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
-        <div class="table"><a data-name="1140085143%2FFunctions%2F-1103303822" anchor-label="close" id="1140085143%2FFunctions%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+        <div class="table"><a data-name="-1613984746%2FFunctions%2F-1103303822" anchor-label="equals" id="-1613984746%2FFunctions%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
           <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="../../dev.kkorolyov.pancake.graphics/-graphics-resource/close.html"><span><span>close</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1140085143%2FFunctions%2F-1103303822"></span>
+                  <div><a href="equals.html"><span><span>equals</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1613984746%2FFunctions%2F-1103303822"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../dev.kkorolyov.pancake.graphics/-graphics-resource/close.html"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Deletes the backing graphics API representation. Subsequent interactions with this resource will initialize a new backing representation.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="540249104%2FFunctions%2F-1103303822" anchor-label="hashCode" id="540249104%2FFunctions%2F-1103303822" data-filterable-set=":graphics:dokkaHtml/main"></a>
+          <div class="table-row" data-filterable-current=":graphics:dokkaHtml/main" data-filterable-set=":graphics:dokkaHtml/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="hash-code.html"><span>hash</span><wbr></wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="540249104%2FFunctions%2F-1103303822"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":graphics:dokkaHtml/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
                 </div>
               </div>
             </div>

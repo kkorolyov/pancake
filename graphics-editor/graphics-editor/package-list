@@ -1,25 +1,15 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor.factory////PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor.factory/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor.factory//getSnapshot/#java.lang.Class[dev.kkorolyov.pancake.graphics.resource.Mesh]/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor.factory/get-snapshot.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor.factory/SnapshotFactory///PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor.factory/-snapshot-factory/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor.factory/SnapshotFactory/get/#java.lang.Class[dev.kkorolyov.pancake.graphics.resource.Mesh]/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor.factory/-snapshot-factory/get.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor////PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/LensComponentWidgetFactory///PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-lens-component-widget-factory/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/LensComponentWidgetFactory/LensComponentWidgetFactory/#/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-lens-component-widget-factory/-lens-component-widget-factory.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/LensComponentWidgetFactory/get/#dev.kkorolyov.pancake.platform.entity.Component/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-lens-component-widget-factory/get.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/LensComponentWidgetFactory/get/#java.lang.Class[dev.kkorolyov.pancake.platform.entity.Component]#kotlin.Function1[dev.kkorolyov.pancake.platform.entity.Component,kotlin.Unit]/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-lens-component-widget-factory/get.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/LensComponentWidgetFactory/type/#/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-lens-component-widget-factory/type.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor/MeshesBuilder///PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-meshes-builder/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor/MeshesBuilder/MeshesBuilder/#java.lang.Class[dev.kkorolyov.pancake.graphics.resource.Mesh]#kotlin.Function1[kotlin.collections.List[dev.kkorolyov.pancake.graphics.resource.Mesh],kotlin.Unit]/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-meshes-builder/-meshes-builder.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor/MeshesBuilder/invoke/#/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-meshes-builder/invoke.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/ModelComponentWidgetFactory///PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-model-component-widget-factory/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/ModelComponentWidgetFactory/ModelComponentWidgetFactory/#/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-model-component-widget-factory/-model-component-widget-factory.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/ModelComponentWidgetFactory/get/#dev.kkorolyov.pancake.platform.entity.Component/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-model-component-widget-factory/get.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/ModelComponentWidgetFactory/get/#java.lang.Class[dev.kkorolyov.pancake.platform.entity.Component]#kotlin.Function1[dev.kkorolyov.pancake.platform.entity.Component,kotlin.Unit]/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-model-component-widget-factory/get.html
 $dokka.location:dev.kkorolyov.pancake.graphics.editor/ModelComponentWidgetFactory/type/#/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-model-component-widget-factory/type.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor/Snapshot///PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-snapshot/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.editor/Snapshot/invoke/#kotlin.collections.List[dev.kkorolyov.pancake.graphics.resource.Mesh]/PointingToDeclaration/graphics-editor/dev.kkorolyov.pancake.graphics.editor/-snapshot/invoke.html
 dev.kkorolyov.pancake.graphics.editor
-dev.kkorolyov.pancake.graphics.editor.factory
 
