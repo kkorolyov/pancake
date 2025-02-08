@@ -12,8 +12,5 @@ module dev.kkorolyov.pancake.graphics.gl {
 	requires dev.kkorolyov.pancake.graphics;
 	requires dev.kkorolyov.pancake.core;
 
-	exports dev.kkorolyov.pancake.graphics.gl;
-	exports dev.kkorolyov.pancake.graphics.gl.system;
-
 	provides RenderBackend with dev.kkorolyov.pancake.graphics.gl.GLRenderBackend;
 }

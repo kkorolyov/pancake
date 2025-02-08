@@ -19,6 +19,7 @@ module dev.kkorolyov.pancake.graphics {
 	exports dev.kkorolyov.pancake.graphics.util;
 	exports dev.kkorolyov.pancake.graphics.resource;
 	exports dev.kkorolyov.pancake.graphics.component;
+	exports dev.kkorolyov.pancake.graphics.system;
 
 	uses dev.kkorolyov.pancake.graphics.RenderBackend;
 

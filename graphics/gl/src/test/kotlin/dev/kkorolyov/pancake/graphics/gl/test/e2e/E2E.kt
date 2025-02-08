@@ -1,9 +1,9 @@
 package dev.kkorolyov.pancake.graphics.gl.test.e2e
 
 import dev.kkorolyov.pancake.graphics.ellipse
-import dev.kkorolyov.pancake.graphics.gl.Font
+import dev.kkorolyov.pancake.graphics.Font
 import dev.kkorolyov.pancake.graphics.gl.GLRenderBackend
-import dev.kkorolyov.pancake.graphics.gl.image
+import dev.kkorolyov.pancake.graphics.image
 import dev.kkorolyov.pancake.graphics.rectangle
 import dev.kkorolyov.pancake.graphics.resource.Buffer
 import dev.kkorolyov.pancake.graphics.resource.Mesh

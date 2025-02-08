@@ -128,8 +128,8 @@ inline fun dockSpace(id: String, setup: Ctx.DockSpace.() -> Unit) {
 /**
  * Draws [value] as text.
  */
-fun text(value: Any) {
-	ImGui.text(value.toString())
+fun text(value: Any, wrap: Boolean = false) {
+	if (wrap) ImGui.textWrapped(value.toString()) else ImGui.text(value.toString())
 }
 
 /**

@@ -23,7 +23,7 @@ Once started, an engine continuously loops on the current thread and for each cy
 In each update, the pipeline is provided the number of nanoseconds elapsed (referred to as delta time, or `dt`) since the start of the previous cycle multiplied by the engine's speed factor.
 
 Engine speed defaults to `1`, where simulation time is 1:1 with real time.
-`< 1` gives a slower simulation time, whereas `> 1` gives a faster.
+Speed `< 1` results in slower simulation time, whereas `> 1`, in faster.
 Speed can also be negative, which can be used to emulate rewind behavior in applicable game systems.
 
 The [reference](reference.md#gameengine-loop) provides a timeline diagram of this.
