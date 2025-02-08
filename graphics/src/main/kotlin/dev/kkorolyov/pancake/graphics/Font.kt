@@ -1,11 +1,9 @@
-package dev.kkorolyov.pancake.graphics.gl
+package dev.kkorolyov.pancake.graphics
 
-import dev.kkorolyov.pancake.graphics.PixelBuffer
-import dev.kkorolyov.pancake.graphics.gl.resource.GLIndexBuffer
-import dev.kkorolyov.pancake.graphics.gl.resource.GLMesh
-import dev.kkorolyov.pancake.graphics.gl.resource.GLTexture
-import dev.kkorolyov.pancake.graphics.gl.resource.GLVertexBuffer
+import dev.kkorolyov.pancake.graphics.resource.Buffer
 import dev.kkorolyov.pancake.graphics.resource.Mesh
+import dev.kkorolyov.pancake.graphics.resource.Texture
+import dev.kkorolyov.pancake.graphics.resource.Vertex
 import dev.kkorolyov.pancake.platform.math.Vector2
 import org.lwjgl.stb.STBTTAlignedQuad
 import org.lwjgl.stb.STBTTFontinfo
@@ -72,7 +70,7 @@ class Font(inStream: InputStream, size: Int) : AutoCloseable {
 			}
 		}
 	}
-	private val bitmap = GLTexture {
+	private val bitmap = Texture {
 		PixelBuffer(pw, ph, 0, 1, pixels) {}
 	}
 
@@ -88,7 +86,6 @@ class Font(inStream: InputStream, size: Int) : AutoCloseable {
 				MemoryUtil.memFree(fData)
 				cdata.close()
 				MemoryUtil.memFree(pixels)
-				bitmap.close()
 				close()
 
 				throw IllegalStateException("cannot initialize font")
@@ -123,7 +120,7 @@ class Font(inStream: InputStream, size: Int) : AutoCloseable {
 		var maxX = 0.0
 		var maxY = 0.0
 
-		val vertices = mutableListOf<Array<Vector2>>().apply {
+		val vertices = mutableListOf<Vertex>().apply {
 			MemoryStack.stackPush().use { stack ->
 				val xP = stack.floats(0f)
 				val yP = stack.floats(0f)
@@ -155,10 +152,10 @@ class Font(inStream: InputStream, size: Int) : AutoCloseable {
 							val t0 = quad.t0().toDouble()
 							val t1 = quad.t1().toDouble()
 
-							add(arrayOf(Vector2.of(x0, y0), Vector2.of(s0, t0)))
-							add(arrayOf(Vector2.of(x1, y0), Vector2.of(s1, t0)))
-							add(arrayOf(Vector2.of(x1, y1), Vector2.of(s1, t1)))
-							add(arrayOf(Vector2.of(x0, y1), Vector2.of(s0, t1)))
+							add(Vertex(Vector2.of(x0, y0), Vector2.of(s0, t0)))
+							add(Vertex(Vector2.of(x1, y0), Vector2.of(s1, t0)))
+							add(Vertex(Vector2.of(x1, y1), Vector2.of(s1, t1)))
+							add(Vertex(Vector2.of(x0, y1), Vector2.of(s0, t1)))
 
 							minX = min(minX, x0)
 							minY = max(minY, y0)
@@ -172,14 +169,14 @@ class Font(inStream: InputStream, size: Int) : AutoCloseable {
 
 		// center around (0,0)
 		val translate = Vector2.of((minX - maxX) / 2, -(minY + maxY) / 2)
-		vertices.forEach { attributes ->
-			attributes[0].add(translate)
+		vertices.forEachIndexed { i, vertex ->
+			vertices[i] = Vertex(Vector2.of(vertex[0]).apply { add(translate) }, vertex[1])
 		}
 
-		return GLMesh(
-			GLVertexBuffer(*vertices),
-			GLIndexBuffer(
-				*(0 until text.length).flatMap { i ->
+		return Mesh(
+			Buffer.vertex(*vertices),
+			Buffer.int(
+				*text.indices.flatMap { i ->
 					sequenceOf(
 						i * 4,
 						i * 4 + 1,
@@ -201,6 +198,5 @@ class Font(inStream: InputStream, size: Int) : AutoCloseable {
 		MemoryUtil.memFree(fData)
 		cdata.close()
 		MemoryUtil.memFree(pixels)
-		bitmap.close()
 	}
 }

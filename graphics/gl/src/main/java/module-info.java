@@ -1,3 +1,5 @@
+import dev.kkorolyov.pancake.graphics.RenderBackend;
+
 module dev.kkorolyov.pancake.graphics.gl {
 	requires kotlin.stdlib;
 	requires org.slf4j;
@@ -10,7 +12,5 @@ module dev.kkorolyov.pancake.graphics.gl {
 	requires dev.kkorolyov.pancake.graphics;
 	requires dev.kkorolyov.pancake.core;
 
-	exports dev.kkorolyov.pancake.graphics.gl;
-	exports dev.kkorolyov.pancake.graphics.gl.resource;
-	exports dev.kkorolyov.pancake.graphics.gl.system;
+	provides RenderBackend with dev.kkorolyov.pancake.graphics.gl.GLRenderBackend;
 }

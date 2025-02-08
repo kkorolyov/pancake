@@ -1,8 +1,8 @@
 package dev.kkorolyov.pancake.graphics.component.io
 
 import dev.kkorolyov.pancake.graphics.component.Model
-import dev.kkorolyov.pancake.graphics.component.NoopMesh
-import dev.kkorolyov.pancake.graphics.component.NoopProgram
+import dev.kkorolyov.pancake.graphics.resource.Mesh
+import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.platform.io.ReadContext
 import dev.kkorolyov.pancake.platform.io.WriteContext
 import dev.kkorolyov.pancake.platform.math.Matrix4
@@ -17,7 +17,7 @@ class ModelSerializerSpec extends Specification {
 
 	def "serializes empty"() {
 		def value = new Model(
-				new NoopProgram(),
+				new Program(),
 				[],
 				null
 		)
@@ -31,8 +31,8 @@ class ModelSerializerSpec extends Specification {
 
 	def "serializes"() {
 		def value = new Model(
-				new NoopProgram(),
-				[new NoopMesh()],
+				new Program(),
+				[new Mesh()],
 				Matrix4.of()
 		)
 

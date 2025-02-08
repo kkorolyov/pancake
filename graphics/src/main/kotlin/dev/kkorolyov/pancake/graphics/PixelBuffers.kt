@@ -1,6 +1,5 @@
-package dev.kkorolyov.pancake.graphics.gl
+package dev.kkorolyov.pancake.graphics
 
-import dev.kkorolyov.pancake.graphics.PixelBuffer
 import org.lwjgl.stb.STBImage
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.system.MemoryUtil

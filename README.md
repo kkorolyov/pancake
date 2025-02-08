@@ -18,7 +18,6 @@ Designed as a lightweight platform providing core concepts, and an assortment of
 * [editor](editor/README.md)
 * [core-editor](core/editor/README.md)
 * [graphics-editor](graphics/editor/README.md)
-* [graphics-gl-editor](graphics/gl/editor/README.md)
 * [input-editor](input/editor/README.md)
 
 ```mermaid
@@ -32,15 +31,11 @@ flowchart TB
     input --- input-glfw
     platform --- editor
     editor --- core-editor
-%%    editor --- audio-al-editor
     editor --- graphics-editor
     editor --- input-editor
     core ----- core-editor
-%%    audio-al ---- audio-al-editor
-    graphics --- graphics-editor
-    graphics-gl ----- graphics-gl-editor
+    graphics ----- graphics-editor
     input ----- input-editor
-    graphics-editor --- graphics-gl-editor
 ```
 
 ## Committing and Publishing

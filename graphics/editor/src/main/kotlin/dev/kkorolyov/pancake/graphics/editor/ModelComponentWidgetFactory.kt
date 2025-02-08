@@ -1,99 +1,183 @@
 package dev.kkorolyov.pancake.graphics.editor
 
 import dev.kkorolyov.pancake.editor.DebouncedValue
+import dev.kkorolyov.pancake.editor.FileAccess
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.factory.WidgetFactory
-import dev.kkorolyov.pancake.editor.factory.getWidget
+import dev.kkorolyov.pancake.editor.header
 import dev.kkorolyov.pancake.editor.image
+import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.list
-import dev.kkorolyov.pancake.editor.sameLine
-import dev.kkorolyov.pancake.editor.separator
+import dev.kkorolyov.pancake.editor.table
 import dev.kkorolyov.pancake.editor.text
 import dev.kkorolyov.pancake.editor.tooltip
-import dev.kkorolyov.pancake.editor.widget.Modal
+import dev.kkorolyov.pancake.graphics.PixelBuffer
 import dev.kkorolyov.pancake.graphics.component.Model
-import dev.kkorolyov.pancake.graphics.editor.factory.getSnapshot
+import dev.kkorolyov.pancake.graphics.renderBackend
 import dev.kkorolyov.pancake.graphics.resource.Mesh
 import dev.kkorolyov.pancake.graphics.resource.Program
+import dev.kkorolyov.pancake.graphics.resource.Shader
+import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.entity.Component
+import dev.kkorolyov.pancake.platform.io.Resources
+import dev.kkorolyov.pancake.platform.math.Matrix4
+import dev.kkorolyov.pancake.platform.math.Vector3
+import imgui.flag.ImGuiTableFlags
+import imgui.flag.ImGuiTreeNodeFlags
+import org.lwjgl.system.MemoryUtil
+import kotlin.math.max
+
+// width and height of the snapshot viewport
+private const val RESOLUTION = 512
 
 private const val IMAGE_WIDTH = 128
 private const val IMAGE_HEIGHT = 128
 
-private val snapshots = mutableListOf<MutableMap<Class<out Mesh>, Snapshot>>()
-
-private fun getSharedSnapshot(i: Int, c: Class<out Mesh>) = snapshots.getOrElse(i) {
-	for (j in (snapshots.size..i)) {
-		snapshots.add(mutableMapOf())
+private val transform = Matrix4.of()
+private val program by lazy {
+	Program(
+		Resources.inStream("dev/kkorolyov/pancake/graphics/editor/shaders/image.vert").use { Shader(Shader.Type.VERTEX, it) },
+		Resources.inStream("dev/kkorolyov/pancake/graphics/editor/shaders/image.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+	).apply {
+		uniforms[0] = transform
 	}
-	snapshots[i]
-}.getOrPut(c) { getSnapshot(c) }
+}
+private val texture = Texture {
+	PixelBuffer(RESOLUTION, RESOLUTION, 0, 4, MemoryUtil.memCalloc(RESOLUTION * RESOLUTION * 4), MemoryUtil::memFree)
+}
+
+private val meshImage = DebouncedValue<List<Mesh>, Widget> { meshes ->
+	// like the above program, assume first attribute is position
+	val minX = meshes.minOf { mesh ->
+		mesh.vertices.minOf { vertex ->
+			vertex[0].x
+		}
+	}
+	val maxX = meshes.maxOf { mesh ->
+		mesh.vertices.maxOf { vertex ->
+			vertex[0].x
+		}
+	}
+	val minY = meshes.minOf { mesh ->
+		mesh.vertices.minOf { vertex ->
+			vertex[0].y
+		}
+	}
+	val maxY = meshes.maxOf { mesh ->
+		mesh.vertices.maxOf { vertex ->
+			vertex[0].y
+		}
+	}
+
+	// scale the minimum amount to fit all dimensions to avoid stretching
+	val scale = 2 / max(maxX - minX, maxY - minY)
+
+	// scale to fit the viewport
+	program.uniforms[0] = transform.apply {
+		reset()
+		scale(Vector3.of(scale, scale))
+	}
+
+	// draw to texture
+	renderBackend.with(texture) {
+		renderBackend.viewport(0, 0, RESOLUTION, RESOLUTION)
+		renderBackend.clear()
+
+		renderBackend.draw(program, meshes)
+	}
+
+	val textureId = renderBackend.getTexture(texture)
+
+	Widget {
+		image(textureId.toLong(), IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat())
+	}
+}
 
 class ModelComponentWidgetFactory : WidgetFactory<Component> {
-	override val type = Component::class.java
+	override val type: Class<Component> = Component::class.java
 
 	override fun get(t: Component): Widget? = WidgetFactory.get<Model>(t) {
-		val allMeshes = DebouncedValue<List<Mesh>, Widget> {
-			val texture = getSharedSnapshot(0, it.first()::class.java)(it)
-			Widget { image(texture, IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat()) }
-		}
-		val mesh = DebouncedValue<Mesh, Widget> {
-			val texture = getSharedSnapshot(1, it::class.java)(listOf(it))
-			Widget { image(texture, IMAGE_WIDTH.toFloat(), IMAGE_HEIGHT.toFloat()) }
-		}
-
-		val editProgram = Modal("Set program")
-		val editMeshes = Modal("Set meshes")
-
 		Widget {
-			text("program: ${program.id}")
-			sameLine()
-			button("edit##program") {
-				editProgram.open(getWidget(Program::class.java, program::class.java) {
-					editProgram.close()
-					program = it
-				})
-			}
-			sameLine()
-			button("free") { program.close() }
+			header("program", ImGuiTreeNodeFlags.DefaultOpen) {
+				table("##shaders", 3, flags = ImGuiTableFlags.SizingFixedFit) {
+					configColumn("Type")
+					configColumn("Source")
+					configColumn("Actions")
+					headersRow()
 
-			separator()
+					val shaders = program.shaders.toMutableList()
 
-			text("meshes (${meshes.size})")
-			if (meshes.isNotEmpty()) {
-				sameLine()
-				button("edit##meshes") {
-					editMeshes.open(MeshesBuilder(meshes.first()::class.java) {
-						editMeshes.close()
-						setMeshes(*it.toTypedArray())
-					})
-				}
-			}
-			sameLine()
-			button("free") { meshes.forEach(Mesh::close) }
+					if (shaders.isNotEmpty()) {
+						var toRemove: Int? = null
 
-			if (meshes.isNotEmpty()) {
-				allMeshes.set(meshes)()
+						shaders.forEachIndexed { i, shader ->
+							column { text(shader.type.name) }
+							column {
+								text(shader.source)
+								tooltip(shader.source)
+							}
+							column {
+								button("-##$i") { toRemove = i }
+								tooltip("remove")
+							}
+						}
 
-				sameLine()
+						// augment elements only after done iterating
+						toRemove?.let {
+							shaders.removeAt(it)
+							program.shaders = shaders
+						}
+					}
 
-				list("##meshes") {
-					meshes.forEach {
-						text(it.id)
-						tooltip {
-							mesh.set(it)()
+					// to add new values
+					var newType: Shader.Type? = null
+					var newPath: String? = null
+					column {
+						input("##type", newType) {
+							newType = it
+							FileAccess.pickFile(FileAccess.Filter("GLSL Shader", "glsl", "vert", "frag"))?.let { newPath = it }
+						}
+						tooltip("create new")
+					}
+
+					newType?.let { type ->
+						newPath?.let { path ->
+							shaders += Resources.inStream(path).use { Shader(type, it) }
+							program.shaders = shaders
 						}
 					}
 				}
 			}
 
-			editProgram?.invoke()
-			editMeshes?.invoke()
+			header("meshes (${meshes.size})", ImGuiTreeNodeFlags.DefaultOpen) {
+				if (meshes.isNotEmpty()) {
+					tooltip {
+						meshImage.set(meshes)()
+					}
+					if (meshes.size > 1) {
+						tooltip {
+
+						}
+
+						list("##meshes") {
+							meshes.forEachIndexed { i, mesh ->
+								text(i)
+								tooltip {
+									meshImage.set(listOf(mesh))()
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
 	override fun get(c: Class<out Component>, onNew: (Component) -> Unit): Widget? = WidgetFactory.get<Model>(c, onNew) {
-		TODO("Not implemented")
+		Widget {
+			it(Model(Program()))
+		}
 	}
 }
+

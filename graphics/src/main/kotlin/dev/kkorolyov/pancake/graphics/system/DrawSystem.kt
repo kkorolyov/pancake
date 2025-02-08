@@ -1,17 +1,15 @@
-package dev.kkorolyov.pancake.graphics.gl.system
+package dev.kkorolyov.pancake.graphics.system
 
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.graphics.Camera
 import dev.kkorolyov.pancake.graphics.CameraQueue
 import dev.kkorolyov.pancake.graphics.component.Model
-import dev.kkorolyov.pancake.graphics.resource.Mesh
+import dev.kkorolyov.pancake.graphics.renderBackend
 import dev.kkorolyov.pancake.graphics.resource.Program
-import dev.kkorolyov.pancake.graphics.scoped
 import dev.kkorolyov.pancake.platform.GameSystem
 import dev.kkorolyov.pancake.platform.entity.Entity
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector3
-import org.lwjgl.opengl.GL46.*
 
 /**
  * Draws entity [Model]s from the perspectives of all active [Camera]s.
@@ -37,7 +35,7 @@ class DrawSystem(
 		queue.cameras.forEach { camera ->
 			// setup viewport
 			camera.lens.let { lens ->
-				glViewport(lens.offset.x.toInt(), lens.offset.y.toInt(), lens.size.x.toInt(), lens.size.y.toInt())
+				renderBackend.viewport(lens.offset.x.toInt(), lens.offset.y.toInt(), lens.size.x.toInt(), lens.size.y.toInt())
 			}
 
 			// build the camera-specific clip <- world projection matrix
@@ -59,22 +57,20 @@ class DrawSystem(
 			})
 
 			pending.forEach { (program, entities) ->
-				program.scoped {
-					entities.forEach {
-						val transform = it[Transform::class.java]
-						val model = it[Model::class.java]
+				entities.forEach {
+					val transform = it[Transform::class.java]
+					val model = it[Model::class.java]
 
-						// build the entity-specific clip <- local projection matrix
-						program[0] = clipLocalMatrix.apply {
-							set(clipWorldMatrix)
-							// with model matrix
-							multiply(transform.matrix)
-							// with model offset - if any
-							model.offset?.let(::multiply)
-						}
-
-						model.meshes.forEach(Mesh::draw)
+					// build the entity-specific clip <- local projection matrix
+					program.uniforms[0] = clipLocalMatrix.apply {
+						set(clipWorldMatrix)
+						// with model matrix
+						multiply(transform.matrix)
+						// with model offset - if any
+						model.offset?.let(::multiply)
 					}
+
+					renderBackend.draw(program, model.meshes)
 				}
 			}
 		}

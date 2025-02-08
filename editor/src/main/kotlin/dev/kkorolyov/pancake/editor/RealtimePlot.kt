@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.editor
 import imgui.extension.implot.ImPlot
 import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotFlags
+import imgui.extension.implot.flag.ImPlotScale
 import imgui.extension.implot.flag.ImPlotStyleVar
 import imgui.flag.ImGuiCond
 import kotlin.math.max
@@ -97,7 +98,8 @@ class RealtimePlot(
 
 		plot(label, flags = ImPlotFlags.NoMenus, width = width, height = height) {
 			axisX1 {
-				setup(flags = ImPlotAxisFlags.NoDecorations or ImPlotAxisFlags.Time)
+				setup(flags = ImPlotAxisFlags.NoDecorations)
+				scale(ImPlotScale.Time)
 				limit(max(0.0, current - interval + interval / samples), max(interval.toDouble(), current), ImGuiCond.Always)
 			}
 			axisY1 {

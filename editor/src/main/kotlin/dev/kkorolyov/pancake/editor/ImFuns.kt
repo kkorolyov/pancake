@@ -1,7 +1,6 @@
 package dev.kkorolyov.pancake.editor
 
 import dev.kkorolyov.pancake.editor.widget.Window
-import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.math.Vector2
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.ImColor
@@ -17,6 +16,8 @@ import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotCond
 import imgui.extension.implot.flag.ImPlotDragToolFlags
 import imgui.extension.implot.flag.ImPlotFlags
+import imgui.extension.implot.flag.ImPlotScale
+import imgui.extension.implot.flag.ImPlotTextFlags
 import imgui.flag.ImGuiCol
 import imgui.flag.ImGuiComboFlags
 import imgui.flag.ImGuiCond
@@ -127,8 +128,8 @@ inline fun dockSpace(id: String, setup: Ctx.DockSpace.() -> Unit) {
 /**
  * Draws [value] as text.
  */
-fun text(value: Any) {
-	ImGui.text(value.toString())
+fun text(value: Any, wrap: Boolean = false) {
+	if (wrap) ImGui.textWrapped(value.toString()) else ImGui.text(value.toString())
 }
 
 /**
@@ -257,8 +258,8 @@ inline fun tree(label: String, flags: Int = ImGuiTreeNodeFlags.None, op: Op): Bo
 /**
  * Runs [op] in a header labeled [label].
  */
-inline fun header(label: String, op: Op) {
-	if (ImGui.collapsingHeader(label)) op()
+inline fun header(label: String, flags: Int = ImGuiTreeNodeFlags.None, op: Op) {
+	if (ImGui.collapsingHeader(label, flags)) op()
 }
 
 /**
@@ -370,12 +371,12 @@ fun separator() {
 }
 
 /**
- * Draws [texture] with [width] and [height].
+ * Draws the texture referenced by [id] with [width] and [height].
  * Optionally [flip]s the image vertically when rendering.
  */
-fun image(texture: Texture, width: Float, height: Float, flip: Boolean = false) {
-	if (flip) ImGui.image(texture.id.toLong(), width, height, 0f, 1f, 1f, 0f)
-	else ImGui.image(texture.id.toLong(), width, height)
+fun image(id: Long, width: Float, height: Float, flip: Boolean = false) {
+	if (flip) ImGui.image(id, width, height, 0f, 1f, 1f, 0f)
+	else ImGui.image(id, width, height)
 }
 
 /**
@@ -447,10 +448,10 @@ inline fun input(label: String, value: String, flags: Int = ImGuiInputTextFlags.
  * Draws an input field with [label], for [value] as a dropdown of all [T] values, and input [flags], invoking [onChange] with the updated value if changed.
  * Returns `true` when changed.
  */
-inline fun <reified T : Enum<T>> input(label: String, value: T, flags: Int = ImGuiComboFlags.None, onChange: OnChange<T>): Boolean {
+inline fun <reified T : Enum<T>> input(label: String, value: T?, flags: Int = ImGuiComboFlags.None, onChange: OnChange<T>): Boolean {
 	var result: T? = null
 
-	if (ImGui.beginCombo(label, value.name, flags)) {
+	if (ImGui.beginCombo(label, value?.name ?: "", flags)) {
 		for (enumValue in enumValues<T>()) {
 			if (enumValue == value) {
 				selectable(enumValue.name) { }
@@ -1088,49 +1089,12 @@ object Ctx {
 	}
 
 	open class PlotModifier {
-		val x1: Axis = Axis(ImPlotAxis.X1)
-		val x2: Axis = Axis(ImPlotAxis.X2)
-		val x3: Axis = Axis(ImPlotAxis.X3)
-		val y1: Axis = Axis(ImPlotAxis.Y1)
-		val y2: Axis = Axis(ImPlotAxis.Y2)
-		val y3: Axis = Axis(ImPlotAxis.Y3)
-
-		/**
-		 * Runs [op] against the 1st X-axis.
-		 */
-		inline fun axisX1(op: Axis.() -> Unit) {
-			x1.op()
-		}
-		/**
-		 * Runs [op] against the 2nd X-axis.
-		 */
-		inline fun axisX2(op: Axis.() -> Unit) {
-			x2.op()
-		}
-		/**
-		 * Runs [op] against the 3rd X-axis.
-		 */
-		inline fun axisX3(op: Axis.() -> Unit) {
-			x3.op()
-		}
-		/**
-		 * Runs [op] against the 1st Y-axis.
-		 */
-		inline fun axisY1(op: Axis.() -> Unit) {
-			y1.op()
-		}
-		/**
-		 * Runs [op] against the 2nd Y-axis.
-		 */
-		inline fun axisY2(op: Axis.() -> Unit) {
-			y2.op()
-		}
-		/**
-		 * Runs [op] against the 3rd Y-axis.
-		 */
-		inline fun axisY3(op: Axis.() -> Unit) {
-			y3.op()
-		}
+		val axisX1: Axis = Axis(ImPlotAxis.X1)
+		val axisX2: Axis = Axis(ImPlotAxis.X2)
+		val axisX3: Axis = Axis(ImPlotAxis.X3)
+		val axisY1: Axis = Axis(ImPlotAxis.Y1)
+		val axisY2: Axis = Axis(ImPlotAxis.Y2)
+		val axisY3: Axis = Axis(ImPlotAxis.Y3)
 
 		/**
 		 * Runs [op] in a tooltip when [label] legend entry is hovered.
@@ -1221,28 +1185,27 @@ object Ctx {
 		 * Plots line data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */
 		fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
-			ImPlot.plotLine(label, xs, ys, xs.size, offset)
+			ImPlot.plotLineV(label, xs, ys, xs.size, ImPlotFlags.None, offset)
 		}
 
 		/**
 		 * Plots scatter data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */
 		fun scatter(label: String, xs: IntArray, ys: IntArray, offset: Int = 0) {
-			ImPlot.plotScatter(label, xs, ys, xs.size, offset)
+			ImPlot.plotScatterV(label, xs, ys, xs.size, ImPlotFlags.None, offset)
 		}
 		/**
 		 * Plots scatter data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */
 		fun scatter(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
-			ImPlot.plotScatter(label, xs, ys, xs.size, offset)
+			ImPlot.plotScatterV(label, xs, ys, xs.size, ImPlotFlags.None, offset)
 		}
 
 		/**
 		 * Plots [text] at ([x], [y]) point.
-		 * Can optionally render [vertical].
 		 */
-		fun text(text: Any, x: Double, y: Double, vertical: Boolean = false) {
-			ImPlot.plotText(text.toString(), x, y, vertical)
+		fun text(text: Any, x: Double, y: Double, flags: Int = ImPlotTextFlags.None) {
+			ImPlot.plotText(text.toString(), x, y, flags)
 		}
 
 		/**
@@ -1269,6 +1232,12 @@ object Ctx {
 		 */
 		fun setup(label: String? = null, flags: Int = ImPlotAxisFlags.None) {
 			ImPlot.setupAxis(id, label, flags)
+		}
+		/**
+		 * Configures this axis with [scale].
+		 */
+		fun scale(scale: Int = ImPlotScale.Linear) {
+			ImPlot.setupAxisScale(id, scale)
 		}
 		/**
 		 * Sets [min] and [max] limits with [condition].
@@ -1300,6 +1269,13 @@ object Ctx {
 			val result = if (horizontal) ImPlot.dragLineX(id, ptr, colorPtr, size, flags) else ImPlot.dragLineY(id, ptr, colorPtr, size, flags)
 			if (result) onChange(ptr.get())
 			return result
+		}
+
+		/**
+		 * Runs [op] against this axis.
+		 */
+		operator fun invoke(op: Axis.() -> Unit) {
+			this.op()
 		}
 	}
 }

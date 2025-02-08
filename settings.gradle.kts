@@ -12,7 +12,6 @@ includeIn("audio-al", "audio/al")
 include("graphics")
 includeIn("graphics-gl", "graphics/gl")
 includeIn("graphics-editor", "graphics/editor")
-includeIn("graphics-gl-editor", "graphics/gl/editor")
 
 include("input")
 includeIn("input-editor", "input/editor")

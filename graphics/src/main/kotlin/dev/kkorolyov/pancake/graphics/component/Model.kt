@@ -35,7 +35,6 @@ class Model(var program: Program, vararg meshes: Mesh, var offset: Matrix4? = nu
 
 		if (program != other.program) return false
 		if (offset != other.offset) return false
-		if (_meshes != other._meshes) return false
 		if (meshes != other.meshes) return false
 
 		return true
@@ -44,7 +43,6 @@ class Model(var program: Program, vararg meshes: Mesh, var offset: Matrix4? = nu
 	override fun hashCode(): Int {
 		var result = program.hashCode()
 		result = 31 * result + (offset?.hashCode() ?: 0)
-		result = 31 * result + _meshes.hashCode()
 		result = 31 * result + meshes.hashCode()
 		return result
 	}

@@ -1,4 +1,6 @@
 dev.kkorolyov.pancake.platform.math.io.VectorSerializer
 dev.kkorolyov.pancake.platform.math.io.MatrixSerializer
-dev.kkorolyov.pancake.graphics.component.io.NoopMeshSerializer
-dev.kkorolyov.pancake.graphics.component.io.NoopProgramSerializer
+dev.kkorolyov.pancake.graphics.resource.io.MeshSerializer
+dev.kkorolyov.pancake.graphics.resource.io.ProgramSerializer
+dev.kkorolyov.pancake.graphics.resource.io.BufferSerializerVertex
+dev.kkorolyov.pancake.graphics.resource.io.BufferSerializerInt
