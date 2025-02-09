@@ -6,6 +6,7 @@ import dev.kkorolyov.pancake.platform.utility.ArgVerify;
 
 // TODO similar use case to an Animator - can Go be described through a Transform or Force animation?
 // doing so could also leverage the natural animation timeout to avoid the locked input issue with a Go component that can't reach its target
+
 /**
  * Ephemeral marker of where an entity wants to go and how intent it is on getting there.
  */

@@ -18,7 +18,6 @@ import dev.kkorolyov.pancake.platform.entity.EntityPool
 import dev.kkorolyov.pancake.platform.entity.io.EntityPoolSerializer
 import dev.kkorolyov.pancake.platform.io.ReadContext
 import dev.kkorolyov.pancake.platform.io.Resources
-import dev.kkorolyov.pancake.platform.io.Resources.read
 import dev.kkorolyov.pancake.platform.io.WriteContext
 import imgui.ImGui
 import imgui.flag.ImGuiKey
@@ -138,16 +137,18 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 		}
 		if (toImport) {
 			trying("import error") {
-				FileAccess.pickFile()?.let {
-					entities.create(EntityPoolSerializer().read(ReadContext(ByteBuffer.allocate(1024), read(it))))
+				FileAccess.pickFile()?.let { path ->
+					Resources.read(path).use { channel ->
+						entities.create(EntityPoolSerializer().read(ReadContext(ByteBuffer.allocate(1 shl 10), channel)))
+					}
 				}
 			}
 			toImport = false
 		}
 		if (toExport) {
 			trying("export error") {
-				FileAccess.pickSave()?.let {
-					WriteContext(ByteBuffer.allocate(1024), Resources.write(it)).use { context ->
+				FileAccess.pickSave()?.let { path ->
+					WriteContext(ByteBuffer.allocate(1024), Resources.write(path)).use { context ->
 						EntityPoolSerializer().write(EntityPool().apply { create(selected) }, context)
 					}
 				}

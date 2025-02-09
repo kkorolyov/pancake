@@ -16,9 +16,9 @@ class LensSerializer : Serializer<Lens> {
 		context.putObject(value.size)
 		context.putObject(value.offset)
 
-		val maskLongs = value.mask.toByteArray()
-		context.putInt(maskLongs.size)
-		maskLongs.forEach {
+		val maskBytes = value.mask.toByteArray()
+		context.putInt(maskBytes.size)
+		maskBytes.forEach {
 			context.putByte(it)
 		}
 

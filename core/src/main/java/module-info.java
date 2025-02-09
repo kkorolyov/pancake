@@ -11,12 +11,7 @@ import dev.kkorolyov.pancake.core.component.limit.io.TransformLimitSerializer;
 import dev.kkorolyov.pancake.core.component.limit.io.VelocityLimitSerializer;
 import dev.kkorolyov.pancake.core.component.tag.io.CollidableSerializer;
 import dev.kkorolyov.pancake.core.component.tag.io.CorrectableSerializer;
-import dev.kkorolyov.pancake.core.io.AnimationStructizer;
-import dev.kkorolyov.pancake.core.io.ComponentStructizer;
-import dev.kkorolyov.pancake.core.registry.ActionResourceConverterFactory;
 import dev.kkorolyov.pancake.platform.io.Serializer;
-import dev.kkorolyov.pancake.platform.io.Structizer;
-import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
 
 module dev.kkorolyov.pancake.core {
 	requires org.slf4j;
@@ -45,8 +40,4 @@ module dev.kkorolyov.pancake.core {
 			TransformLimitSerializer,
 			VelocityLimitSerializer,
 			TransformFrameSerializer;
-	provides Structizer with
-			AnimationStructizer,
-			ComponentStructizer;
-	provides ResourceConverterFactory with ActionResourceConverterFactory;
 }

@@ -1,15 +1,8 @@
-import dev.kkorolyov.pancake.platform.io.Serializer;
 import dev.kkorolyov.pancake.platform.action.io.ActionSerializer;
 import dev.kkorolyov.pancake.platform.animation.io.ChoreographySerializer;
 import dev.kkorolyov.pancake.platform.animation.io.TimelineSerializer;
-import dev.kkorolyov.pancake.platform.io.internal.MathStructizer;
 import dev.kkorolyov.pancake.platform.math.io.MatrixSerializer;
 import dev.kkorolyov.pancake.platform.math.io.VectorSerializer;
-import dev.kkorolyov.pancake.platform.io.Structizer;
-import dev.kkorolyov.pancake.platform.io.internal.MathStructizer;
-import dev.kkorolyov.pancake.platform.registry.ResourceConverterFactory;
-import dev.kkorolyov.pancake.platform.registry.internal.ActionResourceConverterFactory;
-import dev.kkorolyov.pancake.platform.registry.internal.EntityTemplateResourceConverterFactory;
 
 module dev.kkorolyov.pancake.platform {
 	// logging
@@ -32,22 +25,14 @@ module dev.kkorolyov.pancake.platform {
 	exports dev.kkorolyov.pancake.platform.entity.io;
 	exports dev.kkorolyov.pancake.platform.io;
 	exports dev.kkorolyov.pancake.platform.math;
-	exports dev.kkorolyov.pancake.platform.registry;
 	exports dev.kkorolyov.pancake.platform.utility;
 
-	uses Serializer;
-	uses Structizer;
-	uses ResourceConverterFactory;
+	uses dev.kkorolyov.pancake.platform.io.Serializer;
 
-	provides Serializer with
+	provides dev.kkorolyov.pancake.platform.io.Serializer with
 			VectorSerializer,
 			MatrixSerializer,
 			ChoreographySerializer,
 			TimelineSerializer,
 			ActionSerializer;
-	provides Structizer with
-			MathStructizer;
-	provides ResourceConverterFactory with
-			ActionResourceConverterFactory,
-			EntityTemplateResourceConverterFactory;
 }

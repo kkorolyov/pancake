@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -69,10 +70,27 @@ public final class ActionQueue implements Component, Iterable<Action> {
 		delayShift = delayed.isEmpty() ? 0 : delayShift + dt;
 	}
 
+	/**
+	 * Returns the number of queued actions.
+	 */
+	public int size() {
+		return actions.size();
+	}
+
 	@Override
 	public Iterator<Action> iterator() {
 		locked = true;
 		return actions.iterator();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof ActionQueue other)) return false;
+		return Objects.equals(actions, other.actions);
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(actions);
 	}
 
 	private static final class Countdown<T> {
