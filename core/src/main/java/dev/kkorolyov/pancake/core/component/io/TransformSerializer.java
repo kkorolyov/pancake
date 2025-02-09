@@ -10,7 +10,7 @@ import dev.kkorolyov.pancake.platform.math.Vector3;
 /**
  * Serializes {@link Transform}s.
  */
-public class TransformSerializer implements Serializer<Transform> {
+public final class TransformSerializer implements Serializer<Transform> {
 	@Override
 	public void write(Transform value, WriteContext context) {
 		context.putObject(value.getTranslation());

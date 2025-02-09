@@ -3,7 +3,6 @@ package dev.kkorolyov.pancake.editor.widget
 import dev.kkorolyov.pancake.editor.DebouncedValue
 import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.Widget
-import dev.kkorolyov.pancake.editor.button
 import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.data.OwnedComponent
 import dev.kkorolyov.pancake.editor.factory.getWidget
@@ -11,15 +10,11 @@ import dev.kkorolyov.pancake.editor.getValue
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
-import dev.kkorolyov.pancake.editor.toStructEntity
 import dev.kkorolyov.pancake.editor.tooltip
 import dev.kkorolyov.pancake.platform.entity.Component
 import dev.kkorolyov.pancake.platform.entity.Entity
-import imgui.ImGui
 import imgui.flag.ImGuiPopupFlags
 import io.github.classgraph.ClassGraph
-import org.yaml.snakeyaml.DumperOptions
-import org.yaml.snakeyaml.Yaml
 import kotlin.math.max
 
 private val componentTypes by ThreadLocal.withInitial {
@@ -82,9 +77,6 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 			}
 			tooltip("add component")
 			inlineDetails()
-		}
-		button("copy yaml") {
-			ImGui.setClipboardText(Yaml(DumperOptions().apply { width = 1000 }).dump(toStructEntity(entity)))
 		}
 
 		// augment elements only after done iterating
