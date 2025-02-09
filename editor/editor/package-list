@@ -147,7 +147,6 @@ $dokka.location:dev.kkorolyov.pancake.editor//tabBar/#kotlin.String#kotlin.Funct
 $dokka.location:dev.kkorolyov.pancake.editor//tabItem/#kotlin.String#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/tab-item.html
 $dokka.location:dev.kkorolyov.pancake.editor//table/#kotlin.String#kotlin.Int#kotlin.Float#kotlin.Float#kotlin.Int#kotlin.Function1[dev.kkorolyov.pancake.editor.Ctx.Table,kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/table.html
 $dokka.location:dev.kkorolyov.pancake.editor//text/#kotlin.Any#kotlin.Boolean/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/text.html
-$dokka.location:dev.kkorolyov.pancake.editor//toStructEntity/#dev.kkorolyov.pancake.platform.entity.Entity/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/to-struct-entity.html
 $dokka.location:dev.kkorolyov.pancake.editor//tooltip/#kotlin.Any/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/tooltip.html
 $dokka.location:dev.kkorolyov.pancake.editor//tooltip/#kotlin.Int#kotlin.Any/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/tooltip.html
 $dokka.location:dev.kkorolyov.pancake.editor//tooltip/#kotlin.Int#kotlin.Boolean#kotlin.Function0[kotlin.Unit]/PointingToDeclaration/editor/dev.kkorolyov.pancake.editor/tooltip.html

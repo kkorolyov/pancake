@@ -30,11 +30,6 @@ $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/meshes/#/Pointing
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/offset/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/offset.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/program/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/program.html
 $dokka.location:dev.kkorolyov.pancake.graphics.component/Model/setMeshes/#kotlin.Array[dev.kkorolyov.pancake.graphics.resource.Mesh]/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.component/-model/set-meshes.html
-$dokka.location:dev.kkorolyov.pancake.graphics.io////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/-component-structizer/index.html
-$dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer/ComponentStructizer/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/-component-structizer/-component-structizer.html
-$dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer/fromStruct/#java.lang.Class[TypeParam(bounds=[kotlin.Any?])]#kotlin.Any/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/-component-structizer/from-struct.html
-$dokka.location:dev.kkorolyov.pancake.graphics.io/ComponentStructizer/toStruct/#kotlin.Any/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.io/-component-structizer/to-struct.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource.io////PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource.io/BufferSerializerInt///PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-buffer-serializer-int/index.html
 $dokka.location:dev.kkorolyov.pancake.graphics.resource.io/BufferSerializerInt/BufferSerializerInt/#/PointingToDeclaration/graphics/dev.kkorolyov.pancake.graphics.resource.io/-buffer-serializer-int/-buffer-serializer-int.html
@@ -224,7 +219,6 @@ $dokka.location:dev.kkorolyov.pancake.graphics/RenderBackend/with/#dev.kkorolyov
 dev.kkorolyov.pancake.graphics
 dev.kkorolyov.pancake.graphics.component
 dev.kkorolyov.pancake.graphics.component.io
-dev.kkorolyov.pancake.graphics.io
 dev.kkorolyov.pancake.graphics.resource
 dev.kkorolyov.pancake.graphics.resource.io
 dev.kkorolyov.pancake.graphics.system

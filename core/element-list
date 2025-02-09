@@ -8,7 +8,5 @@ dev.kkorolyov.pancake.core.component.limit
 dev.kkorolyov.pancake.core.component.limit.io
 dev.kkorolyov.pancake.core.component.tag
 dev.kkorolyov.pancake.core.component.tag.io
-dev.kkorolyov.pancake.core.io
-dev.kkorolyov.pancake.core.registry
 dev.kkorolyov.pancake.core.system
 dev.kkorolyov.pancake.core.system.cleanup
