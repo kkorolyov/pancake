@@ -7,7 +7,6 @@ com.fasterxml.jackson.core:jackson-databind:2.18.2=compileClasspath,jmhCompileCl
 com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2=compileClasspath,jmhCompileClasspath,jmhRuntimeClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 com.fasterxml.jackson:jackson-bom:2.18.2=compileClasspath,jmhCompileClasspath,jmhRuntimeClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 dev.kkorolyov:flub:0.3.1=compileClasspath,jmhCompileClasspath,jmhRuntimeClasspath,runtimeClasspath,testCompileClasspath,testFixturesCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
-io.github.classgraph:classgraph:4.8.179=compileClasspath,jmhCompileClasspath,jmhRuntimeClasspath,runtimeClasspath,testCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 io.leangen.geantyref:geantyref:1.3.16=jmhRuntimeClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 net.bytebuddy:byte-buddy:1.17.0=jmhRuntimeClasspath,testCompileClasspath,testFixturesCompileClasspath,testFixturesRuntimeClasspath,testRuntimeClasspath
 net.sf.jopt-simple:jopt-simple:5.0.4=jmh,jmhCompileClasspath,jmhRuntimeClasspath

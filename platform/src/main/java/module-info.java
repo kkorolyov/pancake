@@ -11,10 +11,6 @@ module dev.kkorolyov.pancake.platform {
 	// FIXME kotlin compiler cannot find this on module path
 	requires com.fasterxml.jackson.dataformat.yaml;
 
-	// resource parsing
-	requires org.yaml.snakeyaml;
-	// component conversions
-	requires io.github.classgraph;
 	// expose for resource mapping API
 	requires transitive dev.kkorolyov.flub;
 
