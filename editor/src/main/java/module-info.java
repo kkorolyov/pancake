@@ -16,7 +16,6 @@ module dev.kkorolyov.pancake.editor {
 	requires dev.kkorolyov.pancake.graphics;
 
 	requires io.github.classgraph;
-	requires org.yaml.snakeyaml;
 
 	exports dev.kkorolyov.pancake.editor;
 	exports dev.kkorolyov.pancake.editor.data;

@@ -7,7 +7,6 @@ description = "Main Pancake engine platform"
 
 dependencies {
 	api(libs.flub)
-	implementation(libs.snakeyaml)
 	implementation(libs.jackson)
 	implementation(libs.classgraph)
 

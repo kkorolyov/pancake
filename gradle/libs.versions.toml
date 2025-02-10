@@ -7,8 +7,6 @@ flub = "0.+"
 slf4j = "2.+"
 jackson = "2.+"
 
-snakeyaml = "2.+"
-
 lwjgl = "3.+"
 imgui = "1.+"
 
@@ -27,8 +25,6 @@ flub = { module = "dev.kkorolyov:flub", version.ref = "flub" }
 
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 jackson = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
-
-snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 
 lwjgl-bom = { module = "org.lwjgl:lwjgl-bom", version.ref = "lwjgl" }
 lwjgl = { module = "org.lwjgl:lwjgl" }
