@@ -6,9 +6,6 @@ plugins {
 
 java {
 	withSourcesJar()
-	if (!plugins.hasPlugin("org.jetbrains.dokka")) {
-		withJavadocJar()
-	}
 }
 
 publishing {
