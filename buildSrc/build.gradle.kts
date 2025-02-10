@@ -9,6 +9,5 @@ repositories {
 }
 dependencies {
 	implementation(libs.gradle.kotlin)
-	implementation(libs.gradle.dokka)
 	implementation(libs.gradle.jmh)
 }
