@@ -20,7 +20,6 @@ import dev.kkorolyov.pancake.graphics.resource.Program
 import dev.kkorolyov.pancake.graphics.resource.Shader
 import dev.kkorolyov.pancake.graphics.resource.Texture
 import dev.kkorolyov.pancake.platform.entity.Component
-import dev.kkorolyov.pancake.platform.io.Resources
 import dev.kkorolyov.pancake.platform.math.Matrix4
 import dev.kkorolyov.pancake.platform.math.Vector3
 import imgui.flag.ImGuiTableFlags
@@ -37,8 +36,8 @@ private const val IMAGE_HEIGHT = 128
 private val transform = Matrix4.of()
 private val program by lazy {
 	Program(
-		Resources.inStream("dev/kkorolyov/pancake/graphics/editor/shaders/image.vert").use { Shader(Shader.Type.VERTEX, it) },
-		Resources.inStream("dev/kkorolyov/pancake/graphics/editor/shaders/image.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+		Shader(Shader.Type.VERTEX, Shader.Source.Path("dev/kkorolyov/pancake/graphics/editor/shaders/image.vert")),
+		Shader(Shader.Type.FRAGMENT, Shader.Source.Path("dev/kkorolyov/pancake/graphics/editor/shaders/image.frag"))
 	).apply {
 		uniforms[0] = transform
 	}
@@ -102,7 +101,7 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 			header("program", ImGuiTreeNodeFlags.DefaultOpen) {
 				table("##shaders", 3, flags = ImGuiTableFlags.SizingFixedFit) {
 					configColumn("Type")
-					configColumn("Source")
+					configColumn("Value")
 					configColumn("Actions")
 					headersRow()
 
@@ -114,8 +113,14 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 						shaders.forEachIndexed { i, shader ->
 							column { text(shader.type.name) }
 							column {
-								text(shader.source)
-								tooltip(shader.source)
+								val source = shader.source
+								text(
+									when (source) {
+										is Shader.Source.Path -> source.path
+										else -> source.value
+									}
+								)
+								tooltip(shader.source.value)
 							}
 							column {
 								button("-##$i") { toRemove = i }
@@ -143,7 +148,7 @@ class ModelComponentWidgetFactory : WidgetFactory<Component> {
 
 					newType?.let { type ->
 						newPath?.let { path ->
-							shaders += Resources.inStream(path).use { Shader(type, it) }
+							shaders += Shader(type, Shader.Source.Path(path))
 							program.shaders = shaders
 						}
 					}
