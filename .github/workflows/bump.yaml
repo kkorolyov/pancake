@@ -38,7 +38,7 @@ jobs:
 
       - id: token
         if: ${{ ! steps.bump.outputs.unchanged }}
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2
         with:
           app-id: ${{ secrets.BUMPBOT_ID }}
           private-key: ${{ secrets.BUMPBOT_KEY }}
