@@ -39,10 +39,11 @@ public final class EntityPoolSerializer implements Serializer<EntityPool> {
 
 			var entitySize = context.getInt();
 			for (int j = 0; j < entitySize; j++) {
+				var clsName = context.getString();
 				try {
-					entity.put(context.getObject((Class<Component>) Class.forName(context.getString())));
+					entity.put(context.getObject((Class<Component>) Class.forName(clsName)));
 				} catch (ClassNotFoundException e) {
-					throw new IllegalArgumentException("cannot read serialized component", e);
+					throw new IllegalArgumentException("cannot read serialized component: %s".formatted(clsName), e);
 				}
 			}
 		}
