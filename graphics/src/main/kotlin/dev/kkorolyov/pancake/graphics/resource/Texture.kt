@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.graphics.resource
 
 import dev.kkorolyov.pancake.graphics.PixelBuffer
-import java.nio.ByteBuffer
+import org.lwjgl.system.MemoryUtil
 
 /**
  * A texture map.
@@ -11,7 +11,7 @@ class Texture(
 	wrapT: Wrap = Wrap.CLAMP_TO_EDGE,
 	filterMin: Filter = Filter.LINEAR_MIPMAP_LINEAR,
 	filterMag: Filter = Filter.LINEAR,
-	pixels: () -> PixelBuffer = { PixelBuffer(0, 0, 0, 0, ByteBuffer.wrap(byteArrayOf())) {} }
+	pixels: () -> PixelBuffer = { PixelBuffer(0, 0, 0, 0, MemoryUtil.memAlloc(0), MemoryUtil::memFree) }
 ) : RenderResource() {
 	var pixels: () -> PixelBuffer = pixels
 		set(value) {
