@@ -14,14 +14,13 @@ class MouseButtonControlSerializer : Serializer<MouseButtonControl> {
 	override fun write(value: MouseButtonControl, context: WriteContext) {
 		context.putInt(value.button)
 		context.putInt(value.state.ordinal)
-		context.putString(value.action.javaClass.name)
 		context.putObject(value.action)
 	}
 
 	override fun read(context: ReadContext): MouseButtonControl = MouseButtonControl(
 		context.int,
 		StateEvent.State.entries[context.int],
-		context.getObject(Class.forName(context.string) as Class<Action>)
+		context.getObject(Action::class.java)
 	)
 
 	override fun getType(): Class<MouseButtonControl> = MouseButtonControl::class.java

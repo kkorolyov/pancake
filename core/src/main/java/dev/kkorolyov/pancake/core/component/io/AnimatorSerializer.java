@@ -21,7 +21,7 @@ public final class AnimatorSerializer implements Serializer<Animator> {
 		for (Map.Entry<Choreography.Role<TransformFrame>, Animator.PlaybackConfig<TransformFrame>> entry : value) {
 			context.putObject(entry.getKey().choreography());
 			context.putString(entry.getKey().key());
-			context.putString(entry.getValue().type().name());
+			context.putInt(entry.getValue().type().ordinal());
 			context.putInt(entry.getValue().playback().getOffset());
 		}
 	}
@@ -31,10 +31,11 @@ public final class AnimatorSerializer implements Serializer<Animator> {
 		result.setActive(context.getBoolean());
 
 		var size = context.getInt();
+		var types = Animator.Type.values();
 		for (int i = 0; i < size; i++) {
 			result.put(
 					context.getObject(Choreography.class).get(context.getString()),
-					Animator.Type.valueOf(context.getString()),
+					types[context.getInt()],
 					context.getInt()
 			);
 		}

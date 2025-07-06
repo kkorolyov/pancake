@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A read-only view of a {@link ByteBuffer} that hydrates object references on the fly.
@@ -59,6 +60,20 @@ public final class ReadContext {
 		objects.add(null);
 	}
 
+	/**
+	 * Invokes `dstGenerator` with the bytes length at the current position, fills the result with the bytes, returns it, and increments the position.
+	 */
+	public ByteBuffer get(Function<? super Integer, ? extends ByteBuffer> dstGenerator) {
+		var length = getInt();
+		ensureRemaining(length);
+
+		var dst = dstGenerator.apply(length);
+		dst.put(0, buffer, buffer.position(), length);
+
+		buffer.position(buffer.position() + length);
+
+		return dst;
+	}
 	/**
 	 * Returns the byte at the current position in the backing buffer and increments the position.
 	 */

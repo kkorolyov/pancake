@@ -46,7 +46,7 @@ class GLRenderBackend : RenderBackend {
 		val id = glCreateShader(shader.type.value())
 		if (id == 0) throw IllegalStateException("Cannot create shader")
 
-		glShaderSource(id, shader.source)
+		glShaderSource(id, shader.source.value)
 		glCompileShader(id)
 
 		if (glGetShaderi(id, GL_COMPILE_STATUS) == 0) throw IllegalArgumentException("Cannot compile ${shader.type} shader: ${glGetShaderInfoLog(id)}")

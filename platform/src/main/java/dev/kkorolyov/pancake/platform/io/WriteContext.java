@@ -60,6 +60,15 @@ public final class WriteContext implements AutoCloseable {
 	/**
 	 * Writes {@code value} to the current position in the backing buffer and increments the position.
 	 */
+	public void put(ByteBuffer value) {
+		putInt(value.remaining());
+
+		ensureRemaining(value.remaining());
+		buffer.put(value);
+	}
+	/**
+	 * Writes {@code value} to the current position in the backing buffer and increments the position.
+	 */
 	public void putByte(byte value) {
 		ensureRemaining(1);
 		buffer.put(value);

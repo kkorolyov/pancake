@@ -14,14 +14,13 @@ class KeyControlSerializer : Serializer<KeyControl> {
 	override fun write(value: KeyControl, context: WriteContext) {
 		context.putInt(value.key)
 		context.putInt(value.state.ordinal)
-		context.putString(value.action.javaClass.name)
 		context.putObject(value.action)
 	}
 
 	override fun read(context: ReadContext): KeyControl = KeyControl(
 		context.int,
 		StateEvent.State.entries[context.int],
-		context.getObject(Class.forName(context.string) as Class<Action>)
+		context.getObject(Action::class.java)
 	)
 
 	override fun getType(): Class<KeyControl> = KeyControl::class.java

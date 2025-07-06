@@ -14,7 +14,7 @@ public final class PathSerializer implements Serializer<Path> {
 	public void write(Path value, WriteContext context) {
 		context.putDouble(value.getStrength());
 		context.putDouble(value.getProximity());
-		context.putString(value.getSnapStrategy().name());
+		context.putInt(value.getSnapStrategy().ordinal());
 
 		context.putInt(value.size());
 		for (Vector3 step : value) {
@@ -23,7 +23,7 @@ public final class PathSerializer implements Serializer<Path> {
 	}
 	@Override
 	public Path read(ReadContext context) {
-		var result = new Path(context.getDouble(), context.getDouble(), Path.SnapStrategy.valueOf(context.getString()));
+		var result = new Path(context.getDouble(), context.getDouble(), Path.SnapStrategy.values()[context.getInt()]);
 
 		var size = context.getInt();
 		for (int i = 0; i < size; i++) {

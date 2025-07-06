@@ -1,7 +1,7 @@
 package dev.kkorolyov.pancake.graphics.gl.test.e2e
 
-import dev.kkorolyov.pancake.graphics.ellipse
 import dev.kkorolyov.pancake.graphics.Font
+import dev.kkorolyov.pancake.graphics.ellipse
 import dev.kkorolyov.pancake.graphics.gl.GLRenderBackend
 import dev.kkorolyov.pancake.graphics.image
 import dev.kkorolyov.pancake.graphics.rectangle
@@ -55,26 +55,26 @@ private val window by lazy {
 private val renderBackend = GLRenderBackend()
 
 private val colorProgram = Program(
-	Resources.inStream("color.vert").use { Shader(Shader.Type.VERTEX, it) },
-	Resources.inStream("color.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+	Shader(Shader.Type.VERTEX, Shader.Source.Path("color.vert")),
+	Shader(Shader.Type.FRAGMENT, Shader.Source.Path("color.frag"))
 ).apply {
 	uniforms[0] = Matrix4.of()
 }
 private val textureProgram = Program(
-	Resources.inStream("texture.vert").use { Shader(Shader.Type.VERTEX, it) },
-	Resources.inStream("texture.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+	Shader(Shader.Type.VERTEX, Shader.Source.Path("texture.vert")),
+	Shader(Shader.Type.FRAGMENT, Shader.Source.Path("texture.frag"))
 ).apply {
 	uniforms[0] = Matrix4.of()
 }
 private val coTexProgram = Program(
-	Resources.inStream("coTex.vert").use { Shader(Shader.Type.VERTEX, it) },
-	Resources.inStream("coTex.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+	Shader(Shader.Type.VERTEX, Shader.Source.Path("coTex.vert")),
+	Shader(Shader.Type.FRAGMENT, Shader.Source.Path("coTex.frag"))
 ).apply {
 	uniforms[0] = Matrix4.of()
 }
 private val fontProgram = Program(
-	Resources.inStream("texture.vert").use { Shader(Shader.Type.VERTEX, it) },
-	Resources.inStream("font.frag").use { Shader(Shader.Type.FRAGMENT, it) }
+	Shader(Shader.Type.VERTEX, Shader.Source.Path("texture.vert")),
+	Shader(Shader.Type.FRAGMENT, Shader.Source.Path("font.frag"))
 ).apply {
 	uniforms[0] = Matrix4.of()
 }

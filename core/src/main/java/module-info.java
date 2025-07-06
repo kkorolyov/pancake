@@ -1,4 +1,5 @@
 import dev.kkorolyov.pancake.core.animation.io.TransformFrameSerializer;
+import dev.kkorolyov.pancake.core.component.io.ActionQueueSerializer;
 import dev.kkorolyov.pancake.core.component.io.AnimatorSerializer;
 import dev.kkorolyov.pancake.core.component.io.BoundsSerializer;
 import dev.kkorolyov.pancake.core.component.io.DampingSerializer;
@@ -27,6 +28,7 @@ module dev.kkorolyov.pancake.core {
 	exports dev.kkorolyov.pancake.core.system.cleanup;
 
 	provides Serializer with
+			ActionQueueSerializer,
 			AnimatorSerializer,
 			BoundsSerializer,
 			DampingSerializer,

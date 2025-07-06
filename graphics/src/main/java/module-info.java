@@ -1,7 +1,15 @@
 import dev.kkorolyov.pancake.graphics.component.io.LensSerializer;
 import dev.kkorolyov.pancake.graphics.component.io.ModelSerializer;
+import dev.kkorolyov.pancake.graphics.resource.io.BufferSerializerInt;
+import dev.kkorolyov.pancake.graphics.resource.io.BufferSerializerVertex;
 import dev.kkorolyov.pancake.graphics.resource.io.MeshSerializer;
+import dev.kkorolyov.pancake.graphics.resource.io.PathSourceSerializer;
+import dev.kkorolyov.pancake.graphics.resource.io.PixelBufferSerializer;
 import dev.kkorolyov.pancake.graphics.resource.io.ProgramSerializer;
+import dev.kkorolyov.pancake.graphics.resource.io.RawSourceSerializer;
+import dev.kkorolyov.pancake.graphics.resource.io.ShaderSerializer;
+import dev.kkorolyov.pancake.graphics.resource.io.TextureSerializer;
+import dev.kkorolyov.pancake.graphics.resource.io.VertexSerializer;
 import dev.kkorolyov.pancake.platform.io.Serializer;
 
 module dev.kkorolyov.pancake.graphics {
@@ -24,6 +32,14 @@ module dev.kkorolyov.pancake.graphics {
 	provides Serializer with
 			LensSerializer,
 			ModelSerializer,
+			BufferSerializerInt,
+			BufferSerializerVertex,
+			MeshSerializer,
 			ProgramSerializer,
-			MeshSerializer;
+			ShaderSerializer,
+			PathSourceSerializer,
+			RawSourceSerializer,
+			TextureSerializer,
+			PixelBufferSerializer,
+			VertexSerializer;
 }
