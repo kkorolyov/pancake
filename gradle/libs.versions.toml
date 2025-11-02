@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.21"
+kotlin = "2.+"
 jmh = "0.+"
 
 flub = "0.+"
@@ -13,6 +13,7 @@ imgui = "1.+"
 classgraph = "4.+"
 
 spock = "2.+"
+junit = "6.+"
 byteBuddy = "1.+"
 log4j = "2.+"
 
@@ -40,6 +41,8 @@ imgui-lwjgl = { module = "io.github.spair:imgui-java-lwjgl3", version.ref = "img
 classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
 
 spock = { module = "org.spockframework:spock-core", version.ref = "spock" }
+junit = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junitPlatform = { module = "org.junit.platform:junit-platform-launcher" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
 log4j = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j" }
 
@@ -49,4 +52,5 @@ imgui-linux = { module = "io.github.spair:imgui-java-natives-linux", version.ref
 
 [bundles]
 stdlib = ["flub", "slf4j"]
-test = ["spock", "byteBuddy", "log4j"]
+test = ["spock", "junit", "byteBuddy", "log4j"]
+testRuntime = ["junitPlatform"]
