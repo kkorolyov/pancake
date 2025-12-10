@@ -45,7 +45,7 @@ jobs:
 
       - id: pr
         if: ${{ ! steps.bump.outputs.unchanged }}
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ steps.token.outputs.token }}
           sign-commits: true
