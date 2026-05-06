@@ -27,4 +27,4 @@ jobs:
           distribution: temurin
 
       - id: dependencies
-        uses: gradle/actions/dependency-submission@v4
+        uses: gradle/actions/dependency-submission@v5
