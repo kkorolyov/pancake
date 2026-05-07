@@ -20,7 +20,7 @@ jobs:
           default_match: "none"
       - id: version
         if: ${{ steps.bump.outputs.match != 'none' }}
-        uses: zwaldowski/semver-release-action@v4
+        uses: zwaldowski/semver-release-action@v6
         with:
           bump: ${{ steps.bump.outputs.match }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
