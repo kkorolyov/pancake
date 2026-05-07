@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - id: bump
-        uses: zwaldowski/match-label-action@v5
+        uses: zwaldowski/match-label-action@v6
         with:
           allowed: major, minor, patch
           default_match: "none"
