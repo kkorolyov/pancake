@@ -11,6 +11,7 @@ import imgui.ImGuiViewport
 import imgui.ImVec2
 import imgui.ImVec4
 import imgui.extension.implot.ImPlot
+import imgui.extension.implot.ImPlotSpec
 import imgui.extension.implot.flag.ImPlotAxis
 import imgui.extension.implot.flag.ImPlotAxisFlags
 import imgui.extension.implot.flag.ImPlotCond
@@ -55,6 +56,7 @@ private val tVector2 by ThreadLocal.withInitial(Vector2::of)
 private val tVector3 by ThreadLocal.withInitial(Vector3::of)
 private val tVec2 by ThreadLocal.withInitial(::ImVec2)
 private val tVec4 by ThreadLocal.withInitial(::ImVec4)
+private val tPlotSpec by ThreadLocal.withInitial(::ImPlotSpec)
 
 /**
  * Returns a shared thread-local pointer instance for [value].
@@ -1185,27 +1187,36 @@ object Ctx {
 		 * Plots line data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */
 		fun line(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
-			ImPlot.plotLineV(label, xs, ys, xs.size, ImPlotFlags.None, offset)
+			val spec = tPlotSpec
+			spec.offset = offset
+
+			ImPlot.plotLineV(label, xs, ys, xs.size, spec)
 		}
 
 		/**
 		 * Plots scatter data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */
 		fun scatter(label: String, xs: IntArray, ys: IntArray, offset: Int = 0) {
-			ImPlot.plotScatterV(label, xs, ys, xs.size, ImPlotFlags.None, offset)
+			val spec = tPlotSpec
+			spec.offset = offset
+
+			ImPlot.plotScatterV(label, xs, ys, xs.size, spec)
 		}
 		/**
 		 * Plots scatter data for [label] consisting of [xs] to [ys], starting at [offset].
 		 */
 		fun scatter(label: String, xs: DoubleArray, ys: DoubleArray, offset: Int = 0) {
-			ImPlot.plotScatterV(label, xs, ys, xs.size, ImPlotFlags.None, offset)
+			val spec = tPlotSpec
+			spec.offset = offset
+
+			ImPlot.plotScatterV(label, xs, ys, xs.size, spec)
 		}
 
 		/**
 		 * Plots [text] at ([x], [y]) point.
 		 */
-		fun text(text: Any, x: Double, y: Double, flags: Int = ImPlotTextFlags.None) {
-			ImPlot.plotText(text.toString(), x, y, flags)
+		fun text(text: Any, x: Double, y: Double) {
+			ImPlot.plotText(text.toString(), x, y)
 		}
 
 		/**

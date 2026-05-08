@@ -63,7 +63,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 					column {
 						Layout.width(Layout.stretchWidth) {
 							selectable(it.id, it in selected) {
-								if ((Key.onDown(ImGuiKey.ModCtrl))) {
+								if ((Key.onDown(ImGuiKey.ImGuiMod_Ctrl))) {
 									if (it !in selected) selected += it else selected -= it
 								} else {
 									selected.clear()

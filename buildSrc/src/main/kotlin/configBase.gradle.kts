@@ -28,6 +28,7 @@ dependencyLocking {
 }
 
 dependencies {
+	compileOnly(bundles("compile"))
 	implementation(bundles("stdlib"))
 	testImplementation(bundles("test"))
 	testRuntimeOnly(bundles("testRuntime"))

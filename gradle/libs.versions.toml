@@ -1,5 +1,6 @@
 [versions]
 kotlin = "2.+"
+jspecify = "1.+"
 jmh = "0.+"
 
 flub = "0.+"
@@ -21,6 +22,8 @@ log4j = "2.+"
 # actually plugins, but applied through buildSrc
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-jmh = { module = "me.champeau.jmh:jmh-gradle-plugin", version.ref = "jmh" }
+
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 
 flub = { module = "dev.kkorolyov:flub", version.ref = "flub" }
 
@@ -51,6 +54,7 @@ imgui-macos = { module = "io.github.spair:imgui-java-natives-macos", version.ref
 imgui-linux = { module = "io.github.spair:imgui-java-natives-linux", version.ref = "imgui" }
 
 [bundles]
+compile = ["jspecify"]
 stdlib = ["flub", "slf4j"]
 test = ["spock", "junit", "byteBuddy", "log4j"]
 testRuntime = ["junitPlatform"]
