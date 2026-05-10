@@ -22,7 +22,6 @@ jobs:
       - id: renovate
         uses: renovatebot/github-action@v46.1.13
         with:
-          configurationFile: .github/renovate_config.js
           token: ${{ steps.token.outputs.token }}
         env:
           RENOVATE_PLATFORM_COMMIT: enabled
