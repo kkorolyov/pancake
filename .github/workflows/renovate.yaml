@@ -25,5 +25,5 @@ jobs:
           token: ${{ steps.token.outputs.token }}
         env:
           RENOVATE_PLATFORM_COMMIT: enabled
-          RENOVATE_REPOSITORIES: pancake
+          RENOVATE_REPOSITORIES: kkorolyov/pancake
           LOG_LEVEL: debug
