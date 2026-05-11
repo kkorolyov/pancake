@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.21"
+kotlin = "2.3.21"
 jmh = "0.+"
 
 flub = "0.+"
