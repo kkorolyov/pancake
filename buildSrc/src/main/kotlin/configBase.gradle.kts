@@ -15,6 +15,12 @@ repositories {
 			password = System.getenv("GITHUB_TOKEN")
 		}
 	}
+	maven {
+		url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+		content {
+			includeGroup("org.spockframework")
+		}
+	}
 }
 
 dependencyLocking {
@@ -22,8 +28,10 @@ dependencyLocking {
 }
 
 dependencies {
+	compileOnly(bundles("compile"))
 	implementation(bundles("stdlib"))
 	testImplementation(bundles("test"))
+	testRuntimeOnly(bundles("testRuntime"))
 }
 
 tasks.test {

@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         version:
-          - 21
+          - 25
 
     steps:
       - id: checkout
