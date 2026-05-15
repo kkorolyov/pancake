@@ -7,22 +7,9 @@ class EntityPoolSpec extends Specification {
 
 	EntityPool entities = new EntityPool()
 
-	def "create provisions unique ID"() {
+	def "create provisions unique instance"() {
 		expect:
 		entities.create() != entities.create()
-	}
-	def "create adds to pool"() {
-		expect:
-		entities.get(entities.create().id)
-	}
-
-	def "destroy removes entity"() {
-		when:
-		int id = entities.create().id
-		entities.destroy(id)
-
-		then:
-		!entities.get(id)
 	}
 
 	def "invokes on each matching entity"() {

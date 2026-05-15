@@ -7,6 +7,7 @@ import dev.kkorolyov.pancake.editor.contextMenu
 import dev.kkorolyov.pancake.editor.data.OwnedComponent
 import dev.kkorolyov.pancake.editor.factory.getWidget
 import dev.kkorolyov.pancake.editor.getValue
+import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.list
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
@@ -42,6 +43,13 @@ class EntityDetails(private val entity: Entity, private val dragDropId: String? 
 	private var toRemove: Class<out Component>? = null
 
 	override fun invoke() {
+		Layout.width(Layout.stretchWidth) {
+			input("##debugName", entity.debugName) { value ->
+				entity.debugNameOverride = value.ifEmpty { null }
+			}
+			tooltip("Name")
+		}
+
 		list("##components", width = Layout.stretchWidth, height = max(Layout.lineHeight(entity.size() + 1.2), Layout.free.y - Layout.lineHeight(1.5))) {
 			entity.forEach {
 				selectable(it.debugName) {

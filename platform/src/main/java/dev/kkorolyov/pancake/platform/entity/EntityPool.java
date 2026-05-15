@@ -12,13 +12,6 @@ public final class EntityPool implements Iterable<Entity> {
 	private final SparseMultiset<Entity, Class<? extends Component>> pool = new SparseMultiset<>();
 
 	/**
-	 * @param id ID of entity to get
-	 * @return entity with ID {@code id}, or {@code null} if no such entity
-	 */
-	public Entity get(int id) {
-		return pool.get(id);
-	}
-	/**
 	 * @param signature signature to match
 	 * @return all entities in this pool masking {@code signature}
 	 */
@@ -30,6 +23,7 @@ public final class EntityPool implements Iterable<Entity> {
 	 * Creates a new, empty entity attached to this pool and returns it.
 	 */
 	public Entity create() {
+		// pass underlying pool direct to entity to avoid unnecessary redirection overhead
 		return new Entity(pool);
 	}
 
@@ -43,14 +37,6 @@ public final class EntityPool implements Iterable<Entity> {
 			newEntity.setDebugNameOverride(entity.getDebugNameOverride());
 			newEntity.put(entity);
 		}
-	}
-
-	/**
-	 * Removes an entity from this pool.
-	 * @param id ID of entity to remove
-	 */
-	public void destroy(int id) {
-		pool.remove(id);
 	}
 
 	@Override

@@ -6,20 +6,20 @@ import dev.kkorolyov.pancake.platform.entity.Entity
  * Mutable holder of current cameras.
  */
 class CameraQueue {
-	private val values = mutableMapOf<Int, Camera>()
+	private val values = mutableMapOf<Entity, Camera>()
 
 	/**
 	 * If `entity` is not already present in this queue, adds it and assigns a [Camera] to it.
 	 */
 	operator fun plusAssign(entity: Entity) {
-		values.getOrPut(entity.id) { Camera(entity) }
+		values.getOrPut(entity) { Camera(entity) }
 	}
 
 	/**
-	 * Removes any entity matching `id` and its associated [Camera] from this queue.
+	 * Removes `entity` and its associated [Camera] from this queue, if any.
 	 */
-	operator fun minusAssign(id: Int) {
-		values.remove(id)
+	operator fun minusAssign(entity: Entity) {
+		values.remove(entity)
 	}
 
 	/**
@@ -28,12 +28,6 @@ class CameraQueue {
 	fun clear() {
 		values.clear()
 	}
-
-	/**
-	 * IDs of all camera entities in this queue.
-	 */
-	val ids: Collection<Int>
-		get() = values.keys
 
 	/**
 	 * All cameras in this queue.
