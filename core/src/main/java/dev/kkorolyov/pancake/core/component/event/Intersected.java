@@ -87,7 +87,7 @@ public final class Intersected implements Component, Iterable<Intersected.Event>
 		public Entity getOther(Entity entity) {
 			if (entity.equals(b)) return a;
 			else if (entity.equals(a)) return b;
-			else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getId() + "]");
+			else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getDebugName() + "]");
 		}
 
 		/**
@@ -97,7 +97,7 @@ public final class Intersected implements Component, Iterable<Intersected.Event>
 		public Vector2 getMtv(Entity entity) {
 			if (entity.equals(a)) return mtvA;
 			else if (entity.equals(b)) return mtvB;
-			else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getId() + "]");
+			else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getDebugName() + "]");
 		}
 		/**
 		 * Returns the {@link #getMtvA()} or {@link #getMtvB()} matching the entity that is not {@code entity}.
@@ -106,7 +106,7 @@ public final class Intersected implements Component, Iterable<Intersected.Event>
 		public Vector2 getOtherMtv(Entity entity) {
 			if (entity.equals(b)) return mtvA;
 			else if (entity.equals(a)) return mtvB;
-			else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getId() + "]");
+			else throw new IllegalArgumentException("is neither of the intersecting entities: [" + entity.getDebugName() + "]");
 		}
 
 		/**

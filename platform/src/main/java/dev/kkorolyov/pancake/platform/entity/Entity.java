@@ -13,9 +13,10 @@ import java.util.Objects;
  * A container of {@link Component}s of distinct implementation types.
  */
 public final class Entity implements Iterable<Component>, Debuggable {
-	private final int id;
-	private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 	private final SparseMultiset<Entity, ? super Class<? extends Component>> pool;
+	private final int index;
+
+	private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
 	private String debugNameOverride;
 
@@ -24,7 +25,14 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	 */
 	Entity(SparseMultiset<Entity, ? super Class<? extends Component>> pool) {
 		this.pool = pool;
-		id = this.pool.add(this);
+		index = this.pool.add(this);
+	}
+
+	/**
+	 * Removes this entity from its attached pool.
+	 */
+	public void destroy() {
+		pool.remove(index);
 	}
 
 	/**
@@ -41,7 +49,7 @@ public final class Entity implements Iterable<Component>, Debuggable {
 		for (Component component : components) {
 			this.components.put(component.getClass(), component);
 		}
-		pool.put(id, this.components.keySet());
+		pool.put(index, this.components.keySet());
 	}
 
 	/**
@@ -49,11 +57,11 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	 */
 	@SafeVarargs
 	public final void remove(Class<? extends Component>... types) {
-		pool.remove(id, components.keySet());
+		pool.remove(index, components.keySet());
 		for (Class<? extends Component> type : types) {
 			components.remove(type);
 		}
-		pool.put(id, components.keySet());
+		pool.put(index, components.keySet());
 	}
 
 	/**
@@ -63,11 +71,6 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	 */
 	public <T extends Component> T get(Class<T> c) {
 		return (T) components.get(c);
-	}
-
-	/** @return unique ID of this entity */
-	public int getId() {
-		return id;
 	}
 
 	/**
@@ -88,11 +91,11 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	/**
 	 * Returns this entity's debug name.
 	 * If it has been explicitly set with {@link #setDebugNameOverride(String)}, returns the current value - which is the same as {@link #getDebugNameOverride()}.
-	 * Else returns a name generated from the entity's ID.
+	 * Else returns a name generated from the entity's index.
 	 */
 	@Override
 	public String getDebugName() {
-		return debugNameOverride != null ? debugNameOverride : "Entity " + id;
+		return debugNameOverride != null ? debugNameOverride : "Entity " + index;
 	}
 
 	/**
@@ -113,19 +116,15 @@ public final class Entity implements Iterable<Component>, Debuggable {
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Entity other)) return false;
-		return id == other.id;
+		return index == other.index;
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id);
+		return Objects.hashCode(index);
 	}
 
 	@Override
 	public String toString() {
-		return "Entity{" +
-				"id=" + id +
-				"debugName=" + debugNameOverride +
-				", components=" + components +
-				'}';
+		return "Entity{index=%d, debugNameOverride=%s, components=%s}".formatted(index, debugNameOverride, components);
 	}
 }

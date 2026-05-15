@@ -74,12 +74,6 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	protected final Entity create() {
 		return entities.create();
 	}
-	/**
-	 * Destroys entity by {@code id} from the attached {@link EntityPool}.
-	 */
-	protected final void destroy(int id) {
-		entities.destroy(id);
-	}
 
 	/**
 	 * Attaches resources to this system.
@@ -143,10 +137,10 @@ public abstract class GameSystem implements Iterable<Class<? extends Component>>
 	@Override
 	public String toString() {
 		return "GameSystem{" +
-				"signature=" + signature +
-				", entities=" + entities +
-				", sampler=" + sampler +
-				'}';
+			"signature=" + signature +
+			", entities=" + entities +
+			", sampler=" + sampler +
+			'}';
 	}
 
 	private static class DummyComponent implements Component {}

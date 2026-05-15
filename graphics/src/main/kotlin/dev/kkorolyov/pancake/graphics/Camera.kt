@@ -8,13 +8,11 @@ import dev.kkorolyov.pancake.platform.entity.Entity
  * Wraps an entity acting as a camera viewing some scene.
  */
 class Camera(
-	private val entity: Entity
-) {
 	/**
-	 * Unique camera ID.
+	 * Wrapped entity.
 	 */
-	val id: Int
-		get() = entity.id
+	val entity: Entity
+) {
 
 	/**
 	 * Camera transform.

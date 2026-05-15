@@ -7,7 +7,6 @@ import dev.kkorolyov.pancake.editor.Key
 import dev.kkorolyov.pancake.editor.Layout
 import dev.kkorolyov.pancake.editor.Widget
 import dev.kkorolyov.pancake.editor.contextMenu
-import dev.kkorolyov.pancake.editor.input
 import dev.kkorolyov.pancake.editor.onDrag
 import dev.kkorolyov.pancake.editor.selectable
 import dev.kkorolyov.pancake.editor.table
@@ -40,7 +39,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 	private val inlineDetails = Popup("inlineDetails")
 	private val errorMsg = Modal("ERROR")
 
-	private var focusedEntity: Int? = null
+	private var focusedEntity: Entity? = null
 	private var toAdd = false
 	private var toRemove = false
 	private var toImport = false
@@ -50,31 +49,30 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 	override fun invoke() {
 		// leave room for controls below
-		table("entities", 3, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY or ImGuiTableFlags.SizingStretchProp or ImGuiTableFlags.Resizable) {
-			configColumn("ID")
-			configColumn("Name")
+		table("entities", 2, height = -Layout.lineHeight(1.5), flags = ImGuiTableFlags.ScrollY or ImGuiTableFlags.SizingStretchProp or ImGuiTableFlags.Resizable) {
+			configColumn("Entity")
 			configColumn("Components")
 			scrollFreeze(1, 1)
 			headersRow()
 
 			// initialize here to have a reference to the Table receiver
 			if (!::rowRenderer.isInitialized) {
-				rowRenderer = Clipper {
+				rowRenderer = Clipper { entity, _ ->
 					column {
 						Layout.width(Layout.stretchWidth) {
-							selectable(it.id, it in selected) {
-								if ((Key.onDown(ImGuiKey.ImGuiMod_Ctrl))) {
-									if (it !in selected) selected += it else selected -= it
+							selectable(entity.debugName, entity in selected) {
+								if (Key.onDown(ImGuiKey.ImGuiMod_Ctrl)) {
+									if (entity !in selected) selected += entity else selected -= entity
 								} else {
 									selected.clear()
-									inlineDetails.open(current.set(it))
+									inlineDetails.open(current.set(entity))
 								}
 							}
 						}
 						contextMenu {
-							if (it !in selected) {
+							if (entity !in selected) {
 								selected.clear()
-								selected.add(it)
+								selected.add(entity)
 							}
 							menuItem("destroy ${selected.size} entities") { toRemove = true }
 							menuItem("export ${selected.size} entities") { toExport = true }
@@ -82,13 +80,13 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 						dragDropId?.let { id ->
 							onDrag {
-								setDragDropPayload(it, id)
-								current.set(it)()
+								setDragDropPayload(entity, id)
+								current.set(entity)()
 							}
 						}
 
-						focusedEntity?.let { focusedId ->
-							if (focusedId == it.id) {
+						focusedEntity?.let { focused ->
+							if (focused == entity) {
 								ImGui.setScrollHereY()
 								focusedEntity = null
 							}
@@ -96,15 +94,7 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 					}
 
 					column {
-						Layout.width(Layout.stretchWidth) {
-							input("##debugName${it.id}", it.debugName) { value ->
-								it.debugNameOverride = if (value.isEmpty()) null else value
-							}
-						}
-					}
-
-					column {
-						text(it.size())
+						text(entity.size())
 					}
 				}
 			}
@@ -125,13 +115,11 @@ class EntitiesTable(private val entities: EntityPool, private val dragDropId: St
 
 		// augment elements only after done iterating
 		if (toAdd) {
-			focusedEntity = entities.create().id
+			focusedEntity = entities.create()
 			toAdd = false
 		}
 		if (toRemove) {
-			selected.forEach {
-				entities.destroy(it.id)
-			}
+			selected.forEach(Entity::destroy)
 			selected.clear()
 			toRemove = false
 		}

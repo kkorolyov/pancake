@@ -7,7 +7,7 @@ import imgui.callback.ImListClipperCallback
  * Processes a clipped view of items using a given operation.
  * Useful for efficiently rendering a large list of items where only a small subset is visible at a time.
  */
-class Clipper<T>(op: (T) -> Unit) {
+class Clipper<T>(op: (T, Int) -> Unit) {
 	private val callback = ScrollCallback(op)
 
 	/**
@@ -19,10 +19,10 @@ class Clipper<T>(op: (T) -> Unit) {
 	}
 }
 
-private class ScrollCallback<T>(private val op: (T) -> Unit) : ImListClipperCallback() {
+private class ScrollCallback<T>(private val op: (T, Int) -> Unit) : ImListClipperCallback() {
 	var lines = listOf<T>()
 
 	override fun accept(index: Int) {
-		op(lines[index])
+		op(lines[index], index)
 	}
 }

@@ -48,7 +48,7 @@ class Editor(
 	 * Focuses (creating if needed) the window for [entity].
 	 */
 	fun focus(entity: Entity, openAt: OpenAt? = OpenAt.CurrentWindow) {
-		entityManifest[entity] = { Window("${entity.debugName} (${entity.id})", withDropHandlers(EntityDetails(entity, componentDragDropId)), size = windowMin(2.0), openAt = openAt) }
+		entityManifest[entity] = { Window("${entity.debugName}", withDropHandlers(EntityDetails(entity, componentDragDropId)), size = windowMin(2.0), openAt = openAt) }
 	}
 	/**
 	 * Focuses (creating if needed) the window for [ownedComponent].

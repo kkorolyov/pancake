@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream
  * Renders lines from [data] as a scrolling log.
  */
 class Log(private val data: ByteArrayOutputStream) : Widget {
-	private val clipper = Clipper<String>(::text)
+	private val clipper = Clipper<String> { value, _ -> text(value) }
 
 	override fun invoke() {
 		button("Clear") { data.reset() }
