@@ -7,8 +7,6 @@ docs/
 
 # IDE
 .idea/
-*.iml
-out/
 
 # Resources
 *.log
