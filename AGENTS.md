@@ -8,12 +8,12 @@ Pancake is a lightweight, modular ECS (Entity-Component-System) game engine for 
 
 Base package: `dev.kkorolyov.pancake`
 
-**12 modules** (14 project names due to path-based naming):
+**11 modules** (12 project names due to path-based naming):
 
 | Project name | File path | Language | Purpose |
 |---|---|---|---|
 | `platform` | `platform/` | Java | Core ECS constructs: `GameEngine`, `Pipeline`, `GameSystem`, `EntityPool`, `Entity`, `Component` |
-| `core` | `core/` | Java | Common reusable components & systems (Movement, Collisions, Action/Chain/Spawn) |
+| `core` | `core/` | Java | Common reusable components & systems (Movement, Collisions, Action, Animation, Path, Joint) |
 | `audio` | `audio/` | — | Parent module (no source). Mutually-exclusive submodules for audio backends. |
 | `audio-al` | `audio/al/` | Kotlin | OpenAL audio components (`AudioEmitter`, `AudioReceiver`) and systems |
 | `graphics` | `graphics/` | Kotlin | Implementation-agnostic rendering abstractions (`RenderBackend`, `Camera`, `Atlas`, `Font`) |
@@ -81,9 +81,8 @@ Native library classifiers (windows/macos/linux) are selected at build time for 
 ## CI/CD
 
 - **build.yaml**: Runs `./gradlew build` on push to `master` and on PRs. Uploads reports on failure.
-- **bump.yaml**: On push to `master`, runs `./gradlew allDeps --write-locks`. If lockfile changed, opens a PR via `peter-evans/create-pull-request`.
-- **release.yaml**: Triggered on PR close (merged). Label (`major`/`minor`/`patch`) determines version bump. Creates GitHub release + publishes artifacts.
-- **dependabot**: Daily updates for GitHub Actions only.
+- **dependencies.yaml**: Runs `gradle/actions/dependency-submission@v6` on push to `master` to publish dependency graph.
+- **release.yaml**: Triggered on push to `master`. Uses `release-please-action` to determine version and publishes artifacts.
 
 ## File locations for quick reference
 
@@ -92,7 +91,7 @@ Native library classifiers (windows/macos/linux) are selected at build time for 
 - Module READMEs: `platform/README.md`, `core/README.md`, `audio/README.md`, `audio/al/README.md`, `graphics/README.md`, `graphics/gl/README.md`, `input/README.md`, `input/glfw/README.md`, `editor/README.md`, `core/editor/README.md`, `graphics/editor/README.md`, `input/editor/README.md`
 - Architecture diagrams: `platform/reference.md` (Mermaid diagrams for GameEngine, Pipeline, GameSystem loops)
 - Editor reference: `editor/howto-gradle.md`
-- All modules have `howto-gradle.md` with module-specific build instructions
+- Some modules have `howto-gradle.md` with module-specific build instructions (`platform`, `core`, `audio/al`, `editor`, `graphics/gl`, `input/glfw`, `core/editor`, `graphics/editor`, `input/editor`)
 
 ## Coding conventions
 
