@@ -3,6 +3,7 @@ package dev.kkorolyov.pancake.core.system;
 import dev.kkorolyov.pancake.core.component.Transform;
 import dev.kkorolyov.pancake.core.component.event.Intersected;
 import dev.kkorolyov.pancake.core.component.tag.Correctable;
+import dev.kkorolyov.pancake.core.component.event.Moved;
 import dev.kkorolyov.pancake.platform.GameSystem;
 import dev.kkorolyov.pancake.platform.entity.Entity;
 import dev.kkorolyov.pancake.platform.math.Vector3;
@@ -36,12 +37,24 @@ public final class CorrectionSystem extends GameSystem {
 					// split the correction
 					aPosition.add(event.getMtvA(), 0.5);
 					bPosition.add(event.getMtvB(), 0.5);
+
+					markMoved(event.getA());
+					markMoved(event.getB());
 				} else if (priority < 0) {
 					aPosition.add(event.getMtvA());
+
+					markMoved(event.getA());
 				} else {
 					bPosition.add(event.getMtvB());
+
+					markMoved(event.getB());
 				}
 			}
+		}
+	}
+	private static void markMoved(Entity entity) {
+		if (entity.get(Moved.class) == null) {
+			entity.put(new Moved());
 		}
 	}
 

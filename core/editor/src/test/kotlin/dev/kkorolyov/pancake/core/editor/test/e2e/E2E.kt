@@ -8,7 +8,9 @@ import dev.kkorolyov.pancake.core.component.Mass
 import dev.kkorolyov.pancake.core.component.Path
 import dev.kkorolyov.pancake.core.component.Transform
 import dev.kkorolyov.pancake.core.component.Velocity
+import dev.kkorolyov.pancake.core.component.event.Intersected
 import dev.kkorolyov.pancake.core.component.limit.VelocityLimit
+import dev.kkorolyov.pancake.core.component.event.Moved
 import dev.kkorolyov.pancake.core.system.AccelerationSystem
 import dev.kkorolyov.pancake.core.system.ActionSystem
 import dev.kkorolyov.pancake.core.system.CollisionSystem
@@ -18,15 +20,15 @@ import dev.kkorolyov.pancake.core.system.IntersectionSystem
 import dev.kkorolyov.pancake.core.system.LimitSystem
 import dev.kkorolyov.pancake.core.system.MovementSystem
 import dev.kkorolyov.pancake.core.system.PathSystem
-import dev.kkorolyov.pancake.core.system.cleanup.PhysicsCleanupSystem
+import dev.kkorolyov.pancake.core.system.cleanup.CleanupSystem
 import dev.kkorolyov.pancake.editor.test.drawEnd
 import dev.kkorolyov.pancake.editor.test.drawStart
 import dev.kkorolyov.pancake.editor.test.editor
 import dev.kkorolyov.pancake.editor.test.start
 import dev.kkorolyov.pancake.platform.GameEngine
 import dev.kkorolyov.pancake.platform.Pipeline
-import dev.kkorolyov.pancake.platform.math.Vector3
 import dev.kkorolyov.pancake.platform.SpecUtilities.randVector
+import dev.kkorolyov.pancake.platform.math.Vector3
 import kotlin.random.Random
 
 fun main() {
@@ -44,7 +46,8 @@ fun main() {
 				MovementSystem(),
 			),
 			Pipeline.of(
-				PhysicsCleanupSystem()
+				CleanupSystem(Intersected::class.java),
+				CleanupSystem(Moved::class.java),
 			),
 			Pipeline.of(
 				ActionEnqueuerSystem()

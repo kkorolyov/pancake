@@ -69,7 +69,7 @@ class AnimatorComponentWidgetFactory : WidgetFactory<Component> {
 						var clickedOffset: Int? = null
 						onClick {
 							clickedOffset = mouseOffset
-							if (clickedOffset!! < 0) clickedOffset = null
+							if (clickedOffset < 0) clickedOffset = null
 						}
 
 						var moveFrame: Pair<Int, Int>? = null
