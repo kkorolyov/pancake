@@ -79,7 +79,7 @@ abstract class Buffer<T>(vararg elements: T) : RenderResource(), Iterable<T> {
 					data.sumOf { vertex ->
 						vertex.sumOf { attribute ->
 							when (attribute) {
-								is Vector3 -> 3 as Int
+								is Vector3 -> 3
 								else -> 2
 							}
 						}
